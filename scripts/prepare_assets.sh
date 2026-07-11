@@ -16,6 +16,13 @@ url = config["torch2pc"]["repository"]
 pinned = str(config["torch2pc"].get("commit", "")).strip()
 repo.parent.mkdir(parents=True, exist_ok=True)
 
+if repo.exists():
+    status = subprocess.check_output(
+        ["git", "-C", str(repo), "status", "--porcelain"], text=True
+    ).strip()
+    if status:
+        raise RuntimeError("Torch2PC worktree must be clean before asset preparation")
+
 if not repo.exists():
     subprocess.run(["git", "clone", url, str(repo)], check=True)
 else:
@@ -35,6 +42,11 @@ actual_commit = subprocess.check_output(
 ).strip()
 if pinned and actual_commit != pinned:
     raise RuntimeError(f"Torch2PC checkout mismatch: expected {pinned}, found {actual_commit}")
+status = subprocess.check_output(
+    ["git", "-C", str(repo), "status", "--porcelain"], text=True
+).strip()
+if status:
+    raise RuntimeError("Torch2PC worktree changed during asset preparation")
 
 transform = transforms.Compose([transforms.Pad(2), transforms.ToTensor()])
 for cls in [datasets.MNIST, datasets.FashionMNIST, datasets.KMNIST]:

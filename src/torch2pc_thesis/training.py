@@ -1,25 +1,25 @@
 from __future__ import annotations
 
 import copy
-import json
 import time
 from pathlib import Path
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import torch
 import torch.nn as nn
 
 from torch2pc_thesis.data import build_dataloaders
-from torch2pc_thesis.manifests import environment_snapshot, write_json
+from torch2pc_thesis.manifests import write_json
 from torch2pc_thesis.metrics import (
     ensure_finite_parameters,
     ensure_finite_tensor,
     evaluate_classifier,
     gradient_diagnostics,
 )
-from torch2pc_thesis.models import build_model
+from torch2pc_thesis.models import build_model, count_parameters
 from torch2pc_thesis.pc_methods import backward_for_method
 from torch2pc_thesis.reproducibility import configure_threads, set_global_seed
 
@@ -121,7 +121,7 @@ def train_one_epoch(
 def save_predictions(
     path: Path,
     evaluation: dict[str, Any],
-    source_indices: np.ndarray,
+    source_indices: npt.ArrayLike,
 ) -> None:
     y_true = np.asarray(evaluation["y_true"], dtype=np.int64)
     y_pred = np.asarray(evaluation["y_pred"], dtype=np.int64)
@@ -139,7 +139,8 @@ def save_predictions(
 
 def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str, Any]:
     run_dir = Path(run_directory)
-    run_dir.mkdir(parents=True, exist_ok=False)
+    if not run_dir.is_dir():
+        raise RuntimeError(f"Run directory must be prepared before training: {run_dir}")
 
     configure_threads(int(config["runtime"]["torch_threads"]))
     set_global_seed(
@@ -211,6 +212,8 @@ def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str,
 
     metrics: dict[str, Any] = {
         "best_epoch": best_epoch,
+        "epochs_completed": len(history),
+        "model_parameter_count": count_parameters(model),
         "best_validation_metric": best_metric,
         "primary_metric": str(config["training"]["primary_metric"]),
         "test_evaluated": False,
@@ -235,9 +238,4 @@ def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str,
         )
 
     write_json(metrics, run_dir / "metrics.json")
-    write_json(environment_snapshot(), run_dir / "environment.json")
-    (run_dir / "resolved_config.json").write_text(
-        json.dumps(config, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
     return metrics

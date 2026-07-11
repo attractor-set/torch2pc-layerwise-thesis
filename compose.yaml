@@ -86,6 +86,8 @@ services:
       - ${METHOD}
       - --dataset
       - ${DATASET}
+      - --model
+      - ${MODEL}
       - --seed
       - ${SEED}
 

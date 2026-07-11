@@ -20,9 +20,13 @@ def latest_run_events(registry: Path) -> list[dict[str, str]]:
     return list(latest.values())
 
 
-def experiment_key(row: dict[str, str]) -> tuple[str, str, str, str, str]:
+PilotKey = tuple[str, str, str, str, str, str]
+
+
+def experiment_key(row: dict[str, str]) -> PilotKey:
     return (
         row["dataset"],
+        row["model"],
         row["method"],
         row["model_seed"],
         row["eta"],
@@ -30,45 +34,57 @@ def experiment_key(row: dict[str, str]) -> tuple[str, str, str, str, str]:
     )
 
 
-def primary_attempts(events: list[dict[str, str]]) -> dict[tuple[str, str, str, str, str], dict[str, str]]:
-    selected: dict[tuple[str, str, str, str, str], dict[str, str]] = {}
+def primary_attempts(events: list[dict[str, str]]) -> dict[PilotKey, dict[str, str]]:
+    selected: dict[PilotKey, dict[str, str]] = {}
     terminal = [
         row for row in events
         if row["stage"] == "pilot" and row["status"] in {"completed", "failed"}
     ]
     for row in sorted(terminal, key=lambda item: (item["started_utc"], item["run_id"])):
         key = experiment_key(row)
-        current = selected.get(key)
-        if current is None or (current["status"] != "completed" and row["status"] == "completed"):
-            selected[key] = row
+        selected.setdefault(key, row)
     return selected
 
 
 def verify_planned_matrix(
-    attempts: dict[tuple[str, str, str, str, str], dict[str, str]],
+    attempts: dict[PilotKey, dict[str, str]],
     base_config: dict[str, object],
+    pilot_config: dict[str, object],
 ) -> dict[str, object]:
     seeds = [str(value) for value in base_config["statistics"]["pilot_seeds"]]
     datasets = [
         str(base_config["statistics"]["primary_dataset"]),
         str(base_config["statistics"]["secondary_dataset"]),
     ]
-    expected: list[tuple[str, str, str, str, str]] = []
+    selection = pilot_config["selection"]
+    models = [str(value) for value in selection["models"]]
+    methods = [str(value) for value in selection["methods"]]
+    expected: list[PilotKey] = []
     for dataset in datasets:
-        for seed in seeds:
-            expected.append((dataset, "bp", seed, "", ""))
-        for method in ["fixedpred", "strict"]:
-            config = yaml.safe_load(
-                Path(f"configs/methods/{method}.yaml").read_text(encoding="utf-8")
-            )
-            for item in config.get("search", {}).get("grid", []):
-                for seed in seeds:
-                    expected.append(
-                        (
-                            dataset, method, seed, str(item["eta"]),
-                            str(item["inference_steps"]),
+        for model in models:
+            for method in methods:
+                if method in {"bp", "exact"}:
+                    for seed in seeds:
+                        expected.append((dataset, model, method, seed, "", ""))
+                    continue
+                config = yaml.safe_load(
+                    Path(f"configs/methods/{method}.yaml").read_text(encoding="utf-8")
+                )
+                grid = config.get("search", {}).get("grid", [])
+                if not grid:
+                    raise RuntimeError(f"Pilot search grid is empty for method={method}")
+                for item in grid:
+                    for seed in seeds:
+                        expected.append(
+                            (
+                                dataset,
+                                model,
+                                method,
+                                seed,
+                                str(item["eta"]),
+                                str(item["inference_steps"]),
+                            )
                         )
-                    )
     missing = [key for key in expected if key not in attempts]
     if missing:
         preview = missing[:10]
@@ -99,21 +115,25 @@ def planning_pairs(
     frame: pd.DataFrame,
     selected: dict[str, dict[str, object]],
     primary_dataset: str,
+    primary_model: str,
 ) -> dict[str, object]:
     estimates = []
     for method, params in selected.items():
         candidate = frame[
             (frame["dataset"] == primary_dataset)
+            & (frame["model"] == primary_model)
             & (frame["method"] == method)
             & (frame["eta"] == str(params["eta"]))
             & (frame["inference_steps"] == str(params["inference_steps"]))
         ]
         baseline = frame[
-            (frame["dataset"] == primary_dataset) & (frame["method"] == "bp")
+            (frame["dataset"] == primary_dataset)
+            & (frame["model"] == primary_model)
+            & (frame["method"] == "bp")
         ]
         merged = candidate.merge(
             baseline,
-            on=["dataset", "model_seed"],
+            on=["dataset", "model", "model_seed"],
             suffixes=("_pc", "_bp"),
         )
         differences = (
@@ -149,9 +169,19 @@ def main() -> None:
 
     base_config = yaml.safe_load(Path("configs/base.yaml").read_text(encoding="utf-8"))
     primary_dataset = str(base_config["statistics"]["primary_dataset"])
+    pilot_config = yaml.safe_load(
+        Path("configs/stages/pilot.yaml").read_text(encoding="utf-8")
+    )
+    minimum_success_rate = float(pilot_config["selection"]["minimum_success_rate"])
+    models = [str(value) for value in pilot_config["selection"]["models"]]
+    if len(models) != 1:
+        raise RuntimeError(
+            "Pilot selection currently requires exactly one model architecture"
+        )
+    primary_model = models[0]
     events = latest_run_events(Path("experiments/registry.csv"))
     attempts = primary_attempts(events)
-    matrix_status = verify_planned_matrix(attempts, base_config)
+    matrix_status = verify_planned_matrix(attempts, base_config, pilot_config)
     rows = [row for row in attempts.values() if row["status"] == "completed"]
     records = []
     for row in rows:
@@ -171,7 +201,9 @@ def main() -> None:
     selected: dict[str, dict[str, object]] = {}
     for method in ["fixedpred", "strict"]:
         subset = frame[
-            (frame["method"] == method) & (frame["dataset"] == primary_dataset)
+            (frame["method"] == method)
+            & (frame["dataset"] == primary_dataset)
+            & (frame["model"] == primary_model)
         ].copy()
         grouped = (
             subset.groupby(["eta", "inference_steps"], dropna=False)
@@ -184,7 +216,7 @@ def main() -> None:
             .reset_index()
         )
         grouped["success_rate"] = grouped["completed"] / expected
-        eligible = grouped[grouped["success_rate"] >= 2 / 3].copy()
+        eligible = grouped[grouped["success_rate"] >= minimum_success_rate].copy()
         if eligible.empty:
             raise RuntimeError(f"No eligible pilot candidate for method={method}")
         eligible = eligible.sort_values(
@@ -197,8 +229,8 @@ def main() -> None:
             "inference_steps": int(winner["inference_steps"]),
             "selection_rule": (
                 "higher success rate on the primary dataset; then higher mean "
-                "validation macro F1; then lower mean training time, inference "
-                "steps, and eta"
+                "validation macro F1; then lower mean measured training time, "
+                "inference steps, and eta"
             ),
         }
         eligible.insert(0, "method", method)
@@ -211,10 +243,11 @@ def main() -> None:
     result = {
         "status": "selection_observed",
         "selection_dataset": primary_dataset,
+        "selection_model": primary_model,
         "pilot_matrix": matrix_status,
         "selected": selected,
         "test_evaluated": False,
-        "planning": planning_pairs(frame, selected, primary_dataset),
+        "planning": planning_pairs(frame, selected, primary_dataset, primary_model),
     }
     (output_dir / "pilot_selection.json").write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n",

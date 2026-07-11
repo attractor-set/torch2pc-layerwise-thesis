@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import torch
-import torch.nn.functional as functional
+from torchvision.transforms.functional import gaussian_blur
 
 from torch2pc_thesis.reproducibility import stable_int_seed
 
@@ -36,12 +36,11 @@ def corrupt_batch(
         return torch.clamp(value + noise * (0.08 + 0.35 * strength), 0, 1)
     if corruption == "gaussian_blur":
         kernel_size = 3 if severity <= 2 else 5
-        padding = kernel_size // 2
-        return functional.avg_pool2d(
+        sigma = 0.3 + 1.2 * strength
+        return gaussian_blur(
             value,
-            kernel_size=kernel_size,
-            stride=1,
-            padding=padding,
+            kernel_size=[kernel_size, kernel_size],
+            sigma=[sigma, sigma],
         )
     if corruption == "occlusion":
         side = max(2, int(round(value.shape[-1] * (0.1 + 0.35 * strength))))

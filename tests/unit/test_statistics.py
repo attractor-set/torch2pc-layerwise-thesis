@@ -28,3 +28,14 @@ def test_equivalence_requires_interval_inside_margin() -> None:
 def test_exact_sign_flip_detects_zero_centered_difference() -> None:
     p_value = exact_sign_flip_pvalue(np.array([-1.0, -0.5, 0.5, 1.0]))
     assert p_value == 1.0
+
+
+def test_summary_rejects_non_finite_metrics() -> None:
+    import pandas as pd
+    import pytest
+
+    from torch2pc_thesis.statistics import summarize_with_ci
+
+    frame = pd.DataFrame({"method": ["bp", "bp"], "metric": [1.0, float("inf")]})
+    with pytest.raises(ValueError, match="non-finite"):
+        summarize_with_ci(frame, ["method"], ["metric"])

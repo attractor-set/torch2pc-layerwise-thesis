@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - run: python -m pip install "mkdocs>=1.6,<2" "mkdocs-material>=9.6,<10"
+      - run: python -m pip install -c requirements/lock-dev.txt "mkdocs>=1.6,<2" "mkdocs-material>=9.6,<10"
       - name: Русская документация
         run: mkdocs build --strict -f mkdocs.yml
       - name: Английская документация

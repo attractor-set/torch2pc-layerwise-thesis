@@ -1,24 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+
+PYTHON_BIN="${PYTHON_BIN:-.venv/bin/python3}"
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  PYTHON_BIN="$(command -v python3)"
+fi
 export PYTHONPATH="$(pwd)/src${PYTHONPATH:+:$PYTHONPATH}"
 
-python -m compileall -q src scripts
-ruff check src tests scripts/*.py
-mypy src
-python scripts/check_epistemic_language.py
-python scripts/check_language_structure.py
-python scripts/check_local_links.py
-python -m torch2pc_thesis.cli validate --stage smoke --method bp
-python -m torch2pc_thesis.cli validate --stage pilot --method fixedpred
-python -m torch2pc_thesis.cli validate --stage final --method fixedpred
-python -m torch2pc_thesis.cli validate --stage final --method strict
-PYTHONPATH=src pytest -q
+"$PYTHON_BIN" -m compileall -q src scripts
+"$PYTHON_BIN" -m ruff check src tests scripts/*.py
+"$PYTHON_BIN" -m mypy src
+"$PYTHON_BIN" scripts/check_epistemic_language.py
+"$PYTHON_BIN" scripts/check_language_structure.py
+"$PYTHON_BIN" scripts/check_local_links.py
+"$PYTHON_BIN" -m torch2pc_thesis.cli validate --stage smoke --method bp
+"$PYTHON_BIN" -m torch2pc_thesis.cli validate --stage pilot --method fixedpred
+"$PYTHON_BIN" -m torch2pc_thesis.cli validate --stage final --method fixedpred
+"$PYTHON_BIN" -m torch2pc_thesis.cli validate --stage final --method strict
+"$PYTHON_BIN" -m pytest -q
 if command -v cffconvert >/dev/null 2>&1; then
   cffconvert --validate
 fi
 
-python - <<'PY'
+for script in scripts/*.sh; do
+  bash -n "$script"
+done
+
+"$PYTHON_BIN" - <<'PY'
 from pathlib import Path
 import ast
 import nbformat

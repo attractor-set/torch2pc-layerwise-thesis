@@ -2,11 +2,45 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 stage="${1:?stage required}"
-PYTHON_BIN="${PYTHON_BIN:-.venv/bin/python}"
+PYTHON_BIN="${PYTHON_BIN:-.venv/bin/python3}"
 if [[ ! -x "$PYTHON_BIN" ]]; then
-  PYTHON_BIN=python3
+  PYTHON_BIN="$(command -v python3)"
 fi
 failures=0
+
+read_yaml_list() {
+  local file="$1"
+  local dotted_path="$2"
+  "$PYTHON_BIN" - "$file" "$dotted_path" <<'PY'
+from pathlib import Path
+import sys
+import yaml
+
+value = yaml.safe_load(Path(sys.argv[1]).read_text(encoding="utf-8"))
+for part in sys.argv[2].split("."):
+    value = value[part]
+if not isinstance(value, list) or not value:
+    raise RuntimeError(f"Expected a non-empty list at {sys.argv[2]}")
+for item in value:
+    print(item)
+PY
+}
+
+read_method_grid() {
+  local method="$1"
+  "$PYTHON_BIN" - "$method" <<'PY'
+from pathlib import Path
+import sys
+import yaml
+
+method = sys.argv[1]
+config = yaml.safe_load(
+    Path(f"configs/methods/{method}.yaml").read_text(encoding="utf-8")
+)
+for item in config.get("search", {}).get("grid", []):
+    print(item["eta"], item["inference_steps"])
+PY
+}
 
 run_container() {
   local label="$1"
@@ -19,63 +53,78 @@ run_container() {
   fi
 }
 
+run_experiment() {
+  local stage_name="$1"
+  local dataset="$2"
+  local model="$3"
+  local method="$4"
+  local seed="$5"
+  shift 5
+  docker compose run --rm run \
+    torch2pc-thesis run \
+      --stage "$stage_name" \
+      --dataset "$dataset" \
+      --model "$model" \
+      --method "$method" \
+      --seed "$seed" \
+      "$@"
+}
+
 case "$stage" in
   pilot)
     "$PYTHON_BIN" scripts/check_protocol_gate.py pilot
-    seeds=(40 41 42)
-    datasets=(MNIST FashionMNIST)
+    mapfile -t seeds < <(read_yaml_list configs/stages/pilot.yaml selection.seeds)
+    mapfile -t datasets < <(read_yaml_list configs/stages/pilot.yaml selection.datasets)
+    mapfile -t models < <(read_yaml_list configs/stages/pilot.yaml selection.models)
+    mapfile -t methods < <(read_yaml_list configs/stages/pilot.yaml selection.methods)
+
     for dataset in "${datasets[@]}"; do
-      for seed in "${seeds[@]}"; do
-        label="pilot $dataset bp seed=$seed"
-        printf '\n=== %s ===\n' "$label"
-        run_container "$label" env STAGE=pilot METHOD=bp DATASET="$dataset" SEED="$seed" \
-          docker compose run --rm run
-      done
-      for method in fixedpred strict; do
-        while read -r eta steps; do
-          for seed in "${seeds[@]}"; do
-            label="pilot $dataset $method eta=$eta n=$steps seed=$seed"
-            printf '\n=== %s ===\n' "$label"
-            run_container "$label" env \
-              STAGE=pilot METHOD="$method" DATASET="$dataset" SEED="$seed" \
-              docker compose run --rm run \
-              torch2pc-thesis run \
-                --stage pilot \
-                --method "$method" \
-                --dataset "$dataset" \
-                --seed "$seed" \
-                --eta "$eta" \
-                --inference-steps "$steps"
-          done
-        done < <("$PYTHON_BIN" - "$method" <<'INNERPY'
-import sys, yaml
-from pathlib import Path
-method = sys.argv[1]
-config = yaml.safe_load(Path(f"configs/methods/{method}.yaml").read_text(encoding="utf-8"))
-for item in config.get("search", {}).get("grid", []):
-    print(item["eta"], item["inference_steps"])
-INNERPY
-)
+      for model in "${models[@]}"; do
+        for method in "${methods[@]}"; do
+          if [[ "$method" == "bp" || "$method" == "exact" ]]; then
+            for seed in "${seeds[@]}"; do
+              label="pilot $dataset $model $method seed=$seed"
+              printf '\n=== %s ===\n' "$label"
+              run_container "$label" \
+                run_experiment pilot "$dataset" "$model" "$method" "$seed"
+            done
+            continue
+          fi
+
+          while read -r eta steps; do
+            [[ -n "$eta" && -n "$steps" ]] || continue
+            for seed in "${seeds[@]}"; do
+              label="pilot $dataset $model $method eta=$eta n=$steps seed=$seed"
+              printf '\n=== %s ===\n' "$label"
+              run_container "$label" \
+                run_experiment pilot "$dataset" "$model" "$method" "$seed" \
+                  --eta "$eta" --inference-steps "$steps"
+            done
+          done < <(read_method_grid "$method")
+        done
       done
     done
     "$PYTHON_BIN" scripts/select_pilot.py
-    printf '%s\n' "Pilot summary created. Review results/summaries/pilot_selection.json."
-    printf '%s\n' "To apply the observed selection: $PYTHON_BIN scripts/select_pilot.py --apply"
+    printf '%s\n' "Pilot summary создан: results/summaries/pilot_selection.json"
+    printf '%s\n' "Применение наблюдаемого выбора: $PYTHON_BIN scripts/select_pilot.py --apply"
     printf 'Количество сохраненных неудачных попыток: %s\n' "$failures"
     ;;
   final)
     "$PYTHON_BIN" scripts/check_protocol_gate.py final
-    seeds=(0 1 2 3 4 5 6 7 8 9)
-    datasets=(MNIST FashionMNIST)
-    methods=(bp exact fixedpred strict)
+    mapfile -t seeds < <(read_yaml_list configs/stages/final.yaml selection.seeds)
+    mapfile -t datasets < <(read_yaml_list configs/stages/final.yaml selection.datasets)
+    mapfile -t models < <(read_yaml_list configs/stages/final.yaml selection.models)
+    mapfile -t methods < <(read_yaml_list configs/stages/final.yaml selection.methods)
+
     for dataset in "${datasets[@]}"; do
-      for method in "${methods[@]}"; do
-        for seed in "${seeds[@]}"; do
-          label="final $dataset $method seed=$seed"
-          printf '\n=== %s ===\n' "$label"
-          run_container "$label" env \
-            STAGE=final METHOD="$method" DATASET="$dataset" SEED="$seed" \
-            docker compose run --rm run
+      for model in "${models[@]}"; do
+        for method in "${methods[@]}"; do
+          for seed in "${seeds[@]}"; do
+            label="final $dataset $model $method seed=$seed"
+            printf '\n=== %s ===\n' "$label"
+            run_container "$label" \
+              run_experiment final "$dataset" "$model" "$method" "$seed"
+          done
         done
       done
     done
@@ -85,7 +134,7 @@ INNERPY
     fi
     ;;
   diagnostics)
-    echo "Диагностический исполнитель еще не реализован. Текущая команда формирует только сводку зарегистрированных запусков." >&2
+    echo "Диагностический исполнитель еще не реализован. Команда формирует только сводку зарегистрированных запусков." >&2
     docker compose run --rm report
     ;;
   *)

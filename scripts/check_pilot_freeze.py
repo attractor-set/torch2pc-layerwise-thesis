@@ -9,27 +9,29 @@ from pathlib import Path
 import yaml
 
 
-def completed_events(path: Path) -> list[dict[str, str]]:
+def primary_terminal_events(path: Path) -> list[dict[str, str]]:
     latest: dict[str, dict[str, str]] = {}
     with path.open("r", newline="", encoding="utf-8") as stream:
         for row in csv.DictReader(stream):
             latest[row["run_id"]] = row
-    completed = [row for row in latest.values() if row["status"] == "completed"]
+    terminal = [
+        row for row in latest.values() if row["status"] in {"completed", "failed"}
+    ]
     selected: dict[str, dict[str, str]] = {}
-    for row in sorted(completed, key=lambda item: (item["started_utc"], item["run_id"])):
+    for row in sorted(terminal, key=lambda item: (item["started_utc"], item["run_id"])):
         selected.setdefault(row["experiment_id"], row)
     return list(selected.values())
 
 
 def main() -> None:
-    rows = [
+    attempts = [
         row
-        for row in completed_events(Path("experiments/registry.csv"))
+        for row in primary_terminal_events(Path("experiments/registry.csv"))
         if row["stage"] == "pilot"
     ]
-    if not rows:
-        raise RuntimeError("No completed pilot runs were found")
-    if any(row["test_evaluated"].lower() == "true" for row in rows):
+    if not attempts:
+        raise RuntimeError("No terminal pilot attempts were found")
+    if any(row["test_evaluated"].lower() == "true" for row in attempts):
         raise RuntimeError("Pilot registry contains test evaluation")
 
     selection_path = Path("results/summaries/pilot_selection.json")
@@ -51,19 +53,33 @@ def main() -> None:
     minimum_success_rate = float(pilot_stage["selection"]["minimum_success_rate"])
     minimum_completed = math.ceil(len(expected_seeds) * minimum_success_rate)
 
+    completed = [row for row in attempts if row["status"] == "completed"]
+    primary_dataset = str(base["statistics"]["primary_dataset"])
+    secondary_dataset = str(base["statistics"]["secondary_dataset"])
+    models = [str(value) for value in pilot_stage["selection"]["models"]]
+    if len(models) != 1:
+        raise RuntimeError(
+            "Pilot freeze currently requires exactly one model architecture"
+        )
+    primary_model = models[0]
+    if selection.get("selection_model") != primary_model:
+        raise RuntimeError("Pilot selection report has an unexpected model")
     completed_counts: dict[str, int] = {}
     for dataset in datasets:
         observed_bp = {
             row["model_seed"]
-            for row in rows
-            if row["method"] == "bp" and row["dataset"] == dataset
+            for row in completed
+            if row["method"] == "bp"
+            and row["dataset"] == dataset
+            and row["model"] == primary_model
         }
         completed_counts[f"{dataset}/bp"] = len(observed_bp)
-        if len(observed_bp) < minimum_completed:
-            raise RuntimeError(
-                f"BP pilot success rate is below the threshold for {dataset}: "
-                f"required {minimum_completed}, observed {len(observed_bp)}"
-            )
+    if completed_counts[f"{primary_dataset}/bp"] < minimum_completed:
+        raise RuntimeError(
+            f"BP pilot success rate is below the threshold for {primary_dataset}: "
+            f"required {minimum_completed}, "
+            f"observed {completed_counts[f'{primary_dataset}/bp']}"
+        )
 
     applied: dict[str, object] = {}
     for method in ["fixedpred", "strict"]:
@@ -83,14 +99,15 @@ def main() -> None:
         for dataset in datasets:
             observed = {
                 row["model_seed"]
-                for row in rows
+                for row in completed
                 if row["method"] == method
                 and row["dataset"] == dataset
+                and row["model"] == primary_model
                 and float(row["eta"]) == float(eta)
                 and int(row["inference_steps"]) == int(steps)
             }
             completed_counts[f"{dataset}/{method}"] = len(observed)
-            if len(observed) < minimum_completed:
+            if dataset == primary_dataset and len(observed) < minimum_completed:
                 raise RuntimeError(
                     f"Selected pilot success rate is below the threshold for "
                     f"{dataset}/{method}: required {minimum_completed}, "
@@ -106,14 +123,28 @@ def main() -> None:
         raise RuntimeError(
             f"Final seed count {len(final_seeds)} is below the pre-specified minimum {minimum}"
         )
+    advisory = int(selection.get("planning", {}).get("maximum_advisory_pairs", minimum))
+    if len(final_seeds) < advisory:
+        raise RuntimeError(
+            f"Final seed count {len(final_seeds)} is below the pilot planning estimate "
+            f"{advisory}; update both statistics.final_seeds and final selection.seeds "
+            "before freezing"
+        )
 
     result = {
         "status": "ready_for_freeze",
-        "completed_pilot_attempts": len(rows),
+        "terminal_pilot_attempts": len(attempts),
+        "completed_pilot_attempts": len(completed),
+        "selection_model": primary_model,
         "applied_method_parameters": applied,
         "minimum_pilot_completed_per_cell": minimum_completed,
         "completed_pilot_counts": completed_counts,
+        "secondary_dataset_status": {
+            "dataset": secondary_dataset,
+            "role": "descriptive_only_for_selection",
+        },
         "final_seed_count": len(final_seeds),
+        "pilot_advisory_final_pairs": advisory,
         "test_evaluated_in_pilot": False,
     }
     print(json.dumps(result, ensure_ascii=False, indent=2))

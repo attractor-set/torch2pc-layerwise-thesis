@@ -9,15 +9,20 @@ set -a
 . ./.env
 set +a
 mkdir -p results/summaries
+PYTHON_BIN="${PYTHON_BIN:-.venv/bin/python3}"
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  PYTHON_BIN=python3
+fi
 
-python - "$EXPERIMENT_IMAGE" "$ROCM_PYTORCH_IMAGE" <<'INNERPY'
+PYTHONPATH=src "$PYTHON_BIN" - "$EXPERIMENT_IMAGE" "$ROCM_PYTORCH_IMAGE" <<'INNERPY'
 from pathlib import Path
-import hashlib
 import json
 import subprocess
 import sys
 import time
 import yaml
+
+from torch2pc_thesis.assets import sha256_file, validate_prepared_assets
 
 experiment_image, base_image = sys.argv[1:3]
 
@@ -50,7 +55,7 @@ def image_info(reference):
 def digest_record(path):
     return {
         "path": str(path),
-        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "sha256": sha256_file(path),
     }
 
 config_files = sorted(Path("configs").rglob("*.yaml"))
@@ -67,17 +72,52 @@ container_pip = output([
     "docker", "run", "--rm", "--entrypoint", "python",
     experiment_image, "-m", "pip", "freeze"
 ])
+container_python_runtime = output([
+    "docker", "run", "--rm", "--entrypoint", "python",
+    experiment_image, "-c",
+    (
+        "import json, platform, torch, torchvision; "
+        "print(json.dumps({"
+        "'python': platform.python_version(), "
+        "'torch': torch.__version__, "
+        "'torchvision': torchvision.__version__, "
+        "'hip': getattr(torch.version, 'hip', None)"
+        "}, sort_keys=True))"
+    ),
+])
+container_dpkg = output([
+    "docker", "run", "--rm", "--entrypoint", "dpkg-query",
+    experiment_image, "-W", "-f=${binary:Package}=${Version}\n"
+])
+prepared_assets_path = Path("results/summaries/prepared_assets.json")
+prepared_assets = validate_prepared_assets(
+    prepared_assets_path,
+    verify_hashes=True,
+)
+torch2pc_status = output(
+    ["git", "-C", "external/Torch2PC", "status", "--porcelain"]
+)
+if torch2pc_status:
+    raise RuntimeError("Environment lock requires a clean Torch2PC worktree")
 manifest = {
     "schema_version": 1,
     "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     "source_git_commit_at_lock_creation": output(["git", "rev-parse", "HEAD"]),
     "source_worktree_clean_before_lock": output(["git", "status", "--porcelain"]) == "",
     "torch2pc_commit": output(["git", "-C", "external/Torch2PC", "rev-parse", "HEAD"]),
+    "torch2pc_worktree_clean": True,
+    "prepared_assets": {
+        "path": str(prepared_assets_path),
+        "sha256": sha256_file(prepared_assets_path),
+        "dataset_file_count": len(prepared_assets["dataset_files"]),
+    },
     "experiment_image": image_info(experiment_image),
     "base_image": image_info(base_image),
     "config_files": [digest_record(path) for path in config_files],
     "source_files": [digest_record(path) for path in source_files],
     "container_pip_freeze": container_pip.splitlines(),
+    "container_python_runtime": json.loads(container_python_runtime),
+    "container_dpkg_packages": container_dpkg.splitlines(),
     "host": {
         "os_release": shell("cat /etc/os-release"),
         "uname": output(["uname", "-a"], required=False),

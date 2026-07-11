@@ -85,10 +85,15 @@ cp .env.example .env
 make init
 make host-check
 make image-check
+make pin-base-image
 make build
 make validate
 make prepare
 ```
+
+`make pin-base-image` заменяет изменяемый Docker tag в локальном `.env` на
+ссылку вида `repository@sha256:...`. Финальные и pilot-образы собираются только
+после такой фиксации. `.env` остается локальным и не добавляется в Git.
 
 После просмотра скачанного checkout Torch2PC необходимо зафиксировать commit,
 закоммитить изменение конфигурации и создать lock-файл окружения:
@@ -97,6 +102,7 @@ make prepare
 make pin-torch2pc
 git add configs/base.yaml
 git commit -m "research: pin Torch2PC revision"
+make pin-base-image
 make build
 make freeze-environment
 git add results/summaries/environment-lock.json

@@ -42,3 +42,23 @@ allowed only after the pilot configuration is frozen.
 
 See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 [STATUS_EN.md](STATUS_EN.md).
+
+## Controlled environment sequence
+
+```bash
+cp .env.example .env
+./scripts/setup_ubuntu.sh
+make init
+make host-check
+make image-check
+make pin-base-image
+make build
+make validate
+make prepare
+```
+
+`make pin-base-image` replaces the mutable Docker tag in the local `.env` with
+an immutable `repository@sha256:...` reference. Pilot and final images are built
+only after this step. The local `.env` is not committed.
+
+See [docs/validation_EN.md](docs/validation_EN.md) for the validation procedure.

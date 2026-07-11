@@ -9,6 +9,8 @@ from pathlib import Path
 
 import yaml
 
+from torch2pc_thesis.assets import verify_locked_prepared_assets
+
 
 def load(path: Path) -> dict[str, object]:
     if not path.exists():
@@ -27,6 +29,19 @@ def verify_environment_lock() -> None:
     expected_torch2pc = str(base["torch2pc"]["commit"])
     if lock.get("torch2pc_commit") != expected_torch2pc:
         raise RuntimeError("Environment lock contains another Torch2PC commit")
+    actual_torch2pc = subprocess.check_output(
+        ["git", "-C", str(base["torch2pc"]["local_path"]), "rev-parse", "HEAD"],
+        text=True,
+    ).strip()
+    if actual_torch2pc != expected_torch2pc:
+        raise RuntimeError("Torch2PC checkout differs from the pinned commit")
+    torch2pc_status = subprocess.check_output(
+        ["git", "-C", str(base["torch2pc"]["local_path"]), "status", "--porcelain"],
+        text=True,
+    ).strip()
+    if torch2pc_status:
+        raise RuntimeError("Torch2PC worktree contains uncommitted changes")
+    verify_locked_prepared_assets(lock, verify_hashes=True)
     for group in ["config_files", "source_files"]:
         for item in lock.get(group, []):
             path = Path(str(item["path"]))
@@ -46,12 +61,23 @@ def main() -> None:
     verify_environment_lock()
 
     environment_lock_path = Path("results/summaries/environment-lock.json")
+    environment_lock = load(environment_lock_path)
     environment_lock_sha256 = sha256(environment_lock_path)
+    expected_source_commit = str(environment_lock.get("image_source_git_commit", ""))
+    expected_torch2pc_commit = str(environment_lock.get("torch2pc_commit", ""))
     for device in ["cpu", "gpu"]:
         value = load(Path(f"results/summaries/control_gate_{device}.json"))
         if value.get("environment_lock_sha256") != environment_lock_sha256:
             raise RuntimeError(
                 f"Control gate was produced for another environment lock: device={device}"
+            )
+        if value.get("source_git_commit_observed") != expected_source_commit:
+            raise RuntimeError(
+                f"Control gate was produced by another source commit: device={device}"
+            )
+        if value.get("torch2pc_commit") != expected_torch2pc_commit:
+            raise RuntimeError(
+                f"Control gate was produced with another Torch2PC commit: device={device}"
             )
         if not value.get("gate_observed_within_thresholds"):
             raise RuntimeError(f"Control gate is outside thresholds for device={device}")

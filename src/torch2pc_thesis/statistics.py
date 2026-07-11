@@ -4,6 +4,7 @@ import math
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 from scipy import stats
 
@@ -14,12 +15,16 @@ def summarize_with_ci(
     metric_columns: list[str],
     confidence: float = 0.95,
 ) -> pd.DataFrame:
+    if not 0 < confidence < 1:
+        raise ValueError("confidence must be in (0, 1)")
     records: list[dict[str, Any]] = []
     for keys, group in frame.groupby(group_columns, dropna=False):
         normalized_keys = keys if isinstance(keys, tuple) else (keys,)
         base = dict(zip(group_columns, normalized_keys, strict=True))
         for metric in metric_columns:
             values = group[metric].dropna().astype(float).to_numpy()
+            if values.size and not np.isfinite(values).all():
+                raise ValueError(f"Metric contains non-finite values: {metric}")
             count = len(values)
             mean = float(np.mean(values)) if count else np.nan
             std = float(np.std(values, ddof=1)) if count > 1 else np.nan
@@ -42,23 +47,33 @@ def summarize_with_ci(
     return pd.DataFrame(records)
 
 
-def cohen_dz(differences: np.ndarray) -> float:
-    values = np.asarray(differences, dtype=float)
+def _finite_values(values: npt.ArrayLike) -> npt.NDArray[np.float64]:
+    array = np.asarray(values, dtype=np.float64).reshape(-1)
+    finite = array[np.isfinite(array)]
+    return np.asarray(finite, dtype=np.float64)
+
+
+def cohen_dz(differences: npt.ArrayLike) -> float:
+    values = _finite_values(differences)
     if values.size < 2:
         return float("nan")
-    standard_deviation = np.std(values, ddof=1)
+    mean = float(np.mean(values))
+    standard_deviation = float(np.std(values, ddof=1))
     if standard_deviation == 0:
-        return float("nan")
-    return float(np.mean(values) / standard_deviation)
+        if mean == 0:
+            return 0.0
+        return math.copysign(float("inf"), mean)
+    return mean / standard_deviation
 
 
 def mean_difference_ci(
-    differences: np.ndarray,
+    differences: npt.ArrayLike,
     *,
     confidence: float,
 ) -> tuple[float, float, float]:
-    values = np.asarray(differences, dtype=float)
-    values = values[np.isfinite(values)]
+    if not 0 < confidence < 1:
+        raise ValueError("confidence must be in (0, 1)")
+    values = _finite_values(differences)
     if values.size < 2:
         return float("nan"), float("nan"), float("nan")
     mean = float(values.mean())
@@ -69,15 +84,16 @@ def mean_difference_ci(
 
 
 def equivalence_by_ci(
-    differences: np.ndarray,
+    differences: npt.ArrayLike,
     *,
     margin: float,
     alpha: float = 0.05,
 ) -> dict[str, float | bool | int]:
     if margin <= 0:
         raise ValueError("Equivalence margin must be positive")
-    values = np.asarray(differences, dtype=float)
-    values = values[np.isfinite(values)]
+    if not 0 < alpha < 0.5:
+        raise ValueError("alpha must be in (0, 0.5)")
+    values = _finite_values(differences)
     mean, low, high = mean_difference_ci(values, confidence=1 - 2 * alpha)
     equivalent = bool(values.size >= 2 and low > -margin and high < margin)
     return {
@@ -90,9 +106,8 @@ def equivalence_by_ci(
     }
 
 
-def exact_sign_flip_pvalue(differences: np.ndarray) -> float:
-    values = np.asarray(differences, dtype=float)
-    values = values[np.isfinite(values)]
+def exact_sign_flip_pvalue(differences: npt.ArrayLike) -> float:
+    values = _finite_values(differences)
     values = values[values != 0]
     n = values.size
     if n == 0:
@@ -113,6 +128,10 @@ def exact_sign_flip_pvalue(differences: np.ndarray) -> float:
 
 def holm_adjust(p_values: list[float]) -> list[float]:
     values = np.asarray(p_values, dtype=float)
+    if values.ndim != 1 or not np.isfinite(values).all():
+        raise ValueError("p_values must be a finite one-dimensional sequence")
+    if ((values < 0) | (values > 1)).any():
+        raise ValueError("p_values must be in [0, 1]")
     order = np.argsort(values)
     adjusted = np.empty_like(values)
     running = 0.0

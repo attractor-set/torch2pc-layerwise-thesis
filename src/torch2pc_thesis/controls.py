@@ -24,14 +24,19 @@ def _function_source(source_text: str, function_name: str) -> str:
     return match.group(0)
 
 
-def audit_rosenbaum_correction(torch2pc_file: str | Path) -> dict[str, Any]:
+def structural_correction_check(torch2pc_file: str | Path) -> dict[str, Any]:
+    """Observe source patterns associated with the published correction.
+
+    This is a structural source-code check. It does not establish semantic
+    equivalence by itself; numerical controls are evaluated separately.
+    """
     source = Path(torch2pc_file).read_text(encoding="utf-8")
     strict = re.sub(r"\s+", "", _function_source(source, "StrictPCPredErrs"))
     fixed = re.sub(r"\s+", "", _function_source(source, "FixedPredPCPredErrs"))
     exact = re.sub(r"\s+", "", _function_source(source, "ExactPredErrs"))
     loop_pos = strict.find("foriinrange(n):")
     error_pos = strict.find("epsilon[layer]=model[layer-1](v[layer-1])-v[layer]")
-    checks = {
+    observations = {
         "strict_recomputes_errors_each_iteration": loop_pos >= 0 and error_pos > loop_pos,
         "strict_error_is_prediction_minus_belief": (
             "epsilon[layer]=model[layer-1](v[layer-1])-v[layer]" in strict
@@ -45,23 +50,50 @@ def audit_rosenbaum_correction(torch2pc_file: str | Path) -> dict[str, Any]:
             "v[layer]=vhat[layer]-epsilon[layer]" in exact
         ),
     }
-    return {"checks": checks, "passed": all(checks.values())}
-
-
-def named_gradients(model: nn.Module) -> dict[str, torch.Tensor]:
     return {
-        name: (
-            torch.zeros_like(parameter)
-            if parameter.grad is None
-            else parameter.grad.detach().clone()
-        ).flatten().cpu()
-        for name, parameter in model.named_parameters()
-        if parameter.requires_grad
+        "check_kind": "source_pattern_observation",
+        "observations": observations,
+        "all_observed": all(observations.values()),
+        "scope": "Pinned TorchSeq2PC.py source only; numerical controls remain required.",
     }
 
 
+def audit_rosenbaum_correction(torch2pc_file: str | Path) -> dict[str, Any]:
+    """Backward-compatible representation of the structural source check."""
+    result = structural_correction_check(torch2pc_file)
+    return {
+        "checks": result["observations"],
+        "passed": result["all_observed"],
+    }
+
+
+def named_gradients(model: nn.Module) -> dict[str, torch.Tensor]:
+    gradients: dict[str, torch.Tensor] = {}
+    missing: list[str] = []
+    for name, parameter in model.named_parameters():
+        if not parameter.requires_grad:
+            continue
+        if parameter.grad is None:
+            missing.append(name)
+            continue
+        gradients[name] = parameter.grad.detach().clone().flatten().cpu()
+    if missing:
+        raise RuntimeError(f"Missing gradients for trainable parameters: {missing}")
+    if not gradients:
+        raise RuntimeError("No trainable parameter gradients were produced")
+    return gradients
+
+
 def cosine(left: torch.Tensor, right: torch.Tensor, epsilon: float = 1e-12) -> float:
-    return float(torch.dot(left, right) / (torch.norm(left) * torch.norm(right) + epsilon))
+    if epsilon <= 0:
+        raise ValueError("epsilon must be positive")
+    left_norm = float(torch.norm(left))
+    right_norm = float(torch.norm(right))
+    if left_norm <= epsilon and right_norm <= epsilon:
+        return 1.0
+    if left_norm <= epsilon or right_norm <= epsilon:
+        return 0.0
+    return float(torch.dot(left, right) / (left_norm * right_norm))
 
 
 def relative_l2(
@@ -69,17 +101,37 @@ def relative_l2(
     candidate: torch.Tensor,
     epsilon: float = 1e-12,
 ) -> float:
-    return float(torch.norm(reference - candidate) / (torch.norm(reference) + epsilon))
+    if epsilon <= 0:
+        raise ValueError("epsilon must be positive")
+    difference = float(torch.norm(reference - candidate))
+    reference_norm = float(torch.norm(reference))
+    if reference_norm <= epsilon:
+        return 0.0 if difference <= epsilon else float("inf")
+    return difference / reference_norm
 
 
 def gradient_map_table(
     reference: dict[str, torch.Tensor],
     candidate: dict[str, torch.Tensor],
 ) -> pd.DataFrame:
+    if set(reference) != set(candidate):
+        missing_reference = sorted(set(candidate) - set(reference))
+        missing_candidate = sorted(set(reference) - set(candidate))
+        raise RuntimeError(
+            "Gradient parameter sets differ: "
+            f"missing_in_reference={missing_reference}, "
+            f"missing_in_candidate={missing_candidate}"
+        )
+    if not reference:
+        raise RuntimeError("Gradient comparison received no parameters")
     records = []
-    for name in sorted(reference.keys() & candidate.keys()):
+    for name in sorted(reference):
         left = reference[name]
         right = candidate[name]
+        if left.shape != right.shape:
+            raise RuntimeError(
+                f"Gradient shape mismatch for {name}: {left.shape} != {right.shape}"
+            )
         records.append(
             {
                 "parameter": name,

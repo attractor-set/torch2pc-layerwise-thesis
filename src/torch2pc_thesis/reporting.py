@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
 import yaml
 
+from torch2pc_thesis.config import config_sha256
+from torch2pc_thesis.manifests import sha256_file
 from torch2pc_thesis.registry import completed_experiments
 from torch2pc_thesis.statistics import (
     cohen_dz,
@@ -17,6 +20,104 @@ from torch2pc_thesis.statistics import (
     summarize_with_ci,
 )
 
+COHORT_COLUMNS = [
+    "git_commit",
+    "torch2pc_commit",
+    "environment_lock_sha256",
+    "split_seed",
+]
+PAIRING_KEY = ["dataset", "model", "method", "model_seed"]
+
+
+def _json_object(path: Path) -> dict[str, Any]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise RuntimeError(f"Expected a JSON object: {path}")
+    return value
+
+
+
+
+def _verified_run_artifacts(
+    run_directory: Path,
+    row: dict[str, str],
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    required_paths = {
+        "metrics.json": run_directory / "metrics.json",
+        "environment.json": run_directory / "environment.json",
+        "resolved_config.json": run_directory / "resolved_config.json",
+        "manifest.json": run_directory / "manifest.json",
+    }
+    missing = [name for name, path in required_paths.items() if not path.is_file()]
+    if missing:
+        raise RuntimeError(
+            f"Completed run is missing required artifacts {missing}: {run_directory}"
+        )
+
+    metrics = _json_object(required_paths["metrics.json"])
+    environment = _json_object(required_paths["environment.json"])
+    resolved_config = _json_object(required_paths["resolved_config.json"])
+    manifest = _json_object(required_paths["manifest.json"])
+
+    expected_identity = {
+        "source_git_commit": row["git_commit"],
+        "experiment_id": row["experiment_id"],
+        "run_id": row["run_id"],
+        "config_sha256": row["config_sha256"],
+    }
+    for key, expected in expected_identity.items():
+        if str(environment.get(key, "")) != expected:
+            raise RuntimeError(
+                f"Environment artifact disagrees with registry for {key}: "
+                f"{run_directory}"
+            )
+    if config_sha256(resolved_config) != row["config_sha256"]:
+        raise RuntimeError(f"Resolved configuration hash mismatch: {run_directory}")
+
+    file_records = manifest.get("files")
+    if not isinstance(file_records, list) or not file_records:
+        raise RuntimeError(f"Run manifest contains no file records: {run_directory}")
+    indexed: dict[str, dict[str, Any]] = {}
+    for item in file_records:
+        if not isinstance(item, dict):
+            raise RuntimeError(f"Invalid run manifest record: {run_directory}")
+        relative = str(item.get("path", ""))
+        if not relative or relative in indexed:
+            raise RuntimeError(f"Duplicate or empty run manifest path: {run_directory}")
+        indexed[relative] = item
+
+    expected_files = {
+        "environment.json",
+        "resolved_config.json",
+        "metrics.json",
+        "history.csv",
+        "checkpoint.pt",
+        "validation_predictions.npz",
+    }
+    if bool(metrics.get("test_evaluated", False)):
+        expected_files.add("test_predictions.npz")
+    absent_from_manifest = sorted(expected_files - set(indexed))
+    if absent_from_manifest:
+        raise RuntimeError(
+            f"Run manifest omits required files {absent_from_manifest}: {run_directory}"
+        )
+    for relative, item in indexed.items():
+        path = run_directory / relative
+        resolved = path.resolve()
+        try:
+            resolved.relative_to(run_directory.resolve())
+        except ValueError as exc:
+            raise RuntimeError(
+                f"Run manifest path escapes its run directory: {relative}"
+            ) from exc
+        if not path.is_file():
+            raise RuntimeError(f"Run artifact is missing: {path}")
+        if path.stat().st_size != int(item.get("bytes", -1)):
+            raise RuntimeError(f"Run artifact size mismatch: {path}")
+        if sha256_file(path) != str(item.get("sha256", "")):
+            raise RuntimeError(f"Run artifact hash mismatch: {path}")
+    return metrics, environment
+
 
 def collect_metrics(
     registry_path: str | Path,
@@ -24,57 +125,118 @@ def collect_metrics(
 ) -> pd.DataFrame:
     root = Path(project_root)
     records: list[dict[str, Any]] = []
+    root_resolved = root.resolve()
     for row in completed_experiments(registry_path):
-        metrics_path = root / row["run_directory"] / "metrics.json"
-        if not metrics_path.exists():
-            continue
-        metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
-        records.append({**row, **metrics})
+        run_directory = (root / row["run_directory"]).resolve()
+        try:
+            run_directory.relative_to(root_resolved)
+        except ValueError as exc:
+            raise RuntimeError(
+                f"Registered run directory escapes the project root: {run_directory}"
+            ) from exc
+        metrics, environment = _verified_run_artifacts(run_directory, row)
+        registry_test = row["test_evaluated"].lower() == "true"
+        if bool(metrics.get("test_evaluated", False)) != registry_test:
+            raise RuntimeError(
+                f"Registry and metrics disagree about test access: {run_directory}"
+            )
+        records.append(
+            {
+                **row,
+                **metrics,
+                "environment_lock_sha256": environment.get(
+                    "environment_lock_sha256"
+                ),
+            }
+        )
     return pd.DataFrame(records)
 
+
+def _validate_confirmatory_cohort(primary: pd.DataFrame) -> None:
+    missing = [column for column in COHORT_COLUMNS if column not in primary.columns]
+    if missing:
+        raise RuntimeError(f"Confirmatory cohort metadata is missing: {missing}")
+    for column in COHORT_COLUMNS:
+        values = primary[column].dropna().astype(str)
+        if values.empty or values.nunique() != 1:
+            observed = sorted(values.unique().tolist())
+            raise RuntimeError(
+                f"Confirmatory analysis mixes {column} values: {observed}"
+            )
+    duplicated = primary.duplicated(PAIRING_KEY, keep=False)
+    if duplicated.any():
+        conflicts = primary.loc[duplicated, PAIRING_KEY + ["run_id"]]
+        raise RuntimeError(
+            "Confirmatory analysis contains duplicate method/seed observations: "
+            f"{conflicts.to_dict(orient='records')}"
+        )
 
 
 def build_paired_primary_analysis(
     final: pd.DataFrame,
     *,
     primary_dataset: str = "FashionMNIST",
+    primary_model: str = "lenet_classic",
     primary_metric: str = "test_macro_f1",
+    contrasts: list[str] | None = None,
     margin: float = 0.01,
     alpha: float = 0.05,
     minimum_pairs: int = 10,
 ) -> pd.DataFrame:
+    if primary_metric not in final.columns:
+        raise RuntimeError(f"Primary metric is absent: {primary_metric}")
     records: list[dict[str, Any]] = []
     primary = final[
         (final["stage"] == "final")
         & (final["dataset"] == primary_dataset)
+        & (final["model"] == primary_model)
         & final[primary_metric].notna()
     ].copy()
+    if primary.empty:
+        return pd.DataFrame()
+    _validate_confirmatory_cohort(primary)
+
     baseline = primary[primary["method"] == "bp"][
         ["model", "model_seed", primary_metric]
     ].rename(columns={primary_metric: "baseline_value"})
 
-    for method in ["fixedpred", "strict"]:
+    contrast_names = contrasts or ["fixedpred_vs_bp", "strict_vs_bp"]
+    methods: list[str] = []
+    for contrast in contrast_names:
+        suffix = "_vs_bp"
+        if not contrast.endswith(suffix):
+            raise RuntimeError(f"Unsupported primary contrast: {contrast}")
+        methods.append(contrast[: -len(suffix)])
+
+    for method in methods:
         candidate = primary[primary["method"] == method][
             ["model", "model_seed", primary_metric]
         ].rename(columns={primary_metric: "candidate_value"})
-        paired = baseline.merge(candidate, on=["model", "model_seed"], how="inner")
+        paired = baseline.merge(
+            candidate,
+            on=["model", "model_seed"],
+            how="inner",
+            validate="one_to_one",
+        ).sort_values(["model", "model_seed"])
         differences = (
             paired["candidate_value"].astype(float)
             - paired["baseline_value"].astype(float)
         ).to_numpy()
-        mean, ci_low, ci_high = mean_difference_ci(
-            differences, confidence=1 - alpha
-        )
-        equivalence = equivalence_by_ci(
-            differences, margin=margin, alpha=alpha
-        )
+        if not pd.Series(differences).map(lambda value: math.isfinite(float(value))).all():
+            raise RuntimeError(f"Non-finite paired difference for method={method}")
+        mean, ci_low, ci_high = mean_difference_ci(differences, confidence=1 - alpha)
+        equivalence = equivalence_by_ci(differences, margin=margin, alpha=alpha)
         complete = len(differences) >= minimum_pairs
         records.append(
             {
                 "dataset": primary_dataset,
+                "model": primary_model,
                 "contrast": f"{method}_vs_bp",
                 "metric": primary_metric,
                 "n_pairs": int(len(differences)),
+                "paired_model_seeds": ",".join(
+                    paired["model_seed"].astype(str).tolist()
+                ),
                 "minimum_pairs": int(minimum_pairs),
                 "confirmatory_complete": complete,
                 "analysis_status": "confirmatory" if complete else "incomplete",
@@ -102,6 +264,7 @@ def build_paired_primary_analysis(
                 result.loc[valid, "sign_flip_p_raw"].astype(float).tolist()
             )
     return result
+
 
 def write_latex_table(frame: pd.DataFrame, path: str | Path) -> Path:
     output = Path(path)
@@ -131,23 +294,20 @@ def build_primary_assets(
     if metrics.empty:
         return outputs
 
-    validation_columns = [
-        column
-        for column in ["best_validation_metric"]
-        if column in metrics.columns
-    ]
-    if validation_columns:
+    if "best_validation_metric" in metrics.columns:
         validation = summarize_with_ci(
             metrics,
             ["stage", "dataset", "model", "method", "eta", "inference_steps"],
-            validation_columns,
+            ["best_validation_metric"],
         )
         path = summary_dir / "validation_summary.csv"
         validation.to_csv(path, index=False)
         outputs["validation_summary"] = str(path)
 
+    if "test_evaluated" not in metrics.columns:
+        return outputs
     final = metrics[
-        metrics.get("test_evaluated", False).astype(str).str.lower().eq("true")
+        metrics["test_evaluated"].astype(str).str.lower().eq("true")
     ].copy()
     test_columns = [
         column for column in ["test_accuracy", "test_macro_f1"] if column in final.columns
@@ -163,10 +323,14 @@ def build_primary_assets(
         latex_path = write_latex_table(summary, table_dir / "primary_test_summary.tex")
         outputs.update({"test_summary": str(summary_path), "latex": str(latex_path)})
 
+        configured_metric = str(statistics["primary_metric"])
+        primary_metric = f"test_{configured_metric}"
         paired = build_paired_primary_analysis(
             final,
             primary_dataset=str(statistics["primary_dataset"]),
-            primary_metric="test_macro_f1",
+            primary_model=str(statistics["primary_model"]),
+            primary_metric=primary_metric,
+            contrasts=[str(value) for value in statistics["primary_contrasts"]],
             margin=float(statistics["equivalence_margin_macro_f1"]),
             alpha=float(statistics["alpha"]),
             minimum_pairs=int(statistics["minimum_primary_pairs"]),

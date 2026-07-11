@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from typing import cast
-
 import numpy as np
 from scipy import stats
 
 
 def center_features(features: np.ndarray) -> np.ndarray:
-    return cast(np.ndarray, features - features.mean(axis=0, keepdims=True))
+    return features - features.mean(axis=0, keepdims=True)
 
 
 def linear_cka(left: np.ndarray, right: np.ndarray, epsilon: float = 1e-12) -> float:

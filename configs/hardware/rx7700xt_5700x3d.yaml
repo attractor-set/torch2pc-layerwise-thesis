@@ -1,0 +1,21 @@
+hardware:
+  profile: rx7700xt_5700x3d
+  os: Ubuntu 24.04.4
+  gpu: AMD Radeon RX 7700 XT
+  gpu_architecture: gfx1101
+  gpu_memory_gb: 12
+  cpu: AMD Ryzen 7 5700X3D
+  cpu_cores: 8
+  cpu_threads: 16
+  system_memory_gb: 64
+  memory_speed_mt_s: 3600
+
+runtime:
+  device: gpu
+  dtype: float32
+  loader_workers: 4
+  torch_threads: 4
+  mixed_precision: false
+  cpuset: "0-7"
+  memory_limit: 48g
+  shared_memory: 8g

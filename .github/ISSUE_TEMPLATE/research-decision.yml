@@ -1,0 +1,29 @@
+name: Научное решение
+description: Предложение изменения протокола через ADR
+title: "ADR: "
+labels: ["decision"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Контекст
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Рассмотренные альтернативы
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Предлагаемое решение
+    validations:
+      required: true
+  - type: textarea
+    id: consequences
+    attributes:
+      label: Последствия и риски валидности
+    validations:
+      required: true

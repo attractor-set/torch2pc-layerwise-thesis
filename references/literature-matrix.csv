@@ -1,0 +1,10 @@
+citation_key,relevance,role,linked_analysis,citation_status
+rosenbaum2022relationship,direct,Torch2PC regimes and PC/BP relationship,"C0,C1,RQ1,RQ2,RQ3",mandatory
+rosenbaum2025correction,direct,Corrected Strict and FixedPred definitions,"structural check,C0,C1",mandatory
+whittington2017approximation,direct,Theoretical PC approximation of BP,"related work,C0",mandatory
+rao1999predictive,foundational,Classical hierarchical predictive coding,theory chapter,mandatory
+kornblith2019similarity,methodological,CKA representation similarity,layer-wise analysis,mandatory
+raghu2017svcca,methodological,SVCCA background,related methods,supporting
+morcos2018insights,methodological,PWCCA/representation comparison,related methods,supporting
+xiao2017fashion,dataset,Fashion-MNIST source,datasets,mandatory
+clanuwat2018deep,dataset,KMNIST source,publication extension,conditional

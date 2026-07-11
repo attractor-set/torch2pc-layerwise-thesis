@@ -1,0 +1,134 @@
+name: torch2pc-layerwise-thesis
+
+x-common: &common
+  build:
+    context: .
+    dockerfile: Dockerfile.rocm
+    args:
+      BASE_IMAGE: ${ROCM_PYTORCH_IMAGE}
+      SOURCE_GIT_COMMIT: ${SOURCE_GIT_COMMIT}
+  image: ${EXPERIMENT_IMAGE}
+  working_dir: /workspace
+  user: "${HOST_UID}:${HOST_GID}"
+  init: true
+  shm_size: ${SHM_SIZE}
+  mem_limit: ${MEM_LIMIT}
+  environment:
+    HOME: /tmp/home
+    EXPERIMENT_IMAGE: ${EXPERIMENT_IMAGE}
+    ROCM_PYTORCH_IMAGE: ${ROCM_PYTORCH_IMAGE}
+    SOURCE_GIT_COMMIT: ${SOURCE_GIT_COMMIT}
+    HIP_VISIBLE_DEVICES: ${HIP_VISIBLE_DEVICES}
+    OMP_NUM_THREADS: ${OMP_NUM_THREADS}
+    MKL_NUM_THREADS: ${MKL_NUM_THREADS}
+    OPENBLAS_NUM_THREADS: ${OPENBLAS_NUM_THREADS}
+    NUMEXPR_NUM_THREADS: ${NUMEXPR_NUM_THREADS}
+  volumes:
+    - ./data:/workspace/data
+    - ./external:/workspace/external
+    - ./results:/workspace/results
+    - ./experiments:/workspace/experiments
+    - ./configs:/workspace/configs:ro
+
+x-gpu: &gpu
+  devices:
+    - /dev/kfd:/dev/kfd
+    - /dev/dri:/dev/dri
+  group_add:
+    - "${VIDEO_GID}"
+    - "${RENDER_GID}"
+
+services:
+  validate:
+    <<: *common
+    network_mode: none
+    command:
+      - torch2pc-thesis
+      - validate
+      - --stage
+      - smoke
+      - --method
+      - bp
+
+  prepare:
+    <<: *common
+    command: ["bash", "scripts/prepare_assets.sh"]
+
+  control-cpu:
+    <<: *common
+    network_mode: none
+    cpuset: "${CPUSET_CPU}"
+    environment:
+      HOME: /tmp/home
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+      TORCH_NUM_THREADS: "1"
+    command: ["bash", "scripts/run_control_gate.sh", "cpu"]
+
+  control-gpu:
+    <<: [*common, *gpu]
+    network_mode: none
+    cpuset: "${CPUSET_GPU}"
+    command: ["bash", "scripts/run_control_gate.sh", "gpu"]
+
+  run:
+    <<: [*common, *gpu]
+    network_mode: none
+    cpuset: "${CPUSET_GPU}"
+    command:
+      - torch2pc-thesis
+      - run
+      - --stage
+      - ${STAGE}
+      - --method
+      - ${METHOD}
+      - --dataset
+      - ${DATASET}
+      - --seed
+      - ${SEED}
+
+  report:
+    <<: *common
+    network_mode: none
+    command: ["torch2pc-thesis", "report"]
+
+  manifest:
+    <<: [*common, *gpu]
+    network_mode: none
+    command: ["torch2pc-thesis", "manifest"]
+
+  docs:
+    <<: *common
+    profiles: ["dev"]
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - .:/workspace
+    command: ["mkdocs", "serve", "-f", "mkdocs.yml", "--dev-addr=0.0.0.0:8000"]
+
+  docs-en:
+    <<: *common
+    profiles: ["dev"]
+    ports:
+      - "127.0.0.1:8001:8001"
+    volumes:
+      - .:/workspace
+    command: ["mkdocs", "serve", "-f", "mkdocs_EN.yml", "--dev-addr=0.0.0.0:8001"]
+
+  jupyter:
+    <<: [*common, *gpu]
+    profiles: ["dev"]
+    ports:
+      - "127.0.0.1:8888:8888"
+    volumes:
+      - .:/workspace
+    command:
+      - jupyter
+      - lab
+      - --ip=0.0.0.0
+      - --port=8888
+      - --no-browser
+      - --ServerApp.token=
+      - --ServerApp.password=

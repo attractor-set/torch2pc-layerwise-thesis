@@ -1,0 +1,33 @@
+name: Literature review [EN]
+description: Review and trace a scientific source
+title: "LIT: "
+labels: ["literature"]
+body:
+  - type: input
+    id: citation
+    attributes:
+      label: Citation or DOI
+    validations:
+      required: true
+  - type: dropdown
+    id: relevance
+    attributes:
+      label: Relevance
+      options:
+        - Direct theoretical basis
+        - Direct methodological basis
+        - Dataset or metric source
+        - Critical or contextual source
+        - Terminology only
+    validations:
+      required: true
+  - type: textarea
+    id: claims
+    attributes:
+      label: Claims supported and limitations
+    validations:
+      required: true
+  - type: textarea
+    id: links
+    attributes:
+      label: Linked hypothesis, chapter, or experiment

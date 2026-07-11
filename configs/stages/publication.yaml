@@ -1,0 +1,20 @@
+meta:
+  stage: publication
+
+protocol:
+  status: frozen
+  required_artifacts:
+    - results/summaries/pilot-freeze_manifest.json
+
+evaluation:
+  use_test: false
+
+publication:
+  implementation_status: planned
+  datasets: [MNIST, FashionMNIST, KMNIST]
+  equal_wall_clock: true
+  optimizer_ablation: [Adam, SGD]
+  split_sensitivity_seeds: [42, 142, 242]
+  architecture_transfer: [lenet_classic, lenet_modern, lenet_small]
+  external_reference_required: true
+  minimum_primary_pairs: 10

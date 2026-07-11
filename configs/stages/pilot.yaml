@@ -1,0 +1,33 @@
+meta:
+  stage: pilot
+protocol:
+  status: pilot
+  required_artifacts:
+  - results/summaries/environment-lock.json
+  - results/summaries/control_gate_cpu.json
+  - results/summaries/control_gate_gpu.json
+data:
+  train_subset: 12000
+  test_subset: null
+training:
+  epochs: 3
+  batch_size: 256
+  max_batches: null
+evaluation:
+  use_test: false
+selection:
+  selection_data: validation_only
+  seeds:
+  - 40
+  - 41
+  - 42
+  minimum_success_rate: 0.6666666667
+  ranking_metric: macro_f1
+  tie_breakers:
+  - higher_success_rate
+  - higher_mean_validation_macro_f1
+  - lower_mean_wall_clock_time
+  - lower_inference_steps
+  - lower_eta
+  selection_dataset: FashionMNIST
+  secondary_dataset: MNIST

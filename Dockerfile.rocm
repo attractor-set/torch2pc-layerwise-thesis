@@ -1,0 +1,35 @@
+ARG BASE_IMAGE=rocm/pytorch:rocm7.2.1_ubuntu24.04_py3.12_pytorch_release_2.9.1
+FROM ${BASE_IMAGE}
+
+ARG BASE_IMAGE
+ARG SOURCE_GIT_COMMIT=unknown
+LABEL org.opencontainers.image.title="Torch2PC Layer-wise Thesis"
+LABEL org.opencontainers.image.description="Controlled ROCm environment for predictive-coding experiments"
+LABEL org.opencontainers.image.version="0.1.0"
+LABEL org.opencontainers.image.revision="${SOURCE_GIT_COMMIT}"
+LABEL io.torch2pc.base-image="${BASE_IMAGE}"
+
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       ca-certificates curl git jq make numactl pciutils procps tini \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+COPY pyproject.toml README.md LICENSE /workspace/
+COPY src /workspace/src
+COPY requirements /workspace/requirements
+RUN python -m pip install --no-cache-dir --upgrade pip \
+    && python -m pip install --no-cache-dir -r requirements/rocm.txt \
+    && python -m pip check
+
+COPY . /workspace
+RUN chmod +x scripts/*.sh
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    SOURCE_GIT_COMMIT=${SOURCE_GIT_COMMIT} \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+ENTRYPOINT ["/usr/bin/tini", "--", "/workspace/scripts/container_entrypoint.sh"]
+CMD ["torch2pc-thesis", "validate", "--stage", "smoke", "--method", "bp"]

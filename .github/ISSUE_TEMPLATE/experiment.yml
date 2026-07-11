@@ -1,0 +1,36 @@
+name: Эксперимент
+description: Планирование и сопровождение контролируемого эксперимента
+title: "EXP: "
+labels: ["experiment"]
+body:
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Гипотеза или диагностический вопрос
+      description: Сформулируйте проверяемое утверждение без заранее заданного результата.
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Конфигурация
+      description: Набор данных, метод, seed, бюджет, оборудование и путь к YAML.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Критерии приемки
+    validations:
+      required: true
+  - type: checkboxes
+    id: integrity
+    attributes:
+      label: Научная добросовестность
+      options:
+        - label: Гиперпараметры выбираются без доступа к итоговому test
+          required: true
+        - label: Неудачные запуски будут сохранены
+          required: true
+        - label: Вычислительные ограничения и окружение объявлены заранее
+          required: true

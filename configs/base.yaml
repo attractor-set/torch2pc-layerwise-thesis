@@ -1,0 +1,123 @@
+project:
+  name: torch2pc-layerwise-thesis
+  version: 0.1.0
+protocol:
+  status: draft
+  epistemic_position: neutral_observer
+  truth_criterion: pre_specified_experiment
+  required_artifacts: []
+paths:
+  registry: experiments/registry.csv
+  results: results
+  runs: results/runs
+  checkpoints: results/checkpoints
+  summaries: results/summaries
+  figures: results/figures
+  tables: results/tables
+data:
+  dataset: MNIST
+  root: data
+  split_dir: results/splits
+  validation_fraction: 0.15
+  train_subset: null
+  test_subset: null
+  download_during_run: false
+model:
+  architecture: lenet_classic
+  num_classes: 10
+training:
+  epochs: 10
+  batch_size: 256
+  optimizer: Adam
+  learning_rate: 0.001
+  momentum: 0.9
+  early_stopping_patience: 3
+  primary_metric: macro_f1
+  max_batches: null
+method:
+  name: bp
+  eta: null
+  inference_steps: null
+evaluation:
+  use_test: false
+  test_access_policy: final_only_after_pilot_freeze
+reproducibility:
+  split_seed: 42
+  model_seed: 0
+  loader_seed: 31415
+  corruption_seed: 20250325
+  deterministic: true
+  deterministic_warn_only: false
+runtime:
+  device: gpu
+  dtype: float32
+  loader_workers: 4
+  torch_threads: 4
+  mixed_precision: false
+controls:
+  model_seeds:
+  - 0
+  - 1
+  - 2
+  batches_per_seed: 3
+  thresholds:
+    cpu:
+      min_cosine: 0.99999
+      max_relative_l2: 1.0e-07
+    gpu:
+      min_cosine: 0.999
+      max_relative_l2: 0.001
+statistics:
+  statistical_unit: independently_trained_model
+  primary_dataset: FashionMNIST
+  secondary_dataset: MNIST
+  primary_metric: macro_f1
+  primary_contrasts:
+  - fixedpred_vs_bp
+  - strict_vs_bp
+  equivalence_margin_macro_f1: 0.01
+  alpha: 0.05
+  confidence: 0.95
+  multiple_testing: holm
+  pilot_seeds:
+  - 40
+  - 41
+  - 42
+  final_seeds:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  minimum_primary_pairs: 10
+  failed_run_policy: report_and_retain
+  equivalence_confidence: 0.9
+  difference_confidence: 0.95
+analysis:
+  gradient_batches: 5
+  representation_samples: 1000
+  representation_sample_seed: 20251001
+  bootstrap_repeats: 200
+  bootstrap_sample_size: 256
+  corruptions:
+  - gaussian_noise
+  - gaussian_blur
+  - occlusion
+  severities:
+  - 1
+  - 3
+  - 5
+  timing_warmup_steps: 20
+  timing_measured_steps: 50
+  timing_repetitions: 5
+torch2pc:
+  repository: https://github.com/RobertRosenbaum/Torch2PC.git
+  local_path: external/Torch2PC
+  commit: ''
+  require_correction_check: true
+  correction_doi: 10.1371/journal.pone.0320944

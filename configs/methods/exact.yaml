@@ -1,0 +1,4 @@
+method:
+  name: exact
+  eta: 0.1
+  inference_steps: 20

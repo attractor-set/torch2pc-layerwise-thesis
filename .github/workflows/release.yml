@@ -1,0 +1,27 @@
+name: Пакет релиза
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Сборка воспроизводимого архива
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e .
+      - run: ./scripts/build_release.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: research-release
+          path: artifacts/

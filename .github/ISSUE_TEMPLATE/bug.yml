@@ -1,0 +1,23 @@
+name: Ошибка
+description: Дефект кода, окружения или воспроизводимости
+title: "BUG: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Описание
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Шаги воспроизведения
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Конфигурация и манифест окружения
+    validations:
+      required: true

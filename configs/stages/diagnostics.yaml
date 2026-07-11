@@ -1,0 +1,23 @@
+meta:
+  stage: diagnostics
+
+protocol:
+  status: frozen
+  required_artifacts:
+    - results/summaries/pilot-freeze_manifest.json
+
+training:
+  epochs: 0
+
+evaluation:
+  use_test: false
+
+diagnostics:
+  implementation_status: planned
+  require_trained_checkpoints: true
+  gradient_batches: 5
+  representation_samples: 1000
+  bootstrap_repeats: 200
+  hierarchical_bootstrap: true
+  corruptions: [gaussian_noise, gaussian_blur, occlusion]
+  severities: [1, 3, 5]

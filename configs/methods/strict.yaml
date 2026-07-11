@@ -1,0 +1,13 @@
+method:
+  name: strict
+  eta: 0.05
+  inference_steps: 20
+
+search:
+  grid:
+    - {eta: 0.01, inference_steps: 5}
+    - {eta: 0.01, inference_steps: 20}
+    - {eta: 0.05, inference_steps: 10}
+    - {eta: 0.05, inference_steps: 20}
+    - {eta: 0.1, inference_steps: 10}
+    - {eta: 0.1, inference_steps: 20}

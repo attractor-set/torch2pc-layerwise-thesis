@@ -1,0 +1,23 @@
+name: Thesis or article writing [EN]
+description: Track a writing task with evidence requirements
+title: "WRITING: "
+labels: ["writing"]
+body:
+  - type: input
+    id: section
+    attributes:
+      label: Section
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Required evidence and citations
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of done
+    validations:
+      required: true

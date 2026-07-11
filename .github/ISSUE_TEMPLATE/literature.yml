@@ -1,0 +1,33 @@
+name: Анализ литературы
+description: Проверка и трассировка научного источника
+title: "LIT: "
+labels: ["literature"]
+body:
+  - type: input
+    id: citation
+    attributes:
+      label: Ссылка, название или DOI
+    validations:
+      required: true
+  - type: dropdown
+    id: relevance
+    attributes:
+      label: Роль источника
+      options:
+        - Прямая теоретическая основа
+        - Прямая методологическая основа
+        - Источник набора данных или метрики
+        - Критический или контекстный источник
+        - Только терминологическое разграничение
+    validations:
+      required: true
+  - type: textarea
+    id: claims
+    attributes:
+      label: Поддерживаемые утверждения и ограничения
+    validations:
+      required: true
+  - type: textarea
+    id: links
+    attributes:
+      label: Связанные гипотезы, главы и эксперименты

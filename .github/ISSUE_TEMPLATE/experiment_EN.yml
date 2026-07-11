@@ -1,0 +1,35 @@
+name: Experiment [EN]
+description: Plan and track a controlled experiment
+title: "EXP: "
+labels: ["experiment"]
+body:
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis or diagnostic question
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration
+      description: Dataset, method, seeds, compute budget, and YAML path
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
+  - type: checkboxes
+    id: integrity
+    attributes:
+      label: Research integrity
+      options:
+        - label: Hyperparameters are selected without final test access
+          required: true
+        - label: Failure artifacts will be retained
+          required: true
+        - label: Compute and environment constraints are declared
+          required: true

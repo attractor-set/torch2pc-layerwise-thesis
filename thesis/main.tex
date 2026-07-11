@@ -1,0 +1,41 @@
+\documentclass[12pt,a4paper,oneside]{report}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{russian}
+\setotherlanguage{english}
+\setmainfont{Liberation Serif}
+\setsansfont{Liberation Sans}
+\setmonofont{Liberation Mono}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[backend=biber,style=numeric,sorting=nyt]{biblatex}
+
+\geometry{left=30mm,right=15mm,top=20mm,bottom=20mm}
+\addbibresource{../references/bibliography.bib}
+
+\title{Послойное и вычислительно сопоставимое сравнение режимов
+предиктивного кодирования и обратного распространения ошибки}
+\author{TODO}
+\date{2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\include{chapters/01_introduction}
+\include{chapters/02_related_work}
+\include{chapters/03_methodology}
+\include{chapters/04_experiments}
+\include{chapters/05_results}
+\include{chapters/06_discussion}
+\include{chapters/07_conclusion}
+
+\printbibliography
+\appendix
+\include{appendices/reproducibility}
+\end{document}

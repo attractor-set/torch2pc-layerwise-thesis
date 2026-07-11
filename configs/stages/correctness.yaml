@@ -1,0 +1,26 @@
+meta:
+  stage: correctness
+
+protocol:
+  status: draft
+  required_artifacts: []
+
+data:
+  dataset: MNIST
+  train_subset: 1200
+  test_subset: null
+
+training:
+  epochs: 1
+  batch_size: 64
+  max_batches: 1
+
+evaluation:
+  use_test: false
+
+runtime:
+  device: cpu
+  dtype: float64
+  loader_workers: 0
+  torch_threads: 1
+  mixed_precision: false

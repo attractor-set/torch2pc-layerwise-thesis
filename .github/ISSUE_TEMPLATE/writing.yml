@@ -1,0 +1,30 @@
+name: Написание диссертации или статьи
+description: Задача по тексту с требованиями к эмпирической основе
+title: "WRITING: "
+labels: ["writing"]
+body:
+  - type: input
+    id: section
+    attributes:
+      label: Раздел
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Требуемые наблюдения, run IDs и источники
+    validations:
+      required: true
+  - type: textarea
+    id: neutrality
+    attributes:
+      label: Нейтральная формулировка
+      description: Какие предположения, наблюдения и ограничения должны быть разделены?
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Критерий готовности
+    validations:
+      required: true

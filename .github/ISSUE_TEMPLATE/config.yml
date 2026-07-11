@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Документация исследования
+    url: https://github.com/TODO/torch2pc-layerwise-thesis/tree/main/docs
+    about: Перед изменением методологии ознакомьтесь с протоколом.

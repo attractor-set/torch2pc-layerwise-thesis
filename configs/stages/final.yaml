@@ -1,0 +1,42 @@
+meta:
+  stage: final
+protocol:
+  status: frozen
+  required_artifacts:
+  - results/summaries/environment-lock.json
+  - results/summaries/control_gate_cpu.json
+  - results/summaries/control_gate_gpu.json
+  - results/summaries/pilot-freeze_manifest.json
+data:
+  train_subset: null
+  test_subset: null
+training:
+  epochs: 10
+  batch_size: 256
+  max_batches: null
+evaluation:
+  use_test: true
+selection:
+  configuration_frozen: true
+  use_test_once_per_run: true
+  seeds:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  datasets:
+  - MNIST
+  - FashionMNIST
+  models:
+  - lenet_classic
+  methods:
+  - bp
+  - exact
+  - fixedpred
+  - strict

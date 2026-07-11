@@ -1,0 +1,47 @@
+site_name: Torch2PC Layer-wise Thesis
+site_description: Reproducible master's thesis and publication repository
+site_dir: site_en
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+nav:
+  - Home: index_EN.md
+  - Research:
+      - Research question: research-question_EN.md
+      - Methodology: methodology_EN.md
+      - Analysis plan: analysis-plan_EN.md
+      - Experiment protocol: experiment-protocol_EN.md
+      - Threats to validity: threats-to-validity_EN.md
+      - Reproducibility: reproducibility_EN.md
+      - Data management: data-management_EN.md
+      - Hardware: hardware_EN.md
+      - Publication plan: publication-plan_EN.md
+      - GitHub setup: github-setup_EN.md
+  - Design:
+      - Research design: research-design/design_EN.md
+      - Controlled compute: research-design/controlled-compute_EN.md
+      - Run checklist: research-design/run-checklist_EN.md
+      - Article plan: research-design/article-plan_EN.md
+  - Decisions:
+      - ADR index: decisions/index_EN.md
+      - ADR-001 Torch2PC: decisions/ADR-001-use-torch2pc_EN.md
+      - ADR-002 ROCm Docker: decisions/ADR-002-use-rocm-docker_EN.md
+      - ADR-003 Primary metric: decisions/ADR-003-primary-metric_EN.md
+      - ADR-004 Statistics: decisions/ADR-004-statistical-protocol_EN.md
+  - Research log:
+      - July 2026: research-log/2026-07_EN.md
+      - Template: research-log/template_EN.md
+  - Русский:
+      - Русская документация: index.md
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tasklist

@@ -1,0 +1,50 @@
+{
+  "status": "ok",
+  "project": "torch2pc-layerwise-thesis",
+  "version": "0.1.0",
+  "artifact_role": "first_commit_candidate",
+  "epistemic_position": "neutral_researcher_observer",
+  "truth_criterion": "pre_specified_experiment_and_recorded_artifacts",
+  "python_files_checked": 34,
+  "python_syntax_errors": 0,
+  "yaml_files_checked": 33,
+  "yaml_errors": 0,
+  "notebooks_checked": 6,
+  "notebook_code_errors": 0,
+  "shell_files_checked": 14,
+  "shell_syntax_errors": 0,
+  "epistemic_files_checked": 144,
+  "epistemic_findings": 0,
+  "language_pairs": 58,
+  "language_errors": 0,
+  "local_links_checked": 112,
+  "broken_local_links": 0,
+  "configurations_resolved": 24,
+  "ruff": "passed",
+  "mypy": "passed in the completed source-quality run",
+  "pytest": "19 passed in 10.64s",
+  "citation_cff": "valid",
+  "mkdocs_ru": "strict_build_passed",
+  "mkdocs_en": "strict_build_passed",
+  "thesis_latex": "xelatex_build_passed",
+  "article_latex": "pdflatex_build_passed",
+  "pdfs_retained_in_public_repository": 0,
+  "runtime_not_executed": [
+    "Docker image build",
+    "ROCm execution on RX 7700 XT",
+    "Torch2PC runtime import for a pinned commit",
+    "dataset download and checksum observation",
+    "C0/C1 numerical controls",
+    "pilot experiments",
+    "final experiments"
+  ],
+  "known_placeholders": [
+    "author identity in CITATION.cff, pyproject.toml and LaTeX",
+    "repository URL in CITATION.cff and GitHub template links",
+    "chapter text marked TODO until evidence exists"
+  ],
+  "notes": [
+    "Document builds passed before generated PDFs were removed from the delivery package.",
+    "Static validation does not establish any empirical claim."
+  ]
+}

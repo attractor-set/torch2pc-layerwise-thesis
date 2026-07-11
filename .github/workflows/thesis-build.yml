@@ -1,0 +1,34 @@
+name: Сборка диссертации
+
+on:
+  push:
+    paths:
+      - "thesis/**"
+      - "references/bibliography.bib"
+      - "results/tables/**"
+      - ".github/workflows/thesis-build.yml"
+  pull_request:
+    paths:
+      - "thesis/**"
+      - "references/bibliography.bib"
+      - "results/tables/**"
+
+permissions:
+  contents: read
+
+jobs:
+  latex:
+    name: Русскоязычная диссертация
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            latexmk biber texlive-xetex texlive-latex-extra \
+            texlive-lang-cyrillic fonts-liberation
+      - run: cd thesis && latexmk -xelatex -interaction=nonstopmode main.tex
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dissertation-pdf-ru
+          path: thesis/main.pdf

@@ -1,0 +1,29 @@
+name: Research decision [EN]
+description: Propose a protocol-changing ADR
+title: "ADR: "
+labels: ["decision"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Proposed decision
+    validations:
+      required: true
+  - type: textarea
+    id: consequences
+    attributes:
+      label: Consequences and validity risks
+    validations:
+      required: true

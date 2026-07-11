@@ -1,0 +1,14 @@
+experiment:
+  id: EXP-001
+  hypothesis: Infrastructure and data pipeline execute without non-finite values.
+  acceptance:
+    - process exits successfully
+    - metrics.json is created
+    - environment.json is created
+    - manifest.json is created
+
+data:
+  dataset: MNIST
+
+reproducibility:
+  model_seed: 0

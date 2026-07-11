@@ -1,0 +1,42 @@
+name: Проверка качества
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Код, тесты и языковая структура
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Установка
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,cpu]"
+      - name: Ruff
+        run: ruff check src tests
+      - name: Mypy
+        run: mypy src
+      - name: Pytest
+        run: pytest
+      - name: Эпистемическая нейтральность
+        run: python scripts/check_epistemic_language.py
+      - name: Языковая структура
+        run: python scripts/check_language_structure.py
+      - name: Локальные ссылки
+        run: python scripts/check_local_links.py
+      - name: Проверка репозитория
+        run: ./scripts/validate_repository.sh
+      - name: Проверка CITATION.cff в изолированной среде
+        run: |
+          python -m venv /tmp/cff-venv
+          /tmp/cff-venv/bin/python -m pip install "cffconvert>=2.0,<3"
+          /tmp/cff-venv/bin/cffconvert --validate

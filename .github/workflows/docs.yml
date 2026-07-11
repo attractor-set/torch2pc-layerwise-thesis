@@ -1,0 +1,38 @@
+name: Документация
+
+on:
+  push:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "mkdocs_EN.yml"
+      - ".github/workflows/docs.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "mkdocs_EN.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Сборка русской и английской документации
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install "mkdocs>=1.6,<2" "mkdocs-material>=9.6,<10"
+      - name: Русская документация
+        run: mkdocs build --strict -f mkdocs.yml
+      - name: Английская документация
+        run: mkdocs build --strict -f mkdocs_EN.yml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: documentation-sites
+          path: |
+            site_ru
+            site_en

@@ -1,0 +1,47 @@
+site_name: Torch2PC Layer-wise Thesis
+site_description: Воспроизводимый репозиторий магистерской диссертации и научной публикации
+site_dir: site_ru
+theme:
+  name: material
+  language: ru
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+nav:
+  - Главная: index.md
+  - Исследование:
+      - Исследовательский вопрос: research-question.md
+      - Методология: methodology.md
+      - План анализа: analysis-plan.md
+      - Экспериментальный протокол: experiment-protocol.md
+      - Угрозы валидности: threats-to-validity.md
+      - Воспроизводимость: reproducibility.md
+      - Управление данными: data-management.md
+      - Оборудование: hardware.md
+      - План публикации: publication-plan.md
+      - Настройка GitHub: github-setup.md
+  - Дизайн:
+      - Общий дизайн: research-design/design.md
+      - Вычислительная среда: research-design/controlled-compute.md
+      - Контрольный список: research-design/run-checklist.md
+      - План статьи: research-design/article-plan.md
+  - Решения:
+      - Индекс ADR: decisions/index.md
+      - ADR-001 Torch2PC: decisions/ADR-001-use-torch2pc.md
+      - ADR-002 ROCm Docker: decisions/ADR-002-use-rocm-docker.md
+      - ADR-003 Основная метрика: decisions/ADR-003-primary-metric.md
+      - ADR-004 Статистика: decisions/ADR-004-statistical-protocol.md
+  - Журнал исследования:
+      - Июль 2026: research-log/2026-07.md
+      - Шаблон: research-log/template.md
+  - English:
+      - English documentation build: index_EN.md
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tasklist

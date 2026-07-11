@@ -1,0 +1,21 @@
+meta:
+  stage: smoke
+
+protocol:
+  status: draft
+  required_artifacts: []
+
+data:
+  train_subset: 1200
+  test_subset: null
+
+training:
+  epochs: 1
+  batch_size: 128
+  max_batches: 5
+
+evaluation:
+  use_test: false
+
+runtime:
+  loader_workers: 2

@@ -1,0 +1,96 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "torch2pc-layerwise-thesis"
+version = "0.1.0"
+description = "Воспроизводимые эксперименты для послойного сравнения режимов Torch2PC и обратного распространения ошибки."
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+license = {text = "Apache-2.0"}
+authors = [{name = "TODO"}]
+dependencies = [
+  "numpy>=2.1,<3",
+  "pandas>=2.2,<3",
+  "PyYAML>=6.0,<7",
+  "scipy>=1.14,<2",
+  "scikit-learn>=1.6,<2",
+  "openpyxl>=3.1,<4",
+  "psutil>=6,<8",
+  "nbformat>=5.10,<6",
+  "nbclient>=0.10,<1",
+]
+
+[project.optional-dependencies]
+analysis = [
+  "matplotlib>=3.9,<4",
+  "jupyterlab>=4.3,<5",
+  "ipykernel>=6.29,<7",
+]
+cpu = [
+  "torch==2.9.1",
+  "torchvision==0.24.1",
+]
+dev = [
+  "pytest>=8.3,<9",
+  "pytest-cov>=6,<7",
+  "ruff>=0.9,<1",
+  "mypy>=1.14,<2",
+  "types-PyYAML>=6.0,<7",
+  "mkdocs>=1.6,<2",
+  "mkdocs-material>=9.6,<10",
+]
+
+[project.scripts]
+torch2pc-thesis = "torch2pc_thesis.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/torch2pc_thesis"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["notebooks/legacy"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_ignores = true
+exclude = ["notebooks", "external", "private"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+  "integration: requires local assets",
+  "correctness: requires Torch2PC",
+  "gpu: requires ROCm GPU",
+]
+
+[tool.coverage.run]
+source = ["torch2pc_thesis"]
+
+[[tool.mypy.overrides]]
+module = [
+  "pandas",
+  "pandas.*",
+  "scipy",
+  "scipy.*",
+  "sklearn",
+  "sklearn.*",
+  "torch",
+  "torch.*",
+  "torchvision",
+  "torchvision.*",
+]
+ignore_missing_imports = true
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+module = "torch2pc_thesis.models"
+disable_error_code = ["misc"]

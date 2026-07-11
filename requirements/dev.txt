@@ -1,0 +1,2 @@
+-c requirements/lock-dev.txt
+-e .[analysis,dev,cpu]

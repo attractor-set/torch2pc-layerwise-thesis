@@ -34,7 +34,7 @@ jobs:
       - name: Локальные ссылки
         run: python scripts/check_local_links.py
       - name: Проверка репозитория
-        run: ./scripts/validate_repository.sh
+        run: bash scripts/validate_repository.sh
       - name: Проверка CITATION.cff в изолированной среде
         run: |
           python -m venv /tmp/cff-venv

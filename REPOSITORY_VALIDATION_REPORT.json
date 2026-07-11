@@ -41,7 +41,7 @@
   "known_placeholders": [
     "author identity in CITATION.cff, pyproject.toml and LaTeX",
     "repository URL in CITATION.cff and GitHub template links",
-    "chapter text marked TODO until evidence exists"
+    "chapter text remains intentionally incomplete until supporting evidence exists"
   ],
   "notes": [
     "Document builds passed before generated PDFs were removed from the delivery package.",

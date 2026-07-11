@@ -5,9 +5,9 @@ type: software
 version: 0.1.0
 date-released: 2026-07-11
 authors:
-  - family-names: "TODO"
-    given-names: "TODO"
-repository-code: "https://github.com/TODO/torch2pc-layerwise-thesis"
+  - family-names: "Prychyba"
+    given-names: "Dzmitry"
+repository-code: "https://github.com/attractor-set/torch2pc-layerwise-thesis"
 abstract: >
   Reproducible software and research artifacts for a master's thesis on
   layer-wise and compute-matched comparison of backpropagation and

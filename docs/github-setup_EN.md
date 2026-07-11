@@ -3,7 +3,7 @@
 [Русская версия](github-setup.md)
 
 
-1. Replace `TODO` author and repository values.
+1. Verify the author metadata and repository URL.
 2. Run `./scripts/bootstrap_github.sh`.
 3. Create the remote repository.
 4. Push `main`.

@@ -14,10 +14,13 @@ build/
 .ipynb_checkpoints/
 data/*
 !data/README.md
+!data/README_EN.md
 external/*
 !external/README.md
+!external/README_EN.md
 private/*
 !private/README.md
+!private/README_EN.md
 references/pdfs/
 results/runs/
 results/checkpoints/

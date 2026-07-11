@@ -3,6 +3,7 @@ FROM ${BASE_IMAGE}
 
 ARG BASE_IMAGE
 ARG SOURCE_GIT_COMMIT=unknown
+ARG PIP_VERSION=25.1.1
 LABEL org.opencontainers.image.title="Torch2PC Layer-wise Thesis"
 LABEL org.opencontainers.image.description="Controlled ROCm environment for predictive-coding experiments"
 LABEL org.opencontainers.image.version="0.1.0"
@@ -19,7 +20,7 @@ WORKDIR /workspace
 COPY pyproject.toml README.md LICENSE /workspace/
 COPY src /workspace/src
 COPY requirements /workspace/requirements
-RUN python -m pip install --no-cache-dir --upgrade pip \
+RUN python -m pip install --no-cache-dir "pip==${PIP_VERSION}" \
     && python -m pip install --no-cache-dir -r requirements/rocm.txt \
     && python -m pip check
 
@@ -28,6 +29,7 @@ RUN chmod +x scripts/*.sh
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONHASHSEED=0 \
     SOURCE_GIT_COMMIT=${SOURCE_GIT_COMMIT} \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 

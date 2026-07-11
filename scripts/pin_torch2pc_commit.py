@@ -19,6 +19,12 @@ def main() -> None:
 
     config_path = Path(args.config)
     checkout = Path(args.checkout)
+    status = subprocess.check_output(
+        ["git", "-C", str(checkout), "status", "--porcelain"], text=True
+    ).strip()
+    if status:
+        raise RuntimeError("Torch2PC worktree must be clean before pinning")
+
     commit = subprocess.check_output(
         ["git", "-C", str(checkout), "rev-parse", "HEAD"], text=True
     ).strip()

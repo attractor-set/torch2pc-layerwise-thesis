@@ -57,4 +57,9 @@ def backward_for_method(
         eta=0.1 if eta is None else float(eta),
         n=20 if inference_steps is None else int(inference_steps),
     )
-    return output[1]
+    if not isinstance(output, tuple | list) or len(output) < 2:
+        raise RuntimeError("Torch2PC PCInfer returned an unexpected result structure")
+    loss = output[1]
+    if not torch.is_tensor(loss) or loss.ndim != 0:
+        raise RuntimeError("Torch2PC PCInfer did not return a scalar tensor loss")
+    return loss

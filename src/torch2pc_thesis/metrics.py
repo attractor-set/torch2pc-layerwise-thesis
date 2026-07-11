@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 import torch
 import torch.nn as nn
 from sklearn.metrics import accuracy_score, f1_score
@@ -23,14 +24,20 @@ def gradient_diagnostics(model: nn.Module) -> dict[str, float]:
     squared_norm = 0.0
     max_abs = 0.0
     tensors = 0
+    missing: list[str] = []
     for name, parameter in model.named_parameters():
+        if not parameter.requires_grad:
+            continue
         if parameter.grad is None:
+            missing.append(name)
             continue
         ensure_finite_tensor(f"gradient:{name}", parameter.grad)
         gradient = parameter.grad.detach().float()
         squared_norm += float(torch.sum(gradient * gradient).item())
         max_abs = max(max_abs, float(torch.max(torch.abs(gradient)).item()))
         tensors += 1
+    if missing:
+        raise RuntimeError(f"Missing gradients for trainable parameters: {missing}")
     if tensors == 0:
         raise RuntimeError("No parameter gradients were produced")
     return {
@@ -52,7 +59,7 @@ def evaluate_classifier(
     total_loss = 0.0
     y_true: list[int] = []
     y_pred: list[int] = []
-    probabilities: list[np.ndarray] = []
+    probabilities: list[npt.NDArray[np.float64]] = []
 
     with torch.no_grad():
         for inputs, targets in loader:
@@ -66,14 +73,16 @@ def evaluate_classifier(
             predictions = probability.argmax(dim=1)
             y_true.extend(targets.cpu().tolist())
             y_pred.extend(predictions.cpu().tolist())
-            probabilities.append(probability.cpu().numpy())
+            probabilities.append(
+                np.asarray(probability.cpu().numpy(), dtype=np.float64)
+            )
 
     if not y_true:
         raise RuntimeError("Evaluation loader produced no samples")
     return {
         "loss": total_loss / len(y_true),
         "accuracy": accuracy_score(y_true, y_pred),
-        "macro_f1": f1_score(y_true, y_pred, average="macro"),
+        "macro_f1": f1_score(y_true, y_pred, average="macro", zero_division=0),
         "y_true": np.asarray(y_true),
         "y_pred": np.asarray(y_pred),
         "probabilities": np.concatenate(probabilities, axis=0),

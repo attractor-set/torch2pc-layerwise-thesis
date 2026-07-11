@@ -9,8 +9,9 @@ import uuid
 from pathlib import Path
 from typing import Any, cast
 
+from torch2pc_thesis.assets import verify_locked_prepared_assets
 from torch2pc_thesis.config import config_sha256
-from torch2pc_thesis.manifests import directory_manifest, write_json
+from torch2pc_thesis.manifests import directory_manifest, environment_snapshot, write_json
 from torch2pc_thesis.registry import RegistryEntry, append_entry, completed_experiments
 from torch2pc_thesis.training import run_training
 
@@ -23,14 +24,21 @@ def compact_timestamp() -> str:
     return time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
 
 
-def experiment_id(config: dict[str, Any], source_commit: str) -> str:
+def experiment_id(
+    config: dict[str, Any],
+    source_commit: str,
+    environment_lock_sha256: str | None,
+) -> str:
     stage = config["meta"]["stage"]
     dataset = config["data"]["dataset"]
     method = config["method"]["name"]
     seed = config["reproducibility"]["model_seed"]
     digest = config_sha256(config)[:10]
     revision = source_commit[:8]
-    return f"{stage}-{dataset}-{method}-s{seed}-{digest}-{revision}".lower()
+    environment = "unlocked" if environment_lock_sha256 is None else environment_lock_sha256[:8]
+    return (
+        f"{stage}-{dataset}-{method}-s{seed}-{digest}-{revision}-{environment}"
+    ).lower()
 
 
 def new_run_id() -> str:
@@ -71,11 +79,23 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _assert_control_gates(source_commit: str) -> None:
+def _assert_control_gates(source_commit: str) -> str:
     environment_lock = Path("results/summaries/environment-lock.json")
     lock = _load_json(environment_lock)
     if lock.get("image_source_git_commit") != source_commit:
         raise RuntimeError("Container source commit differs from environment lock")
+    verify_locked_prepared_assets(lock, verify_hashes=False)
+    for group in ["config_files", "source_files"]:
+        records = lock.get(group)
+        if not isinstance(records, list) or not records:
+            raise RuntimeError(f"Environment lock has no {group} records")
+        for item in records:
+            if not isinstance(item, dict):
+                raise RuntimeError(f"Invalid environment-lock record in {group}")
+            path = Path(str(item.get("path", "")))
+            expected = str(item.get("sha256", ""))
+            if not path.is_file() or _sha256(path) != expected:
+                raise RuntimeError(f"File differs from environment lock: {path}")
     lock_sha256 = _sha256(environment_lock)
     for device in ["cpu", "gpu"]:
         value = _load_json(Path(f"results/summaries/control_gate_{device}.json"))
@@ -85,6 +105,7 @@ def _assert_control_gates(source_commit: str) -> None:
             )
         if not value.get("gate_observed_within_thresholds"):
             raise RuntimeError(f"Control gate is outside thresholds for device={device}")
+    return lock_sha256
 
 
 def _assert_pilot_freeze() -> dict[str, Any]:
@@ -102,11 +123,12 @@ def _assert_pilot_freeze() -> dict[str, Any]:
     return freeze
 
 
-def assert_research_prerequisites(config: dict[str, Any]) -> None:
+def assert_research_prerequisites(config: dict[str, Any]) -> str | None:
     stage = str(config["meta"]["stage"])
     source_commit = observed_source_commit()
+    environment_lock_sha256: str | None = None
     if stage in {"pilot", "final"}:
-        _assert_control_gates(source_commit)
+        environment_lock_sha256 = _assert_control_gates(source_commit)
     freeze: dict[str, Any] | None = None
     if stage == "final":
         freeze = _assert_pilot_freeze()
@@ -123,6 +145,11 @@ def assert_research_prerequisites(config: dict[str, Any]) -> None:
             raise RuntimeError(
                 f"Torch2PC checkout mismatch: expected {expected_commit}, found {actual_commit}"
             )
+        worktree_status = _git_output(
+            ["git", "-C", str(torch2pc_path), "status", "--porcelain"]
+        )
+        if worktree_status:
+            raise RuntimeError("Torch2PC worktree contains uncommitted changes")
 
     required = config.get("protocol", {}).get("required_artifacts", [])
     missing = [str(path) for path in required if not Path(path).exists()]
@@ -149,12 +176,13 @@ def assert_research_prerequisites(config: dict[str, Any]) -> None:
                 raise RuntimeError(
                     f"Resolved {method_name} parameters differ from pilot-freeze"
                 )
+    return environment_lock_sha256
 
 
 def execute(config: dict[str, Any]) -> tuple[str, str, dict[str, Any]]:
-    assert_research_prerequisites(config)
+    environment_lock_sha256 = assert_research_prerequisites(config)
     source_commit = observed_source_commit()
-    identifier = experiment_id(config, source_commit)
+    identifier = experiment_id(config, source_commit, environment_lock_sha256)
     run_id = new_run_id()
     run_directory = Path("results/runs") / identifier / run_id
     registry_path = config["paths"]["registry"]
@@ -188,6 +216,22 @@ def execute(config: dict[str, Any]) -> tuple[str, str, dict[str, Any]]:
         "run_directory": str(run_directory),
         "started_utc": started,
     }
+    run_directory.mkdir(parents=True, exist_ok=False)
+    environment = environment_snapshot()
+    environment.update(
+        {
+            "source_git_commit": source_commit,
+            "environment_lock_sha256": environment_lock_sha256,
+            "experiment_id": identifier,
+            "run_id": run_id,
+            "config_sha256": config_sha256(config),
+        }
+    )
+    write_json(environment, run_directory / "environment.json")
+    (run_directory / "resolved_config.json").write_text(
+        json.dumps(config, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
     append_entry(
         registry_path,
         RegistryEntry(status="running", **base),  # type: ignore[arg-type]
@@ -221,6 +265,7 @@ def execute(config: dict[str, Any]) -> tuple[str, str, dict[str, Any]]:
             + "\n",
             encoding="utf-8",
         )
+        write_json(directory_manifest(run_directory), run_directory / "manifest.json")
         append_entry(
             registry_path,
             RegistryEntry(

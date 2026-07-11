@@ -98,6 +98,7 @@ statistics:
   failed_run_policy: report_and_retain
   equivalence_confidence: 0.9
   difference_confidence: 0.95
+  primary_model: lenet_classic
 analysis:
   gradient_batches: 5
   representation_samples: 1000

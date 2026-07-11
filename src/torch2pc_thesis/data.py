@@ -3,14 +3,16 @@ from __future__ import annotations
 import hashlib
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 import torch
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Subset
 from torchvision import datasets, transforms
 
+from torch2pc_thesis.array_types import IntArray
 from torch2pc_thesis.reproducibility import seed_worker
 
 
@@ -19,9 +21,9 @@ class DataBundle:
     train: DataLoader[Any]
     validation: DataLoader[Any]
     test: DataLoader[Any] | None
-    train_indices: np.ndarray
-    validation_indices: np.ndarray
-    test_indices: np.ndarray | None
+    train_indices: IntArray
+    validation_indices: IntArray
+    test_indices: IntArray | None
     split_files: tuple[Path, ...]
     split_sha256: dict[str, str]
 
@@ -38,13 +40,13 @@ def image_transform() -> transforms.Compose:
     return transforms.Compose([transforms.Pad(2), transforms.ToTensor()])
 
 
-def dataset_targets(dataset: Any) -> np.ndarray:
+def dataset_targets(dataset: Any) -> IntArray:
     targets = getattr(dataset, "targets", None)
     if targets is None:
         raise ValueError("Dataset does not expose targets")
     if torch.is_tensor(targets):
-        return cast(np.ndarray, targets.cpu().numpy().astype(int))
-    return np.asarray(targets, dtype=int)
+        return np.asarray(targets.cpu().numpy(), dtype=np.int64)
+    return np.asarray(targets, dtype=np.int64)
 
 
 def sha256_file(path: Path) -> str:
@@ -56,30 +58,33 @@ def sha256_file(path: Path) -> str:
 
 
 def stratified_subset_indices(
-    targets: np.ndarray,
+    targets: npt.ArrayLike,
     size: int | None,
     seed: int,
-) -> np.ndarray:
-    all_indices = np.arange(len(targets))
-    if size is None or size >= len(targets):
+) -> IntArray:
+    target_values = np.asarray(targets, dtype=np.int64)
+    all_indices = np.arange(len(target_values), dtype=np.int64)
+    if size is None or size >= len(target_values):
         return all_indices
     selected, _ = train_test_split(
         all_indices,
         train_size=size,
         random_state=seed,
-        stratify=targets,
+        stratify=target_values,
     )
-    return np.sort(selected)
+    return np.asarray(np.sort(selected), dtype=np.int64)
 
 
 def _load_or_create_split(
     path: Path,
-    expected: dict[str, np.ndarray],
-) -> dict[str, np.ndarray]:
+    expected: dict[str, IntArray],
+) -> dict[str, IntArray]:
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists():
-        loaded = np.load(path)
-        result = {key: loaded[key] for key in loaded.files}
+        with np.load(path, allow_pickle=False) as loaded:
+            result = {
+                key: np.asarray(loaded[key], dtype=np.int64) for key in loaded.files
+            }
         if set(result) != set(expected):
             raise RuntimeError(f"Split schema mismatch: {path}")
         for key, value in expected.items():
@@ -88,7 +93,17 @@ def _load_or_create_split(
                     f"Existing split differs from deterministic reconstruction: {path}:{key}"
                 )
         return result
-    np.savez(path, **expected)  # type: ignore[arg-type]
+    keys = set(expected)
+    if keys == {"train_idx", "validation_idx"}:
+        np.savez(
+            path,
+            train_idx=expected["train_idx"],
+            validation_idx=expected["validation_idx"],
+        )
+    elif keys == {"test_idx"}:
+        np.savez(path, test_idx=expected["test_idx"])
+    else:
+        raise RuntimeError(f"Unsupported split schema: {sorted(keys)}")
     return expected
 
 
@@ -140,8 +155,8 @@ def build_dataloaders(
         random_state=int(rep_cfg["split_seed"]),
         stratify=targets[selected],
     )
-    train_idx = np.sort(train_idx)
-    validation_idx = np.sort(validation_idx)
+    train_idx = np.asarray(np.sort(train_idx), dtype=np.int64)
+    validation_idx = np.asarray(np.sort(validation_idx), dtype=np.int64)
 
     subset_label = "all" if data_cfg.get("train_subset") is None else str(data_cfg["train_subset"])
     fraction_label = str(data_cfg["validation_fraction"]).replace(".", "p")
@@ -156,7 +171,7 @@ def build_dataloaders(
     )
 
     split_files = [train_validation_path]
-    test_idx = np.asarray([], dtype=int)
+    test_idx: IntArray = np.asarray([], dtype=np.int64)
     if full_test is not None:
         test_idx = stratified_subset_indices(
             dataset_targets(full_test),

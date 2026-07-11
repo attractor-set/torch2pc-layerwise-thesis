@@ -2,6 +2,13 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 [[ -f .env ]] || { echo "Отсутствует .env; выполните make init" >&2; exit 1; }
+set -a
+. ./.env
+set +a
+if [[ "$ROCM_PYTORCH_IMAGE" != *@sha256:* ]]; then
+  echo "Сначала зафиксируйте базовый образ: make pin-base-image" >&2
+  exit 1
+fi
 commit="$(git rev-parse HEAD)"
 if [[ ! "$commit" =~ ^[0-9a-f]{40}$ ]]; then
   echo "Не удалось определить полный Git commit" >&2

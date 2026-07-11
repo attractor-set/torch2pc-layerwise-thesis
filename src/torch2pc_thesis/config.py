@@ -119,6 +119,17 @@ def validate_config(config: Config) -> None:
     if str(config["runtime"]["dtype"]) not in {"float32", "float64"}:
         raise ConfigurationError("runtime.dtype must be float32 or float64")
 
+    if str(config.get("meta", {}).get("method", method)) != method:
+        raise ConfigurationError("meta.method must match method.name")
+    if str(config["training"]["primary_metric"]) not in {"macro_f1", "accuracy", "loss"}:
+        raise ConfigurationError("training.primary_metric must be macro_f1, accuracy, or loss")
+    if str(config["runtime"]["device"]).lower() not in {"cpu", "gpu", "cuda", "rocm", "auto"}:
+        raise ConfigurationError("runtime.device must be cpu, gpu, cuda, rocm, or auto")
+    if bool(config["runtime"].get("mixed_precision", False)):
+        raise ConfigurationError("Mixed precision is not implemented in the controlled protocol")
+    if bool(config["data"].get("download_during_run", False)):
+        raise ConfigurationError("Dataset download during an experiment is prohibited")
+
     use_test = bool(config["evaluation"]["use_test"])
     if stage in {"correctness", "smoke", "pilot"} and use_test:
         raise ConfigurationError(f"Test access is prohibited during stage={stage}")
@@ -141,6 +152,125 @@ def validate_config(config: Config) -> None:
             int(value) for value in selection["seeds"]
         }:
             raise ConfigurationError("Model seed is outside the frozen final design")
+
+    statistics = config.get("statistics", {})
+    selection = config.get("selection", {})
+    statistical_metric = str(statistics.get("primary_metric", ""))
+    if statistical_metric != str(config["training"]["primary_metric"]):
+        raise ConfigurationError(
+            "statistics.primary_metric must match training.primary_metric"
+        )
+    if float(statistics.get("equivalence_margin_macro_f1", 0.0)) <= 0:
+        raise ConfigurationError("Equivalence margin must be positive")
+    alpha = float(statistics.get("alpha", 0.0))
+    if not 0 < alpha < 0.5:
+        raise ConfigurationError("statistics.alpha must be in (0, 0.5)")
+    minimum_pairs = int(statistics.get("minimum_primary_pairs", 0))
+    if minimum_pairs < 2:
+        raise ConfigurationError("minimum_primary_pairs must be at least 2")
+    primary_model = str(statistics.get("primary_model", ""))
+    if not primary_model:
+        raise ConfigurationError("statistics.primary_model is required")
+    primary_contrasts = [str(value) for value in statistics.get("primary_contrasts", [])]
+    if not primary_contrasts:
+        raise ConfigurationError("statistics.primary_contrasts is required")
+    allowed_contrast_methods = {"exact", "fixedpred", "strict"}
+    for contrast in primary_contrasts:
+        if not contrast.endswith("_vs_bp"):
+            raise ConfigurationError(f"Unsupported primary contrast: {contrast}")
+        contrast_method = contrast.removesuffix("_vs_bp")
+        if contrast_method not in allowed_contrast_methods:
+            raise ConfigurationError(f"Unknown primary contrast method: {contrast_method}")
+
+    confidence = float(statistics.get("confidence", 0.0))
+    difference_confidence = float(statistics.get("difference_confidence", 0.0))
+    equivalence_confidence = float(statistics.get("equivalence_confidence", 0.0))
+    if abs(confidence - (1.0 - alpha)) > 1e-12:
+        raise ConfigurationError("statistics.confidence must equal 1 - alpha")
+    if abs(difference_confidence - (1.0 - alpha)) > 1e-12:
+        raise ConfigurationError("statistics.difference_confidence must equal 1 - alpha")
+    if abs(equivalence_confidence - (1.0 - 2.0 * alpha)) > 1e-12:
+        raise ConfigurationError("statistics.equivalence_confidence must equal 1 - 2 * alpha")
+
+    controls = config.get("controls", {})
+    control_seeds = [int(value) for value in controls.get("model_seeds", [])]
+    if not control_seeds or len(control_seeds) != len(set(control_seeds)):
+        raise ConfigurationError("controls.model_seeds must contain unique values")
+    if int(controls.get("batches_per_seed", 0)) < 1:
+        raise ConfigurationError("controls.batches_per_seed must be positive")
+    thresholds = controls.get("thresholds", {})
+    for device in ["cpu", "gpu"]:
+        device_thresholds = thresholds.get(device, {})
+        min_cosine = float(device_thresholds.get("min_cosine", -1.0))
+        max_relative_l2 = float(device_thresholds.get("max_relative_l2", -1.0))
+        if not -1.0 <= min_cosine <= 1.0:
+            raise ConfigurationError(
+                f"controls.thresholds.{device}.min_cosine must be in [-1, 1]"
+            )
+        if max_relative_l2 < 0:
+            raise ConfigurationError(
+                f"controls.thresholds.{device}.max_relative_l2 must be non-negative"
+            )
+
+    if stage == "pilot":
+        if str(selection.get("ranking_metric")) != statistical_metric:
+            raise ConfigurationError(
+                "Pilot ranking_metric must match statistics.primary_metric"
+            )
+        success_rate = float(selection.get("minimum_success_rate", 0.0))
+        if not 0 < success_rate <= 1:
+            raise ConfigurationError("Pilot minimum_success_rate must be in (0, 1]")
+        expected_seeds = {int(value) for value in statistics.get("pilot_seeds", [])}
+        observed_seeds = {int(value) for value in selection.get("seeds", [])}
+        if observed_seeds != expected_seeds:
+            raise ConfigurationError("Pilot selection.seeds must match statistics.pilot_seeds")
+        primary_dataset = str(statistics.get("primary_dataset"))
+        secondary_dataset = str(statistics.get("secondary_dataset"))
+        if str(selection.get("selection_dataset")) != primary_dataset:
+            raise ConfigurationError(
+                "Pilot selection_dataset must match statistics.primary_dataset"
+            )
+        if str(selection.get("secondary_dataset")) != secondary_dataset:
+            raise ConfigurationError(
+                "Pilot secondary_dataset must match statistics.secondary_dataset"
+            )
+        if set(selection.get("datasets", [])) != {primary_dataset, secondary_dataset}:
+            raise ConfigurationError(
+                "Pilot selection.datasets must match the primary and secondary datasets"
+            )
+        if str(config["data"]["dataset"]) not in set(selection.get("datasets", [])):
+            raise ConfigurationError("Dataset is outside the pilot design")
+        pilot_models = {str(value) for value in selection.get("models", [])}
+        if primary_model not in pilot_models:
+            raise ConfigurationError("Pilot models must contain statistics.primary_model")
+        if str(config["model"]["architecture"]) not in pilot_models:
+            raise ConfigurationError("Model is outside the pilot design")
+        if method not in set(selection.get("methods", [])):
+            raise ConfigurationError("Method is outside the pilot design")
+        if int(config["reproducibility"]["model_seed"]) not in observed_seeds:
+            raise ConfigurationError("Model seed is outside the pilot design")
+    if stage == "final":
+        expected_seeds = {int(value) for value in statistics.get("final_seeds", [])}
+        observed_seeds = {int(value) for value in selection.get("seeds", [])}
+        if observed_seeds != expected_seeds:
+            raise ConfigurationError("Final selection.seeds must match statistics.final_seeds")
+        expected_datasets = {
+            str(statistics.get("primary_dataset")),
+            str(statistics.get("secondary_dataset")),
+        }
+        if set(selection.get("datasets", [])) != expected_datasets:
+            raise ConfigurationError(
+                "Final selection.datasets must match the pre-specified primary and secondary datasets"
+            )
+        final_models = {str(value) for value in selection.get("models", [])}
+        if primary_model not in final_models:
+            raise ConfigurationError("Final models must contain statistics.primary_model")
+        final_methods = {str(value) for value in selection.get("methods", [])}
+        contrast_methods = {value.removesuffix("_vs_bp") for value in primary_contrasts}
+        if "bp" not in final_methods or not contrast_methods.issubset(final_methods):
+            raise ConfigurationError(
+                "Final methods must contain BP and every primary contrast method"
+            )
 
     if method in {"fixedpred", "strict"}:
         if config["method"].get("eta") is None:

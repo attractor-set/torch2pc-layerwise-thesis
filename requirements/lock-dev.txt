@@ -18,5 +18,3 @@ mypy==1.16.1
 types-PyYAML==6.0.12.20250516
 mkdocs==1.6.1
 mkdocs-material==9.6.15
-torch==2.9.1
-torchvision==0.24.1

@@ -26,8 +26,19 @@ selection:
   tie_breakers:
   - higher_success_rate
   - higher_mean_validation_macro_f1
-  - lower_mean_wall_clock_time
+  - lower_mean_measured_training_time
   - lower_inference_steps
   - lower_eta
   selection_dataset: FashionMNIST
   secondary_dataset: MNIST
+  datasets:
+  - FashionMNIST
+  - MNIST
+  models:
+  - lenet_classic
+  methods:
+  - bp
+  - fixedpred
+  - strict
+reproducibility:
+  model_seed: 40

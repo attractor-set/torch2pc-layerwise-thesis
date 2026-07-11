@@ -14,6 +14,7 @@ import sys
 import pandas as pd
 import torch
 
+from torch2pc_thesis.assets import verify_locked_prepared_assets
 from torch2pc_thesis.config import resolve_config
 from torch2pc_thesis.controls import (
     exact_vs_bp,
@@ -48,10 +49,23 @@ if actual_commit != expected_commit:
 environment_lock_path = Path("results/summaries/environment-lock.json")
 if not environment_lock_path.exists():
     raise RuntimeError("Environment lock is required before control execution")
+environment_lock = json.loads(environment_lock_path.read_text(encoding="utf-8"))
+if not isinstance(environment_lock, dict):
+    raise RuntimeError("Environment lock must contain a JSON object")
 environment_lock_sha256 = hashlib.sha256(environment_lock_path.read_bytes()).hexdigest()
 source_commit = os.environ.get("SOURCE_GIT_COMMIT", "").strip()
 if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
     raise RuntimeError("Container does not expose a valid SOURCE_GIT_COMMIT")
+if environment_lock.get("image_source_git_commit") != source_commit:
+    raise RuntimeError("Container source commit differs from the environment lock")
+if environment_lock.get("torch2pc_commit") != expected_commit:
+    raise RuntimeError("Environment lock contains another Torch2PC commit")
+verify_locked_prepared_assets(environment_lock, verify_hashes=True)
+worktree_status = subprocess.check_output(
+    ["git", "-C", "external/Torch2PC", "status", "--porcelain"], text=True
+).strip()
+if worktree_status:
+    raise RuntimeError("Torch2PC worktree contains uncommitted changes")
 source_check = structural_correction_check("external/Torch2PC/TorchSeq2PC.py")
 control_cfg = config["controls"]
 model_seeds = [int(value) for value in control_cfg["model_seeds"]]

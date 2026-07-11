@@ -59,3 +59,38 @@ def test_final_rejects_dataset_outside_frozen_design() -> None:
     config["data"]["dataset"] = "KMNIST"
     with pytest.raises(ConfigurationError):
         validate_config(config)
+
+
+def test_pilot_rejects_seed_outside_pre_specified_design() -> None:
+    config = resolve_config("configs", stage="pilot", method="fixedpred")
+    config["reproducibility"]["model_seed"] = 999
+    with pytest.raises(ConfigurationError):
+        validate_config(config)
+
+
+def test_primary_metric_must_be_consistent_across_training_and_statistics() -> None:
+    config = resolve_config("configs", stage="smoke", method="bp")
+    config["statistics"]["primary_metric"] = "accuracy"
+    with pytest.raises(ConfigurationError):
+        validate_config(config)
+
+
+def test_unknown_primary_contrast_method_is_rejected() -> None:
+    config = resolve_config("configs", stage="smoke", method="bp")
+    config["statistics"]["primary_contrasts"] = ["unknown_vs_bp"]
+    with pytest.raises(ConfigurationError):
+        validate_config(config)
+
+
+def test_confidence_levels_must_match_alpha() -> None:
+    config = resolve_config("configs", stage="smoke", method="bp")
+    config["statistics"]["difference_confidence"] = 0.90
+    with pytest.raises(ConfigurationError):
+        validate_config(config)
+
+
+def test_control_thresholds_must_be_valid() -> None:
+    config = resolve_config("configs", stage="smoke", method="bp")
+    config["controls"]["thresholds"]["gpu"]["max_relative_l2"] = -1.0
+    with pytest.raises(ConfigurationError):
+        validate_config(config)

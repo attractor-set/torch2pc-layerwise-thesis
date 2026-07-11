@@ -12,7 +12,6 @@ HYPOTHESES.md,HYPOTHESES_EN.md,required
 PREREGISTRATION.md,PREREGISTRATION_EN.md,required
 PROJECT_STRUCTURE.md,PROJECT_STRUCTURE_EN.md,required
 FIRST_COMMIT.md,FIRST_COMMIT_EN.md,required
-REPOSITORY_VALIDATION_REPORT.md,REPOSITORY_VALIDATION_REPORT_EN.md,required
 article/README.md,article/README_EN.md,required
 article/structure.md,article/structure_EN.md,required
 configs/README.md,configs/README_EN.md,required
@@ -57,3 +56,4 @@ mkdocs.yml,mkdocs_EN.yml,required
 NOTICE,NOTICE_EN,required
 LICENSE-DOCS,LICENSE-DOCS_EN,required
 docs/threats-to-validity.md,docs/threats-to-validity_EN.md,required
+docs/validation.md,docs/validation_EN.md,required

@@ -1,2 +1,2 @@
--c requirements/lock-rocm.txt
+-c lock-rocm.txt
 -e .[analysis,dev]

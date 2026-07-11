@@ -2,7 +2,7 @@
 
 [English version](github-setup_EN.md)
 
-1. Заменить `TODO` в `CITATION.cff`, `pyproject.toml` и LaTeX.
+1. Проверить данные автора и URL репозитория в `CITATION.cff`, `pyproject.toml` и LaTeX.
 2. Выполнить `./scripts/bootstrap_github.sh`.
 3. Создать пустой удаленный репозиторий.
 4. Отправить ветку `main`.

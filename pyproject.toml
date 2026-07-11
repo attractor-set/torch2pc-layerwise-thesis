@@ -38,6 +38,12 @@ dev = [
   "mkdocs-material>=9.6,<10",
 ]
 
+
+[project.urls]
+Repository = "https://github.com/attractor-set/torch2pc-layerwise-thesis"
+Issues = "https://github.com/attractor-set/torch2pc-layerwise-thesis/issues"
+Documentation = "https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/docs"
+
 [project.scripts]
 torch2pc-thesis = "torch2pc_thesis.cli:main"
 

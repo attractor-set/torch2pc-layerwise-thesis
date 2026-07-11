@@ -28,7 +28,7 @@ jobs:
             latexmk biber texlive-latex-base texlive-latex-extra \
             texlive-fonts-recommended
       - run: cd article && latexmk -pdf -interaction=nonstopmode manuscript_EN.tex
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: article-manuscript-en
           path: article/manuscript_EN.pdf

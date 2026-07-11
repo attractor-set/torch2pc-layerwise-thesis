@@ -28,7 +28,7 @@ jobs:
             latexmk biber texlive-xetex texlive-latex-extra \
             texlive-lang-cyrillic fonts-liberation
       - run: cd thesis && latexmk -xelatex -interaction=nonstopmode main.tex
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dissertation-pdf-ru
           path: thesis/main.pdf

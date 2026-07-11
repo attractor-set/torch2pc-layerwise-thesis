@@ -12,10 +12,10 @@ fi
 
 cat <<'EOF'
 Следующие действия:
-1. Замените TODO в CITATION.cff и pyproject.toml.
+1. Проверьте автора, email и URL репозитория в CITATION.cff и pyproject.toml.
 2. Создайте пустой GitHub-репозиторий.
 3. Добавьте remote:
-   git remote add origin git@github.com:<owner>/torch2pc-layerwise-thesis.git
+   git remote add origin git@github.com:attractor-set/torch2pc-layerwise-thesis.git
 4. Отправьте main:
    git push -u origin main
 5. Включите Issues, Discussions, Projects и защиту ветки.

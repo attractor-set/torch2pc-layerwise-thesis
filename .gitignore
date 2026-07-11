@@ -47,3 +47,7 @@ site_en/
 article/manuscript_EN.pdf
 # Local asset inventory is hashed into the committed environment lock.
 results/summaries/prepared_assets.json
+
+# Local maintenance patches and Windows download metadata
+/torch2pc-*.patch
+*:Zone.Identifier

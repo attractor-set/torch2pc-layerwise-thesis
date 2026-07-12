@@ -33,11 +33,35 @@ path.write_text(
 PY
 
 mkdir -p data external results/runs results/checkpoints results/splits
-python3 -m venv .venv
+if [[ ! -x .venv/bin/python3 ]]; then
+  python3 -m venv .venv
+fi
+
 PYTHON_BIN=".venv/bin/python3"
-"$PYTHON_BIN" -m pip install --upgrade pip
+
+platform="$("$PYTHON_BIN" - <<'PY'
+import platform
+import sys
+
+print(
+    f"{sys.version_info.major}.{sys.version_info.minor}:"
+    f"{platform.machine()}"
+)
+PY
+)"
+
+if [[ "$platform" != "3.12:x86_64" ]]; then
+  printf 'Ожидалась платформа Python 3.12 / x86_64, получено: %s\n'     "$platform" >&2
+  exit 1
+fi
+
 "$PYTHON_BIN" -m pip install -r requirements/torch-cpu.txt
 "$PYTHON_BIN" -m pip install -r requirements/dev.txt
 "$PYTHON_BIN" -m pip check
+
+"$PYTHON_BIN" -m ruff --version
+"$PYTHON_BIN" -m mypy --version
+"$PYTHON_BIN" -m pytest --version
+
 "$PYTHON_BIN" -m torch2pc_thesis.cli registry
 printf 'Репозиторий инициализирован. Проверьте .env перед экспериментами.\n'

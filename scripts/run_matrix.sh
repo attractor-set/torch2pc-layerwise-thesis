@@ -7,6 +7,7 @@ if [[ ! -x "$PYTHON_BIN" ]]; then
   PYTHON_BIN="$(command -v python3)"
 fi
 failures=0
+declare -A pilot_terminal_attempts=()
 
 read_yaml_list() {
   local file="$1"
@@ -42,6 +43,48 @@ for item in config.get("search", {}).get("grid", []):
 PY
 }
 
+read_pilot_terminal_attempts() {
+  "$PYTHON_BIN" - <<'PY'
+from pathlib import Path
+import csv
+import hashlib
+import json
+
+lock_path = Path("results/summaries/environment-lock.json")
+lock = json.loads(lock_path.read_text(encoding="utf-8"))
+lock_sha256 = hashlib.sha256(lock_path.read_bytes()).hexdigest()
+source_commit = str(lock["image_source_git_commit"])
+torch2pc_commit = str(lock["torch2pc_commit"])
+
+latest = {}
+with Path("experiments/registry.csv").open(newline="", encoding="utf-8") as stream:
+    for row in csv.DictReader(stream):
+        latest[row["run_id"]] = row
+
+for row in latest.values():
+    if row["stage"] != "pilot" or row["status"] not in {"completed", "failed"}:
+        continue
+    if row.get("git_commit") != source_commit:
+        continue
+    if row.get("torch2pc_commit") != torch2pc_commit:
+        continue
+    environment_path = Path(row["run_directory"]) / "environment.json"
+    if not environment_path.is_file():
+        continue
+    environment = json.loads(environment_path.read_text(encoding="utf-8"))
+    if environment.get("environment_lock_sha256") != lock_sha256:
+        continue
+    print("|".join([
+        row["dataset"],
+        row["model"],
+        row["method"],
+        row["model_seed"],
+        row["eta"],
+        row["inference_steps"],
+    ]))
+PY
+}
+
 run_container() {
   local label="$1"
   shift
@@ -53,6 +96,18 @@ run_container() {
   fi
 }
 
+run_pilot_cell() {
+  local key="$1"
+  local label="$2"
+  shift 2
+  if [[ -n "${pilot_terminal_attempts[$key]:-}" ]]; then
+    printf 'Пропущена уже зарегистрированная terminal-попытка: %s\n' "$label"
+    return
+  fi
+  run_container "$label" "$@"
+  pilot_terminal_attempts["$key"]=1
+}
+
 run_experiment() {
   local stage_name="$1"
   local dataset="$2"
@@ -60,14 +115,15 @@ run_experiment() {
   local method="$4"
   local seed="$5"
   shift 5
-  docker compose run --rm run \
+  docker compose run --rm -T run \
     torch2pc-thesis run \
       --stage "$stage_name" \
       --dataset "$dataset" \
       --model "$model" \
       --method "$method" \
       --seed "$seed" \
-      "$@"
+      "$@" \
+    </dev/null
 }
 
 case "$stage" in
@@ -77,6 +133,9 @@ case "$stage" in
     mapfile -t datasets < <(read_yaml_list configs/stages/pilot.yaml selection.datasets)
     mapfile -t models < <(read_yaml_list configs/stages/pilot.yaml selection.models)
     mapfile -t methods < <(read_yaml_list configs/stages/pilot.yaml selection.methods)
+    while IFS= read -r key; do
+      [[ -n "$key" ]] && pilot_terminal_attempts["$key"]=1
+    done < <(read_pilot_terminal_attempts)
 
     for dataset in "${datasets[@]}"; do
       for model in "${models[@]}"; do
@@ -85,22 +144,26 @@ case "$stage" in
             for seed in "${seeds[@]}"; do
               label="pilot $dataset $model $method seed=$seed"
               printf '\n=== %s ===\n' "$label"
-              run_container "$label" \
+              key="$dataset|$model|$method|$seed||"
+              run_pilot_cell "$key" "$label" \
                 run_experiment pilot "$dataset" "$model" "$method" "$seed"
             done
             continue
           fi
 
-          while read -r eta steps; do
+          mapfile -t method_grid < <(read_method_grid "$method")
+          for grid_item in "${method_grid[@]}"; do
+            read -r eta steps <<<"$grid_item"
             [[ -n "$eta" && -n "$steps" ]] || continue
             for seed in "${seeds[@]}"; do
               label="pilot $dataset $model $method eta=$eta n=$steps seed=$seed"
+              key="$dataset|$model|$method|$seed|$eta|$steps"
               printf '\n=== %s ===\n' "$label"
-              run_container "$label" \
+              run_pilot_cell "$key" "$label" \
                 run_experiment pilot "$dataset" "$model" "$method" "$seed" \
                   --eta "$eta" --inference-steps "$steps"
             done
-          done < <(read_method_grid "$method")
+          done
         done
       done
     done

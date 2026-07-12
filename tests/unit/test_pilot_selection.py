@@ -22,3 +22,40 @@ def test_first_terminal_attempt_defines_pilot_success_cell() -> None:
     success = _event("run-b", "completed", "2026-07-10T01:00:00Z")
     selected = primary_attempts([success, failure])
     assert selected[experiment_key(failure)]["status"] == "failed"
+
+
+def test_pilot_attempts_are_filtered_by_environment_cohort(tmp_path) -> None:
+    current_run = tmp_path / "current"
+    previous_run = tmp_path / "previous"
+    current_run.mkdir()
+    previous_run.mkdir()
+    (current_run / "environment.json").write_text(
+        '{"environment_lock_sha256": "lock-current"}\n',
+        encoding="utf-8",
+    )
+    (previous_run / "environment.json").write_text(
+        '{"environment_lock_sha256": "lock-previous"}\n',
+        encoding="utf-8",
+    )
+
+    current = {
+        **_event("run-current", "completed", "2026-07-10T02:00:00Z"),
+        "git_commit": "source-current",
+        "torch2pc_commit": "torch-current",
+        "run_directory": str(current_run),
+    }
+    previous = {
+        **_event("run-previous", "completed", "2026-07-10T01:00:00Z"),
+        "git_commit": "source-previous",
+        "torch2pc_commit": "torch-current",
+        "run_directory": str(previous_run),
+    }
+
+    selected = primary_attempts(
+        [previous, current],
+        source_commit="source-current",
+        torch2pc_commit="torch-current",
+        environment_lock_sha256="lock-current",
+    )
+
+    assert list(selected.values()) == [current]

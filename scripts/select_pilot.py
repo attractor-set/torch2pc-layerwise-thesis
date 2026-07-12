@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -34,12 +35,30 @@ def experiment_key(row: dict[str, str]) -> PilotKey:
     )
 
 
-def primary_attempts(events: list[dict[str, str]]) -> dict[PilotKey, dict[str, str]]:
+def primary_attempts(
+    events: list[dict[str, str]],
+    *,
+    source_commit: str | None = None,
+    torch2pc_commit: str | None = None,
+    environment_lock_sha256: str | None = None,
+) -> dict[PilotKey, dict[str, str]]:
     selected: dict[PilotKey, dict[str, str]] = {}
-    terminal = [
-        row for row in events
-        if row["stage"] == "pilot" and row["status"] in {"completed", "failed"}
-    ]
+    terminal = []
+    for row in events:
+        if row["stage"] != "pilot" or row["status"] not in {"completed", "failed"}:
+            continue
+        if source_commit is not None and row.get("git_commit") != source_commit:
+            continue
+        if torch2pc_commit is not None and row.get("torch2pc_commit") != torch2pc_commit:
+            continue
+        if environment_lock_sha256 is not None:
+            environment_path = Path(row["run_directory"]) / "environment.json"
+            if not environment_path.is_file():
+                continue
+            environment = json.loads(environment_path.read_text(encoding="utf-8"))
+            if environment.get("environment_lock_sha256") != environment_lock_sha256:
+                continue
+        terminal.append(row)
     for row in sorted(terminal, key=lambda item: (item["started_utc"], item["run_id"])):
         key = experiment_key(row)
         selected.setdefault(key, row)
@@ -101,8 +120,18 @@ def verify_planned_matrix(
     }
 
 
-def load_metrics(row: dict[str, str]) -> dict[str, object]:
-    path = Path(row["run_directory"]) / "metrics.json"
+def load_metrics(
+    row: dict[str, str],
+    environment_lock_sha256: str,
+) -> dict[str, object]:
+    run_directory = Path(row["run_directory"])
+    environment_path = run_directory / "environment.json"
+    environment = json.loads(environment_path.read_text(encoding="utf-8"))
+    if environment.get("environment_lock_sha256") != environment_lock_sha256:
+        raise RuntimeError(
+            f"Pilot run belongs to another environment lock: {run_directory}"
+        )
+    path = run_directory / "metrics.json"
     if not path.exists():
         raise RuntimeError(f"Metrics are missing: {path}")
     value = json.loads(path.read_text(encoding="utf-8"))
@@ -179,13 +208,25 @@ def main() -> None:
             "Pilot selection currently requires exactly one model architecture"
         )
     primary_model = models[0]
+    environment_lock_path = Path("results/summaries/environment-lock.json")
+    environment_lock = json.loads(environment_lock_path.read_text(encoding="utf-8"))
+    environment_lock_sha256 = hashlib.sha256(
+        environment_lock_path.read_bytes()
+    ).hexdigest()
+    source_commit = str(environment_lock["image_source_git_commit"])
+    torch2pc_commit = str(environment_lock["torch2pc_commit"])
     events = latest_run_events(Path("experiments/registry.csv"))
-    attempts = primary_attempts(events)
+    attempts = primary_attempts(
+        events,
+        source_commit=source_commit,
+        torch2pc_commit=torch2pc_commit,
+        environment_lock_sha256=environment_lock_sha256,
+    )
     matrix_status = verify_planned_matrix(attempts, base_config, pilot_config)
     rows = [row for row in attempts.values() if row["status"] == "completed"]
     records = []
     for row in rows:
-        metrics = load_metrics(row)
+        metrics = load_metrics(row, environment_lock_sha256)
         records.append({
             **row,
             "best_validation_metric": float(metrics["best_validation_metric"]),

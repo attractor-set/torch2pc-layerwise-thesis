@@ -1,4 +1,5 @@
 SHELL := /usr/bin/env bash
+.DEFAULT_GOAL := help
 
 PYTHON ?= .venv/bin/python3
 STAGE ?= smoke
@@ -9,11 +10,45 @@ SEED ?= 0
 ETA ?=
 INFERENCE_STEPS ?=
 
-.PHONY: init host-check image-check pin-base-image build validate prepare pin-torch2pc \
+.PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot apply-pilot-selection \
         freeze-pilot final diagnostics report manifest docs docs-en jupyter lint \
         typecheck test thesis article release clean status epistemic-check \
         freeze-environment
+
+help:
+	@printf '%s\n' \
+	  'Usage: make <target> [VARIABLE=value]' \
+	  '' \
+	  'Environment:' \
+	  '  init                  Create the local CPU development environment' \
+	  '  host-check            Validate the native Ubuntu host' \
+	  '  image-check           Validate the configured ROCm base image' \
+	  '  pin-base-image        Pin the ROCm base image by digest' \
+	  '  build                 Build the controlled Docker image' \
+	  '  validate              Run repository validation in Docker' \
+	  '  prepare               Prepare datasets and external dependencies' \
+	  '  pin-torch2pc          Pin the external Torch2PC revision' \
+	  '' \
+	  'Controls and experiments:' \
+	  '  control-cpu           Run the CPU numerical control gate' \
+	  '  control-gpu           Run the GPU numerical control gate' \
+	  '  smoke                 Run the smoke experiment' \
+	  '  pilot                 Run the pilot matrix' \
+	  '  final                 Run the confirmatory experiment matrix' \
+	  '  diagnostics           Run diagnostic experiments' \
+	  '' \
+	  'Quality and outputs:' \
+	  '  lint                  Run Ruff' \
+	  '  typecheck             Run Mypy' \
+	  '  test                  Run Pytest' \
+	  '  epistemic-check       Run documentation and language checks' \
+	  '  report                Build experiment reports' \
+	  '  manifest              Build artifact manifests' \
+	  '  thesis                Build the dissertation' \
+	  '  article               Build the article' \
+	  '  status                Show experiment and Git status' \
+	  '  clean                 Remove local generated caches'
 
 init:
 	cp -n .env.example .env || true

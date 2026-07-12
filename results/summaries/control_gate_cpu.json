@@ -1,0 +1,42 @@
+{
+  "device": "cpu",
+  "torch2pc_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
+  "source_git_commit_observed": "c08d1503a6e189122d088ed0d1b93bcd89224e6c",
+  "environment_lock_sha256": "ca66dfdc849375451176f0416fdb6c29fcfc81c95ab56da51ca1fbef31c01ffe",
+  "dtype": "torch.float64",
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 3,
+  "structural_source_check": {
+    "check_kind": "source_pattern_observation",
+    "observations": {
+      "strict_recomputes_errors_each_iteration": true,
+      "strict_error_is_prediction_minus_belief": true,
+      "strict_update_is_epsilon_minus_vjp": true,
+      "fixedpred_error_is_activation_minus_belief": true,
+      "fixedpred_update_is_epsilon_minus_vjp": true,
+      "exact_belief_is_activation_minus_epsilon": true
+    },
+    "all_observed": true,
+    "scope": "Pinned TorchSeq2PC.py source only; numerical controls remain required."
+  },
+  "C0_exact_vs_bp": {
+    "min_cosine": 0.9999999999999974,
+    "max_relative_l2": 0.0,
+    "max_abs": 0.0
+  },
+  "C1_fixedpred_vs_exact": {
+    "min_cosine": 0.9999999999999973,
+    "max_relative_l2": 2.689805350765469e-13,
+    "max_abs": 2.966160303485843e-15
+  },
+  "thresholds": {
+    "min_cosine": 0.99999,
+    "max_relative_l2": 1e-07
+  },
+  "gate_observed_within_thresholds": true,
+  "interpretation": "The observations satisfy the pre-specified numerical thresholds. This is an implementation control for the pinned environment, not a general proof."
+}

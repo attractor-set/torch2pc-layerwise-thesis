@@ -1,0 +1,6 @@
+{
+  "created_utc": "2026-07-12T22:51:00Z",
+  "config": "configs/base.yaml",
+  "checkout": "external/Torch2PC",
+  "commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093"
+}

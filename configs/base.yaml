@@ -119,6 +119,6 @@ analysis:
 torch2pc:
   repository: https://github.com/RobertRosenbaum/Torch2PC.git
   local_path: external/Torch2PC
-  commit: ''
+  commit: 00c6c50ee3540537bbb56ab2b6567b541f42b093
   require_correction_check: true
   correction_doi: 10.1371/journal.pone.0320944

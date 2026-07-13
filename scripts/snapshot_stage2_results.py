@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import csv
 import hashlib
 import json
 import shutil
@@ -10,7 +9,6 @@ from pathlib import Path
 from typing import Any
 
 from torch2pc_thesis.registry import latest_by_run_id
-
 
 STAGE = "final_stage_2"
 EXPECTED_DATASETS = {"MNIST", "FashionMNIST"}
@@ -24,9 +22,7 @@ def sha256(path: Path) -> str:
 
 def validate_completed_cells(rows: list[dict[str, str]]) -> dict[str, Any]:
     completed = [
-        row
-        for row in rows
-        if row.get("stage") == STAGE and row.get("status") == "completed"
+        row for row in rows if row.get("stage") == STAGE and row.get("status") == "completed"
     ]
     cells: dict[tuple[str, str, str, int], dict[str, str]] = {}
     duplicates: list[tuple[str, str, str, int]] = []
@@ -62,9 +58,7 @@ def validate_completed_cells(rows: list[dict[str, str]]) -> dict[str, Any]:
     candidate_commits = {row["torch2pc_commit"] for row in cells.values()}
     source_commits = {row["git_commit"] for row in cells.values()}
     if len(candidate_commits) != 1 or len(source_commits) != 1:
-        raise RuntimeError(
-            "Stage 2 successful cells span multiple source or Torch2PC revisions"
-        )
+        raise RuntimeError("Stage 2 successful cells span multiple source or Torch2PC revisions")
 
     return {
         "stage": STAGE,
@@ -73,8 +67,7 @@ def validate_completed_cells(rows: list[dict[str, str]]) -> dict[str, Any]:
         "by_dataset": dict(sorted(Counter(key[0] for key in cells).items())),
         "by_method": dict(sorted(Counter(key[2] for key in cells).items())),
         "by_seed": {
-            str(seed): count
-            for seed, count in sorted(Counter(key[3] for key in cells).items())
+            str(seed): count for seed, count in sorted(Counter(key[3] for key in cells).items())
         },
         "source_git_commit": next(iter(source_commits)),
         "torch2pc_commit": next(iter(candidate_commits)),
@@ -91,19 +84,13 @@ def main() -> None:
     destination = Path("experiments/registry-stage-2-80-completed.csv")
     shutil.copyfile(source, destination)
     checksum_path = Path(f"{destination}.sha256")
-    checksum_path.write_text(
-        f"{sha256(destination)}  {destination}\n", encoding="utf-8"
-    )
+    checksum_path.write_text(f"{sha256(destination)}  {destination}\n", encoding="utf-8")
 
     summary["registry_snapshot"] = str(destination)
     summary["registry_snapshot_sha256"] = sha256(destination)
     summary["terminal_attempts_by_status"] = dict(
         sorted(
-            Counter(
-                row.get("status", "")
-                for row in latest
-                if row.get("stage") == STAGE
-            ).items()
+            Counter(row.get("status", "") for row in latest if row.get("stage") == STAGE).items()
         )
     )
     output = Path("results/stage-2/summaries/stage-2-completion.json")

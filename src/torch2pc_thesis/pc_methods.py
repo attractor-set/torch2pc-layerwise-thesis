@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
-from functools import lru_cache
 from collections.abc import Callable
+from functools import cache
 from pathlib import Path
 from typing import Any, cast
 
@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 
 
-@lru_cache(maxsize=None)
+@cache
 def _load_pc_infer_from_file(source_file: str) -> Callable[..., Any]:
     path = Path(source_file)
     module_digest = hashlib.sha256(str(path).encode("utf-8")).hexdigest()[:16]

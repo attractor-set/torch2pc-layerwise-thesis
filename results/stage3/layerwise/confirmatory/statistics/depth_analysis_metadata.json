@@ -1,0 +1,71 @@
+{
+  "analysis": "stage3a-layerwise-depth-trends",
+  "exact_control": {
+    "absolute_tolerance": 1e-12,
+    "max_abs_slope": 1.1546319456101628e-15,
+    "max_value_range": 1.354472090042691e-14,
+    "rows": 60
+  },
+  "generated_at_utc": "2026-07-13T21:05:18Z",
+  "inputs": {
+    "seed_level_gradient_metrics.csv": {
+      "rows": 600,
+      "sha256": "5d51f6d13157aa1a4d1150b069504f513f01cfe3a5386e678dd3db12fef83a7b"
+    },
+    "seed_level_representation_metrics.csv": {
+      "rows": 300,
+      "sha256": "3aad188e3119dc4d22dfd9d5faaabfcab857be1cb40a9aa943356c1af6173821"
+    }
+  },
+  "outputs": {
+    "depth_seed_level.csv": {
+      "rows": 180,
+      "sha256": "94bfdac432e9a3211e92ddf865756398526fda4dda131be5dbed0f0fd9861bb4"
+    },
+    "depth_statistics.csv": {
+      "rows": 24,
+      "sha256": "933e47ecd3e193593257d618bfbc066dd94d23388ec249fb6cd644b4945f0445"
+    }
+  },
+  "schema_version": 1,
+  "settings": {
+    "candidate_methods": [
+      "fixedpred",
+      "strict"
+    ],
+    "confidence": 0.95,
+    "confirmatory_statistic": "spearman_rho",
+    "depth_mapping": "ordinal layer rank mapped to [0, 1] within each group",
+    "descriptive_statistic": "linear_slope",
+    "exact_absolute_tolerance": 1e-12,
+    "exact_sign_flip": "two-sided exhaustive sign assignments relative to zero",
+    "expected_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "holm_family_keys": [
+      "domain",
+      "method"
+    ],
+    "independent_unit": "model_seed",
+    "seed_level_statistics": [
+      "spearman_rho",
+      "linear_slope"
+    ]
+  },
+  "software": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.1",
+    "python": "3.12.3",
+    "scipy": "1.16.0"
+  },
+  "source_commit": "5e68399d5d85de1b7008c67442c6ce166bf1ff12"
+}

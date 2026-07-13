@@ -79,16 +79,18 @@ The extended Stage 3 studies mathematical and execution locality, exact VJP
 organization, adaptive stopping, periodic VJP refresh, and depth/width scaling.
 See [docs/stage-3-protocol_EN.md](docs/stage-3-protocol_EN.md). Design revision 2 adds an exact-shortcut control and a separate predict-correct line with mandatory exact correction sweeps and Strict fallback.
 
-The repository is ready for implementation and profiling while pilot/final
-execution remains deliberately blocked:
+The repository is ready for implementation of the profiling infrastructure,
+while the profiling campaign, pilot, and final execution remain deliberately
+blocked:
 
 ```bash
 make stage3-ready
 make stage3-plan
 ```
 
-The deterministic design plan contains 288 short profiling cells and 48
-parameterized validation-only screening cells. Stage 3 is absent from `TRAINING_STAGES`, and the
+The deterministic design plan contains 336 short profiling cells, 48
+parameterized core validation-only pilot cells, and 27 predict-correct
+accelerator screening cells. Stage 3 is absent from `TRAINING_STAGES`, and the
 final template keeps `evaluation.use_test=false` until a separate freeze.
 
 ## Pilot evidence export

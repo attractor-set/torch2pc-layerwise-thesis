@@ -263,7 +263,14 @@ def main() -> None:
     final_stage = yaml.safe_load(
         Path("configs/stages/final.yaml").read_text(encoding="utf-8")
     )
-    final_seeds = final_stage["selection"]["seeds"]
+    final_seeds = [int(value) for value in final_stage["selection"]["seeds"]]
+    configured_final_seeds = [
+        int(value) for value in base["statistics"]["final_seeds"]
+    ]
+    if final_seeds != configured_final_seeds:
+        raise RuntimeError(
+            "Final selection.seeds must exactly match statistics.final_seeds"
+        )
     minimum = int(base["statistics"]["minimum_primary_pairs"])
     if len(final_seeds) < minimum:
         raise RuntimeError(

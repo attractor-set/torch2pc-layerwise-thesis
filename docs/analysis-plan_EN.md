@@ -26,3 +26,8 @@ Layer and sample observations are not treated as independent model
 replications. Representation uncertainty must include between-seed variation;
 a bootstrap over images alone is insufficient. Equal-update and
 equal-wall-clock comparisons are reported separately.
+
+Final execution uses a deterministically counterbalanced method order within
+each dataset/model/seed block, GPU synchronization around timed epochs, and
+explicit peak-memory telemetry. The post-pilot execution amendment is recorded
+in `docs/decisions/ADR-005-post-pilot-final-execution_EN.md`.

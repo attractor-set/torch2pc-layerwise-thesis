@@ -12,7 +12,7 @@ INFERENCE_STEPS ?=
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
-        apply-pilot-selection freeze-pilot final diagnostics report manifest docs \
+        apply-pilot-selection final-plan freeze-pilot final diagnostics report manifest docs \
         docs-en jupyter lint \
         typecheck test thesis article release clean status epistemic-check \
         freeze-environment
@@ -37,6 +37,7 @@ help:
 	  '  smoke                 Run the smoke experiment' \
 	  '  pilot                 Run the pilot matrix' \
 	  '  pilot-observations    Export verified pilot observations' \
+	  '  final-plan            Build the deterministic final execution plan' \
 	  '  final                 Run the confirmatory experiment matrix' \
 	  '  diagnostics           Run diagnostic experiments' \
 	  '' \
@@ -101,6 +102,9 @@ pilot-observations:
 
 apply-pilot-selection:
 	$(PYTHON) scripts/select_pilot.py --apply
+
+final-plan:
+	$(PYTHON) scripts/generate_final_execution_plan.py
 
 freeze-pilot:
 	bash scripts/freeze_milestone.sh pilot-freeze

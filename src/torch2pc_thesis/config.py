@@ -271,6 +271,16 @@ def validate_config(config: Config) -> None:
             raise ConfigurationError(
                 "Final methods must contain BP and every primary contrast method"
             )
+        execution_order = str(selection.get("execution_order", ""))
+        if execution_order != "deterministic_hash_counterbalance":
+            raise ConfigurationError(
+                "Final selection.execution_order must be "
+                "deterministic_hash_counterbalance"
+            )
+        if int(selection.get("execution_order_seed", -1)) < 0:
+            raise ConfigurationError(
+                "Final selection.execution_order_seed must be non-negative"
+            )
 
     if method in {"fixedpred", "strict"}:
         if config["method"].get("eta") is None:

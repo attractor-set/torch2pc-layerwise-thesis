@@ -9,8 +9,11 @@
 - Completed all 96 validation-only pilot cells without test evaluation.
 - Recorded the selected FixedPred and Strict parameters.
 - Added compact `pilot_observations.csv` export and provenance validation.
-- Added pilot selection, candidate summary, observations, and registry hashes to
-  the `pilot-freeze` manifest.
+- Added pilot selection, candidate summary, observations, and a dedicated pilot
+  registry snapshot to the `pilot-freeze` manifest.
+- Added a deterministically counterbalanced 80-cell final execution plan.
+- Added safe final resumption and expanded GPU timing/memory telemetry.
+- Added a combined configuration-tree SHA-256 to the environment lock.
 
 Final remains blocked until the selected environment is re-locked, the short
 controls are repeated, and `pilot-freeze` is created.

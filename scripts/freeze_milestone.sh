@@ -15,6 +15,8 @@ fi
 if [[ "$name" == "pilot-freeze" ]]; then
   "$PYTHON_BIN" scripts/check_protocol_gate.py pilot
   "$PYTHON_BIN" scripts/check_pilot_freeze.py
+  "$PYTHON_BIN" scripts/snapshot_pilot_registry.py
+  "$PYTHON_BIN" scripts/generate_final_execution_plan.py
 fi
 
 "$PYTHON_BIN" - "$name" <<'PY'
@@ -41,7 +43,10 @@ if name == "pilot-freeze":
             Path("results/summaries/pilot_selection.json"),
             Path("results/summaries/pilot_candidate_summary.csv"),
             Path("results/summaries/pilot_observations.csv"),
-            Path("experiments/registry.csv"),
+            Path("results/summaries/pilot_registry_snapshot.csv"),
+            Path("results/summaries/final_execution_plan.json"),
+            Path("docs/decisions/ADR-005-post-pilot-final-execution.md"),
+            Path("docs/decisions/ADR-005-post-pilot-final-execution_EN.md"),
         ]
     )
 missing = [str(path) for path in files if not path.is_file()]

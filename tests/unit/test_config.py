@@ -38,6 +38,11 @@ def test_final_configuration_explicitly_uses_test_after_freeze() -> None:
     config = resolve_config("configs", stage="final", method="bp")
     assert config["evaluation"]["use_test"] is True
     assert config["protocol"]["status"] == "frozen"
+    assert (
+        config["selection"]["execution_order"]
+        == "deterministic_hash_counterbalance"
+    )
+    assert config["selection"]["execution_order_seed"] == 20260713
 
 
 def test_test_access_is_rejected_during_pilot() -> None:

@@ -316,6 +316,28 @@ def build_primary_assets(
     test_columns = [
         column for column in ["test_accuracy", "test_macro_f1"] if column in final.columns
     ]
+    if not final.empty:
+        computational_columns = [
+            column
+            for column in [
+                "total_training_time_sec",
+                "mean_epoch_time_sec",
+                "median_epoch_time_sec",
+                "peak_gpu_memory_allocated_bytes",
+                "peak_gpu_memory_reserved_bytes",
+            ]
+            if column in final.columns
+        ]
+        if computational_columns:
+            computational = summarize_with_ci(
+                final,
+                ["dataset", "model", "method", "eta", "inference_steps"],
+                computational_columns,
+            )
+            computational_path = summary_dir / "computational_summary.csv"
+            computational.to_csv(computational_path, index=False)
+            outputs["computational_summary"] = str(computational_path)
+
     if not final.empty and test_columns:
         summary = summarize_with_ci(
             final,

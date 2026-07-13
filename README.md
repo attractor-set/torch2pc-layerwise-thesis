@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-validation%20pilot-blue)
+![Статус](https://img.shields.io/badge/этап-Stage%202%20complete-brightgreen)
 
 Исследовательский репозиторий магистерской диссертации по сравнению
 backpropagation и режимов predictive coding в Torch2PC. Проект организован так,
@@ -49,22 +49,47 @@ backpropagation и режимов predictive coding в Torch2PC. Проект о
 
 ## Наблюдаемый статус на 13 июля 2026 года
 
-В закрепленной Ubuntu/ROCm-среде выполнены технические контроли и
-validation-only pilot. Наблюдаемые факты:
+Validation pilot и две подтверждающие серии завершены в закреплённой
+Ubuntu/ROCm-среде:
 
-- Torch2PC закреплен на commit
+- validation-only pilot: **96/96** terminal-ячеек, 0 failed, test не вычислялся;
+- Stage 1: **80/80**, исходный Torch2PC
   `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
-- целевой ROCm-контур проверен на AMD Radeon RX 7700 XT;
-- C0 Exact/BP и C1 FixedPred/Exact прошли заранее заданные пороги на CPU и GPU;
-- pilot-матрица завершена полностью: 96 из 96 ячеек, 0 неудачных ячеек;
-- test в pilot не вычислялся;
-- выбранные параметры: FixedPred `eta=0.1`, `n=10`; Strict `eta=0.05`,
-  `n=20`;
-- final остается заблокирован до обновления environment lock, повторения коротких
-  контролей и создания `pilot-freeze`.
+- Stage 2: **80/80**, patched Torch2PC
+  `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
+- CPU/GPU numerical equivalence gates пройдены в закреплённой области;
+- regression suite после maintenance: **63 passed**;
+- парные значения test accuracy и macro-F1 Stage 1/2 совпали для всех
+  datasets, методов и seeds;
+- наблюдаемый порядок времени Stage 2:
+  `BP ≈ Exact < FixedPred << Strict`.
 
-Эти наблюдения относятся к закрепленным commit, конфигурации, split и
-вычислительной среде. Они не являются итоговым сравнением качества методов.
+Implementation-preserving patch изменил вычислительный путь, сохранив
+экспериментальный протокол. По среднему total training time относительно
+Stage 1 Exact выполнялся примерно на 14% быстрее, FixedPred — на 31%, Strict —
+на 26%; BP остался практически неизменным. Полные парные записи находятся в
+[`results/cross-version/`](results/cross-version/).
+
+### Разделение execution и publication state
+
+| Роль | Идентификатор |
+|---|---|
+| Stage 1 source lock | `140e77cc2083bf04234dcea16b95803e63cb0537` |
+| Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
+| Stage 2 results/publication state | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
+| Stage 1 tag | `confirmatory-final-v1` |
+| Stage 2 execution tag | `stage2-execution-v1` |
+| Stage 2 results tag | `stage2-results-v1` |
+
+GitHub Release
+[`stage2-results-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
+содержит replication bundle, его SHA-256 и file manifest; проверено 660
+manifest artifacts. Execution tag фиксирует код, использованный для запуска,
+а results tag фиксирует последующее состояние публикации результатов.
+
+Stage 1 и Stage 2 считаются завершёнными и не требуют повторного запуска.
+Любое новое изменение производительности относится к отдельному Stage 3 с
+новым протоколом и отдельной provenance chain.
 
 Текущий статус: [STATUS.md](STATUS.md).
 
@@ -82,7 +107,10 @@ validation-only pilot. Наблюдаемые факты:
 пакетами. Даже успешный результат C0/C1 не рассматривается как универсальное
 доказательство эквивалентности алгоритмов.
 
-## Быстрый запуск
+## Воспроизведение с нуля
+
+Следующая последовательность предназначена для независимого воспроизведения,
+а не для повторного выполнения уже завершённых Stage 1/2.
 
 ```bash
 cp .env.example .env
@@ -203,6 +231,8 @@ Torch2PC и GitHub сохраняются на английском.
 
 ## Публичные и локальные материалы
 
-В публичный репозиторий не включаются скачанные PDF, датасеты, приватные
-комментарии и тяжелые checkpoints. Публикуются код, протокол, конфигурации,
-библиографические записи, агрегированные результаты и манифесты.
+В Git-репозиторий не включаются скачанные PDF, датасеты, приватные комментарии
+и тяжёлые checkpoints. Публикуются код, протокол, конфигурации,
+библиографические записи, агрегированные результаты и манифесты. Полный набор
+raw Stage 2 artifacts распространяется отдельно через replication bundle в
+GitHub Release `stage2-results-v1`.

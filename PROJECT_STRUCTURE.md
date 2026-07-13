@@ -105,7 +105,9 @@ torch2pc-layerwise-thesis/
 ### `results/`
 
 В Git добавляются только компактные агрегированные материалы. Сырые запуски и
-checkpoints остаются локальными.
+checkpoints не хранятся в ветви `main`; полный набор Stage 2 raw artifacts
+распространяется через replication bundle в GitHub Release
+`stage2-results-v1`.
 
 ### `notebooks/analysis/`
 

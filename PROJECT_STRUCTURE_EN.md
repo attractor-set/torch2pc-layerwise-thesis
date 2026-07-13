@@ -31,3 +31,8 @@ final test access.
 The `requirements/` directory separates the CPU development wheel index from
 the ROCm container lock. Dataset assets and their hashes are bound to
 `environment-lock.json` through `src/torch2pc_thesis/assets.py`.
+
+
+Raw runs and checkpoints are not stored in the `main` Git tree. The complete
+Stage 2 raw artifact set is distributed through the `stage2-results-v1`
+replication bundle.

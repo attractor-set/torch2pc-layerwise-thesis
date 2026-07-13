@@ -2,52 +2,67 @@
 
 [English version](ROADMAP_EN.md)
 
-## Этап 1. Первый коммит
+Номера фаз ниже относятся к дорожной карте репозитория. Названия
+экспериментальных кампаний Stage 1, Stage 2 и возможный Stage 3 сохраняются
+отдельно.
 
-- нейтральная исследовательская позиция;
-- preregistration draft;
-- test isolation;
-- append-only реестр с отдельными run attempts;
-- фиксируемые splits и checksums;
-- Docker/ROCm scaffold;
-- статические тесты.
+## Фаза 1. Исследовательский scaffold — завершена
 
-## Этап 2. Проверка среды
+- нейтральная исследовательская позиция и preregistration draft;
+- test isolation и pilot-freeze gate;
+- append-only registry, splits и checksums;
+- Docker/ROCm scaffold и статические проверки.
 
-- собрать образ на нативном Ubuntu;
-- записать image digest, kernel и amdgpu;
-- скачать данные и проверить checksums;
-- выбрать и зафиксировать commit Torch2PC;
-- выполнить C0/C1 на CPU и GPU;
-- зарегистрировать отклонения без изменения порогов постфактум.
+## Фаза 2. Среда и validation pilot — завершена
 
-## Этап 3. Pilot
+- закреплены Ubuntu/ROCm environment и исходный Torch2PC;
+- CPU/GPU C0/C1 gates пройдены;
+- validation-only pilot завершён 96/96 без test;
+- FixedPred и Strict configurations выбраны и заморожены.
 
-- выполнить полную сетку FixedPred и Strict на трех seed;
-- использовать только validation;
-- оценить устойчивость ranking;
-- зафиксировать выбранные конфигурации;
-- рассмотреть достаточность числа final seed;
-- создать pilot-freeze.
+## Фаза 3. Stage 1 confirmatory campaign — завершена
 
-## Этап 4. Final
+- 80/80 ячеек на исходном Torch2PC;
+- 0 failed cells;
+- test открыт только в final;
+- результаты, manifests и publication tables сформированы;
+- tag: `confirmatory-final-v1`.
 
-- выполнить парные запуски BP, Exact, FixedPred и Strict;
-- открыть test только в final;
-- сохранить все ошибки и повторы;
-- сформировать описательные, difference и equivalence оценки.
+## Фаза 4. Stage 2 implementation study — завершена
 
-## Этап 5. Диагностика
+- implementation-preserving Torch2PC patch зафиксирован;
+- original-vs-patched CPU/GPU gates пройдены;
+- парная матрица 80/80 завершена;
+- quality Stage 1/2 совпало попарно;
+- cross-version runtime analysis сформирован;
+- execution tag: `stage2-execution-v1`;
+- results tag и Release: `stage2-results-v1`.
 
+## Фаза 5. Public release — текущая операционная фаза
+
+- replication bundle опубликован и проверен;
+- public-facing документация синхронизирована;
+- выполняется смена repository visibility и проверка неавторизованного доступа;
+- после открытия проверяются README, tags, assets, Actions logs, Issues и
+  Security settings.
+
+## Фаза 6. Stage 3 diagnostics — необязательная
+
+Stage 3 создаётся только как отдельный заранее описанный эксперимент. Возможные
+направления:
+
+- новые performance changes;
 - послойные градиенты;
-- CKA/RSA с учетом вариации между seed;
+- CKA/RSA с учётом вариации между seeds;
 - устойчивость к искажениям;
-- equal-wall-clock сравнение;
-- архитектурный и dataset transfer.
+- equal-wall-clock comparison;
+- architecture и dataset transfer.
 
-## Этап 6. Текст
+Stage 3 не является условием завершённости Stage 1/2 или public visibility.
 
-- переносить в диссертацию только зарегистрированные наблюдения;
-- отделять результат от интерпретации;
-- явно описывать ограничения;
-- подготовить публикационный пакет после выбора политики журнала.
+## Фаза 7. Текст диссертации и статьи — продолжается
+
+- переносить только зарегистрированные наблюдения;
+- разделять результат, интерпретацию и ограничения;
+- ссылаться на execution и publication states явно;
+- выбирать последующий archival/DOI release с учётом требований площадки.

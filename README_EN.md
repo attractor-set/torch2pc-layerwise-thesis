@@ -28,27 +28,50 @@ observed differences exceed pre-specified numerical or statistical bounds?
 
 ## Observed status on 13 July 2026
 
-The pinned Ubuntu/ROCm environment has completed the implementation controls
-and the validation-only pilot:
+The validation pilot and both confirmatory campaigns are complete in the pinned
+Ubuntu/ROCm environment:
 
-- Torch2PC is pinned to
+- validation-only pilot: **96/96** terminal cells, 0 failed, no test evaluation;
+- Stage 1: **80/80**, original Torch2PC
   `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
-- the target ROCm path was exercised on an AMD Radeon RX 7700 XT;
-- C0 Exact/BP and C1 FixedPred/Exact satisfied their pre-specified CPU and GPU
-  thresholds;
-- all 96 pilot configuration-seed cells completed, with no failed cells;
-- the pilot did not evaluate the test set;
-- selected parameters are FixedPred `eta=0.1`, `n=10` and Strict `eta=0.05`,
-  `n=20`;
-- final remains blocked until the selected environment is re-locked, the short
-  controls are repeated, and `pilot-freeze` is created.
+- Stage 2: **80/80**, patched Torch2PC
+  `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
+- the scoped CPU/GPU numerical equivalence gates passed;
+- the maintained regression suite contains **63 passing tests**;
+- paired Stage 1/2 test accuracy and macro-F1 values matched for every dataset,
+  method, and seed;
+- the observed Stage 2 runtime ordering is
+  `BP ≈ Exact < FixedPred << Strict`.
 
-These observations are implementation- and environment-scoped. They are not a
-confirmatory comparison of method performance.
+Relative to Stage 1 mean total training time, Exact was approximately 14%
+faster, FixedPred 31% faster, and Strict 26% faster; BP was effectively
+unchanged. Complete paired records are available in
+[`results/cross-version/`](results/cross-version/).
+
+### Execution and publication states
+
+| Role | Identifier |
+|---|---|
+| Stage 1 source lock | `140e77cc2083bf04234dcea16b95803e63cb0537` |
+| Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
+| Stage 2 results/publication state | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
+| Stage 1 tag | `confirmatory-final-v1` |
+| Stage 2 execution tag | `stage2-execution-v1` |
+| Stage 2 results tag | `stage2-results-v1` |
+
+The
+[`stage2-results-v1` GitHub Release](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
+contains the replication archive, its SHA-256, and the file manifest; 660
+manifest artifacts were verified. The execution tag identifies the code used
+for the campaign, while the results tag identifies the later publication
+state.
+
+Stage 1 and Stage 2 are complete and are not intended to be rerun. Any new
+performance-changing work belongs to a separately specified Stage 3 with its
+own provenance chain.
 
 See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 [STATUS_EN.md](STATUS_EN.md).
-
 
 ## Pilot evidence export
 
@@ -61,7 +84,10 @@ make select-pilot
 make pilot-observations
 ```
 
-## Controlled environment sequence
+## Reproduction from scratch
+
+The following sequence is for independent reproduction, not for repeating the
+completed Stage 1/2 campaigns.
 
 ```bash
 cp .env.example .env
@@ -80,3 +106,11 @@ an immutable `repository@sha256:...` reference. Pilot and final images are built
 only after this step. The local `.env` is not committed.
 
 See [docs/validation_EN.md](docs/validation_EN.md) for the validation procedure.
+
+
+## Public and local artifacts
+
+Downloaded papers, datasets, private notes, and heavyweight checkpoints are not
+stored in Git. Code, protocols, configurations, aggregate results, and
+manifests are versioned. The complete Stage 2 raw artifacts are distributed in
+the `stage2-results-v1` replication bundle.

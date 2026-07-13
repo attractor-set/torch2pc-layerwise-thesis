@@ -43,7 +43,8 @@ results.
 
 ## Next step
 
-Stage 1 and Stage 2 are closed. The current operational step is public
-visibility followed by an unauthenticated check of the README, tags, Release
-assets, and CI. Stage 3 remains optional and is created only as a separate
-campaign for new performance changes or extended diagnostics.
+Public visibility was completed on 13 July 2026. Unauthenticated access to the
+README, tags, Release assets, Actions, and Security policy was verified.
+
+Stage 1 and Stage 2 are closed. Stage 3 remains an optional, separate campaign
+for new performance changes or extended diagnostics.

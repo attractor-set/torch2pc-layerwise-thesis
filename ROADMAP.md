@@ -38,13 +38,13 @@
 - execution tag: `stage2-execution-v1`;
 - results tag и Release: `stage2-results-v1`.
 
-## Фаза 5. Public release — текущая операционная фаза
+## Фаза 5. Public release — завершена
 
 - replication bundle опубликован и проверен;
 - public-facing документация синхронизирована;
-- выполняется смена repository visibility и проверка неавторизованного доступа;
-- после открытия проверяются README, tags, assets, Actions logs, Issues и
-  Security settings.
+- repository visibility изменена на public;
+- неавторизованный доступ к README, tags, Release assets, Actions и Security
+  policy проверен.
 
 ## Фаза 6. Stage 3 diagnostics — необязательная
 

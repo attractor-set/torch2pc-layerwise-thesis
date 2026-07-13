@@ -2,7 +2,8 @@
 
 [Русская версия](README.md)
 
-This directory is excluded from Git and may contain:
+The directory contents are excluded from Git except for `README.md` and
+`README_EN.md`. Locally, the directory may contain:
 
 - scientific article PDFs;
 - supervisor comments;

@@ -236,3 +236,13 @@ Torch2PC и GitHub сохраняются на английском.
 библиографические записи, агрегированные результаты и манифесты. Полный набор
 raw Stage 2 artifacts распространяется отдельно через replication bundle в
 GitHub Release `stage2-results-v1`.
+
+## Лицензирование
+
+- программный код распространяется по лицензии Apache License 2.0 — см.
+  [LICENSE](LICENSE);
+- оригинальный текст диссертации, статьи, документации, таблицы и рисунки
+  распространяются по лицензии Creative Commons Attribution 4.0 International —
+  см. [LICENSE-DOCS](LICENSE-DOCS) и [LICENSE-DOCS_EN](LICENSE-DOCS_EN);
+- сторонние материалы сохраняют свои исходные лицензии и условия атрибуции —
+  см. [NOTICE](NOTICE) и [NOTICE_EN](NOTICE_EN).

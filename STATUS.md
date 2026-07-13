@@ -42,8 +42,9 @@ Execution commit и publication state являются разными provenance
 
 ## Следующий шаг
 
-Stage 1 и Stage 2 закрыты. Текущий операционный шаг — public visibility и
-последующая проверка доступности README, tags, Release assets и CI для
-неавторизованного посетителя. Stage 3 остаётся необязательным и создаётся только
-как отдельная кампания для новых performance changes или расширенной
-диагностики.
+Public visibility завершена 13 июля 2026 года. Доступность README, tags,
+Release assets, Actions и Security policy для неавторизованного посетителя
+проверена.
+
+Stage 1 и Stage 2 закрыты. Stage 3 остаётся необязательной отдельной кампанией
+для новых performance changes или расширенной диагностики.

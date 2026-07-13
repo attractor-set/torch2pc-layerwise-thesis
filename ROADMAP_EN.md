@@ -36,13 +36,13 @@ names—Stage 1, Stage 2, and any future Stage 3—remain separate identifiers.
 - Execution tag: `stage2-execution-v1`.
 - Results tag and Release: `stage2-results-v1`.
 
-## Phase 5. Public release — current operational phase
+## Phase 5. Public release — complete
 
 - Published and verified the replication bundle.
 - Synchronized public-facing documentation.
-- Change repository visibility and verify unauthenticated access.
-- After opening, inspect the README, tags, assets, Actions logs, Issues, and
-  security settings.
+- Changed repository visibility to public.
+- Verified unauthenticated access to the README, tags, Release assets, Actions,
+  and Security policy.
 
 ## Phase 6. Stage 3 diagnostics — optional
 

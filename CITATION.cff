@@ -3,12 +3,17 @@ message: "If you use this research software or its results, please cite the arch
 title: "Torch2PC Layer-wise Thesis"
 type: software
 version: 0.1.0
-date-released: 2026-07-11
+date-released: 2026-07-13
+commit: "bb435432a65b76b7fc4f383b566b9a372fc346ae"
 authors:
   - family-names: "Prychyna"
     given-names: "Dzmitry"
     email: "evil.java.deus.ex@gmail.com"
 repository-code: "https://github.com/attractor-set/torch2pc-layerwise-thesis"
+identifiers:
+  - type: url
+    value: "https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1"
+    description: "GitHub Release for the Stage 2 results publication state."
 abstract: >
   Reproducible software and research artifacts for a master's thesis on
   layer-wise and compute-matched comparison of backpropagation and

@@ -114,3 +114,14 @@ Downloaded papers, datasets, private notes, and heavyweight checkpoints are not
 stored in Git. Code, protocols, configurations, aggregate results, and
 manifests are versioned. The complete Stage 2 raw artifacts are distributed in
 the `stage2-results-v1` replication bundle.
+
+## Licensing
+
+- software code is distributed under the Apache License 2.0 — see
+  [LICENSE](LICENSE);
+- original thesis, article, documentation, table, and figure content is
+  distributed under the Creative Commons Attribution 4.0 International license
+  — see [LICENSE-DOCS](LICENSE-DOCS) and
+  [LICENSE-DOCS_EN](LICENSE-DOCS_EN);
+- third-party materials retain their original licenses and attribution terms —
+  see [NOTICE](NOTICE) and [NOTICE_EN](NOTICE_EN).

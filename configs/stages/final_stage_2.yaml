@@ -70,4 +70,4 @@ comparison:
 torch2pc:
   local_path: external/Torch2PC
   commit: b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4
-  repository: git@github.com:attractor-set/Torch2PC.git
+  repository: https://github.com/attractor-set/Torch2PC.git

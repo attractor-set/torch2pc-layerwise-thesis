@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "milestone": "stage-2-freeze",
+  "created_utc": "2026-07-13T12:51:02Z",
+  "source_git_commit": "b5d21eba8e49e69277b6bd0960fe33bc2938ed40",
+  "image_source_git_commit": "6d66b0a6f82c30c4fb8eca6247383ca13e0636a2",
+  "environment_lock_sha256": "0ffe23c915ee47a38d1aaa3d2eb5b8175ca8e63be25840380b19fc6bdd2b045b",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "torch2pc_reference_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
+  "selected_method_parameters": {
+    "fixedpred": {
+      "name": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "strict": {
+      "name": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    }
+  },
+  "planned_cells": 80,
+  "files": [
+    {
+      "path": "configs/base.yaml",
+      "sha256": "325d6b6b89451d1717d184a8b85301a5c92f95a9f437d04be625bc6414af0436"
+    },
+    {
+      "path": "configs/methods/bp.yaml",
+      "sha256": "f7c463fb2eab2a5e7fdb575e408fd79a45a01ce8c6adc17ac1858f4626ca1a6c"
+    },
+    {
+      "path": "configs/methods/exact.yaml",
+      "sha256": "d59963768545b53114d29c02281cc9f4c49bd78b43e0abc56fd8227fa5c9c4ac"
+    },
+    {
+      "path": "configs/methods/fixedpred.yaml",
+      "sha256": "1a083d3a9e175f92326bd509a22bd54b69b310232b6a1bbc4be9bb63379da241"
+    },
+    {
+      "path": "configs/methods/strict.yaml",
+      "sha256": "96cacef5582d2fa66015ddfe3df6ee100c1a6ef7fb9187f684b3d430e37ecec5"
+    },
+    {
+      "path": "configs/stages/final_stage_2.yaml",
+      "sha256": "89d2c04783aceb37f6a5e8c834f59309658e800658f826ca86a73f0ed7b6db75"
+    },
+    {
+      "path": "docs/stage-2-protocol.md",
+      "sha256": "6763db20d4c294146932deba73c1294415448deb04e71ca40774797912976fde"
+    },
+    {
+      "path": "docs/stage-2-protocol_EN.md",
+      "sha256": "f05ec5f63adcac847b092e02ea5271d18f44a9c5466b49202183fd631b266d07"
+    },
+    {
+      "path": "experiments/registry-final-80-completed.csv",
+      "sha256": "55e66c62760705f3c39364f95bb14f781be13cd0300e3479c43b8313b2a32257"
+    },
+    {
+      "path": "experiments/registry-final-80-completed.sha256",
+      "sha256": "867b05dcd73e33d26f53f0174349dfce89d84993dc78e67fa8cab0f3531ea739"
+    },
+    {
+      "path": "results/stage-2/summaries/environment-lock.json",
+      "sha256": "0ffe23c915ee47a38d1aaa3d2eb5b8175ca8e63be25840380b19fc6bdd2b045b"
+    },
+    {
+      "path": "results/stage-2/summaries/final_stage_2_execution_plan.json",
+      "sha256": "74432f5489f758104b1e5b097bbdff5c2d2ea72ae250f704e066fe57e31ac55e"
+    },
+    {
+      "path": "results/stage-2/summaries/control_gate_cpu.json",
+      "sha256": "9cb8963f9c159976e812cb00b7108e3aba045151a9034b1533c8ca124cdaaa0f"
+    },
+    {
+      "path": "results/stage-2/summaries/control_gate_gpu.json",
+      "sha256": "db8c8116ebbbf052c52e159f7cbe5181d331ad223808848a43da81b298c381b3"
+    }
+  ]
+}

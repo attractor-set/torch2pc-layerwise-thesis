@@ -264,7 +264,10 @@ def comparison_statistics(
             if metric not in targets:
                 raise ValueError(f"missing registered target for metric: {metric}")
             target = float(targets[metric])
-            values = _finite_array(group["value"])
+            raw_values = pd.to_numeric(group["value"], errors="coerce").to_numpy(
+                dtype=float
+            )
+            values = _finite_array(raw_values)
             differences = values - target
             ci_low, ci_high = mean_confidence_interval(differences, confidence=confidence)
             output_rows.append(
@@ -274,8 +277,14 @@ def comparison_statistics(
                     "reference": "bp_target",
                     "target_value": target,
                     "n": int(differences.size),
+                    "n_missing": int(raw_values.size - values.size),
                     "candidate_mean": float(np.mean(values)) if values.size else math.nan,
                     "candidate_median": float(np.median(values)) if values.size else math.nan,
+                    "candidate_std": (
+                        float(np.std(values, ddof=1)) if values.size > 1 else math.nan
+                    ),
+                    "candidate_min": float(np.min(values)) if values.size else math.nan,
+                    "candidate_max": float(np.max(values)) if values.size else math.nan,
                     "mean_difference": (
                         float(np.mean(differences)) if differences.size else math.nan
                     ),

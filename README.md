@@ -106,6 +106,19 @@ profiling, exact execution, adaptive stopping, periodic refresh и
 predict-correct остаются отдельными подкампаниями с собственными gates и
 provenance chains. Текущий статус: [STATUS.md](STATUS.md).
 
+Текущее состояние разрешает начало реализации profiling infrastructure, но
+намеренно блокирует profiling campaign, pilot и final execution:
+
+```bash
+make stage3-ready
+make stage3-plan
+```
+
+Детерминированный design plan содержит 336 коротких profiling cells, 48
+parameterized core validation-only pilot cells и 27 predict-correct accelerator
+screening cells. Stage 3 отсутствует из `TRAINING_STAGES`, а final template
+сохраняет `evaluation.use_test=false` до отдельного freeze.
+
 ## Контрольные проверки
 
 Термины C0 и C1 используются вместо H0/H1, чтобы не смешивать технические

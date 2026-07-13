@@ -87,6 +87,20 @@ execution, adaptive stopping, periodic refresh, and predict-correct remain
 separate gated subcampaigns with their own provenance chains. See
 [STATUS_EN.md](STATUS_EN.md).
 
+The repository is ready for implementation of the profiling infrastructure,
+while the profiling campaign, pilot, and final execution remain deliberately
+blocked:
+
+```bash
+make stage3-ready
+make stage3-plan
+```
+
+The deterministic design plan contains 336 short profiling cells, 48
+parameterized core validation-only pilot cells, and 27 predict-correct
+accelerator screening cells. Stage 3 is absent from `TRAINING_STAGES`, and the
+final template keeps `evaluation.use_test=false` until a separate freeze.
+
 ## Pilot evidence export
 
 `make pilot` generates both `pilot_selection.json` and the compact, verified

@@ -1,0 +1,22 @@
+\begin{tabular}{llllllrrrrr}
+\toprule
+dataset & model & method & eta & inference_steps & metric & n & mean & std & ci_low & ci_high \\
+\midrule
+FashionMNIST & lenet_classic & bp &  &  & test_accuracy & 10 & 0.8718 & 0.0019 & 0.8704 & 0.8731 \\
+FashionMNIST & lenet_classic & bp &  &  & test_macro_f1 & 10 & 0.8726 & 0.0020 & 0.8711 & 0.8740 \\
+FashionMNIST & lenet_classic & exact & 0.1 & 20 & test_accuracy & 10 & 0.8718 & 0.0019 & 0.8704 & 0.8731 \\
+FashionMNIST & lenet_classic & exact & 0.1 & 20 & test_macro_f1 & 10 & 0.8726 & 0.0020 & 0.8711 & 0.8740 \\
+FashionMNIST & lenet_classic & fixedpred & 0.1 & 10 & test_accuracy & 10 & 0.8732 & 0.0016 & 0.8721 & 0.8743 \\
+FashionMNIST & lenet_classic & fixedpred & 0.1 & 10 & test_macro_f1 & 10 & 0.8741 & 0.0016 & 0.8729 & 0.8752 \\
+FashionMNIST & lenet_classic & strict & 0.05 & 20 & test_accuracy & 10 & 0.8721 & 0.0021 & 0.8707 & 0.8736 \\
+FashionMNIST & lenet_classic & strict & 0.05 & 20 & test_macro_f1 & 10 & 0.8723 & 0.0018 & 0.8710 & 0.8736 \\
+MNIST & lenet_classic & bp &  &  & test_accuracy & 10 & 0.9849 & 0.0008 & 0.9843 & 0.9855 \\
+MNIST & lenet_classic & bp &  &  & test_macro_f1 & 10 & 0.9848 & 0.0008 & 0.9843 & 0.9854 \\
+MNIST & lenet_classic & exact & 0.1 & 20 & test_accuracy & 10 & 0.9849 & 0.0008 & 0.9843 & 0.9855 \\
+MNIST & lenet_classic & exact & 0.1 & 20 & test_macro_f1 & 10 & 0.9848 & 0.0008 & 0.9843 & 0.9854 \\
+MNIST & lenet_classic & fixedpred & 0.1 & 10 & test_accuracy & 10 & 0.9851 & 0.0011 & 0.9843 & 0.9859 \\
+MNIST & lenet_classic & fixedpred & 0.1 & 10 & test_macro_f1 & 10 & 0.9850 & 0.0011 & 0.9842 & 0.9859 \\
+MNIST & lenet_classic & strict & 0.05 & 20 & test_accuracy & 10 & 0.9847 & 0.0008 & 0.9842 & 0.9853 \\
+MNIST & lenet_classic & strict & 0.05 & 20 & test_macro_f1 & 10 & 0.9846 & 0.0008 & 0.9841 & 0.9852 \\
+\bottomrule
+\end{tabular}

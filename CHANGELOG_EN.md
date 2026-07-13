@@ -2,17 +2,27 @@
 
 [Русская версия](CHANGELOG.md)
 
-## [Unreleased] — Public visibility preparation
+## [Unreleased] — Stage 3 design-ready
+
+### Added
+
+- A detailed bilingual Stage 3 protocol for locality, approximation, and scaling.
+- ADR-006 for extended Stage 3 scope and ADR-007 for the locality taxonomy.
+- `configs/stage3/design.yaml`, Stage 3 profiling/pilot/final templates, and
+  B0/B1/B2/C1/C2/C3 candidate overlays.
+- A locality trace schema, profiling contract, structural locality gate, and
+  controlled depth/width MLP family.
+- A deterministic plan with 288 profiling and 48 parameterized validation-only
+  screening cells, plus readiness CLI/Make targets.
+- Tests that keep Stage 3 execution blocked until candidates, gates, and freeze.
 
 ### Changed
 
-- Synchronized the public README, STATUS, ROADMAP, and publication plan with the
-  completed Stage 2 state.
-- Documented execution state and results/publication state as distinct
-  provenance points.
-- Left experimental artifacts and their checksums unchanged.
-- Retained project version `0.1.0` pending a separate author decision about the
-  semantic-version milestone.
+- Added RQ6–RQ10 without changing completed Stage 1/2.
+- Updated README, STATUS, ROADMAP, documentation, and repository structure for
+  active Stage 3 preparation.
+- Marked public visibility complete and retained version `0.1.0` pending a
+  separate version milestone.
 
 ## [stage2-results-v1] — 2026-07-13
 

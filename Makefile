@@ -17,7 +17,8 @@ INFERENCE_STEPS ?=
         typecheck test thesis article release clean status epistemic-check \
         freeze-environment configure-stage2 prepare-stage2 freeze-stage2-environment \
         control-stage2-cpu control-stage2-gpu stage2-plan freeze-stage2 final-stage2 \
-        snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2
+        snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2 \
+        stage3-ready stage3-plan
 
 help:
 	@printf '%s\n' \
@@ -53,6 +54,8 @@ help:
 	  '  compare-stages        Build paired Stage 1 vs Stage 2 reports' \
 	  '  bundle-stage2         Verify and package the complete Stage 2 replication bundle' \
 	  '  diagnostics           Run diagnostic experiments' \
+	  '  stage3-ready          Validate the Stage 3 design-ready scaffold' \
+	  '  stage3-plan           Generate the deterministic Stage 3 design plan' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \
@@ -229,6 +232,14 @@ compare-stages:
 
 bundle-stage2:
 	bash scripts/build_stage2_replication_bundle.sh
+
+# Stage 3 is design-ready but remains deliberately non-executable until
+# candidate implementations, numerical gates, and a separate freeze exist.
+stage3-ready:
+	PYTHONPATH=src $(PYTHON) scripts/check_stage3_readiness.py
+
+stage3-plan:
+	PYTHONPATH=src $(PYTHON) scripts/generate_stage3_design_plan.py
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

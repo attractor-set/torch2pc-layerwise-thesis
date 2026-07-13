@@ -21,6 +21,8 @@ nav:
       - Hardware: hardware_EN.md
       - Publication plan: publication-plan_EN.md
       - Stage 2 protocol: stage-2-protocol_EN.md
+      - Stage 3 protocol: stage-3-protocol_EN.md
+      - Stage 3 readiness: stage-3-readiness_EN.md
       - GitHub setup: github-setup_EN.md
   - Design:
       - Research design: research-design/design_EN.md
@@ -33,6 +35,8 @@ nav:
       - ADR-002 ROCm Docker: decisions/ADR-002-use-rocm-docker_EN.md
       - ADR-003 Primary metric: decisions/ADR-003-primary-metric_EN.md
       - ADR-004 Statistics: decisions/ADR-004-statistical-protocol_EN.md
+      - ADR-006 Stage 3 scope: decisions/ADR-006-stage3-scope_EN.md
+      - ADR-007 Locality taxonomy: decisions/ADR-007-stage3-locality-taxonomy_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

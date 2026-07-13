@@ -1,0 +1,35 @@
+meta:
+  stage: stage3_final_template
+  campaign_id: stage3-locality-approximation-v1
+protocol:
+  status: blocked_until_stage3_freeze
+  required_artifacts: []
+paths:
+  registry: experiments/registry-stage-3.csv
+  results: results/stage-3
+  runs: results/stage-3/final/runs
+  checkpoints: results/stage-3/checkpoints
+  summaries: results/stage-3/final/summaries
+  figures: results/stage-3/final/figures
+  tables: results/stage-3/final/tables
+data:
+  train_subset: null
+  test_subset: null
+training:
+  epochs: 10
+  batch_size: 256
+  max_batches: null
+evaluation:
+  use_test: false
+selection:
+  configuration_frozen: false
+  datasets: [FashionMNIST, MNIST]
+  models: [lenet_classic]
+  methods: [fixedpred, strict]
+  seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  selected_candidates: null
+stage3:
+  design: configs/stage3/design.yaml
+  phase: final_template
+  candidate_id: null
+  implementation_status: blocked

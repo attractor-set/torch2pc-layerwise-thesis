@@ -1,0 +1,173 @@
+schema_version: 1
+campaign:
+  id: stage3-locality-approximation-v1
+  status: design_ready
+  stage1_stage2_immutable: true
+  title: Locality, approximation, and computational scaling in Torch2PC
+baseline:
+  stage2_execution_source: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+  stage2_publication_state: bb435432a65b76b7fc4f383b566b9a372fc346ae
+  torch2pc_commit: b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4
+  observed_runtime_order: BP ~= Exact < FixedPred << Strict
+research_questions:
+  - RQ6_locality_profile
+  - RQ7_execution_tradeoff
+  - RQ8_adaptive_compute
+  - RQ9_linearization_refresh
+  - RQ10_approximate_feedback
+candidates:
+  - id: stage2_baseline
+    track: baseline
+    changes_algorithm: false
+    implementation_status: available
+    methods: [fixedpred, strict]
+    equivalence_gate: false
+    non_inferiority_gate: false
+  - id: isolated_layer_vjp
+    track: implementation_preserving
+    changes_algorithm: false
+    implementation_status: planned
+    methods: [fixedpred, strict]
+    equivalence_gate: true
+    non_inferiority_gate: false
+  - id: composite_vjp
+    track: implementation_preserving
+    changes_algorithm: false
+    implementation_status: planned
+    methods: [fixedpred, strict]
+    equivalence_gate: true
+    non_inferiority_gate: false
+  - id: adaptive_stopping
+    track: approximation
+    changes_algorithm: true
+    implementation_status: planned
+    methods: [fixedpred, strict]
+    equivalence_gate: false
+    non_inferiority_gate: true
+    pilot_variants:
+      fixedpred:
+        - id: tolerance_1e-2
+          parameters: {minimum_steps: 3, maximum_steps: 10, relative_state_tolerance: 0.01, patience: 2}
+        - id: tolerance_5e-3
+          parameters: {minimum_steps: 3, maximum_steps: 10, relative_state_tolerance: 0.005, patience: 2}
+        - id: tolerance_1e-3
+          parameters: {minimum_steps: 3, maximum_steps: 10, relative_state_tolerance: 0.001, patience: 2}
+      strict:
+        - id: tolerance_1e-2
+          parameters: {minimum_steps: 3, maximum_steps: 20, relative_state_tolerance: 0.01, patience: 2}
+        - id: tolerance_5e-3
+          parameters: {minimum_steps: 3, maximum_steps: 20, relative_state_tolerance: 0.005, patience: 2}
+        - id: tolerance_1e-3
+          parameters: {minimum_steps: 3, maximum_steps: 20, relative_state_tolerance: 0.001, patience: 2}
+  - id: periodic_vjp_refresh
+    track: approximation
+    changes_algorithm: true
+    implementation_status: planned
+    methods: [strict]
+    equivalence_gate: false
+    non_inferiority_gate: true
+    pilot_variants:
+      strict:
+        - id: refresh_1
+          parameters: {refresh_interval: 1}
+        - id: refresh_2
+          parameters: {refresh_interval: 2}
+        - id: refresh_5
+          parameters: {refresh_interval: 5}
+        - id: refresh_20
+          parameters: {refresh_interval: 20}
+  - id: fixed_random_feedback
+    track: approximation
+    changes_algorithm: true
+    implementation_status: deferred
+    methods: [strict]
+    equivalence_gate: false
+    non_inferiority_gate: true
+phases:
+  profiling:
+    status: planned
+    test_access: false
+    candidates: [stage2_baseline, isolated_layer_vjp, composite_vjp]
+    methods: [fixedpred, strict]
+    depths: [4, 8, 16, 32]
+    widths: [64, 256]
+    batch_sizes: [64, 256]
+    seeds: [70, 71, 72]
+    warmup_steps: 20
+    measured_steps: 50
+    repetitions: 5
+    execution_order: deterministic_hash_counterbalance
+    execution_order_seed: 20260713
+  pilot:
+    status: planned
+    test_access: false
+    datasets: [FashionMNIST]
+    models: [lenet_classic]
+    methods: [fixedpred, strict]
+    candidates:
+      - stage2_baseline
+      - isolated_layer_vjp
+      - composite_vjp
+      - adaptive_stopping
+      - periodic_vjp_refresh
+    seeds: [70, 71, 72]
+    execution_order: deterministic_hash_counterbalance
+    execution_order_seed: 20260714
+  final_template:
+    status: blocked_until_stage3_freeze
+    test_access: false
+    datasets: [FashionMNIST, MNIST]
+    methods: [fixedpred, strict]
+    seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    design_formula: up to 2 datasets x applicable candidate-method pairs x 10 seeds
+    maximum_cells: 80
+    selected_candidates: null
+gates:
+  equivalence:
+    cpu_dtype: float64
+    gpu_dtype: float32
+    cpu_min_cosine: 0.99999
+    cpu_max_relative_l2: 1.0e-7
+    gpu_min_cosine: 0.999
+    gpu_max_relative_l2: 0.001
+    compare:
+      - beliefs
+      - prediction_errors
+      - state_updates
+      - parameter_gradients
+      - one_optimizer_step
+  non_inferiority:
+    metric: validation_macro_f1
+    margin_source: stage2_seed_variability
+    minimum_complete_pairs: 3
+    report_gradient_alignment: true
+  performance:
+    fixedpred_min_speedup_fraction: 0.15
+    strict_min_speedup_fraction: 0.20
+    maximum_baseline_regression_fraction: 0.03
+    maximum_memory_growth_fraction: 0.15
+  locality:
+    maximum_dependency_radius: 1
+    record_graph_span: true
+    record_vjp_calls: true
+    record_saved_tensor_bytes: true
+    record_synchronization_points: true
+stop_rules:
+  profiling_go:
+    minimum_optimizable_runtime_fraction: 0.20
+    fixedpred_min_amdahl_speedup_fraction: 0.15
+    strict_min_amdahl_speedup_fraction: 0.20
+  pilot_go:
+    require_all_numerical_gates: true
+    require_no_new_non_finite_values: true
+    require_test_access_false: true
+  optional_feedback_track:
+    minimum_months_remaining: 3
+    require_core_stage3_complete: true
+provenance:
+  planned_tags:
+    - stage3-design-v1
+    - stage3-pilot-freeze-v1
+    - stage3-execution-v1
+    - stage3-results-v1
+  keep_execution_and_publication_states_distinct: true

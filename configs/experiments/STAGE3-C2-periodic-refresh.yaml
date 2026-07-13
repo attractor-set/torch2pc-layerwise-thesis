@@ -1,0 +1,8 @@
+stage3:
+  candidate_id: periodic_vjp_refresh
+  track: approximation
+  changes_algorithm: true
+  implementation_status: planned
+  periodic_refresh:
+    refresh_interval: null
+    candidate_intervals: [1, 2, 5, 20]

@@ -43,10 +43,33 @@ def make_lenet_small(num_classes: int = 10) -> nn.Sequential:
     )
 
 
+def make_scaling_mlp(depth: int, width: int, num_classes: int = 10) -> nn.Sequential:
+    if depth < 2:
+        raise ValueError("depth must be at least 2")
+    if width < 1:
+        raise ValueError("width must be positive")
+    modules: list[nn.Module] = [
+        nn.Sequential(Flatten(), nn.Linear(28 * 28, width), nn.Tanh())
+    ]
+    for _ in range(depth - 2):
+        modules.append(nn.Sequential(nn.Linear(width, width), nn.Tanh()))
+    modules.append(nn.Linear(width, num_classes))
+    return nn.Sequential(*modules)
+
+
+def _scaling_factory(depth: int, width: int) -> Callable[[int], nn.Sequential]:
+    return lambda num_classes: make_scaling_mlp(depth, width, num_classes)
+
+
 FACTORIES: dict[str, Callable[[int], nn.Sequential]] = {
     "lenet_classic": make_lenet_classic,
     "lenet_modern": make_lenet_modern,
     "lenet_small": make_lenet_small,
+    **{
+        f"mlp_d{depth}_w{width}": _scaling_factory(depth, width)
+        for depth in (4, 8, 16, 32)
+        for width in (64, 256)
+    },
 }
 
 

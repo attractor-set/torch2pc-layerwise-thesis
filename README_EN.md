@@ -73,6 +73,24 @@ own provenance chain.
 See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 [STATUS_EN.md](STATUS_EN.md).
 
+## Stage 3: design-ready
+
+The extended Stage 3 studies mathematical and execution locality, exact VJP
+organization, adaptive stopping, periodic VJP refresh, and depth/width scaling.
+See [docs/stage-3-protocol_EN.md](docs/stage-3-protocol_EN.md).
+
+The repository is ready for implementation and profiling while pilot/final
+execution remains deliberately blocked:
+
+```bash
+make stage3-ready
+make stage3-plan
+```
+
+The deterministic design plan contains 288 short profiling cells and 48
+parameterized validation-only screening cells. Stage 3 is absent from `TRAINING_STAGES`, and the
+final template keeps `evaluation.use_test=false` until a separate freeze.
+
 ## Pilot evidence export
 
 `make pilot` generates both `pilot_selection.json` and the compact, verified

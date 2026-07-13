@@ -57,3 +57,9 @@ NOTICE,NOTICE_EN,required
 LICENSE-DOCS,LICENSE-DOCS_EN,required
 docs/threats-to-validity.md,docs/threats-to-validity_EN.md,required
 docs/validation.md,docs/validation_EN.md,required
+docs/stage-3-protocol.md,docs/stage-3-protocol_EN.md,required
+docs/stage-3-readiness.md,docs/stage-3-readiness_EN.md,required
+docs/decisions/ADR-006-stage3-scope.md,docs/decisions/ADR-006-stage3-scope_EN.md,required
+docs/decisions/ADR-007-stage3-locality-taxonomy.md,docs/decisions/ADR-007-stage3-locality-taxonomy_EN.md,required
+experiments/planned/STAGE3-001.md,experiments/planned/STAGE3-001_EN.md,required
+results/stage-3/README.md,results/stage-3/README_EN.md,required

@@ -15,7 +15,9 @@ Issue
 -> YAML configuration
 -> CLI
 -> documentation
--> experiment
+-> validation-only experiment
+-> freeze
+-> final experiment
 -> aggregate result
 -> dissertation section
 ```
@@ -36,3 +38,17 @@ the ROCm container lock. Dataset assets and their hashes are bound to
 Raw runs and checkpoints are not stored in the `main` Git tree. The complete
 Stage 2 raw artifact set is distributed through the `stage2-results-v1`
 replication bundle.
+
+
+## Stage 3 additions
+
+Stage 3 adds `configs/stage3/design.yaml`, profiling/pilot/final templates,
+candidate overlays, `src/torch2pc_thesis/locality.py`,
+`src/torch2pc_thesis/profiling.py`, and `src/torch2pc_thesis/stage3.py`.
+The new modules define the locality trace schema, measured profiling regions,
+deterministic design plans, and readiness guards. Stage 3 remains outside
+`TRAINING_STAGES` until candidate commits, numerical gates, environment locks,
+and freeze artifacts exist.
+
+Stage 1/2 evidence, tags, and published manifests remain immutable. Stage 3 uses
+its own registry, results tree, execution commit, and publication state.

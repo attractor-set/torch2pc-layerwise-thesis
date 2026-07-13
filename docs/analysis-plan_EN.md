@@ -31,3 +31,16 @@ Final execution uses a deterministically counterbalanced method order within
 each dataset/model/seed block, GPU synchronization around timed epochs, and
 explicit peak-memory telemetry. The post-pilot execution amendment is recorded
 in `docs/decisions/ADR-005-post-pilot-final-execution_EN.md`.
+
+
+## Stage 3 addendum
+
+Stage 3 does not modify the Stage 1/2 confirmatory analysis. Training quality
+uses independently trained model seeds; profiling uses matched cell/repetition
+inside a hardware block; locality events are aggregated within run before
+between-seed analysis; layer alignment is aggregated within model first.
+
+B1/B2 use numerical-equivalence and paired runtime/memory observations. C1/C2
+use validation non-inferiority, gradient alignment, and compute reduction. The
+final non-inferiority margin is fixed before Stage 3 test access. See
+[stage-3-protocol_EN.md](stage-3-protocol_EN.md).

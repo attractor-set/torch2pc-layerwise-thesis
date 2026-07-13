@@ -68,3 +68,19 @@ Bootstrap только по изображениям считается недо
 Pilot-конфигурация выбирается только по FashionMNIST validation. MNIST
 используется как вторичная проверка переносимости выбранных параметров и не
 участвует в ранжировании кандидатов.
+
+
+## Дополнение Stage 3
+
+Stage 3 не изменяет подтверждающий анализ Stage 1/2. Он использует отдельные
+единицы анализа:
+
+- training quality: независимо обученная модель/seed;
+- profiling: matched cell/repetition внутри hardware block;
+- locality: event агрегируется сначала внутри run, затем по seed;
+- gradient alignment: слой агрегируется внутри модели до межсидового анализа.
+
+B1/B2 оцениваются через numerical equivalence и paired runtime/memory
+observations. C1/C2 оцениваются через validation non-inferiority, gradient
+alignment и compute reduction. Final non-inferiority margin фиксируется до
+Stage 3 test access. Подробности: [stage-3-protocol.md](stage-3-protocol.md).

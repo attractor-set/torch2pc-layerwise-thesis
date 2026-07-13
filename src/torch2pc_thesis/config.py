@@ -13,6 +13,7 @@ Config = dict[str, Any]
 FINAL_STAGES = {"final", "final_stage_2"}
 PINNED_STAGES = {"pilot", *FINAL_STAGES, "diagnostics", "publication"}
 TRAINING_STAGES = {"smoke", "pilot", *FINAL_STAGES}
+STAGE3_DESIGN_STAGES = {"stage3_profiling", "stage3_pilot", "stage3_final_template"}
 
 
 class ConfigurationError(ValueError):
@@ -136,6 +137,21 @@ def validate_config(config: Config) -> None:
         raise ConfigurationError("Final stage requires evaluation.use_test=true")
     if stage in FINAL_STAGES and str(config["protocol"]["status"]) != "frozen":
         raise ConfigurationError("Final stage requires protocol.status=frozen")
+    if stage in STAGE3_DESIGN_STAGES:
+        if use_test:
+            raise ConfigurationError(f"Test access is prohibited during stage={stage}")
+        stage3 = config.get("stage3", {})
+        if str(stage3.get("design", "")) != "configs/stage3/design.yaml":
+            raise ConfigurationError("Stage 3 design stages must reference configs/stage3/design.yaml")
+        if stage == "stage3_final_template":
+            if str(config["protocol"]["status"]) != "blocked_until_stage3_freeze":
+                raise ConfigurationError("Stage 3 final template must remain blocked until freeze")
+            if bool(config.get("selection", {}).get("configuration_frozen", False)):
+                raise ConfigurationError("Stage 3 final template cannot be marked frozen")
+            if config.get("selection", {}).get("selected_candidates") is not None:
+                raise ConfigurationError("Stage 3 candidates must be selected only after pilot freeze")
+        elif str(stage3.get("candidate_id", "")) == "":
+            raise ConfigurationError("Stage 3 profiling and pilot require stage3.candidate_id")
     if stage in FINAL_STAGES:
         selection = config.get("selection", {})
         for key in ["datasets", "models", "methods", "seeds"]:

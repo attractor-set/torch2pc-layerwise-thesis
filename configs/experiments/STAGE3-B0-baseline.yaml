@@ -1,0 +1,5 @@
+stage3:
+  candidate_id: stage2_baseline
+  track: baseline
+  changes_algorithm: false
+  implementation_status: available

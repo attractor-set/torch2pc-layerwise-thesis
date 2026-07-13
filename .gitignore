@@ -65,3 +65,12 @@ results/stage-2/raw/
 # Generated before the Stage 2 environment lock; force-add it with the final
 # evidence commit after the execution cohort is complete.
 results/stage-2/summaries/prepared_assets.json
+
+# Stage 3 raw execution artifacts. Compact plans, gates, summaries, tables,
+# figures, and manifests remain versionable evidence.
+results/stage-3/profiling/runs/
+results/stage-3/pilot/runs/
+results/stage-3/final/runs/
+results/stage-3/checkpoints/
+results/stage-3/raw/
+experiments/registry-stage-3.csv

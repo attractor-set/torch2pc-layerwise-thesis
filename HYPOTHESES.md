@@ -42,3 +42,32 @@ C0 и C1 не являются научными гипотезами о прев
 
 Оценивается изменение качества при шуме, размытии и окклюзии. Искажения,
 severity, seed и метрики фиксируются до итогового анализа.
+
+
+## RQ6. Локальность
+
+Оцениваются dependency radius, graph span, VJP calls, synchronization points и
+saved tensor bytes для послойных обновлений FixedPred и Strict. Математическая
+локальность и локальность исполнения рассматриваются как разные измерения.
+
+## RQ7. Организация точных вычислений
+
+Сравниваются isolated layer-local graphs и composite VJP при сохранённом update
+rule. Направление trade-off между execution locality, runtime и памятью заранее
+не фиксируется.
+
+## RQ8. Адаптивный вычислительный бюджет
+
+Оценивается связь adaptive stopping с числом итераций, gradient alignment,
+runtime, памятью и validation quality.
+
+## RQ9. Частота обновления линеаризации
+
+Оценивается семейство periodic VJP refresh между Strict-like и
+fixed-linearization regimes.
+
+## RQ10. Приближённый feedback
+
+Условный exploratory вопрос оценивает отдельный локальный feedback operator.
+Он не получает claim эквивалентности Stage 2 и запускается только после
+завершения core Stage 3.

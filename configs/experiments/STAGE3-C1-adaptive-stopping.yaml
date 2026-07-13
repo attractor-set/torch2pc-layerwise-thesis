@@ -1,0 +1,10 @@
+stage3:
+  candidate_id: adaptive_stopping
+  track: approximation
+  changes_algorithm: true
+  implementation_status: planned
+  adaptive_stopping:
+    minimum_steps: 3
+    maximum_steps: 20
+    relative_state_tolerance: null
+    patience: 2

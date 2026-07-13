@@ -25,7 +25,8 @@ torch2pc-layerwise-thesis/
 │   ├── hardware/
 │   ├── methods/
 │   ├── stages/
-│   └── experiments/
+│   ├── experiments/
+│   └── stage3/
 ├── src/torch2pc_thesis/
 │   ├── array_types.py
 │   ├── assets.py
@@ -35,6 +36,9 @@ torch2pc-layerwise-thesis/
 │   ├── models.py
 │   ├── pc_methods.py
 │   ├── controls.py
+│   ├── locality.py
+│   ├── profiling.py
+│   ├── stage3.py
 │   ├── training.py
 │   ├── metrics.py
 │   ├── representations.py
@@ -45,13 +49,17 @@ torch2pc-layerwise-thesis/
 │   └── reporting.py
 ├── experiments/
 │   ├── registry.csv
+│   ├── registry-stage-2*.csv
 │   ├── planned/
 │   ├── completed/
 │   └── failed/
 ├── results/
 │   ├── summaries/
 │   ├── figures/
-│   └── tables/
+│   ├── tables/
+│   ├── stage-2/
+│   ├── cross-version/
+│   └── stage-3/
 ├── notebooks/
 │   ├── analysis/
 │   └── legacy/
@@ -67,6 +75,8 @@ torch2pc-layerwise-thesis/
 │   ├── bibliography.bib
 │   └── literature-matrix.csv
 ├── docs/
+│   ├── stage-3-protocol.md
+│   ├── stage-3-readiness.md
 │   ├── decisions/
 │   ├── research-log/
 │   ├── research-design/
@@ -84,18 +94,24 @@ torch2pc-layerwise-thesis/
 
 `RESEARCH_PRINCIPLES.md`, `HYPOTHESES.md` и `PREREGISTRATION.md` фиксируют
 эпистемическую позицию, вопросы, критерии и границы подтверждающего анализа до
-получения final test.
+получения final test. Stage 3 оформляется отдельным протоколом и ADR, поэтому
+завершённые Stage 1/2 не переопределяются.
 
 
 ### `src/`
 
 Единственный основной источник научной логики. Ноутбуки не должны содержать
-уникальные реализации обучения, метрик или статистики.
+уникальные реализации обучения, метрик или статистики. `locality.py` определяет
+Stage 3 trace schema и structural gate; `profiling.py` — измеряемые регионы,
+timing summaries и Amdahl utilities; `stage3.py` — design contract,
+детерминированный план и readiness report.
 
 ### `configs/`
 
 Декларативное описание эксперимента. Каждый запуск сохраняет итоговую
-разрешенную конфигурацию и ее SHA-256.
+разрешенную конфигурацию и ее SHA-256. `configs/stage3/design.yaml` фиксирует
+Stage 3 design, а stage templates остаются вне `TRAINING_STAGES` до реализации,
+gates и freeze.
 
 ### `experiments/`
 
@@ -140,7 +156,18 @@ Issue
 -> YAML-конфигурация
 -> CLI
 -> документация
--> эксперимент
+-> validation-only эксперимент
+-> freeze
+-> final эксперимент
 -> агрегированный результат
 -> глава диссертации
 ```
+
+
+## Защита завершённых результатов
+
+Stage 1/2 evidence, tags и опубликованные manifests рассматриваются как
+исторические свидетельства. Stage 3 получает отдельные конфигурации, registry,
+results tree, environment lock, execution commit и publication state. Это
+сохраняет distinction между кодом исполнения и последующим оформлением
+результатов.

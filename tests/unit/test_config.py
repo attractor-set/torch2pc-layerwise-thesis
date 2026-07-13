@@ -112,3 +112,19 @@ def test_stage_2_is_an_isolated_exact_replication_template() -> None:
     assert config["paths"]["registry"] == "experiments/registry-stage-2.csv"
     assert config["paths"]["runs"] == "results/stage-2/runs"
     assert config["torch2pc"]["commit"] != config["comparison"]["original_torch2pc_commit"]
+
+
+def test_stage3_design_stages_keep_test_disabled_and_are_not_training_stages() -> None:
+    from torch2pc_thesis.config import TRAINING_STAGES
+
+    for stage in ["stage3_profiling", "stage3_pilot", "stage3_final_template"]:
+        config = resolve_config("configs", stage=stage, method="strict")
+        assert config["evaluation"]["use_test"] is False
+        assert stage not in TRAINING_STAGES
+
+
+def test_stage3_final_template_rejects_premature_candidate_selection() -> None:
+    config = resolve_config("configs", stage="stage3_final_template", method="strict")
+    config["selection"]["selected_candidates"] = ["composite_vjp"]
+    with pytest.raises(ConfigurationError, match="selected only after pilot freeze"):
+        validate_config(config)

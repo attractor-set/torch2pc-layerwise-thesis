@@ -1,0 +1,37 @@
+meta:
+  stage: stage3_pilot
+  campaign_id: stage3-locality-approximation-v1
+protocol:
+  status: planned
+  required_artifacts:
+    - results/stage-3/profiling/summaries/stage3_profiling_report.json
+paths:
+  registry: experiments/registry-stage-3.csv
+  results: results/stage-3
+  runs: results/stage-3/pilot/runs
+  checkpoints: results/stage-3/checkpoints
+  summaries: results/stage-3/pilot/summaries
+  figures: results/stage-3/pilot/figures
+  tables: results/stage-3/pilot/tables
+data:
+  train_subset: 12000
+  test_subset: null
+training:
+  epochs: 3
+  batch_size: 256
+  max_batches: null
+evaluation:
+  use_test: false
+selection:
+  selection_data: validation_only
+  datasets: [FashionMNIST]
+  models: [lenet_classic]
+  methods: [fixedpred, strict]
+  seeds: [70, 71, 72]
+  execution_order: deterministic_hash_counterbalance
+  execution_order_seed: 20260714
+stage3:
+  design: configs/stage3/design.yaml
+  phase: pilot
+  candidate_id: stage2_baseline
+  implementation_status: design_only

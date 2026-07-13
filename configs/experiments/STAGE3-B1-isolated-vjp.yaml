@@ -1,0 +1,5 @@
+stage3:
+  candidate_id: isolated_layer_vjp
+  track: implementation_preserving
+  changes_algorithm: false
+  implementation_status: planned

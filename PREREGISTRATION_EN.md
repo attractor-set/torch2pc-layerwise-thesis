@@ -51,3 +51,13 @@ epoch time, inference steps, and eta. MNIST is descriptive for selection.
 Before final execution, `pilot-freeze_manifest.json` records the source commit,
 environment-lock hash, selected parameters, and hashes of the governing
 configuration and analysis documents.
+
+
+## Stage 3 addendum
+
+The specification above belongs to completed Stage 1/2 and is not rewritten.
+Stage 3 receives a separate protocol and freeze. Profiling and pilot do not
+construct a test loader. Exact implementation candidates require equivalence
+gates; approximation candidates use a separate non-inferiority rule and have no
+Stage 2 equivalence claim. Candidate selection, stopping tolerance, refresh
+interval, and the margin are frozen before Stage 3 test access.

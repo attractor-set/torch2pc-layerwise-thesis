@@ -2,67 +2,74 @@
 
 [English version](ROADMAP_EN.md)
 
-Номера фаз ниже относятся к дорожной карте репозитория. Названия
-экспериментальных кампаний Stage 1, Stage 2 и возможный Stage 3 сохраняются
-отдельно.
+## Фазы 1–5 — завершены
 
-## Фаза 1. Исследовательский scaffold — завершена
+1. Исследовательский scaffold и preregistration.
+2. Контролируемая среда и validation-only pilot 96/96.
+3. Stage 1 confirmatory campaign 80/80.
+4. Stage 2 implementation study 80/80.
+5. Public release и проверка неавторизованного доступа.
 
-- нейтральная исследовательская позиция и preregistration draft;
-- test isolation и pilot-freeze gate;
-- append-only registry, splits и checksums;
-- Docker/ROCm scaffold и статические проверки.
+## Фаза 6. Stage 3 design-ready — текущая
 
-## Фаза 2. Среда и validation pilot — завершена
+Завершено:
 
-- закреплены Ubuntu/ROCm environment и исходный Torch2PC;
-- CPU/GPU C0/C1 gates пройдены;
-- validation-only pilot завершён 96/96 без test;
-- FixedPred и Strict configurations выбраны и заморожены.
+- scope и locality taxonomy закреплены ADR-006/ADR-007;
+- RQ6–RQ10 добавлены;
+- baseline hashes Stage 2 закреплены;
+- design YAML, stage templates и candidate overlays добавлены;
+- locality trace schema и scaling MLP family реализованы;
+- deterministic design plan и readiness gate добавлены;
+- test остаётся выключенным.
 
-## Фаза 3. Stage 1 confirmatory campaign — завершена
+## Фаза 7. Stage 3A baseline profiling
 
-- 80/80 ячеек на исходном Torch2PC;
-- 0 failed cells;
-- test открыт только в final;
-- результаты, manifests и publication tables сформированы;
-- tag: `confirmatory-final-v1`.
+- реализовать diagnostics/profiler executor;
+- разметить forward, inference, state VJP, parameter VJP и optimizer step;
+- собрать B0 locality/runtime/memory profile;
+- проверить отсутствие perturbation training results;
+- применить feasibility stop rules.
 
-## Фаза 4. Stage 2 implementation study — завершена
+## Фаза 8. Stage 3B exact candidates
 
-- implementation-preserving Torch2PC patch зафиксирован;
-- original-vs-patched CPU/GPU gates пройдены;
-- парная матрица 80/80 завершена;
-- quality Stage 1/2 совпало попарно;
-- cross-version runtime analysis сформирован;
-- execution tag: `stage2-execution-v1`;
-- results tag и Release: `stage2-results-v1`.
+- B1 isolated layer VJP;
+- B2 composite VJP;
+- CPU float64 и GPU float32 equivalence gates;
+- back-to-back profiling и attribution;
+- выбрать не более одного exact candidate для pilot.
 
-## Фаза 5. Public release — завершена
+## Фаза 9. Stage 3C approximations
 
-- replication bundle опубликован и проверен;
-- public-facing документация синхронизирована;
-- repository visibility изменена на public;
-- неавторизованный доступ к README, tags, Release assets, Actions и Security
-  policy проверен.
+- C1 adaptive stopping;
+- C2 periodic VJP refresh;
+- gradient-alignment и stability gates;
+- parameterized validation-only screening 48 cells;
+- выбрать не более одного approximation candidate.
 
-## Фаза 6. Stage 3 diagnostics — необязательная
+C3 fixed random feedback остаётся условным треком после core Stage 3.
 
-Stage 3 создаётся только как отдельный заранее описанный эксперимент. Возможные
-направления:
+## Фаза 10. Stage 3 freeze и final
 
-- новые performance changes;
-- послойные градиенты;
-- CKA/RSA с учётом вариации между seeds;
-- устойчивость к искажениям;
-- equal-wall-clock comparison;
-- architecture и dataset transfer.
+- заморозить candidates, parameters и non-inferiority margin;
+- создать Stage 3 environment lock и control artifacts;
+- создать `stage3-pilot-freeze-v1`;
+- отдельным commit включить test;
+- выполнить до 80 final cells;
+- сохранить execution и publication states раздельно.
 
-Stage 3 не является условием завершённости Stage 1/2 или public visibility.
+## Фаза 11. Анализ и диссертация
 
-## Фаза 7. Текст диссертации и статьи — продолжается
+- locality/runtime/memory scaling;
+- robustness и representations для frozen candidates;
+- экспериментальная глава и статья;
+- replication bundle и clean-room reproduction;
+- финальный резерв на рецензию и исправления.
 
-- переносить только зарегистрированные наблюдения;
-- разделять результат, интерпретацию и ограничения;
-- ссылаться на execution и publication states явно;
-- выбирать последующий archival/DOI release с учётом требований площадки.
+
+## Принцип управления объёмом
+
+Каждая следующая фаза начинается после завершения предыдущего контрольного
+рубежа. Сначала собираются наблюдения о текущей реализации, затем создаётся один
+кандидат, после чего проверяются корректность, устойчивость и практическая
+значимость ускорения. Такой порядок сохраняет возможность установить причину
+каждого изменения и уменьшает риск одновременного изменения нескольких факторов.

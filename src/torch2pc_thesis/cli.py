@@ -72,6 +72,16 @@ def parser() -> argparse.ArgumentParser:
     registry = sub.add_parser("registry")
     registry.add_argument("--path", default="experiments/registry.csv")
 
+    stage3_check = sub.add_parser("stage3-check")
+    stage3_check.add_argument("--root", default=".")
+    stage3_check.add_argument("--design", default="configs/stage3/design.yaml")
+
+    stage3_plan = sub.add_parser("stage3-plan")
+    stage3_plan.add_argument("--design", default="configs/stage3/design.yaml")
+    stage3_plan.add_argument(
+        "--output", default="build/stage3/stage3_design_plan.json"
+    )
+
     return root
 
 
@@ -174,6 +184,22 @@ def main() -> None:
 
         initialize_registry(args.path)
         print(json.dumps(latest_by_run_id(args.path), ensure_ascii=False, indent=2))
+        return
+
+    if args.command == "stage3-check":
+        from torch2pc_thesis.stage3 import stage3_readiness_report
+
+        report = stage3_readiness_report(args.root, args.design)
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        if report["status"] != "ready_for_stage3_implementation":
+            raise SystemExit(1)
+        return
+
+    if args.command == "stage3-plan":
+        from torch2pc_thesis.stage3 import load_stage3_design, write_stage3_design_plan
+
+        design = load_stage3_design(args.design)
+        print(write_stage3_design_plan(design, args.output))
         return
 
     raise RuntimeError(f"Unhandled command: {args.command}")

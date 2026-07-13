@@ -1,0 +1,8 @@
+stage3:
+  candidate_id: fixed_random_feedback
+  track: approximation
+  changes_algorithm: true
+  implementation_status: deferred
+  feedback:
+    operator: fixed_random
+    initialization_seed: 20260714

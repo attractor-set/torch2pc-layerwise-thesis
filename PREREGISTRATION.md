@@ -102,3 +102,13 @@ equal-wall-clock эксперимент.
 - выбранные параметры методов;
 - SHA-256 базовой, методических и final-конфигураций;
 - SHA-256 этой спецификации, гипотез и плана анализа.
+
+
+## Дополнение для Stage 3
+
+Исходная спецификация выше относится к завершённым Stage 1/2 и не
+переписывается. Stage 3 создаёт отдельный protocol/freeze. Profiling и pilot не
+создают test loader. Exact implementation candidates требуют equivalence gates;
+approximation candidates получают отдельный non-inferiority rule и не получают
+claim эквивалентности Stage 2. Candidate selection, stopping tolerance, refresh
+interval и margin замораживаются до Stage 3 test access.

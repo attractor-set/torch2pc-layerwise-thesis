@@ -51,3 +51,8 @@ results/summaries/prepared_assets.json
 # Local maintenance patches and Windows download metadata
 /torch2pc-*.patch
 *:Zone.Identifier
+
+# Reproducibility and dataset provenance metadata
+!results/
+!results/summaries/
+!results/summaries/prepared_assets.json

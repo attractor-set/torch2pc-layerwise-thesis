@@ -37,7 +37,7 @@ Ubuntu/ROCm environment:
 - Stage 2: **80/80**, patched Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
 - the scoped CPU/GPU numerical equivalence gates passed;
-- the maintained regression suite contains **94 passing tests**;
+- the maintained regression suite contains **97 passing tests**;
 - paired Stage 1/2 test accuracy and macro-F1 values matched for every dataset,
   method, and seed;
 - the observed Stage 2 runtime ordering is

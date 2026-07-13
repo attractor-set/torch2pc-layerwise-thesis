@@ -26,7 +26,7 @@
 - representation RSA defined: 150/150;
 - artifact hashes: PASS;
 - unit tests: 7 passed;
-- full regression suite: 94 passed;
+- full regression suite: 97 passed;
 - Mypy: PASS.
 
 ## Статистическая единица

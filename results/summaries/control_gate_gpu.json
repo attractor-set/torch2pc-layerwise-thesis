@@ -1,8 +1,8 @@
 {
   "device": "gpu",
   "torch2pc_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
-  "source_git_commit_observed": "c08d1503a6e189122d088ed0d1b93bcd89224e6c",
-  "environment_lock_sha256": "ca66dfdc849375451176f0416fdb6c29fcfc81c95ab56da51ca1fbef31c01ffe",
+  "source_git_commit_observed": "6313c8995a3317de03806ea80576a7f779ee9823",
+  "environment_lock_sha256": "91107ec7a29950819b7975670fb3108178688e6dc4461075a317ecc1a8681a9d",
   "dtype": "torch.float32",
   "model_seeds": [
     0,

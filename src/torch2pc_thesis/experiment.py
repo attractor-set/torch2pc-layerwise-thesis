@@ -36,9 +36,7 @@ def experiment_id(
     digest = config_sha256(config)[:10]
     revision = source_commit[:8]
     environment = "unlocked" if environment_lock_sha256 is None else environment_lock_sha256[:8]
-    return (
-        f"{stage}-{dataset}-{method}-s{seed}-{digest}-{revision}-{environment}"
-    ).lower()
+    return (f"{stage}-{dataset}-{method}-s{seed}-{digest}-{revision}-{environment}").lower()
 
 
 def new_run_id() -> str:
@@ -47,7 +45,6 @@ def new_run_id() -> str:
 
 def _git_output(args: list[str]) -> str:
     return subprocess.check_output(args, text=True, stderr=subprocess.STDOUT).strip()
-
 
 
 def observed_source_commit() -> str:
@@ -64,6 +61,7 @@ def observed_source_commit() -> str:
         raise RuntimeError("A valid source Git commit is required for execution")
     return value
 
+
 def _load_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise RuntimeError(f"Required protocol artifact is missing: {path}")
@@ -79,9 +77,7 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _protocol_path(
-    config: dict[str, Any], key: str, default: str
-) -> Path:
+def _protocol_path(config: dict[str, Any], key: str, default: str) -> Path:
     return Path(str(config.get("protocol", {}).get(key, default)))
 
 
@@ -113,9 +109,7 @@ def _assert_control_gates(config: dict[str, Any], source_commit: str) -> str:
         gate_path = _protocol_path(config, f"control_gate_{device}", default)
         value = _load_json(gate_path)
         if value.get("environment_lock_sha256") != lock_sha256:
-            raise RuntimeError(
-                f"Control gate belongs to another environment lock: device={device}"
-            )
+            raise RuntimeError(f"Control gate belongs to another environment lock: device={device}")
         if not value.get("gate_observed_within_thresholds"):
             raise RuntimeError(f"Control gate is outside thresholds for device={device}")
     return lock_sha256
@@ -126,9 +120,7 @@ def _assert_freeze(config: dict[str, Any]) -> dict[str, Any]:
         config, "freeze_manifest", "results/summaries/pilot-freeze_manifest.json"
     )
     freeze = _load_json(freeze_path)
-    expected_milestone = str(
-        config.get("protocol", {}).get("freeze_milestone", "pilot-freeze")
-    )
+    expected_milestone = str(config.get("protocol", {}).get("freeze_milestone", "pilot-freeze"))
     if freeze.get("milestone") != expected_milestone:
         raise RuntimeError("Unexpected freeze artifact")
     for item in freeze.get("files", []):
@@ -142,6 +134,7 @@ def _assert_freeze(config: dict[str, Any]) -> dict[str, Any]:
     if freeze.get("environment_lock_sha256") != _sha256(environment_lock_path):
         raise RuntimeError("Freeze artifact belongs to another environment lock")
     return freeze
+
 
 def assert_research_prerequisites(config: dict[str, Any]) -> str | None:
     stage = str(config["meta"]["stage"])
@@ -165,9 +158,7 @@ def assert_research_prerequisites(config: dict[str, Any]) -> str | None:
             raise RuntimeError(
                 f"Torch2PC checkout mismatch: expected {expected_commit}, found {actual_commit}"
             )
-        worktree_status = _git_output(
-            ["git", "-C", str(torch2pc_path), "status", "--porcelain"]
-        )
+        worktree_status = _git_output(["git", "-C", str(torch2pc_path), "status", "--porcelain"])
         if worktree_status:
             raise RuntimeError("Torch2PC worktree contains uncommitted changes")
 
@@ -193,9 +184,7 @@ def assert_research_prerequisites(config: dict[str, Any]) -> str | None:
             if observed_eta != float(selected["eta"]) or observed_steps != int(
                 selected["inference_steps"]
             ):
-                raise RuntimeError(
-                    f"Resolved {method_name} parameters differ from pilot-freeze"
-                )
+                raise RuntimeError(f"Resolved {method_name} parameters differ from pilot-freeze")
     return environment_lock_sha256
 
 

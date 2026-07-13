@@ -27,21 +27,15 @@ from torch2pc_thesis.reproducibility import configure_threads, set_global_seed
 
 
 def git_output(path: Path, *args: str) -> str:
-    return subprocess.check_output(
-        ["git", "-C", str(path), *args], text=True
-    ).strip()
+    return subprocess.check_output(["git", "-C", str(path), *args], text=True).strip()
 
 
 def method_parameters(name: str) -> tuple[float | None, int | None]:
-    value = yaml.safe_load(
-        Path(f"configs/methods/{name}.yaml").read_text(encoding="utf-8")
-    )["method"]
+    value = yaml.safe_load(Path(f"configs/methods/{name}.yaml").read_text(encoding="utf-8"))[
+        "method"
+    ]
     eta = None if value.get("eta") is None else float(value["eta"])
-    steps = (
-        None
-        if value.get("inference_steps") is None
-        else int(value["inference_steps"])
-    )
+    steps = None if value.get("inference_steps") is None else int(value["inference_steps"])
     return eta, steps
 
 
@@ -166,8 +160,7 @@ def main() -> None:
     thresholds = control_cfg["thresholds"][args.device]
     source_check = structural_correction_check(candidate_path / "TorchSeq2PC.py")
     cross_by_method = {
-        method: summarize(group)
-        for method, group in cross_frame.groupby("method", sort=True)
+        method: summarize(group) for method, group in cross_frame.groupby("method", sort=True)
     }
     summary = {
         "device": args.device,
@@ -205,12 +198,8 @@ def main() -> None:
     output_dir = Path(config["paths"]["summaries"])
     output_dir.mkdir(parents=True, exist_ok=True)
     c0_frame.to_csv(output_dir / f"C0_exact_vs_bp_{args.device}.csv", index=False)
-    c1_frame.to_csv(
-        output_dir / f"C1_fixedpred_vs_exact_{args.device}.csv", index=False
-    )
-    cross_frame.to_csv(
-        output_dir / f"C2_C3_original_vs_patched_{args.device}.csv", index=False
-    )
+    c1_frame.to_csv(output_dir / f"C1_fixedpred_vs_exact_{args.device}.csv", index=False)
+    cross_frame.to_csv(output_dir / f"C2_C3_original_vs_patched_{args.device}.csv", index=False)
     gate_path = Path(config["protocol"][f"control_gate_{args.device}"])
     gate_path.write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n",

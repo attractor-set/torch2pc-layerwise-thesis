@@ -47,9 +47,9 @@ def image_info(reference: str) -> dict[str, Any]:
         "id": value.get("Id"),
         "repo_digests": value.get("RepoDigests", []),
         "created": value.get("Created"),
-        "source_git_commit_label": value.get("Config", {}).get("Labels", {}).get(
-            "org.opencontainers.image.revision"
-        ),
+        "source_git_commit_label": value.get("Config", {})
+        .get("Labels", {})
+        .get("org.opencontainers.image.revision"),
     }
 
 
@@ -186,9 +186,7 @@ def main() -> None:
             "lscpu": output(["lscpu"], required=False),
             "lspci_gpu": shell("lspci -nn | grep -Ei 'VGA|Display|AMD' || true"),
             "docker_version": output(["docker", "version"], required=False),
-            "docker_compose_version": output(
-                ["docker", "compose", "version"], required=False
-            ),
+            "docker_compose_version": output(["docker", "compose", "version"], required=False),
             "rocminfo": shell("rocminfo 2>/dev/null | head -n 200 || true"),
             "rocm_smi": shell(
                 "rocm-smi --showproductname --showtemp --showclocks --showpower "

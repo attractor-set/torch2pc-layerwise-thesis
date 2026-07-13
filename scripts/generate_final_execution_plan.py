@@ -113,8 +113,7 @@ def build_final_execution_plan(
                     )
 
     identities = {
-        (cell["dataset"], cell["model"], cell["model_seed"], cell["method"])
-        for cell in cells
+        (cell["dataset"], cell["model"], cell["model_seed"], cell["method"]) for cell in cells
     }
     if len(identities) != len(cells):
         raise RuntimeError("Final execution plan contains duplicate cells")

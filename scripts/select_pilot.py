@@ -136,9 +136,7 @@ def load_metrics(
     environment_path = run_directory / "environment.json"
     environment = json.loads(environment_path.read_text(encoding="utf-8"))
     if environment.get("environment_lock_sha256") != environment_lock_sha256:
-        raise RuntimeError(
-            f"Pilot run belongs to another environment lock: {run_directory}"
-        )
+        raise RuntimeError(f"Pilot run belongs to another environment lock: {run_directory}")
     path = run_directory / "metrics.json"
     if not path.exists():
         raise RuntimeError(f"Metrics are missing: {path}")
@@ -185,13 +183,15 @@ def planning_pairs(
         else:
             sd = float("nan")
             approximate_n = 10
-        estimates.append({
-            "method": method,
-            "pilot_pairs": int(len(differences)),
-            "paired_difference_sd": sd,
-            "target_95_ci_half_width": 0.01,
-            "advisory_final_pairs": approximate_n,
-        })
+        estimates.append(
+            {
+                "method": method,
+                "pilot_pairs": int(len(differences)),
+                "paired_difference_sd": sd,
+                "target_95_ci_half_width": 0.01,
+                "advisory_final_pairs": approximate_n,
+            }
+        )
     return {
         "scope": "planning estimate from validation pilot; not a final power guarantee",
         "estimates": estimates,
@@ -206,21 +206,15 @@ def main() -> None:
 
     base_config = yaml.safe_load(Path("configs/base.yaml").read_text(encoding="utf-8"))
     primary_dataset = str(base_config["statistics"]["primary_dataset"])
-    pilot_config = yaml.safe_load(
-        Path("configs/stages/pilot.yaml").read_text(encoding="utf-8")
-    )
+    pilot_config = yaml.safe_load(Path("configs/stages/pilot.yaml").read_text(encoding="utf-8"))
     minimum_success_rate = float(pilot_config["selection"]["minimum_success_rate"])
     models = [str(value) for value in pilot_config["selection"]["models"]]
     if len(models) != 1:
-        raise RuntimeError(
-            "Pilot selection currently requires exactly one model architecture"
-        )
+        raise RuntimeError("Pilot selection currently requires exactly one model architecture")
     primary_model = models[0]
     environment_lock_path = Path("results/summaries/environment-lock.json")
     environment_lock = json.loads(environment_lock_path.read_text(encoding="utf-8"))
-    environment_lock_sha256 = hashlib.sha256(
-        environment_lock_path.read_bytes()
-    ).hexdigest()
+    environment_lock_sha256 = hashlib.sha256(environment_lock_path.read_bytes()).hexdigest()
     source_commit = str(environment_lock["image_source_git_commit"])
     torch2pc_commit = str(environment_lock["torch2pc_commit"])
     events = latest_run_events(Path("experiments/registry.csv"))
@@ -235,11 +229,13 @@ def main() -> None:
     records = []
     for row in rows:
         metrics = load_metrics(row, environment_lock_sha256)
-        records.append({
-            **row,
-            "best_validation_metric": float(metrics["best_validation_metric"]),
-            "total_training_time_sec": float(metrics["total_training_time_sec"]),
-        })
+        records.append(
+            {
+                **row,
+                "best_validation_metric": float(metrics["best_validation_metric"]),
+                "total_training_time_sec": float(metrics["total_training_time_sec"]),
+            }
+        )
     frame = pd.DataFrame(records)
     if frame.empty:
         raise RuntimeError("No completed pilot observations were found")

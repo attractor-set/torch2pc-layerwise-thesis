@@ -53,9 +53,7 @@ def validate_prepared_assets(
             raise AssetManifestError(f"Dataset file is missing: {path}")
         expected_size = int(item.get("bytes", -1))
         if resolved.stat().st_size != expected_size:
-            raise AssetManifestError(
-                f"Dataset file size differs from the manifest: {path}"
-            )
+            raise AssetManifestError(f"Dataset file size differs from the manifest: {path}")
         expected_sha256 = str(item.get("sha256", ""))
         if len(expected_sha256) != 64:
             raise AssetManifestError(f"Invalid dataset SHA-256 record: {path}")

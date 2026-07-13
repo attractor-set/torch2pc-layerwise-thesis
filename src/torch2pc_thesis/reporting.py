@@ -36,8 +36,6 @@ def _json_object(path: Path) -> dict[str, Any]:
     return value
 
 
-
-
 def verified_run_artifacts(
     run_directory: Path,
     row: dict[str, str],
@@ -68,8 +66,7 @@ def verified_run_artifacts(
     for key, expected in expected_identity.items():
         if str(environment.get(key, "")) != expected:
             raise RuntimeError(
-                f"Environment artifact disagrees with registry for {key}: "
-                f"{run_directory}"
+                f"Environment artifact disagrees with registry for {key}: {run_directory}"
             )
     if config_sha256(resolved_config) != row["config_sha256"]:
         raise RuntimeError(f"Resolved configuration hash mismatch: {run_directory}")
@@ -107,9 +104,7 @@ def verified_run_artifacts(
         try:
             resolved.relative_to(run_directory.resolve())
         except ValueError as exc:
-            raise RuntimeError(
-                f"Run manifest path escapes its run directory: {relative}"
-            ) from exc
+            raise RuntimeError(f"Run manifest path escapes its run directory: {relative}") from exc
         if not path.is_file():
             raise RuntimeError(f"Run artifact is missing: {path}")
         if path.stat().st_size != int(item.get("bytes", -1)):
@@ -141,16 +136,12 @@ def collect_metrics(
         metrics, environment = verified_run_artifacts(run_directory, row)
         registry_test = row["test_evaluated"].lower() == "true"
         if bool(metrics.get("test_evaluated", False)) != registry_test:
-            raise RuntimeError(
-                f"Registry and metrics disagree about test access: {run_directory}"
-            )
+            raise RuntimeError(f"Registry and metrics disagree about test access: {run_directory}")
         records.append(
             {
                 **row,
                 **metrics,
-                "environment_lock_sha256": environment.get(
-                    "environment_lock_sha256"
-                ),
+                "environment_lock_sha256": environment.get("environment_lock_sha256"),
             }
         )
     return pd.DataFrame(records)
@@ -164,9 +155,7 @@ def _validate_confirmatory_cohort(primary: pd.DataFrame) -> None:
         values = primary[column].dropna().astype(str)
         if values.empty or values.nunique() != 1:
             observed = sorted(values.unique().tolist())
-            raise RuntimeError(
-                f"Confirmatory analysis mixes {column} values: {observed}"
-            )
+            raise RuntimeError(f"Confirmatory analysis mixes {column} values: {observed}")
     duplicated = primary.duplicated(PAIRING_KEY, keep=False)
     if duplicated.any():
         conflicts = primary.loc[duplicated, PAIRING_KEY + ["run_id"]]
@@ -201,9 +190,9 @@ def build_paired_primary_analysis(
         return pd.DataFrame()
     _validate_confirmatory_cohort(primary)
 
-    baseline = primary[primary["method"] == "bp"][
-        ["model", "model_seed", primary_metric]
-    ].rename(columns={primary_metric: "baseline_value"})
+    baseline = primary[primary["method"] == "bp"][["model", "model_seed", primary_metric]].rename(
+        columns={primary_metric: "baseline_value"}
+    )
 
     contrast_names = contrasts or ["fixedpred_vs_bp", "strict_vs_bp"]
     methods: list[str] = []
@@ -224,8 +213,7 @@ def build_paired_primary_analysis(
             validate="one_to_one",
         ).sort_values(["model", "model_seed"])
         differences = (
-            paired["candidate_value"].astype(float)
-            - paired["baseline_value"].astype(float)
+            paired["candidate_value"].astype(float) - paired["baseline_value"].astype(float)
         ).to_numpy()
         if not pd.Series(differences).map(lambda value: math.isfinite(float(value))).all():
             raise RuntimeError(f"Non-finite paired difference for method={method}")
@@ -239,9 +227,7 @@ def build_paired_primary_analysis(
                 "contrast": f"{method}_vs_bp",
                 "metric": primary_metric,
                 "n_pairs": int(len(differences)),
-                "paired_model_seeds": ",".join(
-                    paired["model_seed"].astype(str).tolist()
-                ),
+                "paired_model_seeds": ",".join(paired["model_seed"].astype(str).tolist()),
                 "minimum_pairs": int(minimum_pairs),
                 "confirmatory_complete": complete,
                 "analysis_status": "confirmatory" if complete else "incomplete",
@@ -255,9 +241,7 @@ def build_paired_primary_analysis(
                 "equivalence_margin": margin,
                 "tost_ci90_low": equivalence["tost_ci_low"],
                 "tost_ci90_high": equivalence["tost_ci_high"],
-                "equivalent_within_margin": bool(
-                    complete and equivalence["equivalent"]
-                ),
+                "equivalent_within_margin": bool(complete and equivalence["equivalent"]),
             }
         )
     result = pd.DataFrame(records)
@@ -370,9 +354,7 @@ def build_primary_assets(
         )
         paired_path = summary_dir / "primary_paired_analysis.csv"
         paired.to_csv(paired_path, index=False)
-        paired_latex = write_latex_table(
-            paired, table_dir / "primary_paired_analysis.tex"
-        )
+        paired_latex = write_latex_table(paired, table_dir / "primary_paired_analysis.tex")
         outputs.update(
             {
                 "paired_primary_analysis": str(paired_path),

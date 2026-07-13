@@ -35,9 +35,7 @@ def linear_cka(left: npt.ArrayLike, right: npt.ArrayLike, epsilon: float = 1e-12
     if x.shape[0] != y.shape[0]:
         raise ValueError("CKA inputs must contain the same observations")
     numerator = float(np.linalg.norm(x.T @ y, ord="fro") ** 2)
-    denominator = float(
-        np.linalg.norm(x.T @ x, ord="fro") * np.linalg.norm(y.T @ y, ord="fro")
-    )
+    denominator = float(np.linalg.norm(x.T @ x, ord="fro") * np.linalg.norm(y.T @ y, ord="fro"))
     if denominator <= epsilon:
         raise ValueError("CKA is undefined for a degenerate representation")
     return numerator / denominator

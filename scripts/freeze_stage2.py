@@ -23,9 +23,7 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def main() -> None:
-    if subprocess.check_output(
-        ["git", "status", "--porcelain"], text=True
-    ).strip():
+    if subprocess.check_output(["git", "status", "--porcelain"], text=True).strip():
         raise RuntimeError(
             "Commit the Stage 2 configuration, lock, controls, and execution plan "
             "before creating the freeze manifest"
@@ -64,9 +62,7 @@ def main() -> None:
 
     selected: dict[str, Any] = {}
     for method in ["fixedpred", "strict"]:
-        value = yaml.safe_load(
-            Path(f"configs/methods/{method}.yaml").read_text(encoding="utf-8")
-        )
+        value = yaml.safe_load(Path(f"configs/methods/{method}.yaml").read_text(encoding="utf-8"))
         selected[method] = value["method"]
 
     manifest = {
@@ -82,9 +78,7 @@ def main() -> None:
         "torch2pc_reference_commit": lock.get("torch2pc_reference_commit"),
         "selected_method_parameters": selected,
         "planned_cells": plan["planned_cells"],
-        "files": [
-            {"path": str(path), "sha256": sha256(path)} for path in files
-        ],
+        "files": [{"path": str(path), "sha256": sha256(path)} for path in files],
     }
     output = Path(stage_config["protocol"]["freeze_manifest"])
     output.parent.mkdir(parents=True, exist_ok=True)

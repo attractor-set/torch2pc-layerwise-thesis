@@ -46,9 +46,7 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
         fieldnames = set(reader.fieldnames or [])
         missing = REQUIRED_OBSERVATION_COLUMNS - fieldnames
         if missing:
-            raise RuntimeError(
-                f"Pilot observations are missing columns: {sorted(missing)}"
-            )
+            raise RuntimeError(f"Pilot observations are missing columns: {sorted(missing)}")
         return list(reader)
 
 
@@ -81,10 +79,7 @@ def _verify_provenance(
             raise RuntimeError("Pilot observations mix source Git commits")
         if row["torch2pc_commit"] != normalized["torch2pc_commit"]:
             raise RuntimeError("Pilot observations mix Torch2PC commits")
-        if (
-            row["environment_lock_sha256"]
-            != normalized["environment_lock_sha256"]
-        ):
+        if row["environment_lock_sha256"] != normalized["environment_lock_sha256"]:
             raise RuntimeError("Pilot observations mix environment locks")
     return normalized
 
@@ -161,9 +156,7 @@ def main() -> None:
     _verify_registry_rows(observations, registry_path)
 
     base = yaml.safe_load(Path("configs/base.yaml").read_text(encoding="utf-8"))
-    pilot_stage = yaml.safe_load(
-        Path("configs/stages/pilot.yaml").read_text(encoding="utf-8")
-    )
+    pilot_stage = yaml.safe_load(Path("configs/stages/pilot.yaml").read_text(encoding="utf-8"))
     expected_keys = planned_matrix_keys(base, pilot_stage)
     missing = [key for key in expected_keys if key not in indexed]
     extra = [key for key in indexed if key not in set(expected_keys)]
@@ -198,9 +191,7 @@ def main() -> None:
     secondary_dataset = str(base["statistics"]["secondary_dataset"])
     models = [str(value) for value in pilot_stage["selection"]["models"]]
     if len(models) != 1:
-        raise RuntimeError(
-            "Pilot freeze currently requires exactly one model architecture"
-        )
+        raise RuntimeError("Pilot freeze currently requires exactly one model architecture")
     primary_model = models[0]
     if selection.get("selection_model") != primary_model:
         raise RuntimeError("Pilot selection report has an unexpected model")
@@ -210,9 +201,7 @@ def main() -> None:
         observed_bp = {
             row["model_seed"]
             for row in completed
-            if row["method"] == "bp"
-            and row["dataset"] == dataset
-            and row["model"] == primary_model
+            if row["method"] == "bp" and row["dataset"] == dataset and row["model"] == primary_model
         }
         completed_counts[f"{dataset}/bp"] = len(observed_bp)
     if completed_counts[f"{primary_dataset}/bp"] < minimum_completed:
@@ -230,17 +219,13 @@ def main() -> None:
         selected_method = selected.get(method)
         if not isinstance(selected_method, dict):
             raise RuntimeError(f"Pilot selection is missing method={method}")
-        config = yaml.safe_load(
-            Path(f"configs/methods/{method}.yaml").read_text(encoding="utf-8")
-        )
+        config = yaml.safe_load(Path(f"configs/methods/{method}.yaml").read_text(encoding="utf-8"))
         eta = str(config["method"]["eta"])
         steps = str(config["method"]["inference_steps"])
         if float(eta) != float(selected_method["eta"]) or int(steps) != int(
             selected_method["inference_steps"]
         ):
-            raise RuntimeError(
-                f"Configured {method} parameters do not match pilot_selection.json"
-            )
+            raise RuntimeError(f"Configured {method} parameters do not match pilot_selection.json")
         applied[method] = {"eta": eta, "inference_steps": steps}
         for dataset in datasets:
             observed = {
@@ -260,17 +245,11 @@ def main() -> None:
                     f"observed {len(observed)}"
                 )
 
-    final_stage = yaml.safe_load(
-        Path("configs/stages/final.yaml").read_text(encoding="utf-8")
-    )
+    final_stage = yaml.safe_load(Path("configs/stages/final.yaml").read_text(encoding="utf-8"))
     final_seeds = [int(value) for value in final_stage["selection"]["seeds"]]
-    configured_final_seeds = [
-        int(value) for value in base["statistics"]["final_seeds"]
-    ]
+    configured_final_seeds = [int(value) for value in base["statistics"]["final_seeds"]]
     if final_seeds != configured_final_seeds:
-        raise RuntimeError(
-            "Final selection.seeds must exactly match statistics.final_seeds"
-        )
+        raise RuntimeError("Final selection.seeds must exactly match statistics.final_seeds")
     minimum = int(base["statistics"]["minimum_primary_pairs"])
     if len(final_seeds) < minimum:
         raise RuntimeError(
@@ -294,9 +273,7 @@ def main() -> None:
         "failed_pilot_attempts": failed,
         "selection_model": primary_model,
         "pilot_provenance": provenance,
-        "pilot_observations_sha256": hashlib.sha256(
-            observations_path.read_bytes()
-        ).hexdigest(),
+        "pilot_observations_sha256": hashlib.sha256(observations_path.read_bytes()).hexdigest(),
         "applied_method_parameters": applied,
         "minimum_pilot_completed_per_cell": minimum_completed,
         "completed_pilot_counts": completed_counts,

@@ -58,9 +58,7 @@ def test_build_pilot_observations_exports_verified_metrics(
         "config_sha256": row["config_sha256"],
         "environment_lock_sha256": lock_sha,
     }
-    (run_directory / "environment.json").write_text(
-        json.dumps(environment), encoding="utf-8"
-    )
+    (run_directory / "environment.json").write_text(json.dumps(environment), encoding="utf-8")
     base_path = tmp_path / "base.yaml"
     pilot_path = tmp_path / "pilot.yaml"
     registry_path = tmp_path / "registry.csv"

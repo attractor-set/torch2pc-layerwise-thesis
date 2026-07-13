@@ -38,10 +38,7 @@ def test_final_configuration_explicitly_uses_test_after_freeze() -> None:
     config = resolve_config("configs", stage="final", method="bp")
     assert config["evaluation"]["use_test"] is True
     assert config["protocol"]["status"] == "frozen"
-    assert (
-        config["selection"]["execution_order"]
-        == "deterministic_hash_counterbalance"
-    )
+    assert config["selection"]["execution_order"] == "deterministic_hash_counterbalance"
     assert config["selection"]["execution_order_seed"] == 20260713
 
 
@@ -114,7 +111,4 @@ def test_stage_2_is_an_isolated_exact_replication_template() -> None:
     ]
     assert config["paths"]["registry"] == "experiments/registry-stage-2.csv"
     assert config["paths"]["runs"] == "results/stage-2/runs"
-    assert (
-        config["torch2pc"]["commit"]
-        != config["comparison"]["original_torch2pc_commit"]
-    )
+    assert config["torch2pc"]["commit"] != config["comparison"]["original_torch2pc_commit"]

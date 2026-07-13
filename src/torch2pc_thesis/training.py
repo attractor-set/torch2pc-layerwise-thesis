@@ -119,7 +119,6 @@ def train_one_epoch(
     }
 
 
-
 def save_predictions(
     path: Path,
     evaluation: dict[str, Any],
@@ -138,6 +137,7 @@ def save_predictions(
         y_pred=y_pred,
         probabilities=probabilities,
     )
+
 
 def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str, Any]:
     run_dir = Path(run_directory)
@@ -215,9 +215,7 @@ def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str,
     )
     pd.DataFrame(history).to_csv(run_dir / "history.csv", index=False)
 
-    epoch_times = np.asarray(
-        [float(row["epoch_time_sec"]) for row in history], dtype=np.float64
-    )
+    epoch_times = np.asarray([float(row["epoch_time_sec"]) for row in history], dtype=np.float64)
     metrics: dict[str, Any] = {
         "best_epoch": best_epoch,
         "epochs_completed": len(history),
@@ -257,12 +255,8 @@ def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str,
         torch.cuda.synchronize(device)
         metrics.update(
             {
-                "peak_gpu_memory_allocated_bytes": int(
-                    torch.cuda.max_memory_allocated(device)
-                ),
-                "peak_gpu_memory_reserved_bytes": int(
-                    torch.cuda.max_memory_reserved(device)
-                ),
+                "peak_gpu_memory_allocated_bytes": int(torch.cuda.max_memory_allocated(device)),
+                "peak_gpu_memory_reserved_bytes": int(torch.cuda.max_memory_reserved(device)),
             }
         )
     else:

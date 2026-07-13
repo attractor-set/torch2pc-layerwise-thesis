@@ -67,9 +67,7 @@ def resolve_config(
     resolved["meta"]["stage"] = stage
     resolved["meta"]["method"] = method
     resolved["meta"]["hardware_profile"] = hardware
-    resolved["meta"]["sources"] = [
-        source.relative_to(root_path).as_posix() for source in sources
-    ]
+    resolved["meta"]["sources"] = [source.relative_to(root_path).as_posix() for source in sources]
     validate_config(resolved)
     return resolved
 
@@ -158,9 +156,7 @@ def validate_config(config: Config) -> None:
     selection = config.get("selection", {})
     statistical_metric = str(statistics.get("primary_metric", ""))
     if statistical_metric != str(config["training"]["primary_metric"]):
-        raise ConfigurationError(
-            "statistics.primary_metric must match training.primary_metric"
-        )
+        raise ConfigurationError("statistics.primary_metric must match training.primary_metric")
     if float(statistics.get("equivalence_margin_macro_f1", 0.0)) <= 0:
         raise ConfigurationError("Equivalence margin must be positive")
     alpha = float(statistics.get("alpha", 0.0))
@@ -205,9 +201,7 @@ def validate_config(config: Config) -> None:
         min_cosine = float(device_thresholds.get("min_cosine", -1.0))
         max_relative_l2 = float(device_thresholds.get("max_relative_l2", -1.0))
         if not -1.0 <= min_cosine <= 1.0:
-            raise ConfigurationError(
-                f"controls.thresholds.{device}.min_cosine must be in [-1, 1]"
-            )
+            raise ConfigurationError(f"controls.thresholds.{device}.min_cosine must be in [-1, 1]")
         if max_relative_l2 < 0:
             raise ConfigurationError(
                 f"controls.thresholds.{device}.max_relative_l2 must be non-negative"
@@ -215,9 +209,7 @@ def validate_config(config: Config) -> None:
 
     if stage == "pilot":
         if str(selection.get("ranking_metric")) != statistical_metric:
-            raise ConfigurationError(
-                "Pilot ranking_metric must match statistics.primary_metric"
-            )
+            raise ConfigurationError("Pilot ranking_metric must match statistics.primary_metric")
         success_rate = float(selection.get("minimum_success_rate", 0.0))
         if not 0 < success_rate <= 1:
             raise ConfigurationError("Pilot minimum_success_rate must be in (0, 1]")
@@ -275,22 +267,17 @@ def validate_config(config: Config) -> None:
         execution_order = str(selection.get("execution_order", ""))
         if execution_order != "deterministic_hash_counterbalance":
             raise ConfigurationError(
-                "Final selection.execution_order must be "
-                "deterministic_hash_counterbalance"
+                "Final selection.execution_order must be deterministic_hash_counterbalance"
             )
         if int(selection.get("execution_order_seed", -1)) < 0:
-            raise ConfigurationError(
-                "Final selection.execution_order_seed must be non-negative"
-            )
+            raise ConfigurationError("Final selection.execution_order_seed must be non-negative")
 
     if stage == "final_stage_2":
         comparison = config.get("comparison", {})
         original_commit = str(comparison.get("original_torch2pc_commit", ""))
         candidate_commit = str(config["torch2pc"].get("commit", ""))
         if not re.fullmatch(r"[0-9a-f]{40}", original_commit):
-            raise ConfigurationError(
-                "comparison.original_torch2pc_commit must be a full SHA"
-            )
+            raise ConfigurationError("comparison.original_torch2pc_commit must be a full SHA")
         if candidate_commit == original_commit:
             raise ConfigurationError(
                 "final_stage_2 requires a Torch2PC commit different from Stage 1"

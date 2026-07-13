@@ -35,17 +35,11 @@ def structural_correction_check(torch2pc_file: str | Path) -> dict[str, Any]:
     fixed = re.sub(r"\s+", "", _function_source(source, "FixedPredPCPredErrs"))
     exact = re.sub(r"\s+", "", _function_source(source, "ExactPredErrs"))
     loop_pos = strict.find("foriinrange(n):")
-    strict_error_match = re.search(
-        r"epsilon\[layer\]=[^;\n]+-v\[layer\]", strict
-    )
-    fixed_error_match = re.search(
-        r"epsilon\[layer\]=(vhat|fixed)\[layer\]-v\[layer\]", fixed
-    )
+    strict_error_match = re.search(r"epsilon\[layer\]=[^;\n]+-v\[layer\]", strict)
+    fixed_error_match = re.search(r"epsilon\[layer\]=(vhat|fixed)\[layer\]-v\[layer\]", fixed)
     strict_error_pos = -1 if strict_error_match is None else strict_error_match.start()
     observations = {
-        "strict_recomputes_errors_each_iteration": (
-            loop_pos >= 0 and strict_error_pos > loop_pos
-        ),
+        "strict_recomputes_errors_each_iteration": (loop_pos >= 0 and strict_error_pos > loop_pos),
         "strict_error_is_prediction_minus_belief": strict_error_match is not None,
         "strict_update_is_epsilon_minus_vjp": "dv=epsilon[layer]-epsdfdv" in strict,
         "fixedpred_error_is_activation_minus_belief": fixed_error_match is not None,
@@ -133,9 +127,7 @@ def gradient_map_table(
         left = reference[name]
         right = candidate[name]
         if left.shape != right.shape:
-            raise RuntimeError(
-                f"Gradient shape mismatch for {name}: {left.shape} != {right.shape}"
-            )
+            raise RuntimeError(f"Gradient shape mismatch for {name}: {left.shape} != {right.shape}")
         records.append(
             {
                 "parameter": name,
@@ -182,9 +174,7 @@ def exact_vs_bp(
     set_global_seed(seed)
     bp_model = copy.deepcopy(model)
     exact_model = copy.deepcopy(model)
-    bp = gradients_for_method(
-        bp_model, inputs, targets, method="bp", torch2pc_dir=torch2pc_dir
-    )
+    bp = gradients_for_method(bp_model, inputs, targets, method="bp", torch2pc_dir=torch2pc_dir)
     exact = gradients_for_method(
         exact_model, inputs, targets, method="exact", torch2pc_dir=torch2pc_dir
     )

@@ -65,9 +65,7 @@ def test_final_plan_is_deterministic_and_counterbalanced(monkeypatch) -> None:
         "scripts.generate_final_execution_plan._method_parameters",
         lambda method: {"eta": None, "inference_steps": None},
     )
-    first = build_final_execution_plan(
-        _base(), _final(), _lock(), environment_lock_sha256="d" * 64
-    )
+    first = build_final_execution_plan(_base(), _final(), _lock(), environment_lock_sha256="d" * 64)
     second = build_final_execution_plan(
         _base(), _final(), _lock(), environment_lock_sha256="d" * 64
     )
@@ -75,8 +73,7 @@ def test_final_plan_is_deterministic_and_counterbalanced(monkeypatch) -> None:
         tuple(
             cell["method"]
             for cell in first["cells"]
-            if cell["dataset"] == "FashionMNIST"
-            and cell["model_seed"] == seed
+            if cell["dataset"] == "FashionMNIST" and cell["model_seed"] == seed
         )
         for seed in [0, 1, 2]
     ]
@@ -84,8 +81,7 @@ def test_final_plan_is_deterministic_and_counterbalanced(monkeypatch) -> None:
         tuple(
             cell["method"]
             for cell in second["cells"]
-            if cell["dataset"] == "FashionMNIST"
-            and cell["model_seed"] == seed
+            if cell["dataset"] == "FashionMNIST" and cell["model_seed"] == seed
         )
         for seed in [0, 1, 2]
     ]

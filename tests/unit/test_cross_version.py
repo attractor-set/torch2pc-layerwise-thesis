@@ -45,9 +45,7 @@ def test_cross_version_analysis_pairs_identical_cells(tmp_path, monkeypatch) -> 
         return reference.copy() if str(path) == "reference.csv" else candidate.copy()
 
     monkeypatch.setattr(cross_version, "collect_metrics", fake_collect)
-    outputs = cross_version.build_cross_version_assets(
-        "reference.csv", "candidate.csv", tmp_path
-    )
+    outputs = cross_version.build_cross_version_assets("reference.csv", "candidate.csv", tmp_path)
     paired = pd.read_csv(outputs["paired_records"])
     assert len(paired) == 16
     assert paired["total_training_time_sec_ratio"].round(6).eq(0.8).all()

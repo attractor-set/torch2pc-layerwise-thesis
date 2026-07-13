@@ -73,8 +73,6 @@ def verify_environment_lock() -> None:
             raise RuntimeError(f"Immutable image ID is absent from environment lock: {key}")
 
 
-
-
 def verify_final_runtime_worktree() -> None:
     raw = subprocess.check_output(
         ["git", "status", "--porcelain=v1", "--untracked-files=all"],
@@ -94,9 +92,9 @@ def verify_final_runtime_worktree() -> None:
         unexpected.append(line)
     if unexpected:
         raise RuntimeError(
-            "Final stage found non-runtime worktree changes: "
-            + "; ".join(unexpected)
+            "Final stage found non-runtime worktree changes: " + "; ".join(unexpected)
         )
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()

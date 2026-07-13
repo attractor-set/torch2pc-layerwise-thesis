@@ -173,9 +173,7 @@ def build_pilot_observations(
                 "config_sha256": row["config_sha256"],
                 "git_commit": row["git_commit"],
                 "torch2pc_commit": row["torch2pc_commit"],
-                "environment_lock_sha256": str(
-                    environment.get("environment_lock_sha256", "")
-                ),
+                "environment_lock_sha256": str(environment.get("environment_lock_sha256", "")),
                 "run_directory": row["run_directory"],
                 "test_evaluated": "false",
                 "failure_type": failure_type,
@@ -207,14 +205,10 @@ def main() -> None:
         description="Export the complete, verified validation-only pilot cohort."
     )
     parser.add_argument("--registry", default="experiments/registry.csv")
-    parser.add_argument(
-        "--environment-lock", default="results/summaries/environment-lock.json"
-    )
+    parser.add_argument("--environment-lock", default="results/summaries/environment-lock.json")
     parser.add_argument("--base-config", default="configs/base.yaml")
     parser.add_argument("--pilot-config", default="configs/stages/pilot.yaml")
-    parser.add_argument(
-        "--output", default="results/summaries/pilot_observations.csv"
-    )
+    parser.add_argument("--output", default="results/summaries/pilot_observations.csv")
     args = parser.parse_args()
 
     root = Path.cwd().resolve()

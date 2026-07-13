@@ -103,6 +103,7 @@ def latest_by_experiment_id(path: str | Path) -> dict[str, dict[str, str]]:
 def completed_runs(path: str | Path) -> list[dict[str, str]]:
     return [row for row in latest_by_run_id(path).values() if row["status"] == "completed"]
 
+
 def completed_experiments(path: str | Path) -> list[dict[str, str]]:
     """Return one primary completed attempt per experiment configuration.
 
@@ -116,4 +117,3 @@ def completed_experiments(path: str | Path) -> list[dict[str, str]]:
     ):
         selected.setdefault(row["experiment_id"], row)
     return list(selected.values())
-

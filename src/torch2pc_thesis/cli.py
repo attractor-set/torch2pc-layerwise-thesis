@@ -60,8 +60,7 @@ def parser() -> argparse.ArgumentParser:
         "--reference-registry", default="experiments/registry-final-80-completed.csv"
     )
     compare.add_argument(
-        "--candidate-registry",
-        default="experiments/registry-stage-2-80-completed.csv"
+        "--candidate-registry", default="experiments/registry-stage-2-80-completed.csv"
     )
     compare.add_argument("--output-dir", default="results/cross-version")
 

@@ -37,15 +37,15 @@ def _runtime_slowdown(frame: pd.DataFrame) -> pd.DataFrame:
     required = "total_training_time_sec"
     if required not in frame.columns:
         raise RuntimeError("Training time is absent from the cohort")
-    baseline = frame[frame["method"] == "bp"][
-        BLOCK_KEY + [required]
-    ].rename(columns={required: "bp_training_time_sec"})
+    baseline = frame[frame["method"] == "bp"][BLOCK_KEY + [required]].rename(
+        columns={required: "bp_training_time_sec"}
+    )
     result = frame.merge(baseline, on=BLOCK_KEY, how="left", validate="many_to_one")
     if result["bp_training_time_sec"].isna().any():
         raise RuntimeError("A paired block has no BP timing baseline")
-    result["runtime_over_bp"] = (
-        result[required].astype(float) / result["bp_training_time_sec"].astype(float)
-    )
+    result["runtime_over_bp"] = result[required].astype(float) / result[
+        "bp_training_time_sec"
+    ].astype(float)
     return result
 
 
@@ -56,9 +56,7 @@ def _difference_in_differences(
     records: list[dict[str, Any]] = []
     for dataset in sorted(set(reference["dataset"]) & set(candidate["dataset"])):
         for model in sorted(set(reference["model"]) & set(candidate["model"])):
-            ref_block = reference[
-                (reference["dataset"] == dataset) & (reference["model"] == model)
-            ]
+            ref_block = reference[(reference["dataset"] == dataset) & (reference["model"] == model)]
             cand_block = candidate[
                 (candidate["dataset"] == dataset) & (candidate["model"] == model)
             ]
@@ -91,12 +89,8 @@ def _difference_in_differences(
                             ),
                             "runtime_over_bp_reference": runtime_reference,
                             "runtime_over_bp_candidate": runtime_candidate,
-                            "runtime_slowdown_change": (
-                                runtime_candidate - runtime_reference
-                            ),
-                            "runtime_slowdown_ratio": (
-                                runtime_candidate / runtime_reference
-                            ),
+                            "runtime_slowdown_change": (runtime_candidate - runtime_reference),
+                            "runtime_slowdown_ratio": (runtime_candidate / runtime_reference),
                         }
                     )
     return pd.DataFrame(records)
@@ -107,9 +101,7 @@ def build_cross_version_assets(
     candidate_registry: str | Path,
     output_dir: str | Path = "results/cross-version",
 ) -> dict[str, str]:
-    reference = _runtime_slowdown(
-        _cohort(reference_registry, stage="final", label="original")
-    )
+    reference = _runtime_slowdown(_cohort(reference_registry, stage="final", label="original"))
     candidate = _runtime_slowdown(
         _cohort(candidate_registry, stage="final_stage_2", label="patched")
     )
@@ -133,7 +125,9 @@ def build_cross_version_assets(
         "peak_gpu_memory_reserved_bytes",
         "runtime_over_bp",
     ]
-    available = [column for column in columns if column in reference.columns and column in candidate.columns]
+    available = [
+        column for column in columns if column in reference.columns and column in candidate.columns
+    ]
     paired = reference[available].merge(
         candidate[available],
         on=PAIR_KEY,
@@ -143,10 +137,9 @@ def build_cross_version_assets(
     )
     metric_names = [column for column in available if column not in PAIR_KEY]
     for metric in metric_names:
-        paired[f"{metric}_difference"] = (
-            paired[f"{metric}_patched"].astype(float)
-            - paired[f"{metric}_original"].astype(float)
-        )
+        paired[f"{metric}_difference"] = paired[f"{metric}_patched"].astype(float) - paired[
+            f"{metric}_original"
+        ].astype(float)
         denominator = paired[f"{metric}_original"].astype(float)
         paired[f"{metric}_ratio"] = np.where(
             denominator != 0,
@@ -154,9 +147,7 @@ def build_cross_version_assets(
             np.nan,
         )
 
-    difference_columns = [
-        column for column in paired.columns if column.endswith("_difference")
-    ]
+    difference_columns = [column for column in paired.columns if column.endswith("_difference")]
     ratio_columns = [column for column in paired.columns if column.endswith("_ratio")]
     summary = summarize_with_ci(
         paired,

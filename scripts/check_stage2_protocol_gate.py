@@ -25,9 +25,7 @@ def load(path: Path) -> dict[str, Any]:
 
 
 def git_output(path: Path, *args: str) -> str:
-    return subprocess.check_output(
-        ["git", "-C", str(path), *args], text=True
-    ).strip()
+    return subprocess.check_output(["git", "-C", str(path), *args], text=True).strip()
 
 
 def verify_runtime_worktree(registry: str, runs: str) -> None:
@@ -48,9 +46,7 @@ def verify_runtime_worktree(registry: str, runs: str) -> None:
             continue
         unexpected.append(line)
     if unexpected:
-        raise RuntimeError(
-            "Stage 2 found non-runtime worktree changes: " + "; ".join(unexpected)
-        )
+        raise RuntimeError("Stage 2 found non-runtime worktree changes: " + "; ".join(unexpected))
 
 
 def main() -> None:
@@ -58,9 +54,7 @@ def main() -> None:
     lock_path = Path(config["protocol"]["environment_lock"])
     lock = load(lock_path)
     lock_sha = sha256(lock_path)
-    source_commit = subprocess.check_output(
-        ["git", "rev-parse", "HEAD"], text=True
-    ).strip()
+    source_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     image_source_commit = str(lock.get("image_source_git_commit", ""))
     lock_source_commit = str(lock.get("source_git_commit_at_lock_creation", ""))
     if image_source_commit != lock_source_commit:
@@ -135,9 +129,7 @@ def main() -> None:
     if plan.get("torch2pc_commit") != candidate_commit:
         raise RuntimeError("Stage 2 plan references another candidate")
 
-    verify_runtime_worktree(
-        str(config["paths"]["registry"]), str(config["paths"]["runs"])
-    )
+    verify_runtime_worktree(str(config["paths"]["registry"]), str(config["paths"]["runs"]))
     print("Protocol prerequisites observed for stage=final_stage_2")
 
 

@@ -69,9 +69,7 @@ def test_planned_pilot_matrix_contains_all_96_cells() -> None:
     from scripts.select_pilot import planned_matrix_keys
 
     base = yaml.safe_load(Path("configs/base.yaml").read_text(encoding="utf-8"))
-    pilot = yaml.safe_load(
-        Path("configs/stages/pilot.yaml").read_text(encoding="utf-8")
-    )
+    pilot = yaml.safe_load(Path("configs/stages/pilot.yaml").read_text(encoding="utf-8"))
     keys = planned_matrix_keys(base, pilot)
     assert len(keys) == 96
     assert len(set(keys)) == 96

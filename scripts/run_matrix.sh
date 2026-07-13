@@ -147,6 +147,66 @@ for cell in cells:
 PY
 }
 
+
+read_stage2_completed_attempts() {
+  "$PYTHON_BIN" - <<'PY'
+from pathlib import Path
+import csv
+import hashlib
+import json
+
+lock_path = Path("results/stage-2/summaries/environment-lock.json")
+lock = json.loads(lock_path.read_text(encoding="utf-8"))
+lock_sha256 = hashlib.sha256(lock_path.read_bytes()).hexdigest()
+source_commit = str(lock["image_source_git_commit"])
+torch2pc_commit = str(lock["torch2pc_commit"])
+registry_path = Path("experiments/registry-stage-2.csv")
+if not registry_path.exists():
+    raise SystemExit(0)
+latest = {}
+with registry_path.open(newline="", encoding="utf-8") as stream:
+    for row in csv.DictReader(stream):
+        latest[row["run_id"]] = row
+for row in latest.values():
+    if row["stage"] != "final_stage_2" or row["status"] != "completed":
+        continue
+    if row.get("git_commit") != source_commit:
+        continue
+    if row.get("torch2pc_commit") != torch2pc_commit:
+        continue
+    if row.get("test_evaluated", "").lower() != "true":
+        continue
+    environment_path = Path(row["run_directory"]) / "environment.json"
+    if not environment_path.is_file():
+        continue
+    environment = json.loads(environment_path.read_text(encoding="utf-8"))
+    if environment.get("environment_lock_sha256") != lock_sha256:
+        continue
+    print("|".join([
+        row["dataset"], row["model"], row["method"], row["model_seed"]
+    ]))
+PY
+}
+
+read_stage2_execution_plan() {
+  "$PYTHON_BIN" - <<'PY'
+from pathlib import Path
+import json
+path = Path("results/stage-2/summaries/final_stage_2_execution_plan.json")
+plan = json.loads(path.read_text(encoding="utf-8"))
+if plan.get("stage") != "final_stage_2":
+    raise RuntimeError("Unexpected Stage 2 plan")
+cells = plan.get("cells")
+if not isinstance(cells, list) or len(cells) != int(plan.get("planned_cells", -1)):
+    raise RuntimeError("Stage 2 execution plan is incomplete")
+for cell in cells:
+    print("\t".join([
+        str(cell["dataset"]), str(cell["model"]), str(cell["method"]),
+        str(cell["model_seed"]),
+    ]))
+PY
+}
+
 run_container() {
   local label="$1"
   shift
@@ -255,6 +315,31 @@ case "$stage" in
       run_container "$label" \
         run_experiment final "$dataset" "$model" "$method" "$seed"
     done < <(read_final_execution_plan)
+
+    printf 'Количество сохраненных неудачных попыток: %s\n' "$failures"
+    if (( failures > 0 )); then
+      exit 1
+    fi
+    ;;
+  final_stage_2)
+    PYTHONPATH=src "$PYTHON_BIN" scripts/check_stage2_protocol_gate.py
+    declare -A stage2_completed_attempts=()
+    while IFS= read -r key; do
+      [[ -n "$key" ]] && stage2_completed_attempts["$key"]=1
+    done < <(read_stage2_completed_attempts)
+
+    while IFS=$'\t' read -r dataset model method seed; do
+      [[ -n "$dataset" && -n "$model" && -n "$method" && -n "$seed" ]] || continue
+      key="$dataset|$model|$method|$seed"
+      label="final-stage-2 $dataset $model $method seed=$seed"
+      if [[ -n "${stage2_completed_attempts[$key]:-}" ]]; then
+        printf 'Пропущен уже завершенный Stage 2 запуск: %s\n' "$label"
+        continue
+      fi
+      printf '\n=== %s ===\n' "$label"
+      run_container "$label" \
+        run_experiment final_stage_2 "$dataset" "$model" "$method" "$seed"
+    done < <(read_stage2_execution_plan)
 
     printf 'Количество сохраненных неудачных попыток: %s\n' "$failures"
     if (( failures > 0 )); then

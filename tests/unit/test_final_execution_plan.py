@@ -91,3 +91,21 @@ def test_final_plan_is_deterministic_and_counterbalanced(monkeypatch) -> None:
     ]
     assert first_orders == second_orders
     assert len(set(first_orders)) > 1
+
+
+def test_stage_2_plan_preserves_the_same_matrix(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "scripts.generate_final_execution_plan._method_parameters",
+        lambda method: {"eta": None, "inference_steps": None},
+    )
+    plan = build_final_execution_plan(
+        _base(),
+        _final(),
+        _lock(),
+        environment_lock_sha256="d" * 64,
+        stage="final_stage_2",
+        test_access="once_per_completed_run_after_stage_2_freeze",
+    )
+    assert plan["stage"] == "final_stage_2"
+    assert plan["planned_cells"] == 24
+    assert plan["execution_order_seed"] == 20260713

@@ -10,8 +10,9 @@ from typing import Any
 import yaml
 
 Config = dict[str, Any]
-PINNED_STAGES = {"pilot", "final", "diagnostics", "publication"}
-TRAINING_STAGES = {"smoke", "pilot", "final"}
+FINAL_STAGES = {"final", "final_stage_2"}
+PINNED_STAGES = {"pilot", *FINAL_STAGES, "diagnostics", "publication"}
+TRAINING_STAGES = {"smoke", "pilot", *FINAL_STAGES}
 
 
 class ConfigurationError(ValueError):
@@ -133,11 +134,11 @@ def validate_config(config: Config) -> None:
     use_test = bool(config["evaluation"]["use_test"])
     if stage in {"correctness", "smoke", "pilot"} and use_test:
         raise ConfigurationError(f"Test access is prohibited during stage={stage}")
-    if stage == "final" and not use_test:
+    if stage in FINAL_STAGES and not use_test:
         raise ConfigurationError("Final stage requires evaluation.use_test=true")
-    if stage == "final" and str(config["protocol"]["status"]) != "frozen":
+    if stage in FINAL_STAGES and str(config["protocol"]["status"]) != "frozen":
         raise ConfigurationError("Final stage requires protocol.status=frozen")
-    if stage == "final":
+    if stage in FINAL_STAGES:
         selection = config.get("selection", {})
         for key in ["datasets", "models", "methods", "seeds"]:
             if not selection.get(key):
@@ -249,7 +250,7 @@ def validate_config(config: Config) -> None:
             raise ConfigurationError("Method is outside the pilot design")
         if int(config["reproducibility"]["model_seed"]) not in observed_seeds:
             raise ConfigurationError("Model seed is outside the pilot design")
-    if stage == "final":
+    if stage in FINAL_STAGES:
         expected_seeds = {int(value) for value in statistics.get("final_seeds", [])}
         observed_seeds = {int(value) for value in selection.get("seeds", [])}
         if observed_seeds != expected_seeds:
@@ -281,6 +282,23 @@ def validate_config(config: Config) -> None:
             raise ConfigurationError(
                 "Final selection.execution_order_seed must be non-negative"
             )
+
+    if stage == "final_stage_2":
+        comparison = config.get("comparison", {})
+        original_commit = str(comparison.get("original_torch2pc_commit", ""))
+        candidate_commit = str(config["torch2pc"].get("commit", ""))
+        if not re.fullmatch(r"[0-9a-f]{40}", original_commit):
+            raise ConfigurationError(
+                "comparison.original_torch2pc_commit must be a full SHA"
+            )
+        if candidate_commit == original_commit:
+            raise ConfigurationError(
+                "final_stage_2 requires a Torch2PC commit different from Stage 1"
+            )
+        if str(config["paths"]["registry"]) == "experiments/registry.csv":
+            raise ConfigurationError("final_stage_2 requires an isolated registry")
+        if str(config["paths"]["runs"]) == "results/runs":
+            raise ConfigurationError("final_stage_2 requires an isolated run directory")
 
     if method in {"fixedpred", "strict"}:
         if config["method"].get("eta") is None:

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-import sys
+import hashlib
+import importlib.util
+from functools import lru_cache
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any, cast
@@ -9,15 +11,28 @@ import torch
 import torch.nn as nn
 
 
+@lru_cache(maxsize=None)
+def _load_pc_infer_from_file(source_file: str) -> Callable[..., Any]:
+    path = Path(source_file)
+    module_digest = hashlib.sha256(str(path).encode("utf-8")).hexdigest()[:16]
+    module_name = f"torchseq2pc_{module_digest}"
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot import Torch2PC source: {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    pc_infer = getattr(module, "PCInfer", None)
+    if not callable(pc_infer):
+        raise RuntimeError(f"Torch2PC source has no callable PCInfer: {path}")
+    return cast(Callable[..., Any], pc_infer)
+
+
 def load_pc_infer(torch2pc_dir: str | Path) -> Callable[..., Any]:
     path = Path(torch2pc_dir).resolve()
-    if not (path / "TorchSeq2PC.py").exists():
+    source = path / "TorchSeq2PC.py"
+    if not source.is_file():
         raise FileNotFoundError(f"Torch2PC checkout is missing: {path}")
-    if str(path) not in sys.path:
-        sys.path.insert(0, str(path))
-    from TorchSeq2PC import PCInfer  # type: ignore[import-not-found]
-
-    return cast(Callable[..., Any], PCInfer)
+    return _load_pc_infer_from_file(str(source))
 
 
 def backward_for_method(

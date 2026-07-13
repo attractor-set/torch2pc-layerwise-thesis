@@ -1,0 +1,74 @@
+meta:
+  stage: final_stage_2
+  campaign_id: torch2pc-patched-v1
+protocol:
+  status: frozen
+  environment_lock: results/stage-2/summaries/environment-lock.json
+  control_gate_cpu: results/stage-2/summaries/control_gate_cpu.json
+  control_gate_gpu: results/stage-2/summaries/control_gate_gpu.json
+  freeze_manifest: results/stage-2/summaries/stage-2-freeze_manifest.json
+  freeze_milestone: stage-2-freeze
+  execution_plan: results/stage-2/summaries/final_stage_2_execution_plan.json
+  required_artifacts:
+  - results/stage-2/summaries/environment-lock.json
+  - results/stage-2/summaries/control_gate_cpu.json
+  - results/stage-2/summaries/control_gate_gpu.json
+  - results/stage-2/summaries/stage-2-freeze_manifest.json
+  - results/stage-2/summaries/final_stage_2_execution_plan.json
+paths:
+  registry: experiments/registry-stage-2.csv
+  results: results/stage-2
+  runs: results/stage-2/runs
+  checkpoints: results/stage-2/checkpoints
+  summaries: results/stage-2/summaries
+  figures: results/stage-2/figures
+  tables: results/stage-2/tables
+data:
+  train_subset: null
+  test_subset: null
+training:
+  epochs: 10
+  batch_size: 256
+  max_batches: null
+evaluation:
+  use_test: true
+controls:
+  stage2_cross_version_batches_per_seed: 1
+selection:
+  configuration_frozen: true
+  execution_order: deterministic_hash_counterbalance
+  execution_order_seed: 20260713
+  use_test_once_per_run: true
+  seeds:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  datasets:
+  - MNIST
+  - FashionMNIST
+  models:
+  - lenet_classic
+  methods:
+  - bp
+  - exact
+  - fixedpred
+  - strict
+comparison:
+  reference_stage: final
+  reference_registry: experiments/registry-final-80-completed.csv
+  reference_runs: results/runs
+  original_torch2pc_path: external/Torch2PC-original
+  original_torch2pc_commit: 00c6c50ee3540537bbb56ab2b6567b541f42b093
+  candidate_variant: torch2pc-patched-v1
+torch2pc:
+  local_path: external/Torch2PC
+  # Replace this placeholder with the commit produced after applying the
+  # Torch2PC patch series, then commit the configured protocol before build.
+  commit: '1111111111111111111111111111111111111111'

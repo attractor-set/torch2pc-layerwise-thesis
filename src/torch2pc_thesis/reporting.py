@@ -186,12 +186,13 @@ def build_paired_primary_analysis(
     margin: float = 0.01,
     alpha: float = 0.05,
     minimum_pairs: int = 10,
+    stage_name: str = "final",
 ) -> pd.DataFrame:
     if primary_metric not in final.columns:
         raise RuntimeError(f"Primary metric is absent: {primary_metric}")
     records: list[dict[str, Any]] = []
     primary = final[
-        (final["stage"] == "final")
+        (final["stage"] == stage_name)
         & (final["dataset"] == primary_dataset)
         & (final["model"] == primary_model)
         & final[primary_metric].notna()
@@ -283,12 +284,16 @@ def write_latex_table(frame: pd.DataFrame, path: str | Path) -> Path:
 def build_primary_assets(
     registry_path: str | Path = "experiments/registry.csv",
     config_path: str | Path = "configs/base.yaml",
+    *,
+    stage_name: str = "final",
+    summary_dir_path: str | Path = "results/summaries",
+    table_dir_path: str | Path = "results/tables",
 ) -> dict[str, str]:
     base_config = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
     statistics = base_config["statistics"]
     metrics = collect_metrics(registry_path)
-    summary_dir = Path("results/summaries")
-    table_dir = Path("results/tables")
+    summary_dir = Path(summary_dir_path)
+    table_dir = Path(table_dir_path)
     summary_dir.mkdir(parents=True, exist_ok=True)
     table_dir.mkdir(parents=True, exist_ok=True)
 
@@ -312,6 +317,7 @@ def build_primary_assets(
         return outputs
     final = metrics[
         metrics["test_evaluated"].astype(str).str.lower().eq("true")
+        & metrics["stage"].astype(str).eq(stage_name)
     ].copy()
     test_columns = [
         column for column in ["test_accuracy", "test_macro_f1"] if column in final.columns
@@ -360,6 +366,7 @@ def build_primary_assets(
             margin=float(statistics["equivalence_margin_macro_f1"]),
             alpha=float(statistics["alpha"]),
             minimum_pairs=int(statistics["minimum_primary_pairs"]),
+            stage_name=stage_name,
         )
         paired_path = summary_dir / "primary_paired_analysis.csv"
         paired.to_csv(paired_path, index=False)

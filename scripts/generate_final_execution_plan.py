@@ -60,6 +60,8 @@ def build_final_execution_plan(
     environment_lock: dict[str, Any],
     *,
     environment_lock_sha256: str,
+    stage: str = "final",
+    test_access: str = "once_per_completed_run_after_pilot_freeze",
 ) -> dict[str, Any]:
     selection = final.get("selection")
     if not isinstance(selection, dict):
@@ -123,8 +125,8 @@ def build_final_execution_plan(
     return {
         "schema_version": 1,
         "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "stage": "final",
-        "test_access": "once_per_completed_run_after_pilot_freeze",
+        "stage": stage,
+        "test_access": test_access,
         "execution_order_policy": policy,
         "execution_order_seed": order_seed,
         "planned_cells": len(cells),

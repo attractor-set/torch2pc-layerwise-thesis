@@ -20,6 +20,14 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def copy_registry_snapshot(source: Path, destination: Path) -> None:
+    with (
+        source.open("r", encoding="utf-8", newline=None) as input_stream,
+        destination.open("w", encoding="utf-8", newline="\n") as output_stream,
+    ):
+        shutil.copyfileobj(input_stream, output_stream)
+
+
 def validate_completed_cells(rows: list[dict[str, str]]) -> dict[str, Any]:
     completed = [
         row for row in rows if row.get("stage") == STAGE and row.get("status") == "completed"
@@ -82,7 +90,7 @@ def main() -> None:
     summary = validate_completed_cells(latest)
 
     destination = Path("experiments/registry-stage-2-80-completed.csv")
-    shutil.copyfile(source, destination)
+    copy_registry_snapshot(source, destination)
     checksum_path = Path(f"{destination}.sha256")
     checksum_path.write_text(f"{sha256(destination)}  {destination}\n", encoding="utf-8")
 

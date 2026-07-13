@@ -20,6 +20,8 @@ nav:
       - Управление данными: data-management.md
       - Оборудование: hardware.md
       - План публикации: publication-plan.md
+      - Протокол Stage 2: stage-2-protocol.md
+      - Эквивалентность Torch2PC patched-v1: torch2pc-patched-v1-equivalence.md
       - Настройка GitHub: github-setup.md
   - Дизайн:
       - Общий дизайн: research-design/design.md

@@ -67,6 +67,7 @@ def parser() -> argparse.ArgumentParser:
     manifest = sub.add_parser("manifest")
     manifest.add_argument("--directory", default="results")
     manifest.add_argument("--output", default="results/summaries/results_manifest.json")
+    manifest.add_argument("--environment-lock")
 
     registry = sub.add_parser("registry")
     registry.add_argument("--path", default="experiments/registry.csv")
@@ -159,8 +160,11 @@ def main() -> None:
 
         value = {
             "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "environment": environment_snapshot(),
-            "artifacts": directory_manifest(args.directory),
+            "environment": environment_snapshot(args.environment_lock),
+            "artifacts": directory_manifest(
+                args.directory,
+                exclude_paths=(args.output,),
+            ),
         }
         print(write_json(value, args.output))
         return

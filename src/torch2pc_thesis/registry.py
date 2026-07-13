@@ -57,7 +57,7 @@ def initialize_registry(path: str | Path) -> Path:
     registry.parent.mkdir(parents=True, exist_ok=True)
     if not registry.exists():
         with registry.open("w", newline="", encoding="utf-8") as stream:
-            writer = csv.DictWriter(stream, fieldnames=FIELDS)
+            writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
             writer.writeheader()
     else:
         with registry.open("r", newline="", encoding="utf-8") as stream:
@@ -74,7 +74,7 @@ def append_entry(path: str | Path, entry: RegistryEntry) -> None:
     registry = initialize_registry(path)
     with registry.open("a+", newline="", encoding="utf-8") as stream:
         fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
-        writer = csv.DictWriter(stream, fieldnames=FIELDS)
+        writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
         writer.writerow(asdict(entry))
         stream.flush()
         fcntl.flock(stream.fileno(), fcntl.LOCK_UN)

@@ -2,24 +2,30 @@
 
 [Русская версия](STATUS.md)
 
-This status follows the complete validation-only pilot. Passing implementation
-controls is not treated as a universal equivalence proof, and pilot validation
-metrics are not confirmatory test results.
+Status after two completed 80-cell confirmatory campaigns. Stage 1 uses the
+original Torch2PC implementation; Stage 2 uses the pinned
+implementation-preserving patch. Numerical controls are scoped to the pinned
+experimental domain and are not treated as a universal proof for arbitrary
+models or environments.
 
 | Component | Observed status |
 |---|---|
-| Repository structure | Created and statically checked |
-| Test isolation | Implemented; pilot records `test_evaluated=false` |
-| Split persistence and SHA-256 | Implemented and observed for pilot splits |
-| Torch2PC commit | Pinned to `00c6c50ee3540537bbb56ab2b6567b541f42b093` |
-| Docker/ROCm runtime | Exercised on the target Ubuntu host and RX 7700 XT |
-| Correction source-pattern check | Observed for the pinned `TorchSeq2PC.py` |
-| C0 Exact/BP | Passed on CPU float64 and GPU float32 |
-| C1 FixedPred/Exact | Passed on CPU float64 and GPU float32 |
 | Validation-only pilot | 96/96 terminal cells, 0 failed, no test evaluation |
-| Pilot selection | FixedPred `eta=0.1`, `n=10`; Strict `eta=0.05`, `n=20` |
-| Compact pilot observations | Generate `pilot_observations.csv` before replacing the pilot lock |
-| Pilot freeze | Not created yet |
-| Final | Blocked until the new environment lock, C0/C1, and pilot freeze |
-| CKA/RSA/robustness executor | Planned and partially implemented |
-| Confirmatory dissertation results | Absent until final |
+| Stage 1 final | 80/80 completed, 0 failed |
+| Stage 2 final | 80/80 completed, 0 failed |
+| Model and data | `lenet_classic`, MNIST, and FashionMNIST |
+| Original Torch2PC | `00c6c50ee3540537bbb56ab2b6567b541f42b093` |
+| Patched Torch2PC | `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4` |
+| Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
+| CPU/GPU equivalence gates | Passed |
+| Stage 1 / Stage 2 quality | Paired test accuracy and macro-F1 values matched |
+| Stage 2 performance | Exact ≈ BP; FixedPred and Strict substantially faster |
+| Cross-version analysis | Available in `results/cross-version/` |
+| Torch2PC equivalence audit | `docs/torch2pc-patched-v1-equivalence.md` |
+| Confirmatory results | Available for dissertation reporting |
+
+## Current task
+
+Complete post-experiment maintenance: stabilize CSV checksums, regenerate the
+Stage 2 manifest with the correct environment lock, verify CI, and prepare a
+complete replication bundle containing raw run artifacts.

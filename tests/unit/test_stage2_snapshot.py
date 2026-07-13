@@ -4,7 +4,10 @@ from itertools import product
 
 import pytest
 
-from scripts.snapshot_stage2_results import validate_completed_cells
+from scripts.snapshot_stage2_results import (
+    copy_registry_snapshot,
+    validate_completed_cells,
+)
 
 
 def rows() -> list[dict[str, str]]:
@@ -45,3 +48,13 @@ def test_validate_completed_stage2_matrix() -> None:
 def test_validate_rejects_missing_cell() -> None:
     with pytest.raises(RuntimeError, match="incomplete or non-unique"):
         validate_completed_cells(rows()[:-1])
+
+
+def test_copy_registry_snapshot_normalizes_line_endings(tmp_path) -> None:
+    source = tmp_path / "source.csv"
+    destination = tmp_path / "snapshot.csv"
+    source.write_bytes(b"a,b\r\n1,2\r\n")
+
+    copy_registry_snapshot(source, destination)
+
+    assert destination.read_bytes() == b"a,b\n1,2\n"

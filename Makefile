@@ -192,7 +192,7 @@ control-stage2-gpu:
 		python scripts/run_stage2_control_gate.py gpu
 
 stage2-plan:
-	PYTHONPATH=src $(PYTHON) scripts/generate_stage2_execution_plan.py
+	PYTHONPATH=src $(PYTHON) -m scripts.generate_stage2_execution_plan
 
 freeze-stage2:
 	PYTHONPATH=src $(PYTHON) scripts/freeze_stage2.py
@@ -212,10 +212,12 @@ report-stage2:
 		--table-dir results/stage-2/tables
 
 manifest-stage2:
-	docker compose run --rm manifest \
-		torch2pc-thesis manifest \
+	docker compose run --rm \
+		-v "$(CURDIR)/src:/workspace/src:ro" \
+		manifest torch2pc-thesis manifest \
 		--directory results/stage-2 \
-		--output results/stage-2/summaries/results_manifest.json
+		--output results/stage-2/summaries/results_manifest.json \
+		--environment-lock results/stage-2/summaries/environment-lock.json
 
 compare-stages:
 	docker compose run --rm report \

@@ -38,8 +38,14 @@ def git_head(path: str | Path = ".") -> str:
     return command_output(["git", "-C", str(path), "rev-parse", "HEAD"])
 
 
-def environment_snapshot() -> dict[str, Any]:
-    environment_lock = Path("results/summaries/environment-lock.json")
+def environment_snapshot(
+    environment_lock_path: str | Path | None = None,
+) -> dict[str, Any]:
+    environment_lock = Path(
+        environment_lock_path
+        or os.environ.get("ENVIRONMENT_LOCK_PATH")
+        or "results/summaries/environment-lock.json"
+    )
     snapshot: dict[str, Any] = {
         "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "python": sys.version,
@@ -75,11 +81,16 @@ def environment_snapshot() -> dict[str, Any]:
     return snapshot
 
 
-def directory_manifest(directory: str | Path) -> dict[str, Any]:
+def directory_manifest(
+    directory: str | Path,
+    *,
+    exclude_paths: tuple[str | Path, ...] = (),
+) -> dict[str, Any]:
     root = Path(directory)
+    excluded = {Path(path).resolve() for path in exclude_paths}
     files = []
     for path in sorted(root.rglob("*")):
-        if path.is_file():
+        if path.is_file() and path.resolve() not in excluded:
             files.append(
                 {
                     "path": path.relative_to(root).as_posix(),

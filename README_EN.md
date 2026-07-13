@@ -26,22 +26,40 @@ Under which algorithmic and computational conditions do `Exact`, `FixedPred`,
 and `Strict` produce observations close to backpropagation, and when do the
 observed differences exceed pre-specified numerical or statistical bounds?
 
-## First-commit status
+## Observed status on 13 July 2026
 
-The first commit contains the repository structure, protocol, configuration
-system, tests, controlled Ubuntu/ROCm environment, and executable experiment
-scaffold. It contains no empirical result claims.
+The pinned Ubuntu/ROCm environment has completed the implementation controls
+and the validation-only pilot:
 
-C0 and C1 are implementation controls, not statistical null hypotheses:
+- Torch2PC is pinned to
+  `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
+- the target ROCm path was exercised on an AMD Radeon RX 7700 XT;
+- C0 Exact/BP and C1 FixedPred/Exact satisfied their pre-specified CPU and GPU
+  thresholds;
+- all 96 pilot configuration-seed cells completed, with no failed cells;
+- the pilot did not evaluate the test set;
+- selected parameters are FixedPred `eta=0.1`, `n=10` and Strict `eta=0.05`,
+  `n=20`;
+- final remains blocked until the selected environment is re-locked, the short
+  controls are repeated, and `pilot-freeze` is created.
 
-- C0 compares `Exact` and BP gradients;
-- C1 compares `FixedPred` at `eta=1`, `n>=depth` with `Exact`.
-
-Test data are unavailable to smoke and pilot stages. Final test evaluation is
-allowed only after the pilot configuration is frozen.
+These observations are implementation- and environment-scoped. They are not a
+confirmatory comparison of method performance.
 
 See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 [STATUS_EN.md](STATUS_EN.md).
+
+
+## Pilot evidence export
+
+`make pilot` generates both `pilot_selection.json` and the compact, verified
+`pilot_observations.csv`. The latter can be regenerated while the original run
+directories and pilot environment lock are still available:
+
+```bash
+make select-pilot
+make pilot-observations
+```
 
 ## Controlled environment sequence
 

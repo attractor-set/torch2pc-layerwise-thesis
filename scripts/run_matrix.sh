@@ -168,7 +168,9 @@ case "$stage" in
       done
     done
     "$PYTHON_BIN" scripts/select_pilot.py
+    "$PYTHON_BIN" scripts/generate_pilot_observations.py
     printf '%s\n' "Pilot summary создан: results/summaries/pilot_selection.json"
+    printf '%s\n' "Pilot observations созданы: results/summaries/pilot_observations.csv"
     printf '%s\n' "Применение наблюдаемого выбора: $PYTHON_BIN scripts/select_pilot.py --apply"
     printf 'Количество сохраненных неудачных попыток: %s\n' "$failures"
     ;;

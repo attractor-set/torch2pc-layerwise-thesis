@@ -11,8 +11,9 @@ ETA ?=
 INFERENCE_STEPS ?=
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
-        control-cpu control-gpu run smoke pilot select-pilot apply-pilot-selection \
-        freeze-pilot final diagnostics report manifest docs docs-en jupyter lint \
+        control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
+        apply-pilot-selection freeze-pilot final diagnostics report manifest docs \
+        docs-en jupyter lint \
         typecheck test thesis article release clean status epistemic-check \
         freeze-environment
 
@@ -35,6 +36,7 @@ help:
 	  '  control-gpu           Run the GPU numerical control gate' \
 	  '  smoke                 Run the smoke experiment' \
 	  '  pilot                 Run the pilot matrix' \
+	  '  pilot-observations    Export verified pilot observations' \
 	  '  final                 Run the confirmatory experiment matrix' \
 	  '  diagnostics           Run diagnostic experiments' \
 	  '' \
@@ -93,6 +95,9 @@ pilot:
 
 select-pilot:
 	$(PYTHON) scripts/select_pilot.py
+
+pilot-observations:
+	$(PYTHON) scripts/generate_pilot_observations.py
 
 apply-pilot-selection:
 	$(PYTHON) scripts/select_pilot.py --apply

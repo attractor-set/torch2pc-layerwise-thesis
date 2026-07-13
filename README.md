@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-первый%20коммит-yellow)
+![Статус](https://img.shields.io/badge/этап-validation%20pilot-blue)
 
 Исследовательский репозиторий магистерской диссертации по сравнению
 backpropagation и режимов predictive coding в Torch2PC. Проект организован так,
@@ -47,19 +47,24 @@ backpropagation и режимов predictive coding в Torch2PC. Проект о
 - вычислительное время и память;
 - воспроизводимость между независимыми запусками.
 
-## Статус первого коммита
+## Наблюдаемый статус на 13 июля 2026 года
 
-В первый коммит входят структура проекта, протокол, конфигурации, тесты,
-контролируемая Ubuntu/ROCm-среда и исполняемый каркас экспериментов.
+В закрепленной Ubuntu/ROCm-среде выполнены технические контроли и
+validation-only pilot. Наблюдаемые факты:
 
-На этом этапе:
+- Torch2PC закреплен на commit
+  `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
+- целевой ROCm-контур проверен на AMD Radeon RX 7700 XT;
+- C0 Exact/BP и C1 FixedPred/Exact прошли заранее заданные пороги на CPU и GPU;
+- pilot-матрица завершена полностью: 96 из 96 ячеек, 0 неудачных ячеек;
+- test в pilot не вычислялся;
+- выбранные параметры: FixedPred `eta=0.1`, `n=10`; Strict `eta=0.05`,
+  `n=20`;
+- final остается заблокирован до обновления environment lock, повторения коротких
+  контролей и создания `pilot-freeze`.
 
-- фактические результаты не заявляются;
-- commit Torch2PC еще не зафиксирован;
-- контрольные проверки C0/C1 еще не выполнены;
-- pilot и final еще не запускались;
-- диагностические модули CKA/RSA/robustness обозначены как последующие этапы;
-- текст диссертации содержит только нейтральный каркас и план анализа.
+Эти наблюдения относятся к закрепленным commit, конфигурации, split и
+вычислительной среде. Они не являются итоговым сравнением качества методов.
 
 Текущий статус: [STATUS.md](STATUS.md).
 
@@ -115,7 +120,10 @@ Pilot запускается только после прохождения об
 
 ```bash
 make pilot
+# make pilot уже создает selection и компактный файл наблюдений;
+# для повторной генерации доступны отдельные команды:
 make select-pilot
+make pilot-observations
 make apply-pilot-selection
 # проверить изменения configs/methods/*.yaml и закоммитить их
 git add configs/methods/
@@ -146,6 +154,8 @@ make manifest
 - final требует замороженного протокола и артефакта `pilot-freeze`;
 - каждый запуск сохраняет resolved config, environment manifest, split hashes,
   per-sample predictions, метрики и уникальный `run_id`;
+- `pilot_observations.csv` сохраняет компактные проверяемые наблюдения всех
+  terminal-ячеек pilot без публикации checkpoints;
 - попытки не перезаписывают друг друга;
 - повторный успешный final-запуск той же комбинации code/config/seed блокируется,
   чтобы повторный просмотр test не учитывался как новая репликация.

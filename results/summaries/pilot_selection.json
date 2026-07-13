@@ -20,6 +20,13 @@
     }
   },
   "test_evaluated": false,
+  "provenance": {
+    "source_git_commit": "6313c8995a3317de03806ea80576a7f779ee9823",
+    "torch2pc_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
+    "environment_lock_sha256": "91107ec7a29950819b7975670fb3108178688e6dc4461075a317ecc1a8681a9d",
+    "registry_path": "experiments/registry.csv",
+    "pilot_observations_path": "results/summaries/pilot_observations.csv"
+  },
   "planning": {
     "scope": "planning estimate from validation pilot; not a final power guarantee",
     "estimates": [

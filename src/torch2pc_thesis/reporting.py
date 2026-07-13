@@ -38,7 +38,7 @@ def _json_object(path: Path) -> dict[str, Any]:
 
 
 
-def _verified_run_artifacts(
+def verified_run_artifacts(
     run_directory: Path,
     row: dict[str, str],
 ) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -119,6 +119,10 @@ def _verified_run_artifacts(
     return metrics, environment
 
 
+# Backward-compatible internal name retained for existing callers and tests.
+_verified_run_artifacts = verified_run_artifacts
+
+
 def collect_metrics(
     registry_path: str | Path,
     project_root: str | Path = ".",
@@ -134,7 +138,7 @@ def collect_metrics(
             raise RuntimeError(
                 f"Registered run directory escapes the project root: {run_directory}"
             ) from exc
-        metrics, environment = _verified_run_artifacts(run_directory, row)
+        metrics, environment = verified_run_artifacts(run_directory, row)
         registry_test = row["test_evaluated"].lower() == "true"
         if bool(metrics.get("test_evaluated", False)) != registry_test:
             raise RuntimeError(

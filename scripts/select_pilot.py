@@ -65,11 +65,10 @@ def primary_attempts(
     return selected
 
 
-def verify_planned_matrix(
-    attempts: dict[PilotKey, dict[str, str]],
+def planned_matrix_keys(
     base_config: dict[str, object],
     pilot_config: dict[str, object],
-) -> dict[str, object]:
+) -> list[PilotKey]:
     seeds = [str(value) for value in base_config["statistics"]["pilot_seeds"]]
     datasets = [
         str(base_config["statistics"]["primary_dataset"]),
@@ -104,6 +103,15 @@ def verify_planned_matrix(
                                 str(item["inference_steps"]),
                             )
                         )
+    return expected
+
+
+def verify_planned_matrix(
+    attempts: dict[PilotKey, dict[str, str]],
+    base_config: dict[str, object],
+    pilot_config: dict[str, object],
+) -> dict[str, object]:
+    expected = planned_matrix_keys(base_config, pilot_config)
     missing = [key for key in expected if key not in attempts]
     if missing:
         preview = missing[:10]
@@ -288,6 +296,13 @@ def main() -> None:
         "pilot_matrix": matrix_status,
         "selected": selected,
         "test_evaluated": False,
+        "provenance": {
+            "source_git_commit": source_commit,
+            "torch2pc_commit": torch2pc_commit,
+            "environment_lock_sha256": environment_lock_sha256,
+            "registry_path": "experiments/registry.csv",
+            "pilot_observations_path": "results/summaries/pilot_observations.csv",
+        },
         "planning": planning_pairs(frame, selected, primary_dataset, primary_model),
     }
     (output_dir / "pilot_selection.json").write_text(

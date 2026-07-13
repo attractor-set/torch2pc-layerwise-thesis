@@ -2,6 +2,23 @@
 
 [English version](CHANGELOG_EN.md)
 
+## [Unreleased] - Validation pilot milestone
+
+### Добавлено
+
+- закрепление Torch2PC и контролируемого ROCm-окружения;
+- CPU/GPU-артефакты C0 и C1;
+- полный validation-only pilot из 96 ячеек без test evaluation;
+- выбранные параметры FixedPred и Strict;
+- компактный экспорт `pilot_observations.csv` и его provenance-проверки;
+- включение pilot selection, candidate summary, observations и registry в
+  `pilot-freeze` manifest.
+
+### Текущая граница
+
+Final остается заблокирован до повторной фиксации среды с выбранными
+параметрами, коротких контрольных проверок и создания `pilot-freeze`.
+
 ## [0.1.0] - Первый коммит
 
 ### Добавлено

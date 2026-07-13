@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Aggregate Stage 3 layer-wise probe outputs without treating layers as replicas."""
+"""Aggregate Stage 3 layer-wise probe outputs with seed provenance."""
 
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
-import pandas as pd
+from torch2pc_thesis.stage3_aggregation import aggregate_tables
 
 
 def parse_args() -> argparse.Namespace:
@@ -16,27 +16,11 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def concatenate(paths: list[Path]) -> pd.DataFrame:
-    frames: list[pd.DataFrame] = []
-    for path in paths:
-        frame = pd.read_csv(path)
-        frame.insert(0, "source_file", str(path))
-        frames.append(frame)
-    return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
-
-
 def main() -> None:
     args = parse_args()
-    args.output.mkdir(parents=True, exist_ok=True)
-
-    tables = {
-        "all_gradient_metrics.csv": sorted(args.root.rglob("gradient_metrics.csv")),
-        "all_gradient_summaries.csv": sorted(args.root.rglob("gradient_summary.csv")),
-        "all_representation_metrics.csv": sorted(args.root.rglob("representation_metrics.csv")),
-        "all_cross_layer_cka.csv": sorted(args.root.rglob("cross_layer_cka.csv")),
-    }
-    for filename, paths in tables.items():
-        concatenate(paths).to_csv(args.output / filename, index=False)
+    row_counts = aggregate_tables(args.root, args.output)
+    for filename, rows in row_counts.items():
+        print(f"{filename}: rows={rows}")
 
 
 if __name__ == "__main__":

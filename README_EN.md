@@ -37,7 +37,7 @@ Ubuntu/ROCm environment:
 - Stage 2: **80/80**, patched Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
 - the scoped CPU/GPU numerical equivalence gates passed;
-- the maintained regression suite contains **63 passing tests**;
+- the maintained regression suite contains **94 passing tests**;
 - paired Stage 1/2 test accuracy and macro-F1 values matched for every dataset,
   method, and seed;
 - the observed Stage 2 runtime ordering is
@@ -73,25 +73,19 @@ own provenance chain.
 See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 [STATUS_EN.md](STATUS_EN.md).
 
-## Stage 3: design-ready
+## Stage 3A: layer-wise diagnostics complete
 
-The extended Stage 3 studies mathematical and execution locality, exact VJP
-organization, adaptive stopping, periodic VJP refresh, and depth/width scaling.
-See [docs/stage-3-protocol_EN.md](docs/stage-3-protocol_EN.md). Design revision 2 adds an exact-shortcut control and a separate predict-correct line with mandatory exact correction sweeps and Strict fallback.
+The validation-only confirmatory subcampaign covers FashionMNIST,
+`lenet_classic`, and seeds 0–9. Same-state gradient probes and independently
+trained representation comparisons are complete for every seed; all 10
+Exact–BP controls passed. Published evidence contains 2250 gradient
+observations, 150 corresponding CKA/RSA observations, and 750 cross-layer CKA
+observations.
 
-The repository is ready for implementation of the profiling infrastructure,
-while the profiling campaign, pilot, and final execution remain deliberately
-blocked:
-
-```bash
-make stage3-ready
-make stage3-plan
-```
-
-The deterministic design plan contains 336 short profiling cells, 48
-parameterized core validation-only pilot cells, and 27 predict-correct
-accelerator screening cells. Stage 3 is absent from `TRAINING_STAGES`, and the
-final template keeps `evaluation.use_test=false` until a separate freeze.
+Stage 3A does not complete the broader Stage 3. Locality, profiling, exact
+execution, adaptive stopping, periodic refresh, and predict-correct remain
+separate gated subcampaigns with their own provenance chains. See
+[STATUS_EN.md](STATUS_EN.md).
 
 ## Pilot evidence export
 

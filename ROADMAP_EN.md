@@ -5,41 +5,43 @@
 ## Phases 1–5 — complete
 
 Research scaffold, controlled environment and 96/96 pilot, Stage 1 80/80,
-Stage 2 80/80, and public release are complete.
+Stage 2 80/80, and the public release are complete.
 
-## Phase 6. Stage 3 design-ready revision 2 — current
+## Phase 6 — Stage 3 design revision 2 complete
 
-ADR-006/007/008, RQ6–RQ11, full Stage 2 hashes, locality/profiling contracts,
-the scaling MLP family, exact-shortcut control A0, core approximations C1/C2,
-and predict-correct candidates C4/C5 are declared. Test remains disabled.
+The locality/profiling contracts, exact candidates, core approximations, and
+predict-correct candidates are specified.
 
-## Phase 7. Stage 3A profiling
+## Phase 7 — Stage 3A layer-wise diagnostics complete
 
-Implement the non-perturbing executor, profile B0/A0, execute 336 matched cells,
-and apply feasibility and endpoint-equivalence gates.
+- same-state gradient probes for seeds 0–9;
+- independently trained representation probes for seeds 0–9;
+- Exact–BP controls passed for 10/10 seeds;
+- aggregate gradient, CKA, and RSA evidence tables published;
+- raw observations retained outside Git.
 
-## Phase 8. Stage 3B exact candidates
+## Phase 8 — Stage 3A statistical publication — current
 
-Implement B1/B2, run CPU float64 and GPU float32 full-trajectory gates, perform
-attribution, and select at most one exact candidate.
+Run paired model-seed statistics, within-family Holm correction, effect-size
+and interval estimation, figure generation, evidence tagging, and replication
+bundle publication.
 
-## Phase 9. Stage 3C core approximations
+## Phase 9 — locality and exact execution
 
-Implement C1/C2, run the 48-cell validation-only pilot, and select at most one
-core approximation candidate.
+Run B0/A0 profiling, then B1/B2 numerical gates and attribution. These
+experiments remain separate from the completed Stage 3A diagnostic evidence.
 
-## Phase 10. Stage 3C2 predict-correct screening
+## Phase 10 — core approximations and predict-correct
 
-Implement C4/C5, run 27 validation-only cells, and apply residual, VJP-reduction,
-fallback, and non-inferiority gates. C3H/C6 remain deferred.
+Run C1/C2 and C4/C5 as separate validation-only screening campaigns with
+residual, fallback, non-inferiority, and VJP-reduction gates.
 
-## Phase 11. Stage 3 freeze and final
+## Phase 11 — extended Stage 3 freeze and final
 
-Freeze candidates and parameters, create environment/control artifacts and
-`stage3-pilot-freeze-v1`, enable test in a separate commit, run up to 80 final
-cells, and keep execution/publication states distinct.
+Freeze selected candidates and parameters, preserve distinct execution and
+publication states, and enable final test evaluation only after the freeze.
 
-## Phase 12. Analysis and thesis
+## Phase 12 — thesis and article
 
-Complete scaling, robustness, representations, thesis/article writing,
-replication bundle, clean-room reproduction, and review reserve.
+Integrate Stage 1/2, Stage 3A diagnostics, and later locality/acceleration
+results; publish replication bundles and complete clean-room reproduction.

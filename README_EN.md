@@ -37,7 +37,7 @@ Ubuntu/ROCm environment:
 - Stage 2: **80/80**, patched Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
 - the scoped CPU/GPU numerical equivalence gates passed;
-- the maintained regression suite contains **97 passing tests**;
+- the current publication branch regression suite contains **120 passing tests**;
 - paired Stage 1/2 test accuracy and macro-F1 values matched for every dataset,
   method, and seed;
 - the observed Stage 2 runtime ordering is
@@ -73,33 +73,55 @@ own provenance chain.
 See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 [STATUS_EN.md](STATUS_EN.md).
 
-## Stage 3A: layer-wise diagnostics complete
+## Stage 3A: diagnostics and statistical publication complete
 
 The validation-only confirmatory subcampaign covers FashionMNIST,
 `lenet_classic`, and seeds 0–9. Same-state gradient probes and independently
 trained representation comparisons are complete for every seed; all 10
-Exact–BP controls passed. Published evidence contains 2250 gradient
-observations, 150 corresponding CKA/RSA observations, and 750 cross-layer CKA
-observations.
+Exact–BP controls passed. Published outputs include:
 
-Stage 3A does not complete the broader Stage 3. Locality, profiling, exact
-execution, adaptive stopping, periodic refresh, and predict-correct remain
-separate gated subcampaigns with their own provenance chains. See
-[STATUS_EN.md](STATUS_EN.md).
+- 2250 gradient observations;
+- 150 corresponding CKA/RSA observations;
+- 750 cross-layer CKA observations;
+- 40 gradient and 20 representation confirmatory comparisons;
+- 24 depth-analysis rows;
+- 8 publication PDF figures;
+- metadata and SHA-256 manifests for statistics and figures.
 
-The repository is ready for implementation of the profiling infrastructure,
-while the profiling campaign, pilot, and final execution remain deliberately
-blocked:
+The bounded primary finding is that, within the studied configuration,
+`FixedPred` nearly preserves gradient direction while strongly attenuating the
+norm in early layers; magnitude approaches BP toward the output. `Strict`
+differs from BP in both direction and magnitude in hidden layers. `FixedPred`
+representations remain closer to BP than `Strict`. Gradient norm ratio
+increases with depth and relative L2 decreases; CKA has no reliable monotonic
+trend, while RSA has a moderate positive trend.
+
+Detailed bilingual report:
+[docs/stage3a-statistical-results_EN.md](docs/stage3a-statistical-results_EN.md).
+
+Publication artifacts:
+
+- [statistics](results/stage3/layerwise/confirmatory/statistics/), including
+  `analysis_metadata.json`, `depth_analysis_metadata.json`, and `SHA256SUMS`;
+- [figures](results/stage3/layerwise/confirmatory/figures/), including
+  `figure_metadata.json` and `SHA256SUMS`.
+
+Conclusions are limited to FashionMNIST, `lenet_classic`, seeds 0–9, the pinned
+implementation, and the validation-only Stage 3A protocol. Stage 3A does not
+complete the broader Stage 3. The next campaign must use a separate branch and
+preregistration for profiling/locality; exact execution and acceleration retain
+separate gates and provenance chains.
+
+The current design state still permits profiling-infrastructure preparation
+only:
 
 ```bash
 make stage3-ready
 make stage3-plan
 ```
 
-The deterministic design plan contains 336 short profiling cells, 48
-parameterized core validation-only pilot cells, and 27 predict-correct
-accelerator screening cells. Stage 3 is absent from `TRAINING_STAGES`, and the
-final template keeps `evaluation.use_test=false` until a separate freeze.
+Stage 3 remains absent from `TRAINING_STAGES`, and the final template keeps
+`evaluation.use_test=false` until a separate freeze.
 
 ## Pilot evidence export
 

@@ -79,6 +79,8 @@ source = ["torch2pc_thesis"]
 
 [[tool.mypy.overrides]]
 module = [
+  "matplotlib",
+  "matplotlib.*",
   "pandas",
   "pandas.*",
   "scipy",

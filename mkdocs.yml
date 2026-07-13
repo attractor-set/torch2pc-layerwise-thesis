@@ -23,6 +23,7 @@ nav:
       - Протокол Stage 2: stage-2-protocol.md
       - Протокол Stage 3: stage-3-protocol.md
       - Готовность Stage 3: stage-3-readiness.md
+      - Результаты Stage 3A: stage3a-statistical-results.md
       - Эквивалентность Torch2PC patched-v1: torch2pc-patched-v1-equivalence.md
       - Настройка GitHub: github-setup.md
   - Дизайн:

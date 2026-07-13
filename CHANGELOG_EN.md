@@ -2,27 +2,40 @@
 
 [Русская версия](CHANGELOG.md)
 
-## [Unreleased] — Stage 3 design-ready
+## [Unreleased] — Stage 3A statistical publication
 
 ### Added
 
-- A detailed bilingual Stage 3 protocol for locality, approximation, and scaling.
-- ADR-006 for Stage 3 scope, ADR-007 for locality taxonomy, and ADR-008 for predict-correct acceleration.
-- `configs/stage3/design.yaml`, Stage 3 profiling/pilot/final templates, and
-  B0/B1/B2/C1/C2/C3 candidate overlays.
-- A locality trace schema, profiling contract, structural locality gate, and
-  controlled depth/width MLP family.
-- A deterministic plan with 288 profiling and 48 parameterized validation-only
-  screening cells, plus readiness CLI/Make targets.
-- Tests that keep Stage 3 execution blocked until candidates, gates, and freeze.
+- The final bilingual `docs/stage3a-statistical-results*.md` report.
+- Seed-level confirmatory statistics: 40 gradient and 20 representation
+  comparisons.
+- Confirmatory depth analysis: 180 seed-level and 24 statistical rows.
+- Eight publication PDF figures, provenance metadata, and a separate figures
+  `SHA256SUMS` manifest.
+- Public links to statistics, figures, metadata, and SHA-256 manifests.
+- The Stage 3 profiling/locality design foundation: locality taxonomy,
+  profiling contract, structural gates, and exact/approximation/predict-correct
+  candidates.
+- A deterministic Stage 3 design plan with 336 profiling cells, 48
+  parameterized core validation-only pilot cells, and 27 predict-correct
+  screening cells.
 
 ### Changed
 
-- Added RQ6–RQ10 without changing completed Stage 1/2.
-- Updated README, STATUS, ROADMAP, documentation, and repository structure for
-  active Stage 3 preparation.
-- Marked public visibility complete and retained version `0.1.0` pending a
-  separate version milestone.
+- Marked Phase 8 complete.
+- Synchronized README, STATUS, and ROADMAP with the published Stage 3A
+  statistics, depth, and figure evidence.
+- Updated the regression-suite count to the current 120 passing tests.
+- Defined the next stage as the separate
+  `stage3b-profiling-locality-preregistration` branch.
+- Explicitly bounded conclusions to FashionMNIST, `lenet_classic`, seeds 0–9,
+  the pinned implementation, and the validation-only protocol.
+
+### Preserved unchanged
+
+- Committed Stage 3A evidence was not regenerated.
+- Stage 1/2 execution and publication states were not changed.
+- Immutable evidence history and existing tags were not moved.
 
 ## [stage2-results-v1] — 2026-07-13
 

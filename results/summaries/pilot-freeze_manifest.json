@@ -1,0 +1,93 @@
+{
+  "schema_version": 2,
+  "milestone": "pilot-freeze",
+  "created_utc": "2026-07-13T01:55:55Z",
+  "source_git_commit": "a3660857e068a122415bfe2368b433cfde00a928",
+  "image_source_git_commit": "140e77cc2083bf04234dcea16b95803e63cb0537",
+  "environment_lock_sha256": "ec7d54375867ae4e5d9379010b4bbea87328590417e988c642f007c6d8b15242",
+  "selected_method_parameters": {
+    "fixedpred": {
+      "name": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "strict": {
+      "name": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    }
+  },
+  "pilot_selection_provenance": {
+    "source_git_commit": "6313c8995a3317de03806ea80576a7f779ee9823",
+    "torch2pc_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
+    "environment_lock_sha256": "91107ec7a29950819b7975670fb3108178688e6dc4461075a317ecc1a8681a9d",
+    "registry_path": "experiments/registry.csv",
+    "pilot_observations_path": "results/summaries/pilot_observations.csv"
+  },
+  "files": [
+    {
+      "path": "configs/base.yaml",
+      "sha256": "325d6b6b89451d1717d184a8b85301a5c92f95a9f437d04be625bc6414af0436"
+    },
+    {
+      "path": "configs/methods/bp.yaml",
+      "sha256": "f7c463fb2eab2a5e7fdb575e408fd79a45a01ce8c6adc17ac1858f4626ca1a6c"
+    },
+    {
+      "path": "configs/methods/exact.yaml",
+      "sha256": "d59963768545b53114d29c02281cc9f4c49bd78b43e0abc56fd8227fa5c9c4ac"
+    },
+    {
+      "path": "configs/methods/fixedpred.yaml",
+      "sha256": "1a083d3a9e175f92326bd509a22bd54b69b310232b6a1bbc4be9bb63379da241"
+    },
+    {
+      "path": "configs/methods/strict.yaml",
+      "sha256": "96cacef5582d2fa66015ddfe3df6ee100c1a6ef7fb9187f684b3d430e37ecec5"
+    },
+    {
+      "path": "configs/stages/final.yaml",
+      "sha256": "fd072116abac95905baf98dcb0327f5fc1b2ba49509cee7cd5b1b700137387dd"
+    },
+    {
+      "path": "PREREGISTRATION.md",
+      "sha256": "d7927d579d652ca03b6a8b10ef321960a960fecaad260371a10b0973125a2ef3"
+    },
+    {
+      "path": "HYPOTHESES.md",
+      "sha256": "2fc60d978734d1545b946450938b3acfea7badac8f11e98a9eac6a1fc57e4fc2"
+    },
+    {
+      "path": "docs/analysis-plan.md",
+      "sha256": "23476b09cf9d71f698288bb0e46db55a059f353f1887498230b074681a6013b4"
+    },
+    {
+      "path": "results/summaries/pilot_selection.json",
+      "sha256": "921af56e5e4aee5e20efb7e992139f521a8ee57237f51c91de70f4317b66ec41"
+    },
+    {
+      "path": "results/summaries/pilot_candidate_summary.csv",
+      "sha256": "6e42142113bdffccdf41bc12ec831db8024f4ba75afe7fdceb4814d5203b8bef"
+    },
+    {
+      "path": "results/summaries/pilot_observations.csv",
+      "sha256": "08fd775437992b8fa98d2b274503884d49bbde965b0159e515acd6ead6a42e40"
+    },
+    {
+      "path": "results/summaries/pilot_registry_snapshot.csv",
+      "sha256": "c34dccacd9718ea9568bd8ad29c851f67e4804d5cff006aaf2b1699aeab83ab0"
+    },
+    {
+      "path": "results/summaries/final_execution_plan.json",
+      "sha256": "c2d9e1ad255a67125ec35a25be485e1a07330b7a0676ff7ff875dff36d8759a9"
+    },
+    {
+      "path": "docs/decisions/ADR-005-post-pilot-final-execution.md",
+      "sha256": "a4a9c11294866d531c34f9ebc1d017cf2b4da818c4f60bc40bb2b76ceebc67dc"
+    },
+    {
+      "path": "docs/decisions/ADR-005-post-pilot-final-execution_EN.md",
+      "sha256": "67590c5b7ef5cb3a17b73c6e427a8179dbc67a9a1ccb6c5d0568a2ac5dc806f7"
+    }
+  ]
+}

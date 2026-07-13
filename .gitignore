@@ -74,3 +74,6 @@ results/stage-3/final/runs/
 results/stage-3/checkpoints/
 results/stage-3/raw/
 experiments/registry-stage-3.csv
+
+# Stage 3 local diagnostic pilot artifacts
+results/stage3/layerwise/pilot/

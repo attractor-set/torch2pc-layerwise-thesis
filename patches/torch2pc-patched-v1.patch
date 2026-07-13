@@ -1,0 +1,616 @@
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..8e95401
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,5 @@
++
++# Python generated files
++__pycache__/
++*.py[cod]
++.pytest_cache/
+diff --git a/TorchSeq2PC.py b/TorchSeq2PC.py
+index 1eb53a1..1e640ad 100644
+--- a/TorchSeq2PC.py
++++ b/TorchSeq2PC.py
+@@ -36,36 +36,43 @@ def FwdPassPlus(model,LossFun,X,Y):
+ # see: Millidge, Tschantz, and Buckley. Predictive coding approximates backprop along arbitrary computation graphs.
+ # v,epsilon=FixedPredPCPredErrs(model,vhat,dLdy,eta=1,n=None)
+ def FixedPredPCPredErrs(model,vhat,dLdy,eta=1,n=None):
+-
+-    # Number of layers, counting the input as layer 0 
+-    DepthPlusOne=len(model)+1 
+-
+-    if n==None:
+-      n=len(model)
+-
+-    # Initialize epsilons
+-    epsilon=[None]*DepthPlusOne
+-    epsilon[-1]=dLdy
+-
+-    # Initialize v to a copy of vhat with no gradients needed
+-    # (can this be moved up to the loop above?)
+-    v=[None]*DepthPlusOne
+-    for layer in range(DepthPlusOne):
+-      v[layer]=vhat[layer].clone().detach()
+-    
+-    # Iterative updates of v and epsilon using stored values of vhat    
+-    for i in range(n):
+-      for layer in reversed(range(DepthPlusOne-1)):#range(DepthPlusOne-2,-1,-1):  
+-        epsilon[layer]=vhat[layer]-v[layer]
+-        _,epsdfdv=torch.autograd.functional.vjp(model[layer],vhat[layer],epsilon[layer+1])               
+-        dv=epsilon[layer]-epsdfdv
+-        v[layer]=v[layer]+eta*dv
+-      # This helps free up memory
+-      with torch.no_grad():
+-        for layer in range(1,DepthPlusOne-1):
+-          v[layer]=v[layer].clone()
+-          epsilon[layer]=epsilon[layer].clone()      
+-    return v,epsilon
++ # Number of layers, counting the input as layer 0
++ DepthPlusOne=len(model)+1
++ if n is None:
++  n=len(model)
++ if n < 1:
++  raise ValueError('n must be positive')
++ # FixedPred uses one Jacobian linearization point per layer. Build each
++ # local forward graph once and reuse it for all inference iterations.
++ fixed=[activation.detach() for activation in vhat]
++ linear_inputs=[]
++ linear_outputs=[]
++ for layer in range(DepthPlusOne-1):
++  linear_input=fixed[layer].detach().requires_grad_(True)
++  linear_inputs.append(linear_input)
++  linear_outputs.append(model[layer](linear_input))
++ # Initialize epsilons and beliefs.
++ epsilon=[None]*DepthPlusOne
++ epsilon[-1]=dLdy.detach()
++ v=[activation.clone() for activation in fixed]
++ # Iterative updates of v and epsilon using stored values of vhat.
++ for i in range(n):
++  retain_graph=i < n-1
++  for layer in reversed(range(DepthPlusOne-1)):
++   epsilon[layer]=fixed[layer]-v[layer]
++   epsdfdv=torch.autograd.grad(
++    linear_outputs[layer],
++    linear_inputs[layer],
++    grad_outputs=epsilon[layer+1],
++    retain_graph=retain_graph,
++   )[0]
++   dv=epsilon[layer]-epsdfdv
++   v[layer]=v[layer]+eta*dv
++  # Detach iterative state without copying tensor storage.
++  for layer in range(1,DepthPlusOne-1):
++   v[layer]=v[layer].detach()
++   epsilon[layer]=epsilon[layer].detach()
++ return v,epsilon
+ 
+ 
+ 
+@@ -75,39 +82,43 @@ def FixedPredPCPredErrs(model,vhat,dLdy,eta=1,n=None):
+ # without the fixed prediction assumption.
+ # v,epsilon=StrictPCPredErrs(model,vinit,LossFun,Y,eta,n)
+ def StrictPCPredErrs(model,vinit,LossFun,Y,eta,n):
+-
++ if n < 1:
++  raise ValueError('n must be positive')
++ # Number of layers, counting the input as layer 0.
++ DepthPlusOne=len(model)+1
++ epsilon=[None]*DepthPlusOne
++ # Beliefs are independent iterative state.
++ v=[activation.detach().clone() for activation in vinit]
++ # Iterative updates of v and epsilon.
++ for i in range(n):
++  current_input=v[-2].detach().requires_grad_(True)
++  current_output=model[-1](current_input)
++  Loss=LossFun(current_output,Y)
++  epsilon[-1]=torch.autograd.grad(Loss,current_output,retain_graph=True)[0]
++  for layer in reversed(range(1,DepthPlusOne-1)):
++   epsdfdv=torch.autograd.grad(
++    current_output,
++    current_input,
++    grad_outputs=epsilon[layer+1],
++    retain_graph=False,
++   )[0]
++   if layer == 1:
+     with torch.no_grad():
+-      # Number of layers, counting the input as layer 0 
+-      DepthPlusOne=len(model)+1 
+-
+-      # Initialize epsilons
+-      epsilon=[None]*DepthPlusOne
+-
+-    # Initialize v to a copy of vinit with no gradients needed
+-    # (can this be moved up to the loop above?)
+-    v=[None]*DepthPlusOne
+-    for layer in range(DepthPlusOne):
+-      v[layer]=vinit[layer].clone()    
+-
+-    # Iterative updates of v and epsilon 
+-    for i in range(n):
+-      model.zero_grad()
+-      layer=DepthPlusOne-1
+-      vtilde=model[layer-1](v[layer-1])
+-      Loss=LossFun(vtilde,Y)
+-      epsilon[layer]=torch.autograd.grad(Loss,vtilde,retain_graph=False)[0] # -2 ~ DepthPlusOne-2
+-      for layer in reversed(range(1,DepthPlusOne-1)):
+-        epsilon[layer]=model[layer-1](v[layer-1])-v[layer]
+-        _,epsdfdv=torch.autograd.functional.vjp(model[layer],v[layer],epsilon[layer+1])               
+-        dv=epsilon[layer]-epsdfdv
+-        v[layer]=v[layer]+eta*dv
+-      # This helps free up memory
+-      with torch.no_grad():
+-        for layer in range(1,DepthPlusOne-1):
+-          v[layer]=v[layer].clone()
+-          epsilon[layer]=epsilon[layer].clone()
+-        
+-    return v,epsilon
++     lower_output=model[0](v[0])
++    lower_input=None
++   else:
++    lower_input=v[layer-1].detach().requires_grad_(True)
++    lower_output=model[layer-1](lower_input)
++   epsilon[layer]=lower_output-v[layer]
++   dv=epsilon[layer]-epsdfdv
++   v[layer]=v[layer]+eta*dv
++   current_input=lower_input
++   current_output=lower_output
++  # Detach iterative state without copying tensor storage.
++  for layer in range(1,DepthPlusOne-1):
++   v[layer]=v[layer].detach()
++   epsilon[layer]=epsilon[layer].detach()
++ return v,epsilon
+ 
+ 
+ # Compute exact prediction errors (epsilon) and beliefs (v)
+@@ -115,54 +126,83 @@ def StrictPCPredErrs(model,vinit,LossFun,Y,eta,n):
+ # the activations and v=vhat-epsilon where vhat are the
+ # activations from a forward pass.
+ # v,epsilon=ExactPredErrs(model,LossFun,X,Y,vhat=None)
+-def ExactPredErrs(model,LossFun,X,Y,vhat=None):
+-
+-    # Number of layers, counting the input as layer 0 
+-    DepthPlusOne=len(model)+1
+-
+-    # Forward pass if it wasn't passed in
+-    if vhat==None:
+-      vhat=[None]*DepthPlusOne
+-      vhat[0]=X
+-      for layer in range(1,DepthPlusOne):
+-        f=model[layer-1]
+-        vhat[layer]=f(vhat[layer-1])
+-
+-    Loss = LossFun(vhat[-1], Y)
+-    
+-    epsilon=[None]*DepthPlusOne
+-    v=[None]*DepthPlusOne
+-
+-    for layer in range(1,DepthPlusOne):          
+-      epsilon[layer]=torch.autograd.grad(Loss,vhat[layer],allow_unused=True,retain_graph=True)[0]      
+-      v[layer]=vhat[layer]-epsilon[layer]
+-    
+-    return v,epsilon
++def ExactPredErrs(model,LossFun,X,Y,vhat=None,Loss=None):
++ # Number of layers, counting the input as layer 0
++ DepthPlusOne=len(model)+1
++ # Forward pass if it wasn't passed in
++ if vhat is None:
++  vhat=[None]*DepthPlusOne
++  vhat[0]=X
++  for layer in range(1,DepthPlusOne):
++   f=model[layer-1]
++   vhat[layer]=f(vhat[layer-1])
++  Loss = LossFun(vhat[-1], Y)
++ elif Loss is None:
++  Loss = LossFun(vhat[-1], Y)
++ epsilon=[None]*DepthPlusOne
++ v=[None]*DepthPlusOne
++ for layer in range(1,DepthPlusOne):
++  epsilon[layer]=torch.autograd.grad(Loss,vhat[layer],allow_unused=True,retain_graph=True)[0]
++  v[layer]=vhat[layer]-epsilon[layer]
++ return v,epsilon
++
++def ExactPCInfer(model,LossFun,X,Y):
++ DepthPlusOne=len(model)+1
++ vhat=[None]*DepthPlusOne
++ vhat[0]=X
++ for layer in range(1,DepthPlusOne):
++  vhat[layer]=model[layer-1](vhat[layer-1])
++ Loss=LossFun(vhat[-1],Y)
++ parameters=tuple(model.parameters())
++ targets=tuple(vhat[1:])+parameters
++ gradients=torch.autograd.grad(
++  Loss,
++  targets,
++  allow_unused=True,
++  retain_graph=False,
++ )
++ activation_gradients=gradients[:DepthPlusOne-1]
++ parameter_gradients=gradients[DepthPlusOne-1:]
++ epsilon=[None]*DepthPlusOne
++ v=[None]*DepthPlusOne
++ for layer,gradient in enumerate(activation_gradients,start=1):
++  if gradient is None:
++   raise RuntimeError(f'Exact activation gradient is missing at layer {layer}')
++  epsilon[layer]=gradient
++  v[layer]=vhat[layer]-gradient
++ for parameter,gradient in zip(parameters,parameter_gradients):
++  parameter.grad=gradient
++ dLdy=epsilon[-1]
++ return vhat,Loss,dLdy,v,epsilon
+ 
+     
+ # Set gradients of model params based on PC approximations
+ def SetPCGrads(model,epsilon,X,v=None):
+-    
+-    # Number of layers, counting the input as layer 0 
+-    DepthPlusOne=len(model)+1
+-
+-    # Forward pass if v wasn't passed in
+-    if v==None:
+-      v=[None]*DepthPlusOne
+-      v[0]=X
+-      for layer in range(1,DepthPlusOne):
+-        f=model[layer-1]
+-        v[layer]=f(v[layer-1])
+-
+-    # Compute new parameter values    
+-    for layer in range(0,DepthPlusOne-1):
+-      with torch.no_grad():
+-        vtemp0=v[layer].clone()
+-        vtemp0.requires_grad=True
+-      vtemp1=model[layer](vtemp0)
+-      for p in model[layer].parameters():
+-        dtheta=torch.autograd.grad(vtemp1,p,grad_outputs=epsilon[layer+1],allow_unused=True,retain_graph=True)[0]
+-        p.grad = dtheta      
++ # Number of layers, counting the input as layer 0
++ DepthPlusOne=len(model)+1
++ # Forward pass if v wasn't passed in
++ if v is None:
++  v=[None]*DepthPlusOne
++  v[0]=X
++  for layer in range(1,DepthPlusOne):
++   f=model[layer-1]
++   v[layer]=f(v[layer-1])
++ # Compute all parameter gradients for each module in one VJP.
++ for layer in range(0,DepthPlusOne-1):
++  parameters=tuple(model[layer].parameters())
++  if not parameters:
++   continue
++  vtemp0=v[layer].detach()
++  vtemp1=model[layer](vtemp0)
++  gradients=torch.autograd.grad(
++   vtemp1,
++   parameters,
++   grad_outputs=epsilon[layer+1],
++   allow_unused=True,
++   retain_graph=False,
++  )
++  for parameter,gradient in zip(parameters,gradients):
++   parameter.grad=gradient
+ 
+ 
+ # Perform a whole PC inference step
+@@ -170,26 +210,21 @@ def SetPCGrads(model,epsilon,X,v=None):
+ # beliefs (v), and prediction errors (epsilon)
+ # vhat,Loss,dLdy,v,epsilon=PCInfer(model,LossFun,X,Y,ErrType="FixedPred",eta=.1,n=20,vinit=None)
+ def PCInfer(model,LossFun,X,Y,ErrType,eta=.1,n=20,vinit=None):
+-  
+-  # Fwd pass (plus return vhat and dLdy)
+-  vhat,Loss,dLdy=FwdPassPlus(model,LossFun,X,Y)
+-
+-  # Get beliefs and prediction errors
+-  if ErrType=="FixedPred":
+-    v,epsilon=FixedPredPCPredErrs(model,vhat,dLdy,eta,n)
+-    SetPCGrads(model,epsilon,X,vhat)
+-  elif ErrType=="Strict":
+-    if vinit==None:
+-      vinit=vhat
+-    v,epsilon=StrictPCPredErrs(model,vhat,LossFun,Y,eta,n)
+-    SetPCGrads(model,epsilon,X,v)
+-  elif ErrType=="Exact":
+-    v,epsilon=ExactPredErrs(model,LossFun,X,Y)
+-    SetPCGrads(model,epsilon,X,vhat)
+-  else:
+-    raise ValueError('ErrType must be \"FixedPred\", \"Strict\", or \"Exact\"')
+-
+-  # Set gradients in model
+-  #SetPCGrads(model,epsilon,X,vhat)
+-
+-  return vhat,Loss,dLdy,v,epsilon
++ if ErrType=="Exact":
++  return ExactPCInfer(model,LossFun,X,Y)
++ # Fwd pass (plus return vhat and dLdy)
++ vhat,Loss,dLdy=FwdPassPlus(model,LossFun,X,Y)
++ # Get beliefs and prediction errors
++ if ErrType=="FixedPred":
++  v,epsilon=FixedPredPCPredErrs(model,vhat,dLdy,eta,n)
++  SetPCGrads(model,epsilon,X,vhat)
++ elif ErrType=="Strict":
++  if vinit is None:
++   vinit=vhat
++  v,epsilon=StrictPCPredErrs(model,vinit,LossFun,Y,eta,n)
++  SetPCGrads(model,epsilon,X,v)
++ else:
++  raise ValueError('ErrType must be "FixedPred", "Strict", or "Exact"')
++ # Set gradients in model
++ #SetPCGrads(model,epsilon,X,vhat)
++ return vhat,Loss,dLdy,v,epsilon
+diff --git a/benchmarks/benchmark_pc_infer.py b/benchmarks/benchmark_pc_infer.py
+new file mode 100644
+index 0000000..8499028
+--- /dev/null
++++ b/benchmarks/benchmark_pc_infer.py
+@@ -0,0 +1,91 @@
++from __future__ import annotations
++
++import argparse
++import copy
++import importlib.util
++import statistics
++import time
++from pathlib import Path
++from types import ModuleType
++
++import torch
++import torch.nn as nn
++
++
++def load_module(name: str, path: Path) -> ModuleType:
++    spec = importlib.util.spec_from_file_location(name, path)
++    if spec is None or spec.loader is None:
++        raise RuntimeError(f"Cannot import {path}")
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    return module
++
++
++def model() -> nn.Sequential:
++    return nn.Sequential(
++        nn.Sequential(nn.Conv2d(1, 6, 5), nn.Tanh(), nn.AvgPool2d(2, 2)),
++        nn.Sequential(nn.Conv2d(6, 16, 5), nn.Tanh(), nn.AvgPool2d(2, 2)),
++        nn.Flatten(),
++        nn.Sequential(nn.Linear(16 * 5 * 5, 120), nn.Tanh()),
++        nn.Sequential(nn.Linear(120, 84), nn.Tanh()),
++        nn.Linear(84, 10),
++    )
++
++
++def synchronize(device: torch.device) -> None:
++    if device.type == "cuda":
++        torch.cuda.synchronize(device)
++
++
++def main() -> None:
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--module", type=Path, default=Path("TorchSeq2PC.py"))
++    parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu")
++    parser.add_argument("--batch-size", type=int, default=256)
++    parser.add_argument("--warmup", type=int, default=3)
++    parser.add_argument("--repetitions", type=int, default=10)
++    args = parser.parse_args()
++
++    device = torch.device(args.device)
++    implementation = load_module("torch2pc_benchmark_candidate", args.module)
++    base = model().to(device)
++    inputs = torch.randn(args.batch_size, 1, 32, 32, device=device)
++    targets = torch.randint(0, 10, (args.batch_size,), device=device)
++    loss_fn = nn.CrossEntropyLoss()
++
++    for method, eta, steps in [
++        ("Exact", 0.1, 20),
++        ("FixedPred", 0.1, 10),
++        ("Strict", 0.05, 20),
++    ]:
++        samples: list[float] = []
++        for repetition in range(args.warmup + args.repetitions):
++            candidate = copy.deepcopy(base)
++            synchronize(device)
++            started = time.perf_counter()
++            implementation.PCInfer(
++                candidate,
++                loss_fn,
++                inputs,
++                targets,
++                method,
++                eta=eta,
++                n=steps,
++            )
++            synchronize(device)
++            elapsed = time.perf_counter() - started
++            if repetition >= args.warmup:
++                samples.append(elapsed)
++        print(
++            method,
++            {
++                "median_sec": statistics.median(samples),
++                "mean_sec": statistics.fmean(samples),
++                "min_sec": min(samples),
++                "max_sec": max(samples),
++            },
++        )
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tests/test_patch_equivalence.py b/tests/test_patch_equivalence.py
+new file mode 100644
+index 0000000..e5fe666
+--- /dev/null
++++ b/tests/test_patch_equivalence.py
+@@ -0,0 +1,175 @@
++from __future__ import annotations
++
++import copy
++import importlib.util
++import os
++import subprocess
++import sys
++from pathlib import Path
++from types import ModuleType
++
++import pytest
++import torch
++import torch.nn as nn
++
++DEFAULT_ORIGINAL_COMMIT = "00c6c50ee3540537bbb56ab2b6567b541f42b093"
++
++
++def _load_module(name: str, path: Path) -> ModuleType:
++    spec = importlib.util.spec_from_file_location(name, path)
++    if spec is None or spec.loader is None:
++        raise RuntimeError(f"Cannot import {path}")
++    module = importlib.util.module_from_spec(spec)
++    sys.modules[name] = module
++    spec.loader.exec_module(module)
++    return module
++
++
++@pytest.fixture(scope="session")
++def implementations(tmp_path_factory: pytest.TempPathFactory) -> tuple[ModuleType, ModuleType]:
++    root = Path(__file__).resolve().parents[1]
++    original_commit = os.environ.get(
++        "TORCH2PC_ORIGINAL_COMMIT", DEFAULT_ORIGINAL_COMMIT
++    )
++    try:
++        original_source = subprocess.check_output(
++            ["git", "show", f"{original_commit}:TorchSeq2PC.py"],
++            cwd=root,
++            text=True,
++            stderr=subprocess.STDOUT,
++        )
++    except subprocess.CalledProcessError as exc:
++        pytest.fail(
++            "Original Torch2PC commit is unavailable. Base the patch branch on "
++            f"{DEFAULT_ORIGINAL_COMMIT} or set TORCH2PC_ORIGINAL_COMMIT.\n{exc.output}"
++        )
++    reference_path = tmp_path_factory.mktemp("torch2pc-reference") / "TorchSeq2PC.py"
++    reference_path.write_text(original_source, encoding="utf-8")
++    return (
++        _load_module("torch2pc_original_reference", reference_path),
++        _load_module("torch2pc_patched_candidate", root / "TorchSeq2PC.py"),
++    )
++
++
++def _model() -> nn.Sequential:
++    return nn.Sequential(
++        nn.Linear(4, 6),
++        nn.Tanh(),
++        nn.Linear(6, 3),
++    ).double()
++
++
++def _assert_tensor_lists_close(
++    reference: list[torch.Tensor | None],
++    candidate: list[torch.Tensor | None],
++) -> None:
++    assert len(reference) == len(candidate)
++    for left, right in zip(reference, candidate, strict=True):
++        if left is None or right is None:
++            assert left is right
++            continue
++        torch.testing.assert_close(left, right, rtol=1e-10, atol=1e-12)
++
++
++@pytest.mark.parametrize(
++    ("method", "eta", "steps"),
++    [
++        ("Exact", 0.1, 20),
++        ("FixedPred", 0.1, 5),
++        ("Strict", 0.05, 5),
++    ],
++)
++def test_patched_pc_infer_matches_original(
++    implementations: tuple[ModuleType, ModuleType],
++    method: str,
++    eta: float,
++    steps: int,
++) -> None:
++    original, patched = implementations
++    torch.manual_seed(11)
++    base = _model()
++    reference_model = copy.deepcopy(base)
++    candidate_model = copy.deepcopy(base)
++    inputs = torch.randn(8, 4, dtype=torch.float64)
++    targets = torch.randint(0, 3, (8,))
++    loss_fn = nn.CrossEntropyLoss()
++
++    reference = original.PCInfer(
++        reference_model, loss_fn, inputs, targets, method, eta=eta, n=steps
++    )
++    candidate = patched.PCInfer(
++        candidate_model, loss_fn, inputs, targets, method, eta=eta, n=steps
++    )
++
++    torch.testing.assert_close(reference[1], candidate[1], rtol=1e-12, atol=1e-12)
++    torch.testing.assert_close(reference[2], candidate[2], rtol=1e-10, atol=1e-12)
++    _assert_tensor_lists_close(reference[3], candidate[3])
++    _assert_tensor_lists_close(reference[4], candidate[4])
++    for reference_parameter, candidate_parameter in zip(
++        reference_model.parameters(), candidate_model.parameters(), strict=True
++    ):
++        assert reference_parameter.grad is not None
++        assert candidate_parameter.grad is not None
++        torch.testing.assert_close(
++            reference_parameter.grad,
++            candidate_parameter.grad,
++            rtol=1e-10,
++            atol=1e-12,
++        )
++
++
++def test_exact_gradients_match_backprop(
++    implementations: tuple[ModuleType, ModuleType],
++) -> None:
++    _, patched = implementations
++    torch.manual_seed(19)
++    bp_model = _model()
++    exact_model = copy.deepcopy(bp_model)
++    inputs = torch.randn(8, 4, dtype=torch.float64)
++    targets = torch.randint(0, 3, (8,))
++    loss_fn = nn.CrossEntropyLoss()
++
++    loss_fn(bp_model(inputs), targets).backward()
++    patched.PCInfer(exact_model, loss_fn, inputs, targets, "Exact")
++
++    for bp_parameter, exact_parameter in zip(
++        bp_model.parameters(), exact_model.parameters(), strict=True
++    ):
++        assert bp_parameter.grad is not None
++        assert exact_parameter.grad is not None
++        torch.testing.assert_close(
++            bp_parameter.grad,
++            exact_parameter.grad,
++            rtol=1e-10,
++            atol=1e-12,
++        )
++
++
++def test_strict_uses_explicit_vinit(
++    implementations: tuple[ModuleType, ModuleType],
++) -> None:
++    _, patched = implementations
++    torch.manual_seed(23)
++    model = _model()
++    inputs = torch.randn(8, 4, dtype=torch.float64)
++    targets = torch.randint(0, 3, (8,))
++    loss_fn = nn.CrossEntropyLoss()
++    vhat, _, _ = patched.FwdPassPlus(model, loss_fn, inputs, targets)
++    custom = [value.detach().clone() for value in vhat]
++    custom[1] = custom[1] + 0.25
++
++    _, _, _, default_v, _ = patched.PCInfer(
++        copy.deepcopy(model), loss_fn, inputs, targets, "Strict", eta=0.05, n=1
++    )
++    _, _, _, custom_v, _ = patched.PCInfer(
++        copy.deepcopy(model),
++        loss_fn,
++        inputs,
++        targets,
++        "Strict",
++        eta=0.05,
++        n=1,
++        vinit=custom,
++    )
++
++    assert not torch.equal(default_v[1], custom_v[1])

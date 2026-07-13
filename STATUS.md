@@ -25,6 +25,7 @@ patch. Численные контроли ограничены закреплё
 
 ## Текущая задача
 
-Завершить post-experiment maintenance: стабилизировать CSV-хэши, пересоздать
-Stage 2 manifest с правильным environment lock, проверить CI и подготовить
-полный replication bundle с raw run artifacts.
+Post-experiment maintenance завершён: CSV-хэши стабильны, Stage 2 manifest
+привязан к правильному environment lock, а regression suite содержит 63 теста.
+Остаётся проверить CI, создать отдельные теги execution/results state и
+опубликовать полный replication bundle с raw run artifacts.

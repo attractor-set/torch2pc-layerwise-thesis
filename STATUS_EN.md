@@ -26,6 +26,8 @@ models or environments.
 
 ## Current task
 
-Complete post-experiment maintenance: stabilize CSV checksums, regenerate the
-Stage 2 manifest with the correct environment lock, verify CI, and prepare a
-complete replication bundle containing raw run artifacts.
+Post-experiment maintenance is complete: CSV checksums are stable, the Stage 2
+manifest is bound to the correct environment lock, and the regression suite
+contains 63 tests. The remaining work is to verify CI, create separate
+execution/results-state tags, and publish the complete replication bundle with
+raw run artifacts.

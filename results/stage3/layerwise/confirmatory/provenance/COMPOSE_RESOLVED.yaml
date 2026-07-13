@@ -1,0 +1,431 @@
+name: torch2pc-layerwise-thesis
+services:
+  control-cpu:
+    build:
+      context: /home/dzmitry-prychyna/torch2pc-layerwise-thesis
+      dockerfile: Dockerfile.rocm
+      args:
+        BASE_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+        SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    cpuset: "0"
+    command:
+      - bash
+      - scripts/run_control_gate.sh
+      - cpu
+    environment:
+      HOME: /tmp/home
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      TORCH_NUM_THREADS: "1"
+    image: torch2pc-layerwise-thesis:0.1.0
+    init: true
+    mem_limit: "51539607552"
+    network_mode: none
+    shm_size: "8589934592"
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/data
+        target: /workspace/data
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/external
+        target: /workspace/external
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/results
+        target: /workspace/results
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/experiments
+        target: /workspace/experiments
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/configs
+        target: /workspace/configs
+        read_only: true
+        bind: {}
+    working_dir: /workspace
+  control-gpu:
+    build:
+      context: /home/dzmitry-prychyna/torch2pc-layerwise-thesis
+      dockerfile: Dockerfile.rocm
+      args:
+        BASE_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+        SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    cpuset: 0-7
+    command:
+      - bash
+      - scripts/run_control_gate.sh
+      - gpu
+    devices:
+      - source: /dev/kfd
+        target: /dev/kfd
+        permissions: rwm
+      - source: /dev/dri
+        target: /dev/dri
+        permissions: rwm
+    environment:
+      EXPERIMENT_IMAGE: torch2pc-layerwise-thesis:0.1.0
+      HIP_VISIBLE_DEVICES: "0"
+      HOME: /tmp/home
+      MKL_NUM_THREADS: "4"
+      NUMEXPR_NUM_THREADS: "4"
+      OMP_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      ROCM_PYTORCH_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+      SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    group_add:
+      - "44"
+      - "992"
+    image: torch2pc-layerwise-thesis:0.1.0
+    init: true
+    mem_limit: "51539607552"
+    network_mode: none
+    shm_size: "8589934592"
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/data
+        target: /workspace/data
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/external
+        target: /workspace/external
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/results
+        target: /workspace/results
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/experiments
+        target: /workspace/experiments
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/configs
+        target: /workspace/configs
+        read_only: true
+        bind: {}
+    working_dir: /workspace
+  manifest:
+    build:
+      context: /home/dzmitry-prychyna/torch2pc-layerwise-thesis
+      dockerfile: Dockerfile.rocm
+      args:
+        BASE_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+        SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    command:
+      - torch2pc-thesis
+      - manifest
+    devices:
+      - source: /dev/kfd
+        target: /dev/kfd
+        permissions: rwm
+      - source: /dev/dri
+        target: /dev/dri
+        permissions: rwm
+    environment:
+      EXPERIMENT_IMAGE: torch2pc-layerwise-thesis:0.1.0
+      HIP_VISIBLE_DEVICES: "0"
+      HOME: /tmp/home
+      MKL_NUM_THREADS: "4"
+      NUMEXPR_NUM_THREADS: "4"
+      OMP_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      ROCM_PYTORCH_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+      SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    group_add:
+      - "44"
+      - "992"
+    image: torch2pc-layerwise-thesis:0.1.0
+    init: true
+    mem_limit: "51539607552"
+    network_mode: none
+    shm_size: "8589934592"
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/data
+        target: /workspace/data
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/external
+        target: /workspace/external
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/results
+        target: /workspace/results
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/experiments
+        target: /workspace/experiments
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/configs
+        target: /workspace/configs
+        read_only: true
+        bind: {}
+    working_dir: /workspace
+  prepare:
+    build:
+      context: /home/dzmitry-prychyna/torch2pc-layerwise-thesis
+      dockerfile: Dockerfile.rocm
+      args:
+        BASE_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+        SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    command:
+      - bash
+      - scripts/prepare_assets.sh
+    environment:
+      EXPERIMENT_IMAGE: torch2pc-layerwise-thesis:0.1.0
+      HIP_VISIBLE_DEVICES: "0"
+      HOME: /tmp/home
+      MKL_NUM_THREADS: "4"
+      NUMEXPR_NUM_THREADS: "4"
+      OMP_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      ROCM_PYTORCH_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+      SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    image: torch2pc-layerwise-thesis:0.1.0
+    init: true
+    mem_limit: "51539607552"
+    networks:
+      default: null
+    shm_size: "8589934592"
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/data
+        target: /workspace/data
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/external
+        target: /workspace/external
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/results
+        target: /workspace/results
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/experiments
+        target: /workspace/experiments
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/configs
+        target: /workspace/configs
+        read_only: true
+        bind: {}
+    working_dir: /workspace
+  report:
+    build:
+      context: /home/dzmitry-prychyna/torch2pc-layerwise-thesis
+      dockerfile: Dockerfile.rocm
+      args:
+        BASE_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+        SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    command:
+      - torch2pc-thesis
+      - report
+    environment:
+      EXPERIMENT_IMAGE: torch2pc-layerwise-thesis:0.1.0
+      HIP_VISIBLE_DEVICES: "0"
+      HOME: /tmp/home
+      MKL_NUM_THREADS: "4"
+      NUMEXPR_NUM_THREADS: "4"
+      OMP_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      ROCM_PYTORCH_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+      SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    image: torch2pc-layerwise-thesis:0.1.0
+    init: true
+    mem_limit: "51539607552"
+    network_mode: none
+    shm_size: "8589934592"
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/data
+        target: /workspace/data
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/external
+        target: /workspace/external
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/results
+        target: /workspace/results
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/experiments
+        target: /workspace/experiments
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/configs
+        target: /workspace/configs
+        read_only: true
+        bind: {}
+    working_dir: /workspace
+  run:
+    build:
+      context: /home/dzmitry-prychyna/torch2pc-layerwise-thesis
+      dockerfile: Dockerfile.rocm
+      args:
+        BASE_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+        SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    cpuset: 0-7
+    command:
+      - torch2pc-thesis
+      - run
+      - --stage
+      - smoke
+      - --method
+      - bp
+      - --dataset
+      - MNIST
+      - --model
+      - lenet_classic
+      - --seed
+      - "0"
+    devices:
+      - source: /dev/kfd
+        target: /dev/kfd
+        permissions: rwm
+      - source: /dev/dri
+        target: /dev/dri
+        permissions: rwm
+    environment:
+      EXPERIMENT_IMAGE: torch2pc-layerwise-thesis:0.1.0
+      HIP_VISIBLE_DEVICES: "0"
+      HOME: /tmp/home
+      MKL_NUM_THREADS: "4"
+      NUMEXPR_NUM_THREADS: "4"
+      OMP_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      ROCM_PYTORCH_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+      SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    group_add:
+      - "44"
+      - "992"
+    image: torch2pc-layerwise-thesis:0.1.0
+    init: true
+    mem_limit: "51539607552"
+    network_mode: none
+    shm_size: "8589934592"
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/data
+        target: /workspace/data
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/external
+        target: /workspace/external
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/results
+        target: /workspace/results
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/experiments
+        target: /workspace/experiments
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/configs
+        target: /workspace/configs
+        read_only: true
+        bind: {}
+    working_dir: /workspace
+  validate:
+    build:
+      context: /home/dzmitry-prychyna/torch2pc-layerwise-thesis
+      dockerfile: Dockerfile.rocm
+      args:
+        BASE_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+        SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    command:
+      - torch2pc-thesis
+      - validate
+      - --stage
+      - smoke
+      - --method
+      - bp
+    environment:
+      EXPERIMENT_IMAGE: torch2pc-layerwise-thesis:0.1.0
+      HIP_VISIBLE_DEVICES: "0"
+      HOME: /tmp/home
+      MKL_NUM_THREADS: "4"
+      NUMEXPR_NUM_THREADS: "4"
+      OMP_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      ROCM_PYTORCH_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+      SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    image: torch2pc-layerwise-thesis:0.1.0
+    init: true
+    mem_limit: "51539607552"
+    network_mode: none
+    shm_size: "8589934592"
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/data
+        target: /workspace/data
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/external
+        target: /workspace/external
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/results
+        target: /workspace/results
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/experiments
+        target: /workspace/experiments
+        bind: {}
+      - type: bind
+        source: /home/dzmitry-prychyna/torch2pc-layerwise-thesis/configs
+        target: /workspace/configs
+        read_only: true
+        bind: {}
+    working_dir: /workspace
+networks:
+  default:
+    name: torch2pc-layerwise-thesis_default
+x-common:
+  build:
+    args:
+      BASE_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+      SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+    context: .
+    dockerfile: Dockerfile.rocm
+  environment:
+    EXPERIMENT_IMAGE: torch2pc-layerwise-thesis:0.1.0
+    HIP_VISIBLE_DEVICES: "0"
+    HOME: /tmp/home
+    MKL_NUM_THREADS: "4"
+    NUMEXPR_NUM_THREADS: "4"
+    OMP_NUM_THREADS: "4"
+    OPENBLAS_NUM_THREADS: "4"
+    ROCM_PYTORCH_IMAGE: rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+    SOURCE_GIT_COMMIT: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
+  image: torch2pc-layerwise-thesis:0.1.0
+  init: true
+  mem_limit: 48g
+  shm_size: 8gb
+  user: 1000:1000
+  volumes:
+    - ./data:/workspace/data
+    - ./external:/workspace/external
+    - ./results:/workspace/results
+    - ./experiments:/workspace/experiments
+    - ./configs:/workspace/configs:ro
+  working_dir: /workspace
+x-gpu:
+  devices:
+    - /dev/kfd:/dev/kfd
+    - /dev/dri:/dev/dri
+  group_add:
+    - "44"
+    - "992"

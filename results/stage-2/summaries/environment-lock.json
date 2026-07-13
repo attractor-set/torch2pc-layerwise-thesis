@@ -1,0 +1,528 @@
+{
+  "schema_version": 2,
+  "campaign_stage": "final_stage_2",
+  "campaign_id": "torch2pc-patched-v1",
+  "created_utc": "2026-07-13T12:33:31Z",
+  "source_git_commit_at_lock_creation": "6d66b0a6f82c30c4fb8eca6247383ca13e0636a2",
+  "source_worktree_clean_before_lock": true,
+  "image_source_git_commit": "6d66b0a6f82c30c4fb8eca6247383ca13e0636a2",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "torch2pc_worktree_clean": true,
+  "torch2pc_reference_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
+  "torch2pc_reference_worktree_clean": true,
+  "prepared_assets": {
+    "path": "results/stage-2/summaries/prepared_assets.json",
+    "sha256": "1f81f1c787c05c2ea60de57cb5cd451bc4226a17ada8e3163bb480733b40ec60",
+    "dataset_file_count": 26
+  },
+  "experiment_image": {
+    "reference": "torch2pc-layerwise-thesis:0.1.0",
+    "id": "sha256:df1bd97e22b4a8aa6e3278a7670b552384b3c43f56d9b790b9d99250e328e6d7",
+    "repo_digests": [
+      "torch2pc-layerwise-thesis@sha256:df1bd97e22b4a8aa6e3278a7670b552384b3c43f56d9b790b9d99250e328e6d7"
+    ],
+    "created": "2026-07-13T02:28:26.377221149-03:00",
+    "source_git_commit_label": "6d66b0a6f82c30c4fb8eca6247383ca13e0636a2"
+  },
+  "base_image": {
+    "reference": "rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191",
+    "id": "sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191",
+    "repo_digests": [
+      "rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191"
+    ],
+    "created": "2026-03-30T18:13:55.092019506Z",
+    "source_git_commit_label": null
+  },
+  "config_sha256": "a0dc07e519206391b9d7bde7e351cf7b0ac9b461374660e684913c1de8cdf01b",
+  "config_sha256_kind": "sha256_of_sorted_config_path_and_content_digests",
+  "config_files": [
+    {
+      "path": "configs/base.yaml",
+      "sha256": "325d6b6b89451d1717d184a8b85301a5c92f95a9f437d04be625bc6414af0436"
+    },
+    {
+      "path": "configs/experiments/EXP-001-smoke-bp-mnist.yaml",
+      "sha256": "6fcffc3f32fa43a9e3ec396c1ba88b9b1e11949a58a579e09ca39d0de5a3ac6a"
+    },
+    {
+      "path": "configs/hardware/rx7700xt_5700x3d.yaml",
+      "sha256": "679b82d7b0051dc088459d09bc9e85bef5ce9e15e153c3ee8ec834f8f860dbde"
+    },
+    {
+      "path": "configs/methods/bp.yaml",
+      "sha256": "f7c463fb2eab2a5e7fdb575e408fd79a45a01ce8c6adc17ac1858f4626ca1a6c"
+    },
+    {
+      "path": "configs/methods/exact.yaml",
+      "sha256": "d59963768545b53114d29c02281cc9f4c49bd78b43e0abc56fd8227fa5c9c4ac"
+    },
+    {
+      "path": "configs/methods/fixedpred.yaml",
+      "sha256": "1a083d3a9e175f92326bd509a22bd54b69b310232b6a1bbc4be9bb63379da241"
+    },
+    {
+      "path": "configs/methods/strict.yaml",
+      "sha256": "96cacef5582d2fa66015ddfe3df6ee100c1a6ef7fb9187f684b3d430e37ecec5"
+    },
+    {
+      "path": "configs/stages/correctness.yaml",
+      "sha256": "fb55fe018b4ebbe64e6175efdc2958e89332186dea3332744133f72d85014c07"
+    },
+    {
+      "path": "configs/stages/diagnostics.yaml",
+      "sha256": "2eb3a3671027d5c6e104f9605dbcba31823bd5a2e09afa9dd5093df4cff8188d"
+    },
+    {
+      "path": "configs/stages/final.yaml",
+      "sha256": "fd072116abac95905baf98dcb0327f5fc1b2ba49509cee7cd5b1b700137387dd"
+    },
+    {
+      "path": "configs/stages/final_stage_2.yaml",
+      "sha256": "89d2c04783aceb37f6a5e8c834f59309658e800658f826ca86a73f0ed7b6db75"
+    },
+    {
+      "path": "configs/stages/pilot.yaml",
+      "sha256": "545d1ccdc1558155b40f4289d3b56119df58f53bb56f640f0dc1431b29f22920"
+    },
+    {
+      "path": "configs/stages/publication.yaml",
+      "sha256": "be48542e6192a88880af864a369c4f7e8283d8f36ae7c9102c33b25b51f126a2"
+    },
+    {
+      "path": "configs/stages/smoke.yaml",
+      "sha256": "33255bfaee77c5676531ccbd3db8459db531143a72c4407b55b4ab4b82286079"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "pyproject.toml",
+      "sha256": "e2dd7e32065a46f40f5798857796d06ccde50ce5b543336589d0bce24087ff5e"
+    },
+    {
+      "path": "Dockerfile.rocm",
+      "sha256": "a841668298aee5863b5897a6d0a062797111a3a09dcf92b216ba96fdc2d58da5"
+    },
+    {
+      "path": "compose.yaml",
+      "sha256": "65dec400cd8389f9e5dc7f77a3c99362c408105016a2e19153ec2dbaad72fd4c"
+    },
+    {
+      "path": "Makefile",
+      "sha256": "844f1ef3b95c0e0462303024d54de51b88ba3b0dd9b4647dd42469b44ed19de2"
+    },
+    {
+      "path": ".env.example",
+      "sha256": "3ed30ab34c7d02816077c44c24a4ef4472fa7714c96922163c77296cdb074d04"
+    },
+    {
+      "path": "requirements/dev.txt",
+      "sha256": "032e6779e8f9aa3ebb686adf2b238775e114b91703e56ec3da78ef5118973e03"
+    },
+    {
+      "path": "requirements/lock-dev.txt",
+      "sha256": "a529a6e3bc41b4d3db114c749f6baf0c36dea64055bfd95fb5c1ba84a050b765"
+    },
+    {
+      "path": "requirements/lock-rocm.txt",
+      "sha256": "a529a6e3bc41b4d3db114c749f6baf0c36dea64055bfd95fb5c1ba84a050b765"
+    },
+    {
+      "path": "requirements/rocm.txt",
+      "sha256": "fa3b401ffd43d54652b1a300c3be18d2a1a477e8f89a8f301b3c1373cb0e32d4"
+    },
+    {
+      "path": "requirements/torch-cpu.txt",
+      "sha256": "4900e2b5b7716d1f362d82fcf5eec946c7a911f3f889a01573d15506fe732bd4"
+    },
+    {
+      "path": "src/torch2pc_thesis/__init__.py",
+      "sha256": "99a15a1f681efaaff846df254eab58412a16fc8e1c7767d0ccd00b5e721b08f0"
+    },
+    {
+      "path": "src/torch2pc_thesis/__main__.py",
+      "sha256": "0cdac7a05ebb7dcba14d972361aaf2a36cbf3f11585a96354d83eb1e33e27135"
+    },
+    {
+      "path": "src/torch2pc_thesis/array_types.py",
+      "sha256": "98b734918465ebf4bd8a9b9b253a8f58dab5d78c3bd200f04c9a1a95e943c0c4"
+    },
+    {
+      "path": "src/torch2pc_thesis/assets.py",
+      "sha256": "92dec42c91da8cca775016a48263b6457c93a783dd62069df07f565b16c67097"
+    },
+    {
+      "path": "src/torch2pc_thesis/cli.py",
+      "sha256": "ce7eab956ff426dc20f17cf50f86a72a68caed9a821dceb12443f8c7f5cc4dba"
+    },
+    {
+      "path": "src/torch2pc_thesis/config.py",
+      "sha256": "b85ff56ff2e560d41ffd79d3139e6531138e48b69ff5c6c883f43dc3ef1bba15"
+    },
+    {
+      "path": "src/torch2pc_thesis/controls.py",
+      "sha256": "a04deac34df9c03be9f42058ca6d0361a9330714344e19c1cb611e4ebea07274"
+    },
+    {
+      "path": "src/torch2pc_thesis/cross_version.py",
+      "sha256": "cebb69a8a584daa24b9a8f28608cfe6478404d7642f55615d28d64172a6e438c"
+    },
+    {
+      "path": "src/torch2pc_thesis/data.py",
+      "sha256": "0dd12d8dbd1ab339eb0be8e1d4590735cb2db718b01822b47fd1ed5e877d30ba"
+    },
+    {
+      "path": "src/torch2pc_thesis/experiment.py",
+      "sha256": "5c21b2fdeeeb69be2f14e9f7f099df2d461cbfe2fb79297ea15594d95e7833db"
+    },
+    {
+      "path": "src/torch2pc_thesis/legacy_adapter.py",
+      "sha256": "7476f10ad34e750323fcc11d459882f27ccb5750cf028a3e61c910d8c1340b8a"
+    },
+    {
+      "path": "src/torch2pc_thesis/manifests.py",
+      "sha256": "ca306ccdb5a0cb875158cebb2f8e352fce3d24a2989c1df72d41ca5b3bdcba0b"
+    },
+    {
+      "path": "src/torch2pc_thesis/metrics.py",
+      "sha256": "8a4954b02ec06577686f73072494096b1465da81ea402fd77c50acee182e8aaf"
+    },
+    {
+      "path": "src/torch2pc_thesis/models.py",
+      "sha256": "26422736d2f8c747a5d80d20e82b84478728d965ba74de9718a1458dc5519bad"
+    },
+    {
+      "path": "src/torch2pc_thesis/pc_methods.py",
+      "sha256": "27078ecebffcc197e9ab7515224828b814a12397169ab8f87775a44a92a67a92"
+    },
+    {
+      "path": "src/torch2pc_thesis/registry.py",
+      "sha256": "9503c3afc55468ac54fa7a2113eb1fbff72316e5e737bc39ca663e950741e529"
+    },
+    {
+      "path": "src/torch2pc_thesis/reporting.py",
+      "sha256": "13253f7cc7124ce063f0c9c03e5130c82ef86e12c70f746d08b619c9b932e46d"
+    },
+    {
+      "path": "src/torch2pc_thesis/representations.py",
+      "sha256": "387a4ee5ef9a75509d99aadf3dfac7ad14ac9f8a174bfe9baaee7046faeeaf4f"
+    },
+    {
+      "path": "src/torch2pc_thesis/reproducibility.py",
+      "sha256": "d1a91d82586f3866ac4a7feaf0917eeb782ddb2bb862269210b1143c2bb60e9d"
+    },
+    {
+      "path": "src/torch2pc_thesis/robustness.py",
+      "sha256": "e08dca4c54fa630140369f4c6ed9108948ee4c9137480f34c18731b70184780c"
+    },
+    {
+      "path": "src/torch2pc_thesis/statistics.py",
+      "sha256": "a9cf7206e51edb9b6336c40979efb024b805d564f9c9ff9e35592e8b760620e5"
+    },
+    {
+      "path": "src/torch2pc_thesis/training.py",
+      "sha256": "b1fec4c9d8b915f0c0fe07da45e9727b688b4d79036e80b873b14426def0c178"
+    },
+    {
+      "path": "scripts/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scripts/check_epistemic_language.py",
+      "sha256": "41e1dbf724977a49774a532af829a2e3dce88edd4be1e3410a401121b1bbf335"
+    },
+    {
+      "path": "scripts/check_language_structure.py",
+      "sha256": "ad6f6e9ff28a369aca771930deeb247aa4b427472e7ecc3c38d8d99c8e189e08"
+    },
+    {
+      "path": "scripts/check_local_links.py",
+      "sha256": "d2e18cdd0d9efbff201c70f4e76a30c86f3dd43a1bbd257246bbcb73aa0107a8"
+    },
+    {
+      "path": "scripts/check_pilot_freeze.py",
+      "sha256": "950284ac1a3d421e5d400807a8ca3633d212bab2fb535c3f7fca106ae098767d"
+    },
+    {
+      "path": "scripts/check_protocol_gate.py",
+      "sha256": "d0b7329bccfb7e6017c8266d7d2489ca6cf2c04dab423e260a0265b25bb5e70d"
+    },
+    {
+      "path": "scripts/check_stage2_protocol_gate.py",
+      "sha256": "2dc36029b1541608ee0c7f2a7a688969a13619fd9d5380b7b3304c6e40a0c9d9"
+    },
+    {
+      "path": "scripts/configure_stage2.py",
+      "sha256": "43d47cfc427ad77a57a8d1b69e9d04b6eb98c3c501985fd1acb7b0346497f99a"
+    },
+    {
+      "path": "scripts/freeze_stage2.py",
+      "sha256": "e277783966a37eadb21e807d3b6e4db055c4f1a8751b9ba86a2777ecae6439c7"
+    },
+    {
+      "path": "scripts/freeze_stage2_environment.py",
+      "sha256": "ba2f004e4b1057134d0fa7a63cdd4ad0932942dd82754134ff20227eb0af2730"
+    },
+    {
+      "path": "scripts/generate_final_execution_plan.py",
+      "sha256": "0528fdc2dd4f64b474eae243a89dc03b7c5c9a242827529a1ede0bf0e1258d6d"
+    },
+    {
+      "path": "scripts/generate_pilot_observations.py",
+      "sha256": "28dd86b51fb4072f3976841fd5064402a6ff30be188974c55f911d183041f31f"
+    },
+    {
+      "path": "scripts/generate_stage2_execution_plan.py",
+      "sha256": "cceda82887239216d698fdd74b121a8205a6c77454db5f670053c764c4905d29"
+    },
+    {
+      "path": "scripts/pin_torch2pc_commit.py",
+      "sha256": "efdbf2feb10a873fecd971bb2560c3c1d2293a81650a585b5f299a9f3a2c649f"
+    },
+    {
+      "path": "scripts/run_stage2_control_gate.py",
+      "sha256": "b456aef808fe3dc0e083459323180472728fdd1767aa1379ca8cc39abda77b98"
+    },
+    {
+      "path": "scripts/select_pilot.py",
+      "sha256": "137ff1c9612ed14d29cc17162d9eb6db5d48bfb44880b5a36dc3526fd2ee1a0a"
+    },
+    {
+      "path": "scripts/snapshot_pilot_registry.py",
+      "sha256": "1b8a6fb7c8022fe24de9a70d79d2b79c7f1f7d5ca59a88144b084aeddb0a49f9"
+    },
+    {
+      "path": "scripts/snapshot_stage2_results.py",
+      "sha256": "322c97e4495c52dded20915fcbe9db5884feb50d44521a31b8cc3c07b2dee84b"
+    },
+    {
+      "path": "scripts/bootstrap_github.sh",
+      "sha256": "f810d42dec01f595c7b2bd9e2f536a67484b675a6aa48f7fe41a2b79aa285033"
+    },
+    {
+      "path": "scripts/build_controlled_image.sh",
+      "sha256": "ee1ba44af88bc8af332f2a3479376720955e10d27bf8e5c77660c99bb37c0c44"
+    },
+    {
+      "path": "scripts/build_release.sh",
+      "sha256": "141e6955a8518560cc411b6e9eac283706a991ebcbb4a303b5ba09e131be519c"
+    },
+    {
+      "path": "scripts/check_base_image.sh",
+      "sha256": "5ce11461547bc223a29128ed604d7c642b1c19602b99f04a3c425e7538e1aecc"
+    },
+    {
+      "path": "scripts/container_entrypoint.sh",
+      "sha256": "a319a4bd8df6c724f134c6b5504be934c8ce47ebfd8b356307e6ab0f5652812c"
+    },
+    {
+      "path": "scripts/freeze_environment.sh",
+      "sha256": "3b3b256c6a3ae05c2f3abd41daacb17ac001b9e9275bf470d9490d876a9ce776"
+    },
+    {
+      "path": "scripts/freeze_milestone.sh",
+      "sha256": "39127ebf82ee1dbf023f43d0e26e61d48c2682eef116263d7a05abf9ba82ebfa"
+    },
+    {
+      "path": "scripts/host_preflight.sh",
+      "sha256": "88a5c1afb162c6863f44b87d64f7873669ae3188295f6671a208de0378e30cea"
+    },
+    {
+      "path": "scripts/init_environment.sh",
+      "sha256": "4bfe07a5d4c1862759b1e23c20164b105d21624e1b20a3f2da41c0523342de2c"
+    },
+    {
+      "path": "scripts/pin_base_image.sh",
+      "sha256": "37aef67714690e90a07601c0b0cd897c1b7394cd3c1e1a351c559efb0347eb42"
+    },
+    {
+      "path": "scripts/prepare_assets.sh",
+      "sha256": "1ec756d35707807f7c86b81e93bd6b651cdcd39dc172dc277d031c85ce002d48"
+    },
+    {
+      "path": "scripts/run_control_gate.sh",
+      "sha256": "4fc3cd911c876e433385420a2d35efa31be87c7189dd9ee40e4d22310d124138"
+    },
+    {
+      "path": "scripts/run_matrix.sh",
+      "sha256": "e86742d7247759dbb4a4bd0860311a901a9f9a3268753318adb713e28c42d092"
+    },
+    {
+      "path": "scripts/setup_ubuntu.sh",
+      "sha256": "9d975cb15d3b0b0ad3788fddff78910b9cdfc614840ef7d1fcf8a0c86ec40f54"
+    },
+    {
+      "path": "scripts/validate_repository.sh",
+      "sha256": "99d1c1fe3f9945d02fe6494802b5b8d56ebfabea698c07788c0a9bb63b27f4a5"
+    }
+  ],
+  "container_pip_freeze": [
+    "anyio==4.14.2",
+    "apex==1.9.0+rocm7.2.1.git355db9b8",
+    "argon2-cffi==25.1.0",
+    "argon2-cffi-bindings==25.1.0",
+    "arrow==1.4.0",
+    "asttokens==3.0.2",
+    "async-lru==2.3.0",
+    "attrs==26.1.0",
+    "babel==2.18.0",
+    "backrefs==5.9",
+    "beautifulsoup4==4.15.0",
+    "bleach==6.4.0",
+    "build==1.4.2",
+    "certifi==2026.6.17",
+    "cffi==2.1.0",
+    "charset-normalizer==3.4.9",
+    "click==8.4.2",
+    "colorama==0.4.6",
+    "comm==0.2.3",
+    "contourpy==1.3.3",
+    "coverage==7.15.1",
+    "cxxfilt==0.3.0",
+    "cycler==0.12.1",
+    "debugpy==1.8.21",
+    "decorator==5.3.1",
+    "defusedxml==0.7.1",
+    "et_xmlfile==2.0.0",
+    "executing==2.2.1",
+    "fastjsonschema==2.21.2",
+    "filelock==3.25.2",
+    "fonttools==4.62.1",
+    "fqdn==1.5.1",
+    "fsspec==2026.3.0",
+    "ghp-import==2.1.0",
+    "h11==0.16.0",
+    "httpcore==1.0.9",
+    "httpx==0.28.1",
+    "hypothesis==6.151.10",
+    "idna==3.18",
+    "iniconfig==2.3.0",
+    "ipykernel==6.29.5",
+    "ipython==9.15.0",
+    "ipython_pygments_lexers==1.1.1",
+    "isoduration==20.11.0",
+    "jedi==0.20.0",
+    "Jinja2==3.1.6",
+    "joblib==1.5.3",
+    "json5==0.15.0",
+    "jsonpointer==3.1.1",
+    "jsonschema==4.26.0",
+    "jsonschema-specifications==2025.9.1",
+    "jupyter-events==0.12.1",
+    "jupyter-lsp==2.3.1",
+    "jupyter_client==8.9.1",
+    "jupyter_core==5.9.1",
+    "jupyter_server==2.20.0",
+    "jupyter_server_terminals==0.5.4",
+    "jupyterlab==4.4.4",
+    "jupyterlab_pygments==0.3.0",
+    "jupyterlab_server==2.28.0",
+    "kiwisolver==1.5.0",
+    "lark==1.3.1",
+    "Markdown==3.10.2",
+    "MarkupSafe==3.0.3",
+    "matplotlib==3.10.3",
+    "matplotlib-inline==0.2.2",
+    "mergedeep==1.3.4",
+    "mistune==3.3.3",
+    "mkdocs==1.6.1",
+    "mkdocs-get-deps==0.2.2",
+    "mkdocs-material==9.6.15",
+    "mkdocs-material-extensions==1.3.1",
+    "mpmath==1.3.0",
+    "mypy==1.16.1",
+    "mypy_extensions==1.1.0",
+    "nbclient==0.10.2",
+    "nbconvert==7.17.1",
+    "nbformat==5.10.4",
+    "nest-asyncio==1.6.0",
+    "networkx==3.6.1",
+    "ninja==1.13.0",
+    "notebook_shim==0.2.4",
+    "numpy==2.2.6",
+    "openpyxl==3.1.5",
+    "packaging==26.0",
+    "paginate==0.5.7",
+    "pandas==2.3.1",
+    "pandocfilters==1.5.1",
+    "parso==0.8.7",
+    "pathspec==1.1.1",
+    "pexpect==4.9.0",
+    "pillow==12.1.1",
+    "platformdirs==4.10.0",
+    "pluggy==1.6.0",
+    "prometheus_client==0.25.0",
+    "prompt_toolkit==3.0.52",
+    "psutil==7.0.0",
+    "ptyprocess==0.7.0",
+    "pure_eval==0.2.3",
+    "py-cpuinfo==9.0.0",
+    "pycparser==3.0",
+    "Pygments==2.20.0",
+    "pymdown-extensions==10.21.3",
+    "pyparsing==3.3.2",
+    "pyproject_hooks==1.2.0",
+    "pytest==8.4.1",
+    "pytest-cov==6.2.1",
+    "python-dateutil==2.9.0.post0",
+    "python-json-logger==4.1.0",
+    "pytz==2026.2",
+    "PyYAML==6.0.2",
+    "pyyaml_env_tag==1.1",
+    "pyzmq==27.1.0",
+    "referencing==0.37.0",
+    "requests==2.34.2",
+    "rfc3339-validator==0.1.4",
+    "rfc3986-validator==0.1.1",
+    "rfc3987-syntax==1.1.0",
+    "rpds-py==2026.6.3",
+    "ruff==0.12.2",
+    "scikit-learn==1.7.1",
+    "scipy==1.16.0",
+    "Send2Trash==2.1.0",
+    "setuptools==82.0.1",
+    "six==1.17.0",
+    "sortedcontainers==2.4.0",
+    "soupsieve==2.8.4",
+    "stack-data==0.6.3",
+    "sympy==1.14.0",
+    "terminado==0.18.1",
+    "threadpoolctl==3.6.0",
+    "tinycss2==1.5.1",
+    "torch==2.9.1+rocm7.2.1.lw.gitff65f5bc",
+    "# Editable install with no version control (torch2pc-layerwise-thesis==0.1.0)",
+    "-e /workspace",
+    "torchaudio==2.9.0+rocm7.2.1.gite3c6ee2b",
+    "torchvision==0.24.0+rocm7.2.1.gitb919bd0c",
+    "tornado==6.5.7",
+    "tqdm==4.67.3",
+    "traitlets==5.15.1",
+    "triton==3.5.1+rocm7.2.1.gita272dfa8",
+    "types-PyYAML==6.0.12.20250516",
+    "typing_extensions==4.15.0",
+    "tzdata==2026.3",
+    "uri-template==1.3.0",
+    "urllib3==2.7.0",
+    "watchdog==6.0.0",
+    "wcwidth==0.8.2",
+    "webcolors==25.10.0",
+    "webencodings==0.5.1",
+    "websocket-client==1.9.0",
+    "wheel==0.46.3"
+  ],
+  "container_python_runtime": {
+    "hip": "7.2.53211-e1a6bc5663",
+    "python": "3.12.3",
+    "torch": "2.9.1+rocm7.2.1.gitff65f5bc",
+    "torchvision": "0.24.0+rocm7.2.1.gitb919bd0c"
+  },
+  "host": {
+    "os_release": "PRETTY_NAME=\"Ubuntu 24.04.4 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.4 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo",
+    "uname": "Linux dzmitry-prychyna-ubuntu 6.17.0-35-generic #35~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 19:30:42 UTC 2 x86_64 x86_64 x86_64 GNU/Linux",
+    "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  16\nOn-line CPU(s) list:                     0-15\nVendor ID:                               AuthenticAMD\nModel name:                              AMD Ryzen 7 5700X3D 8-Core Processor\nCPU family:                              25\nModel:                                   33\nThread(s) per core:                      2\nCore(s) per socket:                      8\nSocket(s):                               1\nStepping:                                2\nBogoMIPS:                                5988.93\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk clzero irperf xsaveerptr rdpru wbnoinvd arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm debug_swap\nVirtualization:                          AMD-V\nL1d cache:                               256 KiB (8 instances)\nL1i cache:                               256 KiB (8 instances)\nL2 cache:                                4 MiB (8 instances)\nL3 cache:                                96 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-15\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Mitigation; Safe RET\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Mitigation; Clear CPU buffers\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace",
+    "lspci_gpu": "00:00.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse Root Complex [1022:1480]\n00:00.2 IOMMU [0806]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse IOMMU [1022:1481]\n00:01.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]\n00:01.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse GPP Bridge [1022:1483]\n00:01.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse GPP Bridge [1022:1483]\n00:02.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]\n00:03.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]\n00:03.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse GPP Bridge [1022:1483]\n00:04.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]\n00:05.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]\n00:07.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]\n00:07.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse Internal PCIe GPP Bridge 0 to bus[E:B] [1022:1484]\n00:08.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Host Bridge [1022:1482]\n00:08.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse Internal PCIe GPP Bridge 0 to bus[E:B] [1022:1484]\n00:14.0 SMBus [0c05]: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller [1022:790b] (rev 61)\n00:14.3 ISA bridge [0601]: Advanced Micro Devices, Inc. [AMD] FCH LPC Bridge [1022:790e] (rev 51)\n00:18.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Matisse/Vermeer Data Fabric: Device 18h; Function 0 [1022:1440]\n00:18.1 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Matisse/Vermeer Data Fabric: Device 18h; Function 1 [1022:1441]\n00:18.2 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Matisse/Vermeer Data Fabric: Device 18h; Function 2 [1022:1442]\n00:18.3 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Matisse/Vermeer Data Fabric: Device 18h; Function 3 [1022:1443]\n00:18.4 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Matisse/Vermeer Data Fabric: Device 18h; Function 4 [1022:1444]\n00:18.5 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Matisse/Vermeer Data Fabric: Device 18h; Function 5 [1022:1445]\n00:18.6 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Matisse/Vermeer Data Fabric: Device 18h; Function 6 [1022:1446]\n00:18.7 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Matisse/Vermeer Data Fabric: Device 18h; Function 7 [1022:1447]\n02:00.0 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] 500 Series Chipset USB 3.1 XHCI Controller [1022:43ee]\n02:00.1 SATA controller [0106]: Advanced Micro Devices, Inc. [AMD] 500 Series Chipset SATA Controller [1022:43eb]\n02:00.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] 500 Series Chipset Switch Upstream Port [1022:43e9]\n03:08.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:43ea]\n03:09.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:43ea]\n06:00.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD/ATI] Navi 10 XL Upstream Port of PCI Express Switch [1002:1478] (rev 11)\n07:00.0 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD/ATI] Navi 10 XL Downstream Port of PCI Express Switch [1002:1479] (rev 11)\n08:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Navi 32 [Radeon RX 7700 XT / 7800 XT] [1002:747e] (rev ff)\n08:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Navi 31 HDMI/DP Audio [1002:ab30]\n09:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse PCIe Dummy Function [1022:148a]\n0a:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse Reserved SPP [1022:1485]\n0a:00.1 Encryption controller [1080]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse Cryptographic Coprocessor PSPCPP [1022:1486]\n0a:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Matisse USB 3.0 Host Controller [1022:149c]\n0a:00.4 Audio device [0403]: Advanced Micro Devices, Inc. [AMD] Starship/Matisse HD Audio Controller [1022:1487]",
+    "docker_version": "Client: Docker Engine - Community\n Version:           29.6.1\n API version:       1.55\n Go version:        go1.26.4\n Git commit:        8900f1d\n Built:             Fri Jun 26 11:40:19 2026\n OS/Arch:           linux/amd64\n Context:           default\n\nServer: Docker Engine - Community\n Engine:\n  Version:          29.6.1\n  API version:      1.55 (minimum version 1.40)\n  Go version:       go1.26.4\n  Git commit:       8ec5ab3\n  Built:            Fri Jun 26 11:40:19 2026\n  OS/Arch:          linux/amd64\n  Experimental:     false\n containerd:\n  Version:          v2.2.6\n  GitCommit:        11ce9d5f3c68c941867e82890e93e815c1304f1b\n runc:\n  Version:          1.3.6\n  GitCommit:        v1.3.6-0-g491b69ba\n docker-init:\n  Version:          0.19.0\n  GitCommit:        de40ad0",
+    "docker_compose_version": "Docker Compose version v5.3.1",
+    "rocminfo": "",
+    "rocm_smi": ""
+  }
+}

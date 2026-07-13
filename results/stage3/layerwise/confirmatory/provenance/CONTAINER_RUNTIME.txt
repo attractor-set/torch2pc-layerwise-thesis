@@ -1,0 +1,6 @@
+Python: 3.12.3
+PyTorch: 2.9.1+rocm7.2.1.gitff65f5bc
+HIP: 7.2.53211-e1a6bc5663
+GPU available: True
+Device count: 1
+Device: AMD Radeon RX 7700 XT

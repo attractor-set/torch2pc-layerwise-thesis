@@ -1,0 +1,92 @@
+[
+    {
+        "Id": "sha256:24945747bbebec37d54b492f7048d0a30a57f432775242405bdd52d463cf14bc",
+        "RepoTags": [
+            "torch2pc-layerwise-thesis:0.1.0"
+        ],
+        "RepoDigests": [
+            "torch2pc-layerwise-thesis@sha256:24945747bbebec37d54b492f7048d0a30a57f432775242405bdd52d463cf14bc"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-07-13T15:29:53.849498062-03:00",
+        "Config": {
+            "User": "root",
+            "Env": [
+                "PATH=/opt/venv/bin:/opt/rocm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "DEBIAN_FRONTEND=noninteractive",
+                "LD_LIBRARY_PATH=/opt/rocm/lib",
+                "PYTHONUNBUFFERED=1",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONHASHSEED=0",
+                "SOURCE_GIT_COMMIT=98fdcfbce0c812e94a4221b349f8f7edcd4b81fc",
+                "PIP_DISABLE_PIP_VERSION_CHECK=1"
+            ],
+            "Entrypoint": [
+                "/usr/bin/tini",
+                "--",
+                "/workspace/scripts/container_entrypoint.sh"
+            ],
+            "Cmd": [
+                "torch2pc-thesis",
+                "validate",
+                "--stage",
+                "smoke",
+                "--method",
+                "bp"
+            ],
+            "WorkingDir": "/workspace",
+            "Labels": {
+                "com.docker.compose.project": "torch2pc-layerwise-thesis",
+                "com.docker.compose.service": "validate",
+                "com.docker.compose.version": "5.3.1",
+                "io.torch2pc.base-image": "rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191",
+                "org.opencontainers.image.description": "Controlled ROCm environment for predictive-coding experiments",
+                "org.opencontainers.image.ref.name": "rocm/pytorch:rocm7.2.1_ubuntu24.04_py3.12_pytorch_release_2.9.1",
+                "org.opencontainers.image.revision": "98fdcfbce0c812e94a4221b349f8f7edcd4b81fc",
+                "org.opencontainers.image.title": "Torch2PC Layer-wise Thesis",
+                "org.opencontainers.image.version": "0.1.0"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 11035228830,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:f2a7f072635332d307212e318e07284948b89f4167fce5c4d7c9cfb7590b74b6",
+                "sha256:38431d8e5f8b31c89008ccae537f0577d7baaed71b09aaf4bfe1404c5cf498bc",
+                "sha256:c680c862a0120b3b714242412df2e5cf9815097ddf100f3e927d232a332a9789",
+                "sha256:88f02404abb2fd82fbf049034af019ef5bfcd72fdd3494a857713a5e81554aad",
+                "sha256:636db6118fd07e4d965c6e5601961fc508a20c5eec25ced32f29ae9bfc66bc3b",
+                "sha256:cc599bf66a6e61bba98a5e9856f42cbc1e85d1042ce764042e8e38809556636e",
+                "sha256:94ee51b3a67cd13c1f60ca536f0cc3fa7c73965559ffe8f8342f4e4078cd7822",
+                "sha256:11400d5d58b53c828726b13f195c991d3582d12940657418174972a7f054d910",
+                "sha256:f6bb0b549ae4275f2f6c98a5e87507b67d9ef6bebee127e6ac0c91d09326e590",
+                "sha256:25feff5f9bcc00f7a5d15cdc73345d98c0c12346135c2c873dcfffce51611947",
+                "sha256:9204157c5752a0a2f8619d5cd18f6d62f88e3735425090d30506efcdd963e46d",
+                "sha256:54f31d24335569dc4d46f01dffdc88a1da875f70485ce060733a4b1f19d65408",
+                "sha256:e4790f99a931c58f4389dc562b187fb242dedb506ae3370945efd7f17b7feb99",
+                "sha256:c8239a463d5efd0ef33b2956812412ae035260bc3b494b69efbc90e46f32badc",
+                "sha256:09deb68ff408d2e4d84401da07c71046e40ba1d180bf55d6f9d2836b63537dc1",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-07-13T18:30:19.60099655Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:24945747bbebec37d54b492f7048d0a30a57f432775242405bdd52d463cf14bc",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "97qcs91q7sozhrrq6ns3thffb",
+                    "CreatedAt": "2026-07-13T15:30:28.261347986-03:00"
+                }
+            ]
+        }
+    }
+]

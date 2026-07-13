@@ -69,6 +69,5 @@ comparison:
   candidate_variant: torch2pc-patched-v1
 torch2pc:
   local_path: external/Torch2PC
-  # Replace this placeholder with the commit produced after applying the
-  # Torch2PC patch series, then commit the configured protocol before build.
-  commit: '1111111111111111111111111111111111111111'
+  commit: b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4
+  repository: git@github.com:attractor-set/Torch2PC.git

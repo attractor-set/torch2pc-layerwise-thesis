@@ -77,3 +77,6 @@ experiments/registry-stage-3.csv
 
 # Stage 3 local diagnostic pilot artifacts
 results/stage3/layerwise/pilot/
+
+# Stage 3 confirmatory raw diagnostic artifacts
+results/stage3/layerwise/confirmatory/raw/

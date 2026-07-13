@@ -17,7 +17,7 @@ Stage 1/2 завершены и остаются неизменяемой опу
 | Gradient observations | 2250; cosine определён для 2250/2250 |
 | Representation observations | 150; RSA определён для 150/150 |
 | Cross-layer CKA observations | 750 |
-| Regression suite | 94 passed |
+| Regression suite | 97 passed |
 | Test access Stage 3A | validation-only diagnostics; test loader не создавался |
 | Расширенный Stage 3 | profiling, locality, exact candidates и approximations ожидают отдельных gates |
 

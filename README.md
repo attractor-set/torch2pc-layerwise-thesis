@@ -58,7 +58,7 @@ Ubuntu/ROCm-среде:
 - Stage 2: **80/80**, patched Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
 - CPU/GPU numerical equivalence gates пройдены в закреплённой области;
-- regression suite после maintenance: **94 passed**;
+- regression suite после maintenance: **97 passed**;
 - парные значения test accuracy и macro-F1 Stage 1/2 совпали для всех
   datasets, методов и seeds;
 - наблюдаемый порядок времени Stage 2:

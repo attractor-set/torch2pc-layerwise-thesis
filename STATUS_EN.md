@@ -17,7 +17,7 @@ locality, profiling, and acceleration lines remain separate future work.
 | Gradient observations | 2250; cosine defined for 2250/2250 |
 | Representation observations | 150; RSA defined for 150/150 |
 | Cross-layer CKA observations | 750 |
-| Regression suite | 94 passed |
+| Regression suite | 97 passed |
 | Stage 3A test access | validation-only diagnostics; no test loader created |
 | Broader Stage 3 | profiling, locality, exact candidates, and approximations remain gated |
 

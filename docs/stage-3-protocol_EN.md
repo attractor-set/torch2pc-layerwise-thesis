@@ -1,28 +1,19 @@
-# Stage 3 protocol: locality, approximation, and scaling
+# Stage 3 protocol: locality, approximation, and predict-correct acceleration
 
 [Русская версия](stage-3-protocol.md)
 
-Status: **design-ready; execution remains blocked until candidate
-implementations, numerical gates, and a separate Stage 3 freeze exist**.
+Status: **design-ready revision 2; execution blocked until candidates, numerical
+gates, and a separate Stage 3 freeze exist**.
 
 ## 1. Purpose
 
-Stage 3 is a new campaign. It does not reopen or modify Stage 1 or Stage 2. It
-studies the relationship among:
+Stage 3 is a new campaign and does not reopen Stage 1/2. It studies mathematical
+locality, executed autograd structure, VJPs, memory, runtime, depth scaling, and
+controlled approximations.
 
-- mathematical layer locality in predictive coding;
-- the span of the executed autograd graph;
-- VJP calls, synchronization points, and saved tensors;
-- runtime, memory, and depth scaling;
-- exact and approximate credit-signal computation;
-- quality, robustness, and gradient alignment.
-
-Two tracks remain separate:
-
-1. **implementation-preserving:** execution changes while the update equations
-   remain fixed;
-2. **algorithm-changing approximation:** stopping, linearization refresh, or the
-   feedback operator changes.
+Three change classes are analyzed separately: implementation-preserving exact
+execution, exact shortcuts with endpoint equivalence, and algorithm-changing
+approximations.
 
 ## 2. Immutable baseline
 
@@ -31,221 +22,213 @@ Two tracks remain separate:
 | Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
 | Stage 2 publication state | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
 | Stage 2 Torch2PC | `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4` |
-| Observed runtime order | `BP ≈ Exact < FixedPred << Strict` |
+| Runtime order | `BP ~= Exact < FixedPred << Strict` |
 
-The execution and publication states remain distinct provenance points. Stage 2
-tags are not moved, and Stage 1/2 are not rerun to create Stage 3.
+Execution and publication remain distinct provenance points. Stage 1/2 are not
+rerun.
 
 ## 3. Research questions
 
-- **RQ6:** What dependency radius, graph span, VJP count, synchronization count,
-  and saved-tensor volume occur for each FixedPred and Strict layer update?
-- **RQ7:** How do isolated layer graphs and composite VJP change execution
-  locality, runtime, and memory while preserving the equations?
-- **RQ8:** How does adaptive stopping affect inference steps, alignment, runtime,
-  memory, and validation quality?
-- **RQ9:** How does periodic or state-triggered VJP refresh interpolate between
-  Strict and fixed-linearization behavior?
-- **RQ10:** Can a separate local feedback operator reduce cost inside a declared
-  non-inferiority margin while its alignment change is reported?
+### RQ6. Locality profile
 
-RQ10 is conditional and begins only after the core Stage 3 track is complete.
+Measure dependency radius, graph span, VJP calls, synchronization points, and
+saved tensor bytes.
 
-## 4. Locality profile
+### RQ7. Execution locality and throughput
 
-No single locality score is used. The report keeps separate dimensions:
+Compare isolated layer-local graphs and composite VJPs under preserved math.
 
-- algorithmic inputs required by a layer update;
-- dependency radius in the layer graph;
-- autograd graph modules and graph span;
-- independent construction/execution/release of local graphs;
-- exact, reused, or approximate feedback;
-- sequential, synchronous, or barrier-based orchestration.
+### RQ8. Adaptive budget
 
-For mathematically local PC events, the structural gate is
-`dependency_radius <= 1`. Graph span is reported separately because a composite
-implementation may execute a wider graph without changing the local equations.
+Assess adaptive stopping against inference steps, alignment, runtime, memory,
+and validation quality.
+
+### RQ9. Linearization frequency
+
+Assess periodic/state-triggered VJP refresh between Strict and fixed
+linearization.
+
+### RQ10. Approximate feedback
+
+Assess local approximate feedback with infrequent exact correction.
+
+### RQ11. Predict-correct acceleration
+
+Assess whether a cheap local belief or inverse-scale estimate followed by
+`1–5` exact PC correction sweeps reduces VJPs and runtime without a practically
+meaningful quality loss.
+
+## 4. Locality taxonomy
+
+Publish algorithmic locality, dependency radius, graph locality, execution
+locality, feedback locality, and orchestration locality separately. The
+structural gate for mathematically local events is `dependency_radius <= 1`.
 
 ## 5. Candidates
 
-| ID | Track | Methods | Initial status |
-|---|---|---|---|
-| `stage2_baseline` | baseline | FixedPred, Strict | available |
-| `isolated_layer_vjp` | implementation-preserving | FixedPred, Strict | planned |
-| `composite_vjp` | implementation-preserving | FixedPred, Strict | planned |
-| `adaptive_stopping` | approximation | FixedPred, Strict | planned |
-| `periodic_vjp_refresh` | approximation | Strict | planned |
-| `fixed_random_feedback` | approximation | Strict | deferred |
+### B0. `stage2_baseline`
 
-B1 isolates detached layer-local graphs. B2 groups mathematically local VJPs into
-fewer autograd invocations. C1 introduces a residual-based stopping rule. C2
-refreshes Strict pullbacks at intervals `1, 2, 5, 20` or by a state trigger. C3
-uses a separate feedback operator and has no Stage 2 equivalence claim.
+Frozen Stage 2 patched Torch2PC.
+
+### A0. `fixedpred_finite_step_control`
+
+FixedPred with `eta=1` and steps equal to network depth. It uses endpoint
+equivalence for parameter gradients and one optimizer step; belief-trajectory
+equivalence is not claimed.
+
+### B1. `isolated_layer_vjp`
+
+Detached layer inputs and separate local graphs. Full-trajectory CPU/GPU gates
+are required.
+
+### B2. `composite_vjp`
+
+Grouped exact local VJPs with the same full-trajectory gates.
+
+### C1. `adaptive_stopping`
+
+Residual-based stopping within fixed minimum and maximum steps.
+
+### C2. `periodic_vjp_refresh`
+
+Strict pullback refresh intervals `1, 2, 5, 20`.
+
+### C3. `fixed_random_feedback`
+
+Pure approximate feedback; deferred.
+
+### C3H. `hybrid_feedback_exact_refresh`
+
+Cheap feedback between exact VJP refreshes plus a required final exact
+correction; deferred.
+
+### C4. `predict_correct_initialization`
+
+A layer-local EMA residual initializer followed by `1/2/3/5` exact correction
+sweeps. Revision 2 fixes `ema_beta=0.9`, epoch reset, and Strict fallback on
+non-finite or increasing residuals.
+
+### C5. `local_secant_preconditioner`
+
+Two exact warmup sweeps, a layer-scalar secant scale clipped to `[0.25, 4.0]`,
+and `1/2/3/5` exact correction sweeps. Strict fallback is mandatory.
+
+### C6. `layer_local_anderson`
+
+Layer-local Anderson mixing with history window `2/3`; deferred.
 
 ## 6. Phases
 
-### Stage 3A — baseline audit and profiling
+### 6.1. Stage 3A — profiling
 
-Instrument:
+Profile `initial_forward`, `state_inference`, `local_state_vjp`,
+`parameter_vjp`, and `optimizer_step`. Record time, VJPs, synchronization,
+saved tensors, memory, graph span, dependency radius, and actual steps. B0, A0,
+B1, and B2 are included; A0 applies only to FixedPred.
 
-- `initial_forward`;
-- `state_inference`;
-- `local_state_vjp`;
-- `parameter_vjp`;
-- `optimizer_step`.
+### 6.2. Stage 3B — exact candidates
 
-Record CPU/device time, VJP calls, synchronization points, saved-tensor bytes,
-peak memory, dependency radius, graph span, and actual inference iterations.
+Run B1 gates, B2 gates, A0 endpoint gates, then randomized matched profiling.
 
-### Stage 3B — exact implementation candidates
+### 6.3. Stage 3C — core approximations
 
-Implement and gate B1 first, then B2. Run CPU float64 and GPU float32
-comparisons for beliefs, errors, state updates, gradients, and one optimizer
-step. Profile B0/B1/B2 in randomized back-to-back blocks.
+Implement C1 and C2 and run the validation-only core pilot.
 
-### Stage 3C — approximations
+### 6.4. Stage 3C2 — predict-correct accelerator screening
 
-Implement C1, then C2. C3 is a separate conditional exploratory track.
-Approximation candidates use alignment and non-inferiority gates rather than an
-equivalence claim.
+After the core pilot, compare B0 Strict, C4, and C5. C3H/C6 remain deferred.
+No test loader is created.
 
-### Stage 3D — scaling
+### 6.5. Stage 3D — scaling
 
-The controlled model family contains depths `4, 8, 16, 32`, widths `64, 256`,
-and names such as `mlp_d16_w256`.
+Use depths `4/8/16/32`, widths `64/256`, batch sizes `64/256`, and seeds
+`70/71/72`.
 
-## 7. Profiling design
+## 7. Matrices
 
-```text
-2 methods
-x 3 exact candidates
-x 4 depths
-x 2 widths
-x 2 batch sizes
-x 3 seeds
-= 288 profiling cells
-```
+### 7.1. Profiling
 
-Each cell is a short benchmark: 20 warm-up steps, 50 measured steps, five
-repetitions, explicit synchronization, and randomized matched ordering.
+B0/B1/B2 contribute 288 short matched cells; A0 contributes 48 FixedPred-only
+cells, for **336** total.
 
-## 8. Validation-only pilot
+### 7.2. Core validation-only pilot
 
-The screening phase expands approximation parameters before they are frozen:
+B0/B1/B2: 18 cells; C1: 18; C2: 12; total **48**.
 
-```text
-B0/B1/B2 defaults:
-  3 candidates x 2 methods x 3 seeds = 18 cells
-C1 adaptive stopping:
-  3 tolerances x 2 methods x 3 seeds = 18 cells
-C2 periodic refresh:
-  4 intervals x Strict x 3 seeds = 12 cells
-Total = 48 validation-only terminal cells
-```
+### 7.3. Predict-correct accelerator screening
 
-C1 uses tolerances `1e-2`, `5e-3`, and `1e-3`; maximum steps are 10 for
-FixedPred and 20 for Strict. C2 uses intervals `1, 2, 5, 20`. Every plan cell
-contains a `variant_id` and complete parameters so the selection remains
-reproducible.
+B0 Strict: 3 cells; C4: 12; C5: 12; total **27** validation-only cells.
 
-The pilot does not construct a test loader. It selects one exact and one
-approximate candidate, estimates validation variability, chooses stopping and
-refresh parameters, and fixes the non-inferiority rule. MNIST and test are not
-used for candidate selection.
+### 7.4. Final template
 
-## 9. Final template
+Test remains disabled until freeze. The final campaign contains at most 80
+cells for one exact and one approximation candidate; a Strict-only
+approximation yields 60 cells, and no passing approximation yields 40.
 
-Before freeze:
+## 8. Gates
 
-```yaml
-evaluation:
-  use_test: false
-protocol:
-  status: blocked_until_stage3_freeze
-```
+### 8.1. Full-trajectory equivalence
 
-The planned frozen design is:
-
-```text
-2 datasets x applicable candidate-method pairs x 10 seeds = at most 80 cells
-```
-
-One candidate is implementation-preserving and one is approximate. If
-`periodic_vjp_refresh` is selected, it applies only to Strict, yielding 60
-cells: 40 for the exact candidate and 20 for the approximation. If no
-approximation passes the pilot gates, the final campaign is reduced to the
-40-cell exact candidate and the decision is recorded before any Stage 3 test
-access.
-
-## 10. Gates
-
-### Exact implementation gates
-
-Compare beliefs, prediction errors, state updates, parameter gradients, and one
-optimizer step. Initial thresholds preserve the Stage 2 scope:
+B1/B2 compare beliefs, prediction errors, state updates, parameter gradients,
+and one optimizer step.
 
 | Device | dtype | min cosine | max relative L2 |
 |---|---|---:|---:|
 | CPU | float64 | 0.99999 | `1e-7` |
 | GPU | float32 | 0.999 | `1e-3` |
 
-### Approximation gates
+### 8.2. Endpoint equivalence
 
-Report per-layer cosine, relative L2, sign agreement, residuals, iteration/VJP
-reduction, validation macro F1, seed variation, and non-finite events. The
-non-inferiority margin is fixed from Stage 2 variability and the Stage 3 pilot,
-not after Stage 3 test access.
+A0 compares parameter gradients and one optimizer step only.
 
-### Engineering continuation gates
+### 8.3. Approximation/non-inferiority
 
-- FixedPred speedup: at least 15%;
-- Strict speedup: at least 20%;
-- baseline timing regression: at most 3%;
-- peak-memory growth: at most 15% without a separate rationale.
+C1–C6 report per-layer cosine, relative L2, sign agreement, residuals,
+VJP/step reduction, validation macro F1, seed variance, and non-finite events.
 
-These thresholds govern engineering continuation and do not by themselves form
-a superiority claim.
+### 8.4. Predict-correct guard
 
-## 11. Stop rules
+C4/C5 continue only with at least one exact correction, at least 25% mean VJP
+reduction, at most 10% fallback, non-increasing residual after correction, no
+new non-finite values, and validation non-inferiority. Fallback time and events
+remain in the analysis.
 
-Stop a candidate when the optimizable region is below 20% of runtime, the Amdahl
-upper bound is below the declared threshold, exact gates fail, non-finite values
-appear, or an approximation misses the validation non-inferiority rule. Negative
-outcomes remain in the registry and report.
+### 8.5. Performance
 
-## 12. Test access and provenance
+Require at least 15% FixedPred or 20% Strict speedup, no more than 3% baseline
+regression, and no more than 15% memory growth without an ADR. These are
+engineering continuation rules, not superiority claims.
 
-Profiling, pilot, and the current final template all keep test disabled. Test is
-enabled only in a separate commit after `stage3-pilot-freeze-v1`. Planned tags:
+## 9. Stop rules
 
-- `stage3-design-v1`;
-- `stage3-pilot-freeze-v1`;
-- `stage3-execution-v1`;
-- `stage3-results-v1`.
+Stop on insufficient Amdahl opportunity, failed exact gates, non-finite values,
+increasing residuals, fallback above 10%, or failed validation non-inferiority.
+Negative outcomes remain registered.
 
-Execution and publication states remain separate commits.
+## 10. Test access and provenance
 
-## 13. Twelve-month schedule
+Profiling, both screenings, and the current final template keep test disabled.
+Test is enabled only by a separate commit after `stage3-pilot-freeze-v1`.
+Planned tags are `stage3-design-v1`, `stage3-pilot-freeze-v1`,
+`stage3-execution-v1`, and `stage3-results-v1`; execution and publication
+states remain distinct.
+
+## 11. Twelve-month schedule
 
 | Period | Deliverable |
 |---|---|
-| Months 1–2 | literature update, RQs/ADRs, design freeze, profiling executor |
-| Months 3–4 | B0 audit, locality traces, scaling baseline |
+| Months 1–2 | literature update, ADR/RQ freeze, profiling executor |
+| Months 3–4 | B0/A0 audit, locality traces, scaling baseline |
 | Months 5–6 | B1/B2 and exact gates |
-| Month 7 | C1/C2 and validation-only pilot |
-| Month 8 | candidate freeze and core final execution |
-| Month 9 | conditional C3 go/no-go |
-| Month 10 | robustness, representations, and scaling analysis |
-| Month 11 | thesis chapter, article, replication bundle |
-| Month 12 | clean-room reproduction, review corrections, reserve |
+| Month 7 | C1/C2 and 48-cell core pilot |
+| Month 8 | C4/C5 and 27-cell accelerator screening |
+| Month 9 | freeze/core final; C3H/C6 go/no-go |
+| Month 10 | robustness, representations, scaling |
+| Month 11 | thesis/article/replication bundle |
+| Month 12 | clean-room reproduction and reserve |
 
-## 14. Current readiness definition
+## 12. Current readiness boundary
 
-The repository is ready for Stage 3 implementation when the design, ADRs,
-full baseline hashes, locality schema, scaling models, deterministic design
-plan, and execution guards are present. The locality schema lives in
-`src/torch2pc_thesis/locality.py`; measured region names, timing summaries, and
-Amdahl feasibility calculations are fixed in
-`src/torch2pc_thesis/profiling.py`. This is not pilot/final readiness: candidate
-commits, environment locks, numerical gates, and freeze artifacts are still
-required.
+Repository readiness means ready to implement Stage 3A, not ready to run
+pilot/final. Candidate commits, environment locks, full-trajectory/endpoint
+gates, fallback tests, and a separate freeze are still required.

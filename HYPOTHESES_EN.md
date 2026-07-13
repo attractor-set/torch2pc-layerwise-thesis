@@ -61,3 +61,10 @@ fixed-linearization regimes.
 
 A conditional exploratory question evaluates a separate local feedback operator.
 It has no Stage 2 equivalence claim and begins only after the core Stage 3 track.
+
+## RQ11. Predict-correct acceleration
+
+Assess whether a cheap layer-local belief or inverse-scale estimate followed by
+one to five exact correction sweeps reduces VJPs and runtime under controlled
+residual, fallback-rate, gradient-alignment, and validation non-inferiority
+gates.

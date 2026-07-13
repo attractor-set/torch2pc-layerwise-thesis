@@ -71,3 +71,10 @@ fixed-linearization regimes.
 Условный exploratory вопрос оценивает отдельный локальный feedback operator.
 Он не получает claim эквивалентности Stage 2 и запускается только после
 завершения core Stage 3.
+
+## RQ11. Predict-correct acceleration
+
+Оценивается, может ли дешёвая layer-local оценка beliefs или обратного масштаба,
+после которой выполняются один–пять точных correction sweeps, уменьшить число
+VJP и runtime при контролируемых residual, fallback rate, gradient alignment и
+validation non-inferiority.

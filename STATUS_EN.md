@@ -2,45 +2,30 @@
 
 [Русская версия](STATUS.md)
 
-Stage 1 and Stage 2 are complete and remain an immutable published baseline. The
-active work is preparation of an extended Stage 3 on locality, approximation,
-and scaling.
+Stage 1/2 are complete immutable published baselines. Active work is Stage 3
+design revision 2 on locality, exact execution, and predict-correct
+approximations.
 
 | Component | Observed status |
 |---|---|
-| Validation-only pilot | 96/96 terminal cells, 0 failed, test not evaluated |
-| Stage 1 final | 80/80 completed, 0 failed |
-| Stage 2 final | 80/80 completed, 0 failed |
-| Stage 1/2 model and data | `lenet_classic`, MNIST, and FashionMNIST |
-| Original Torch2PC | `00c6c50ee3540537bbb56ab2b6567b541f42b093` |
-| Patched Torch2PC | `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4` |
-| Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
-| Stage 2 results state | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
-| Stage 2 CPU/GPU gates | passed |
-| Regression suite after Stage 3 scaffold | 82 passed |
-| Stage 1 / Stage 2 quality | paired test accuracy and macro F1 match |
-| Stage 2 performance | `BP ≈ Exact < FixedPred << Strict` |
-| Public release | completed on July 13, 2026 |
-| Stage 3 design | `ready_for_stage3_implementation` |
-| Stage 3 execution | blocked until candidates, gates, and freeze |
+| Validation-only pilot | 96/96; test not evaluated |
+| Stage 1 / Stage 2 | 80/80 and 80/80 |
+| Original / patched Torch2PC | `00c6c50ee3540537bbb56ab2b6567b541f42b093` / `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4` |
+| Stage 2 execution / publication | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` / `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
+| Stage 2 runtime | `BP ~= Exact < FixedPred << Strict` |
+| Stage 3 design | `ready_for_stage3_implementation`, revision 2 |
+| Stage 3 matrices | 336 profiling, 48 core pilot, 27 accelerator screening |
+| Test access | disabled until a separate freeze |
+| Stage 3 execution | blocked until candidate commits, gates, and locks |
 
-## Stage 3 readiness
+## Predict-correct line
 
-The repository now contains the detailed protocol, two ADRs, the Stage 3 design
-contract, profiling/pilot/final-template configurations, a locality trace and
-profiling contract, a depth/width MLP family, deterministic plans for 288 profiling and 48
-parameterized validation-only screening cells, and CLI/Make guards that keep Stage 3 outside
-`TRAINING_STAGES`. The final template keeps `evaluation.use_test=false`.
-
-```bash
-make stage3-ready
-make stage3-plan
-```
+A0 is the FixedPred endpoint-equivalence control. C4 uses a layer-local EMA
+initializer and exact correction; C5 uses a layer-scalar secant preconditioner
+and exact correction. C3H/C6 remain deferred.
 
 ## Next step
 
-Implement a non-perturbing B0 profiling executor and produce the baseline
-locality report. Then implement B1 isolated VJP and B2 composite VJP separately,
-run CPU/GPU equivalence gates, and only then proceed to C1/C2. Stage 1/2 are not
-rerun, and Stage 3 receives its own commits, environment lock, execution tag,
-and publication state.
+Implement non-perturbing B0/A0 profiling, then B1/B2 and exact gates, then the
+C1/C2 core pilot. C4/C5 receive a separate 27-cell validation-only screening
+with residual and fallback guards. Stage 1/2 are not rerun.

@@ -4,11 +4,9 @@
 
 ## Значение статуса
 
-`ready_for_stage3_implementation` означает, что исследовательский дизайн можно
-реализовывать без изменения Stage 1/2. Этот статус не разрешает pilot или final.
-
-`blocked_until_candidates_and_freeze` означает, что CLI Stage 3 обучения
-намеренно отсутствует из `TRAINING_STAGES`.
+`ready_for_stage3_implementation` разрешает реализацию, но не pilot/final.
+`blocked_until_candidates_and_freeze` означает, что Stage 3 отсутствует из
+`TRAINING_STAGES`, а test выключен.
 
 ## Проверка
 
@@ -20,44 +18,43 @@ PYTHONPATH=src python scripts/generate_stage3_design_plan.py
 
 Ожидается:
 
-- `status: ready_for_stage3_implementation`;
-- `execution_status: blocked_until_candidates_and_freeze`;
-- 288 profiling cells;
-- 48 parameterized validation-only screening cells;
-- final status `blocked_until_stage3_freeze`.
+- design revision 2;
+- 336 profiling cells;
+- 48 core validation-only pilot cells;
+- 27 predict-correct accelerator-screening cells;
+- final `blocked_until_stage3_freeze`.
 
-## Условия перехода к profiling execution
+## Переход к profiling
 
-- реализован profiler executor;
-- B0 instrumentation не меняет training results;
-- pinned Stage 3 source commit;
-- новый environment lock;
-- trace schema validation проходит;
-- warmup/synchronization protocol проходит smoke.
+Требуются profiler executor, non-perturbing B0 instrumentation, A0 endpoint
+control, pinned source commit, environment lock и warmup/synchronization smoke.
 
-## Условия перехода к pilot
+## Переход к core pilot
 
-- B1/B2/C1/C2 имеют отдельные Torch2PC commits;
-- exact candidates прошли CPU/GPU equivalence gates;
-- approximate candidates прошли finite/stability gates;
-- profiling report завершён;
-- test loader отсутствует;
-- pilot execution plan заморожен.
+B1/B2/C1/C2 получают отдельные Torch2PC commits. B1/B2 проходят
+full-trajectory CPU/GPU gates, A0 — endpoint gate, C1/C2 — finite/stability
+gates. Test loader отсутствует.
 
-## Условия перехода к final
+## Переход к accelerator screening
 
-- один exact и не более одного approximate candidate выбраны validation-only;
-- candidate parameters и non-inferiority margin заморожены;
-- Stage 3 environment lock и control artifacts закреплены;
-- создан `stage3-pilot-freeze` manifest и tag;
-- final config включается отдельным commit;
-- execution commit отличается от будущего publication state.
+- core pilot завершён и его selection artifact зафиксирован;
+- C4/C5 реализованы отдельными commits;
+- каждый путь выполняет хотя бы одну exact correction;
+- fallback на Strict покрыт тестами;
+- residual/VJP/fallback telemetry включена;
+- screening environment lock зафиксирован;
+- test loader отсутствует.
 
+## Переход к final
 
-## Практический смысл
+Выбран один exact и не более одного approximation candidate, параметры и margin
+заморожены, создан `stage3-pilot-freeze` manifest/tag, а final включается
+отдельным commit. Execution и publication states остаются различными.
 
-Положительный результат проверки означает, что исследователь может начинать
-реализацию профилирования по уже описанным правилам. Отрицательный результат
-указывает на отсутствующий документ, конфигурацию или защитный механизм.
-Проверка не создаёт экспериментальные результаты и не открывает доступ к
-тестовой выборке.
+## Практическая интерпретация
+
+Успешная проверка означает, что исследователь может начинать реализацию
+профилирования по закреплённому плану. Она не подтверждает эффективность
+кандидатов и не создаёт экспериментальные данные. Любое расхождение в
+структуре, конфигурации или защитных правилах должно быть устранено до запуска,
+чтобы последующие результаты оставались воспроизводимыми и проверяемыми.

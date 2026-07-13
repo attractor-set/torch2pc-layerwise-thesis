@@ -63,3 +63,4 @@ docs/decisions/ADR-006-stage3-scope.md,docs/decisions/ADR-006-stage3-scope_EN.md
 docs/decisions/ADR-007-stage3-locality-taxonomy.md,docs/decisions/ADR-007-stage3-locality-taxonomy_EN.md,required
 experiments/planned/STAGE3-001.md,experiments/planned/STAGE3-001_EN.md,required
 results/stage-3/README.md,results/stage-3/README_EN.md,required
+docs/decisions/ADR-008-predict-correct-acceleration.md,docs/decisions/ADR-008-predict-correct-acceleration_EN.md,required

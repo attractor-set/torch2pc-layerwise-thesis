@@ -60,4 +60,7 @@ Stage 3 receives a separate protocol and freeze. Profiling and pilot do not
 construct a test loader. Exact implementation candidates require equivalence
 gates; approximation candidates use a separate non-inferiority rule and have no
 Stage 2 equivalence claim. Candidate selection, stopping tolerance, refresh
-interval, and the margin are frozen before Stage 3 test access.
+interval, predict-correct correction budget, EMA/secant parameters, fallback
+rule, and the margin are frozen before Stage 3 test access. A0 uses a separate
+endpoint-equivalence gate; C4/C5 require at least one exact correction and a
+reported fallback rate.

@@ -1,0 +1,41 @@
+meta:
+  stage: stage3_accelerator_screening
+  campaign_id: stage3-locality-approximation-v1
+protocol:
+  status: planned_after_core_pilot
+  required_artifacts:
+    - results/stage-3/pilot/summaries/stage3_pilot_selection.json
+paths:
+  registry: experiments/registry-stage-3.csv
+  results: results/stage-3
+  runs: results/stage-3/accelerator-screening/runs
+  checkpoints: results/stage-3/checkpoints
+  summaries: results/stage-3/accelerator-screening/summaries
+  figures: results/stage-3/accelerator-screening/figures
+  tables: results/stage-3/accelerator-screening/tables
+data:
+  train_subset: 12000
+  test_subset: null
+training:
+  epochs: 3
+  batch_size: 256
+  max_batches: null
+evaluation:
+  use_test: false
+selection:
+  selection_data: validation_only
+  datasets: [FashionMNIST]
+  models: [lenet_classic]
+  methods: [strict]
+  seeds: [70, 71, 72]
+  candidates:
+    - stage2_baseline
+    - predict_correct_initialization
+    - local_secant_preconditioner
+  execution_order: deterministic_hash_counterbalance
+  execution_order_seed: 20260715
+stage3:
+  design: configs/stage3/design.yaml
+  phase: accelerator_screening
+  candidate_id: stage2_baseline
+  implementation_status: design_only

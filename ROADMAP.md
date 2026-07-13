@@ -4,72 +4,69 @@
 
 ## Фазы 1–5 — завершены
 
-1. Исследовательский scaffold и preregistration.
-2. Контролируемая среда и validation-only pilot 96/96.
+1. Research scaffold и preregistration.
+2. Controlled environment и validation-only pilot 96/96.
 3. Stage 1 confirmatory campaign 80/80.
 4. Stage 2 implementation study 80/80.
 5. Public release и проверка неавторизованного доступа.
 
-## Фаза 6. Stage 3 design-ready — текущая
+## Фаза 6. Stage 3 design-ready revision 2 — текущая
 
-Завершено:
+Закреплены ADR-006/007/008, RQ6–RQ11, точные hashes Stage 2, locality schema,
+profiling contract, scaling MLP family, exact-shortcut control A0, core
+approximation candidates C1/C2 и predict-correct candidates C4/C5. Test остаётся
+выключенным.
 
-- scope и locality taxonomy закреплены ADR-006/ADR-007;
-- RQ6–RQ10 добавлены;
-- baseline hashes Stage 2 закреплены;
-- design YAML, stage templates и candidate overlays добавлены;
-- locality trace schema и scaling MLP family реализованы;
-- deterministic design plan и readiness gate добавлены;
-- test остаётся выключенным.
+## Фаза 7. Stage 3A profiling
 
-## Фаза 7. Stage 3A baseline profiling
-
-- реализовать diagnostics/profiler executor;
-- разметить forward, inference, state VJP, parameter VJP и optimizer step;
-- собрать B0 locality/runtime/memory profile;
-- проверить отсутствие perturbation training results;
-- применить feasibility stop rules.
+- реализовать non-perturbing profiler executor;
+- собрать B0/A0 locality/runtime/memory profile;
+- выполнить 336 matched profiling cells;
+- применить feasibility и endpoint-equivalence gates.
 
 ## Фаза 8. Stage 3B exact candidates
 
 - B1 isolated layer VJP;
 - B2 composite VJP;
-- CPU float64 и GPU float32 equivalence gates;
-- back-to-back profiling и attribution;
-- выбрать не более одного exact candidate для pilot.
+- CPU float64/GPU float32 full-trajectory gates;
+- attribution и выбор не более одного exact candidate.
 
-## Фаза 9. Stage 3C approximations
+## Фаза 9. Stage 3C core approximations
 
 - C1 adaptive stopping;
 - C2 periodic VJP refresh;
-- gradient-alignment и stability gates;
-- parameterized validation-only screening 48 cells;
-- выбрать не более одного approximation candidate.
+- 48-cell validation-only pilot;
+- выбрать не более одного core approximation candidate.
 
-C3 fixed random feedback остаётся условным треком после core Stage 3.
+## Фаза 10. Stage 3C2 predict-correct screening
 
-## Фаза 10. Stage 3 freeze и final
+- C4 layer-local EMA initializer + exact correction;
+- C5 local secant preconditioner + exact correction;
+- 27 validation-only cells;
+- residual, VJP-reduction, fallback и non-inferiority gates;
+- C3H/C6 остаются deferred до отдельного go/no-go.
 
-- заморозить candidates, parameters и non-inferiority margin;
-- создать Stage 3 environment lock и control artifacts;
-- создать `stage3-pilot-freeze-v1`;
-- отдельным commit включить test;
-- выполнить до 80 final cells;
-- сохранить execution и publication states раздельно.
+## Фаза 11. Stage 3 freeze и final
 
-## Фаза 11. Анализ и диссертация
+Заморозить candidates/parameters/margin, создать environment/control artifacts и
+`stage3-pilot-freeze-v1`, отдельным commit включить test, выполнить до 80 final
+cells и сохранить execution/publication states раздельно.
 
-- locality/runtime/memory scaling;
-- robustness и representations для frozen candidates;
-- экспериментальная глава и статья;
-- replication bundle и clean-room reproduction;
-- финальный резерв на рецензию и исправления.
+## Фаза 12. Анализ и диссертация
 
+Locality/runtime/memory scaling, robustness, representations, глава диссертации,
+статья, replication bundle, clean-room reproduction и резерв на рецензию.
 
 ## Принцип управления объёмом
 
-Каждая следующая фаза начинается после завершения предыдущего контрольного
-рубежа. Сначала собираются наблюдения о текущей реализации, затем создаётся один
-кандидат, после чего проверяются корректность, устойчивость и практическая
-значимость ускорения. Такой порядок сохраняет возможность установить причину
-каждого изменения и уменьшает риск одновременного изменения нескольких факторов.
+Каждая линия начинается после предыдущего контрольного рубежа. C4/C5 не
+объединяются с C1/C2 или B1/B2 до завершения attribution. Отрицательные и
+fallback-heavy результаты сохраняются как результаты, а не удаляются.
+
+## Критерий завершения проектирования
+
+Проектирование считается завершённым, когда все варианты имеют однозначные
+идентификаторы, область сравнения, правила остановки и заранее заданные условия
+перехода. Наличие кода само по себе не разрешает эксперимент: сначала
+фиксируются среда, контрольные результаты и план исполнения. Это позволяет
+отделить исследовательское решение от последующего наблюдения.

@@ -9,3 +9,4 @@
 - ADR-005: Freeze post-pilot final ordering, resumption, and telemetry.
 - [ADR-006](ADR-006-stage3-scope_EN.md): extended Stage 3 scope.
 - [ADR-007](ADR-007-stage3-locality-taxonomy_EN.md): multidimensional locality taxonomy.
+- [ADR-008](ADR-008-predict-correct-acceleration_EN.md): predict-correct acceleration and exact-correction boundaries.

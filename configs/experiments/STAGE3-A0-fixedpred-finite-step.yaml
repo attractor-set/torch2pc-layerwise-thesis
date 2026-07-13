@@ -1,0 +1,9 @@
+stage3:
+  candidate_id: fixedpred_finite_step_control
+  track: exact_shortcut
+  changes_algorithm: false
+  implementation_status: planned
+  equivalence_scope: endpoint_gradient
+  fixedpred:
+    eta: 1.0
+    inference_steps_rule: network_depth

@@ -77,7 +77,7 @@ See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 
 The extended Stage 3 studies mathematical and execution locality, exact VJP
 organization, adaptive stopping, periodic VJP refresh, and depth/width scaling.
-See [docs/stage-3-protocol_EN.md](docs/stage-3-protocol_EN.md).
+See [docs/stage-3-protocol_EN.md](docs/stage-3-protocol_EN.md). Design revision 2 adds an exact-shortcut control and a separate predict-correct line with mandatory exact correction sweeps and Strict fallback.
 
 The repository is ready for implementation and profiling while pilot/final
 execution remains deliberately blocked:

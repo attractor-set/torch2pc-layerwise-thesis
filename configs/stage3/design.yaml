@@ -1,9 +1,10 @@
 schema_version: 1
 campaign:
   id: stage3-locality-approximation-v1
+  design_revision: 2
   status: design_ready
   stage1_stage2_immutable: true
-  title: Locality, approximation, and computational scaling in Torch2PC
+  title: Locality, approximation, predict-correct acceleration, and computational scaling in Torch2PC
 baseline:
   stage2_execution_source: 6d66b0a6f82c30c4fb8eca6247383ca13e0636a2
   stage2_publication_state: bb435432a65b76b7fc4f383b566b9a372fc346ae
@@ -15,6 +16,7 @@ research_questions:
   - RQ8_adaptive_compute
   - RQ9_linearization_refresh
   - RQ10_approximate_feedback
+  - RQ11_predict_correct_acceleration
 candidates:
   - id: stage2_baseline
     track: baseline
@@ -23,12 +25,25 @@ candidates:
     methods: [fixedpred, strict]
     equivalence_gate: false
     non_inferiority_gate: false
+  - id: fixedpred_finite_step_control
+    track: exact_shortcut
+    changes_algorithm: false
+    implementation_status: planned
+    methods: [fixedpred]
+    equivalence_gate: true
+    equivalence_scope: endpoint_gradient
+    non_inferiority_gate: false
+    pilot_variants:
+      fixedpred:
+        - id: eta1_depth_steps
+          parameters: {eta: 1.0, inference_steps_rule: network_depth}
   - id: isolated_layer_vjp
     track: implementation_preserving
     changes_algorithm: false
     implementation_status: planned
     methods: [fixedpred, strict]
     equivalence_gate: true
+    equivalence_scope: full_trajectory
     non_inferiority_gate: false
   - id: composite_vjp
     track: implementation_preserving
@@ -36,9 +51,11 @@ candidates:
     implementation_status: planned
     methods: [fixedpred, strict]
     equivalence_gate: true
+    equivalence_scope: full_trajectory
     non_inferiority_gate: false
   - id: adaptive_stopping
     track: approximation
+    approximation_family: stopping
     changes_algorithm: true
     implementation_status: planned
     methods: [fixedpred, strict]
@@ -61,6 +78,7 @@ candidates:
           parameters: {minimum_steps: 3, maximum_steps: 20, relative_state_tolerance: 0.001, patience: 2}
   - id: periodic_vjp_refresh
     track: approximation
+    approximation_family: stale_linearization
     changes_algorithm: true
     implementation_status: planned
     methods: [strict]
@@ -78,6 +96,59 @@ candidates:
           parameters: {refresh_interval: 20}
   - id: fixed_random_feedback
     track: approximation
+    approximation_family: feedback
+    changes_algorithm: true
+    implementation_status: deferred
+    methods: [strict]
+    equivalence_gate: false
+    non_inferiority_gate: true
+  - id: hybrid_feedback_exact_refresh
+    track: approximation
+    approximation_family: feedback_with_exact_correction
+    changes_algorithm: true
+    implementation_status: deferred
+    methods: [strict]
+    equivalence_gate: false
+    non_inferiority_gate: true
+  - id: predict_correct_initialization
+    track: approximation
+    approximation_family: predict_correct
+    changes_algorithm: true
+    implementation_status: planned
+    methods: [strict]
+    equivalence_gate: false
+    non_inferiority_gate: true
+    pilot_variants:
+      strict:
+        - id: ema_beta_09_correct_1
+          parameters: {initializer: layerwise_ema_residual, ema_beta: 0.9, reset_policy: epoch, exact_correction_steps: 1, fallback_to_strict: true}
+        - id: ema_beta_09_correct_2
+          parameters: {initializer: layerwise_ema_residual, ema_beta: 0.9, reset_policy: epoch, exact_correction_steps: 2, fallback_to_strict: true}
+        - id: ema_beta_09_correct_3
+          parameters: {initializer: layerwise_ema_residual, ema_beta: 0.9, reset_policy: epoch, exact_correction_steps: 3, fallback_to_strict: true}
+        - id: ema_beta_09_correct_5
+          parameters: {initializer: layerwise_ema_residual, ema_beta: 0.9, reset_policy: epoch, exact_correction_steps: 5, fallback_to_strict: true}
+  - id: local_secant_preconditioner
+    track: approximation
+    approximation_family: local_inverse_preconditioner
+    changes_algorithm: true
+    implementation_status: planned
+    methods: [strict]
+    equivalence_gate: false
+    non_inferiority_gate: true
+    pilot_variants:
+      strict:
+        - id: scalar_secant_correct_1
+          parameters: {preconditioner: layer_scalar_secant, warmup_exact_steps: 2, scale_clip_min: 0.25, scale_clip_max: 4.0, exact_correction_steps: 1, fallback_to_strict: true}
+        - id: scalar_secant_correct_2
+          parameters: {preconditioner: layer_scalar_secant, warmup_exact_steps: 2, scale_clip_min: 0.25, scale_clip_max: 4.0, exact_correction_steps: 2, fallback_to_strict: true}
+        - id: scalar_secant_correct_3
+          parameters: {preconditioner: layer_scalar_secant, warmup_exact_steps: 2, scale_clip_min: 0.25, scale_clip_max: 4.0, exact_correction_steps: 3, fallback_to_strict: true}
+        - id: scalar_secant_correct_5
+          parameters: {preconditioner: layer_scalar_secant, warmup_exact_steps: 2, scale_clip_min: 0.25, scale_clip_max: 4.0, exact_correction_steps: 5, fallback_to_strict: true}
+  - id: layer_local_anderson
+    track: approximation
+    approximation_family: fixed_point_mixing
     changes_algorithm: true
     implementation_status: deferred
     methods: [strict]
@@ -87,7 +158,7 @@ phases:
   profiling:
     status: planned
     test_access: false
-    candidates: [stage2_baseline, isolated_layer_vjp, composite_vjp]
+    candidates: [stage2_baseline, fixedpred_finite_step_control, isolated_layer_vjp, composite_vjp]
     methods: [fixedpred, strict]
     depths: [4, 8, 16, 32]
     widths: [64, 256]
@@ -113,13 +184,26 @@ phases:
     seeds: [70, 71, 72]
     execution_order: deterministic_hash_counterbalance
     execution_order_seed: 20260714
+  accelerator_screening:
+    status: planned_after_core_pilot
+    test_access: false
+    datasets: [FashionMNIST]
+    models: [lenet_classic]
+    methods: [strict]
+    candidates:
+      - stage2_baseline
+      - predict_correct_initialization
+      - local_secant_preconditioner
+    seeds: [70, 71, 72]
+    execution_order: deterministic_hash_counterbalance
+    execution_order_seed: 20260715
   final_template:
     status: blocked_until_stage3_freeze
     test_access: false
     datasets: [FashionMNIST, MNIST]
     methods: [fixedpred, strict]
     seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    design_formula: up to 2 datasets x applicable candidate-method pairs x 10 seeds
+    design_formula: up to 2 datasets x applicable frozen candidate-method pairs x 10 seeds
     maximum_cells: 80
     selected_candidates: null
 gates:
@@ -131,11 +215,15 @@ gates:
     gpu_min_cosine: 0.999
     gpu_max_relative_l2: 0.001
     compare:
-      - beliefs
-      - prediction_errors
-      - state_updates
-      - parameter_gradients
-      - one_optimizer_step
+      full_trajectory:
+        - beliefs
+        - prediction_errors
+        - state_updates
+        - parameter_gradients
+        - one_optimizer_step
+      endpoint_gradient:
+        - parameter_gradients
+        - one_optimizer_step
   non_inferiority:
     metric: validation_macro_f1
     margin_source: stage2_seed_variability
@@ -152,6 +240,11 @@ gates:
     record_vjp_calls: true
     record_saved_tensor_bytes: true
     record_synchronization_points: true
+  predict_correct:
+    minimum_vjp_reduction_fraction: 0.25
+    maximum_fallback_fraction: 0.10
+    require_residual_nonincrease: true
+    require_at_least_one_exact_correction: true
 stop_rules:
   profiling_go:
     minimum_optimizable_runtime_fraction: 0.20
@@ -161,6 +254,11 @@ stop_rules:
     require_all_numerical_gates: true
     require_no_new_non_finite_values: true
     require_test_access_false: true
+  accelerator_screening_go:
+    minimum_vjp_reduction_fraction: 0.25
+    maximum_fallback_fraction: 0.10
+    require_validation_non_inferiority: true
+    require_residual_nonincrease: true
   optional_feedback_track:
     minimum_months_remaining: 3
     require_core_stage3_complete: true

@@ -7,7 +7,7 @@
 ### Добавлено
 
 - подробный двуязычный протокол Stage 3 по locality, approximation и scaling;
-- ADR-006 с границами расширенного Stage 3 и ADR-007 с locality taxonomy;
+- ADR-006 с границами Stage 3, ADR-007 с locality taxonomy и ADR-008 с predict-correct acceleration;
 - design contract `configs/stage3/design.yaml`;
 - profiling, pilot и final-template конфигурации Stage 3;
 - candidate overlays B0/B1/B2/C1/C2/C3;

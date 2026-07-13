@@ -110,5 +110,4 @@ equal-wall-clock эксперимент.
 переписывается. Stage 3 создаёт отдельный protocol/freeze. Profiling и pilot не
 создают test loader. Exact implementation candidates требуют equivalence gates;
 approximation candidates получают отдельный non-inferiority rule и не получают
-claim эквивалентности Stage 2. Candidate selection, stopping tolerance, refresh
-interval и margin замораживаются до Stage 3 test access.
+claim эквивалентности Stage 2. Candidate selection, stopping tolerance, refresh interval, predict-correct correction budget, EMA/secant parameters, fallback rule и margin замораживаются до Stage 3 test access. A0 использует отдельный endpoint-equivalence gate; C4/C5 требуют хотя бы одну точную коррекцию и публикуемый fallback rate.

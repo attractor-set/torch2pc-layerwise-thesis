@@ -14,8 +14,9 @@ Design-ready; execution blocked.
 
 ## Matrices
 
-- profiling: 288 short matched cells;
-- screening pilot: 48 parameterized validation-only terminal cells;
+- profiling: 336 short matched cells;
+- core screening pilot: 48 parameterized validation-only terminal cells;
+- predict-correct screening: 27 validation-only terminal cells;
 - final template: up to 80 cells after freeze.
 
 ## Implementation-start acceptance

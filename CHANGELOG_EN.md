@@ -7,7 +7,7 @@
 ### Added
 
 - A detailed bilingual Stage 3 protocol for locality, approximation, and scaling.
-- ADR-006 for extended Stage 3 scope and ADR-007 for the locality taxonomy.
+- ADR-006 for Stage 3 scope, ADR-007 for locality taxonomy, and ADR-008 for predict-correct acceleration.
 - `configs/stage3/design.yaml`, Stage 3 profiling/pilot/final templates, and
   B0/B1/B2/C1/C2/C3 candidate overlays.
 - A locality trace schema, profiling contract, structural locality gate, and

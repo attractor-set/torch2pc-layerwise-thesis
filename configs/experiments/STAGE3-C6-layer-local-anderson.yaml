@@ -1,0 +1,10 @@
+stage3:
+  candidate_id: layer_local_anderson
+  track: approximation
+  changes_algorithm: true
+  implementation_status: deferred
+  anderson:
+    scope: layer_local
+    history_window_candidates: [2, 3]
+    regularization: 1.0e-4
+    fallback_to_strict: true

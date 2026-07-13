@@ -4,11 +4,9 @@
 
 ## Status meaning
 
-`ready_for_stage3_implementation` means that implementation can start without
-changing Stage 1/2. It does not authorize pilot or final execution.
-
-`blocked_until_candidates_and_freeze` means that Stage 3 training stages remain
-intentionally absent from `TRAINING_STAGES`.
+`ready_for_stage3_implementation` authorizes implementation, not pilot/final.
+`blocked_until_candidates_and_freeze` keeps Stage 3 out of `TRAINING_STAGES` and
+test disabled.
 
 ## Checks
 
@@ -18,26 +16,28 @@ PYTHONPATH=src python -m torch2pc_thesis.cli stage3-check
 PYTHONPATH=src python scripts/generate_stage3_design_plan.py
 ```
 
-Expected output includes 288 profiling cells, 48 parameterized validation-only screening cells,
-and a final template blocked until Stage 3 freeze.
+Expected: design revision 2, 336 profiling cells, 48 core validation-only pilot
+cells, 27 predict-correct screening cells, and final blocked until freeze.
 
-## Profiling execution prerequisites
+## Profiling prerequisites
 
-A profiling executor, non-perturbing B0 instrumentation, a pinned source commit,
-a new environment lock, trace-schema checks, and a warmup/synchronization smoke
-run are required.
+Require the profiler executor, non-perturbing B0 instrumentation, A0 endpoint
+control, pinned source, environment lock, and warmup/synchronization smoke.
 
-## Pilot prerequisites
+## Core-pilot prerequisites
 
-B1/B2/C1/C2 require separate Torch2PC commits. Exact candidates require CPU/GPU
-equivalence gates; approximation candidates require finite/stability gates. The
-profiling report and frozen validation-only pilot plan must exist, and no test
-loader may be constructed.
+B1/B2/C1/C2 require separate commits. B1/B2 require full-trajectory CPU/GPU
+gates, A0 requires an endpoint gate, and C1/C2 require finite/stability gates.
+No test loader may be constructed.
+
+## Accelerator-screening prerequisites
+
+The core-pilot selection artifact must be frozen; C4/C5 need separate commits,
+at least one exact correction, tested Strict fallback, residual/VJP/fallback
+telemetry, a screening environment lock, and no test loader.
 
 ## Final prerequisites
 
-Select one exact and at most one approximate candidate from validation only,
-freeze their parameters and the non-inferiority margin, create the Stage 3
-environment and control artifacts, create a `stage3-pilot-freeze` manifest/tag,
-and enable final execution in a separate commit. The execution and later
-publication states remain distinct.
+Select one exact and at most one approximation candidate, freeze parameters and
+the margin, create `stage3-pilot-freeze`, and enable final in a separate commit.
+Execution and publication states remain distinct.

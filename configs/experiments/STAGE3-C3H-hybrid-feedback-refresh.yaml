@@ -1,0 +1,10 @@
+stage3:
+  candidate_id: hybrid_feedback_exact_refresh
+  track: approximation
+  changes_algorithm: true
+  implementation_status: deferred
+  feedback:
+    approximate_operator: fixed_random
+    exact_refresh_intervals: [2, 5]
+    require_final_exact_correction: true
+    fallback_to_strict: true

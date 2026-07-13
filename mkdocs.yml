@@ -38,6 +38,7 @@ nav:
       - ADR-004 Статистика: decisions/ADR-004-statistical-protocol.md
       - ADR-006 Scope Stage 3: decisions/ADR-006-stage3-scope.md
       - ADR-007 Таксономия локальности: decisions/ADR-007-stage3-locality-taxonomy.md
+      - ADR-008 Predict-correct acceleration: decisions/ADR-008-predict-correct-acceleration.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

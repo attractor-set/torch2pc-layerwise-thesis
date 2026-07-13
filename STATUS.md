@@ -2,22 +2,30 @@
 
 [English version](STATUS_EN.md)
 
+Состояние после завершения двух подтверждающих 80-ячеечных серий. Stage 1
+использует исходный Torch2PC, Stage 2 — закреплённый implementation-preserving
+patch. Численные контроли ограничены закреплённой экспериментальной областью и
+не трактуются как универсальное доказательство для любых моделей и сред.
+
 | Компонент | Наблюдаемый статус |
 |---|---|
-| Структура репозитория | Создана и статически проверена |
-| Нейтральная языковая политика | Добавлена |
-| Test isolation | Реализована в конфигурации и training pipeline |
-| Уникальные повторные запуски | Реализованы через `run_id` |
-| Split persistence и SHA-256 | Реализованы |
-| Torch2PC commit | Не зафиксирован |
-| Docker/ROCm runtime | Не проверен на целевом хосте |
-| Структурная проверка поправки | Не выполнена |
-| C0 Exact/BP | Не выполнен |
-| C1 FixedPred/Exact | Не выполнен |
-| Pilot | Не выполнен |
-| Pilot freeze | Не создан |
-| Final | Заблокирован до pilot-freeze |
-| CKA/RSA/robustness executor | Запланирован, не реализован полностью |
-| Результаты диссертации | Отсутствуют |
+| Validation-only pilot | 96/96 terminal-ячеек, 0 failed, test не вычислялся |
+| Stage 1 final | 80/80 completed, 0 failed |
+| Stage 2 final | 80/80 completed, 0 failed |
+| Модель и данные | `lenet_classic`, MNIST и FashionMNIST |
+| Исходный Torch2PC | `00c6c50ee3540537bbb56ab2b6567b541f42b093` |
+| Patched Torch2PC | `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4` |
+| Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
+| CPU/GPU equivalence gates | Пройдены |
+| Stage 1 / Stage 2 quality | Парные значения test accuracy и macro-F1 совпали |
+| Производительность Stage 2 | Exact ≈ BP; FixedPred и Strict существенно ускорены |
+| Cross-version analysis | Создан в `results/cross-version/` |
+| Torch2PC equivalence audit | `docs/torch2pc-patched-v1-equivalence.md` |
+| Подтверждающие результаты | Сформированы и готовы к описанию в диссертации |
 
-Наличие кода или конфигурации не трактуется как успешный эксперимент.
+## Текущая задача
+
+Post-experiment maintenance завершён: CSV-хэши стабильны, Stage 2 manifest
+привязан к правильному environment lock, а regression suite содержит 63 теста.
+Остаётся проверить CI, создать отдельные теги execution/results state и
+опубликовать полный replication bundle с raw run artifacts.

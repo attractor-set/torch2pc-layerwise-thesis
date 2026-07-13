@@ -82,9 +82,7 @@ def _load_or_create_split(
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists():
         with np.load(path, allow_pickle=False) as loaded:
-            result = {
-                key: np.asarray(loaded[key], dtype=np.int64) for key in loaded.files
-            }
+            result = {key: np.asarray(loaded[key], dtype=np.int64) for key in loaded.files}
         if set(result) != set(expected):
             raise RuntimeError(f"Split schema mismatch: {path}")
         for key, value in expected.items():
@@ -182,8 +180,7 @@ def build_dataloaders(
             "all" if data_cfg.get("test_subset") is None else str(data_cfg["test_subset"])
         )
         test_path = split_dir / (
-            f"{name}_test_seed{int(rep_cfg['split_seed']) + 1000}_"
-            f"subset{test_subset_label}.npz"
+            f"{name}_test_seed{int(rep_cfg['split_seed']) + 1000}_subset{test_subset_label}.npz"
         )
         _load_or_create_split(test_path, {"test_idx": test_idx})
         split_files.append(test_path)

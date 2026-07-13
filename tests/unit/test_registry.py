@@ -57,6 +57,7 @@ def test_registry_tracks_independent_run_attempts(tmp_path) -> None:
     assert latest["run-1"]["status"] == "completed"
     assert latest["run-2"]["status"] == "failed"
     assert [row["run_id"] for row in completed_runs(path)] == ["run-1"]
+    assert b"\r\n" not in path.read_bytes()
 
 
 def test_completed_experiments_do_not_count_successful_reruns_as_new_replications(tmp_path) -> None:

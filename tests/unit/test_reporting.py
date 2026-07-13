@@ -90,9 +90,7 @@ def _write_completed_run(tmp_path, *, corrupt_metrics: bool = False):
         "git_commit": "a" * 40,
         "config_sha256": config_hash,
     }
-    (run_directory / "resolved_config.json").write_text(
-        json.dumps(config), encoding="utf-8"
-    )
+    (run_directory / "resolved_config.json").write_text(json.dumps(config), encoding="utf-8")
     (run_directory / "environment.json").write_text(
         json.dumps(
             {
@@ -110,9 +108,7 @@ def _write_completed_run(tmp_path, *, corrupt_metrics: bool = False):
     for name in ["history.csv", "checkpoint.pt", "validation_predictions.npz"]:
         (run_directory / name).write_bytes(name.encode())
     manifest = directory_manifest(run_directory)
-    (run_directory / "manifest.json").write_text(
-        json.dumps(manifest), encoding="utf-8"
-    )
+    (run_directory / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
     if corrupt_metrics:
         (run_directory / "metrics.json").write_text(
             json.dumps({"test_evaluated": False, "changed": True}),
@@ -129,8 +125,6 @@ def test_completed_run_artifacts_are_verified(tmp_path) -> None:
 
 
 def test_completed_run_artifact_hash_mismatch_is_rejected(tmp_path) -> None:
-    verifier, run_directory, row = _write_completed_run(
-        tmp_path, corrupt_metrics=True
-    )
+    verifier, run_directory, row = _write_completed_run(tmp_path, corrupt_metrics=True)
     with pytest.raises(RuntimeError, match="(?:size|hash) mismatch"):
         verifier(run_directory, row)

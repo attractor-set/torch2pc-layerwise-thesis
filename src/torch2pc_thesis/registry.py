@@ -57,7 +57,7 @@ def initialize_registry(path: str | Path) -> Path:
     registry.parent.mkdir(parents=True, exist_ok=True)
     if not registry.exists():
         with registry.open("w", newline="", encoding="utf-8") as stream:
-            writer = csv.DictWriter(stream, fieldnames=FIELDS)
+            writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
             writer.writeheader()
     else:
         with registry.open("r", newline="", encoding="utf-8") as stream:
@@ -74,7 +74,7 @@ def append_entry(path: str | Path, entry: RegistryEntry) -> None:
     registry = initialize_registry(path)
     with registry.open("a+", newline="", encoding="utf-8") as stream:
         fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
-        writer = csv.DictWriter(stream, fieldnames=FIELDS)
+        writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
         writer.writerow(asdict(entry))
         stream.flush()
         fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
@@ -103,6 +103,7 @@ def latest_by_experiment_id(path: str | Path) -> dict[str, dict[str, str]]:
 def completed_runs(path: str | Path) -> list[dict[str, str]]:
     return [row for row in latest_by_run_id(path).values() if row["status"] == "completed"]
 
+
 def completed_experiments(path: str | Path) -> list[dict[str, str]]:
     """Return one primary completed attempt per experiment configuration.
 
@@ -116,4 +117,3 @@ def completed_experiments(path: str | Path) -> list[dict[str, str]]:
     ):
         selected.setdefault(row["experiment_id"], row)
     return list(selected.values())
-

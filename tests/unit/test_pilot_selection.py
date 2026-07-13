@@ -59,3 +59,17 @@ def test_pilot_attempts_are_filtered_by_environment_cohort(tmp_path) -> None:
     )
 
     assert list(selected.values()) == [current]
+
+
+def test_planned_pilot_matrix_contains_all_96_cells() -> None:
+    from pathlib import Path
+
+    import yaml
+
+    from scripts.select_pilot import planned_matrix_keys
+
+    base = yaml.safe_load(Path("configs/base.yaml").read_text(encoding="utf-8"))
+    pilot = yaml.safe_load(Path("configs/stages/pilot.yaml").read_text(encoding="utf-8"))
+    keys = planned_matrix_keys(base, pilot)
+    assert len(keys) == 96
+    assert len(set(keys)) == 96

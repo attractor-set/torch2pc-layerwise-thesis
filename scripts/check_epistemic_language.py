@@ -74,9 +74,7 @@ def _strip_fenced_code(text: str) -> str:
 
 def _text_sources(path: Path) -> Iterable[tuple[str, str]]:
     if path.suffix != ".ipynb":
-        yield str(path.relative_to(ROOT)), _strip_fenced_code(
-            path.read_text(encoding="utf-8")
-        )
+        yield str(path.relative_to(ROOT)), _strip_fenced_code(path.read_text(encoding="utf-8"))
         return
 
     notebook = json.loads(path.read_text(encoding="utf-8"))

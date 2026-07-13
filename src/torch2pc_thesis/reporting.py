@@ -36,9 +36,7 @@ def _json_object(path: Path) -> dict[str, Any]:
     return value
 
 
-
-
-def _verified_run_artifacts(
+def verified_run_artifacts(
     run_directory: Path,
     row: dict[str, str],
 ) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -68,8 +66,7 @@ def _verified_run_artifacts(
     for key, expected in expected_identity.items():
         if str(environment.get(key, "")) != expected:
             raise RuntimeError(
-                f"Environment artifact disagrees with registry for {key}: "
-                f"{run_directory}"
+                f"Environment artifact disagrees with registry for {key}: {run_directory}"
             )
     if config_sha256(resolved_config) != row["config_sha256"]:
         raise RuntimeError(f"Resolved configuration hash mismatch: {run_directory}")
@@ -107,9 +104,7 @@ def _verified_run_artifacts(
         try:
             resolved.relative_to(run_directory.resolve())
         except ValueError as exc:
-            raise RuntimeError(
-                f"Run manifest path escapes its run directory: {relative}"
-            ) from exc
+            raise RuntimeError(f"Run manifest path escapes its run directory: {relative}") from exc
         if not path.is_file():
             raise RuntimeError(f"Run artifact is missing: {path}")
         if path.stat().st_size != int(item.get("bytes", -1)):
@@ -117,6 +112,10 @@ def _verified_run_artifacts(
         if sha256_file(path) != str(item.get("sha256", "")):
             raise RuntimeError(f"Run artifact hash mismatch: {path}")
     return metrics, environment
+
+
+# Backward-compatible internal name retained for existing callers and tests.
+_verified_run_artifacts = verified_run_artifacts
 
 
 def collect_metrics(
@@ -134,19 +133,15 @@ def collect_metrics(
             raise RuntimeError(
                 f"Registered run directory escapes the project root: {run_directory}"
             ) from exc
-        metrics, environment = _verified_run_artifacts(run_directory, row)
+        metrics, environment = verified_run_artifacts(run_directory, row)
         registry_test = row["test_evaluated"].lower() == "true"
         if bool(metrics.get("test_evaluated", False)) != registry_test:
-            raise RuntimeError(
-                f"Registry and metrics disagree about test access: {run_directory}"
-            )
+            raise RuntimeError(f"Registry and metrics disagree about test access: {run_directory}")
         records.append(
             {
                 **row,
                 **metrics,
-                "environment_lock_sha256": environment.get(
-                    "environment_lock_sha256"
-                ),
+                "environment_lock_sha256": environment.get("environment_lock_sha256"),
             }
         )
     return pd.DataFrame(records)
@@ -160,9 +155,7 @@ def _validate_confirmatory_cohort(primary: pd.DataFrame) -> None:
         values = primary[column].dropna().astype(str)
         if values.empty or values.nunique() != 1:
             observed = sorted(values.unique().tolist())
-            raise RuntimeError(
-                f"Confirmatory analysis mixes {column} values: {observed}"
-            )
+            raise RuntimeError(f"Confirmatory analysis mixes {column} values: {observed}")
     duplicated = primary.duplicated(PAIRING_KEY, keep=False)
     if duplicated.any():
         conflicts = primary.loc[duplicated, PAIRING_KEY + ["run_id"]]
@@ -182,12 +175,13 @@ def build_paired_primary_analysis(
     margin: float = 0.01,
     alpha: float = 0.05,
     minimum_pairs: int = 10,
+    stage_name: str = "final",
 ) -> pd.DataFrame:
     if primary_metric not in final.columns:
         raise RuntimeError(f"Primary metric is absent: {primary_metric}")
     records: list[dict[str, Any]] = []
     primary = final[
-        (final["stage"] == "final")
+        (final["stage"] == stage_name)
         & (final["dataset"] == primary_dataset)
         & (final["model"] == primary_model)
         & final[primary_metric].notna()
@@ -196,9 +190,9 @@ def build_paired_primary_analysis(
         return pd.DataFrame()
     _validate_confirmatory_cohort(primary)
 
-    baseline = primary[primary["method"] == "bp"][
-        ["model", "model_seed", primary_metric]
-    ].rename(columns={primary_metric: "baseline_value"})
+    baseline = primary[primary["method"] == "bp"][["model", "model_seed", primary_metric]].rename(
+        columns={primary_metric: "baseline_value"}
+    )
 
     contrast_names = contrasts or ["fixedpred_vs_bp", "strict_vs_bp"]
     methods: list[str] = []
@@ -219,8 +213,7 @@ def build_paired_primary_analysis(
             validate="one_to_one",
         ).sort_values(["model", "model_seed"])
         differences = (
-            paired["candidate_value"].astype(float)
-            - paired["baseline_value"].astype(float)
+            paired["candidate_value"].astype(float) - paired["baseline_value"].astype(float)
         ).to_numpy()
         if not pd.Series(differences).map(lambda value: math.isfinite(float(value))).all():
             raise RuntimeError(f"Non-finite paired difference for method={method}")
@@ -234,9 +227,7 @@ def build_paired_primary_analysis(
                 "contrast": f"{method}_vs_bp",
                 "metric": primary_metric,
                 "n_pairs": int(len(differences)),
-                "paired_model_seeds": ",".join(
-                    paired["model_seed"].astype(str).tolist()
-                ),
+                "paired_model_seeds": ",".join(paired["model_seed"].astype(str).tolist()),
                 "minimum_pairs": int(minimum_pairs),
                 "confirmatory_complete": complete,
                 "analysis_status": "confirmatory" if complete else "incomplete",
@@ -250,9 +241,7 @@ def build_paired_primary_analysis(
                 "equivalence_margin": margin,
                 "tost_ci90_low": equivalence["tost_ci_low"],
                 "tost_ci90_high": equivalence["tost_ci_high"],
-                "equivalent_within_margin": bool(
-                    complete and equivalence["equivalent"]
-                ),
+                "equivalent_within_margin": bool(complete and equivalence["equivalent"]),
             }
         )
     result = pd.DataFrame(records)
@@ -279,12 +268,16 @@ def write_latex_table(frame: pd.DataFrame, path: str | Path) -> Path:
 def build_primary_assets(
     registry_path: str | Path = "experiments/registry.csv",
     config_path: str | Path = "configs/base.yaml",
+    *,
+    stage_name: str = "final",
+    summary_dir_path: str | Path = "results/summaries",
+    table_dir_path: str | Path = "results/tables",
 ) -> dict[str, str]:
     base_config = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
     statistics = base_config["statistics"]
     metrics = collect_metrics(registry_path)
-    summary_dir = Path("results/summaries")
-    table_dir = Path("results/tables")
+    summary_dir = Path(summary_dir_path)
+    table_dir = Path(table_dir_path)
     summary_dir.mkdir(parents=True, exist_ok=True)
     table_dir.mkdir(parents=True, exist_ok=True)
 
@@ -308,10 +301,33 @@ def build_primary_assets(
         return outputs
     final = metrics[
         metrics["test_evaluated"].astype(str).str.lower().eq("true")
+        & metrics["stage"].astype(str).eq(stage_name)
     ].copy()
     test_columns = [
         column for column in ["test_accuracy", "test_macro_f1"] if column in final.columns
     ]
+    if not final.empty:
+        computational_columns = [
+            column
+            for column in [
+                "total_training_time_sec",
+                "mean_epoch_time_sec",
+                "median_epoch_time_sec",
+                "peak_gpu_memory_allocated_bytes",
+                "peak_gpu_memory_reserved_bytes",
+            ]
+            if column in final.columns
+        ]
+        if computational_columns:
+            computational = summarize_with_ci(
+                final,
+                ["dataset", "model", "method", "eta", "inference_steps"],
+                computational_columns,
+            )
+            computational_path = summary_dir / "computational_summary.csv"
+            computational.to_csv(computational_path, index=False)
+            outputs["computational_summary"] = str(computational_path)
+
     if not final.empty and test_columns:
         summary = summarize_with_ci(
             final,
@@ -334,12 +350,11 @@ def build_primary_assets(
             margin=float(statistics["equivalence_margin_macro_f1"]),
             alpha=float(statistics["alpha"]),
             minimum_pairs=int(statistics["minimum_primary_pairs"]),
+            stage_name=stage_name,
         )
         paired_path = summary_dir / "primary_paired_analysis.csv"
         paired.to_csv(paired_path, index=False)
-        paired_latex = write_latex_table(
-            paired, table_dir / "primary_paired_analysis.tex"
-        )
+        paired_latex = write_latex_table(paired, table_dir / "primary_paired_analysis.tex")
         outputs.update(
             {
                 "paired_primary_analysis": str(paired_path),

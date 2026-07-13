@@ -1,0 +1,34 @@
+{
+  "stage": "final_stage_2",
+  "completed_unique_cells": 80,
+  "all_test_evaluated": true,
+  "by_dataset": {
+    "FashionMNIST": 40,
+    "MNIST": 40
+  },
+  "by_method": {
+    "bp": 20,
+    "exact": 20,
+    "fixedpred": 20,
+    "strict": 20
+  },
+  "by_seed": {
+    "0": 8,
+    "1": 8,
+    "2": 8,
+    "3": 8,
+    "4": 8,
+    "5": 8,
+    "6": 8,
+    "7": 8,
+    "8": 8,
+    "9": 8
+  },
+  "source_git_commit": "6d66b0a6f82c30c4fb8eca6247383ca13e0636a2",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "registry_snapshot": "experiments/registry-stage-2-80-completed.csv",
+  "registry_snapshot_sha256": "4358c6fe8d2db69ea0f51607724f85eab7084e16b212546db3f81ab642e4a043",
+  "terminal_attempts_by_status": {
+    "completed": 80
+  }
+}

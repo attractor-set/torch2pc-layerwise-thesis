@@ -6,3 +6,4 @@
 *.yaml text eol=lf
 *.tex text eol=lf
 *.ipynb text eol=lf
+*.npz binary

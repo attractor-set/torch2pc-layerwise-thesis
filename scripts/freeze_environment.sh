@@ -16,6 +16,7 @@ fi
 
 PYTHONPATH=src "$PYTHON_BIN" - "$EXPERIMENT_IMAGE" "$ROCM_PYTORCH_IMAGE" <<'INNERPY'
 from pathlib import Path
+import hashlib
 import json
 import subprocess
 import sys
@@ -58,7 +59,16 @@ def digest_record(path):
         "sha256": sha256_file(path),
     }
 
+def digest_records(records):
+    canonical = json.dumps(
+        sorted(records, key=lambda item: item["path"]),
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
 config_files = sorted(Path("configs").rglob("*.yaml"))
+config_records = [digest_record(path) for path in config_files]
 source_files = [
     Path("pyproject.toml"), Path("Dockerfile.rocm"), Path("compose.yaml"),
     Path("Makefile"), Path(".env.example"),
@@ -113,7 +123,9 @@ manifest = {
     },
     "experiment_image": image_info(experiment_image),
     "base_image": image_info(base_image),
-    "config_files": [digest_record(path) for path in config_files],
+    "config_sha256": digest_records(config_records),
+    "config_sha256_kind": "sha256_of_sorted_config_path_and_content_digests",
+    "config_files": config_records,
     "source_files": [digest_record(path) for path in source_files],
     "container_pip_freeze": container_pip.splitlines(),
     "container_python_runtime": json.loads(container_python_runtime),

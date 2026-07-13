@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cd /workspace
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+cd "${REPO_ROOT}"
+
+ASSET_STAGE="${ASSET_STAGE:-final}"
+export ASSET_STAGE
 
 python - <<'INNERPY'
 from pathlib import Path
 import hashlib
 import json
+import os
 import subprocess
-import yaml
 from torchvision import datasets, transforms
 
-config = yaml.safe_load(Path("configs/base.yaml").read_text(encoding="utf-8"))
+from torch2pc_thesis.config import resolve_config
+
+stage = os.environ["ASSET_STAGE"]
+config = resolve_config("configs", stage=stage, method="exact")
 repo = Path(config["torch2pc"]["local_path"])
-url = config["torch2pc"]["repository"]
+url = str(config["torch2pc"]["repository"])
 pinned = str(config["torch2pc"].get("commit", "")).strip()
 repo.parent.mkdir(parents=True, exist_ok=True)
 
@@ -59,11 +67,12 @@ for path in sorted(Path("data").rglob("*")):
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         files.append({"path": str(path), "bytes": path.stat().st_size, "sha256": digest})
 
-output = Path("results/summaries/prepared_assets.json")
+output = Path(config["paths"]["summaries"]) / "prepared_assets.json"
 output.parent.mkdir(parents=True, exist_ok=True)
 output.write_text(
     json.dumps(
         {
+            "campaign_stage": stage,
             "torch2pc_repository": url,
             "torch2pc_commit_observed": actual_commit,
             "torch2pc_commit_pinned": pinned or None,
@@ -76,6 +85,7 @@ output.write_text(
     encoding="utf-8",
 )
 print(output)
-if not pinned:
-    print("Candidate Torch2PC commit. Review controls, then pin explicitly:", actual_commit)
+print("Torch2PC provenance verified:")
+print(f"  pinned:   {pinned}")
+print(f"  observed: {actual_commit}")
 INNERPY

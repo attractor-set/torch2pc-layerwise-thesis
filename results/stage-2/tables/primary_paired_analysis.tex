@@ -1,0 +1,8 @@
+\begin{tabular}{llllrlrrlrrrrrrrrrr}
+\toprule
+dataset & model & contrast & metric & n_pairs & paired_model_seeds & minimum_pairs & confirmatory_complete & analysis_status & mean_difference & ci95_low & ci95_high & cohen_dz & sign_flip_p_raw & equivalence_margin & tost_ci90_low & tost_ci90_high & equivalent_within_margin & sign_flip_p_holm \\
+\midrule
+FashionMNIST & lenet_classic & fixedpred_vs_bp & test_macro_f1 & 10 & 0,1,2,3,4,5,6,7,8,9 & 10 & True & confirmatory & 0.0015 & -0.0005 & 0.0034 & 0.5438 & 0.1406 & 0.0100 & -0.0001 & 0.0031 & True & 0.2812 \\
+FashionMNIST & lenet_classic & strict_vs_bp & test_macro_f1 & 10 & 0,1,2,3,4,5,6,7,8,9 & 10 & True & confirmatory & -0.0003 & -0.0016 & 0.0009 & -0.1804 & 0.5645 & 0.0100 & -0.0013 & 0.0007 & True & 0.5645 \\
+\bottomrule
+\end{tabular}

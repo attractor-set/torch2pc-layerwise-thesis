@@ -1,0 +1,50 @@
+{
+  "status": "selection_observed",
+  "selection_dataset": "FashionMNIST",
+  "selection_model": "lenet_classic",
+  "pilot_matrix": {
+    "planned_attempts": 96,
+    "completed_config_seed_cells": 96,
+    "failed_config_seed_cells": 0
+  },
+  "selected": {
+    "fixedpred": {
+      "eta": 0.1,
+      "inference_steps": 10,
+      "selection_rule": "higher success rate on the primary dataset; then higher mean validation macro F1; then lower mean measured training time, inference steps, and eta"
+    },
+    "strict": {
+      "eta": 0.05,
+      "inference_steps": 20,
+      "selection_rule": "higher success rate on the primary dataset; then higher mean validation macro F1; then lower mean measured training time, inference steps, and eta"
+    }
+  },
+  "test_evaluated": false,
+  "provenance": {
+    "source_git_commit": "6313c8995a3317de03806ea80576a7f779ee9823",
+    "torch2pc_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
+    "environment_lock_sha256": "91107ec7a29950819b7975670fb3108178688e6dc4461075a317ecc1a8681a9d",
+    "registry_path": "experiments/registry.csv",
+    "pilot_observations_path": "results/summaries/pilot_observations.csv"
+  },
+  "planning": {
+    "scope": "planning estimate from validation pilot; not a final power guarantee",
+    "estimates": [
+      {
+        "method": "fixedpred",
+        "pilot_pairs": 3,
+        "paired_difference_sd": 0.002994068377071148,
+        "target_95_ci_half_width": 0.01,
+        "advisory_final_pairs": 10
+      },
+      {
+        "method": "strict",
+        "pilot_pairs": 3,
+        "paired_difference_sd": 0.002629037514921283,
+        "target_95_ci_half_width": 0.01,
+        "advisory_final_pairs": 10
+      }
+    ],
+    "maximum_advisory_pairs": 10
+  }
+}

@@ -11,10 +11,13 @@ ETA ?=
 INFERENCE_STEPS ?=
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
-        control-cpu control-gpu run smoke pilot select-pilot apply-pilot-selection \
-        freeze-pilot final diagnostics report manifest docs docs-en jupyter lint \
+        control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
+        apply-pilot-selection final-plan freeze-pilot final diagnostics report manifest docs \
+        docs-en jupyter lint \
         typecheck test thesis article release clean status epistemic-check \
-        freeze-environment
+        freeze-environment configure-stage2 prepare-stage2 freeze-stage2-environment \
+        control-stage2-cpu control-stage2-gpu stage2-plan freeze-stage2 final-stage2 \
+        snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2
 
 help:
 	@printf '%s\n' \
@@ -35,7 +38,20 @@ help:
 	  '  control-gpu           Run the GPU numerical control gate' \
 	  '  smoke                 Run the smoke experiment' \
 	  '  pilot                 Run the pilot matrix' \
+	  '  pilot-observations    Export verified pilot observations' \
+	  '  final-plan            Build the deterministic final execution plan' \
 	  '  final                 Run the confirmatory experiment matrix' \
+	  '  configure-stage2      Pin the patched Torch2PC candidate revision' \
+	  '  prepare-stage2        Prepare Stage 2 assets and provenance' \
+	  '  control-stage2-cpu    Run Stage 2 CPU numerical gates' \
+	  '  control-stage2-gpu    Run Stage 2 GPU numerical gates' \
+	  '  stage2-plan           Build the deterministic Stage 2 execution plan' \
+	  '  freeze-stage2         Freeze the Stage 2 protocol evidence' \
+	  '  final-stage2          Run the isolated 80-cell Stage 2 matrix' \
+	  '  snapshot-stage2       Validate and snapshot the completed Stage 2 registry' \
+	  '  report-stage2         Build Stage 2 reports' \
+	  '  compare-stages        Build paired Stage 1 vs Stage 2 reports' \
+	  '  bundle-stage2         Verify and package the complete Stage 2 replication bundle' \
 	  '  diagnostics           Run diagnostic experiments' \
 	  '' \
 	  'Quality and outputs:' \
@@ -94,8 +110,14 @@ pilot:
 select-pilot:
 	$(PYTHON) scripts/select_pilot.py
 
+pilot-observations:
+	$(PYTHON) scripts/generate_pilot_observations.py
+
 apply-pilot-selection:
 	$(PYTHON) scripts/select_pilot.py --apply
+
+final-plan:
+	$(PYTHON) scripts/generate_final_execution_plan.py
 
 freeze-pilot:
 	bash scripts/freeze_milestone.sh pilot-freeze
@@ -146,6 +168,67 @@ article:
 
 release:
 	bash scripts/build_release.sh
+
+# Stage 2: exact replication of the 80-cell final matrix with a patched
+# Torch2PC implementation. Stage 1 evidence remains immutable.
+configure-stage2:
+	@test -n "$(PATCHED_TORCH2PC_COMMIT)" || \
+		(echo "PATCHED_TORCH2PC_COMMIT=<40-char SHA> is required" >&2; exit 2)
+	$(PYTHON) scripts/configure_stage2.py \
+		--commit "$(PATCHED_TORCH2PC_COMMIT)" \
+		$(if $(PATCHED_TORCH2PC_REPOSITORY),--repository "$(PATCHED_TORCH2PC_REPOSITORY)",)
+
+prepare-stage2:
+	docker compose run --rm -e ASSET_STAGE=final_stage_2 prepare
+
+freeze-stage2-environment:
+	PYTHONPATH=src $(PYTHON) scripts/freeze_stage2_environment.py
+
+control-stage2-cpu:
+	docker compose run --rm control-cpu \
+		python scripts/run_stage2_control_gate.py cpu
+
+control-stage2-gpu:
+	docker compose run --rm control-gpu \
+		python scripts/run_stage2_control_gate.py gpu
+
+stage2-plan:
+	PYTHONPATH=src $(PYTHON) -m scripts.generate_stage2_execution_plan
+
+freeze-stage2:
+	PYTHONPATH=src $(PYTHON) scripts/freeze_stage2.py
+
+final-stage2:
+	bash scripts/run_matrix.sh final_stage_2
+
+snapshot-stage2:
+	PYTHONPATH=src $(PYTHON) scripts/snapshot_stage2_results.py
+
+report-stage2:
+	docker compose run --rm report \
+		torch2pc-thesis report \
+		--registry experiments/registry-stage-2-80-completed.csv \
+		--stage final_stage_2 \
+		--summary-dir results/stage-2/summaries \
+		--table-dir results/stage-2/tables
+
+manifest-stage2:
+	docker compose run --rm \
+		-v "$(CURDIR)/src:/workspace/src:ro" \
+		manifest torch2pc-thesis manifest \
+		--directory results/stage-2 \
+		--output results/stage-2/summaries/results_manifest.json \
+		--environment-lock results/stage-2/summaries/environment-lock.json
+
+compare-stages:
+	docker compose run --rm report \
+		torch2pc-thesis compare \
+		--reference-registry experiments/registry-final-80-completed.csv \
+		--candidate-registry experiments/registry-stage-2-80-completed.csv \
+		--output-dir results/cross-version
+
+bundle-stage2:
+	bash scripts/build_stage2_replication_bundle.sh
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

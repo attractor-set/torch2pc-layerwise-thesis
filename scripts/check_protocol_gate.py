@@ -22,6 +22,23 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def config_records_sha256(records: object) -> str:
+    if not isinstance(records, list) or not records:
+        raise RuntimeError("Environment lock has no config file records")
+    normalized: list[dict[str, str]] = []
+    for item in records:
+        if not isinstance(item, dict):
+            raise RuntimeError("Invalid config file record in environment lock")
+        normalized.append(
+            {"path": str(item.get("path", "")), "sha256": str(item.get("sha256", ""))}
+        )
+    canonical = json.dumps(
+        sorted(normalized, key=lambda item: item["path"]),
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
 
 def verify_environment_lock() -> None:
     lock = load(Path("results/summaries/environment-lock.json"))
@@ -47,10 +64,36 @@ def verify_environment_lock() -> None:
             path = Path(str(item["path"]))
             if not path.exists() or sha256(path) != item["sha256"]:
                 raise RuntimeError(f"File differs from environment lock: {path}")
+    expected_config_sha = config_records_sha256(lock.get("config_files"))
+    if lock.get("config_sha256") != expected_config_sha:
+        raise RuntimeError("Environment lock configuration-tree hash is invalid")
     for key in ["experiment_image", "base_image"]:
         image = lock.get(key, {})
         if not isinstance(image, dict) or not image.get("id"):
             raise RuntimeError(f"Immutable image ID is absent from environment lock: {key}")
+
+
+def verify_final_runtime_worktree() -> None:
+    raw = subprocess.check_output(
+        ["git", "status", "--porcelain=v1", "--untracked-files=all"],
+        text=True,
+    )
+    allowed_exact = {"experiments/registry.csv"}
+    allowed_prefixes = ("results/runs/", "results/splits/")
+    unexpected: list[str] = []
+    for line in raw.splitlines():
+        if len(line) < 4:
+            continue
+        path = line[3:]
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1]
+        if path in allowed_exact or path.startswith(allowed_prefixes):
+            continue
+        unexpected.append(line)
+    if unexpected:
+        raise RuntimeError(
+            "Final stage found non-runtime worktree changes: " + "; ".join(unexpected)
+        )
 
 
 def main() -> None:
@@ -94,11 +137,17 @@ def main() -> None:
                     f"Frozen configuration changed: {path}; "
                     f"expected {item['sha256']}, observed {actual}"
                 )
-        status = subprocess.check_output(
-            ["git", "status", "--porcelain"], text=True
-        ).strip()
-        if status:
-            raise RuntimeError("Final stage requires a clean Git working tree")
+        plan_path = Path("results/summaries/final_execution_plan.json")
+        plan = load(plan_path)
+        if plan.get("stage") != "final":
+            raise RuntimeError("Unexpected final execution plan stage")
+        if plan.get("environment_lock_sha256") != environment_lock_sha256:
+            raise RuntimeError("Final execution plan references another environment lock")
+        if plan.get("source_git_commit") != expected_source_commit:
+            raise RuntimeError("Final execution plan references another source commit")
+        if plan.get("torch2pc_commit") != expected_torch2pc_commit:
+            raise RuntimeError("Final execution plan references another Torch2PC commit")
+        verify_final_runtime_worktree()
     print(f"Protocol prerequisites observed for stage={args.stage}")
 
 

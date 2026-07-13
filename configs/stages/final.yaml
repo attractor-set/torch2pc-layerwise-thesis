@@ -18,6 +18,8 @@ evaluation:
   use_test: true
 selection:
   configuration_frozen: true
+  execution_order: deterministic_hash_counterbalance
+  execution_order_seed: 20260713
   use_test_once_per_run: true
   seeds:
   - 0

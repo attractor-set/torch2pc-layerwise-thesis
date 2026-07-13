@@ -10,8 +10,9 @@ from typing import Any
 import yaml
 
 Config = dict[str, Any]
-PINNED_STAGES = {"pilot", "final", "diagnostics", "publication"}
-TRAINING_STAGES = {"smoke", "pilot", "final"}
+FINAL_STAGES = {"final", "final_stage_2"}
+PINNED_STAGES = {"pilot", *FINAL_STAGES, "diagnostics", "publication"}
+TRAINING_STAGES = {"smoke", "pilot", *FINAL_STAGES}
 
 
 class ConfigurationError(ValueError):
@@ -66,9 +67,7 @@ def resolve_config(
     resolved["meta"]["stage"] = stage
     resolved["meta"]["method"] = method
     resolved["meta"]["hardware_profile"] = hardware
-    resolved["meta"]["sources"] = [
-        source.relative_to(root_path).as_posix() for source in sources
-    ]
+    resolved["meta"]["sources"] = [source.relative_to(root_path).as_posix() for source in sources]
     validate_config(resolved)
     return resolved
 
@@ -133,11 +132,11 @@ def validate_config(config: Config) -> None:
     use_test = bool(config["evaluation"]["use_test"])
     if stage in {"correctness", "smoke", "pilot"} and use_test:
         raise ConfigurationError(f"Test access is prohibited during stage={stage}")
-    if stage == "final" and not use_test:
+    if stage in FINAL_STAGES and not use_test:
         raise ConfigurationError("Final stage requires evaluation.use_test=true")
-    if stage == "final" and str(config["protocol"]["status"]) != "frozen":
+    if stage in FINAL_STAGES and str(config["protocol"]["status"]) != "frozen":
         raise ConfigurationError("Final stage requires protocol.status=frozen")
-    if stage == "final":
+    if stage in FINAL_STAGES:
         selection = config.get("selection", {})
         for key in ["datasets", "models", "methods", "seeds"]:
             if not selection.get(key):
@@ -157,9 +156,7 @@ def validate_config(config: Config) -> None:
     selection = config.get("selection", {})
     statistical_metric = str(statistics.get("primary_metric", ""))
     if statistical_metric != str(config["training"]["primary_metric"]):
-        raise ConfigurationError(
-            "statistics.primary_metric must match training.primary_metric"
-        )
+        raise ConfigurationError("statistics.primary_metric must match training.primary_metric")
     if float(statistics.get("equivalence_margin_macro_f1", 0.0)) <= 0:
         raise ConfigurationError("Equivalence margin must be positive")
     alpha = float(statistics.get("alpha", 0.0))
@@ -204,9 +201,7 @@ def validate_config(config: Config) -> None:
         min_cosine = float(device_thresholds.get("min_cosine", -1.0))
         max_relative_l2 = float(device_thresholds.get("max_relative_l2", -1.0))
         if not -1.0 <= min_cosine <= 1.0:
-            raise ConfigurationError(
-                f"controls.thresholds.{device}.min_cosine must be in [-1, 1]"
-            )
+            raise ConfigurationError(f"controls.thresholds.{device}.min_cosine must be in [-1, 1]")
         if max_relative_l2 < 0:
             raise ConfigurationError(
                 f"controls.thresholds.{device}.max_relative_l2 must be non-negative"
@@ -214,9 +209,7 @@ def validate_config(config: Config) -> None:
 
     if stage == "pilot":
         if str(selection.get("ranking_metric")) != statistical_metric:
-            raise ConfigurationError(
-                "Pilot ranking_metric must match statistics.primary_metric"
-            )
+            raise ConfigurationError("Pilot ranking_metric must match statistics.primary_metric")
         success_rate = float(selection.get("minimum_success_rate", 0.0))
         if not 0 < success_rate <= 1:
             raise ConfigurationError("Pilot minimum_success_rate must be in (0, 1]")
@@ -249,7 +242,7 @@ def validate_config(config: Config) -> None:
             raise ConfigurationError("Method is outside the pilot design")
         if int(config["reproducibility"]["model_seed"]) not in observed_seeds:
             raise ConfigurationError("Model seed is outside the pilot design")
-    if stage == "final":
+    if stage in FINAL_STAGES:
         expected_seeds = {int(value) for value in statistics.get("final_seeds", [])}
         observed_seeds = {int(value) for value in selection.get("seeds", [])}
         if observed_seeds != expected_seeds:
@@ -271,6 +264,28 @@ def validate_config(config: Config) -> None:
             raise ConfigurationError(
                 "Final methods must contain BP and every primary contrast method"
             )
+        execution_order = str(selection.get("execution_order", ""))
+        if execution_order != "deterministic_hash_counterbalance":
+            raise ConfigurationError(
+                "Final selection.execution_order must be deterministic_hash_counterbalance"
+            )
+        if int(selection.get("execution_order_seed", -1)) < 0:
+            raise ConfigurationError("Final selection.execution_order_seed must be non-negative")
+
+    if stage == "final_stage_2":
+        comparison = config.get("comparison", {})
+        original_commit = str(comparison.get("original_torch2pc_commit", ""))
+        candidate_commit = str(config["torch2pc"].get("commit", ""))
+        if not re.fullmatch(r"[0-9a-f]{40}", original_commit):
+            raise ConfigurationError("comparison.original_torch2pc_commit must be a full SHA")
+        if candidate_commit == original_commit:
+            raise ConfigurationError(
+                "final_stage_2 requires a Torch2PC commit different from Stage 1"
+            )
+        if str(config["paths"]["registry"]) == "experiments/registry.csv":
+            raise ConfigurationError("final_stage_2 requires an isolated registry")
+        if str(config["paths"]["runs"]) == "results/runs":
+            raise ConfigurationError("final_stage_2 requires an isolated run directory")
 
     if method in {"fixedpred", "strict"}:
         if config["method"].get("eta") is None:

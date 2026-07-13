@@ -73,6 +73,8 @@ def train_one_epoch(
     total_samples = 0
     max_gradient_l2 = 0.0
     max_gradient_abs = 0.0
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
     start = time.perf_counter()
 
     for batch_index, (inputs, targets) in enumerate(loader):
@@ -117,7 +119,6 @@ def train_one_epoch(
     }
 
 
-
 def save_predictions(
     path: Path,
     evaluation: dict[str, Any],
@@ -136,6 +137,7 @@ def save_predictions(
         y_pred=y_pred,
         probabilities=probabilities,
     )
+
 
 def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str, Any]:
     run_dir = Path(run_directory)
@@ -157,6 +159,9 @@ def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str,
         int(config["model"]["num_classes"]),
     ).to(device=device, dtype=dtype)
     optimizer = make_optimizer(model, config)
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+        torch.cuda.reset_peak_memory_stats(device)
 
     best_metric = float("-inf")
     best_epoch = -1
@@ -210,6 +215,7 @@ def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str,
     )
     pd.DataFrame(history).to_csv(run_dir / "history.csv", index=False)
 
+    epoch_times = np.asarray([float(row["epoch_time_sec"]) for row in history], dtype=np.float64)
     metrics: dict[str, Any] = {
         "best_epoch": best_epoch,
         "epochs_completed": len(history),
@@ -217,7 +223,15 @@ def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str,
         "best_validation_metric": best_metric,
         "primary_metric": str(config["training"]["primary_metric"]),
         "test_evaluated": False,
-        "total_training_time_sec": float(sum(float(row["epoch_time_sec"]) for row in history)),
+        "total_training_time_sec": float(epoch_times.sum()),
+        "mean_epoch_time_sec": float(epoch_times.mean()),
+        "median_epoch_time_sec": float(np.median(epoch_times)),
+        "runtime_device": device.type,
+        "runtime_device_name": (
+            torch.cuda.get_device_name(device) if device.type == "cuda" else "cpu"
+        ),
+        "torch_version": torch.__version__,
+        "hip_version": getattr(torch.version, "hip", None),
         "split_files": [str(path) for path in bundle.split_files],
         "split_sha256": bundle.split_sha256,
     }
@@ -234,6 +248,22 @@ def run_training(config: dict[str, Any], run_directory: str | Path) -> dict[str,
                 "test_loss": float(test["loss"]),
                 "test_accuracy": float(test["accuracy"]),
                 "test_macro_f1": float(test["macro_f1"]),
+            }
+        )
+
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+        metrics.update(
+            {
+                "peak_gpu_memory_allocated_bytes": int(torch.cuda.max_memory_allocated(device)),
+                "peak_gpu_memory_reserved_bytes": int(torch.cuda.max_memory_reserved(device)),
+            }
+        )
+    else:
+        metrics.update(
+            {
+                "peak_gpu_memory_allocated_bytes": None,
+                "peak_gpu_memory_reserved_bytes": None,
             }
         )
 

@@ -9,7 +9,7 @@ import pandas as pd
 import torch
 import torch.nn as nn
 
-from torch2pc_thesis.pc_methods import backward_for_method
+from torch2pc_thesis.pc_methods import backward_for_method, load_pc_infer
 from torch2pc_thesis.reproducibility import set_global_seed
 
 
@@ -35,16 +35,14 @@ def structural_correction_check(torch2pc_file: str | Path) -> dict[str, Any]:
     fixed = re.sub(r"\s+", "", _function_source(source, "FixedPredPCPredErrs"))
     exact = re.sub(r"\s+", "", _function_source(source, "ExactPredErrs"))
     loop_pos = strict.find("foriinrange(n):")
-    error_pos = strict.find("epsilon[layer]=model[layer-1](v[layer-1])-v[layer]")
+    strict_error_match = re.search(r"epsilon\[layer\]=[^;\n]+-v\[layer\]", strict)
+    fixed_error_match = re.search(r"epsilon\[layer\]=(vhat|fixed)\[layer\]-v\[layer\]", fixed)
+    strict_error_pos = -1 if strict_error_match is None else strict_error_match.start()
     observations = {
-        "strict_recomputes_errors_each_iteration": loop_pos >= 0 and error_pos > loop_pos,
-        "strict_error_is_prediction_minus_belief": (
-            "epsilon[layer]=model[layer-1](v[layer-1])-v[layer]" in strict
-        ),
+        "strict_recomputes_errors_each_iteration": (loop_pos >= 0 and strict_error_pos > loop_pos),
+        "strict_error_is_prediction_minus_belief": strict_error_match is not None,
         "strict_update_is_epsilon_minus_vjp": "dv=epsilon[layer]-epsdfdv" in strict,
-        "fixedpred_error_is_activation_minus_belief": (
-            "epsilon[layer]=vhat[layer]-v[layer]" in fixed
-        ),
+        "fixedpred_error_is_activation_minus_belief": fixed_error_match is not None,
         "fixedpred_update_is_epsilon_minus_vjp": "dv=epsilon[layer]-epsdfdv" in fixed,
         "exact_belief_is_activation_minus_epsilon": (
             "v[layer]=vhat[layer]-epsilon[layer]" in exact
@@ -129,9 +127,7 @@ def gradient_map_table(
         left = reference[name]
         right = candidate[name]
         if left.shape != right.shape:
-            raise RuntimeError(
-                f"Gradient shape mismatch for {name}: {left.shape} != {right.shape}"
-            )
+            raise RuntimeError(f"Gradient shape mismatch for {name}: {left.shape} != {right.shape}")
         records.append(
             {
                 "parameter": name,
@@ -178,9 +174,7 @@ def exact_vs_bp(
     set_global_seed(seed)
     bp_model = copy.deepcopy(model)
     exact_model = copy.deepcopy(model)
-    bp = gradients_for_method(
-        bp_model, inputs, targets, method="bp", torch2pc_dir=torch2pc_dir
-    )
+    bp = gradients_for_method(bp_model, inputs, targets, method="bp", torch2pc_dir=torch2pc_dir)
     exact = gradients_for_method(
         exact_model, inputs, targets, method="exact", torch2pc_dir=torch2pc_dir
     )
@@ -211,3 +205,132 @@ def fixedpred_vs_exact(
         inference_steps=len(model),
     )
     return gradient_map_table(exact, fixed)
+
+
+def implementation_vs_implementation(
+    model: nn.Module,
+    inputs: torch.Tensor,
+    targets: torch.Tensor,
+    *,
+    reference_torch2pc_dir: str | Path,
+    candidate_torch2pc_dir: str | Path,
+    method: str,
+    seed: int,
+    eta: float | None = None,
+    inference_steps: int | None = None,
+) -> pd.DataFrame:
+    """Compare parameter gradients produced by two Torch2PC checkouts."""
+    set_global_seed(seed)
+    reference_model = copy.deepcopy(model)
+    candidate_model = copy.deepcopy(model)
+    reference = gradients_for_method(
+        reference_model,
+        inputs,
+        targets,
+        method=method,
+        torch2pc_dir=reference_torch2pc_dir,
+        eta=eta,
+        inference_steps=inference_steps,
+    )
+    candidate = gradients_for_method(
+        candidate_model,
+        inputs,
+        targets,
+        method=method,
+        torch2pc_dir=candidate_torch2pc_dir,
+        eta=eta,
+        inference_steps=inference_steps,
+    )
+    result = gradient_map_table(reference, candidate)
+    result.insert(0, "method", method)
+    return result
+
+
+def implementation_state_comparison(
+    model: nn.Module,
+    inputs: torch.Tensor,
+    targets: torch.Tensor,
+    *,
+    reference_torch2pc_dir: str | Path,
+    candidate_torch2pc_dir: str | Path,
+    method: str,
+    seed: int,
+    eta: float | None = None,
+    inference_steps: int | None = None,
+) -> pd.DataFrame:
+    """Compare losses, states, errors, and gradients across implementations."""
+    mapping = {"exact": "Exact", "fixedpred": "FixedPred", "strict": "Strict"}
+    try:
+        torch2pc_method = mapping[method.lower()]
+    except KeyError as exc:
+        raise ValueError(f"Unsupported Torch2PC comparison method: {method}") from exc
+    set_global_seed(seed)
+    reference_model = copy.deepcopy(model)
+    candidate_model = copy.deepcopy(model)
+    reference_infer = load_pc_infer(reference_torch2pc_dir)
+    candidate_infer = load_pc_infer(candidate_torch2pc_dir)
+    call_eta = 0.1 if eta is None else float(eta)
+    call_steps = 20 if inference_steps is None else int(inference_steps)
+    reference = reference_infer(
+        reference_model,
+        nn.CrossEntropyLoss(),
+        inputs,
+        targets,
+        torch2pc_method,
+        eta=call_eta,
+        n=call_steps,
+    )
+    candidate = candidate_infer(
+        candidate_model,
+        nn.CrossEntropyLoss(),
+        inputs,
+        targets,
+        torch2pc_method,
+        eta=call_eta,
+        n=call_steps,
+    )
+
+    records: list[dict[str, Any]] = []
+
+    def add(component: str, left: torch.Tensor, right: torch.Tensor) -> None:
+        left_vector = left.detach().flatten().cpu()
+        right_vector = right.detach().flatten().cpu()
+        records.append(
+            {
+                "method": method.lower(),
+                "component": component,
+                "cosine": cosine(left_vector, right_vector),
+                "relative_l2": relative_l2(left_vector, right_vector),
+                "max_abs": float(torch.max(torch.abs(left_vector - right_vector))),
+            }
+        )
+
+    add("loss", reference[1].reshape(1), candidate[1].reshape(1))
+    add("dLdy", reference[2], candidate[2])
+    for prefix, left_values, right_values in [
+        ("belief", reference[3], candidate[3]),
+        ("epsilon", reference[4], candidate[4]),
+    ]:
+        if len(left_values) != len(right_values):
+            raise RuntimeError(f"{prefix} lengths differ between implementations")
+        for index, (left, right) in enumerate(zip(left_values, right_values, strict=True)):
+            if left is None or right is None:
+                if left is not right:
+                    raise RuntimeError(f"{prefix}[{index}] availability differs")
+                continue
+            add(f"{prefix}[{index}]", left, right)
+
+    reference_gradients = named_gradients(reference_model)
+    candidate_gradients = named_gradients(candidate_model)
+    gradient_frame = gradient_map_table(reference_gradients, candidate_gradients)
+    for row in gradient_frame.to_dict(orient="records"):
+        records.append(
+            {
+                "method": method.lower(),
+                "component": f"gradient:{row['parameter']}",
+                "cosine": row["cosine"],
+                "relative_l2": row["relative_l2"],
+                "max_abs": row["max_abs"],
+            }
+        )
+    return pd.DataFrame(records)

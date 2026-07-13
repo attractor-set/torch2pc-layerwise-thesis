@@ -73,9 +73,7 @@ def evaluate_classifier(
             predictions = probability.argmax(dim=1)
             y_true.extend(targets.cpu().tolist())
             y_pred.extend(predictions.cpu().tolist())
-            probabilities.append(
-                np.asarray(probability.cpu().numpy(), dtype=np.float64)
-            )
+            probabilities.append(np.asarray(probability.cpu().numpy(), dtype=np.float64))
 
     if not y_true:
         raise RuntimeError("Evaluation loader produced no samples")

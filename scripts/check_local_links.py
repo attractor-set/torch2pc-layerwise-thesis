@@ -39,9 +39,7 @@ def main() -> None:
                 )
                 continue
             if not resolved.exists():
-                errors.append(
-                    f"{document.relative_to(ROOT)}: отсутствует цель ссылки: {target}"
-                )
+                errors.append(f"{document.relative_to(ROOT)}: отсутствует цель ссылки: {target}")
 
     result = {
         "status": "ok" if not errors else "failed",

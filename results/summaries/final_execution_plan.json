@@ -1,0 +1,842 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-07-13T01:55:55Z",
+  "stage": "final",
+  "test_access": "once_per_completed_run_after_pilot_freeze",
+  "execution_order_policy": "deterministic_hash_counterbalance",
+  "execution_order_seed": 20260713,
+  "planned_cells": 80,
+  "source_git_commit": "140e77cc2083bf04234dcea16b95803e63cb0537",
+  "torch2pc_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
+  "environment_lock_sha256": "ec7d54375867ae4e5d9379010b4bbea87328590417e988c642f007c6d8b15242",
+  "config_tree_sha256": "62a045780d96991637bf9a5dd95c96a44aa764d3486a0765aea680e2c84adfbc",
+  "dimensions": {
+    "datasets": [
+      "MNIST",
+      "FashionMNIST"
+    ],
+    "models": [
+      "lenet_classic"
+    ],
+    "methods": [
+      "bp",
+      "exact",
+      "fixedpred",
+      "strict"
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "cells": [
+    {
+      "order_index": 0,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 0,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 1,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 0,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 2,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 0,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 3,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 0,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 4,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 1,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 5,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 1,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 6,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 1,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 7,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 1,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 8,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 2,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 9,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 2,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 10,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 2,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 11,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 2,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 12,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 3,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 13,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 3,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 14,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 3,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 15,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 3,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 16,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 4,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 17,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 4,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 18,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 4,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 19,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 4,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 20,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 5,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 21,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 5,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 22,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 5,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 23,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 5,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 24,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 6,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 25,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 6,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 26,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 6,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 27,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 6,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 28,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 7,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 29,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 7,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 30,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 7,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 31,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 7,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 32,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 8,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 33,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 8,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 34,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 8,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 35,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 8,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 36,
+      "within_seed_method_position": 0,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 9,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 37,
+      "within_seed_method_position": 1,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 9,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 38,
+      "within_seed_method_position": 2,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 9,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 39,
+      "within_seed_method_position": 3,
+      "dataset": "MNIST",
+      "model": "lenet_classic",
+      "model_seed": 9,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 40,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 0,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 41,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 0,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 42,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 0,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 43,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 0,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 44,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 1,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 45,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 1,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 46,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 1,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 47,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 1,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 48,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 2,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 49,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 2,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 50,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 2,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 51,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 2,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 52,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 3,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 53,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 3,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 54,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 3,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 55,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 3,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 56,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 4,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 57,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 4,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 58,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 4,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 59,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 4,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 60,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 5,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 61,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 5,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 62,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 5,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 63,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 5,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 64,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 6,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 65,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 6,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 66,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 6,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 67,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 6,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 68,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 7,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 69,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 7,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 70,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 7,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 71,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 7,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 72,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 8,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    {
+      "order_index": 73,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 8,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 74,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 8,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 75,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 8,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 76,
+      "within_seed_method_position": 0,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 9,
+      "method": "strict",
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 77,
+      "within_seed_method_position": 1,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 9,
+      "method": "bp",
+      "eta": null,
+      "inference_steps": null
+    },
+    {
+      "order_index": 78,
+      "within_seed_method_position": 2,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 9,
+      "method": "exact",
+      "eta": 0.1,
+      "inference_steps": 20
+    },
+    {
+      "order_index": 79,
+      "within_seed_method_position": 3,
+      "dataset": "FashionMNIST",
+      "model": "lenet_classic",
+      "model_seed": 9,
+      "method": "fixedpred",
+      "eta": 0.1,
+      "inference_steps": 10
+    }
+  ]
+}

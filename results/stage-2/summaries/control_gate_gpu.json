@@ -1,0 +1,61 @@
+{
+  "device": "gpu",
+  "dtype": "torch.float32",
+  "source_git_commit_observed": "6d66b0a6f82c30c4fb8eca6247383ca13e0636a2",
+  "environment_lock_sha256": "0ffe23c915ee47a38d1aaa3d2eb5b8175ca8e63be25840380b19fc6bdd2b045b",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "torch2pc_reference_commit": "00c6c50ee3540537bbb56ab2b6567b541f42b093",
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 3,
+  "cross_version_batches_per_seed": 1,
+  "structural_source_check": {
+    "check_kind": "source_pattern_observation",
+    "observations": {
+      "strict_recomputes_errors_each_iteration": true,
+      "strict_error_is_prediction_minus_belief": true,
+      "strict_update_is_epsilon_minus_vjp": true,
+      "fixedpred_error_is_activation_minus_belief": true,
+      "fixedpred_update_is_epsilon_minus_vjp": true,
+      "exact_belief_is_activation_minus_epsilon": true
+    },
+    "all_observed": true,
+    "scope": "Pinned TorchSeq2PC.py source only; numerical controls remain required."
+  },
+  "C0_exact_vs_bp": {
+    "min_cosine": 0.999999463558197,
+    "max_relative_l2": 0.0,
+    "max_abs": 0.0
+  },
+  "C1_fixedpred_vs_exact": {
+    "min_cosine": 0.9999996423721313,
+    "max_relative_l2": 0.0009624222213572001,
+    "max_abs": 2.0605511963367462e-06
+  },
+  "C2_C3_original_vs_patched": {
+    "exact": {
+      "min_cosine": 0.9999997019767761,
+      "max_relative_l2": 0.0,
+      "max_abs": 0.0
+    },
+    "fixedpred": {
+      "min_cosine": 0.9999905228614807,
+      "max_relative_l2": 0.0,
+      "max_abs": 0.0
+    },
+    "strict": {
+      "min_cosine": 0.9999954104423523,
+      "max_relative_l2": 0.0,
+      "max_abs": 0.0
+    }
+  },
+  "thresholds": {
+    "min_cosine": 0.999,
+    "max_relative_l2": 0.001
+  },
+  "gate_observed_within_thresholds": true,
+  "interpretation": "Patched Torch2PC passed BP/Exact, FixedPred/Exact, and original/patched state-gradient equivalence controls for this pinned environment."
+}

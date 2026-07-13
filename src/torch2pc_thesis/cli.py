@@ -51,10 +51,23 @@ def parser() -> argparse.ArgumentParser:
 
     report = sub.add_parser("report")
     report.add_argument("--registry", default="experiments/registry.csv")
+    report.add_argument("--stage", default="final")
+    report.add_argument("--summary-dir", default="results/summaries")
+    report.add_argument("--table-dir", default="results/tables")
+
+    compare = sub.add_parser("compare")
+    compare.add_argument(
+        "--reference-registry", default="experiments/registry-final-80-completed.csv"
+    )
+    compare.add_argument(
+        "--candidate-registry", default="experiments/registry-stage-2-80-completed.csv"
+    )
+    compare.add_argument("--output-dir", default="results/cross-version")
 
     manifest = sub.add_parser("manifest")
     manifest.add_argument("--directory", default="results")
     manifest.add_argument("--output", default="results/summaries/results_manifest.json")
+    manifest.add_argument("--environment-lock")
 
     registry = sub.add_parser("registry")
     registry.add_argument("--path", default="experiments/registry.csv")
@@ -114,7 +127,32 @@ def main() -> None:
     if args.command == "report":
         from torch2pc_thesis.reporting import build_primary_assets
 
-        print(json.dumps(build_primary_assets(args.registry), indent=2))
+        print(
+            json.dumps(
+                build_primary_assets(
+                    args.registry,
+                    stage_name=args.stage,
+                    summary_dir_path=args.summary_dir,
+                    table_dir_path=args.table_dir,
+                ),
+                indent=2,
+            )
+        )
+        return
+
+    if args.command == "compare":
+        from torch2pc_thesis.cross_version import build_cross_version_assets
+
+        print(
+            json.dumps(
+                build_cross_version_assets(
+                    args.reference_registry,
+                    args.candidate_registry,
+                    args.output_dir,
+                ),
+                indent=2,
+            )
+        )
         return
 
     if args.command == "manifest":
@@ -122,8 +160,11 @@ def main() -> None:
 
         value = {
             "created_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "environment": environment_snapshot(),
-            "artifacts": directory_manifest(args.directory),
+            "environment": environment_snapshot(args.environment_lock),
+            "artifacts": directory_manifest(
+                args.directory,
+                exclude_paths=(args.output,),
+            ),
         }
         print(write_json(value, args.output))
         return

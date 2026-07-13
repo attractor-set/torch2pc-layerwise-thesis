@@ -5,10 +5,11 @@ from __future__ import annotations
 import itertools
 import math
 from collections.abc import Iterable, Mapping, Sequence
-from typing import Final
+from typing import Final, cast
 
 import numpy as np
 import pandas as pd
+from numpy.typing import NDArray
 from scipy import stats
 
 GRADIENT_METRICS: Final[tuple[str, ...]] = (
@@ -33,23 +34,25 @@ REPRESENTATION_CONTROL_TARGETS: Final[Mapping[str, float]] = {
 }
 
 
-def _finite_array(values: Iterable[float]) -> np.ndarray:
+def _finite_array(values: Iterable[float]) -> NDArray[np.float64]:
     """Return finite values as a one-dimensional float array."""
-    array = np.asarray(list(values), dtype=float).reshape(-1)
-    return array[np.isfinite(array)]
+    array = np.asarray(list(values), dtype=np.float64).reshape(-1)
+    finite = array[np.isfinite(array)]
+    return cast(NDArray[np.float64], finite)
 
 
 def paired_differences(
     reference: Iterable[float],
     candidate: Iterable[float],
-) -> np.ndarray:
+) -> NDArray[np.float64]:
     """Return finite candidate-minus-reference paired differences."""
-    reference_array = np.asarray(list(reference), dtype=float).reshape(-1)
-    candidate_array = np.asarray(list(candidate), dtype=float).reshape(-1)
+    reference_array = np.asarray(list(reference), dtype=np.float64).reshape(-1)
+    candidate_array = np.asarray(list(candidate), dtype=np.float64).reshape(-1)
     if reference_array.shape != candidate_array.shape:
         raise ValueError("reference and candidate must have equal shapes")
     valid = np.isfinite(reference_array) & np.isfinite(candidate_array)
-    return candidate_array[valid] - reference_array[valid]
+    differences = candidate_array[valid] - reference_array[valid]
+    return cast(NDArray[np.float64], differences)
 
 
 def exact_sign_flip_test(differences: Iterable[float]) -> float:
@@ -64,7 +67,7 @@ def exact_sign_flip_test(differences: Iterable[float]) -> float:
         statistic = abs(float(np.mean(values * np.asarray(signs, dtype=float))))
         if statistic + tolerance >= observed:
             extreme += 1
-    return extreme / (2 ** int(values.size))
+    return float(extreme / (2 ** int(values.size)))
 
 
 def paired_effect_size_dz(differences: Iterable[float]) -> float:
@@ -130,13 +133,13 @@ def holm_adjust(p_values: Sequence[float]) -> list[float]:
     running = 0.0
     count = len(values)
     for rank, original_index in enumerate(order):
-        adjusted = min(1.0, (count - rank) * float(values[original_index]))
-        running = max(running, adjusted)
+        adjusted_value = min(1.0, (count - rank) * float(values[original_index]))
+        running = max(running, adjusted_value)
         adjusted_sorted[rank] = running
-    adjusted = np.empty_like(values)
+    adjusted_values = np.empty_like(values)
     for rank, original_index in enumerate(order):
-        adjusted[original_index] = adjusted_sorted[rank]
-    return [float(value) for value in adjusted]
+        adjusted_values[original_index] = adjusted_sorted[rank]
+    return [float(value) for value in adjusted_values]
 
 
 def _require_columns(frame: pd.DataFrame, required: set[str]) -> None:

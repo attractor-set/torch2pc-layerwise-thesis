@@ -1,0 +1,72 @@
+{
+  "analysis": "stage3a-layerwise-confirmatory-statistics",
+  "generated_at_utc": "2026-07-13T20:00:00Z",
+  "inputs": {
+    "all_gradient_metrics.csv": {
+      "rows": 2250,
+      "sha256": "77514a2fc30524cebec44c0c1ad425792d837e1cc1effe84070b1de79faae01b"
+    },
+    "all_representation_metrics.csv": {
+      "rows": 150,
+      "sha256": "31b2a893707b70f7f411a545741bef0ab7dac76e28ce8c77a0e97b2272826d0c"
+    }
+  },
+  "outputs": {
+    "exact_numerical_control.csv": {
+      "rows": 30,
+      "sha256": "409db5364a1cfa0047e73ecc41c96b95b45d63574011e4908de3264d9adf9e89"
+    },
+    "gradient_statistics.csv": {
+      "rows": 40,
+      "sha256": "1096865f378d1b6ad8015e8c06131d0938816f6424fdc6ac39593a2b2fa3722c"
+    },
+    "representation_statistics.csv": {
+      "rows": 20,
+      "sha256": "750d51038e59ae1fa3cf69d93a43ea6aad36ff7df320b041f9cf16faed9d7054"
+    },
+    "seed_level_gradient_metrics.csv": {
+      "rows": 600,
+      "sha256": "5d51f6d13157aa1a4d1150b069504f513f01cfe3a5386e678dd3db12fef83a7b"
+    },
+    "seed_level_representation_metrics.csv": {
+      "rows": 300,
+      "sha256": "3aad188e3119dc4d22dfd9d5faaabfcab857be1cb40a9aa943356c1af6173821"
+    }
+  },
+  "schema_version": 1,
+  "settings": {
+    "candidate_methods": [
+      "fixedpred",
+      "strict"
+    ],
+    "confidence": 0.95,
+    "exact_absolute_tolerance": 1e-12,
+    "exact_sign_flip": "two-sided exhaustive sign assignments of mean differences",
+    "expected_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "holm_families": [
+      "gradient/fixedpred",
+      "gradient/strict",
+      "representation/fixedpred",
+      "representation/strict"
+    ],
+    "independent_unit": "model_seed"
+  },
+  "software": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.1",
+    "python": "3.12.3",
+    "scipy": "1.16.0"
+  },
+  "source_commit": "2b8bf25ef798d11275fecdfffb70c37f5c6d3246"
+}

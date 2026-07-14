@@ -48,7 +48,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-root",
         type=Path,
-        default=Path("/tmp/torch2pc-stage3b-b0-authorized"),
+        default=Path("/tmp/torch2pc-stage3b-b0-rocm-authorized-v2"),
     )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--freeze-record", type=Path)
@@ -86,8 +86,11 @@ def parse_args() -> argparse.Namespace:
     elif args.issue_authorization:
         if args.freeze_record is None or args.output is None:
             parser.error("--issue-authorization requires --freeze-record and --output")
-        if len(args.lane_preflight) != 2:
-            parser.error("--issue-authorization requires two --lane-preflight files")
+        if not 1 <= len(args.lane_preflight) <= 2:
+            parser.error(
+                "--issue-authorization requires the ROCm preflight and accepts "
+                "at most one optional CPU engineering-control preflight"
+            )
         if args.operator_acknowledgement != B0_OPERATOR_ACKNOWLEDGEMENT:
             parser.error(
                 "--operator-acknowledgement must exactly match the documented phrase"
@@ -138,6 +141,9 @@ def main() -> None:
                 "torch2pc_source_sha256",
                 "b0_cell_count",
                 "canonical_protocol",
+                "protocol_contract_digest",
+                "canonical_lanes",
+                "engineering_control_lanes",
                 "output_root",
                 "minimum_free_bytes",
                 "evidence",
@@ -207,6 +213,10 @@ def main() -> None:
                 "torch2pc_commit",
                 "authorized_cell_count",
                 "canonical_protocol",
+                "protocol_contract_digest",
+                "canonical_lanes",
+                "engineering_control_lanes",
+                "canonical_execution_count",
                 "output_root",
                 "execution_permitted",
                 "evidence",

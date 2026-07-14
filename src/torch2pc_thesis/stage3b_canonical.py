@@ -51,6 +51,10 @@ from torch2pc_thesis.stage3b_profiling import (
     iter_protocol_steps,
     validate_profile_completeness,
 )
+from torch2pc_thesis.stage3b_protocol_contract import (
+    B0_CANONICAL_LANES,
+    B0_ENGINEERING_CONTROL_LANES,
+)
 
 B0_CANONICAL_SCHEMA_VERSION: Final[int] = 1
 B0_CANONICAL_SCOPE: Final[str] = "authorized_b0_canonical_lane"
@@ -262,12 +266,21 @@ def _validated_source_commit(source_commit: str) -> str:
     return normalized
 
 
-def _validated_lane(*, device: str, dtype: str) -> tuple[str, str]:
+def _validated_lane(
+    *,
+    device: str,
+    dtype: str,
+    allow_engineering_control: bool = False,
+) -> tuple[str, str]:
     lane = (device.strip().lower(), dtype.strip().lower())
-    if lane == ("cpu", "float64") or lane == ("rocm", "float32"):
+    if lane in B0_CANONICAL_LANES:
+        return lane
+    if allow_engineering_control and lane in B0_ENGINEERING_CONTROL_LANES:
         return lane
     raise Stage3BExecutionError(
-        "canonical B0 lanes are limited to cpu/float64 and rocm/float32"
+        "canonical B0 execution is limited to rocm/float32; "
+        "cpu/float64 is an engineering control available only through "
+        "bounded smoke or injected test harnesses"
     )
 
 
@@ -454,6 +467,11 @@ def verify_authorized_lane(
     """Verify the frozen authorization and canonical protocol for one lane."""
 
     _canonical_protocol(authorization)
+    normalized_lane = _validated_lane(
+        device=device,
+        dtype=dtype,
+        allow_engineering_control=probe is not None,
+    )
     verification = verifier(
         authorization,
         manifest,
@@ -469,6 +487,15 @@ def verify_authorized_lane(
         raise Stage3BExecutionError("canonical lane authorization was not verified")
     if verification.get("execution_permitted") is not True:
         raise Stage3BExecutionError("canonical lane execution is not permitted")
+    if verification.get("canonical_execution_permitted") is not True:
+        injected_cpu_control = (
+            probe is not None
+            and normalized_lane in B0_ENGINEERING_CONTROL_LANES
+        )
+        if not injected_cpu_control:
+            raise Stage3BExecutionError(
+                "canonical runner rejects engineering-control lanes"
+            )
     if verification.get("evidence") is not False:
         raise Stage3BExecutionError("canonical lane authorization must remain non-evidence")
     if verification.get("results_publication_permitted") is not False:
@@ -499,7 +526,11 @@ def plan_authorized_lane(
     """Build a deterministic, resume-aware plan for one authorized lane."""
 
     validate_manifest(manifest)
-    normalized_device, normalized_dtype = _validated_lane(device=device, dtype=dtype)
+    normalized_device, normalized_dtype = _validated_lane(
+        device=device,
+        dtype=dtype,
+        allow_engineering_control=probe is not None,
+    )
     clean_commit = _validated_source_commit(source_commit)
     bounded_attempts = _validated_max_attempts(max_attempts)
     resolved_root = validated_temporary_output_root(output_root)
@@ -625,8 +656,17 @@ def _acquire_lane_lock(path: Path, *, resume: bool) -> None:
         os.close(descriptor)
 
 
-def _resolve_device_dtype(*, device: str, dtype: str) -> tuple[torch.device, torch.dtype]:
-    normalized_device, normalized_dtype = _validated_lane(device=device, dtype=dtype)
+def _resolve_device_dtype(
+    *,
+    device: str,
+    dtype: str,
+    allow_engineering_control: bool = False,
+) -> tuple[torch.device, torch.dtype]:
+    normalized_device, normalized_dtype = _validated_lane(
+        device=device,
+        dtype=dtype,
+        allow_engineering_control=allow_engineering_control,
+    )
     if normalized_device == "cpu":
         return torch.device("cpu"), torch.float64
     if not torch.cuda.is_available() or not getattr(torch.version, "hip", None):
@@ -917,10 +957,15 @@ def execute_canonical_cell(
 
     validate_manifest(manifest)
     resolved_root = validated_temporary_output_root(output_root)
-    normalized_device, normalized_dtype = _validated_lane(device=device, dtype=dtype)
+    normalized_device, normalized_dtype = _validated_lane(
+        device=device,
+        dtype=dtype,
+        allow_engineering_control=executor is not None,
+    )
     resolved_device, resolved_dtype = _resolve_device_dtype(
         device=normalized_device,
         dtype=normalized_dtype,
+        allow_engineering_control=executor is not None,
     )
     clean_commit = _validated_source_commit(source_commit)
     cell = _select_b0_cell(manifest, cell_id=cell_id)
@@ -1081,6 +1126,11 @@ def execute_authorized_lane(
 ) -> dict[str, object]:
     """Execute or resume all eligible cells in one authorized canonical lane."""
 
+    _validated_lane(
+        device=device,
+        dtype=dtype,
+        allow_engineering_control=probe is not None and executor is not None,
+    )
     plan = plan_authorized_lane(
         authorization,
         manifest,

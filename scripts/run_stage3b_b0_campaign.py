@@ -45,7 +45,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-root",
         type=Path,
-        default=Path("/tmp/torch2pc-stage3b-b0-authorized"),
+        default=Path("/tmp/torch2pc-stage3b-b0-rocm-authorized-v2"),
     )
     parser.add_argument("--plan-output", type=Path)
     parser.add_argument("--device", required=True, choices=("cpu", "rocm"))
@@ -67,6 +67,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--retry-failed", action="store_true")
     args = parser.parse_args()
+    if (args.device, args.dtype) != ("rocm", "float32"):
+        parser.error(
+            "canonical B0 runner is limited to --device rocm --dtype float32; "
+            "use single-cell or bounded-batch smoke tooling for CPU controls"
+        )
     if not args.source_commit:
         parser.error("--source-commit or TORCH2PC_SOURCE_COMMIT is required")
     if not args.image_digest:

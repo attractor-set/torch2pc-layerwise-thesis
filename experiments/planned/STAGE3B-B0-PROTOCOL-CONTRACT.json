@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "contract_scope": "stage3b_b0_rocm_canonical_v1",
+  "campaign_id": "stage3b-profiling-locality-v1",
+  "candidate_id": "stage2_baseline",
+  "manifest_cell_count": 336,
+  "canonical_cell_count": 96,
+  "canonical_lanes": [
+    {
+      "device": "rocm",
+      "dtype": "float32"
+    }
+  ],
+  "engineering_control_lanes": [
+    {
+      "device": "cpu",
+      "dtype": "float64",
+      "scope": "bounded_smoke_or_targeted_equivalence",
+      "canonical": false,
+      "required_for_campaign_completion": false,
+      "confirmatory_performance_evidence": false
+    }
+  ],
+  "canonical_protocol": {
+    "warmup_steps": 20,
+    "measured_steps": 50,
+    "repetitions": 5
+  },
+  "execution_count": 96,
+  "test_dataset_access": false,
+  "results_publication_permitted": false,
+  "decision_record": "docs/decisions/ADR-009-stage3b-rocm-canonical-lane.md"
+}

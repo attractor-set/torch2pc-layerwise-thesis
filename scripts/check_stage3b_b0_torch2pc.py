@@ -170,9 +170,16 @@ def main() -> None:
         config=gate_config,
     )
 
+    if report.full_preregistered_gate_complete:
+        status = "pass"
+    elif report.passed:
+        status = "partial_pass"
+    else:
+        status = "failed"
+
     payload = {
         **report.to_record(),
-        "status": "partial_pass" if report.passed else "failed",
+        "status": status,
         "source_commit": _source_commit(),
         "checkpoint": {
             "path": str(checkpoint_path),

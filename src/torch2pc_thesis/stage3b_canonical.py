@@ -7,6 +7,7 @@ import json
 import os
 import platform
 import socket
+import subprocess
 import sys
 import uuid
 from collections import Counter, defaultdict
@@ -59,6 +60,10 @@ from torch2pc_thesis.stage3b_protocol_contract import (
 B0_CANONICAL_SCHEMA_VERSION: Final[int] = 1
 B0_CANONICAL_SCOPE: Final[str] = "authorized_b0_canonical_lane"
 B0_CANONICAL_CELL_SCOPE: Final[str] = "authorized_b0_canonical_cell"
+B0_CANONICAL_PROCESS_SCOPE: Final[str] = (
+    "authorized_b0_canonical_cell_process"
+)
+B0_CANONICAL_PROCESS_MODE: Final[str] = "fresh_python_child_per_cell"
 B0_CANONICAL_DEFAULT_MAX_ATTEMPTS: Final[int] = 2
 B0_CANONICAL_MAX_ATTEMPTS: Final[int] = 3
 B0_CANONICAL_ETA: Final[float] = 0.1
@@ -138,6 +143,10 @@ class CanonicalCellRunner(Protocol):
         image_digest: str,
         executor: CanonicalCellExecutor | None = None,
     ) -> dict[str, object]: ...
+
+
+class CanonicalCellProcessError(Stage3BExecutionError):
+    """Raised when a per-cell child process violates the lifecycle contract."""
 
 
 @dataclass(frozen=True)
@@ -253,6 +262,14 @@ def _load_json_object(path: Path) -> dict[str, object] | None:
     if not isinstance(raw, dict):
         return None
     return cast(dict[str, object], raw)
+
+
+def _sha256_text(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _text_tail(value: str, *, limit: int = 4096) -> str:
+    return value[-limit:]
 
 
 def _validated_source_commit(source_commit: str) -> str:
@@ -375,6 +392,375 @@ def _request_matches(
         and request.get("image_digest") == image_digest
         and request.get("canonical_protocol") == B0_CANONICAL_PROTOCOL
     )
+
+
+def _attempt_directories(
+    *,
+    output_root: Path,
+    cell_id: str,
+    device: str,
+    dtype: str,
+) -> set[Path]:
+    attempts_root = (
+        _lane_root(output_root, device=device, dtype=dtype)
+        / "cells"
+        / cell_id
+        / "attempts"
+    )
+    if not attempts_root.is_dir():
+        return set()
+    return {path.resolve() for path in attempts_root.iterdir() if path.is_dir()}
+
+
+def _validated_child_terminal(
+    *,
+    attempt_dir: Path,
+    cell_id: str,
+    authorization_token: str,
+    manifest_digest: str,
+    source_commit: str,
+    device: str,
+    dtype: str,
+    image_digest: str,
+) -> tuple[dict[str, object], Path]:
+    request = _load_json_object(attempt_dir / "request.json")
+    if request is None or not _request_matches(
+        request,
+        cell_id=cell_id,
+        authorization_token=authorization_token,
+        manifest_digest=manifest_digest,
+        source_commit=source_commit,
+        device=device,
+        dtype=dtype,
+        image_digest=image_digest,
+    ):
+        raise CanonicalCellProcessError(
+            f"child attempt request does not match the authorized cell: {attempt_dir}"
+        )
+
+    completed_path = attempt_dir / "completed.json"
+    failed_path = attempt_dir / "failed.json"
+    existing_terminals = [
+        path for path in (completed_path, failed_path) if path.exists()
+    ]
+    if len(existing_terminals) != 1:
+        raise CanonicalCellProcessError(
+            "child process must leave exactly one terminal record for "
+            f"{cell_id}; found {len(existing_terminals)}"
+        )
+
+    terminal_path = existing_terminals[0]
+    terminal = _load_json_object(terminal_path)
+    if terminal is None:
+        raise CanonicalCellProcessError(
+            f"child terminal record is not a JSON object: {terminal_path}"
+        )
+    expected_status = (
+        "canonical_cell_complete"
+        if terminal_path == completed_path
+        else "canonical_cell_failed"
+    )
+    if not _request_matches(
+        terminal,
+        cell_id=cell_id,
+        authorization_token=authorization_token,
+        manifest_digest=manifest_digest,
+        source_commit=source_commit,
+        device=device,
+        dtype=dtype,
+        image_digest=image_digest,
+    ):
+        raise CanonicalCellProcessError(
+            f"child terminal record does not match the authorized cell: {terminal_path}"
+        )
+    immutable_fields = (
+        "schema_version",
+        "campaign_id",
+        "authorization_scope",
+        "execution_scope",
+        "attempt_id",
+        "cell_id",
+        "block_id",
+        "candidate_id",
+        "method",
+        "authorization_token",
+        "manifest_digest",
+        "source_commit",
+        "device",
+        "dtype",
+        "image_digest",
+        "canonical_protocol",
+        "evidence",
+        "full_lane_complete",
+        "full_campaign_complete",
+        "results_publication_permitted",
+        "test_dataset_access",
+    )
+    mismatched = [
+        field for field in immutable_fields if terminal.get(field) != request.get(field)
+    ]
+    if mismatched:
+        raise CanonicalCellProcessError(
+            "child terminal differs from its immutable request fields "
+            f"{mismatched}: {terminal_path}"
+        )
+    if terminal.get("attempt_directory") != str(attempt_dir):
+        raise CanonicalCellProcessError(
+            f"child terminal attempt_directory differs from parent observation: "
+            f"{terminal_path}"
+        )
+    if terminal.get("status") != expected_status:
+        raise CanonicalCellProcessError(
+            f"child terminal status is invalid: {terminal_path}"
+        )
+    if expected_status == "canonical_cell_complete":
+        if terminal.get("full_cell_complete") is not True:
+            raise CanonicalCellProcessError(
+                f"completed child did not mark the cell complete: {terminal_path}"
+            )
+    elif terminal.get("full_cell_complete") is not False:
+        raise CanonicalCellProcessError(
+            f"failed child changed full_cell_complete: {terminal_path}"
+        )
+    return terminal, terminal_path
+
+
+def _systemic_gpu_oom(
+    *,
+    terminal: Mapping[str, object] | None,
+    child_exit_code: int,
+    stderr: str,
+) -> bool:
+    exception_type = ""
+    exception_message = ""
+    if terminal is not None:
+        exception_type = str(terminal.get("exception_type", "")).lower()
+        exception_message = str(terminal.get("exception_message", "")).lower()
+    combined = f"{exception_type}\n{exception_message}\n{stderr.lower()}"
+    explicit_oom = (
+        "outofmemoryerror" in combined
+        or "hip out of memory" in combined
+        or "cuda out of memory" in combined
+        or "hiperroroutofmemory" in combined
+        or "cudaerror_memoryallocation" in combined
+    )
+    return explicit_oom
+
+
+@dataclass(frozen=True)
+class CanonicalSubprocessCellRunner:
+    """Run each canonical cell in a fresh Python interpreter."""
+
+    run_directory: Path
+    authorization_snapshot: Path
+    manifest_snapshot: Path
+    python_executable: str = sys.executable
+    child_module: str = "torch2pc_thesis.stage3b_canonical_child"
+
+    def __call__(
+        self,
+        manifest: Mapping[str, object],
+        authorization: Mapping[str, object],
+        *,
+        output_root: Path,
+        cell_id: str,
+        device: str,
+        dtype: str,
+        torch2pc_dir: Path,
+        source_commit: str,
+        image_digest: str,
+        executor: CanonicalCellExecutor | None = None,
+    ) -> dict[str, object]:
+        if executor is not None:
+            raise CanonicalCellProcessError(
+                "production subprocess cells do not accept an injected executor"
+            )
+        normalized_device, normalized_dtype = _validated_lane(
+            device=device,
+            dtype=dtype,
+        )
+        before = _attempt_directories(
+            output_root=output_root,
+            cell_id=cell_id,
+            device=normalized_device,
+            dtype=normalized_dtype,
+        )
+        command = [
+            self.python_executable,
+            "-m",
+            self.child_module,
+            "--authorization",
+            str(self.authorization_snapshot),
+            "--manifest",
+            str(self.manifest_snapshot),
+            "--output-root",
+            str(output_root),
+            "--cell-id",
+            cell_id,
+            "--device",
+            normalized_device,
+            "--dtype",
+            normalized_dtype,
+            "--torch2pc-dir",
+            str(torch2pc_dir),
+            "--source-commit",
+            source_commit,
+            "--image-digest",
+            image_digest,
+        ]
+        started_at = _utc_now()
+        process = subprocess.Popen(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        wait_error: BaseException | None = None
+        stdout = ""
+        stderr = ""
+        try:
+            stdout, stderr = process.communicate()
+        except BaseException as exc:
+            wait_error = exc
+            process.terminate()
+            try:
+                stdout, stderr = process.communicate(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                stdout, stderr = process.communicate()
+        exited_at = _utc_now()
+        if process.returncode is None:
+            raise CanonicalCellProcessError(
+                f"child process has no exit code for {cell_id}"
+            )
+        child_exit_code = process.returncode
+        after = _attempt_directories(
+            output_root=output_root,
+            cell_id=cell_id,
+            device=normalized_device,
+            dtype=normalized_dtype,
+        )
+        created = sorted(after - before)
+        attempt_dir = created[0] if len(created) == 1 else None
+        terminal: dict[str, object] | None = None
+        terminal_path: Path | None = None
+        validation_error: str | None = None
+        if attempt_dir is None:
+            validation_error = (
+                "child process must create exactly one attempt directory; "
+                f"observed {len(created)} for {cell_id}"
+            )
+        else:
+            try:
+                terminal, terminal_path = _validated_child_terminal(
+                    attempt_dir=attempt_dir,
+                    cell_id=cell_id,
+                    authorization_token=str(authorization["authorization_token"]),
+                    manifest_digest=str(manifest["manifest_digest"]),
+                    source_commit=source_commit,
+                    device=normalized_device,
+                    dtype=normalized_dtype,
+                    image_digest=image_digest,
+                )
+            except CanonicalCellProcessError as exc:
+                validation_error = str(exc)
+
+        systemic_oom = _systemic_gpu_oom(
+            terminal=terminal,
+            child_exit_code=child_exit_code,
+            stderr=stderr,
+        )
+        process_record: dict[str, object] = {
+            "schema_version": B0_CANONICAL_SCHEMA_VERSION,
+            "campaign_id": STAGE3B_CAMPAIGN_ID,
+            "authorization_scope": B0_AUTHORIZATION_SCOPE,
+            "execution_scope": B0_CANONICAL_PROCESS_SCOPE,
+            "process_isolation_mode": B0_CANONICAL_PROCESS_MODE,
+            "cell_id": cell_id,
+            "authorization_token": str(authorization["authorization_token"]),
+            "manifest_digest": str(manifest["manifest_digest"]),
+            "source_commit": source_commit,
+            "device": normalized_device,
+            "dtype": normalized_dtype,
+            "image_digest": image_digest,
+            "parent_pid": os.getpid(),
+            "child_pid": process.pid,
+            "child_exit_code": child_exit_code,
+            "child_started_at": started_at,
+            "child_exited_at": exited_at,
+            "attempt_directory": str(attempt_dir) if attempt_dir is not None else None,
+            "request_record": (
+                str(attempt_dir / "request.json")
+                if attempt_dir is not None
+                else None
+            ),
+            "request_record_sha256": (
+                _sha256_file(attempt_dir / "request.json")
+                if attempt_dir is not None
+                and (attempt_dir / "request.json").is_file()
+                else None
+            ),
+            "terminal_record": (
+                str(terminal_path) if terminal_path is not None else None
+            ),
+            "terminal_record_sha256": (
+                _sha256_file(terminal_path) if terminal_path is not None else None
+            ),
+            "terminal_status": (
+                str(terminal.get("status")) if terminal is not None else None
+            ),
+            "terminal_validation_error": validation_error,
+            "systemic_resource_failure": systemic_oom,
+            "child_stdout_sha256": _sha256_text(stdout),
+            "child_stderr_sha256": _sha256_text(stderr),
+            "child_stdout_tail": _text_tail(stdout),
+            "child_stderr_tail": _text_tail(stderr),
+            "evidence": False,
+            "full_lane_complete": False,
+            "full_campaign_complete": False,
+            "results_publication_permitted": False,
+            "test_dataset_access": False,
+        }
+        process_record_path = (
+            self.run_directory
+            / "processes"
+            / f"{_identifier()}-{cell_id}.json"
+        )
+        if process_record_path.exists():
+            raise CanonicalCellProcessError(
+                f"process telemetry already exists: {process_record_path}"
+            )
+        atomic_write_json(process_record_path, process_record)
+
+        if wait_error is not None:
+            raise wait_error
+        if validation_error is not None or terminal is None:
+            raise CanonicalCellProcessError(
+                validation_error or f"child terminal validation failed for {cell_id}"
+            )
+        status = str(terminal["status"])
+        if status == "canonical_cell_complete" and child_exit_code != 0:
+            raise CanonicalCellProcessError(
+                f"completed child exited with code {child_exit_code}: {cell_id}"
+            )
+        if status == "canonical_cell_failed" and child_exit_code == 0:
+            raise CanonicalCellProcessError(
+                f"failed child exited successfully: {cell_id}"
+            )
+        return {
+            **terminal,
+            "process_isolation": {
+                "mode": B0_CANONICAL_PROCESS_MODE,
+                "parent_pid": os.getpid(),
+                "child_pid": process.pid,
+                "child_exit_code": child_exit_code,
+                "record_path": str(process_record_path),
+                "terminal_record_sha256": process_record[
+                    "terminal_record_sha256"
+                ],
+            },
+            "systemic_resource_failure": systemic_oom,
+        }
 
 
 def _inspect_attempts(
@@ -1121,7 +1507,7 @@ def execute_authorized_lane(
     retry_failed: bool = False,
     probe: RuntimeProbe | None = None,
     verifier: AuthorizationVerifier = verify_authorization_for_lane,
-    cell_runner: CanonicalCellRunner = execute_canonical_cell,
+    cell_runner: CanonicalCellRunner | None = None,
     executor: CanonicalCellExecutor | None = None,
 ) -> dict[str, object]:
     """Execute or resume all eligible cells in one authorized canonical lane."""
@@ -1178,6 +1564,9 @@ def execute_authorized_lane(
     run_dir.mkdir(parents=True, exist_ok=False)
     journal = resolved_root / "canonical" / "campaign-journal.jsonl"
     lane_state = lane_root / "lane-state.json"
+    production_process_isolation = (
+        cell_runner is None and probe is None and executor is None
+    )
     request: dict[str, object] = {
         "schema_version": B0_CANONICAL_SCHEMA_VERSION,
         "campaign_id": STAGE3B_CAMPAIGN_ID,
@@ -1195,6 +1584,9 @@ def execute_authorized_lane(
         "resume": resume,
         "retry_failed": retry_failed,
         "max_attempts": max_attempts,
+        "process_isolation_mode": (
+            B0_CANONICAL_PROCESS_MODE if production_process_isolation else None
+        ),
         "evidence": False,
         "full_lane_complete": False,
         "full_campaign_complete": False,
@@ -1203,6 +1595,21 @@ def execute_authorized_lane(
     }
     atomic_write_json(run_dir / "request.json", request)
     atomic_write_json(run_dir / "plan.json", plan.to_record())
+    selected_cell_runner = cell_runner
+    if selected_cell_runner is None:
+        if probe is not None or executor is not None:
+            selected_cell_runner = execute_canonical_cell
+        else:
+            child_inputs = run_dir / "child-inputs"
+            authorization_snapshot = child_inputs / "authorization.json"
+            manifest_snapshot = child_inputs / "manifest.json"
+            atomic_write_json(authorization_snapshot, dict(authorization))
+            atomic_write_json(manifest_snapshot, dict(manifest))
+            selected_cell_runner = CanonicalSubprocessCellRunner(
+                run_directory=run_dir,
+                authorization_snapshot=authorization_snapshot,
+                manifest_snapshot=manifest_snapshot,
+            )
     started = {
         **request,
         "status": "lane_running",
@@ -1220,12 +1627,13 @@ def execute_authorized_lane(
 
     results: list[dict[str, object]] = []
     failures: list[dict[str, object]] = []
+    systemic_stop: dict[str, object] | None = None
     emergency_stop = Path(str(authorization["emergency_stop_path"]))
     try:
         for cell_id in plan.selected_cell_ids:
             _check_emergency_stop(emergency_stop)
             try:
-                result = cell_runner(
+                result = selected_cell_runner(
                     manifest,
                     authorization,
                     output_root=resolved_root,
@@ -1238,21 +1646,67 @@ def execute_authorized_lane(
                     executor=executor,
                 )
                 result_record = dict(result)
-                results.append(result_record)
+                result_status = result_record.get("status")
+                if result_status == "canonical_cell_complete":
+                    results.append(result_record)
+                    _append_jsonl(
+                        journal,
+                        {
+                            "run_id": run_id,
+                            "status": "canonical_cell_complete",
+                            "cell_id": cell_id,
+                            "attempt_id": result_record.get("attempt_id"),
+                            "device": plan.device,
+                            "dtype": plan.dtype,
+                            "process_isolation": result_record.get(
+                                "process_isolation"
+                            ),
+                            "recorded_at": _utc_now(),
+                        },
+                    )
+                    continue
+                if result_status != "canonical_cell_failed":
+                    raise CanonicalCellProcessError(
+                        f"cell runner returned an invalid status for {cell_id}: "
+                        f"{result_status}"
+                    )
+                failure = {
+                    "cell_id": cell_id,
+                    "status": "canonical_cell_failed",
+                    "attempt_id": result_record.get("attempt_id"),
+                    "attempt_directory": result_record.get("attempt_directory"),
+                    "exception_type": result_record.get("exception_type"),
+                    "exception_message": result_record.get("exception_message"),
+                    "process_isolation": result_record.get("process_isolation"),
+                    "systemic_resource_failure": bool(
+                        result_record.get("systemic_resource_failure")
+                    ),
+                }
+                failures.append(failure)
                 _append_jsonl(
                     journal,
                     {
                         "run_id": run_id,
-                        "status": "canonical_cell_complete",
-                        "cell_id": cell_id,
-                        "attempt_id": result_record.get("attempt_id"),
                         "device": plan.device,
                         "dtype": plan.dtype,
                         "recorded_at": _utc_now(),
+                        **failure,
                     },
                 )
+                if failure["systemic_resource_failure"]:
+                    systemic_stop = {
+                        "reason": "systemic_gpu_out_of_memory",
+                        "cell_id": cell_id,
+                        "attempt_id": failure["attempt_id"],
+                        "exception_type": failure["exception_type"],
+                        "exception_message": failure["exception_message"],
+                        "process_isolation": failure["process_isolation"],
+                    }
+                    break
+            except CanonicalCellProcessError:
+                raise
             except Exception as exc:
-                failure: dict[str, object] = {
+                failure = {
                     "cell_id": cell_id,
                     "status": "canonical_cell_failed",
                     "exception_type": type(exc).__name__,
@@ -1299,6 +1753,8 @@ def execute_authorized_lane(
             "remaining_cell_count": B0_EXPECTED_CELL_COUNT - final_states["completed"],
             "results": results,
             "failures": failures,
+            "stopped_early": systemic_stop is not None,
+            "systemic_stop": systemic_stop,
             "full_lane_complete": lane_complete,
             "full_campaign_complete": False,
             "completed_at": _utc_now(),

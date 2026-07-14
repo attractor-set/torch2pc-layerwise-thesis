@@ -1,14 +1,15 @@
 """Real Torch2PC B0 integration and non-perturbation gate.
 
-This module deliberately measures the complete ``PCInfer`` call as one
-composite gate region.  It does not claim internal Stage 3B attribution until
-Torch2PC exposes honest boundaries for the preregistered five regions.
+The reference arm remains uninstrumented.  For a compatible loaded Torch2PC
+``PCInfer`` callable, the candidate arm installs temporary wrappers around the
+five preregistered regions and restores the original namespace after the call.
 """
 
 from __future__ import annotations
 
 import math
 import time
+from collections import Counter
 from collections.abc import Callable, Mapping
 from copy import deepcopy
 from dataclasses import asdict, dataclass
@@ -17,8 +18,19 @@ from typing import Any, Final, Literal, cast
 import torch
 from torch import Tensor, nn
 
-from torch2pc_thesis.profiling import Stage3ProfilingError, synchronize_device
+from torch2pc_thesis.pcinfer_instrumentation import (
+    PCInferInstrumentationSummary,
+    instrument_pcinfer,
+    supports_pcinfer_instrumentation,
+)
+from torch2pc_thesis.profiling import (
+    STAGE3_PROFILE_REGIONS,
+    Stage3ProfilingError,
+    synchronize_device,
+)
 from torch2pc_thesis.stage3b_profiling import (
+    RegionMeasurement,
+    Stage3BProfiler,
     TensorComparison,
     assert_non_perturbing,
     snapshot_named_tensors,
@@ -35,7 +47,7 @@ B0_TORCH2PC_LABELS: Final[dict[MethodName, str]] = {
 }
 B0_METHODS: Final[frozenset[str]] = frozenset(B0_TORCH2PC_LABELS)
 B0_COMPOSITE_LABEL: Final[str] = "stage3::b0_pcinfer_composite_gate"
-B0_GATE_SCHEMA_VERSION: Final[int] = 1
+B0_GATE_SCHEMA_VERSION: Final[int] = 2
 
 
 @dataclass(frozen=True)
@@ -98,6 +110,9 @@ class B0StepSnapshot:
 
     tensors: Mapping[str, Tensor]
     configured_inference_steps: int
+    observed_inference_steps: int | None = None
+    region_measurements: tuple[RegionMeasurement, ...] = ()
+    instrumentation: PCInferInstrumentationSummary | None = None
 
 
 @dataclass(frozen=True)
@@ -108,10 +123,41 @@ class B0GateReport:
     configured_inference_steps: int
     comparisons: tuple[TensorComparison, ...]
     measurement: B0CompositeMeasurement
+    observed_inference_steps: int | None = None
+    region_measurements: tuple[RegionMeasurement, ...] = ()
+    instrumentation: PCInferInstrumentationSummary | None = None
 
     @property
     def passed(self) -> bool:
         return all(comparison.passed for comparison in self.comparisons)
+
+    @property
+    def internal_region_attribution_ready(self) -> bool:
+        if self.instrumentation is None:
+            return False
+        counts = Counter(
+            measurement.region for measurement in self.region_measurements
+        )
+        return bool(
+            counts["initial_forward"] == 1
+            and counts["state_inference"] == 1
+            and counts["local_state_vjp"] >= 1
+            and counts["parameter_vjp"] == 1
+            and counts["optimizer_step"] == 1
+            and set(counts) == STAGE3_PROFILE_REGIONS
+        )
+
+    @property
+    def actual_inference_step_count_observed(self) -> bool:
+        return self.observed_inference_steps == self.configured_inference_steps
+
+    @property
+    def full_preregistered_gate_complete(self) -> bool:
+        return bool(
+            self.passed
+            and self.internal_region_attribution_ready
+            and self.actual_inference_step_count_observed
+        )
 
     def to_record(self) -> dict[str, object]:
         return {
@@ -119,14 +165,28 @@ class B0GateReport:
             "gate": "stage3b_real_b0_non_perturbation",
             "method": self.method,
             "configured_inference_steps": self.configured_inference_steps,
+            "observed_inference_steps": self.observed_inference_steps,
             "comparison_count": len(self.comparisons),
             "comparisons": [item.to_record() for item in self.comparisons],
-            "measurement_scope": "pcinfer_composite_gate_only",
-            "internal_region_attribution_ready": False,
-            "full_preregistered_gate_complete": False,
-            "actual_inference_step_count_observed": False,
+            "measurement_scope": (
+                "pcinfer_internal_regions_plus_optimizer_step"
+                if self.internal_region_attribution_ready
+                else "pcinfer_composite_gate_only"
+            ),
+            "internal_region_attribution_ready": self.internal_region_attribution_ready,
+            "full_preregistered_gate_complete": self.full_preregistered_gate_complete,
+            "actual_inference_step_count_observed": (
+                self.actual_inference_step_count_observed
+            ),
             "returned_tensor_coverage": (
                 "all_tensors_exposed_by_pcinfer_return"
+            ),
+            "region_measurement_count": len(self.region_measurements),
+            "region_measurements": [item.to_record() for item in self.region_measurements],
+            "instrumentation": (
+                self.instrumentation.to_record()
+                if self.instrumentation is not None
+                else None
             ),
             "evidence": False,
             "observed_tensor_gate_passed": self.passed,
@@ -245,8 +305,30 @@ def _run_step(
         end_event = torch.cuda.Event(enable_timing=True)
         start_event.record()
 
+    profiler: Stage3BProfiler | None = None
+    instrumentation: PCInferInstrumentationSummary | None = None
+    observed_inference_steps: int | None = None
     started_ns = time.perf_counter_ns()
-    if instrumented:
+    if instrumented and supports_pcinfer_instrumentation(pc_infer):
+        profiler = Stage3BProfiler(device=config.device, method=config.method)
+        with torch.autograd.profiler.record_function(B0_COMPOSITE_LABEL):
+            with instrument_pcinfer(
+                pc_infer,
+                profiler=profiler,
+                configured_inference_steps=config.inference_steps,
+            ) as observer:
+                output = pc_infer(
+                    model,
+                    loss_fn,
+                    run_inputs,
+                    run_targets,
+                    config.torch2pc_method,
+                    eta=config.eta,
+                    n=config.inference_steps,
+                )
+            instrumentation = observer.summary()
+            observed_inference_steps = instrumentation.actual_inference_steps
+    elif instrumented:
         with torch.autograd.profiler.record_function(B0_COMPOSITE_LABEL):
             output = pc_infer(
                 model,
@@ -269,7 +351,11 @@ def _run_step(
         )
 
     _validate_pc_output(output)
-    optimizer.step()
+    if profiler is not None:
+        with profiler.region("optimizer_step", repetition=0, step=0):
+            optimizer.step()
+    else:
+        optimizer.step()
     if end_event is not None:
         end_event.record()
     finished_ns = time.perf_counter_ns()
@@ -291,6 +377,9 @@ def _run_step(
     snapshot = B0StepSnapshot(
         tensors={**returned, **gradients, **model_state},
         configured_inference_steps=config.inference_steps,
+        observed_inference_steps=observed_inference_steps,
+        region_measurements=profiler.records if profiler is not None else (),
+        instrumentation=instrumentation,
     )
     if not instrumented:
         return snapshot, None
@@ -364,4 +453,7 @@ def run_b0_non_perturbation_gate(
         configured_inference_steps=config.inference_steps,
         comparisons=comparisons,
         measurement=measurement,
+        observed_inference_steps=candidate.observed_inference_steps,
+        region_measurements=candidate.region_measurements,
+        instrumentation=candidate.instrumentation,
     )

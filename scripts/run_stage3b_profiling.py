@@ -17,7 +17,10 @@ from torch2pc_thesis.stage3b_execution import (
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        allow_abbrev=False,
+    )
     parser.add_argument(
         "--manifest",
         type=Path,

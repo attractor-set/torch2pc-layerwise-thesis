@@ -5,12 +5,32 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import platform
+import re
+import socket
+import subprocess
+import sys
 import tempfile
+import uuid
 from collections import Counter
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import asdict, dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Final, Literal, cast
+
+import torch
+from torch import Tensor, nn
+
+from torch2pc_thesis.models import build_model
+from torch2pc_thesis.pc_methods import load_pc_infer
+from torch2pc_thesis.reproducibility import set_global_seed, stable_int_seed
+from torch2pc_thesis.stage3b_b0_integration import (
+    B0GateConfig,
+    MethodName,
+    run_b0_non_perturbation_gate,
+    torch2pc_method_label,
+)
 
 STAGE3B_EXECUTION_SCHEMA_VERSION: Final[int] = 1
 STAGE3B_CAMPAIGN_ID: Final[str] = "stage3b-profiling-locality-v1"
@@ -484,3 +504,427 @@ def plan_dry_run(
         summary={str(key): value for key, value in summary.items()},
         cells=tuple(planned),
     )
+
+SMOKE_WARMUP_STEPS: Final[int] = 1
+SMOKE_MEASURED_STEPS: Final[int] = 1
+SMOKE_REPETITIONS: Final[int] = 1
+SMOKE_ETA: Final[float] = 0.1
+SMOKE_LEARNING_RATE: Final[float] = 0.01
+SMOKE_INFERENCE_STEPS: Final[dict[str, int]] = {
+    "fixedpred": 10,
+    "strict": 20,
+}
+_CLEAN_COMMIT_PATTERN: Final[re.Pattern[str]] = re.compile(r"^[0-9a-f]{40}$")
+
+
+@dataclass(frozen=True)
+class SmokeExecutionContext:
+    """Frozen inputs for exactly one non-evidence B0 smoke attempt."""
+
+    cell: Mapping[str, object]
+    manifest_digest: str
+    output_root: Path
+    device: torch.device
+    requested_device: str
+    dtype: torch.dtype
+    dtype_name: str
+    torch2pc_dir: Path
+    torch2pc_commit: str
+    torch2pc_commit_verification: str
+    torch2pc_source_sha256: str
+    project_source_commit: str
+    image_id: str | None
+
+
+@dataclass(frozen=True)
+class SmokeExecutorResult:
+    """Serializable records returned by one smoke executor."""
+
+    resolved_config: Mapping[str, object]
+    environment: Mapping[str, object]
+    measurements: Mapping[str, object]
+
+
+type SmokeExecutor = Callable[[SmokeExecutionContext], SmokeExecutorResult]
+
+
+def _utc_now() -> str:
+    return datetime.now(tz=UTC).isoformat().replace("+00:00", "Z")
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _tensor_digest(tensor: Tensor) -> str:
+    value = tensor.detach().cpu().contiguous()
+    metadata = {
+        "dtype": str(value.dtype),
+        "shape": list(value.shape),
+    }
+    digest = hashlib.sha256(_canonical_json(metadata).encode("utf-8"))
+    digest.update(value.numpy().tobytes(order="C"))
+    return digest.hexdigest()
+
+
+def _state_dict_digest(state: Mapping[str, Tensor]) -> str:
+    digest = hashlib.sha256()
+    for name in sorted(state):
+        tensor = state[name]
+        digest.update(name.encode("utf-8"))
+        digest.update(_tensor_digest(tensor).encode("ascii"))
+    return digest.hexdigest()
+
+
+def _select_cell(
+    manifest: Mapping[str, object], *, cell_id: str
+) -> dict[str, object]:
+    raw_cells = cast(list[dict[str, object]], manifest["cells"])
+    matches = [cell for cell in raw_cells if cell.get("cell_id") == cell_id]
+    if len(matches) != 1:
+        raise Stage3BExecutionError(f"unknown Stage 3B cell_id: {cell_id}")
+    return dict(matches[0])
+
+
+def _validated_clean_source_commit(source_commit: str) -> str:
+    normalized = source_commit.strip().lower()
+    if not _CLEAN_COMMIT_PATTERN.fullmatch(normalized):
+        raise Stage3BExecutionError(
+            "single-cell smoke requires an exact clean 40-character source commit"
+        )
+    return normalized
+
+
+def _resolve_smoke_device_dtype(
+    *, device: str, dtype: str
+) -> tuple[torch.device, str, torch.dtype, str]:
+    requested_device = device.lower()
+    dtype_name = dtype.lower()
+    if requested_device == "cpu":
+        if dtype_name != "float64":
+            raise Stage3BExecutionError("CPU smoke requires dtype=float64")
+        return torch.device("cpu"), "cpu", torch.float64, "float64"
+    if requested_device in {"gpu", "cuda", "rocm"}:
+        if dtype_name != "float32":
+            raise Stage3BExecutionError("ROCm/CUDA smoke requires dtype=float32")
+        if not torch.cuda.is_available():
+            raise Stage3BExecutionError("ROCm/CUDA smoke requested but no GPU is available")
+        return torch.device("cuda"), requested_device, torch.float32, "float32"
+    raise Stage3BExecutionError(f"unsupported smoke device: {device}")
+
+
+def _resolve_torch2pc_provenance(
+    torch2pc_dir: Path, *, expected_commit: str
+) -> tuple[Path, str, str, str]:
+    resolved = torch2pc_dir.expanduser().resolve()
+    source = resolved / "TorchSeq2PC.py"
+    if not source.is_file():
+        raise Stage3BExecutionError(f"Torch2PC source is missing: {source}")
+
+    completed = subprocess.run(
+        ["git", "-C", str(resolved), "rev-parse", "HEAD"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    observed_commit = completed.stdout.strip().lower()
+    if completed.returncode == 0 and observed_commit:
+        if observed_commit != expected_commit:
+            raise Stage3BExecutionError(
+                "Torch2PC checkout commit differs from the execution manifest: "
+                f"expected={expected_commit}, observed={observed_commit}"
+            )
+        verification = "git_checkout"
+        resolved_commit = observed_commit
+    else:
+        verification = "manifest_pinned_source_without_git_metadata"
+        resolved_commit = expected_commit
+    return resolved, resolved_commit, verification, _sha256_file(source)
+
+
+def _attempt_id() -> str:
+    timestamp = datetime.now(tz=UTC).strftime("%Y%m%dT%H%M%S%fZ")
+    return f"{timestamp}-{uuid.uuid4().hex[:12]}"
+
+
+def _append_jsonl(path: Path, payload: Mapping[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    line = (_canonical_json(payload) + "\n").encode("utf-8")
+    descriptor = os.open(path, os.O_APPEND | os.O_CREAT | os.O_WRONLY, 0o600)
+    try:
+        os.write(descriptor, line)
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def _base_environment(context: SmokeExecutionContext) -> dict[str, object]:
+    device_name = (
+        torch.cuda.get_device_name(context.device)
+        if context.device.type == "cuda"
+        else "cpu"
+    )
+    return {
+        "project_source_commit": context.project_source_commit,
+        "project_worktree_clean": True,
+        "project_commit_verification": "explicit_exact_commit",
+        "manifest_digest": context.manifest_digest,
+        "cell_id": str(context.cell["cell_id"]),
+        "candidate_id": str(context.cell["candidate_id"]),
+        "method": str(context.cell["method"]),
+        "torch2pc_path": str(context.torch2pc_dir),
+        "torch2pc_commit": context.torch2pc_commit,
+        "torch2pc_commit_verification": context.torch2pc_commit_verification,
+        "torch2pc_source_sha256": context.torch2pc_source_sha256,
+        "python_version": sys.version,
+        "pytorch_version": torch.__version__,
+        "hip_version": getattr(torch.version, "hip", None),
+        "requested_device": context.requested_device,
+        "resolved_device_type": context.device.type,
+        "device_name": device_name,
+        "dtype": context.dtype_name,
+        "hostname": socket.gethostname(),
+        "platform": platform.platform(),
+        "container_image_identifier": context.image_id,
+    }
+
+
+def _execute_real_b0_smoke(context: SmokeExecutionContext) -> SmokeExecutorResult:
+    cell = context.cell
+    method_text = str(cell["method"])
+    if method_text not in SMOKE_INFERENCE_STEPS:
+        raise Stage3BExecutionError(f"unsupported B0 smoke method: {method_text}")
+    method = cast(MethodName, method_text)
+    depth = int(cast(int, cell["depth"]))
+    width = int(cast(int, cell["width"]))
+    batch_size = int(cast(int, cell["batch_size"]))
+    model_seed = int(cast(int, cell["model_seed"]))
+    architecture = f"mlp_d{depth}_w{width}"
+
+    set_global_seed(model_seed, deterministic=True, warn_only=True)
+    model = build_model(architecture, 10).to(dtype=context.dtype)
+    model_state_sha256 = _state_dict_digest(
+        cast(Mapping[str, Tensor], model.state_dict())
+    )
+
+    minibatch_seed = stable_int_seed(
+        STAGE3B_CAMPAIGN_ID,
+        str(cell["cell_id"]),
+        "synthetic_minibatch",
+    )
+    generator = torch.Generator(device="cpu")
+    generator.manual_seed(minibatch_seed)
+    inputs = torch.randn(
+        (batch_size, 1, 28, 28),
+        generator=generator,
+        dtype=context.dtype,
+    )
+    targets = torch.randint(
+        low=0,
+        high=10,
+        size=(batch_size,),
+        generator=generator,
+        dtype=torch.int64,
+    )
+
+    def optimizer_factory(candidate: nn.Module) -> torch.optim.Optimizer:
+        return torch.optim.SGD(candidate.parameters(), lr=SMOKE_LEARNING_RATE)
+
+    inference_steps = SMOKE_INFERENCE_STEPS[method]
+    gate_config = B0GateConfig(
+        method=method,
+        torch2pc_method=torch2pc_method_label(method),
+        eta=SMOKE_ETA,
+        inference_steps=inference_steps,
+        device=context.device,
+        dtype=context.dtype,
+    )
+    pc_infer = load_pc_infer(context.torch2pc_dir)
+
+    warmup_report = run_b0_non_perturbation_gate(
+        model=model,
+        optimizer_factory=optimizer_factory,
+        loss_fn=nn.CrossEntropyLoss(),
+        inputs=inputs,
+        targets=targets,
+        pc_infer=pc_infer,
+        config=gate_config,
+    )
+    if not warmup_report.full_preregistered_gate_complete:
+        raise Stage3BExecutionError("B0 smoke warm-up gate did not pass")
+
+    measured_report = run_b0_non_perturbation_gate(
+        model=model,
+        optimizer_factory=optimizer_factory,
+        loss_fn=nn.CrossEntropyLoss(),
+        inputs=inputs,
+        targets=targets,
+        pc_infer=pc_infer,
+        config=gate_config,
+    )
+    if not measured_report.full_preregistered_gate_complete:
+        raise Stage3BExecutionError("B0 smoke measured gate did not pass")
+
+    return SmokeExecutorResult(
+        resolved_config={
+            "architecture": architecture,
+            "num_classes": 10,
+            "depth": depth,
+            "width": width,
+            "batch_size": batch_size,
+            "model_seed": model_seed,
+            "minibatch_seed": minibatch_seed,
+            "method": method,
+            "torch2pc_method": torch2pc_method_label(method),
+            "eta": SMOKE_ETA,
+            "inference_steps": inference_steps,
+            "optimizer": "SGD",
+            "learning_rate": SMOKE_LEARNING_RATE,
+            "canonical_protocol": {
+                "warmup_steps": WARMUP_STEPS,
+                "measured_steps": MEASURED_STEPS,
+                "repetitions": REPETITIONS,
+            },
+            "smoke_protocol": {
+                "warmup_steps": SMOKE_WARMUP_STEPS,
+                "measured_steps": SMOKE_MEASURED_STEPS,
+                "repetitions": SMOKE_REPETITIONS,
+            },
+        },
+        environment={
+            "model_state_sha256": model_state_sha256,
+            "synthetic_inputs_sha256": _tensor_digest(inputs),
+            "synthetic_targets_sha256": _tensor_digest(targets),
+        },
+        measurements={
+            "status": "smoke_passed",
+            "execution_scope": "single_cell_smoke",
+            "evidence": False,
+            "full_cell_complete": False,
+            "warmup_gate_passed": warmup_report.full_preregistered_gate_complete,
+            "measured_gate": measured_report.to_record(),
+            "validation": {
+                "dataset": "synthetic_scaling_family",
+                "test_loader_created": False,
+                "test_evaluated": False,
+            },
+        },
+    )
+
+
+def execute_single_cell_smoke(
+    manifest: Mapping[str, object],
+    *,
+    output_root: Path,
+    cell_id: str,
+    device: str,
+    dtype: str,
+    torch2pc_dir: Path,
+    source_commit: str,
+    image_id: str | None = None,
+    executor: SmokeExecutor | None = None,
+) -> dict[str, object]:
+    """Execute one append-only B0 smoke attempt under /tmp."""
+    validate_manifest(manifest)
+    resolved_root = validated_temporary_output_root(output_root)
+    cell = _select_cell(manifest, cell_id=cell_id)
+    if cell.get("candidate_id") != "stage2_baseline":
+        raise Stage3BExecutionError(
+            "single-cell smoke execution is currently allowed only for B0"
+        )
+    clean_commit = _validated_clean_source_commit(source_commit)
+    resolved_device, requested_device, resolved_dtype, dtype_name = (
+        _resolve_smoke_device_dtype(device=device, dtype=dtype)
+    )
+    expected_torch2pc_commit = str(manifest["torch2pc_source_commit"])
+    (
+        resolved_torch2pc_dir,
+        torch2pc_commit,
+        torch2pc_verification,
+        torch2pc_source_sha256,
+    ) = _resolve_torch2pc_provenance(
+        torch2pc_dir,
+        expected_commit=expected_torch2pc_commit,
+    )
+    manifest_digest = str(manifest["manifest_digest"])
+    context = SmokeExecutionContext(
+        cell=cell,
+        manifest_digest=manifest_digest,
+        output_root=resolved_root,
+        device=resolved_device,
+        requested_device=requested_device,
+        dtype=resolved_dtype,
+        dtype_name=dtype_name,
+        torch2pc_dir=resolved_torch2pc_dir,
+        torch2pc_commit=torch2pc_commit,
+        torch2pc_commit_verification=torch2pc_verification,
+        torch2pc_source_sha256=torch2pc_source_sha256,
+        project_source_commit=clean_commit,
+        image_id=image_id,
+    )
+
+    attempt_id = _attempt_id()
+    attempt_dir = (
+        resolved_root
+        / "smoke"
+        / "cells"
+        / cell_id
+        / "attempts"
+        / attempt_id
+    )
+    attempt_dir.mkdir(parents=True, exist_ok=False)
+    request = {
+        "schema_version": STAGE3B_EXECUTION_SCHEMA_VERSION,
+        "campaign_id": STAGE3B_CAMPAIGN_ID,
+        "attempt_id": attempt_id,
+        "cell_id": cell_id,
+        "manifest_digest": manifest_digest,
+        "candidate_id": str(cell["candidate_id"]),
+        "method": str(cell["method"]),
+        "device": requested_device,
+        "dtype": dtype_name,
+        "execution_scope": "single_cell_smoke",
+        "evidence": False,
+        "full_cell_complete": False,
+    }
+    atomic_write_json(attempt_dir / "request.json", request)
+    atomic_write_json(
+        attempt_dir / "started.json",
+        {
+            **request,
+            "status": "smoke_running",
+            "started_at": _utc_now(),
+        },
+    )
+
+    selected_executor = executor or _execute_real_b0_smoke
+    try:
+        result = selected_executor(context)
+        environment = {**_base_environment(context), **dict(result.environment)}
+        atomic_write_json(attempt_dir / "resolved-config.json", result.resolved_config)
+        atomic_write_json(attempt_dir / "environment.json", environment)
+        atomic_write_json(attempt_dir / "measurements.json", result.measurements)
+        completed = {
+            **request,
+            "status": "smoke_passed",
+            "completed_at": _utc_now(),
+            "attempt_directory": str(attempt_dir),
+        }
+        atomic_write_json(attempt_dir / "completed.json", completed)
+        return completed
+    except Exception as exc:
+        failed = {
+            **request,
+            "status": "smoke_failed",
+            "failed_at": _utc_now(),
+            "attempt_directory": str(attempt_dir),
+            "exception_type": type(exc).__name__,
+            "exception_message": str(exc),
+        }
+        atomic_write_json(attempt_dir / "failed.json", failed)
+        _append_jsonl(resolved_root / "smoke" / "failure-ledger.jsonl", failed)
+        raise

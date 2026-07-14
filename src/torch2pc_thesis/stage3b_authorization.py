@@ -28,22 +28,28 @@ from torch2pc_thesis.stage3b_execution import (
     validate_manifest,
     validated_temporary_output_root,
 )
+from torch2pc_thesis.stage3b_protocol_contract import (
+    B0_CANONICAL_CELL_COUNT,
+    B0_CANONICAL_LANES,
+    B0_ENGINEERING_CONTROL_LANES,
+    B0_PROTOCOL_CONTRACT,
+    B0_PROTOCOL_CONTRACT_DIGEST,
+    B0_SUPPORTED_PREFLIGHT_LANES,
+)
 
-B0_AUTHORIZATION_SCHEMA_VERSION: Final[int] = 1
-B0_AUTHORIZATION_SCOPE: Final[str] = "stage3b_b0_canonical_campaign"
+B0_AUTHORIZATION_SCHEMA_VERSION: Final[int] = 2
+B0_AUTHORIZATION_SCOPE: Final[str] = "stage3b_b0_rocm_canonical_campaign"
 B0_PROJECT_FREEZE_SCOPE: Final[str] = "stage3b_b0_project_freeze"
 B0_LANE_PREFLIGHT_SCOPE: Final[str] = "stage3b_b0_lane_preflight"
 B0_CANDIDATE_ID: Final[str] = "stage2_baseline"
-B0_EXPECTED_CELL_COUNT: Final[int] = 96
+B0_EXPECTED_CELL_COUNT: Final[int] = B0_CANONICAL_CELL_COUNT
 B0_DEFAULT_MINIMUM_FREE_BYTES: Final[int] = 20 * 1024**3
 B0_OPERATOR_ACKNOWLEDGEMENT: Final[str] = (
-    "AUTHORIZE_STAGE3B_B0_CANONICAL_96_CELL_CAMPAIGN"
+    "AUTHORIZE_STAGE3B_B0_ROCM_FLOAT32_CANONICAL_96_CELL_CAMPAIGN"
 )
-B0_REQUIRED_LANES: Final[tuple[tuple[str, str], ...]] = (
-    ("cpu", "float64"),
-    ("rocm", "float32"),
-)
-B0_AUTHORIZATION_DOMAIN: Final[str] = "torch2pc-stage3b-b0-authorization-v1"
+# Compatibility alias: required lanes are canonical lanes only.
+B0_REQUIRED_LANES: Final[tuple[tuple[str, str], ...]] = B0_CANONICAL_LANES
+B0_AUTHORIZATION_DOMAIN: Final[str] = "torch2pc-stage3b-b0-rocm-authorization-v2"
 
 _CLEAN_COMMIT_PATTERN: Final[re.Pattern[str]] = re.compile(r"^[0-9a-f]{40}$")
 _SHA256_IDENTIFIER_PATTERN: Final[re.Pattern[str]] = re.compile(
@@ -116,11 +122,20 @@ def _validated_image_digest(image_digest: str) -> str:
 
 def _validated_lane(*, device: str, dtype: str) -> tuple[str, str]:
     lane = (device.strip().lower(), dtype.strip().lower())
-    if lane not in B0_REQUIRED_LANES:
+    if lane not in B0_SUPPORTED_PREFLIGHT_LANES:
         raise Stage3BExecutionError(
-            "B0 campaign lanes are limited to cpu/float64 and rocm/float32"
+            "B0 preflight lanes are limited to rocm/float32 canonical and "
+            "cpu/float64 engineering control"
         )
     return lane
+
+
+def _lane_role(lane: tuple[str, str]) -> str:
+    if lane in B0_CANONICAL_LANES:
+        return "canonical"
+    if lane in B0_ENGINEERING_CONTROL_LANES:
+        return "engineering_control"
+    raise Stage3BExecutionError(f"unsupported B0 lane: {lane}")
 
 
 def _run_git(root: Path, *arguments: str) -> str:
@@ -264,7 +279,10 @@ def _freeze_stable_projection(record: Mapping[str, object]) -> dict[str, object]
         "output_root",
         "minimum_free_bytes",
         "emergency_stop_path",
-        "required_lanes",
+        "protocol_contract_digest",
+        "protocol_contract",
+        "canonical_lanes",
+        "engineering_control_lanes",
     )
     return {key: record[key] for key in keys}
 
@@ -334,9 +352,15 @@ def freeze_project_environment(
         "output_root": str(resolved_output),
         "minimum_free_bytes": minimum_free_bytes,
         "emergency_stop_path": str(output_observation["emergency_stop_path"]),
-        "required_lanes": [
+        "protocol_contract_digest": B0_PROTOCOL_CONTRACT_DIGEST,
+        "protocol_contract": dict(B0_PROTOCOL_CONTRACT),
+        "canonical_lanes": [
             {"device": device, "dtype": dtype}
-            for device, dtype in B0_REQUIRED_LANES
+            for device, dtype in B0_CANONICAL_LANES
+        ],
+        "engineering_control_lanes": [
+            {"device": device, "dtype": dtype}
+            for device, dtype in B0_ENGINEERING_CONTROL_LANES
         ],
     }
     return {
@@ -372,6 +396,22 @@ def validate_project_freeze(record: Mapping[str, object]) -> None:
         raise Stage3BExecutionError("project freeze cannot mark the campaign complete")
     if record.get("test_dataset_access") is not False:
         raise Stage3BExecutionError("project freeze cannot authorize test dataset access")
+    if record.get("protocol_contract_digest") != B0_PROTOCOL_CONTRACT_DIGEST:
+        raise Stage3BExecutionError("project freeze uses a different B0 protocol contract")
+    if record.get("protocol_contract") != B0_PROTOCOL_CONTRACT:
+        raise Stage3BExecutionError("project freeze protocol contract content differs")
+    if record.get("canonical_lanes") != [
+        {"device": device, "dtype": dtype}
+        for device, dtype in B0_CANONICAL_LANES
+    ]:
+        raise Stage3BExecutionError("project freeze canonical lanes differ from contract")
+    if record.get("engineering_control_lanes") != [
+        {"device": device, "dtype": dtype}
+        for device, dtype in B0_ENGINEERING_CONTROL_LANES
+    ]:
+        raise Stage3BExecutionError(
+            "project freeze engineering control lanes differ from contract"
+        )
     _validated_commit(str(record.get("project_source_commit", "")))
     supplied = record.get("freeze_digest")
     if not isinstance(supplied, str) or supplied != _digest(
@@ -418,6 +458,7 @@ def _lane_stable_projection(record: Mapping[str, object]) -> dict[str, object]:
         "freeze_digest",
         "device",
         "dtype",
+        "lane_role",
         "image_digest",
         "runtime",
         "output_root",
@@ -508,6 +549,7 @@ def capture_lane_preflight(
         "freeze_digest": str(freeze_record["freeze_digest"]),
         "device": normalized_device,
         "dtype": normalized_dtype,
+        "lane_role": _lane_role((normalized_device, normalized_dtype)),
         "image_digest": normalized_image,
         "runtime": runtime.to_record(),
         "output_root": str(resolved_output),
@@ -539,10 +581,12 @@ def validate_lane_preflight(record: Mapping[str, object]) -> None:
         raise Stage3BExecutionError("lane preflight must remain non-evidence")
     if record.get("full_campaign_complete") is not False:
         raise Stage3BExecutionError("lane preflight cannot mark the campaign complete")
-    _validated_lane(
+    lane = _validated_lane(
         device=str(record.get("device", "")),
         dtype=str(record.get("dtype", "")),
     )
+    if record.get("lane_role") != _lane_role(lane):
+        raise Stage3BExecutionError("lane preflight role differs from protocol contract")
     _validated_image_digest(str(record.get("image_digest", "")))
     supplied = record.get("lane_preflight_digest")
     if not isinstance(supplied, str) or supplied != _digest(
@@ -573,13 +617,20 @@ def issue_campaign_authorization(
     *,
     operator_acknowledgement: str,
 ) -> dict[str, object]:
-    """Issue a tamper-evident authorization envelope for the frozen campaign."""
+    """Issue a ROCm-only canonical authorization envelope.
+
+    A CPU/float64 preflight may be attached as an engineering-control record,
+    but it never becomes a canonical lane and never gates campaign completion.
+    """
 
     validate_project_freeze(freeze_record)
     if operator_acknowledgement != B0_OPERATOR_ACKNOWLEDGEMENT:
         raise Stage3BExecutionError("operator acknowledgement does not match")
-    if len(lane_preflights) != len(B0_REQUIRED_LANES):
-        raise Stage3BExecutionError("authorization requires exactly two lane preflights")
+    if not lane_preflights:
+        raise Stage3BExecutionError(
+            "authorization requires the rocm/float32 canonical preflight"
+        )
+
     indexed: dict[tuple[str, str], Mapping[str, object]] = {}
     for preflight in lane_preflights:
         validate_lane_preflight(preflight)
@@ -589,15 +640,28 @@ def issue_campaign_authorization(
         if lane in indexed:
             raise Stage3BExecutionError(f"duplicate lane preflight: {lane}")
         indexed[lane] = preflight
-    if set(indexed) != set(B0_REQUIRED_LANES):
+
+    unknown = set(indexed) - set(B0_SUPPORTED_PREFLIGHT_LANES)
+    if unknown:
+        raise Stage3BExecutionError(f"unsupported lane preflights: {sorted(unknown)}")
+    if not set(B0_CANONICAL_LANES).issubset(indexed):
         raise Stage3BExecutionError(
-            "authorization requires cpu/float64 and rocm/float32 preflights"
+            "authorization requires the rocm/float32 canonical preflight"
         )
-    ordered_preflights = [dict(indexed[lane]) for lane in B0_REQUIRED_LANES]
+
+    canonical_preflights = [
+        dict(indexed[lane]) for lane in B0_CANONICAL_LANES
+    ]
+    control_preflights = [
+        dict(indexed[lane])
+        for lane in B0_ENGINEERING_CONTROL_LANES
+        if lane in indexed
+    ]
     payload: dict[str, object] = {
         "schema_version": B0_AUTHORIZATION_SCHEMA_VERSION,
         "campaign_id": STAGE3B_CAMPAIGN_ID,
         "authorization_scope": B0_AUTHORIZATION_SCOPE,
+        "protocol_contract_digest": B0_PROTOCOL_CONTRACT_DIGEST,
         "execution_permitted": True,
         "evidence": False,
         "full_campaign_complete": False,
@@ -605,9 +669,23 @@ def issue_campaign_authorization(
         "test_dataset_access": False,
         "candidate_id": B0_CANDIDATE_ID,
         "authorized_cell_count": B0_EXPECTED_CELL_COUNT,
+        "canonical_execution_count": B0_EXPECTED_CELL_COUNT,
         "canonical_protocol": dict(
             cast(Mapping[str, int], freeze_record["canonical_protocol"])
         ),
+        "canonical_lanes": [
+            {"device": device, "dtype": dtype}
+            for device, dtype in B0_CANONICAL_LANES
+        ],
+        "engineering_control_lanes": [
+            {
+                "device": device,
+                "dtype": dtype,
+                "required_for_campaign_completion": False,
+                "confirmatory_performance_evidence": False,
+            }
+            for device, dtype in B0_ENGINEERING_CONTROL_LANES
+        ],
         "project_source_commit": str(freeze_record["project_source_commit"]),
         "manifest_digest": str(freeze_record["manifest_digest"]),
         "torch2pc_commit": str(freeze_record["torch2pc_commit"]),
@@ -622,7 +700,11 @@ def issue_campaign_authorization(
             "failed_and_interrupted_attempts_require_explicit_resume": True,
         },
         "freeze_record": dict(freeze_record),
-        "lane_preflights": ordered_preflights,
+        # Backward-compatible key name used by the canonical runner. It now
+        # contains canonical preflights only.
+        "lane_preflights": canonical_preflights,
+        "canonical_lane_preflights": canonical_preflights,
+        "engineering_control_preflights": control_preflights,
         "issued_at": _utc_now(),
     }
     token = _authorization_token(payload)
@@ -632,16 +714,23 @@ def issue_campaign_authorization(
         "authorization_digest": token,
     }
 
-
 def validate_campaign_authorization(record: Mapping[str, object]) -> None:
-    """Validate a complete campaign authorization envelope."""
+    """Validate a complete ROCm-only campaign authorization envelope."""
 
     if record.get("schema_version") != B0_AUTHORIZATION_SCHEMA_VERSION:
-        raise Stage3BExecutionError("unsupported B0 campaign authorization schema")
+        raise Stage3BExecutionError(
+            "unsupported or retired B0 campaign authorization schema"
+        )
     if record.get("campaign_id") != STAGE3B_CAMPAIGN_ID:
         raise Stage3BExecutionError("unexpected B0 campaign authorization campaign")
     if record.get("authorization_scope") != B0_AUTHORIZATION_SCOPE:
-        raise Stage3BExecutionError("unexpected B0 campaign authorization scope")
+        raise Stage3BExecutionError(
+            "unexpected or retired B0 campaign authorization scope"
+        )
+    if record.get("protocol_contract_digest") != B0_PROTOCOL_CONTRACT_DIGEST:
+        raise Stage3BExecutionError(
+            "authorization uses a different B0 protocol contract"
+        )
     if record.get("execution_permitted") is not True:
         raise Stage3BExecutionError("B0 campaign execution is not permitted")
     if record.get("evidence") is not False:
@@ -652,6 +741,7 @@ def validate_campaign_authorization(record: Mapping[str, object]) -> None:
         raise Stage3BExecutionError("authorization cannot permit results publication")
     if record.get("test_dataset_access") is not False:
         raise Stage3BExecutionError("authorization cannot permit test dataset access")
+
     freeze_record = record.get("freeze_record")
     if not isinstance(freeze_record, Mapping):
         raise Stage3BExecutionError("authorization freeze_record is missing")
@@ -664,6 +754,7 @@ def validate_campaign_authorization(record: Mapping[str, object]) -> None:
         "output_root": freeze_record.get("output_root"),
         "minimum_free_bytes": freeze_record.get("minimum_free_bytes"),
         "canonical_protocol": freeze_record.get("canonical_protocol"),
+        "protocol_contract_digest": freeze_record.get("protocol_contract_digest"),
     }
     for key, expected_value in expected_from_freeze.items():
         if record.get(key) != expected_value:
@@ -674,26 +765,88 @@ def validate_campaign_authorization(record: Mapping[str, object]) -> None:
         raise Stage3BExecutionError("authorization candidate_id differs from B0")
     if record.get("authorized_cell_count") != B0_EXPECTED_CELL_COUNT:
         raise Stage3BExecutionError("authorization cell count differs from B0")
+    if record.get("canonical_execution_count") != B0_EXPECTED_CELL_COUNT:
+        raise Stage3BExecutionError(
+            "authorization canonical execution count must remain 96"
+        )
+    expected_canonical_lanes = [
+        {"device": device, "dtype": dtype}
+        for device, dtype in B0_CANONICAL_LANES
+    ]
+    if record.get("canonical_lanes") != expected_canonical_lanes:
+        raise Stage3BExecutionError(
+            "authorization canonical lanes differ from ROCm-only contract"
+        )
+    expected_control_lanes = [
+        {
+            "device": device,
+            "dtype": dtype,
+            "required_for_campaign_completion": False,
+            "confirmatory_performance_evidence": False,
+        }
+        for device, dtype in B0_ENGINEERING_CONTROL_LANES
+    ]
+    if record.get("engineering_control_lanes") != expected_control_lanes:
+        raise Stage3BExecutionError(
+            "authorization engineering control lanes differ from contract"
+        )
+
     lane_preflights = record.get("lane_preflights")
     if not isinstance(lane_preflights, list):
         raise Stage3BExecutionError("authorization lane_preflights are missing")
-    lanes: set[tuple[str, str]] = set()
+    if record.get("canonical_lane_preflights") != lane_preflights:
+        raise Stage3BExecutionError(
+            "authorization canonical preflight aliases differ"
+        )
+    canonical_lanes: set[tuple[str, str]] = set()
     for preflight in lane_preflights:
         if not isinstance(preflight, Mapping):
             raise Stage3BExecutionError("authorization lane preflight is invalid")
         validate_lane_preflight(preflight)
         if preflight.get("freeze_digest") != freeze_record.get("freeze_digest"):
             raise Stage3BExecutionError("authorization lane uses a different freeze")
-        lanes.add((str(preflight["device"]), str(preflight["dtype"])))
-    if lanes != set(B0_REQUIRED_LANES):
-        raise Stage3BExecutionError("authorization does not contain both required lanes")
+        lane = (str(preflight["device"]), str(preflight["dtype"]))
+        if lane not in B0_CANONICAL_LANES:
+            raise Stage3BExecutionError(
+                "authorization canonical preflights contain a noncanonical lane"
+            )
+        canonical_lanes.add(lane)
+    if canonical_lanes != set(B0_CANONICAL_LANES):
+        raise Stage3BExecutionError(
+            "authorization does not contain the rocm/float32 canonical lane"
+        )
+
+    controls = record.get("engineering_control_preflights", [])
+    if not isinstance(controls, list):
+        raise Stage3BExecutionError(
+            "authorization engineering_control_preflights must be a list"
+        )
+    control_lanes: set[tuple[str, str]] = set()
+    for preflight in controls:
+        if not isinstance(preflight, Mapping):
+            raise Stage3BExecutionError("engineering control preflight is invalid")
+        validate_lane_preflight(preflight)
+        if preflight.get("freeze_digest") != freeze_record.get("freeze_digest"):
+            raise Stage3BExecutionError(
+                "engineering control preflight uses a different freeze"
+            )
+        lane = (str(preflight["device"]), str(preflight["dtype"]))
+        if lane not in B0_ENGINEERING_CONTROL_LANES:
+            raise Stage3BExecutionError(
+                "authorization contains an unsupported engineering control lane"
+            )
+        if lane in control_lanes:
+            raise Stage3BExecutionError(
+                f"duplicate engineering control preflight: {lane}"
+            )
+        control_lanes.add(lane)
+
     supplied = record.get("authorization_token")
     expected = _authorization_token(_authorization_payload(record))
     if not isinstance(supplied, str) or supplied != expected:
         raise Stage3BExecutionError("authorization token does not match its content")
     if record.get("authorization_digest") != supplied:
         raise Stage3BExecutionError("authorization digest differs from its token")
-
 
 def verify_authorization_for_lane(
     authorization: Mapping[str, object],
@@ -707,12 +860,14 @@ def verify_authorization_for_lane(
     image_digest: str,
     probe: RuntimeProbe | None = None,
 ) -> dict[str, object]:
-    """Verify exact frozen inputs for one future canonical execution lane."""
+    """Verify one canonical or optional engineering-control fingerprint."""
 
     validate_campaign_authorization(authorization)
     validate_manifest(manifest)
     clean_commit = _validated_commit(source_commit)
     normalized_device, normalized_dtype = _validated_lane(device=device, dtype=dtype)
+    lane = (normalized_device, normalized_dtype)
+    role = _lane_role(lane)
     normalized_image = _validated_image_digest(image_digest)
     if clean_commit != authorization.get("project_source_commit"):
         raise Stage3BExecutionError("runtime source commit differs from authorization")
@@ -740,15 +895,25 @@ def verify_authorization_for_lane(
         image_digest=normalized_image,
         probe=probe,
     )
-    authorized_lanes = cast(list[Mapping[str, object]], authorization["lane_preflights"])
+    if role == "canonical":
+        authorized_lanes = cast(
+            list[Mapping[str, object]], authorization["lane_preflights"]
+        )
+    else:
+        authorized_lanes = cast(
+            list[Mapping[str, object]],
+            authorization.get("engineering_control_preflights", []),
+        )
     matches = [
-        lane
-        for lane in authorized_lanes
-        if lane.get("device") == normalized_device
-        and lane.get("dtype") == normalized_dtype
+        item
+        for item in authorized_lanes
+        if item.get("device") == normalized_device
+        and item.get("dtype") == normalized_dtype
     ]
     if len(matches) != 1:
-        raise Stage3BExecutionError("authorization lane selection is ambiguous")
+        raise Stage3BExecutionError(
+            f"authorization has no unique {role} fingerprint for {lane}"
+        )
     if current_lane["lane_preflight_digest"] != matches[0].get(
         "lane_preflight_digest"
     ):
@@ -763,8 +928,14 @@ def verify_authorization_for_lane(
         "manifest_digest": str(manifest["manifest_digest"]),
         "device": normalized_device,
         "dtype": normalized_dtype,
+        "lane_role": role,
         "image_digest": normalized_image,
+        # Verification is permitted for an attached engineering-control record,
+        # but only a canonical lane may be executed by the canonical runner.
         "execution_permitted": True,
+        "canonical_execution_permitted": role == "canonical",
+        "required_for_campaign_completion": role == "canonical",
+        "confirmatory_performance_evidence": role == "canonical",
         "evidence": False,
         "full_campaign_complete": False,
         "results_publication_permitted": False,

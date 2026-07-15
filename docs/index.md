@@ -26,6 +26,7 @@
 - [Готовность Stage 3](stage-3-readiness.md)
 - [Stage 3A statistical results](stage3a-statistical-results.md)
 - [Stage 3B B0 validation и sealing](stage3b-b0-sealing.md)
+- [Stage 3B B0 analysis pipeline](stage3b-b0-analysis-pipeline.md)
 - [Stage 3B B0 sealed evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/b0/sealed-v1)
 - [Воспроизводимость](reproducibility.md)
 - [Управление данными](data-management.md)

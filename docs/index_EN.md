@@ -27,6 +27,7 @@ Core documents:
 - [Stage 3 readiness](stage-3-readiness_EN.md)
 - [Stage 3A statistical results](stage3a-statistical-results_EN.md)
 - [Stage 3B B0 validation and sealing](stage3b-b0-sealing_EN.md)
+- [Stage 3B B0 analysis pipeline](stage3b-b0-analysis-pipeline_EN.md)
 - [Stage 3B B0 sealed evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/b0/sealed-v1)
 - [Reproducibility](reproducibility_EN.md)
 - [Data management](data-management_EN.md)

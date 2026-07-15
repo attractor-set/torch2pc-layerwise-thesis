@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "control_id": "OBS-NI0",
+  "experiment_source_git_commit": "3cbda083bc5747732a51295da9a4494ffde48436",
+  "observer_schema": {
+    "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+    "capture_implementation": "top-level forward-pre and forward hooks",
+    "capture_policy": "first forward invocation per top-level layer",
+    "additional_forward_calls": "counted but not captured",
+    "payload_copy": "tensor.detach().clone()",
+    "roles": [
+      "layer_input",
+      "layer_output"
+    ],
+    "records_per_top_level_layer": 2,
+    "expected_top_level_layers": 6,
+    "expected_records_per_arm_run": 12,
+    "record_key_format": "layer-{index:02d}:{role}:00",
+    "expected_occurrences_per_role": 1,
+    "cleanup_rule": "remove all observer handles and restore baseline hook ids",
+    "serialization_phase": "after observed execution and hook cleanup"
+  }
+}

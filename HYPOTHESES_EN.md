@@ -68,3 +68,31 @@ Assess whether a cheap layer-local belief or inverse-scale estimate followed by
 one to five exact correction sweeps reduces VJPs and runtime under controlled
 residual, fallback-rate, gradient-alignment, and validation non-inferiority
 gates.
+
+
+## Primary post-B0 Scenario A hypotheses
+
+These hypotheses belong to a separate protocol/freeze and do not change
+completed B0 findings.
+
+- **H-CZ1:** activity, resultant efficiency, and destructive interaction add
+  information about next exact-sweep utility beyond layer, sweep index, and
+  residual norm.
+- **H-T1:** transport diagnostics distinguish intrinsic NCZ from low observed
+  contribution caused by attenuation or TNZ.
+- **H-M1:** a validated `state_inference` decomposition explains measurable
+  Strict/FixedPred differences in time, memory, and saved tensors.
+
+- **H-TREF1:** correction geometry and state transport reduce operational
+  manifestations of the task-relative equivalence defect relative to a
+  residual-only representation.
+- **H-TREF2:** among registered $\phi_0,\ldots,\phi_5$, one representation
+  reaches a point where further features do not provide practically meaningful
+  regret reduction relative to diagnostic cost.
+- **H-Q1:** shadow QWake-PC reduces dangerous misses relative to residual-only
+  or fixed-budget rules.
+- **H-R1:** after observer cost is included, exact-sweep reduction yields device
+  time reduction while endpoint gradients remain within registered bounds.
+
+PNZ and the parameter tangent kernel are a limited exploratory extension and
+are not part of the mandatory confirmatory hypothesis family.

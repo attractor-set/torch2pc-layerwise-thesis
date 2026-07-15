@@ -14,8 +14,7 @@ published results always include their scope and [artifact provenance](glossary_
   publication are complete;
 - Stage 3B B0 statistical and engineering analysis is complete and published;
 - the full Stage 3B program remains incomplete;
-- the next stage is [candidate](glossary_EN.md#term-candidate)-specific numerical-equivalence testing for B1
-  and B2.
+- [primary working Scenario](glossary_EN.md#term-primary-working-scenario) A is adopted after B0; its design-only freeze is complete, and the next factual stage is shortcut and observer controls.
 
 The machine-readable boundary remains unchanged:
 `full_stage3b_campaign_complete=false`.
@@ -49,6 +48,14 @@ The machine-readable boundary remains unchanged:
 - [Reproducibility](reproducibility_EN.md)
 - [Data management](data-management_EN.md)
 - [Hardware](hardware_EN.md)
+
+### PC-TREF, PC-CATM, and primary scenario
+
+- [Realistic master's thesis plan](masters-thesis-plan_EN.md)
+
+- [PC-TREF Balanced Core](pc-tref-balanced-core_EN.md)
+- [PC-CATM of correction zero and error transport](pc-catm-operator-model_EN.md)
+- [Scenario A plan](stage3b-primary-scenario-a_EN.md)
 
 ### Stages and results
 

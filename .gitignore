@@ -80,3 +80,8 @@ results/stage3/layerwise/pilot/
 
 # Stage 3 confirmatory raw diagnostic artifacts
 results/stage3/layerwise/confirmatory/raw/
+
+# Stage 3B A1/A2 generated working outputs.
+# Canonical compact gates, summaries, tables and manifests are promoted
+# separately through explicit evidence commits.
+/results/stage-3/a1-shortcut-observer-controls/working/

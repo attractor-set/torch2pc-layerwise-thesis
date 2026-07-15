@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "evidence_id": "stage3b-a1-eq-s1-v1",
+  "control_id": "EQ-S1",
+  "status": "passed",
+  "sealed_at_utc": "2026-07-15T19:26:10.120632+00:00",
+  "experiment_source_git_commit": "a2c634a066d871cf0dbf9c8e638dd830fe0e3705",
+  "parent_evidence": "stage3b-a1-eq-s0-v1",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "scope": "BP vs opt-in reduced shortcut using one joint VJP per top-level layer",
+  "candidate_contract": {
+    "top_level_model_type": "torch.nn.Sequential",
+    "forward_graph_policy": "detached graph island per top-level layer",
+    "reverse_policy": "one joint state-and-parameter VJP per layer",
+    "loss_backward_used_by_candidate": false,
+    "iterative_fixedpred_loop_used_by_candidate": false
+  },
+  "observer_mode": "no_hooks",
+  "dtype_by_lane": {
+    "cpu": "torch.float64",
+    "rocm": "torch.float32"
+  },
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 10,
+  "independent_unit": "model_seed",
+  "repeated_control_unit": "batch within model seed",
+  "optimizer": {
+    "name": "SGD",
+    "lr": 0.001,
+    "momentum": 0.0
+  },
+  "threshold_policy": {
+    "type": "lane_specific",
+    "cpu": {
+      "min_cosine": 0.99999,
+      "max_relative_l2": 1e-07,
+      "zero_atol": 1e-12
+    },
+    "rocm": {
+      "min_cosine": 0.999,
+      "max_relative_l2": 0.001,
+      "zero_atol": 1e-07
+    }
+  },
+  "structural_contract": {
+    "top_level_layers": 6,
+    "joint_vjp_calls_per_run": 6,
+    "parameterized_layers": 5,
+    "parameter_components": 10,
+    "graph_islands": 6,
+    "one_joint_vjp_per_layer": true,
+    "candidate_uses_loss_backward": false,
+    "candidate_uses_iterative_fixedpred_loop": false
+  },
+  "lanes": {
+    "cpu": {
+      "passed": true,
+      "runs": 30,
+      "records": 600,
+      "comparison_counts": {
+        "endpoint_gradient": 300,
+        "parameter_after_optimizer_step": 300
+      },
+      "execution_environment": {
+        "controlled_container": true,
+        "lane": "cpu",
+        "source_git_commit": "a2c634a066d871cf0dbf9c8e638dd830fe0e3705",
+        "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+        "torch_hip_version": "7.2.53211-e1a6bc5663",
+        "torch_cuda_available": false,
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "device_name": "cpu"
+      }
+    },
+    "rocm": {
+      "passed": true,
+      "runs": 30,
+      "records": 600,
+      "comparison_counts": {
+        "endpoint_gradient": 300,
+        "parameter_after_optimizer_step": 300
+      },
+      "execution_environment": {
+        "controlled_container": true,
+        "lane": "rocm",
+        "source_git_commit": "a2c634a066d871cf0dbf9c8e638dd830fe0e3705",
+        "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+        "torch_hip_version": "7.2.53211-e1a6bc5663",
+        "torch_cuda_available": true,
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "device_name": "AMD Radeon RX 7700 XT"
+      }
+    }
+  },
+  "aggregate": {
+    "lanes": 2,
+    "runs": 60,
+    "endpoint_gradient_comparisons": 600,
+    "parameter_after_optimizer_step_comparisons": 600,
+    "total_tensor_comparisons": 1200,
+    "failed_comparisons": 0,
+    "nonfinite_comparisons": 0
+  },
+  "supported_claim": "Under the registered lane-specific numerical thresholds, the opt-in reduced shortcut using one joint state-and-parameter VJP per top-level layer matched BP endpoint gradients and parameters after one stateless SGD step for seeds 0-2 and ten batches per seed on controlled CPU and ROCm lanes.",
+  "claim_boundary": "This gate concerns BP/reduced-shortcut endpoint gradients and one stateless SGD step in the pinned environment. It does not establish hidden-state trajectory equivalence, training-trajectory equivalence, runtime benefit, or EQ-S2.",
+  "not_established": [
+    "hidden-state trajectory equivalence",
+    "full training-trajectory equivalence",
+    "equivalence for stateful optimizers",
+    "runtime or memory benefit",
+    "equivalence with iterative FixedPred",
+    "EQ-S2",
+    "observer non-interference"
+  ],
+  "artifacts": [
+    "cpu/eq_s1_summary.json",
+    "cpu/eq_s1_records.csv",
+    "rocm/eq_s1_summary.json",
+    "rocm/eq_s1_records.csv",
+    "EQ-S1-SEAL.md",
+    "EQ-S1-SEAL_EN.md"
+  ]
+}

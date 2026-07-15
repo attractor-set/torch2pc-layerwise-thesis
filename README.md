@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-Stage%203B%20B0%20evidence%20complete-blue)
+![Статус](https://img.shields.io/badge/этап-Stage%203B%20B0%20analysis%20published-blue)
 
 Исследовательский репозиторий магистерской диссертации по сравнению
 backpropagation и режимов predictive coding в Torch2PC. Проект организован так,
@@ -59,8 +59,11 @@ backpropagation и режимов predictive coding в Torch2PC. Проект о
 - Stage 3A: layer-wise diagnostics, seed-level statistics, depth analysis и
   publication figures опубликованы;
 - Stage 3B B0: ROCm/float32 canonical baseline завершён **96/96**, без failed
-  attempts и без systemic resource failures; каждая cell выполнена в отдельном
+  attempts и systemic resource failures; каждая cell выполнена в отдельном
   fresh Python child process;
+- Stage 3B B0 statistical and engineering analysis опубликован как
+  deterministic derived evidence с `model_seed` как независимой единицей и
+  тремя seeds на configuration;
 - Stage 3A и Stage 3B B0 не использовали test dataset.
 
 Актуальный статус regression suite показывает CI; документация не закрепляет
@@ -84,17 +87,22 @@ Stage 1 Exact выполнялся примерно на 14% быстрее, Fix
 | Stage 3B B0 sealing source | `caa226cc1cd5d4aa0f9772c1fb997f7388d60730` |
 | Stage 3B B0 publication state | `ed0d48063a17e2d9c6679869a4d930f933877052` |
 | Stage 3B B0 publication tag | `stage3b-b0-evidence-v1` |
+| Stage 3B B0 analysis implementation | `e7a1632a947fae578e877826f0c923342669430e` |
+| Stage 3B B0 analysis publication state | `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3` |
+| Stage 3B B0 analysis publication tag | `stage3b-b0-analysis-evidence-v1` |
 
 GitHub Release
 [`stage2-results-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
 содержит replication bundle Stage 2. GitHub Release
 [`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
 закрепляет компактный производный evidence bundle Stage 3B B0, его provenance и
-контрольные суммы.
+контрольные суммы. GitHub Release
+[`stage3b-b0-analysis-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1)
+публикует deterministic statistical and engineering analysis этого baseline.
 
-Stage 1, Stage 2, Stage 3A и Stage 3B B0 считаются завершёнными в своих
-зарегистрированных областях и не требуют повторного запуска. Полный Stage 3B
-остаётся незавершённым.
+Stage 1, Stage 2, Stage 3A, Stage 3B B0 measurement baseline и его B0 analysis
+считаются завершёнными в своих зарегистрированных областях и не требуют
+повторного запуска. Полный Stage 3B остаётся незавершённым.
 
 Текущий статус: [STATUS.md](STATUS.md).
 
@@ -134,7 +142,7 @@ probes и сравнения independently trained representations; Exact–BP c
 Выводы ограничены FashionMNIST, `lenet_classic`, seeds 0–9, закреплённой
 реализацией и validation-only Stage 3A protocol.
 
-## Stage 3B B0: canonical profiling baseline и evidence publication завершены
+## Stage 3B B0: baseline, evidence и engineering analysis опубликованы
 
 B0 фиксирует candidate `stage2_baseline` для методов `FixedPred` и `Strict` в
 ROCm/float32 synthetic scaling campaign. Canonical protocol использовал 20
@@ -162,11 +170,25 @@ Seal digest:
 - `full_stage3b_campaign_complete=false`;
 - `test_dataset_access=false`.
 
-B0 publication подтверждает полноту и целостность измерительной базы, но сама
-по себе не заменяет статистический и инженерный анализ сравнений. Следующий
-этап — отдельная ветка `stage3b-b0-analysis-v1` с paired seed-level analysis,
-decomposition времени по regions, анализом памяти и scaling, после чего
-принимается decision gate для следующих Stage 3B candidates.
+Deterministic analysis опубликован в
+[`results/stage-3/profiling/b0/analysis-v1/`](results/stage-3/profiling/b0/analysis-v1/).
+Независимая статистическая единица — `model_seed`; доступны три seeds на
+configuration, поэтому выводы ограничены descriptive engineering analysis.
+
+Основные bounded observations в опубликованной synthetic ROCm/float32 matrix:
+
+- median Strict/FixedPred device-time ratio — **2.327×**
+  (configuration range 1.966–2.619×);
+- median peak-allocated ratio — **1.328×**;
+- dominant device-time region обоих методов — `state_inference`;
+- median saved-tensor ratio Strict/FixedPred внутри `state_inference` —
+  **11.998×**.
+
+Decision gate разрешает candidate-specific B1/B2 numerical-equivalence work.
+Полный matched B1/B2 profiling остаётся заблокированным до прохождения этих
+gates, а structural locality claims — до добавления dependency-radius,
+graph-span/lifetime, feedback-operator и orchestration-barrier measurements.
+Новый B0 execution не требуется.
 
 ## Контрольные проверки
 

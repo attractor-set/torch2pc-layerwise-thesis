@@ -49,34 +49,50 @@ Publication tag: `stage3b-b0-evidence-v1`.
 Evidence boundary: `full_b0_campaign_complete=true`,
 `full_stage3b_campaign_complete=false`.
 
-## Phase 10 — B0 statistical and engineering analysis — next
+## Phase 10 — B0 statistical and engineering analysis complete
 
-In a separate `stage3b-b0-analysis-v1` branch:
+- the published sealed B0 evidence was analyzed without rerunning execution;
+- `model_seed` is the independent unit, with 3 seeds per configuration;
+- paired timing/memory effects, region attribution, saved tensors, and log2
+  scaling summaries are published;
+- median Strict/FixedPred device-time ratio: `2.327×`;
+- median peak-allocated ratio: `1.328×`;
+- dominant region: `state_inference`;
+- state-inference saved-tensor ratio: `11.998×`;
+- 8 derived tables, 4 PDF figures, a bilingual report, metadata, and
+  `SHA256SUMS` are published;
+- the decision gate permits candidate-specific B1/B2 equivalence work while
+  keeping full matched profiling blocked.
 
-- perform paired seed-level analysis of `Strict` relative to `FixedPred`;
-- decompose time across profiling regions;
-- analyze peak memory and saved-tensor attribution;
-- analyze scaling across depth, width, and batch size;
-- report bounded descriptive uncertainty with three model seeds per
-  configuration;
-- publish a bilingual report and a decision gate for later candidates.
+Publication tag: `stage3b-b0-analysis-evidence-v1`.
 
-## Phase 11 — exact execution and mechanism attribution
+## Phase 11 — B1/B2 candidate-specific numerical equivalence gates — next
 
-After the B0 analysis, run B1/B2 numerical gates, identify layer/module
-hotspots, and only then freeze exact execution candidates.
+- formalize B1 and B2 candidates relative to B0;
+- implement candidates separately without modifying B0 evidence;
+- pass cosine, relative-L2, finite-value, and stability gates;
+- run a small profiling pilot only after equivalence acceptance;
+- keep test access disabled;
+- use a separate decision gate to authorize full matched B1/B2 profiling.
 
-## Phase 12 — core approximations and predict-correct
+## Phase 12 — mechanism attribution and matched profiling
+
+For accepted B1/B2 candidates, identify layer/module hotspots and
+graph-retention costs before running the registered matched profiling matrix.
+Structural locality claims require dedicated dependency-radius,
+graph-span/lifetime, feedback-operator, and orchestration-barrier measurements.
+
+## Phase 13 — core approximations and predict-correct
 
 Run C1/C2 and C4/C5 as separate validation-only screening campaigns with
 residual, fallback, non-inferiority, VJP-reduction, and stability gates.
 
-## Phase 13 — extended Stage 3 freeze and final
+## Phase 14 — extended Stage 3 freeze and final
 
 Freeze selected candidates and parameters, preserve distinct execution and
 publication states, and enable final test evaluation only after the freeze.
 
-## Phase 14 — thesis and article
+## Phase 15 — thesis and article
 
 Integrate Stage 1/2, Stage 3A, and later profiling/locality/acceleration
 results; publish replication bundles and complete clean-room reproduction.

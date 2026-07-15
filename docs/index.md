@@ -9,9 +9,10 @@
 
 - Stage 1/2 завершены;
 - Stage 3A diagnostics/statistics publication завершена;
-- Stage 3B B0 execution, validation, sealing и evidence publication завершены;
+- Stage 3B B0 execution, validation, sealing, evidence и statistical and
+  engineering analysis publication завершены;
 - полный Stage 3B остаётся незавершённым;
-- следующий этап — B0 statistical and engineering analysis.
+- следующий этап — B1/B2 candidate-specific numerical equivalence gates.
 
 Основные документы:
 
@@ -28,6 +29,9 @@
 - [Stage 3B B0 validation и sealing](stage3b-b0-sealing.md)
 - [Stage 3B B0 analysis pipeline](stage3b-b0-analysis-pipeline.md)
 - [Stage 3B B0 sealed evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/b0/sealed-v1)
+- [Stage 3B B0 engineering analysis](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/b0/analysis-v1)
+- [Stage 3B B0 analysis report](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/results/stage-3/profiling/b0/analysis-v1/report.md)
+- [Stage 3B B0 analysis Release](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1)
 - [Воспроизводимость](reproducibility.md)
 - [Управление данными](data-management.md)
 - [Аппаратная среда](hardware.md)

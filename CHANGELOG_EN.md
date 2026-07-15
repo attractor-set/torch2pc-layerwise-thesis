@@ -2,25 +2,66 @@
 
 [Русская версия](CHANGELOG.md)
 
-## [Unreleased] — documentation synchronization after Stage 3B B0 publication
+## [Unreleased] — documentation synchronization after B0 analysis publication
 
 ### Changed
 
 - Synchronized README, STATUS, ROADMAP, and documentation indexes with the
-  published Stage 3B B0 evidence.
-- Defined `stage3b-b0-analysis-v1` as the next stage rather than repeating B0
-  execution or preregistration.
-- Removed static passing-test counts from current-status documentation; CI is
-  the source of truth for regression status.
+  published Stage 3B B0 statistical and engineering analysis.
+- Defined B1/B2 candidate-specific numerical equivalence gates as the next
+  milestone rather than repeating B0 execution or starting the full profiling
+  matrix.
+- Added the B0 analysis bounded findings, provenance, tag, and GitHub Release to
+  the public status.
 - Preserved the explicit boundary
   `full_stage3b_campaign_complete=false`.
 
 ### Preserved unchanged
 
-- Stage 1/2, Stage 3A, and Stage 3B B0 committed evidence.
-- Execution, sealing, and publication provenance.
+- Stage 1/2, Stage 3A, Stage 3B B0 sealed evidence, and analysis evidence.
+- Execution, sealing, analysis, and publication provenance.
 - Existing tags and GitHub Releases.
 - The raw canonical archive outside Git.
+
+## [stage3b-b0-analysis-evidence-v1] — 2026-07-15
+
+### Added
+
+- Deterministic B0 statistical and engineering analysis without rerunning
+  execution.
+- `model_seed` as the independent unit, with 3 seeds per configuration.
+- Eight derived CSV tables, four PDF figures, a bilingual report, metadata, and
+  `SHA256SUMS`.
+- Paired timing/memory analysis, region attribution, saved-tensor analysis, and
+  descriptive log2 scaling.
+- GitHub tag and Release `stage3b-b0-analysis-evidence-v1`.
+
+### Provenance
+
+- analysis implementation: `e7a1632a947fae578e877826f0c923342669430e`;
+- analysis publication state: `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3`;
+- source execution: `95c25d35224abd5e741f1df9327662ff2fde23ad`;
+- source sealing: `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
+- source seal digest:
+  `6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
+
+### Bounded findings
+
+- median Strict/FixedPred device-time ratio: `2.327×`
+  (`1.966–2.619×` across configurations);
+- median peak-allocated ratio: `1.328×`;
+- dominant device-time region: `state_inference`;
+- state-inference saved-tensor ratio: `11.998×`.
+
+### Decision gate and claim boundary
+
+- candidate-specific B1/B2 equivalence work: `continue`;
+- full matched B1/B2 profiling:
+  `blocked_pending_candidate_specific_gates`;
+- structural locality claims: `blocked_by_missing_structural_evidence`;
+- new B0 execution: `not_required`;
+- the test dataset was not accessed;
+- the full Stage 3B program remains incomplete.
 
 ## [stage3b-b0-evidence-v1] — 2026-07-15
 

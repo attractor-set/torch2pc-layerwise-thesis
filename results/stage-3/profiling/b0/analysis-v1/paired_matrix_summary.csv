@@ -1,0 +1,5 @@
+metric,comparison,configuration_count,seed_count_per_configuration,configuration_median_ratio,configuration_min_ratio,configuration_max_ratio,configuration_median_percent_change,all_configuration_medians_strict_greater,inference_scope
+device_time,strict_relative_to_fixedpred,16,3,2.32690073879,1.9661041522,2.61896077785,132.690073879,True,descriptive_engineering_matrix
+host_time,strict_relative_to_fixedpred,16,3,2.3269261283,1.96923920054,2.61896378145,132.69261283,True,descriptive_engineering_matrix
+peak_allocated,strict_relative_to_fixedpred,16,3,1.3281135002,1.06848916105,2.16029502938,32.8113500195,True,descriptive_engineering_matrix
+peak_reserved,strict_relative_to_fixedpred,16,3,1.32291034073,1.06379865379,2.05842696629,32.2910340728,True,descriptive_engineering_matrix

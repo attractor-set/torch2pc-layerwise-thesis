@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -76,6 +77,17 @@ def verify_controlled_image(repo: Path) -> tuple[str, str]:
     return head, image
 
 
+def controlled_compose_environment(
+    *,
+    head: str,
+    image: str,
+) -> dict[str, str]:
+    environment = os.environ.copy()
+    environment["SOURCE_GIT_COMMIT"] = head
+    environment["EXPERIMENT_IMAGE"] = image
+    return environment
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run Stage 3B EQ-S2 through the controlled Docker execution lane."
@@ -131,7 +143,16 @@ def main() -> None:
     print(f"source_commit={head}")
     print(f"experiment_image={image}")
     print(f"execution_lane={lane}")
-    subprocess.run(command, cwd=repo, check=True)
+    compose_environment = controlled_compose_environment(
+        head=head,
+        image=image,
+    )
+    subprocess.run(
+        command,
+        cwd=repo,
+        check=True,
+        env=compose_environment,
+    )
 
     summary_path = repo / output_dir / "eq_s2_summary.json"
     summary = json.loads(summary_path.read_text(encoding="utf-8"))

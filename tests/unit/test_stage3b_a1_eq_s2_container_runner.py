@@ -95,3 +95,32 @@ def test_verify_controlled_image_rejects_stale_image(
     monkeypatch.setattr(runner, "output", fake_output)
     with pytest.raises(RuntimeError, match="not built from the current commit"):
         runner.verify_controlled_image(tmp_path)
+
+
+def test_controlled_compose_environment_overrides_inherited_values(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(
+        "EXPERIMENT_IMAGE",
+        "torch2pc-layerwise-thesis:stale",
+    )
+    monkeypatch.setenv(
+        "SOURCE_GIT_COMMIT",
+        "b" * 40,
+    )
+    monkeypatch.setenv(
+        "UNRELATED_VALUE",
+        "preserved",
+    )
+
+    expected_head = "a" * 40
+    expected_image = "torch2pc-layerwise-thesis:0.1.0"
+
+    environment = runner.controlled_compose_environment(
+        head=expected_head,
+        image=expected_image,
+    )
+
+    assert environment["EXPERIMENT_IMAGE"] == expected_image
+    assert environment["SOURCE_GIT_COMMIT"] == expected_head
+    assert environment["UNRELATED_VALUE"] == "preserved"

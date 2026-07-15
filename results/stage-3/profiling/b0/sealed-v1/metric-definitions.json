@@ -1,0 +1,63 @@
+{
+  "cell_metrics": {
+    "integrity_maximum_relative_l2": "maximum B0 gate relative L2 over measured records",
+    "integrity_minimum_cosine": "minimum B0 gate cosine over measured records",
+    "peak_memory": "maximum observed byte count within the cell child process",
+    "time_mean": "arithmetic mean over all measured repetition-step records",
+    "time_median": "median over all measured repetition-step records",
+    "time_p95": "nearest-rank 95th percentile over measured records"
+  },
+  "configuration_metrics": {
+    "expected_seed_count": 3,
+    "grouping_keys": [
+      "method",
+      "depth",
+      "width",
+      "batch_size"
+    ],
+    "unit": "model_seed"
+  },
+  "evidence": true,
+  "full_b0_campaign_complete": true,
+  "full_stage3b_campaign_complete": false,
+  "paired_metrics": {
+    "comparison": "strict relative to fixedpred",
+    "pairing_keys": [
+      "depth",
+      "width",
+      "batch_size",
+      "model_seed"
+    ]
+  },
+  "protocol": {
+    "measured_steps": 50,
+    "repetitions": 5,
+    "warmup_steps": 20
+  },
+  "quantile_definition": {
+    "name": "nearest_rank",
+    "probability": 0.95,
+    "rank": "ceil(0.95 * n), one-indexed"
+  },
+  "region_metrics": {
+    "counter_totals": "sum over measured repetition-step records",
+    "record_count": "repetitions * measured_steps for one region",
+    "saved_tensor_bytes_mean": "arithmetic mean over measured records"
+  },
+  "required_regions": [
+    "initial_forward",
+    "local_state_vjp",
+    "optimizer_step",
+    "parameter_vjp",
+    "state_inference"
+  ],
+  "schema_version": 1,
+  "scope": "stage3b_b0_aggregate_metric_definitions",
+  "statistical_unit": "model_seed",
+  "test_dataset_access": false,
+  "within_seed_repeated_observations": [
+    "repetition",
+    "measured_step",
+    "profiling_region"
+  ]
+}

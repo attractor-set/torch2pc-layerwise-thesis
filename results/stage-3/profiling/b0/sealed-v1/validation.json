@@ -1,0 +1,80 @@
+{
+  "authorization_token": "2f102d5a6242d0d886f43195822a6f2ef82a5975a2fea59049c9aabb1801be6b",
+  "campaign_id": "stage3b-profiling-locality-v1",
+  "candidate_id": "stage2_baseline",
+  "canonical_protocol": {
+    "measured_steps": 50,
+    "repetitions": 5,
+    "warmup_steps": 20
+  },
+  "counts": {
+    "attempt_directories": 96,
+    "cell_metric_rows": 96,
+    "cells": 96,
+    "completed_attempts": 96,
+    "configuration_metric_rows": 32,
+    "failed_attempts": 0,
+    "methods": {
+      "fixedpred": 48,
+      "strict": 48
+    },
+    "observed_child_processes": 96,
+    "paired_metric_rows": 48,
+    "parent_processes": 1,
+    "process_records": 96,
+    "region_metric_rows": 480,
+    "unique_child_pids": 96
+  },
+  "evidence": true,
+  "full_b0_campaign_complete": true,
+  "full_stage3b_campaign_complete": false,
+  "image_digest": "sha256:70b33afe8ee4d54bba27df7c4601a7148b9ab0f72e2260ef54a7432c3d246f29",
+  "integrity": {
+    "all_non_perturbation_gates_passed": true,
+    "all_profile_completeness_gates_passed": true,
+    "maximum_relative_l2_threshold": 0.001,
+    "minimum_cosine_threshold": 0.999,
+    "non_finite_region_event_count": 0
+  },
+  "manifest_digest": "3112b85da4447901e9fe98f99baff06c19981008366315ee9e8c4da9fb31f3d1",
+  "process_isolation": {
+    "all_child_exit_codes_zero": true,
+    "all_terminal_records_validated": true,
+    "mode": "fresh_python_child_per_cell",
+    "parent_pids": [
+      8
+    ],
+    "systemic_resource_failure_count": 0
+  },
+  "required_regions": [
+    "initial_forward",
+    "local_state_vjp",
+    "optimizer_step",
+    "parameter_vjp",
+    "state_inference"
+  ],
+  "results_publication_permitted": true,
+  "run_completed_at": "2026-07-14T20:43:56.886919Z",
+  "run_id": "20260714T174933633141Z-2c683eef573b",
+  "schema_version": 1,
+  "source_archive_file_count": 685,
+  "source_archive_inventory_sha256": "9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed",
+  "source_commit": "95c25d35224abd5e741f1df9327662ff2fde23ad",
+  "source_output_root": "/tmp/torch2pc-stage3b-b0-rocm-isolated-95c25d3-70b33afe",
+  "source_record_digests": {
+    "authorization_snapshot": "68c3c26b2eaf4dba05ad40480f07cc59b50441f981ba34aced83eab6e004ba93",
+    "campaign_authorization": "68c3c26b2eaf4dba05ad40480f07cc59b50441f981ba34aced83eab6e004ba93",
+    "lane_preflight": "e0904e2165f2e3904dbfea60bd1dd49fde6053882d9a3965c65ac2bb1c4c4da1",
+    "lane_state": "c9cc52f68cc5ff49fb5b84e7b640c85c747bc0716520280a2ef371bda32acb19",
+    "manifest_snapshot": "9fe4fbca27dc81daa4748c3944770c6b85ed412bbe5ab1cc868392355f286e03",
+    "measurement_records_digest": "7a57dc083206650f96ada527b4d0f24ad977c83e87da6b93327a734b7b199f8b",
+    "project_freeze": "aaf4201d8499ac1387f245a59419164dd871be0973b25f0ecd81cd5f291bd7d6",
+    "run_completed": "481ee35d358f6feb6e0bfd2986474f8ab77e8df664d6a7ef33ae2516af2fca11",
+    "run_results": "481ee35d358f6feb6e0bfd2986474f8ab77e8df664d6a7ef33ae2516af2fca11",
+    "terminal_records_digest": "3dc64b06034f796993f518de41aa3257b0e0d613cabc36e73eb5780b798b1bf6"
+  },
+  "source_records_evidence": false,
+  "status": "validation_passed",
+  "test_dataset_access": false,
+  "validation_scope": "stage3b_b0_rocm_float32_canonical_validation"
+}

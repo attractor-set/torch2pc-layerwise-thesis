@@ -1,0 +1,85 @@
+{
+  "authorization_token": "2f102d5a6242d0d886f43195822a6f2ef82a5975a2fea59049c9aabb1801be6b",
+  "campaign_id": "stage3b-profiling-locality-v1",
+  "candidate_id": "stage2_baseline",
+  "canonical_protocol": {
+    "measured_steps": 50,
+    "repetitions": 5,
+    "warmup_steps": 20
+  },
+  "derivative_artifacts": [
+    {
+      "bytes": 29010,
+      "path": "cell_metrics.csv",
+      "sha256": "fd0f79d5814c47e8fd98634ad53e2b0cd49946d573c1d546f223fb5680afc248"
+    },
+    {
+      "bytes": 6507,
+      "path": "configuration_metrics.csv",
+      "sha256": "b4cd0dbc56b45efd51b41e31c7ca74ab3541b3c6e52c3556675a38c18cd5f219"
+    },
+    {
+      "bytes": 1798,
+      "path": "metric-definitions.json",
+      "sha256": "5d5effdc8e9d1953ea46e06a1548503dd7bf8536f49db689d9ed04eb79051549"
+    },
+    {
+      "bytes": 15363,
+      "path": "paired_method_metrics.csv",
+      "sha256": "fe673288a1d6b036226b8b3150916370470664f8ab90a6c3d718bd9cd233eeaa"
+    },
+    {
+      "bytes": 102374,
+      "path": "region_metrics.csv",
+      "sha256": "3135570db55488cc527ab90859eec697f398cae10b576bc50c423c8f495e2c91"
+    },
+    {
+      "bytes": 3206,
+      "path": "validation.json",
+      "sha256": "afdcaac30165c6ace1e62d49cd887caa30cdaa0a6f9794e21049e645d91507db"
+    }
+  ],
+  "evidence": true,
+  "evidence_scope": "stage3b_b0_rocm_float32_canonical_aggregate_evidence",
+  "full_b0_campaign_complete": true,
+  "full_stage3b_campaign_complete": false,
+  "image_digest": "sha256:70b33afe8ee4d54bba27df7c4601a7148b9ab0f72e2260ef54a7432c3d246f29",
+  "limitations": [
+    "The seal covers the Stage 3B B0 stage2_baseline candidate only.",
+    "The full Stage 3B candidate campaign remains incomplete.",
+    "Raw canonical records remain immutable external archive inputs.",
+    "No test dataset was accessed by this synthetic scaling campaign."
+  ],
+  "manifest_digest": "3112b85da4447901e9fe98f99baff06c19981008366315ee9e8c4da9fb31f3d1",
+  "results_publication_permitted": true,
+  "row_counts": {
+    "cell_metrics.csv": 96,
+    "configuration_metrics.csv": 32,
+    "paired_method_metrics.csv": 48,
+    "region_metrics.csv": 480
+  },
+  "run_completed_at": "2026-07-14T20:43:56.886919Z",
+  "run_id": "20260714T174933633141Z-2c683eef573b",
+  "schema_version": 1,
+  "seal_digest": "04e275af4fffee124d90b4dc7a0c62381a80ab78546e870c3fa663402f285b3d",
+  "seal_scope": "stage3b_b0_rocm_float32_canonical_seal",
+  "sealing_source_commit": "2114d181128b6769ff40dd654ec4049aa1a8c50e",
+  "source_archive_inventory_sha256": "9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed",
+  "source_commit": "95c25d35224abd5e741f1df9327662ff2fde23ad",
+  "source_record_digests": {
+    "authorization_snapshot": "68c3c26b2eaf4dba05ad40480f07cc59b50441f981ba34aced83eab6e004ba93",
+    "campaign_authorization": "68c3c26b2eaf4dba05ad40480f07cc59b50441f981ba34aced83eab6e004ba93",
+    "lane_preflight": "e0904e2165f2e3904dbfea60bd1dd49fde6053882d9a3965c65ac2bb1c4c4da1",
+    "lane_state": "c9cc52f68cc5ff49fb5b84e7b640c85c747bc0716520280a2ef371bda32acb19",
+    "manifest_snapshot": "9fe4fbca27dc81daa4748c3944770c6b85ed412bbe5ab1cc868392355f286e03",
+    "measurement_records_digest": "7a57dc083206650f96ada527b4d0f24ad977c83e87da6b93327a734b7b199f8b",
+    "project_freeze": "aaf4201d8499ac1387f245a59419164dd871be0973b25f0ecd81cd5f291bd7d6",
+    "run_completed": "481ee35d358f6feb6e0bfd2986474f8ab77e8df664d6a7ef33ae2516af2fca11",
+    "run_results": "481ee35d358f6feb6e0bfd2986474f8ab77e8df664d6a7ef33ae2516af2fca11",
+    "terminal_records_digest": "3dc64b06034f796993f518de41aa3257b0e0d613cabc36e73eb5780b798b1bf6"
+  },
+  "source_records_evidence": false,
+  "statistical_unit": "model_seed",
+  "status": "sealed",
+  "test_dataset_access": false
+}

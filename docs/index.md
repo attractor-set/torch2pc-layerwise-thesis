@@ -18,3 +18,4 @@
 - [Управление данными](data-management.md)
 - [Аппаратная среда](hardware.md)
 - [Индекс ADR](decisions/index.md)
+- [Stage 3B B0 validation и sealing](stage3b-b0-sealing.md)

@@ -1,0 +1,321 @@
+{
+  "bottlenecks": {
+    "fixedpred": {
+      "continuation_threshold": 0.15,
+      "continuation_threshold_passed": true,
+      "dominant_device_region": "state_inference",
+      "dominant_device_region_share_median": 0.7177957414130859,
+      "dominant_saved_tensor_bytes_mean_median": 3352832.0,
+      "dominant_saved_tensor_region": "state_inference",
+      "state_inference_share_median": 0.7177957414130859,
+      "vjp_region_amdahl_upper_bound_proxy": 1.364021626388227,
+      "vjp_region_share_median": 0.26687379389439336,
+      "vjp_region_upper_bound_speedup_fraction": 0.364021626388227
+    },
+    "strict": {
+      "continuation_threshold": 0.2,
+      "continuation_threshold_passed": true,
+      "dominant_device_region": "state_inference",
+      "dominant_device_region_share_median": 0.7883502994605036,
+      "dominant_saved_tensor_bytes_mean_median": 40227920.0,
+      "dominant_saved_tensor_region": "state_inference",
+      "state_inference_share_median": 0.7883502994605036,
+      "vjp_region_amdahl_upper_bound_proxy": 1.2578651289820901,
+      "vjp_region_share_median": 0.2050022081387724,
+      "vjp_region_upper_bound_speedup_fraction": 0.25786512898209013
+    }
+  },
+  "decision_gate": {
+    "b1_b2_candidate_specific_equivalence_work": "continue",
+    "full_b1_b2_matched_profiling": "blocked_pending_candidate_specific_gates",
+    "locality_claims": "blocked_by_missing_structural_evidence",
+    "new_b0_execution": "not_required",
+    "reason": "The normalized VJP-region Amdahl proxy exceeds the registered engineering continuation threshold for both methods, while structural locality evidence remains incomplete."
+  },
+  "evidence": true,
+  "full_b0_campaign_complete": true,
+  "full_stage3b_campaign_complete": false,
+  "independent_seed_count_per_configuration": 3,
+  "inferential_scope": "descriptive_engineering_analysis_n3",
+  "limitations": [
+    "Three independent model seeds per configuration; discrete p-values are not used for superiority claims.",
+    "Configuration cells are controlled engineering conditions, not additional independent biological or population replicates.",
+    "Region medians are normalized within the sum of region medians because region timings are not assumed to be additive to the composite median.",
+    "Log2 scaling models are descriptive main-effect summaries without interaction terms.",
+    "Results are bounded to the published ROCm/float32 synthetic scaling matrix and pinned implementation."
+  ],
+  "locality_coverage": {
+    "interpretation": "B0 sealed aggregates support region-cost attribution but do not support dependency-radius, graph-span, lifetime, feedback-operator, or orchestration-locality claims.",
+    "missing_structural_fields": [
+      "dependency_radius",
+      "feedback_operator",
+      "graph_modules",
+      "graph_span",
+      "independent_lifetime",
+      "orchestration_barriers"
+    ],
+    "structural_locality_claims_supported": false
+  },
+  "paired_strict_relative_to_fixedpred": {
+    "device_time": {
+      "all_configuration_medians_strict_greater": true,
+      "configuration_max_ratio": 2.618960777845311,
+      "configuration_median_ratio": 2.32690073878938,
+      "configuration_min_ratio": 1.966104152197516
+    },
+    "host_time": {
+      "all_configuration_medians_strict_greater": true,
+      "configuration_max_ratio": 2.6189637814541085,
+      "configuration_median_ratio": 2.326926128303387,
+      "configuration_min_ratio": 1.9692392005399544
+    },
+    "peak_allocated": {
+      "all_configuration_medians_strict_greater": true,
+      "configuration_max_ratio": 2.160295029377452,
+      "configuration_median_ratio": 1.3281135001951883,
+      "configuration_min_ratio": 1.0684891610540042
+    },
+    "peak_reserved": {
+      "all_configuration_medians_strict_greater": true,
+      "configuration_max_ratio": 2.0584269662921346,
+      "configuration_median_ratio": 1.3229103407284897,
+      "configuration_min_ratio": 1.0637986537898745
+    }
+  },
+  "results_publication_permitted": true,
+  "saved_tensor_analysis": {
+    "interpretation": "Strict retains substantially more saved-tensor bytes in state_inference within the published B0 matrix.",
+    "state_inference_fixedpred_bytes_mean_median": 3352832.0,
+    "state_inference_strict_bytes_mean_median": 40227920.0,
+    "state_inference_strict_to_fixedpred_ratio": 11.998191379705275
+  },
+  "scaling": [
+    {
+      "factor": "batch_size",
+      "method": "fixedpred",
+      "metric": "device_time",
+      "multiplier_per_doubling_max": 1.0031230899084267,
+      "multiplier_per_doubling_median": 0.9988772356386183,
+      "multiplier_per_doubling_min": 0.9984624230183324,
+      "r_squared_median": 0.9996854938037767
+    },
+    {
+      "factor": "depth",
+      "method": "fixedpred",
+      "metric": "device_time",
+      "multiplier_per_doubling_max": 1.9415232501882866,
+      "multiplier_per_doubling_median": 1.94118893233897,
+      "multiplier_per_doubling_min": 1.9351172908821113,
+      "r_squared_median": 0.9996854938037767
+    },
+    {
+      "factor": "width",
+      "method": "fixedpred",
+      "metric": "device_time",
+      "multiplier_per_doubling_max": 1.000939273848445,
+      "multiplier_per_doubling_median": 0.9982881173860921,
+      "multiplier_per_doubling_min": 0.9954491920128153,
+      "r_squared_median": 0.9996854938037767
+    },
+    {
+      "factor": "batch_size",
+      "method": "fixedpred",
+      "metric": "host_time",
+      "multiplier_per_doubling_max": 1.003243777051195,
+      "multiplier_per_doubling_median": 0.9990247119917107,
+      "multiplier_per_doubling_min": 0.998429657407222,
+      "r_squared_median": 0.9997011607498341
+    },
+    {
+      "factor": "depth",
+      "method": "fixedpred",
+      "metric": "host_time",
+      "multiplier_per_doubling_max": 1.9428884264688246,
+      "multiplier_per_doubling_median": 1.9426385414402878,
+      "multiplier_per_doubling_min": 1.9363098152597382,
+      "r_squared_median": 0.9997011607498341
+    },
+    {
+      "factor": "width",
+      "method": "fixedpred",
+      "metric": "host_time",
+      "multiplier_per_doubling_max": 1.000795736344511,
+      "multiplier_per_doubling_median": 0.9982871259129117,
+      "multiplier_per_doubling_min": 0.9955028530828686,
+      "r_squared_median": 0.9997011607498341
+    },
+    {
+      "factor": "batch_size",
+      "method": "fixedpred",
+      "metric": "peak_allocated",
+      "multiplier_per_doubling_max": 1.2372113908628521,
+      "multiplier_per_doubling_median": 1.2372113908628521,
+      "multiplier_per_doubling_min": 1.2372113908628521,
+      "r_squared_median": 0.9600227886451602
+    },
+    {
+      "factor": "depth",
+      "method": "fixedpred",
+      "metric": "peak_allocated",
+      "multiplier_per_doubling_max": 1.543824810416465,
+      "multiplier_per_doubling_median": 1.543824810416465,
+      "multiplier_per_doubling_min": 1.543824810416465,
+      "r_squared_median": 0.9600227886451602
+    },
+    {
+      "factor": "width",
+      "method": "fixedpred",
+      "metric": "peak_allocated",
+      "multiplier_per_doubling_max": 2.0974695796242546,
+      "multiplier_per_doubling_median": 2.0974695796242546,
+      "multiplier_per_doubling_min": 2.0974695796242546,
+      "r_squared_median": 0.9600227886451602
+    },
+    {
+      "factor": "batch_size",
+      "method": "fixedpred",
+      "metric": "peak_reserved",
+      "multiplier_per_doubling_max": 1.2622422292250204,
+      "multiplier_per_doubling_median": 1.2622422292250204,
+      "multiplier_per_doubling_min": 1.2622422292250204,
+      "r_squared_median": 0.9642566130005811
+    },
+    {
+      "factor": "depth",
+      "method": "fixedpred",
+      "metric": "peak_reserved",
+      "multiplier_per_doubling_max": 1.526853982594237,
+      "multiplier_per_doubling_median": 1.526853982594237,
+      "multiplier_per_doubling_min": 1.526853982594237,
+      "r_squared_median": 0.9642566130005811
+    },
+    {
+      "factor": "width",
+      "method": "fixedpred",
+      "metric": "peak_reserved",
+      "multiplier_per_doubling_max": 2.133004700542007,
+      "multiplier_per_doubling_median": 2.133004700542007,
+      "multiplier_per_doubling_min": 2.133004700542007,
+      "r_squared_median": 0.9642566130005811
+    },
+    {
+      "factor": "batch_size",
+      "method": "strict",
+      "metric": "device_time",
+      "multiplier_per_doubling_max": 1.0128176455699684,
+      "multiplier_per_doubling_median": 1.0010796258542665,
+      "multiplier_per_doubling_min": 0.9858594540949884,
+      "r_squared_median": 0.9991203950573956
+    },
+    {
+      "factor": "depth",
+      "method": "strict",
+      "metric": "device_time",
+      "multiplier_per_doubling_max": 2.101218302070815,
+      "multiplier_per_doubling_median": 2.088977706821601,
+      "multiplier_per_doubling_min": 2.0792724898708976,
+      "r_squared_median": 0.9991203950573956
+    },
+    {
+      "factor": "width",
+      "method": "strict",
+      "metric": "device_time",
+      "multiplier_per_doubling_max": 1.0117199258936043,
+      "multiplier_per_doubling_median": 1.0000660666252394,
+      "multiplier_per_doubling_min": 0.9920564051490893,
+      "r_squared_median": 0.9991203950573956
+    },
+    {
+      "factor": "batch_size",
+      "method": "strict",
+      "metric": "host_time",
+      "multiplier_per_doubling_max": 1.0127582207000847,
+      "multiplier_per_doubling_median": 1.0010271922016731,
+      "multiplier_per_doubling_min": 0.985890212985467,
+      "r_squared_median": 0.999118354641648
+    },
+    {
+      "factor": "depth",
+      "method": "strict",
+      "metric": "host_time",
+      "multiplier_per_doubling_max": 2.101466523173349,
+      "multiplier_per_doubling_median": 2.0892918049920386,
+      "multiplier_per_doubling_min": 2.0797418404157324,
+      "r_squared_median": 0.999118354641648
+    },
+    {
+      "factor": "width",
+      "method": "strict",
+      "metric": "host_time",
+      "multiplier_per_doubling_max": 1.0117013974144156,
+      "multiplier_per_doubling_median": 1.0000548395706395,
+      "multiplier_per_doubling_min": 0.9920148996449644,
+      "r_squared_median": 0.999118354641648
+    },
+    {
+      "factor": "batch_size",
+      "method": "strict",
+      "metric": "peak_allocated",
+      "multiplier_per_doubling_max": 1.3985920524452236,
+      "multiplier_per_doubling_median": 1.3985920524452236,
+      "multiplier_per_doubling_min": 1.3985920524452236,
+      "r_squared_median": 0.9697833781262933
+    },
+    {
+      "factor": "depth",
+      "method": "strict",
+      "metric": "peak_allocated",
+      "multiplier_per_doubling_max": 1.3838605033156512,
+      "multiplier_per_doubling_median": 1.3838605033156512,
+      "multiplier_per_doubling_min": 1.3838605033156512,
+      "r_squared_median": 0.9697833781262933
+    },
+    {
+      "factor": "width",
+      "method": "strict",
+      "metric": "peak_allocated",
+      "multiplier_per_doubling_max": 2.083828716777017,
+      "multiplier_per_doubling_median": 2.083828716777017,
+      "multiplier_per_doubling_min": 2.083828716777017,
+      "r_squared_median": 0.9697833781262933
+    },
+    {
+      "factor": "batch_size",
+      "method": "strict",
+      "metric": "peak_reserved",
+      "multiplier_per_doubling_max": 1.4147508245698566,
+      "multiplier_per_doubling_median": 1.4147508245698566,
+      "multiplier_per_doubling_min": 1.4147508245698566,
+      "r_squared_median": 0.9716698394234596
+    },
+    {
+      "factor": "depth",
+      "method": "strict",
+      "metric": "peak_reserved",
+      "multiplier_per_doubling_max": 1.3743497715710806,
+      "multiplier_per_doubling_median": 1.3743497715710806,
+      "multiplier_per_doubling_min": 1.3743497715710806,
+      "r_squared_median": 0.9716698394234596
+    },
+    {
+      "factor": "width",
+      "method": "strict",
+      "metric": "peak_reserved",
+      "multiplier_per_doubling_max": 2.1061885511306873,
+      "multiplier_per_doubling_median": 2.1061885511306873,
+      "multiplier_per_doubling_min": 2.1061885511306873,
+      "r_squared_median": 0.9716698394234596
+    }
+  ],
+  "schema_version": 1,
+  "scope": "stage3b_b0_statistical_engineering_analysis_v1",
+  "source": {
+    "archive_inventory_sha256": "9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed",
+    "execution_commit": "95c25d35224abd5e741f1df9327662ff2fde23ad",
+    "seal_digest": "6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e",
+    "sealing_source_commit": "caa226cc1cd5d4aa0f9772c1fb997f7388d60730"
+  },
+  "statistical_unit": "model_seed",
+  "status": "analysis_complete",
+  "test_dataset_access": false
+}

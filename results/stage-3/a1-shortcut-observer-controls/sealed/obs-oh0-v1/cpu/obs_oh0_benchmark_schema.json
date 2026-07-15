@@ -1,0 +1,99 @@
+{
+  "benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+  "execution_scope": "confirmatory",
+  "observer_schema": {
+    "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+    "capture_implementation": "top-level forward-pre and forward hooks",
+    "capture_policy": "first forward invocation per top-level layer",
+    "additional_forward_calls": "counted but not captured",
+    "payload_copy": "tensor.detach().clone()",
+    "roles": [
+      "layer_input",
+      "layer_output"
+    ],
+    "records_per_top_level_layer": 2,
+    "expected_top_level_layers": 6,
+    "expected_records_per_arm_run": 12,
+    "record_key_format": "layer-{index:02d}:{role}:00",
+    "expected_occurrences_per_role": 1,
+    "cleanup_rule": "remove all observer handles and restore baseline hook ids",
+    "serialization_phase": "after observed execution and hook cleanup"
+  },
+  "timing_clock": "time.perf_counter_ns",
+  "timing_region": {
+    "included": [
+      "matched observer lifecycle setup",
+      "registered backward path",
+      "observer cleanup",
+      "ROCm synchronization boundary"
+    ],
+    "excluded": [
+      "dataloader",
+      "model construction and deepcopy",
+      "device transfer",
+      "optimizer construction and step",
+      "endpoint comparison",
+      "payload validation and serialization",
+      "disk I/O"
+    ]
+  },
+  "paired_order_rule": "parity = model_seed + batch_index + repeat_index + arm_index",
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 10,
+  "timing_repeats": 3,
+  "warmup_pairs_per_lane_arm": 3,
+  "memory_pairs_per_seed_batch_arm": 1,
+  "rss_sampler_interval_ms": 1.0,
+  "expected_measured_timing_pairs_per_lane": 180,
+  "expected_memory_pairs_per_lane": 60,
+  "record_keys": {
+    "timing": "{phase}:{lane}:{arm}:s{model_seed}:b{batch_index}:r{repeat_index}",
+    "memory": "{lane}:{arm}:s{model_seed}:b{batch_index}"
+  },
+  "aggregation": {
+    "independent_unit": "model_seed",
+    "within_seed_repeats": [
+      "batch_index",
+      "repeat_index"
+    ],
+    "runtime_primary_estimand": "median of three seed-level median runtime ratios",
+    "memory_primary_estimand": "median of three seed-level median paired peak differences",
+    "outlier_policy": "retain all measured records"
+  },
+  "output_artifacts": [
+    "obs_oh0_guard_records.csv",
+    "obs_oh0_timing_records.csv",
+    "obs_oh0_timing_summary.json",
+    "obs_oh0_memory_records.csv",
+    "obs_oh0_memory_summary.json",
+    "obs_oh0_benchmark_schema.json",
+    "obs_oh0_summary.json"
+  ],
+  "runtime_budget": {
+    "primary_runtime_ratio_max": 1.25,
+    "max_seed_median_runtime_ratio": 1.35
+  },
+  "provenance": {
+    "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+    "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+    "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+    "execution_environment": {
+      "controlled_container": true,
+      "lane": "cpu",
+      "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+      "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+      "torch_hip_version": "7.2.53211-e1a6bc5663",
+      "torch_cuda_available": false,
+      "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+      "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+      "device_name": "cpu",
+      "cpu_thread_count": 1,
+      "visible_rocm_devices": null
+    }
+  }
+}

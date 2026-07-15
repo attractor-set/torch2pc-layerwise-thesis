@@ -1,0 +1,130 @@
+{
+  "benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+  "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+  "lane": "rocm",
+  "scope": "confirmatory",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "execution_environment": {
+    "controlled_container": true,
+    "lane": "rocm",
+    "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+    "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+    "torch_hip_version": "7.2.53211-e1a6bc5663",
+    "torch_cuda_available": true,
+    "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+    "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+    "device_name": "AMD Radeon RX 7700 XT",
+    "cpu_thread_count": 4,
+    "visible_rocm_devices": "0"
+  },
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 10,
+  "memory_pairs_per_seed_batch_arm": 1,
+  "rss_sampler_interval_ms": 1.0,
+  "arm_summaries": {
+    "fixedpred": {
+      "arm": "fixedpred",
+      "seed_summaries": [
+        {
+          "arm": "fixedpred",
+          "model_seed": 0,
+          "paired_records": 10,
+          "median_payload_bytes": 5523456.0,
+          "median_paired_peak_memory_difference_bytes": 4352000.0,
+          "median_memory_accounting_residual_bytes": -1171456.0,
+          "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+          "payload_budget_passed": true,
+          "peak_memory_budget_passed": true,
+          "passed_structure": true,
+          "passed": true
+        },
+        {
+          "arm": "fixedpred",
+          "model_seed": 1,
+          "paired_records": 10,
+          "median_payload_bytes": 5523456.0,
+          "median_paired_peak_memory_difference_bytes": 4352000.0,
+          "median_memory_accounting_residual_bytes": -1171456.0,
+          "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+          "payload_budget_passed": true,
+          "peak_memory_budget_passed": true,
+          "passed_structure": true,
+          "passed": true
+        },
+        {
+          "arm": "fixedpred",
+          "model_seed": 2,
+          "paired_records": 10,
+          "median_payload_bytes": 5523456.0,
+          "median_paired_peak_memory_difference_bytes": 4352000.0,
+          "median_memory_accounting_residual_bytes": -1171456.0,
+          "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+          "payload_budget_passed": true,
+          "peak_memory_budget_passed": true,
+          "passed_structure": true,
+          "passed": true
+        }
+      ],
+      "primary_median_payload_bytes": 5523456.0,
+      "primary_median_paired_peak_memory_difference_bytes": 4352000.0,
+      "primary_median_memory_accounting_residual_bytes": -1171456.0,
+      "payload_limit_bytes": 67108864,
+      "passed": true
+    },
+    "joint_vjp": {
+      "arm": "joint_vjp",
+      "seed_summaries": [
+        {
+          "arm": "joint_vjp",
+          "model_seed": 0,
+          "paired_records": 10,
+          "median_payload_bytes": 5523456.0,
+          "median_paired_peak_memory_difference_bytes": 5523456.0,
+          "median_memory_accounting_residual_bytes": 0.0,
+          "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+          "payload_budget_passed": true,
+          "peak_memory_budget_passed": true,
+          "passed_structure": true,
+          "passed": true
+        },
+        {
+          "arm": "joint_vjp",
+          "model_seed": 1,
+          "paired_records": 10,
+          "median_payload_bytes": 5523456.0,
+          "median_paired_peak_memory_difference_bytes": 5523456.0,
+          "median_memory_accounting_residual_bytes": 0.0,
+          "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+          "payload_budget_passed": true,
+          "peak_memory_budget_passed": true,
+          "passed_structure": true,
+          "passed": true
+        },
+        {
+          "arm": "joint_vjp",
+          "model_seed": 2,
+          "paired_records": 10,
+          "median_payload_bytes": 5523456.0,
+          "median_paired_peak_memory_difference_bytes": 5523456.0,
+          "median_memory_accounting_residual_bytes": 0.0,
+          "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+          "payload_budget_passed": true,
+          "peak_memory_budget_passed": true,
+          "passed_structure": true,
+          "passed": true
+        }
+      ],
+      "primary_median_payload_bytes": 5523456.0,
+      "primary_median_paired_peak_memory_difference_bytes": 5523456.0,
+      "primary_median_memory_accounting_residual_bytes": 0.0,
+      "payload_limit_bytes": 67108864,
+      "passed": true
+    }
+  },
+  "budget_enforced": true,
+  "budget_passed": true
+}

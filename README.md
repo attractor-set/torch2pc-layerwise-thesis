@@ -8,38 +8,39 @@
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
 ![Статус](https://img.shields.io/badge/этап-Stage%203B%20B0%20analysis%20published-blue)
 
-Исследовательский репозиторий магистерской диссертации по сравнению
-backpropagation и режимов predictive coding в Torch2PC. Проект организован так,
-чтобы отделять предварительные предположения от наблюдений, а выводы - от
-процедур, которыми они получены.
+Репозиторий магистерской диссертации по сравнению обратного распространения
+ошибки (backpropagation, BP) и режимов предиктивного кодирования в Torch2PC.
+Проект отделяет предположения от наблюдений, процедуры от результатов, а
+результаты — от их интерпретации.
+
+Нормативные определения и русско-английские соответствия терминов:
+[глоссарий исследования](docs/glossary.md).
 
 ## Исследовательская позиция
 
-В проекте принимается позиция нейтрального исследователя-наблюдателя:
+Проект следует нейтральной исследовательской позиции:
 
-- заранее не предполагается превосходство какого-либо метода;
-- теоретические ожидания рассматриваются как проверяемые предположения;
-- отсутствие статистически обнаруженного различия не трактуется как
-  эквивалентность без отдельного equivalence-анализа;
-- критерием принятия эмпирического утверждения является результат заранее
-  описанного эксперимента в зафиксированной среде;
-- отрицательный, смешанный или нестабильный результат сохраняется и
-  рассматривается наравне с положительным;
-- область вывода ограничивается исследованной реализацией, архитектурами,
-  наборами данных и вычислительной средой.
+- превосходство метода не предполагается заранее;
+- теоретические ожидания формулируются как проверяемые предположения;
+- отсутствие обнаруженного различия не считается эквивалентностью без
+  отдельного анализа эквивалентности;
+- эмпирическое утверждение принимается только в пределах заранее описанного
+  эксперимента и зафиксированной вычислительной среды;
+- отрицательные, смешанные и нестабильные результаты сохраняются;
+- выводы ограничиваются исследованной реализацией, архитектурами, наборами
+  данных и вычислительной средой.
 
 Подробно: [RESEARCH_PRINCIPLES.md](RESEARCH_PRINCIPLES.md).
 
 ## Исследовательский вопрос
 
 При каких алгоритмических и вычислительных условиях режимы `Exact`,
-`FixedPred` и `Strict` в Torch2PC дают наблюдения, близкие к backpropagation,
-а при каких условиях наблюдаемые различия выходят за заранее заданные
-численные или статистические границы?
+`FixedPred` и `Strict` дают результаты, близкие к BP, и когда различия выходят
+за заранее заданные численные или статистические границы?
 
-Сравнение планируется проводить по нескольким уровням:
+Сравнение охватывает:
 
-- корректность реализации и контрольные численные соотношения;
+- корректность реализации и численные контрольные соотношения;
 - качество классификации;
 - послойные градиенты;
 - нейронные представления;
@@ -47,152 +48,145 @@ backpropagation и режимов predictive coding в Torch2PC. Проект о
 - вычислительное время и память;
 - воспроизводимость между независимыми запусками.
 
-## Наблюдаемый статус на 15 июля 2026 года
+## Текущее состояние на 15 июля 2026 года
 
-В закреплённой Ubuntu/ROCm-среде завершены базовые и диагностические кампании:
+В закреплённой среде Ubuntu/ROCm завершены:
 
-- validation-only pilot: **96/96** terminal-ячеек, 0 failed, test не вычислялся;
-- Stage 1: **80/80**, исходный Torch2PC
+- пилотная кампания: **96/96**, тестовая выборка не использовалась;
+- Stage 1: **80/80** на исходном Torch2PC
   `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
-- Stage 2: **80/80**, patched Torch2PC
+- Stage 2: **80/80** на изменённом Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
-- Stage 3A: layer-wise diagnostics, seed-level statistics, depth analysis и
-  publication figures опубликованы;
-- Stage 3B B0: ROCm/float32 canonical baseline завершён **96/96**, без failed
-  attempts и systemic resource failures; каждая cell выполнена в отдельном
-  fresh Python child process;
-- Stage 3B B0 statistical and engineering analysis опубликован как
-  deterministic derived evidence с `model_seed` как независимой единицей и
-  тремя seeds на configuration;
-- Stage 3A и Stage 3B B0 не использовали test dataset.
+- Stage 3A: послойная диагностика, статистика на уровне независимо обученных
+  моделей, анализ по глубине и публикационные рисунки;
+- Stage 3B B0: каноническая базовая линия ROCm/float32, 96/96 ячеек, без
+  неудачных попыток и системных отказов ресурсов;
+- Stage 3B B0: статистический и инженерный анализ опубликован без повторного
+  выполнения базовой кампании.
 
-Актуальный статус regression suite показывает CI; документация не закрепляет
-быстро устаревающее число passing tests.
+Stage 3A и Stage 3B B0 не обращались к тестовой выборке. Актуальное состояние
+регрессионных проверок фиксирует CI; документация не закрепляет быстро
+устаревающее число пройденных тестов.
 
-Implementation-preserving patch Stage 2 изменил вычислительный путь, сохранив
-экспериментальный протокол. По среднему total training time относительно
-Stage 1 Exact выполнялся примерно на 14% быстрее, FixedPred — на 31%, Strict —
-на 26%; BP остался практически неизменным. Полные парные записи находятся в
+Подробный статус: [STATUS.md](STATUS.md). Последовательность дальнейшей работы:
+[ROADMAP.md](ROADMAP.md).
+
+## Основные опубликованные результаты
+
+### Stage 1 и Stage 2
+
+Изменения Stage 2 сохранили экспериментальный протокол и изменили только
+вычислительный путь. По среднему общему времени обучения относительно Stage 1:
+
+- Exact выполнялся примерно на 14% быстрее;
+- FixedPred — примерно на 31% быстрее;
+- Strict — примерно на 26% быстрее;
+- время BP практически не изменилось.
+
+Наблюдаемый порядок времени Stage 2:
+`BP ≈ Exact < FixedPred << Strict`.
+
+Парные записи опубликованы в
 [`results/cross-version/`](results/cross-version/).
 
-### Разделение execution и publication state
+### Stage 3A
+
+Подтверждающая кампания охватывает FashionMNIST, `lenet_classic` и случайные
+начальные значения 0–9. Опубликованы:
+
+- 2250 наблюдений градиентов;
+- 150 наблюдений CKA/RSA по представлениям;
+- 750 наблюдений межслойного CKA;
+- 40 подтверждающих сравнений градиентов;
+- 20 подтверждающих сравнений представлений;
+- 24 статистические строки анализа по глубине;
+- 8 PDF-рисунков.
+
+В зарегистрированной области `FixedPred` почти сохраняет направление градиента,
+но существенно уменьшает его норму в ранних слоях. `Strict` в скрытых слоях
+отличается от BP по направлению и масштабу. Представления `FixedPred` ближе к
+BP, чем представления `Strict`.
+
+Подробный отчёт:
+[docs/stage3a-statistical-results.md](docs/stage3a-statistical-results.md).
+
+### Stage 3B B0
+
+B0 закрепляет кандидата `stage2_baseline` для `FixedPred` и `Strict` в
+синтетической кампании масштабирования ROCm/float32. Канонический протокол
+использует 20 разогревочных шагов, 5 повторений и 50 измеряемых шагов.
+
+Завершены:
+
+- 96/96 канонических ячеек и 96/96 попыток;
+- 0 неудачных попыток и 0 системных отказов ресурсов;
+- 96 записей процессов и 96 уникальных дочерних PID;
+- 48 ячеек `FixedPred` и 48 ячеек `Strict`;
+- 96 строк по ячейкам, 480 по областям, 48 парных и 32 по конфигурациям;
+- измерение областей `initial_forward`, `state_inference`, `local_state_vjp`,
+  `parameter_vjp` и `optimizer_step`;
+- проверки отсутствия возмущения, полноты и конечности значений.
+
+Зафиксированные доказательные материалы:
+[`results/stage-3/profiling/b0/sealed-v1/`](results/stage-3/profiling/b0/sealed-v1/).
+Контрольная сумма набора:
+`6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
+
+Инженерный анализ опубликован в
+[`results/stage-3/profiling/b0/analysis-v1/`](results/stage-3/profiling/b0/analysis-v1/).
+Независимая статистическая единица — отдельно обученная модель, заданная
+`model_seed`; доступны три модели на конфигурацию.
+
+Основные выводы в зарегистрированной области:
+
+- медианное отношение Strict/FixedPred для времени на устройстве — **2.327×**;
+- медианное отношение пиковой выделенной памяти — **1.328×**;
+- основная область времени — вывод состояний (`state_inference`);
+- отношение сохранённых тензоров Strict/FixedPred в `state_inference` —
+  **11.998×**.
+
+Эти результаты являются описательным инженерным анализом закреплённой матрицы,
+а не универсальным ранжированием методов. Полный Stage 3B остаётся
+незавершённым:
+`full_stage3b_campaign_complete=false`.
+
+## Цепочка выполнения и публикации
 
 | Роль | Идентификатор |
 |---|---|
-| Stage 1 source lock | `140e77cc2083bf04234dcea16b95803e63cb0537` |
-| Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
-| Stage 2 results/publication state | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
-| Stage 3A publication tag | `stage3a-statistical-publication-v1` |
-| Stage 3B B0 execution source | `95c25d35224abd5e741f1df9327662ff2fde23ad` |
-| Stage 3B B0 sealing source | `caa226cc1cd5d4aa0f9772c1fb997f7388d60730` |
-| Stage 3B B0 publication state | `ed0d48063a17e2d9c6679869a4d930f933877052` |
-| Stage 3B B0 publication tag | `stage3b-b0-evidence-v1` |
-| Stage 3B B0 analysis implementation | `e7a1632a947fae578e877826f0c923342669430e` |
-| Stage 3B B0 analysis publication state | `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3` |
-| Stage 3B B0 analysis publication tag | `stage3b-b0-analysis-evidence-v1` |
+| Исходное состояние Stage 1 | `140e77cc2083bf04234dcea16b95803e63cb0537` |
+| Источник выполнения Stage 2 | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
+| Публикационное состояние Stage 2 | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
+| Тег публикации Stage 3A | `stage3a-statistical-publication-v1` |
+| Источник выполнения Stage 3B B0 | `95c25d35224abd5e741f1df9327662ff2fde23ad` |
+| Источник фиксации целостности Stage 3B B0 | `caa226cc1cd5d4aa0f9772c1fb997f7388d60730` |
+| Публикационное состояние Stage 3B B0 | `ed0d48063a17e2d9c6679869a4d930f933877052` |
+| Тег доказательных материалов Stage 3B B0 | `stage3b-b0-evidence-v1` |
+| Реализация анализа Stage 3B B0 | `e7a1632a947fae578e877826f0c923342669430e` |
+| Публикационное состояние анализа Stage 3B B0 | `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3` |
+| Тег анализа Stage 3B B0 | `stage3b-b0-analysis-evidence-v1` |
 
-GitHub Release
-[`stage2-results-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
-содержит replication bundle Stage 2. GitHub Release
-[`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
-закрепляет компактный производный evidence bundle Stage 3B B0, его provenance и
-контрольные суммы. GitHub Release
-[`stage3b-b0-analysis-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1)
-публикует deterministic statistical and engineering analysis этого baseline.
+Выпуски GitHub:
 
-Stage 1, Stage 2, Stage 3A, Stage 3B B0 measurement baseline и его B0 analysis
-считаются завершёнными в своих зарегистрированных областях и не требуют
-повторного запуска. Полный Stage 3B остаётся незавершённым.
+- [`stage2-results-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
+- [`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
+- [`stage3b-b0-analysis-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1)
 
-Текущий статус: [STATUS.md](STATUS.md).
+## Следующий этап
 
-## Stage 3A: диагностика и статистическая публикация завершены
+Следующая работа — проверки численной эквивалентности для кандидатов B1 и B2.
+Каждый кандидат должен отдельно пройти зарегистрированные критерии cosine,
+relative L2, конечности значений и устойчивости. Малое пилотное профилирование
+разрешается только после прохождения этих проверок. Полная матрица
+сопоставленного профилирования требует отдельного решения о допуске.
 
-Подтверждающая validation-only подкампания выполнена для FashionMNIST,
-`lenet_classic`, seeds 0–9. Для каждого seed завершены same-state gradient
-probes и сравнения independently trained representations; Exact–BP controls
-пройдены 10/10. Опубликованы:
-
-- 2250 gradient observations;
-- 150 corresponding CKA/RSA observations;
-- 750 cross-layer CKA observations;
-- 40 gradient и 20 representation confirmatory comparisons;
-- 24 depth-analysis rows;
-- 8 publication PDF figures;
-- metadata и SHA-256 manifests для statistics и figures.
-
-Основной ограниченный вывод: в исследованной конфигурации `FixedPred` почти
-сохраняет направление градиента, но сильно подавляет его норму в ранних слоях;
-масштаб приближается к BP к выходу. `Strict` в скрытых слоях расходится с BP и
-по направлению, и по масштабу. Представления `FixedPred` ближе к BP, чем
-представления `Strict`. Gradient norm ratio возрастает с глубиной, relative L2
-падает; CKA не имеет надёжного monotonic trend, RSA показывает умеренный
-положительный trend.
-
-Подробный двуязычный отчёт:
-[docs/stage3a-statistical-results.md](docs/stage3a-statistical-results.md).
-
-Публикационные артефакты:
-
-- [statistics](results/stage3/layerwise/confirmatory/statistics/), включая
-  `analysis_metadata.json`, `depth_analysis_metadata.json` и `SHA256SUMS`;
-- [figures](results/stage3/layerwise/confirmatory/figures/), включая
-  `figure_metadata.json` и `SHA256SUMS`.
-
-Выводы ограничены FashionMNIST, `lenet_classic`, seeds 0–9, закреплённой
-реализацией и validation-only Stage 3A protocol.
-
-## Stage 3B B0: baseline, evidence и engineering analysis опубликованы
-
-B0 фиксирует candidate `stage2_baseline` для методов `FixedPred` и `Strict` в
-ROCm/float32 synthetic scaling campaign. Canonical protocol использовал 20
-warm-up steps, 5 repetitions и 50 measured steps. Завершены:
-
-- 96/96 canonical cells и 96/96 completed attempts;
-- 0 failed attempts и 0 systemic resource failures;
-- 96 process records и 96 уникальных child PID;
-- 48 `FixedPred` и 48 `Strict` cells;
-- 96 cell-level, 480 region-level, 48 paired-method и 32 configuration rows;
-- измерения пяти regions: `initial_forward`, `state_inference`,
-  `local_state_vjp`, `parameter_vjp`, `optimizer_step`;
-- non-perturbation, completeness и finite-value gates.
-
-Компактный evidence bundle опубликован в
-[`results/stage-3/profiling/b0/sealed-v1/`](results/stage-3/profiling/b0/sealed-v1/).
-Seal digest:
-`6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
-
-Граница утверждений зафиксирована явно:
-
-- `evidence=true`;
-- `full_b0_campaign_complete=true`;
-- `results_publication_permitted=true`;
-- `full_stage3b_campaign_complete=false`;
-- `test_dataset_access=false`.
-
-Deterministic analysis опубликован в
-[`results/stage-3/profiling/b0/analysis-v1/`](results/stage-3/profiling/b0/analysis-v1/).
-Независимая статистическая единица — `model_seed`; доступны три seeds на
-configuration, поэтому выводы ограничены descriptive engineering analysis.
-
-Основные bounded observations в опубликованной synthetic ROCm/float32 matrix:
-
-- median Strict/FixedPred device-time ratio — **2.327×**
-  (configuration range 1.966–2.619×);
-- median peak-allocated ratio — **1.328×**;
-- dominant device-time region обоих методов — `state_inference`;
-- median saved-tensor ratio Strict/FixedPred внутри `state_inference` —
-  **11.998×**.
-
-Decision gate разрешает candidate-specific B1/B2 numerical-equivalence work.
-Полный matched B1/B2 profiling остаётся заблокированным до прохождения этих
-gates, а structural locality claims — до добавления dependency-radius,
-graph-span/lifetime, feedback-operator и orchestration-barrier measurements.
-Новый B0 execution не требуется.
+Утверждения о структурной локальности требуют отдельных измерений радиуса
+зависимостей, протяжённости и времени жизни графа, оператора обратной связи и
+барьеров оркестрации.
 
 ## Контрольные проверки
 
-Термины C0 и C1 используются вместо H0/H1, чтобы не смешивать технические
+Обозначения C0 и C1 используются вместо H0/H1, чтобы не смешивать технические
 контроли с нулевыми статистическими гипотезами.
 
 - **C0:** численное сопоставление градиентов `Exact` и BP;
@@ -200,14 +194,13 @@ graph-span/lifetime, feedback-operator и orchestration-barrier measurements.
 - **структурная проверка:** проверка выбранных выражений Torch2PC, связанных с
   поправкой Rosenbaum 2025.
 
-Эти проверки ограничены конкретным commit, dtype, устройством и тестовыми
-пакетами. Даже успешный результат C0/C1 не рассматривается как универсальное
-доказательство эквивалентности алгоритмов.
+Успешный результат C0/C1 относится только к закреплённым версии кода, типу
+данных, устройству и тестовым пакетам. Он не является универсальным
+доказательством эквивалентности алгоритмов.
 
-## Воспроизведение с нуля
+## Воспроизведение
 
-Следующая последовательность предназначена для независимого воспроизведения,
-а не для повторного выполнения уже завершённых Stage 1/2.
+Базовая подготовка среды:
 
 ```bash
 cp .env.example .env
@@ -221,125 +214,53 @@ make validate
 make prepare
 ```
 
-`make pin-base-image` заменяет изменяемый Docker tag в локальном `.env` на
-ссылку вида `repository@sha256:...`. Финальные и pilot-образы собираются только
-после такой фиксации. `.env` остается локальным и не добавляется в Git.
+`make pin-base-image` заменяет изменяемый тег Docker на неизменяемую ссылку
+`repository@sha256:...`. Локальный `.env` не добавляется в Git.
 
-После просмотра скачанного checkout Torch2PC необходимо зафиксировать commit,
-закоммитить изменение конфигурации и создать lock-файл окружения:
+Дальнейшие команды и требования к фиксации среды описаны в
+[docs/reproducibility.md](docs/reproducibility.md) и
+[docs/validation.md](docs/validation.md).
 
-```bash
-make pin-torch2pc
-git add configs/base.yaml
-git commit -m "research: pin Torch2PC revision"
-make pin-base-image
-make build
-make freeze-environment
-git add results/summaries/environment-lock.json
-git commit -m "research: lock controlled environment"
-make control-cpu
-make control-gpu
-```
+## Защита тестовой выборки
 
-Pilot запускается только после прохождения обоих контрольных контуров:
+- стадии `smoke` и `pilot` не создают загрузчик тестовой выборки;
+- тестовая выборка разрешена только для стадии `final`;
+- `final` требует замороженного протокола и артефакта `pilot-freeze`;
+- каждый запуск сохраняет разрешённую конфигурацию, описание среды, контрольные
+  суммы разбиений, предсказания по примерам, метрики и уникальный `run_id`;
+- повторный успешный запуск той же комбинации кода, конфигурации и начального
+  значения блокируется, чтобы повторный просмотр тестовой выборки не считался
+  новой репликацией.
 
-```bash
-make pilot
-# make pilot уже создает selection и компактный файл наблюдений;
-# для повторной генерации доступны отдельные команды:
-make select-pilot
-make pilot-observations
-make apply-pilot-selection
-# проверить изменения configs/methods/*.yaml и закоммитить их
-git add configs/methods/
-git commit -m "research: apply validation-only pilot selection"
-# заново собрать образ, зафиксировать окружение и повторить короткие контроли
-make build
-make freeze-environment
-git add results/summaries/environment-lock.json
-git commit -m "research: refresh environment lock after pilot selection"
-make control-cpu
-make control-gpu
-make freeze-pilot
-# закоммитить freeze manifest и создать tag pilot-freeze
-```
-
-Final запускается только после заморозки pilot-конфигурации:
-
-```bash
-make final
-make report
-make manifest
-```
-
-## Защита от утечки test
-
-- `smoke` и `pilot` не создают test loader;
-- test разрешен только для стадии `final`;
-- final требует замороженного протокола и артефакта `pilot-freeze`;
-- каждый запуск сохраняет resolved config, environment manifest, split hashes,
-  per-sample predictions, метрики и уникальный `run_id`;
-- `pilot_observations.csv` сохраняет компактные проверяемые наблюдения всех
-  terminal-ячеек pilot без публикации checkpoints;
-- попытки не перезаписывают друг друга;
-- повторный успешный final-запуск той же комбинации code/config/seed блокируется,
-  чтобы повторный просмотр test не учитывался как новая репликация.
-
-## Структура
+## Структура репозитория
 
 | Каталог | Назначение |
 |---|---|
-| `src/torch2pc_thesis/` | Исполняемая научная логика и CLI |
-| `configs/` | Базовые, аппаратные, стадийные и методические конфигурации |
-| `experiments/` | Append-only реестр запусков и планы экспериментов |
+| `src/torch2pc_thesis/` | Исполняемая исследовательская логика и CLI |
+| `configs/` | Базовые, аппаратные, этапные и методические конфигурации |
+| `experiments/` | Добавляемый реестр запусков и планы экспериментов |
 | `results/` | Агрегированные публичные материалы |
 | `notebooks/analysis/` | Анализ зарегистрированных результатов |
-| `notebooks/legacy/` | Исторический ноутбук для проверки миграции |
-| `thesis/` | Русскоязычный LaTeX-каркас диссертации |
+| `notebooks/legacy/` | Исторический блокнот для проверки миграции |
+| `thesis/` | Русскоязычный каркас диссертации |
 | `article/` | Англоязычный каркас статьи с суффиксом `_EN` |
 | `references/` | BibTeX и матрица литературы без PDF |
-| `docs/` | Протокол, решения и журнал исследования |
+| `docs/` | Протоколы, решения и журнал исследования |
 
 Полная схема: [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md).
 
-## Воспроизводимость
-
-Проект фиксирует или планирует фиксировать:
-
-- Git commit проекта;
-- полный commit Torch2PC;
-- Docker image ID и digest базового образа;
-- версии Python-пакетов;
-- контрольные суммы файлов данных;
-- индексы train/validation/test;
-- model, split, loader и corruption seeds;
-- dtype, device, число потоков и workers;
-- аппаратное и системное окружение;
-- конфигурацию и SHA-256 каждого запуска;
-- статус успешных и неудачных запусков.
-
-Подробно: [docs/reproducibility.md](docs/reproducibility.md).
-
-## Язык проекта
+## Язык и терминология
 
 Русский является основным языком пользовательских материалов. Английские
 версии используют суффикс `_EN`. Технические идентификаторы Python, YAML,
-Torch2PC и GitHub сохраняются на английском.
-
-## Публичные и локальные материалы
-
-В Git-репозиторий не включаются скачанные PDF, датасеты, приватные комментарии
-и тяжёлые checkpoints. Публикуются код, протокол, конфигурации,
-библиографические записи, агрегированные результаты и манифесты. Полный набор
-raw Stage 2 artifacts распространяется отдельно через replication bundle в
-GitHub Release `stage2-results-v1`.
+Torch2PC и GitHub сохраняются на английском. Канонические термины определены в
+[LANGUAGE_POLICY.md](LANGUAGE_POLICY.md).
 
 ## Лицензирование
 
-- программный код распространяется по лицензии Apache License 2.0 — см.
-  [LICENSE](LICENSE);
-- оригинальный текст диссертации, статьи, документации, таблицы и рисунки
-  распространяются по лицензии Creative Commons Attribution 4.0 International —
-  см. [LICENSE-DOCS](LICENSE-DOCS) и [LICENSE-DOCS_EN](LICENSE-DOCS_EN);
-- сторонние материалы сохраняют свои исходные лицензии и условия атрибуции —
-  см. [NOTICE](NOTICE) и [NOTICE_EN](NOTICE_EN).
+- программный код: Apache License 2.0 — [LICENSE](LICENSE);
+- текст диссертации, статьи, документации, таблицы и рисунки: Creative Commons
+  Attribution 4.0 International — [LICENSE-DOCS](LICENSE-DOCS) и
+  [LICENSE-DOCS_EN](LICENSE-DOCS_EN);
+- сторонние материалы сохраняют исходные лицензии и условия атрибуции —
+  [NOTICE](NOTICE) и [NOTICE_EN](NOTICE_EN).

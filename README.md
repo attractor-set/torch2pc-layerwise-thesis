@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-Stage%203A%20publication%20complete-blue)
+![Статус](https://img.shields.io/badge/этап-Stage%203B%20B0%20evidence%20complete-blue)
 
 Исследовательский репозиторий магистерской диссертации по сравнению
 backpropagation и режимов predictive coding в Torch2PC. Проект организован так,
@@ -47,24 +47,26 @@ backpropagation и режимов predictive coding в Torch2PC. Проект о
 - вычислительное время и память;
 - воспроизводимость между независимыми запусками.
 
-## Наблюдаемый статус на 13 июля 2026 года
+## Наблюдаемый статус на 15 июля 2026 года
 
-Validation pilot и две подтверждающие серии завершены в закреплённой
-Ubuntu/ROCm-среде:
+В закреплённой Ubuntu/ROCm-среде завершены базовые и диагностические кампании:
 
 - validation-only pilot: **96/96** terminal-ячеек, 0 failed, test не вычислялся;
 - Stage 1: **80/80**, исходный Torch2PC
   `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
 - Stage 2: **80/80**, patched Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
-- CPU/GPU numerical equivalence gates пройдены в закреплённой области;
-- regression suite текущей publication-ветки: **120 passed**;
-- парные значения test accuracy и macro-F1 Stage 1/2 совпали для всех
-  datasets, методов и seeds;
-- наблюдаемый порядок времени Stage 2:
-  `BP ≈ Exact < FixedPred << Strict`.
+- Stage 3A: layer-wise diagnostics, seed-level statistics, depth analysis и
+  publication figures опубликованы;
+- Stage 3B B0: ROCm/float32 canonical baseline завершён **96/96**, без failed
+  attempts и без systemic resource failures; каждая cell выполнена в отдельном
+  fresh Python child process;
+- Stage 3A и Stage 3B B0 не использовали test dataset.
 
-Implementation-preserving patch изменил вычислительный путь, сохранив
+Актуальный статус regression suite показывает CI; документация не закрепляет
+быстро устаревающее число passing tests.
+
+Implementation-preserving patch Stage 2 изменил вычислительный путь, сохранив
 экспериментальный протокол. По среднему total training time относительно
 Stage 1 Exact выполнялся примерно на 14% быстрее, FixedPred — на 31%, Strict —
 на 26%; BP остался практически неизменным. Полные парные записи находятся в
@@ -77,19 +79,22 @@ Stage 1 Exact выполнялся примерно на 14% быстрее, Fix
 | Stage 1 source lock | `140e77cc2083bf04234dcea16b95803e63cb0537` |
 | Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
 | Stage 2 results/publication state | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
-| Stage 1 tag | `confirmatory-final-v1` |
-| Stage 2 execution tag | `stage2-execution-v1` |
-| Stage 2 results tag | `stage2-results-v1` |
+| Stage 3A publication tag | `stage3a-statistical-publication-v1` |
+| Stage 3B B0 execution source | `95c25d35224abd5e741f1df9327662ff2fde23ad` |
+| Stage 3B B0 sealing source | `caa226cc1cd5d4aa0f9772c1fb997f7388d60730` |
+| Stage 3B B0 publication state | `ed0d48063a17e2d9c6679869a4d930f933877052` |
+| Stage 3B B0 publication tag | `stage3b-b0-evidence-v1` |
 
 GitHub Release
 [`stage2-results-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
-содержит replication bundle, его SHA-256 и file manifest; проверено 660
-manifest artifacts. Execution tag фиксирует код, использованный для запуска,
-а results tag фиксирует последующее состояние публикации результатов.
+содержит replication bundle Stage 2. GitHub Release
+[`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
+закрепляет компактный производный evidence bundle Stage 3B B0, его provenance и
+контрольные суммы.
 
-Stage 1 и Stage 2 считаются завершёнными и не требуют повторного запуска.
-Любое новое изменение производительности относится к отдельному Stage 3 с
-новым протоколом и отдельной provenance chain.
+Stage 1, Stage 2, Stage 3A и Stage 3B B0 считаются завершёнными в своих
+зарегистрированных областях и не требуют повторного запуска. Полный Stage 3B
+остаётся незавершённым.
 
 Текущий статус: [STATUS.md](STATUS.md).
 
@@ -127,21 +132,41 @@ probes и сравнения independently trained representations; Exact–BP c
   `figure_metadata.json` и `SHA256SUMS`.
 
 Выводы ограничены FashionMNIST, `lenet_classic`, seeds 0–9, закреплённой
-реализацией и validation-only Stage 3A protocol. Stage 3A не завершает весь
-расширенный Stage 3. Следующая кампания должна быть создана в отдельной ветке и
-с отдельной preregistration для profiling/locality; exact execution и
-acceleration сохраняют собственные gates и provenance chains.
+реализацией и validation-only Stage 3A protocol.
 
-Текущий design state по-прежнему разрешает только подготовку profiling
-infrastructure:
+## Stage 3B B0: canonical profiling baseline и evidence publication завершены
 
-```bash
-make stage3-ready
-make stage3-plan
-```
+B0 фиксирует candidate `stage2_baseline` для методов `FixedPred` и `Strict` в
+ROCm/float32 synthetic scaling campaign. Canonical protocol использовал 20
+warm-up steps, 5 repetitions и 50 measured steps. Завершены:
 
-Stage 3 отсутствует из `TRAINING_STAGES`, а final template сохраняет
-`evaluation.use_test=false` до отдельного freeze.
+- 96/96 canonical cells и 96/96 completed attempts;
+- 0 failed attempts и 0 systemic resource failures;
+- 96 process records и 96 уникальных child PID;
+- 48 `FixedPred` и 48 `Strict` cells;
+- 96 cell-level, 480 region-level, 48 paired-method и 32 configuration rows;
+- измерения пяти regions: `initial_forward`, `state_inference`,
+  `local_state_vjp`, `parameter_vjp`, `optimizer_step`;
+- non-perturbation, completeness и finite-value gates.
+
+Компактный evidence bundle опубликован в
+[`results/stage-3/profiling/b0/sealed-v1/`](results/stage-3/profiling/b0/sealed-v1/).
+Seal digest:
+`6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
+
+Граница утверждений зафиксирована явно:
+
+- `evidence=true`;
+- `full_b0_campaign_complete=true`;
+- `results_publication_permitted=true`;
+- `full_stage3b_campaign_complete=false`;
+- `test_dataset_access=false`.
+
+B0 publication подтверждает полноту и целостность измерительной базы, но сама
+по себе не заменяет статистический и инженерный анализ сравнений. Следующий
+этап — отдельная ветка `stage3b-b0-analysis-v1` с paired seed-level analysis,
+decomposition времени по regions, анализом памяти и scaling, после чего
+принимается decision gate для следующих Stage 3B candidates.
 
 ## Контрольные проверки
 

@@ -2,7 +2,57 @@
 
 [English version](CHANGELOG_EN.md)
 
-## [Unreleased] — Stage 3A statistical publication
+## [Unreleased] — синхронизация документации после Stage 3B B0 publication
+
+### Изменено
+
+- README, STATUS, ROADMAP и индексы документации синхронизированы с
+  опубликованным Stage 3B B0 evidence;
+- следующий этап определён как `stage3b-b0-analysis-v1`, а не повторный B0
+  execution или preregistration;
+- статические числа passing tests удалены из текущего статуса; источником
+  актуального regression status является CI;
+- граница результатов явно сохраняет
+  `full_stage3b_campaign_complete=false`.
+
+### Сохранено неизменным
+
+- Stage 1/2, Stage 3A и Stage 3B B0 committed evidence;
+- execution, sealing и publication provenance;
+- существующие tags и GitHub Releases;
+- raw canonical archive вне Git.
+
+## [stage3b-b0-evidence-v1] — 2026-07-15
+
+### Добавлено
+
+- Stage 3B B0 ROCm/float32 canonical campaign: 96/96 cells, 0 failed;
+- fresh Python child process per cell: 96 process records и 96 unique child PID;
+- compact derived evidence: 96 cell, 480 region, 48 paired и 32 configuration
+  rows;
+- validation, metric definitions, content-addressed seal и `SHA256SUMS`;
+- Git-stable LF serialization для evidence CSV;
+- GitHub tag и Release `stage3b-b0-evidence-v1`.
+
+### Provenance
+
+- execution source: `95c25d35224abd5e741f1df9327662ff2fde23ad`;
+- sealing source: `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
+- publication state: `ed0d48063a17e2d9c6679869a4d930f933877052`;
+- archive inventory:
+  `9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed`;
+- seal digest:
+  `6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
+
+### Граница утверждений
+
+- B0 measurement baseline завершён и разрешён к публикации;
+- test dataset не использовался;
+- полный Stage 3B остаётся незавершённым;
+- сравнительные claims о времени, памяти и scaling переносятся в отдельный B0
+  analysis.
+
+## [stage3a-statistical-publication-v1] — Stage 3A statistical publication
 
 ### Добавлено
 
@@ -23,9 +73,6 @@
 - Phase 8 отмечена завершённой;
 - README, STATUS и ROADMAP синхронизированы с опубликованной Stage 3A
   statistics/depth/figures evidence;
-- regression suite отражает текущие 120 passing tests;
-- следующий этап определён как отдельная preregistration-ветка
-  `stage3b-profiling-locality-preregistration`;
 - выводы явно ограничены FashionMNIST, `lenet_classic`, seeds 0–9,
   закреплённой реализацией и validation-only protocol.
 

@@ -2,7 +2,58 @@
 
 [Русская версия](CHANGELOG.md)
 
-## [Unreleased] — Stage 3A statistical publication
+## [Unreleased] — documentation synchronization after Stage 3B B0 publication
+
+### Changed
+
+- Synchronized README, STATUS, ROADMAP, and documentation indexes with the
+  published Stage 3B B0 evidence.
+- Defined `stage3b-b0-analysis-v1` as the next stage rather than repeating B0
+  execution or preregistration.
+- Removed static passing-test counts from current-status documentation; CI is
+  the source of truth for regression status.
+- Preserved the explicit boundary
+  `full_stage3b_campaign_complete=false`.
+
+### Preserved unchanged
+
+- Stage 1/2, Stage 3A, and Stage 3B B0 committed evidence.
+- Execution, sealing, and publication provenance.
+- Existing tags and GitHub Releases.
+- The raw canonical archive outside Git.
+
+## [stage3b-b0-evidence-v1] — 2026-07-15
+
+### Added
+
+- Stage 3B B0 ROCm/float32 canonical campaign: 96/96 cells, 0 failed.
+- Fresh Python child process per cell: 96 process records and 96 unique child
+  PIDs.
+- Compact derived evidence: 96 cell, 480 region, 48 paired, and 32
+  configuration rows.
+- Validation, metric definitions, a content-addressed seal, and `SHA256SUMS`.
+- Git-stable LF serialization for evidence CSV files.
+- GitHub tag and Release `stage3b-b0-evidence-v1`.
+
+### Provenance
+
+- execution source: `95c25d35224abd5e741f1df9327662ff2fde23ad`;
+- sealing source: `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
+- publication state: `ed0d48063a17e2d9c6679869a4d930f933877052`;
+- archive inventory:
+  `9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed`;
+- seal digest:
+  `6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
+
+### Claim boundary
+
+- The B0 measurement baseline is complete and publication-permitted.
+- The test dataset was not accessed.
+- The full Stage 3B program remains incomplete.
+- Comparative claims about time, memory, and scaling are deferred to the
+  separate B0 analysis.
+
+## [stage3a-statistical-publication-v1] — Stage 3A statistical publication
 
 ### Added
 
@@ -25,9 +76,6 @@
 - Marked Phase 8 complete.
 - Synchronized README, STATUS, and ROADMAP with the published Stage 3A
   statistics, depth, and figure evidence.
-- Updated the regression-suite count to the current 120 passing tests.
-- Defined the next stage as the separate
-  `stage3b-profiling-locality-preregistration` branch.
 - Explicitly bounded conclusions to FashionMNIST, `lenet_classic`, seeds 0–9,
   the pinned implementation, and the validation-only protocol.
 

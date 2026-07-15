@@ -24,6 +24,7 @@ nav:
       - Stage 3 protocol: stage-3-protocol_EN.md
       - Stage 3 readiness: stage-3-readiness_EN.md
       - Stage 3A results: stage3a-statistical-results_EN.md
+      - Stage 3B B0 validation and sealing: stage3b-b0-sealing_EN.md
       - GitHub setup: github-setup_EN.md
   - Design:
       - Research design: research-design/design_EN.md

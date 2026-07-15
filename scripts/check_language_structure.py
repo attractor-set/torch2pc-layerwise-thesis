@@ -10,6 +10,7 @@ MAP = ROOT / "docs" / "language-map.csv"
 
 CYRILLIC = re.compile(r"[А-Яа-яЁё]")
 LATIN = re.compile(r"[A-Za-z]")
+GLOSSARY_TERM = re.compile(r"^### (TERM-[A-Z0-9-]+) — ", re.MULTILINE)
 
 
 def text_ratio(pattern: re.Pattern[str], text: str) -> float:
@@ -17,6 +18,20 @@ def text_ratio(pattern: re.Pattern[str], text: str) -> float:
     if not letters:
         return 0.0
     return len(pattern.findall(text)) / len(letters)
+
+
+def extract_glossary_term_ids(text: str) -> list[str]:
+    return GLOSSARY_TERM.findall(text)
+
+
+def duplicate_values(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    duplicates: set[str] = set()
+    for value in values:
+        if value in seen:
+            duplicates.add(value)
+        seen.add(value)
+    return sorted(duplicates)
 
 
 def main() -> None:
@@ -61,6 +76,35 @@ def main() -> None:
             }
         )
 
+    glossary_ru = ROOT / "docs" / "glossary.md"
+    glossary_en = ROOT / "docs" / "glossary_EN.md"
+    glossary_term_count = 0
+
+    if glossary_ru.exists() and glossary_en.exists():
+        ru_ids = extract_glossary_term_ids(glossary_ru.read_text(encoding="utf-8"))
+        en_ids = extract_glossary_term_ids(glossary_en.read_text(encoding="utf-8"))
+        glossary_term_count = len(ru_ids)
+
+        ru_duplicates = duplicate_values(ru_ids)
+        en_duplicates = duplicate_values(en_ids)
+        if ru_duplicates:
+            errors.append(
+                "Повторяются идентификаторы терминов в русском глоссарии: "
+                + ", ".join(ru_duplicates)
+            )
+        if en_duplicates:
+            errors.append(
+                "Повторяются идентификаторы терминов в английском глоссарии: "
+                + ", ".join(en_duplicates)
+            )
+        if not ru_ids:
+            errors.append("Русский глоссарий не содержит идентификаторов TERM-*")
+        if ru_ids != en_ids:
+            errors.append(
+                "Русский и английский глоссарии содержат разные "
+                "идентификаторы TERM-* или разный порядок терминов"
+            )
+
     forbidden = ROOT / "README.ru.md"
     if forbidden.exists():
         errors.append("README.ru.md не должен существовать: основной файл README.md русский")
@@ -74,6 +118,7 @@ def main() -> None:
         "pairs": len(rows),
         "errors": errors,
         "records": records,
+        "glossary_terms": glossary_term_count,
     }
     print(json.dumps(result, ensure_ascii=False, indent=2))
     if errors:

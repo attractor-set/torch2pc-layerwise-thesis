@@ -2,122 +2,135 @@
 
 [English version](STATUS_EN.md)
 
-Stage 1/2 завершены и остаются неизменяемой опубликованной базовой линией.
-Диагностическая и статистическая публикация **Stage 3A** завершена в
-validation-only области. Canonical execution, validation, sealing и публикация
-**Stage 3B B0**, а также его statistical and engineering analysis завершены и
-опубликованы. Полный Stage 3B остаётся незавершённым.
+Этапы Stage 1 и Stage 2 завершены и опубликованы как неизменяемые базовые
+линии. Диагностика и статистическая публикация **Stage 3A** завершены в области,
+ограниченной валидационной выборкой. Для **Stage 3B B0** завершены каноническое
+выполнение, проверка, фиксация целостности, публикация доказательных материалов,
+а также статистический и инженерный анализ. Полный этап Stage 3B остаётся
+незавершённым.
 
-| Компонент | Наблюдаемый статус |
+## Сводка состояния
+
+| Компонент | Подтверждённое состояние |
 |---|---|
-| Validation-only pilot | 96/96; test не вычислялся |
+| Пилотная кампания | 96/96; тестовая выборка не использовалась |
 | Stage 1 / Stage 2 | 80/80 и 80/80 |
-| Stage 2 runtime | `BP ≈ Exact < FixedPred << Strict` |
-| Stage 3A same-state probes | 10/10 seeds |
-| Stage 3A representation probes | 10/10 seeds |
-| Exact–BP numerical controls | 10/10 seeds; 30/30 statistical control rows passed |
-| Stage 3A observations | 2250 gradient; 150 representation; 750 cross-layer CKA |
-| Stage 3A confirmatory statistics | 40 gradient + 20 representation comparisons |
-| Stage 3A depth analysis | 180 seed-level rows; 24 statistical rows |
-| Stage 3A publication figures | 8 PDF |
-| Stage 3B B0 candidate | `stage2_baseline`; `FixedPred` и `Strict` |
-| Stage 3B B0 lane | ROCm / float32; synthetic scaling; validation-only |
-| Stage 3B B0 execution | 96/96 cells; 96 completed attempts; 0 failed |
-| Process isolation | 96 process records; 96 unique child PID; fresh child per cell |
-| B0 aggregate evidence | 96 cell + 480 region + 48 paired + 32 configuration rows |
-| B0 integrity | non-perturbation, completeness, finite-value и SHA-256 gates passed |
-| Test access Stage 3A/B0 | test dataset не использовался |
-| Stage 3B B0 publication | tag/release `stage3b-b0-evidence-v1` |
-| B0 analysis statistical unit | `model_seed`; 3 seeds на configuration |
-| B0 analysis bounded timing | median Strict/FixedPred device time `2.327×` |
-| B0 analysis bounded memory | peak allocated `1.328×`; state-inference saved tensors `11.998×` |
-| B0 dominant region | `state_inference` для `FixedPred` и `Strict` |
-| B0 analysis publication | tag/release `stage3b-b0-analysis-evidence-v1` |
-| B0 decision gate | candidate-specific B1/B2 equivalence work: `continue` |
+| Время выполнения Stage 2 | `BP ≈ Exact < FixedPred << Strict` |
+| Проверки градиентов Stage 3A при одинаковом состоянии | 10/10 случайных начальных значений |
+| Проверки представлений Stage 3A | 10/10 случайных начальных значений |
+| Численные проверки Exact–BP | 10/10; пройдены 30/30 строк статистического контроля |
+| Наблюдения Stage 3A | 2250 градиентных; 150 по представлениям; 750 cross-layer CKA |
+| Подтверждающая статистика Stage 3A | 40 сравнений градиентов и 20 сравнений представлений |
+| Анализ Stage 3A по глубине | 180 строк по случайным начальным значениям; 24 статистические строки |
+| Публикационные рисунки Stage 3A | 8 PDF-файлов |
+| Кандидат Stage 3B B0 | `stage2_baseline`; методы `FixedPred` и `Strict` |
+| Область Stage 3B B0 | ROCm/float32; синтетическое масштабирование; без тестовой выборки |
+| Выполнение Stage 3B B0 | 96/96 ячеек; 96 завершённых попыток; 0 неудачных |
+| Изоляция процессов | 96 записей; 96 уникальных дочерних PID; новый процесс на ячейку |
+| Сводные доказательные материалы B0 | 96 строк по ячейкам, 480 по областям, 48 парных и 32 по конфигурациям |
+| Целостность B0 | пройдены проверки отсутствия возмущения, полноты, конечности и SHA-256 |
+| Доступ к тестовой выборке в Stage 3A/B0 | отсутствовал |
+| Публикация B0 | тег и выпуск `stage3b-b0-evidence-v1` |
+| Независимая единица анализа B0 | независимо обученная модель, заданная `model_seed`; 3 на конфигурацию |
+| Ограниченный результат по времени | медиана Strict/FixedPred для времени на устройстве `2.327×` |
+| Ограниченный результат по памяти | пиковая выделенная память `1.328×`; сохранённые тензоры при выводе состояний `11.998×` |
+| Основная область времени B0 | вывод состояний (`state_inference`) для обоих методов |
+| Публикация анализа B0 | тег и выпуск `stage3b-b0-analysis-evidence-v1` |
+| Решение после B0 | продолжить проверки эквивалентности для кандидатов B1/B2 |
 | Полный Stage 3B | `full_stage3b_campaign_complete=false` |
-| Regression status | актуальное состояние фиксируется CI |
+| Регрессионные проверки | актуальное состояние фиксирует CI |
 
-## Опубликованные границы результатов
+## Границы опубликованных результатов
 
 ### Stage 3A
 
 Подробный отчёт опубликован в
 [docs/stage3a-statistical-results.md](docs/stage3a-statistical-results.md).
-Статистической единицей является независимо обученная модель; слои, batches,
-параметры и samples являются повторными наблюдениями внутри model seed.
+Независимой статистической единицей является отдельно обученная модель. Слои,
+пакеты данных, параметры и отдельные примеры рассматриваются как повторные
+наблюдения внутри одного `model_seed`.
 
-В пределах FashionMNIST, `lenet_classic`, seeds 0–9 и закреплённой реализации:
+В пределах FashionMNIST, архитектуры `lenet_classic`, случайных начальных
+значений 0–9 и закреплённой реализации наблюдается следующее:
 
-- `FixedPred` почти сохраняет направление градиента, но сильно подавляет норму
-  в ранних слоях; layer 5 совпадает с BP targets;
-- `Strict` в скрытых слоях расходится с BP по направлению и масштабу, а выходной
-  слой близок к BP;
+- `FixedPred` почти сохраняет направление градиента, но существенно уменьшает
+  его норму в ранних слоях; в слое 5 значения приближаются к целям BP;
+- `Strict` в скрытых слоях отличается от BP по направлению и масштабу, тогда
+  как выходной слой остаётся близким к BP;
 - представления `FixedPred` ближе к BP, чем представления `Strict`;
-- gradient norm ratio возрастает с глубиной, relative L2 уменьшается;
-- CKA не показывает надёжного monotonic depth trend, RSA показывает умеренный
-  положительный trend.
+- отношение норм градиента увеличивается с глубиной, а relative L2 уменьшается;
+- CKA не показывает устойчивого монотонного изменения с глубиной, тогда как
+  RSA показывает умеренную положительную тенденцию.
+
+Эти наблюдения не переносятся автоматически на другие архитектуры, наборы
+данных, реализации или вычислительные среды.
 
 ### Stage 3B B0
 
-B0 publication подтверждает полноту, provenance и целостность canonical
-profiling baseline для candidate `stage2_baseline`. Опубликованный B0 analysis
-добавляет bounded comparative findings о времени, памяти, region attribution и
-scaling без расширения независимого `n` за пределы трёх model seeds на
-configuration.
+Публикация B0 подтверждает полноту, происхождение и целостность канонической
+базовой линии профилирования для кандидата `stage2_baseline`. Опубликованный
+анализ добавляет ограниченные сравнительные результаты по времени, памяти,
+областям измерения и масштабированию. Число независимых единиц остаётся равным
+трём моделям на конфигурацию.
 
-Зафиксировано:
+Зафиксированная цепочка происхождения:
 
-- execution source `95c25d35224abd5e741f1df9327662ff2fde23ad`;
-- sealing source `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
-- publication state `ed0d48063a17e2d9c6679869a4d930f933877052`;
-- archive inventory
+- источник выполнения `95c25d35224abd5e741f1df9327662ff2fde23ad`;
+- источник фиксации целостности `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
+- публикационное состояние `ed0d48063a17e2d9c6679869a4d930f933877052`;
+- контрольная сумма архива
   `9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed`;
-- seal digest
+- контрольная сумма зафиксированного набора
   `6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`;
-- analysis implementation `e7a1632a947fae578e877826f0c923342669430e`;
-- analysis publication state `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3`;
-- analysis publication tag `stage3b-b0-analysis-evidence-v1`.
+- реализация анализа `e7a1632a947fae578e877826f0c923342669430e`;
+- публикационное состояние анализа
+  `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3`;
+- тег публикации анализа `stage3b-b0-analysis-evidence-v1`.
 
+Опубликованные результаты в зарегистрированной области:
 
-Опубликованные bounded observations:
+- медианное отношение Strict/FixedPred для времени на устройстве — `2.327×`;
+  диапазон по конфигурациям — `1.966–2.619×`;
+- медианное отношение Strict/FixedPred для пиковой выделенной памяти — `1.328×`;
+- вывод состояний (`state_inference`) является основной областью времени для
+  `FixedPred` и `Strict`;
+- медианное отношение Strict/FixedPred для сохранённых тензоров в области
+  `state_inference` — `11.998×`.
 
-- median Strict/FixedPred device-time ratio — `2.327×`
-  (configuration range `1.966–2.619×`);
-- median Strict/FixedPred peak-allocated ratio — `1.328×`;
-- `state_inference` является dominant device-time region обоих методов;
-- median Strict/FixedPred saved-tensor ratio в `state_inference` — `11.998×`.
+Это описательный инженерный анализ закреплённой синтетической матрицы
+ROCm/float32. Он не задаёт универсального ранжирования методов и не подтверждает
+структурную локальность без дополнительных измерений.
 
-Это descriptive engineering analysis для pinned ROCm/float32 synthetic matrix.
-Она не является универсальным ранжированием методов и не поддерживает
-structural locality claims без дополнительных measurements.
+## Публикационные материалы
 
-## Публикационные артефакты
-
-- Stage 3A [statistics](results/stage3/layerwise/confirmatory/statistics/) и
-  [figures](results/stage3/layerwise/confirmatory/figures/);
-- Stage 3B B0
-  [sealed evidence](results/stage-3/profiling/b0/sealed-v1/);
-- Stage 3B B0
-  [engineering analysis](results/stage-3/profiling/b0/analysis-v1/);
-- GitHub Releases
+- Stage 3A: [статистика](results/stage3/layerwise/confirmatory/statistics/) и
+  [рисунки](results/stage3/layerwise/confirmatory/figures/);
+- Stage 3B B0:
+  [зафиксированные доказательные материалы](results/stage-3/profiling/b0/sealed-v1/);
+- Stage 3B B0:
+  [инженерный анализ](results/stage-3/profiling/b0/analysis-v1/);
+- выпуски GitHub
   [`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
   и
   [`stage3b-b0-analysis-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1).
 
-Committed evidence не перегенерируется при этой документационной синхронизации.
+Опубликованные доказательные материалы не пересоздаются при изменении
+документации.
 
-## Следующий шаг
+## Следующий этап
 
-Перейти к **Stage 3B B1/B2 candidate-specific numerical equivalence gates**:
+Следующий этап — **проверки численной эквивалентности для кандидатов B1 и B2**:
 
-- формализовать B1 и B2 candidates относительно опубликованного B0 baseline;
-- реализовать каждый candidate отдельно;
-- проверить registered cosine, relative-L2, finite-value и stability gates;
-- сохранить test access выключенным;
-- выполнить малый profiling pilot только для candidates, прошедших numerical
-  equivalence gates;
-- разрешать full matched B1/B2 profiling matrix только отдельным decision gate.
+- формализовать кандидатов B1 и B2 относительно опубликованной базовой линии B0;
+- реализовать каждый кандидат отдельно;
+- применить заранее зарегистрированные критерии cosine, relative L2,
+  конечности значений и устойчивости;
+- сохранить доступ к тестовой выборке выключенным;
+- провести малое пилотное профилирование только для кандидатов, прошедших
+  численные проверки;
+- разрешать полную матрицу сопоставленного профилирования B1/B2 только отдельным
+  решением о допуске.
 
-Structural locality claims остаются заблокированными до dedicated measurements
-для dependency radius, graph span/lifetime, feedback operator и orchestration
-barriers.
+Утверждения о структурной локальности остаются заблокированными до измерения
+радиуса зависимостей, протяжённости и времени жизни графа, оператора обратной
+связи и барьеров оркестрации.

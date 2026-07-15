@@ -2,171 +2,189 @@
 
 [English version](CHANGELOG_EN.md)
 
-## [Unreleased] — синхронизация документации после B0 analysis publication
+## [Unreleased] — терминологическая и редакционная синхронизация
 
 ### Изменено
 
-- README, STATUS, ROADMAP и индексы документации синхронизированы с
-  опубликованным Stage 3B B0 statistical and engineering analysis;
-- следующий milestone определён как B1/B2 candidate-specific numerical
-  equivalence gates, а не повторный B0 execution или full profiling matrix;
-- bounded findings, provenance, tag и GitHub Release B0 analysis добавлены в
-  публичный статус;
-- граница результатов сохраняет `full_stage3b_campaign_complete=false`.
+- центральные русские и английские документы приведены к одной структуре и
+  одинаковым границам утверждений;
+- в русском тексте закреплены общепринятые русские термины, а английские
+  идентификаторы сохранены только для кода, полей, тегов и имён артефактов;
+- уточнены связи между README, STATUS, ROADMAP, журналом изменений и индексом
+  документации;
+- добавлен отдельный нормативный глоссарий с устойчивыми `TERM-*`,
+  двуязычными соответствиями, определениями и границами употребления;
+- языковая политика связывает обновление терминов с глоссарием и требует
+  сквозной проверки употреблений;
+- сохранена машинная граница
+  `full_stage3b_campaign_complete=false`.
 
 ### Сохранено неизменным
 
-- Stage 1/2, Stage 3A, Stage 3B B0 sealed evidence и analysis evidence;
-- execution, sealing, analysis и publication provenance;
-- существующие tags и GitHub Releases;
-- raw canonical archive вне Git.
+- численные результаты Stage 1/2, Stage 3A и Stage 3B B0;
+- доказательные материалы `sealed-v1` и `analysis-v1`;
+- хэши происхождения, контрольные суммы, теги и выпуски GitHub;
+- доступ к тестовой выборке и решения о допуске к следующим этапам.
 
 ## [stage3b-b0-analysis-evidence-v1] — 2026-07-15
 
 ### Добавлено
 
-- deterministic B0 statistical and engineering analysis без повторного
-  execution;
-- `model_seed` как независимая единица, 3 seeds на configuration;
-- 8 derived CSV tables, 4 PDF figures, bilingual report, metadata и
+- детерминированный статистический и инженерный анализ B0 без повторного
+  выполнения;
+- независимо обученная модель, заданная `model_seed`, как статистическая
+  единица; три модели на конфигурацию;
+- 8 производных CSV-таблиц, 4 PDF-рисунка, двуязычный отчёт, метаданные и
   `SHA256SUMS`;
-- paired timing/memory analysis, region attribution, saved-tensor analysis и
-  descriptive log2 scaling;
-- GitHub tag и Release `stage3b-b0-analysis-evidence-v1`.
+- парный анализ времени и памяти, вклад областей измерения, анализ сохранённых
+  тензоров и описательное масштабирование `log2`;
+- тег и выпуск GitHub `stage3b-b0-analysis-evidence-v1`.
 
-### Provenance
+### Происхождение артефактов
 
-- analysis implementation: `e7a1632a947fae578e877826f0c923342669430e`;
-- analysis publication state: `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3`;
-- source execution: `95c25d35224abd5e741f1df9327662ff2fde23ad`;
-- source sealing: `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
-- source seal digest:
+- реализация анализа: `e7a1632a947fae578e877826f0c923342669430e`;
+- публикационное состояние анализа:
+  `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3`;
+- источник выполнения: `95c25d35224abd5e741f1df9327662ff2fde23ad`;
+- источник фиксации целостности:
+  `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
+- контрольная сумма зафиксированного набора:
   `6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
 
-### Bounded findings
+### Выводы в зарегистрированной области
 
-- median Strict/FixedPred device-time ratio: `2.327×`
-  (`1.966–2.619×` across configurations);
-- median peak-allocated ratio: `1.328×`;
-- dominant device-time region: `state_inference`;
-- state-inference saved-tensor ratio: `11.998×`.
+- медианное отношение Strict/FixedPred для времени на устройстве — `2.327×`;
+  диапазон по конфигурациям — `1.966–2.619×`;
+- медианное отношение пиковой выделенной памяти — `1.328×`;
+- основная область времени — вывод состояний (`state_inference`);
+- отношение сохранённых тензоров в `state_inference` — `11.998×`.
 
-### Decision gate и граница утверждений
+### Решение о допуске и граница утверждений
 
-- candidate-specific B1/B2 equivalence work: `continue`;
-- full matched B1/B2 profiling:
-  `blocked_pending_candidate_specific_gates`;
-- structural locality claims: `blocked_by_missing_structural_evidence`;
-- новый B0 execution: `not_required`;
-- test dataset не использовался;
+- проверки эквивалентности для каждого кандидата B1/B2 разрешены;
+- полное сопоставленное профилирование B1/B2 остаётся заблокированным до
+  прохождения кандидатных проверок;
+- утверждения о структурной локальности заблокированы до появления специальных
+  структурных измерений;
+- новое выполнение B0 не требуется;
+- тестовая выборка не использовалась;
 - полный Stage 3B остаётся незавершённым.
 
 ## [stage3b-b0-evidence-v1] — 2026-07-15
 
 ### Добавлено
 
-- Stage 3B B0 ROCm/float32 canonical campaign: 96/96 cells, 0 failed;
-- fresh Python child process per cell: 96 process records и 96 unique child PID;
-- compact derived evidence: 96 cell, 480 region, 48 paired и 32 configuration
-  rows;
-- validation, metric definitions, content-addressed seal и `SHA256SUMS`;
-- Git-stable LF serialization для evidence CSV;
-- GitHub tag и Release `stage3b-b0-evidence-v1`.
+- каноническая кампания Stage 3B B0 в ROCm/float32: 96/96 ячеек, 0 неудачных;
+- новый дочерний процесс Python для каждой ячейки: 96 записей и 96 уникальных
+  PID;
+- компактные производные доказательные материалы: 96 строк по ячейкам, 480 по
+  областям, 48 парных и 32 по конфигурациям;
+- определения метрик, проверка, адресуемая по содержимому фиксация целостности
+  и `SHA256SUMS`;
+- стабильная для Git сериализация CSV с переводами строк LF;
+- тег и выпуск GitHub `stage3b-b0-evidence-v1`.
 
-### Provenance
+### Происхождение артефактов
 
-- execution source: `95c25d35224abd5e741f1df9327662ff2fde23ad`;
-- sealing source: `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
-- publication state: `ed0d48063a17e2d9c6679869a4d930f933877052`;
-- archive inventory:
+- источник выполнения: `95c25d35224abd5e741f1df9327662ff2fde23ad`;
+- источник фиксации целостности:
+  `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
+- публикационное состояние: `ed0d48063a17e2d9c6679869a4d930f933877052`;
+- контрольная сумма архива:
   `9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed`;
-- seal digest:
+- контрольная сумма зафиксированного набора:
   `6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
 
 ### Граница утверждений
 
-- B0 measurement baseline завершён и разрешён к публикации;
-- test dataset не использовался;
+- базовая линия измерений B0 завершена и разрешена к публикации;
+- тестовая выборка не использовалась;
 - полный Stage 3B остаётся незавершённым;
-- сравнительные claims о времени, памяти и scaling переносятся в отдельный B0
-  analysis.
+- сравнительные выводы по времени, памяти и масштабированию вынесены в
+  отдельный анализ B0.
 
-## [stage3a-statistical-publication-v1] — Stage 3A statistical publication
+## [stage3a-statistical-publication-v1] — статистическая публикация Stage 3A
 
 ### Добавлено
 
 - итоговый двуязычный отчёт `docs/stage3a-statistical-results*.md`;
-- seed-level confirmatory statistics: 40 gradient и 20 representation
-  comparisons;
-- confirmatory depth analysis: 180 seed-level и 24 statistical rows;
-- 8 publication PDF figures, metadata и отдельный figures `SHA256SUMS`;
-- ссылки на statistics, figures, provenance metadata и SHA-256 manifests в
-  публичной документации;
-- Stage 3 profiling/locality design foundation: locality taxonomy, profiling
-  contract, structural gates, exact/approximation/predict-correct candidates;
-- deterministic Stage 3 design plan: 336 profiling cells, 48 parameterized
-  core validation-only pilot cells и 27 predict-correct screening cells.
+- подтверждающая статистика на уровне случайных начальных значений: 40
+  сравнений градиентов и 20 сравнений представлений;
+- подтверждающий анализ по глубине: 180 строк по начальным значениям и 24
+  статистические строки;
+- 8 публикационных PDF-рисунков, метаданные происхождения и отдельный манифест
+  `SHA256SUMS` для рисунков;
+- публичные ссылки на статистику, рисунки, метаданные и манифесты SHA-256;
+- основание для профилирования и исследования локальности Stage 3: таксономия,
+  контракт измерений, структурные проверки и кандидаты ускорения;
+- детерминированный план Stage 3: 336 ячеек профилирования, 48 основных ячеек
+  пилотной проверки и 27 ячеек отбора схемы «предсказание–коррекция».
 
 ### Изменено
 
-- Phase 8 отмечена завершённой;
-- README, STATUS и ROADMAP синхронизированы с опубликованной Stage 3A
-  statistics/depth/figures evidence;
-- выводы явно ограничены FashionMNIST, `lenet_classic`, seeds 0–9,
-  закреплённой реализацией и validation-only protocol.
+- этап 8 отмечен завершённым;
+- README, STATUS и ROADMAP синхронизированы с опубликованной статистикой,
+  анализом по глубине и рисунками Stage 3A;
+- выводы ограничены FashionMNIST, `lenet_classic`, случайными начальными
+  значениями 0–9, закреплённой реализацией и протоколом без тестовой выборки.
 
 ### Сохранено неизменным
 
-- committed Stage 3A evidence не перегенерировался;
-- Stage 1/2 execution и publication states не изменены;
-- immutable evidence history и существующие tags не перемещались.
+- опубликованные доказательные материалы Stage 3A не пересоздавались;
+- состояния выполнения и публикации Stage 1/2 не изменялись;
+- неизменяемая история доказательных материалов и существующие теги не
+  перемещались.
 
 ## [stage2-results-v1] — 2026-07-13
 
 ### Добавлено
 
-- Stage 2: 80/80 completed на patched Torch2PC
+- Stage 2 завершён 80/80 на изменённой реализации Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
-- Stage 2 execution source
+- источник выполнения Stage 2
   `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2`;
-- results/publication state
+- публикационное состояние результатов
   `bb435432a65b76b7fc4f383b566b9a372fc346ae`;
-- CPU/GPU original-vs-patched numerical gates;
-- cross-version pair records и summary;
-- implementation-equivalence audit для `torch2pc-patched-v1`;
-- release tooling и regression coverage до 63 passing tests;
-- replication bundle с raw Stage 2 artifacts, archive SHA-256 и file manifest;
-- проверка 660 manifest artifacts.
+- ограниченные численные проверки исходной и изменённой реализаций на CPU/GPU;
+- парные межверсионные записи и сводки;
+- аудит эквивалентности реализации `torch2pc-patched-v1`;
+- инструменты выпуска и 63 регрессионные проверки;
+- пакет воспроизведения с исходными артефактами Stage 2, SHA-256 архива и
+  файловым манифестом;
+- проверка 660 артефактов манифеста.
 
 ### Наблюдалось
 
-- парные Stage 1/2 test accuracy и macro-F1 совпали;
-- BP runtime практически не изменился;
-- Exact приблизился к BP и ускорился примерно на 14% относительно Stage 1;
+- парные значения точности на тестовой выборке и macro-F1 для Stage 1/2
+  совпали;
+- время BP практически не изменилось;
+- Exact приблизился ко времени BP и ускорился примерно на 14% относительно
+  Stage 1;
 - FixedPred ускорился примерно на 31%;
 - Strict ускорился примерно на 26%;
 - порядок времени Stage 2: `BP ≈ Exact < FixedPred << Strict`.
 
 ## [stage2-execution-v1]
 
-Execution tag фиксирует код, использованный для Stage 2, отдельно от
-последующего results state. Экспериментальный протокол Stage 1 был сохранён;
-контролируемой интервенцией являлась закреплённая реализация Torch2PC.
+Тег выполнения фиксирует код Stage 2 отдельно от последующего публикационного
+состояния результатов. Протокол Stage 1 сохранён; контролируемым вмешательством
+являлась закреплённая реализация Torch2PC.
 
 ## [confirmatory-final-v1]
 
-- Stage 1: 80/80 completed, 0 failed;
+- Stage 1 завершён 80/80, 0 неудачных запусков;
 - исходный Torch2PC:
   `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
-- source lock: `140e77cc2083bf04234dcea16b95803e63cb0537`;
-- validation-only pilot до Stage 1: 96/96, test не вычислялся;
-- выбранные параметры: FixedPred `eta=0.1`, `n=10`; Strict `eta=0.05`,
-  `n=20`.
+- исходное состояние проекта:
+  `140e77cc2083bf04234dcea16b95803e63cb0537`;
+- предшествующая пилотная кампания: 96/96 без оценки на тестовой выборке;
+- выбранные параметры: FixedPred `eta=0.1`, `n=10`; Strict `eta=0.05`, `n=20`.
 
-## [0.1.0] — Первый коммит
+## [0.1.0] — первый коммит
 
-Добавлены нейтральная исследовательская позиция, preregistration draft, test
-isolation, pilot-freeze gate, append-only registry, фиксируемые splits и
-checksums, контейнерная Ubuntu/ROCm-среда, статистические utilities, статические
-проверки и каркас диссертации/статьи. Эта запись описывает исходный scaffold до
-получения эмпирических результатов.
+Добавлены нейтральная исследовательская позиция, проект предварительной
+регистрации, изоляция тестовой выборки, требование заморозки пилотной
+конфигурации, добавляемый реестр запусков, фиксируемые разбиения и контрольные
+суммы, контейнерная среда Ubuntu/ROCm, статистические средства, статические
+проверки и каркас диссертации и статьи. Запись описывает состояние до получения
+эмпирических результатов.

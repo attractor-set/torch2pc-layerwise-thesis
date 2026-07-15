@@ -26,9 +26,9 @@ Under which algorithmic and computational conditions do `Exact`, `FixedPred`,
 and `Strict` produce observations close to backpropagation, and when do the
 observed differences exceed pre-specified numerical or statistical bounds?
 
-## Observed status on 13 July 2026
+## Observed status on 15 July 2026
 
-The validation pilot and both confirmatory campaigns are complete in the pinned
+The following baseline and diagnostic campaigns are complete in the pinned
 Ubuntu/ROCm environment:
 
 - validation-only pilot: **96/96** terminal cells, 0 failed, no test evaluation;
@@ -36,12 +36,15 @@ Ubuntu/ROCm environment:
   `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
 - Stage 2: **80/80**, patched Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
-- the scoped CPU/GPU numerical equivalence gates passed;
-- the current publication branch regression suite contains **120 passing tests**;
-- paired Stage 1/2 test accuracy and macro-F1 values matched for every dataset,
-  method, and seed;
-- the observed Stage 2 runtime ordering is
-  `BP ≈ Exact < FixedPred << Strict`.
+- Stage 3A: layer-wise diagnostics, seed-level statistics, depth analysis, and
+  publication figures are published;
+- Stage 3B B0: the ROCm/float32 canonical baseline completed **96/96**, with no
+  failed attempts or systemic resource failures; every cell ran in a fresh
+  Python child process;
+- neither Stage 3A nor Stage 3B B0 accessed the test dataset.
+
+CI is the source of truth for the current regression-suite status; the
+repository documentation does not pin a quickly stale passing-test count.
 
 Relative to Stage 1 mean total training time, Exact was approximately 14%
 faster, FixedPred 31% faster, and Strict 26% faster; BP was effectively
@@ -55,20 +58,22 @@ unchanged. Complete paired records are available in
 | Stage 1 source lock | `140e77cc2083bf04234dcea16b95803e63cb0537` |
 | Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
 | Stage 2 results/publication state | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
-| Stage 1 tag | `confirmatory-final-v1` |
-| Stage 2 execution tag | `stage2-execution-v1` |
-| Stage 2 results tag | `stage2-results-v1` |
+| Stage 3A publication tag | `stage3a-statistical-publication-v1` |
+| Stage 3B B0 execution source | `95c25d35224abd5e741f1df9327662ff2fde23ad` |
+| Stage 3B B0 sealing source | `caa226cc1cd5d4aa0f9772c1fb997f7388d60730` |
+| Stage 3B B0 publication state | `ed0d48063a17e2d9c6679869a4d930f933877052` |
+| Stage 3B B0 publication tag | `stage3b-b0-evidence-v1` |
 
 The
 [`stage2-results-v1` GitHub Release](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
-contains the replication archive, its SHA-256, and the file manifest; 660
-manifest artifacts were verified. The execution tag identifies the code used
-for the campaign, while the results tag identifies the later publication
-state.
+contains the Stage 2 replication bundle. The
+[`stage3b-b0-evidence-v1` GitHub Release](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
+pins the compact Stage 3B B0 derived-evidence bundle, its provenance, and its
+checksums.
 
-Stage 1 and Stage 2 are complete and are not intended to be rerun. Any new
-performance-changing work belongs to a separately specified Stage 3 with its
-own provenance chain.
+Stage 1, Stage 2, Stage 3A, and Stage 3B B0 are complete within their registered
+scopes and are not intended to be rerun. The full Stage 3B program remains
+incomplete.
 
 See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 [STATUS_EN.md](STATUS_EN.md).
@@ -107,21 +112,41 @@ Publication artifacts:
   `figure_metadata.json` and `SHA256SUMS`.
 
 Conclusions are limited to FashionMNIST, `lenet_classic`, seeds 0–9, the pinned
-implementation, and the validation-only Stage 3A protocol. Stage 3A does not
-complete the broader Stage 3. The next campaign must use a separate branch and
-preregistration for profiling/locality; exact execution and acceleration retain
-separate gates and provenance chains.
+implementation, and the validation-only Stage 3A protocol.
 
-The current design state still permits profiling-infrastructure preparation
-only:
+## Stage 3B B0: canonical profiling baseline and evidence publication complete
 
-```bash
-make stage3-ready
-make stage3-plan
-```
+B0 fixes the `stage2_baseline` candidate for `FixedPred` and `Strict` in an
+ROCm/float32 synthetic scaling campaign. The canonical protocol used 20 warm-up
+steps, 5 repetitions, and 50 measured steps. Completed outputs include:
 
-Stage 3 remains absent from `TRAINING_STAGES`, and the final template keeps
-`evaluation.use_test=false` until a separate freeze.
+- 96/96 canonical cells and 96/96 completed attempts;
+- 0 failed attempts and 0 systemic resource failures;
+- 96 process records and 96 unique child PIDs;
+- 48 `FixedPred` and 48 `Strict` cells;
+- 96 cell-level, 480 region-level, 48 paired-method, and 32 configuration rows;
+- five measured regions: `initial_forward`, `state_inference`,
+  `local_state_vjp`, `parameter_vjp`, and `optimizer_step`;
+- non-perturbation, completeness, and finite-value gates.
+
+The compact evidence bundle is published under
+[`results/stage-3/profiling/b0/sealed-v1/`](results/stage-3/profiling/b0/sealed-v1/).
+Seal digest:
+`6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
+
+The claim boundary is explicit:
+
+- `evidence=true`;
+- `full_b0_campaign_complete=true`;
+- `results_publication_permitted=true`;
+- `full_stage3b_campaign_complete=false`;
+- `test_dataset_access=false`.
+
+The B0 publication establishes a complete and integrity-checked measurement
+baseline; it does not replace statistical and engineering comparison analysis.
+The next stage is a separate `stage3b-b0-analysis-v1` branch for paired
+seed-level effects, region-level time decomposition, memory and scaling
+analysis, followed by a decision gate for later Stage 3B candidates.
 
 ## Pilot evidence export
 

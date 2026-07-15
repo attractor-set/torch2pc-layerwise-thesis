@@ -12,8 +12,8 @@
 
 ## Фаза 6 — Stage 3 design revision 2 завершена
 
-Закреплены контракты локальности и профилирования, точные кандидаты,
-основные приближения и predict-correct candidates.
+Закреплены контракты локальности и профилирования, точные кандидаты, основные
+приближения и predict-correct candidates.
 
 ## Фаза 7 — Stage 3A layer-wise diagnostics завершена
 
@@ -32,43 +32,53 @@
 - выполнен confirmatory depth analysis;
 - опубликованы 8 PDF figures;
 - добавлены metadata и SHA-256 manifests;
-- опубликован двуязычный bounded findings report;
-- regression suite: 120 passed.
+- опубликован двуязычный bounded findings report.
 
 Publication tag: `stage3a-statistical-publication-v1`.
 
-## Фаза 9 — profiling/locality preregistration и измерительная база — следующая
+## Фаза 9 — Stage 3B preregistration и B0 measurement baseline завершены
 
-Создать отдельную ветку `stage3b-profiling-locality-preregistration` и до
-запуска новой кампании заморозить:
+- profiling/locality preregistration и measurement contract заморожены;
+- B0 candidate: `stage2_baseline` для `FixedPred` и `Strict`;
+- ROCm/float32 canonical campaign выполнена 96/96;
+- каждая cell изолирована в fresh Python child process;
+- 0 failed attempts и 0 systemic resource failures;
+- опубликованы 96 cell, 480 region, 48 paired и 32 configuration rows;
+- validation, sealing, tag и GitHub Release завершены;
+- test dataset не использовался.
 
-- validation-only область и independent unit = model seed;
-- B0/A0 profiling design;
-- warm-up, device synchronization и repetition rules;
-- wall-clock, CPU/GPU time, peak memory, VJP/backward attribution;
-- locality taxonomy и B1/B2 gates;
-- failure, exclusion и missing-data rules;
-- разделение exploratory attribution и confirmatory claims.
+Publication tag: `stage3b-b0-evidence-v1`.
 
-Profiling/locality не изменяет завершённый Stage 3A evidence-набор и не
-формулирует acceleration claims до прохождения measurement-validity gates.
+Evidence boundary: `full_b0_campaign_complete=true`,
+`full_stage3b_campaign_complete=false`.
 
-## Фаза 10 — exact execution и mechanism attribution
+## Фаза 10 — B0 statistical and engineering analysis — следующая
 
-После валидированного profiling выполнить B1/B2 numerical gates, определить
-layer/module hotspots и только затем фиксировать exact execution candidates.
+В отдельной ветке `stage3b-b0-analysis-v1` выполнить:
 
-## Фаза 11 — core approximations и predict-correct
+- paired seed-level analysis `Strict` относительно `FixedPred`;
+- decomposition времени по profiling regions;
+- peak-memory и saved-tensor attribution;
+- scaling по depth, width и batch size;
+- bounded descriptive uncertainty при трёх model seeds на configuration;
+- двуязычный report и decision gate для дальнейших candidates.
+
+## Фаза 11 — exact execution и mechanism attribution
+
+После B0 analysis пройти B1/B2 numerical gates, определить layer/module
+hotspots и только затем фиксировать exact execution candidates.
+
+## Фаза 12 — core approximations и predict-correct
 
 C1/C2 и C4/C5 проходят отдельные validation-only screening campaigns с
 residual, fallback, non-inferiority, VJP-reduction и stability gates.
 
-## Фаза 12 — расширенный Stage 3: freeze и final
+## Фаза 13 — расширенный Stage 3: freeze и final
 
 Заморозить выбранные candidates и параметры, создать отдельные execution и
 publication states и только после freeze разрешить final test evaluation.
 
-## Фаза 13 — диссертация и статья
+## Фаза 14 — диссертация и статья
 
 Объединить Stage 1/2, Stage 3A и последующие profiling/locality/acceleration
 результаты; подготовить replication bundles и clean-room reproduction.

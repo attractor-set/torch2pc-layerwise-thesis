@@ -29,43 +29,54 @@ predict-correct candidates are specified.
 - confirmatory depth analysis is complete;
 - 8 PDF figures are published;
 - metadata and SHA-256 manifests are present;
-- a bilingual bounded findings report is published;
-- regression suite: 120 passed.
+- a bilingual bounded findings report is published.
 
 Publication tag: `stage3a-statistical-publication-v1`.
 
-## Phase 9 — profiling/locality preregistration and measurement baseline — next
+## Phase 9 — Stage 3B preregistration and B0 measurement baseline complete
 
-Create a separate `stage3b-profiling-locality-preregistration` branch and
-freeze the following before a new campaign starts:
+- the profiling/locality preregistration and measurement contract are frozen;
+- B0 candidate: `stage2_baseline` for `FixedPred` and `Strict`;
+- the ROCm/float32 canonical campaign completed 96/96;
+- every cell ran in a fresh Python child process;
+- 0 failed attempts and 0 systemic resource failures;
+- 96 cell, 480 region, 48 paired, and 32 configuration rows are published;
+- validation, sealing, tag, and GitHub Release are complete;
+- the test dataset was not accessed.
 
-- validation-only scope and independent unit = model seed;
-- B0/A0 profiling design;
-- warm-up, device synchronization, and repetition rules;
-- wall-clock, CPU/GPU time, peak memory, and VJP/backward attribution;
-- locality taxonomy and B1/B2 gates;
-- failure, exclusion, and missing-data rules;
-- separation of exploratory attribution from confirmatory claims.
+Publication tag: `stage3b-b0-evidence-v1`.
 
-Profiling/locality does not modify the completed Stage 3A evidence and does not
-make acceleration claims before measurement-validity gates pass.
+Evidence boundary: `full_b0_campaign_complete=true`,
+`full_stage3b_campaign_complete=false`.
 
-## Phase 10 — exact execution and mechanism attribution
+## Phase 10 — B0 statistical and engineering analysis — next
 
-After profiling is validated, run B1/B2 numerical gates, identify layer/module
+In a separate `stage3b-b0-analysis-v1` branch:
+
+- perform paired seed-level analysis of `Strict` relative to `FixedPred`;
+- decompose time across profiling regions;
+- analyze peak memory and saved-tensor attribution;
+- analyze scaling across depth, width, and batch size;
+- report bounded descriptive uncertainty with three model seeds per
+  configuration;
+- publish a bilingual report and a decision gate for later candidates.
+
+## Phase 11 — exact execution and mechanism attribution
+
+After the B0 analysis, run B1/B2 numerical gates, identify layer/module
 hotspots, and only then freeze exact execution candidates.
 
-## Phase 11 — core approximations and predict-correct
+## Phase 12 — core approximations and predict-correct
 
 Run C1/C2 and C4/C5 as separate validation-only screening campaigns with
 residual, fallback, non-inferiority, VJP-reduction, and stability gates.
 
-## Phase 12 — extended Stage 3 freeze and final
+## Phase 13 — extended Stage 3 freeze and final
 
 Freeze selected candidates and parameters, preserve distinct execution and
 publication states, and enable final test evaluation only after the freeze.
 
-## Phase 13 — thesis and article
+## Phase 14 — thesis and article
 
 Integrate Stage 1/2, Stage 3A, and later profiling/locality/acceleration
 results; publish replication bundles and complete clean-room reproduction.

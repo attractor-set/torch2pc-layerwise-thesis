@@ -18,6 +18,9 @@ EQ_S1_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq
 EQ_S2_MAX_BATCHES ?= 1
 EQ_S2_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s2-cpu-smoke
 EQ_S2_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s2-gpu-smoke
+OBS_NI0_MAX_BATCHES ?= 1
+OBS_NI0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-ni0-cpu-smoke
+OBS_NI0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-ni0-gpu-smoke
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
@@ -29,7 +32,8 @@ EQ_S2_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq
         snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2 \
         stage3-ready stage3-plan stage3b-a1-eq-s0-cpu stage3b-a1-eq-s0-gpu \
         stage3b-a1-eq-s1-cpu stage3b-a1-eq-s1-gpu \
-        stage3b-a1-eq-s2-cpu stage3b-a1-eq-s2-gpu
+        stage3b-a1-eq-s2-cpu stage3b-a1-eq-s2-gpu \
+        stage3b-a1-obs-ni0-cpu stage3b-a1-obs-ni0-gpu
 
 help:
 	@printf '%s\n' \
@@ -73,6 +77,8 @@ help:
 	  '  stage3b-a1-eq-s1-gpu  Run EQ-S1 joint-VJP shortcut in Docker/ROCm' \
 	  '  stage3b-a1-eq-s2-cpu  Run EQ-S2 FixedPred/shortcut in Docker CPU' \
 	  '  stage3b-a1-eq-s2-gpu  Run EQ-S2 FixedPred/shortcut in Docker/ROCm' \
+	  '  stage3b-a1-obs-ni0-cpu Run OBS-NI0 passive observer in Docker CPU' \
+	  '  stage3b-a1-obs-ni0-gpu Run OBS-NI0 passive observer in Docker/ROCm' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \
@@ -287,6 +293,16 @@ stage3b-a1-eq-s2-gpu:
 	$(PYTHON) scripts/run_stage3b_a1_eq_s2_container.py gpu \
 		--max-batches "$(EQ_S2_MAX_BATCHES)" \
 		--output-dir "$(EQ_S2_GPU_OUTPUT_DIR)"
+
+stage3b-a1-obs-ni0-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_obs_ni0_container.py cpu \
+		--max-batches "$(OBS_NI0_MAX_BATCHES)" \
+		--output-dir "$(OBS_NI0_CPU_OUTPUT_DIR)"
+
+stage3b-a1-obs-ni0-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_obs_ni0_container.py gpu \
+		--max-batches "$(OBS_NI0_MAX_BATCHES)" \
+		--output-dir "$(OBS_NI0_GPU_OUTPUT_DIR)"
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

@@ -28,6 +28,8 @@ Central question:
 
 ## 3. Frozen mandatory scope
 
+### Mandatory
+
 Mandatory work includes shortcut/equivalence controls, observer
 non-interference and overhead, deterministic NCZ/ECZ/TNZ controls, SI-MA0,
 [candidate](glossary_EN.md#term-candidate)-specific B1/B2 gates, `EX-IF0`, passive PC-CATM diagnostics, nested
@@ -35,8 +37,14 @@ $\phi_0,\ldots,\phi_5$ ablations, [endpoint](glossary_EN.md#term-endpoint)-gradi
 exact verification, shadow [QWake-PC](glossary_EN.md#term-qwake-pc), and active full-sweep QWake-PC only after
 the safety gate passes.
 
+### Limited extension
+
 `PNZ` is limited to theory, one deterministic parameter-accessibility control,
-and an optional small passive audit. Active kernel-preconditioned learning,
+and an optional small passive audit.
+
+### Outside mandatory scope
+
+Active kernel-preconditioned learning,
 dual Gauss–Newton, layer-aware skipping, plasticity control, continual
 learning, and universal TREF are outside mandatory scope.
 
@@ -106,12 +114,18 @@ sufficiency and shadow QWake by April, and discussion/conclusion in May–June.
 
 ## 7. Primary measurements
 
+### Validity
+
 Validity: endpoint-gradient cosine/relative L2, zero-safe absolute error,
 optimizer-step parity, update reconstruction, and observer non-interference.
+
+### Diagnostic sufficiency
 
 Diagnostic sufficiency: dangerous misses, endpoint-gradient regret,
 unnecessary wake-ups, [fallback](glossary_EN.md#term-fallback) rate, calibration, and generalization across
 `model_seed`.
+
+### Engineering measurements
 
 Engineering: sweeps, VJPs, device/wall time, memory, saved tensors, graph
 lifetime, synchronization, host transfer, and serialization cost.

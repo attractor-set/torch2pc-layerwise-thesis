@@ -67,3 +67,13 @@ experiments/planned/STAGE3-001.md,experiments/planned/STAGE3-001_EN.md,required
 results/stage-3/README.md,results/stage-3/README_EN.md,required
 docs/decisions/ADR-008-predict-correct-acceleration.md,docs/decisions/ADR-008-predict-correct-acceleration_EN.md,required
 experiments/planned/STAGE3B-PROFILING-LOCALITY.md,experiments/planned/STAGE3B-PROFILING-LOCALITY_EN.md,required
+docs/decisions/ADR-005-post-pilot-final-execution.md,docs/decisions/ADR-005-post-pilot-final-execution_EN.md,required
+docs/decisions/ADR-009-stage3b-rocm-canonical-lane.md,docs/decisions/ADR-009-stage3b-rocm-canonical-lane_EN.md,required
+docs/decisions/ADR-010-stage3b-per-cell-process-isolation.md,docs/decisions/ADR-010-stage3b-per-cell-process-isolation_EN.md,required
+docs/decisions/ADR-011-stage3b-b0-derived-evidence-seal.md,docs/decisions/ADR-011-stage3b-b0-derived-evidence-seal_EN.md,required
+docs/stage-2-protocol.md,docs/stage-2-protocol_EN.md,required
+docs/stage3-layerwise-analysis.md,docs/stage3-layerwise-analysis_EN.md,required
+docs/stage3a-publication-finalization.md,docs/stage3a-publication-finalization_EN.md,required
+docs/stage3b-b0-analysis-pipeline.md,docs/stage3b-b0-analysis-pipeline_EN.md,required
+docs/stage3b-b0-sealing.md,docs/stage3b-b0-sealing_EN.md,required
+docs/torch2pc-patched-v1-equivalence.md,docs/torch2pc-patched-v1-equivalence_EN.md,required

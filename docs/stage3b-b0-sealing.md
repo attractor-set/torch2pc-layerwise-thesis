@@ -1,55 +1,66 @@
-# Validation, aggregation и sealing Stage 3B B0
+# Проверка, агрегирование и фиксация целостности этапа 3B B0
 
 [English version](stage3b-b0-sealing_EN.md)
 
 ## Назначение
 
-`scripts/seal_stage3b_b0.py` читает полный immutable archive завершённой
-ROCm/float32 canonical lane. Script не изменяет archive и записывает отдельный
-compact evidence bundle.
+`scripts/seal_stage3b_b0.py` читает полный неизменяемый архив завершённого
+канонического контура ROCm/float32. Скрипт не изменяет архив и записывает
+отдельный компактный набор доказательных материалов.
 
-Обязательные identity inputs:
+Обязательные идентификационные входные данные:
 
-- exact execution source commit;
-- exact source commit sealing implementation;
-- immutable Docker image digest `sha256:<64 hex>`;
-- SHA-256 файла archive `SHA256SUMS`.
+- точный исходный коммит выполнения;
+- точный исходный коммит реализации фиксации целостности;
+- неизменяемый хэш образа Docker `sha256:<64 hex>`;
+- SHA-256 файла `SHA256SUMS` исходного архива.
 
-## Validation gates
+## Проверки корректности
 
-Pipeline проверяет:
+Конвейер проверяет:
 
-- exact checksum inventory без missing, extra и symlink files;
-- project freeze schema v2, ROCm preflight и campaign authorization;
-- archived manifest и authorization snapshots;
-- один завершённый canonical run;
-- 96/96 completed cells, отсутствие failed attempts и systemic stop;
-- отдельный child process record для каждой cell;
-- request/terminal hashes и immutable fields;
-- exact B0 matrix: methods, depths, widths, batch sizes и model seeds;
-- 250 composite и integrity records на cell;
-- 1250 region records на cell;
-- completeness всех preregistered regions;
-- float32 non-perturbation thresholds и отсутствие non-finite events;
-- отсутствие test dataset access.
+- точный перечень контрольных сумм без отсутствующих, лишних и символьных
+  ссылок;
+- схему фиксации проекта версии 2, предварительную проверку ROCm и разрешение
+  кампании;
+- архивные снимки манифеста и разрешения;
+- один завершённый канонический [запуск](glossary.md#term-run);
+- 96 из 96 завершённых экспериментальных ячеек, отсутствие неудачных попыток
+  и системной остановки;
+- отдельную запись дочернего процесса для каждой экспериментальной ячейки;
+- хэши запросов и терминальных записей, а также неизменяемые поля;
+- точную матрицу B0: методы, глубины, ширины, размеры пакета и случайные
+  начальные значения модели;
+- 250 составных записей и записей целостности на экспериментальную ячейку;
+- 1250 записей областей измерения на экспериментальную ячейку;
+- полноту всех предварительно зарегистрированных областей измерения;
+- пороги отсутствия возмущения измерением для float32 и отсутствие
+  неконечных значений;
+- отсутствие доступа к тестовой выборке.
 
 ## Производные файлы
 
-- `validation.json` — полный acceptance record;
-- `metric-definitions.json` — точные aggregation definitions;
-- `cell_metrics.csv` — 96 seed-level cell rows;
-- `region_metrics.csv` — 480 seed-level cell-region rows;
-- `paired_method_metrics.csv` — 48 FixedPred/Strict pairs;
-- `configuration_metrics.csv` — 32 method/configuration summaries по трём seeds;
-- `seal.json` — content-addressed evidence seal с execution и sealing source commits;
-- `SHA256SUMS` — inventory производного bundle.
+- `validation.json` — полная запись решения о приёмке;
+- `metric-definitions.json` — точные определения агрегирования;
+- `cell_metrics.csv` — 96 строк экспериментальных ячеек на уровне случайного
+  начального значения модели;
+- `region_metrics.csv` — 480 строк пар «[экспериментальная ячейка](glossary.md#term-experiment-cell) — область
+  измерения» на уровне случайного начального значения модели;
+- `paired_method_metrics.csv` — 48 пар FixedPred/Strict;
+- `configuration_metrics.csv` — 32 сводки по сочетаниям метода и конфигурации
+  для трёх случайных начальных значений модели;
+- `seal.json` — адресуемая по содержимому [фиксация целостности](glossary.md#term-integrity-sealing) доказательных
+  материалов с исходными коммитами выполнения и реализации фиксации;
+- `SHA256SUMS` — перечень контрольных сумм производного набора.
 
-Nearest-rank p95 определяется как элемент с one-indexed rank
-`ceil(0.95 * n)`. Peak memory — максимальное наблюдаемое значение внутри
-отдельного cell child process.
+Квантиль p95 по правилу ближайшего ранга определяется как элемент с рангом
+`ceil(0.95 * n)` при нумерации с единицы. Пиковая память — максимальное
+наблюдаемое значение внутри отдельного дочернего процесса экспериментальной
+ячейки.
 
 ## Границы утверждений
 
-Seal разрешает публикацию только aggregate evidence B0 baseline candidate.
-Он не означает завершение A0/B1/B2 или всей Stage 3B campaign. Raw archive
-остаётся non-evidence execution source и не копируется в Git.
+[Фиксация целостности](glossary.md#term-integrity-sealing) разрешает публикацию только агрегированных доказательных
+материалов кандидата базовой линии B0. Она не означает завершение A0, B1, B2
+или всей кампании этапа 3B. Исходный архив остаётся источником выполнения, а не
+публикуемым набором доказательных материалов, и не копируется в Git.

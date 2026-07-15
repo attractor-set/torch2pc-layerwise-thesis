@@ -2,45 +2,85 @@
 
 [Русская версия](analysis-plan.md)
 
-Primary analysis uses paired model seeds on FashionMNIST macro F1. The primary
-contrasts are FixedPred vs BP and Strict vs BP. Each contrast reports seed-level
-values, mean paired difference, 95% confidence interval, Cohen dz, the declared
-paired test, Holm adjustment, and a separate equivalence assessment.
+## Primary analysis
 
-The absolute macro-F1 equivalence margin of 0.01 is fixed before pilot
-execution. Equivalence requires at least ten complete pairs and a 90%
-confidence interval entirely inside the margin. A non-significant difference
-is not treated as evidence of equivalence.
+FashionMNIST is the primary [dataset](glossary_EN.md#term-dataset), macro-F1 is the primary metric, and an
+independently trained model is the [independent statistical unit](glossary_EN.md#term-statistical-unit). The primary
+paired comparisons are FixedPred versus BP and Strict versus BP. Each
+comparison requires at least ten complete pairs with matching `model_seed`
+values.
 
-A contrast is confirmatory only with at least ten complete pre-specified seed
-pairs. With fewer pairs, descriptive estimates are retained, but no
-Holm-adjusted confirmatory conclusion or equivalence conclusion is produced.
+For each primary comparison, publish:
 
-Pilot selection uses FashionMNIST validation only. Success rate is based on the
-first terminal attempt for each configuration/seed. MNIST is a secondary
-transfer description and does not enter ranking. An advisory final sample size
-may only increase the initial ten pairs and follows the rule documented in
-`PREREGISTRATION.md`.
+- raw values for every independently trained model;
+- mean paired difference;
+- 95% confidence interval;
+- `Cohen dz`;
+- an exact paired sign-flip permutation test or the preregistered approximation;
+- the Holm-adjusted value;
+- a separate equivalence assessment.
 
-Layer and sample observations are not treated as independent model
-replications. Representation uncertainty must include between-seed variation;
-a bootstrap over images alone is insufficient. Equal-update and
-equal-wall-clock comparisons are reported separately.
+## Equivalence
 
-Final execution uses a deterministically counterbalanced method order within
-each dataset/model/seed block, GPU synchronization around timed epochs, and
-explicit peak-memory telemetry. The post-pilot execution amendment is recorded
-in `docs/decisions/ADR-005-post-pilot-final-execution_EN.md`.
+Equivalence is not inferred from the absence of a statistically detectable
+difference. It is assessed separately: the 90% confidence interval for the
+paired macro-F1 difference must lie entirely inside a prespecified margin. The
+working margin of 0.01 is fixed before the [pilot study](glossary_EN.md#term-pilot-study) and is not changed after
+pilot or final results are observed.
 
+## Secondary analysis
+
+Secondary outcomes include MNIST, accuracy, loss, training trajectory, Exact,
+run success rate, and computational metrics. Secondary analysis is marked
+separately and does not replace the primary analysis.
+
+## Layer-wise analysis
+
+Gradient measures are aggregated first within one trained model and then across
+models with different `model_seed` values. Individual parameters, layers, and
+batches are not treated as independent model replications.
+
+## Representation analysis
+
+Uncertainty for CKA and RSA must include between-model variation. Resampling
+images alone is insufficient. The analysis uses hierarchical resampling or
+comparisons of model-level estimates.
+
+## Robustness
+
+The same [checkpoint](glossary_EN.md#term-checkpoint) is evaluated on deterministic corruptions with fixed
+corruption-generator seeds. Report the clean-data metric, relative degradation,
+the slope across severity, and the value at maximum severity.
+
+## Computational cost
+
+Equal-update and equal-wall-clock comparisons are reported separately. The
+measurements include [warm-up](glossary_EN.md#term-warm-up), GPU synchronization, deterministic method-order
+counterbalancing, repeated measurements, and host-state recording before and
+after each series. The post-pilot order and telemetry freeze are documented in
+`docs/decisions/ADR-005-post-pilot-final-execution_EN.md`.
+
+## Confirmatory-analysis completeness
+
+A primary contrast is confirmatory only when at least ten complete pairs with
+prespecified seed values are available. With fewer pairs, descriptive estimates
+are retained, but no Holm-adjusted p-value or equivalence conclusion is formed.
+
+The pilot [configuration](glossary_EN.md#term-configuration) is selected using FashionMNIST validation data only. MNIST is
+a secondary transfer assessment and does not participate in [candidate](glossary_EN.md#term-candidate) ranking.
 
 ## Stage 3 addendum
 
-Stage 3 does not modify the Stage 1/2 confirmatory analysis. Training quality
-uses independently trained model seeds; profiling uses matched cell/repetition
-inside a hardware block; locality events are aggregated within run before
-between-seed analysis; layer alignment is aggregated within model first.
+Stage 3 does not modify the Stage 1/2 [confirmatory analysis](glossary_EN.md#term-confirmatory-analysis). It uses separate
+analysis units:
 
-B1/B2 use numerical-equivalence and paired runtime/memory observations. C1/C2
-use validation non-inferiority, gradient alignment, and compute reduction. The
-final non-inferiority margin is fixed before Stage 3 test access. See
-[stage-3-protocol_EN.md](stage-3-protocol_EN.md).
+- training quality: an independently trained model;
+- [profiling](glossary_EN.md#term-profiling): a matched [experiment cell](glossary_EN.md#term-experiment-cell) or repetition within a hardware block;
+- locality: events aggregated within a run before analysis across trained models;
+- gradient alignment: layers aggregated within a model before between-model
+  analysis.
+
+B1 and B2 use numerical-equivalence checks and paired [runtime](glossary_EN.md#term-runtime)/memory
+observations. C1 and C2 use validation [non-inferiority](glossary_EN.md#term-non-inferiority), gradient alignment, and
+compute reduction. The final [non-inferiority](glossary_EN.md#term-non-inferiority) margin is fixed before Stage 3
+test access. See the [Stage 3 protocol](stage-3-protocol_EN.md).

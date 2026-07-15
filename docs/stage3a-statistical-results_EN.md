@@ -7,16 +7,16 @@
 Stage 3A is a confirmatory diagnostic subcampaign executed in the pinned
 Ubuntu/ROCm environment within one experimental scope:
 
-- dataset: FashionMNIST;
-- architecture: `lenet_classic`;
+- [dataset](glossary_EN.md#term-dataset): FashionMNIST;
+- [architecture](glossary_EN.md#term-architecture): `lenet_classic`;
 - methods: BP, `Exact`, `FixedPred`, and `Strict`;
 - model seeds: 0–9;
 - data access: validation-only diagnostic probes;
-- statistical unit: the independently trained model seed.
+- statistical unit: the independently trained [model seed](glossary_EN.md#term-model-seed).
 
 Layers, batches, parameters, and samples are repeated observations within a
 seed and do not increase the number of independent replications. Stage 3A does
-not create a test loader and does not modify the completed Stage 1/2 execution
+not create a test loader and does not modify the completed Stage 1/2 [execution](glossary_EN.md#term-execution)
 or publication states.
 
 The frozen analysis plan is available at
@@ -83,7 +83,7 @@ values match the targets within numerical precision and `p_holm=1`.
 | 4 | 1.000000 | 0.612580 | 0.387420 | 0.999848 |
 | 5 | 1.000000 | 1.000000 | 0.000000 | 1.000000 |
 
-Within the studied configuration, `FixedPred` nearly preserves gradient
+Within the studied [configuration](glossary_EN.md#term-configuration), `FixedPred` nearly preserves gradient
 direction while strongly suppressing the norm in early layers. The scale
 approaches BP toward the output, and layer 5 matches the BP targets.
 
@@ -105,7 +105,7 @@ Output layer 5 is close to BP but not identical:
 - relative L2: `0.002240`;
 - sign agreement: `0.999482`.
 
-In this scope, `Strict` produces both depth-dependent scaling and a visible
+In this scope, `Strict` produces both depth-dependent [scaling](glossary_EN.md#term-scaling) and a visible
 direction mismatch in hidden layers.
 
 ## Neural representations
@@ -121,7 +121,7 @@ BP than `Strict`:
 
 A statistical difference from the ideal target does not automatically imply a
 large practical effect. The absolute CKA/RSA deviations for `FixedPred` remain
-small within the studied configuration.
+small within the studied [configuration](glossary_EN.md#term-configuration).
 
 ## Depth analysis
 
@@ -149,8 +149,8 @@ moderate positive trend for both `FixedPred` and `Strict`.
 
 ## Cross-layer CKA
 
-Cross-layer CKA is retained as a descriptive evidence set with 750
-observations. The candidate-method matrices have their largest mean values on
+Cross-layer CKA is retained as a descriptive [evidence](glossary_EN.md#term-evidence) set with 750
+observations. The [candidate](glossary_EN.md#term-candidate)-method matrices have their largest mean values on
 matched layers:
 
 | Method | Mean matched-layer CKA | Mean off-diagonal CKA |
@@ -170,12 +170,12 @@ results are therefore interpreted descriptively.
   under near-zero between-seed variance. They indicate a stable deviation from
   the target, not a universal measure of practical importance.
 - Significance against ideal `1/0` targets does not replace evaluation of
-  training quality, runtime, memory, or downstream utility.
+  training quality, [runtime](glossary_EN.md#term-runtime), memory, or downstream utility.
 - Layers and batches are not independent replications.
 
 ## Threats to validity
 
-1. One dataset and one architecture were studied.
+1. One [dataset](glossary_EN.md#term-dataset) and one [architecture](glossary_EN.md#term-architecture) were studied.
 2. The analysis contains 10 independently trained seeds.
 3. The campaign is limited to validation-only diagnostic probes.
 4. Results apply to the pinned Torch2PC commits, dtype, configurations, and
@@ -187,7 +187,7 @@ results are therefore interpreted descriptively.
 
 ## Bounded conclusions
 
-Within the studied configuration:
+Within the studied [configuration](glossary_EN.md#term-configuration):
 
 - `Exact` passes the registered numerical controls against BP;
 - `FixedPred` primarily preserves gradient direction while producing strong
@@ -217,7 +217,7 @@ Figures:
 - [figure metadata](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/stage3a-statistical-publication-v1/results/stage3/layerwise/confirmatory/figures/figure_metadata.json);
 - [figures SHA256SUMS](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/stage3a-statistical-publication-v1/results/stage3/layerwise/confirmatory/figures/SHA256SUMS).
 
-Committed evidence is verified without regeneration:
+Committed [evidence](glossary_EN.md#term-evidence) is verified without regeneration:
 
 ```bash
 (

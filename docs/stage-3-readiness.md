@@ -1,12 +1,12 @@
-# Готовность Stage 3
+# Готовность этапа 3
 
 [English version](stage-3-readiness_EN.md)
 
 ## Значение статуса
 
-`ready_for_stage3_implementation` разрешает реализацию, но не pilot/final.
-`blocked_until_candidates_and_freeze` означает, что Stage 3 отсутствует из
-`TRAINING_STAGES`, а test выключен.
+`ready_for_stage3_implementation` разрешает реализацию, но не пилотное или
+итоговое [выполнение](glossary.md#term-execution). `blocked_until_candidates_and_freeze` означает, что этап
+3 отсутствует в `TRAINING_STAGES`, а тестовая выборка выключена.
 
 ## Проверка
 
@@ -18,38 +18,40 @@ PYTHONPATH=src python scripts/generate_stage3_design_plan.py
 
 Ожидается:
 
-- design revision 2;
-- 336 profiling cells;
-- 48 core validation-only pilot cells;
-- 27 predict-correct accelerator-screening cells;
-- final `blocked_until_stage3_freeze`.
+- редакция проекта 2;
+- 336 экспериментальных ячеек профилирования;
+- 48 ячеек основного пилотного исследования только на валидационной выборке;
+- 27 ячеек предварительного отбора ускорителей «предсказание–коррекция»;
+- итоговый статус `blocked_until_stage3_freeze`.
 
-## Переход к profiling
+## Переход к профилированию
 
-Требуются profiler executor, non-perturbing B0 instrumentation, A0 endpoint
-control, pinned source commit, environment lock и warmup/synchronization smoke.
+Требуются исполнитель профилирования, измерительный путь B0 без недопустимого
+возмущения, контроль конечного состояния A0, закреплённый исходный коммит, файл
+фиксации среды и быстрая проверка разогрева и синхронизации.
 
-## Переход к core pilot
+## Переход к основному пилотному исследованию
 
-B1/B2/C1/C2 получают отдельные Torch2PC commits. B1/B2 проходят
-full-trajectory CPU/GPU gates, A0 — endpoint gate, C1/C2 — finite/stability
-gates. Test loader отсутствует.
+B1, B2, C1 и C2 получают отдельные коммиты Torch2PC. B1 и B2 проходят проверки
+полной траектории на CPU/GPU, A0 — проверку конечного состояния, C1 и C2 —
+проверки конечности и устойчивости. Загрузчик тестовой выборки отсутствует.
 
-## Переход к accelerator screening
+## Переход к предварительному отбору ускорителей
 
-- core pilot завершён и его selection artifact зафиксирован;
-- C4/C5 реализованы отдельными commits;
-- каждый путь выполняет хотя бы одну exact correction;
-- fallback на Strict покрыт тестами;
-- residual/VJP/fallback telemetry включена;
-- screening environment lock зафиксирован;
-- test loader отсутствует.
+- основное [пилотное исследование](glossary.md#term-pilot-study) завершено, а артефакт выбора зафиксирован;
+- C4 и C5 реализованы отдельными коммитами;
+- каждый путь выполняет хотя бы одну точную коррекцию;
+- [резервный переход](glossary.md#term-fallback) к Strict покрыт тестами;
+- включена телеметрия невязки, VJP и резервных переходов;
+- файл фиксации среды предварительного отбора закреплён;
+- загрузчик тестовой выборки отсутствует.
 
-## Переход к final
+## Переход к итоговому выполнению
 
-Выбран один exact и не более одного approximation candidate, параметры и margin
-заморожены, создан `stage3-pilot-freeze` manifest/tag, а final включается
-отдельным commit. Execution и publication states остаются различными.
+Выбран один точный [кандидат](glossary.md#term-candidate) и не более одного кандидата-аппроксимации,
+параметры и граница зафиксированы, создан манифест и тег
+`stage3-pilot-freeze`, а [итоговое выполнение](glossary.md#term-final-execution) включается отдельным коммитом.
+Коммиты выполнения и публикационные состояния остаются различными.
 
 ## Практическая интерпретация
 

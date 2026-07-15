@@ -15,6 +15,7 @@ python3 -m mypy src
 python3 -m pytest -q
 python3 scripts/check_epistemic_language.py
 python3 scripts/check_language_structure.py
+python3 scripts/check_glossary_usage.py
 python3 scripts/check_local_links.py
 bash scripts/validate_repository.sh
 ```
@@ -25,10 +26,10 @@ GitHub Actions runs the same checks in a clean environment with dependencies
 constrained by `requirements/lock-dev.txt` and `requirements/torch-cpu.txt`.
 
 A green CI result describes a specific commit. It does not establish a research
-hypothesis and does not replace Docker/ROCm execution, C0/C1, pilot, or final.
+hypothesis and does not replace Docker/ROCm [execution](glossary_EN.md#term-execution), C0/C1, pilot, or final.
 
 ## Release metadata
 
 `scripts/build_release.sh` creates a `git archive` package and records its
 SHA-256, project version, full source commit, and metadata creation time.
-Runtime experiments retain their own manifests and environment-lock binding.
+[Runtime](glossary_EN.md#term-runtime) experiments retain their own manifests and environment-lock binding.

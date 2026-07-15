@@ -2,19 +2,20 @@
 
 [English version](run-checklist_EN.md)
 
-- [ ] Git working tree имеет ожидаемый статус.
-- [ ] Base image доступен, а image ID и RepoDigest записаны.
-- [ ] Образ содержит label с полным source Git commit.
-- [ ] `environment-lock.json` соответствует текущим code/config hashes.
-- [ ] Torch2PC commit закреплен.
-- [ ] Dataset checksums записаны.
+- [ ] Рабочее дерево Git имеет ожидаемый статус.
+- [ ] Базовый образ доступен, а идентификатор образа и `RepoDigest` записаны.
+- [ ] Образ содержит метку с полным исходным коммитом Git.
+- [ ] `environment-lock.json` соответствует текущим хэшам кода и конфигурации.
+- [ ] Коммит Torch2PC закреплён.
+- [ ] Контрольные суммы набора данных записаны.
 - [ ] C0 CPU выполнен.
 - [ ] C1 CPU выполнен.
 - [ ] C0 GPU выполнен.
 - [ ] C1 GPU выполнен.
-- [ ] Pilot не содержит test metrics.
-- [ ] Pilot configuration frozen.
-- [ ] Final config hash совпадает с freeze manifest.
-- [ ] Failed runs сохранены.
-- [ ] Per-sample validation/test predictions сохранены с source indices.
-- [ ] Environment и artifact manifests созданы.
+- [ ] [Пилотное исследование](../glossary.md#term-pilot-study) не содержит метрик тестовой выборки.
+- [ ] Пилотная [конфигурация](../glossary.md#term-configuration) зафиксирована.
+- [ ] Хэш итоговой конфигурации совпадает с манифестом фиксации.
+- [ ] Неудачные запуски сохранены.
+- [ ] Предсказания для каждого примера валидационной и тестовой выборок
+      сохранены с исходными индексами.
+- [ ] Манифесты среды и артефактов созданы.

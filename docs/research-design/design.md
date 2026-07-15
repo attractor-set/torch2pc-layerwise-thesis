@@ -5,6 +5,7 @@
 Исследование наблюдает поведение BP, Exact, FixedPred и Strict в одинаковой
 вычислительной рамке. Все направленные выводы откладываются до эксперимента.
 
-Основные оси: dataset, architecture, method, inference budget, optimizer,
-model seed и compute budget. Primary scope ограничен FashionMNIST/MNIST и
-LeNet-classic; расширения отмечаются как secondary.
+Основные оси: [набор данных](../glossary.md#term-dataset), [архитектура](../glossary.md#term-architecture), метод, бюджет вывода состояний,
+оптимизатор, [случайное начальное значение модели](../glossary.md#term-model-seed) и вычислительный бюджет.
+Основная область ограничена FashionMNIST/MNIST и `lenet_classic`; расширения
+отмечаются как дополнительные.

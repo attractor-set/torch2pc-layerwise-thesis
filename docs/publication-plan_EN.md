@@ -6,12 +6,12 @@ The primary paired Stage 1/2 analysis is complete. The public narrative centers
 on two separate observations:
 
 1. Stage 1 and Stage 2 quality values matched pairwise in the pinned domain;
-2. the implementation-preserving patch materially changed the runtime profile,
+2. the implementation-preserving patch materially changed the [runtime](glossary_EN.md#term-runtime) profile,
    after which the observed ordering was `BP ≈ Exact < FixedPred << Strict`.
 
-Stage 2 execution source
+Stage 2 [execution](glossary_EN.md#term-execution) source
 `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` is kept distinct from the
-results/publication state
+results/[publication state](glossary_EN.md#term-publication-state)
 `bb435432a65b76b7fc4f383b566b9a372fc346ae`. Reproduction uses the
 `stage2-execution-v1` and `stage2-results-v1` tags, with raw artifacts distributed
 through the corresponding GitHub Release.

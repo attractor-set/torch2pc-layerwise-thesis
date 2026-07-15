@@ -8,7 +8,7 @@
 
 ## Context
 
-Stage 2 retained quality and reduced PC runtime, while the remaining order was
+Stage 2 retained quality and reduced PC [runtime](../glossary_EN.md#term-runtime), while the remaining order was
 `BP ≈ Exact < FixedPred << Strict`. One year remains for the master's thesis.
 Further implementation tuning alone would have limited additional scientific
 scope.
@@ -17,7 +17,7 @@ scope.
 
 Stage 3 covers three connected axes:
 
-1. mathematical and execution locality;
+1. mathematical and [execution](../glossary_EN.md#term-execution) locality;
 2. exact implementation-preserving VJP organization;
 3. controlled approximations through adaptive stopping and periodic VJP refresh.
 
@@ -32,5 +32,5 @@ baselines, while Stage 3 receives a separate provenance chain.
 
 The core scope remains feasible within one year, exact and approximate claims
 remain separate, a diagnostics executor becomes mandatory, final test remains
-closed until Stage 3 freeze, and rejected candidates still contribute profiling,
-locality, and scaling observations.
+closed until Stage 3 freeze, and rejected candidates still contribute [profiling](../glossary_EN.md#term-profiling),
+locality, and [scaling](../glossary_EN.md#term-scaling) observations.

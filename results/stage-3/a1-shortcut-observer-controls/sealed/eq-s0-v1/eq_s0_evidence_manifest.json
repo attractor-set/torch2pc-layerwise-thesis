@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "evidence_id": "stage3b-a1-eq-s0-v1",
+  "control_id": "EQ-S0",
+  "status": "passed",
+  "sealed_at_utc": "2026-07-15T18:18:08.109003+00:00",
+  "experiment_source_git_commit": "50d6e37183dec3e0719ad4a1f246d1b325d1b346",
+  "design_baseline_tag": "stage3b-pc-tref-pc-catm-design-v1",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "scope": "BP vs iterative FixedPred with eta=1 and n=len(model)",
+  "observer_mode": "no_hooks",
+  "dtype": "torch.float64",
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 10,
+  "independent_unit": "model_seed",
+  "repeated_control_unit": "batch within model seed",
+  "optimizer": {
+    "name": "SGD",
+    "lr": 0.001,
+    "momentum": 0.0
+  },
+  "threshold_policy": {
+    "type": "lane_specific",
+    "rationale": "CPU uses stricter numerical tolerances; ROCm uses registered accelerator tolerances. Both policies were embedded in the sealed experiment source before execution.",
+    "cpu": {
+      "min_cosine": 0.99999,
+      "max_relative_l2": 1e-07,
+      "zero_atol": 1e-12
+    },
+    "rocm": {
+      "min_cosine": 0.999,
+      "max_relative_l2": 0.001,
+      "zero_atol": 1e-07
+    },
+    "ordering_constraints": {
+      "cpu_min_cosine_gte_rocm": true,
+      "cpu_max_relative_l2_lte_rocm": true,
+      "cpu_zero_atol_lte_rocm": true
+    }
+  },
+  "lanes": {
+    "cpu": {
+      "passed": true,
+      "runs": 30,
+      "records": 600,
+      "comparison_counts": {
+        "endpoint_gradient": 300,
+        "parameter_after_optimizer_step": 300
+      },
+      "thresholds": {
+        "min_cosine": 0.99999,
+        "max_relative_l2": 1e-07,
+        "zero_atol": 1e-12
+      },
+      "execution_environment": {
+        "controlled_container": true,
+        "lane": "cpu",
+        "source_git_commit": "50d6e37183dec3e0719ad4a1f246d1b325d1b346",
+        "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+        "torch_hip_version": "7.2.53211-e1a6bc5663",
+        "torch_cuda_available": false,
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "device_name": "cpu"
+      }
+    },
+    "rocm": {
+      "passed": true,
+      "runs": 30,
+      "records": 600,
+      "comparison_counts": {
+        "endpoint_gradient": 300,
+        "parameter_after_optimizer_step": 300
+      },
+      "thresholds": {
+        "min_cosine": 0.999,
+        "max_relative_l2": 0.001,
+        "zero_atol": 1e-07
+      },
+      "execution_environment": {
+        "controlled_container": true,
+        "lane": "rocm",
+        "source_git_commit": "50d6e37183dec3e0719ad4a1f246d1b325d1b346",
+        "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+        "torch_hip_version": "7.2.53211-e1a6bc5663",
+        "torch_cuda_available": true,
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "device_name": "AMD Radeon RX 7700 XT"
+      }
+    }
+  },
+  "aggregate": {
+    "lanes": 2,
+    "runs": 60,
+    "endpoint_gradient_comparisons": 600,
+    "parameter_after_optimizer_step_comparisons": 600,
+    "total_tensor_comparisons": 1200,
+    "failed_comparisons": 0
+  },
+  "supported_claim": "Under the registered lane-specific numerical thresholds, iterative FixedPred with eta=1 and n=len(model) matched BP endpoint gradients and parameters after one stateless SGD step for seeds 0-2 and ten batches per seed on controlled CPU and ROCm lanes.",
+  "claim_boundary": "This gate concerns endpoint gradients and one optimizer step in the pinned environment. It does not establish trajectory equivalence or enable EQ-S1/EQ-S2.",
+  "not_established": [
+    "hidden-state trajectory equivalence",
+    "full training-trajectory equivalence",
+    "equivalence for Adam or momentum SGD",
+    "reduced-shortcut equivalence",
+    "EQ-S1",
+    "EQ-S2",
+    "observer non-interference"
+  ],
+  "artifacts": [
+    "cpu/eq_s0_summary.json",
+    "cpu/eq_s0_records.csv",
+    "rocm/eq_s0_summary.json",
+    "rocm/eq_s0_records.csv",
+    "EQ-S0-SEAL.md",
+    "EQ-S0-SEAL_EN.md"
+  ]
+}

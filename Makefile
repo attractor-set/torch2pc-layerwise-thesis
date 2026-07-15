@@ -12,6 +12,9 @@ INFERENCE_STEPS ?=
 EQ_S0_MAX_BATCHES ?= 1
 EQ_S0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s0-cpu-smoke
 EQ_S0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s0-gpu-smoke
+EQ_S1_MAX_BATCHES ?= 1
+EQ_S1_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s1-cpu-smoke
+EQ_S1_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s1-gpu-smoke
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
@@ -21,7 +24,8 @@ EQ_S0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq
         freeze-environment configure-stage2 prepare-stage2 freeze-stage2-environment \
         control-stage2-cpu control-stage2-gpu stage2-plan freeze-stage2 final-stage2 \
         snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2 \
-        stage3-ready stage3-plan stage3b-a1-eq-s0-cpu stage3b-a1-eq-s0-gpu
+        stage3-ready stage3-plan stage3b-a1-eq-s0-cpu stage3b-a1-eq-s0-gpu \
+        stage3b-a1-eq-s1-cpu stage3b-a1-eq-s1-gpu
 
 help:
 	@printf '%s\n' \
@@ -61,6 +65,8 @@ help:
 	  '  stage3-plan           Generate the deterministic Stage 3 design plan' \
 	  '  stage3b-a1-eq-s0-cpu  Run EQ-S0 in the controlled Docker CPU lane' \
 	  '  stage3b-a1-eq-s0-gpu  Run EQ-S0 in the controlled Docker/ROCm lane' \
+	  '  stage3b-a1-eq-s1-cpu  Run EQ-S1 joint-VJP shortcut in Docker CPU' \
+	  '  stage3b-a1-eq-s1-gpu  Run EQ-S1 joint-VJP shortcut in Docker/ROCm' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \
@@ -255,6 +261,16 @@ stage3b-a1-eq-s0-gpu:
 	$(PYTHON) scripts/run_stage3b_a1_eq_s0_container.py gpu \
 		--max-batches "$(EQ_S0_MAX_BATCHES)" \
 		--output-dir "$(EQ_S0_GPU_OUTPUT_DIR)"
+
+stage3b-a1-eq-s1-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s1_container.py cpu \
+		--max-batches "$(EQ_S1_MAX_BATCHES)" \
+		--output-dir "$(EQ_S1_CPU_OUTPUT_DIR)"
+
+stage3b-a1-eq-s1-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s1_container.py gpu \
+		--max-batches "$(EQ_S1_MAX_BATCHES)" \
+		--output-dir "$(EQ_S1_GPU_OUTPUT_DIR)"
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

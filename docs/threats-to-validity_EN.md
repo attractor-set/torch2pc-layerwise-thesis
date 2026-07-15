@@ -5,7 +5,7 @@
 ## Internal validity
 
 Potential confounders include implementation mismatch, unequal initialization
-or data order, test-driven configuration changes, nondeterministic GPU
+or data order, test-driven [configuration](glossary_EN.md#term-configuration) changes, nondeterministic GPU
 operations, counting reruns as independent models, and environment drift.
 Mitigations include a pinned Torch2PC commit, C0/C1 controls, shared splits and
 seeds, strict determinism, protocol freeze, an append-only registry, duplicate
@@ -37,6 +37,11 @@ Docker does not freeze BIOS, physical temperature, host-driver state, power
 conditions, or background load. These variables are recorded. Procedural and
 statistical reproducibility is sought; bitwise identity across GPUs is not
 assumed.
+
+The observations are bounded by the pinned Torch2PC commit, LeNet-like
+architectures, selected image datasets, the declared optimizers and inference
+budgets, the RX 7700 XT / Ryzen 7 5700X3D hardware profile, and the
+Ubuntu/ROCm software environment.
 
 ## Researcher degrees of freedom
 

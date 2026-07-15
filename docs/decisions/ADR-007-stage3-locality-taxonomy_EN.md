@@ -24,5 +24,5 @@ retaining the same local update rule.
 ## Consequences
 
 Locality is not collapsed into one score. B1 versus B2 directly represents the
-trade-off between execution locality and throughput. Approximate feedback has a
+trade-off between [execution](../glossary_EN.md#term-execution) locality and [throughput](../glossary_EN.md#term-throughput). Approximate feedback has a
 separate algorithm-changing label.

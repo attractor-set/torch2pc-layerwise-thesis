@@ -1,34 +1,62 @@
-# ADR-009: ROCm/float32 как единственная canonical lane Stage 3B B0
+# ADR-009: ROCm/float32 как единственный канонический контур этапа 3B B0
 
 [English version](ADR-009-stage3b-rocm-canonical-lane_EN.md)
 
-- Статус: принято как corrective protocol decision;
+- Статус: принято как корректирующее решение протокола;
 - дата: 2026-07-14;
-- область: Stage 3B B0 profiling;
-- затрагивает Stage 1/2 и опубликованный Stage 3A evidence: нет.
+- область: [профилирование](../glossary.md#term-profiling) этапа 3B B0;
+- затрагивает этапы 1 и 2 и опубликованные [доказательные материалы](../glossary.md#term-evidence) этапа 3A:
+  нет.
 
 ## Контекст
 
-Preregistered Stage 3 profiling matrix содержит 336 cells, из которых 96 принадлежат B0 `stage2_baseline`. Device не является дополнительной осью этой матрицы. Дублирование каждой B0 cell на CPU и ROCm создало бы 192 B0 executions и 672 Stage 3 executions, что не соответствует зафиксированному design.
+Предварительно зарегистрированная матрица профилирования этапа 3 содержит 336
+экспериментальных ячеек, из которых 96 относятся к B0 `stage2_baseline`.
+Устройство не является дополнительной осью этой матрицы. Дублирование каждой
+ячейки B0 на CPU и ROCm создало бы 192 выполнения B0 и 672 выполнения этапа 3,
+что не соответствует зафиксированному дизайну.
 
-CPU/float64 ранее использовался как инженерный correctness/control environment для smoke, non-perturbation и targeted equivalence gates. Он был ошибочно включён в campaign authorization как вторая обязательная canonical performance lane.
+CPU/float64 ранее использовался как инженерная контрольная среда для быстрых
+проверок, проверки отсутствия возмущения измерением и целевых проверок
+эквивалентности. Он был ошибочно включён в разрешение кампании как второй
+обязательный канонический контур производительности.
 
-Ошибочная CPU lane была остановлена memory-cgroup OOM killer после 21 завершённой cell и одной незавершённой попытки. При завершении Python-процесс имел приблизительно 50 202 008 KiB anonymous RSS. Все CPU attempts сохранились immutable, имеют `evidence=false`, `full_lane_complete=false` и исключаются из confirmatory results.
+Ошибочный контур CPU был остановлен механизмом OOM контрольной группы памяти
+после 21 завершённой экспериментальной ячейки и одной незавершённой попытки. В
+момент завершения процесс Python имел приблизительно 50 202 008 КиБ
+анонимной резидентной памяти. Все попытки CPU сохранены неизменяемыми, имеют
+`evidence=false`, `full_lane_complete=false` и исключаются из подтверждающих
+результатов.
 
 ## Решение
 
-1. Единственная canonical B0 performance lane — `rocm/float32`.
-2. Canonical design содержит ровно 96 executions: 48 FixedPred и 48 Strict.
-3. Canonical protocol остаётся `20 warm-up × 50 measured × 5 repetitions`.
-4. `cpu/float64` остаётся engineering control lane только для bounded smoke и targeted equivalence checks.
-5. CPU control не участвует в `full_lane_complete`, `full_campaign_complete` или confirmatory performance evidence.
-6. Authorization требует ровно один canonical preflight — ROCm/float32. CPU preflight может быть приложен только как optional engineering-control record.
-7. Canonical CLI отклоняет CPU до создания lock, lane directory или attempt.
-8. Machine-readable source of truth: `experiments/planned/STAGE3B-B0-PROTOCOL-CONTRACT.json`.
-9. Authorization schema повышается до version 2, domain и scope меняются; version 1 и старый двух-lane token считаются retired и не могут быть resumed.
+1. Единственный канонический контур производительности B0 — `rocm/float32`.
+2. Канонический дизайн содержит ровно 96 выполнений: 48 FixedPred и 48 Strict.
+3. Канонический протокол остаётся
+   `20 шагов разогрева × 50 измеряемых шагов × 5 повторений`.
+4. `cpu/float64` остаётся инженерным контрольным контуром только для
+   ограниченных быстрых проверок и целевых проверок эквивалентности.
+5. Контроль CPU не участвует в `full_lane_complete`,
+   `full_campaign_complete` или подтверждающих доказательных материалах
+   производительности.
+6. Разрешение требует ровно одну каноническую предварительную проверку —
+   ROCm/float32. Предварительная проверка CPU может прилагаться только как
+   необязательная инженерная контрольная запись.
+7. Канонический интерфейс командной строки отклоняет CPU до создания файла
+   фиксации, каталога контура или попытки.
+8. Машиночитаемый источник истины:
+   `experiments/planned/STAGE3B-B0-PROTOCOL-CONTRACT.json`.
+9. Версия схемы разрешения повышается до 2, область и назначение изменяются;
+   версия 1 и прежний токен для двух контуров считаются выведенными из
+   эксплуатации и не могут быть возобновлены.
 
 ## Последствия
 
-После merge требуется новый project freeze, новый image digest, новый output root, новый ROCm preflight и новый authorization token. Старые CPU attempts и старый token сохраняются как audit trail, но не используются для научных выводов.
+После слияния требуются новая фиксация проекта, новый хэш образа, новый корневой
+каталог результатов, новая предварительная проверка ROCm и новый токен
+разрешения. Старые попытки CPU и прежний токен сохраняются как след аудита, но
+не используются для научных выводов.
 
-Stage 3A results, SHA manifests, B0 manifest ordering, seeds, methods, depth/width/batch grid и Torch2PC source commit остаются неизменными.
+Результаты этапа 3A, манифесты SHA, порядок манифеста B0, случайные начальные
+значения модели, методы, сетка глубины, ширины и размера пакета, а также
+исходный коммит Torch2PC остаются неизменными.

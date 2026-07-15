@@ -2,4 +2,8 @@
 
 [Русская версия](controlled-compute.md)
 
-Docker fixes user-space dependencies but not the host kernel, driver, firmware, temperature, or background load. Correctness, training, and timing are treated as separate execution profiles.
+Docker pins the user-space environment but not the operating-system kernel,
+`amdgpu`, BIOS, temperature, or background load. These quantities are recorded
+separately. CPU correctness checks, GPU training, and timing measurements are
+treated as distinct [execution](../glossary_EN.md#term-execution) profiles and are not combined in one table
+without explicit labeling.

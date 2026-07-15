@@ -15,7 +15,7 @@ local estimate moves beliefs closer to the solution and one or more exact
 predictive-coding sweeps correct the estimate.
 
 Torch2PC already computes VJPs without materializing a full Jacobian. Bit-level
-approximations or runtime low-rank Jacobian construction are therefore not the
+approximations or [runtime](../glossary_EN.md#term-runtime) low-rank Jacobian construction are therefore not the
 primary candidates because they do not remove the dominant repeated VJPs and
 inference sweeps.
 
@@ -23,7 +23,7 @@ inference sweeps.
 
 Stage 3 adds a predict-correct line:
 
-1. `fixedpred_finite_step_control`, an exact endpoint control with `eta=1` and
+1. `fixedpred_finite_step_control`, an exact [endpoint](../glossary_EN.md#term-endpoint) control with `eta=1` and
    steps equal to network depth;
 2. `predict_correct_initialization`, a cheap layer-local initializer followed by
    `1/2/3/5` exact correction sweeps;
@@ -38,20 +38,20 @@ complete.
 
 ## Methodological boundary
 
-`fixedpred_finite_step_control` may receive only an endpoint-equivalence claim:
+`fixedpred_finite_step_control` may receive only an [endpoint](../glossary_EN.md#term-endpoint)-equivalence claim:
 parameter gradients and one optimizer step are compared, while identical belief
 trajectories are not required.
 
 Predict-correct, secant, feedback, and Anderson are algorithm-changing. They use
-non-inferiority, gradient-alignment, residual, performance, and fallback gates
+[non-inferiority](../glossary_EN.md#term-non-inferiority), gradient-alignment, residual, performance, and [fallback](../glossary_EN.md#term-fallback) gates
 and do not inherit a Stage 2 equivalence claim.
 
 ## Execution safeguards
 
-Each predict-correct candidate requires at least one exact correction sweep,
-Strict fallback on non-finite or increasing residuals, logging of VJPs,
-correction sweeps, and fallback events, disabled test access until Stage 3
-freeze, and separate Torch2PC candidate commits and environment locks.
+Each predict-correct [candidate](../glossary_EN.md#term-candidate) requires at least one exact correction sweep,
+Strict [fallback](../glossary_EN.md#term-fallback) on non-finite or increasing residuals, logging of VJPs,
+correction sweeps, and [fallback](../glossary_EN.md#term-fallback) events, disabled test access until Stage 3
+freeze, and separate Torch2PC [candidate](../glossary_EN.md#term-candidate) commits and environment locks.
 
 ## Consequences
 

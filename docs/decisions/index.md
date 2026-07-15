@@ -5,13 +5,21 @@
 ADR фиксируют решения, влияющие на интерпретацию или воспроизводимость:
 
 - ADR-001: Torch2PC как основная реализация;
-- ADR-002: native Ubuntu и ROCm Docker;
-- ADR-003: macro F1 как основная метрика выбора;
+- ADR-002: непосредственно установленная Ubuntu и контейнер Docker с ROCm;
+- ADR-003: макро-F1 как основная метрика выбора;
 - ADR-004: парный многостартовый статистический протокол;
-- ADR-005: постпилотная фиксация порядка и телеметрии final;
-- [ADR-006](ADR-006-stage3-scope.md): границы расширенного Stage 3;
-- [ADR-007](ADR-007-stage3-locality-taxonomy.md): многомерная таксономия локальности.
-- [ADR-008](ADR-008-predict-correct-acceleration.md): predict-correct acceleration и границы exact correction.
-- [ADR-009](ADR-009-stage3b-rocm-canonical-lane.md): ROCm/float32 как единственная canonical lane Stage 3B B0; CPU/float64 остаётся инженерным контролем.
-- [ADR-010](ADR-010-stage3b-per-cell-process-isolation.md): отдельный Python child process для каждой Stage 3B B0 canonical cell и fail-fast после systemic OOM.
-- [ADR-011](ADR-011-stage3b-b0-derived-evidence-seal.md): read-only validation, aggregation и content-addressed evidence seal для Stage 3B B0.
+- ADR-005: постпилотная фиксация порядка и телеметрии итогового выполнения;
+- [ADR-006](ADR-006-stage3-scope.md): границы расширенного этапа 3;
+- [ADR-007](ADR-007-stage3-locality-taxonomy.md): многомерная таксономия
+  локальности;
+- [ADR-008](ADR-008-predict-correct-acceleration.md): ускорение по схеме
+  «предсказание–коррекция» и границы точной коррекции;
+- [ADR-009](ADR-009-stage3b-rocm-canonical-lane.md): ROCm/float32 как
+  единственный канонический контур этапа 3B B0; CPU/float64 остаётся инженерным
+  контролем;
+- [ADR-010](ADR-010-stage3b-per-cell-process-isolation.md): отдельный дочерний
+  процесс Python для каждой канонической экспериментальной ячейки этапа 3B B0
+  и немедленная остановка после системной нехватки памяти;
+- [ADR-011](ADR-011-stage3b-b0-derived-evidence-seal.md): проверка только для
+  чтения, агрегирование и адресуемая по содержимому [фиксация целостности](../glossary.md#term-integrity-sealing)
+  доказательных материалов этапа 3B B0.

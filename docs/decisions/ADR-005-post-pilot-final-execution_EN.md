@@ -12,28 +12,28 @@ returned an advisory value of 10 complete pairs. The final seed count therefore
 remains 10 (`0-9`) under the preregistered rule and is not increased in response
 to the direction of the pilot effect.
 
-Infrastructure limitations were identified before final execution: methods were
-run in blocks, the full registry was both pilot evidence and the mutable final
-log, and the environment lock did not expose a combined configuration-tree
+Infrastructure limitations were identified before final [execution](../glossary_EN.md#term-execution): methods were
+run in blocks, the full registry was both pilot [evidence](../glossary_EN.md#term-evidence) and the mutable final
+log, and the environment lock did not expose a combined [configuration](../glossary_EN.md#term-configuration)-tree
 hash.
 
 ## Decision
 
 1. Create an immutable `final_execution_plan.json` before `pilot-freeze`.
 2. Counterbalance method order with deterministic SHA-256 ranking within every
-   dataset/model/seed combination.
+   [dataset](../glossary_EN.md#term-dataset)/model/seed combination.
 3. Preserve a dedicated `pilot_registry_snapshot.csv` while keeping
    `experiments/registry.csv` as the append-only final log.
 4. Support safe final resumption by skipping completed cells in the current
    cohort while retaining failed attempts for documented technical reruns.
 5. Synchronize the GPU before every timed epoch and record mean/median epoch
-   time, runtime device, PyTorch/HIP versions, and peak GPU memory.
-6. Add a combined configuration-tree SHA-256 to the environment lock.
+   time, [runtime](../glossary_EN.md#term-runtime) device, PyTorch/HIP versions, and peak GPU memory.
+6. Add a combined [configuration](../glossary_EN.md#term-configuration)-tree SHA-256 to the environment lock.
 
 ## Unchanged design elements
 
-- primary dataset: FashionMNIST;
-- secondary dataset: MNIST;
+- primary [dataset](../glossary_EN.md#term-dataset): FashionMNIST;
+- secondary [dataset](../glossary_EN.md#term-dataset): MNIST;
 - primary metric: macro F1;
 - primary contrasts: FixedPred vs BP and Strict vs BP;
 - equivalence margin: `+-0.01`;
@@ -43,7 +43,7 @@ hash.
 
 ## Consequences
 
-The changes improve execution-order reproducibility, resumption safety, and
+The changes improve [execution](../glossary_EN.md#term-execution)-order reproducibility, resumption safety, and
 computational telemetry. They do not reselect hyperparameters or alter the
 confirmatory hypotheses. Training-time comparisons remain secondary and
 descriptive; equal-wall-clock analysis remains a separately labelled diagnostic

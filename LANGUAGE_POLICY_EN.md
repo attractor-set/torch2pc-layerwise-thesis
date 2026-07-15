@@ -25,10 +25,13 @@ meaning remains equivalent.
 
 ## Terminology principle
 
-Russian prose uses the established Russian term first. The English term is
-included on first use when it connects the text to the literature, source code,
-or an artifact name. Method names, fields, files, tags, branches, and commands
-remain unchanged and are formatted as code.
+Russian prose uses the established Russian term first. On first substantive
+use, the term links to its entry in the normative glossary. The English
+equivalent is not duplicated in Russian running prose because the glossary
+stores the language mapping. Direct English use is limited to quotations,
+external-source titles, method names, and software identifiers. Method names,
+fields, files, tags, branches, and commands remain unchanged and are formatted
+as code.
 
 English prose uses established machine-learning and software-engineering
 terminology. Literal translations that are uncommon in scientific writing are
@@ -70,7 +73,9 @@ The following retain their standard technical names:
 5. Keep scientific data, numbers, links, and claim boundaries aligned.
 6. `scripts/check_language_structure.py` verifies document pairs and language
    structure.
-7. Before publication, search README, STATUS, ROADMAP, CHANGELOG, protocol
+7. `scripts/check_glossary_usage.py` verifies first-use glossary links and the
+   absence of noncanonical English prose in Russian documents.
+8. Before publication, search README, STATUS, ROADMAP, CHANGELOG, protocol
    documents, and result reports for competing variants of each term.
 
 ## Source-code language

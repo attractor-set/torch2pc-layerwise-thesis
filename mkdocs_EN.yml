@@ -27,6 +27,7 @@ nav:
       - Stage 3A results: stage3a-statistical-results_EN.md
       - Stage 3B B0 validation and sealing: stage3b-b0-sealing_EN.md
       - Stage 3B B0 analysis pipeline: stage3b-b0-analysis-pipeline_EN.md
+      - Torch2PC patched-v1 equivalence: torch2pc-patched-v1-equivalence_EN.md
       - GitHub setup: github-setup_EN.md
   - Design:
       - Research design: research-design/design_EN.md

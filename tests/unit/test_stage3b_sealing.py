@@ -453,6 +453,16 @@ def test_seal_archive_creates_compact_evidence_and_preserves_source(
     assert sum(1 for _ in (output / "paired_method_metrics.csv").read_text().splitlines()) == 2
     assert sum(1 for _ in (output / "configuration_metrics.csv").read_text().splitlines()) == 3
 
+    for csv_name in (
+        "cell_metrics.csv",
+        "region_metrics.csv",
+        "paired_method_metrics.csv",
+        "configuration_metrics.csv",
+    ):
+        csv_bytes = (output / csv_name).read_bytes()
+        assert b"\r\n" not in csv_bytes
+        assert csv_bytes.endswith(b"\n")
+
 
 def test_validate_archive_rejects_systemic_resource_failure(
     tmp_path: Path,

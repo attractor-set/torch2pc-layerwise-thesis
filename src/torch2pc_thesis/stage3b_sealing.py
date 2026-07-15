@@ -1895,7 +1895,12 @@ def _write_csv(
     path.parent.mkdir(parents=True, exist_ok=True)
     count = 0
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(columns), extrasaction="raise")
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=list(columns),
+            extrasaction="raise",
+            lineterminator="\n",
+        )
         writer.writeheader()
         for row in rows:
             writer.writerow({column: row[column] for column in columns})

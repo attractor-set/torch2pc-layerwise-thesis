@@ -41,6 +41,9 @@ Ubuntu/ROCm environment:
 - Stage 3B B0: the ROCm/float32 canonical baseline completed **96/96**, with no
   failed attempts or systemic resource failures; every cell ran in a fresh
   Python child process;
+- the Stage 3B B0 statistical and engineering analysis is published as
+  deterministic derived evidence with `model_seed` as the independent unit and
+  three seeds per configuration;
 - neither Stage 3A nor Stage 3B B0 accessed the test dataset.
 
 CI is the source of truth for the current regression-suite status; the
@@ -63,17 +66,23 @@ unchanged. Complete paired records are available in
 | Stage 3B B0 sealing source | `caa226cc1cd5d4aa0f9772c1fb997f7388d60730` |
 | Stage 3B B0 publication state | `ed0d48063a17e2d9c6679869a4d930f933877052` |
 | Stage 3B B0 publication tag | `stage3b-b0-evidence-v1` |
+| Stage 3B B0 analysis implementation | `e7a1632a947fae578e877826f0c923342669430e` |
+| Stage 3B B0 analysis publication state | `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3` |
+| Stage 3B B0 analysis publication tag | `stage3b-b0-analysis-evidence-v1` |
 
 The
 [`stage2-results-v1` GitHub Release](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
 contains the Stage 2 replication bundle. The
 [`stage3b-b0-evidence-v1` GitHub Release](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
 pins the compact Stage 3B B0 derived-evidence bundle, its provenance, and its
-checksums.
+checksums. The
+[`stage3b-b0-analysis-evidence-v1` GitHub Release](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1)
+publishes the deterministic statistical and engineering analysis of that
+baseline.
 
-Stage 1, Stage 2, Stage 3A, and Stage 3B B0 are complete within their registered
-scopes and are not intended to be rerun. The full Stage 3B program remains
-incomplete.
+Stage 1, Stage 2, Stage 3A, the Stage 3B B0 measurement baseline, and its B0
+analysis are complete within their registered scopes and are not intended to be
+rerun. The full Stage 3B program remains incomplete.
 
 See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md) and
 [STATUS_EN.md](STATUS_EN.md).
@@ -114,7 +123,7 @@ Publication artifacts:
 Conclusions are limited to FashionMNIST, `lenet_classic`, seeds 0–9, the pinned
 implementation, and the validation-only Stage 3A protocol.
 
-## Stage 3B B0: canonical profiling baseline and evidence publication complete
+## Stage 3B B0: baseline, evidence, and engineering analysis published
 
 B0 fixes the `stage2_baseline` candidate for `FixedPred` and `Strict` in an
 ROCm/float32 synthetic scaling campaign. The canonical protocol used 20 warm-up
@@ -142,11 +151,24 @@ The claim boundary is explicit:
 - `full_stage3b_campaign_complete=false`;
 - `test_dataset_access=false`.
 
-The B0 publication establishes a complete and integrity-checked measurement
-baseline; it does not replace statistical and engineering comparison analysis.
-The next stage is a separate `stage3b-b0-analysis-v1` branch for paired
-seed-level effects, region-level time decomposition, memory and scaling
-analysis, followed by a decision gate for later Stage 3B candidates.
+The deterministic analysis is published under
+[`results/stage-3/profiling/b0/analysis-v1/`](results/stage-3/profiling/b0/analysis-v1/).
+The independent statistical unit is `model_seed`, with three seeds per
+configuration, so the findings are bounded to descriptive engineering analysis.
+
+Published bounded observations for the synthetic ROCm/float32 matrix include:
+
+- median Strict/FixedPred device-time ratio: **2.327×**
+  (configuration range 1.966–2.619×);
+- median peak-allocated ratio: **1.328×**;
+- dominant device-time region for both methods: `state_inference`;
+- median Strict/FixedPred saved-tensor ratio in `state_inference`: **11.998×**.
+
+The decision gate permits candidate-specific B1/B2 numerical-equivalence work.
+Full matched B1/B2 profiling remains blocked until those gates pass, while
+structural locality claims remain blocked until dependency-radius,
+graph-span/lifetime, feedback-operator, and orchestration-barrier measurements
+are available. A new B0 execution is not required.
 
 ## Pilot evidence export
 

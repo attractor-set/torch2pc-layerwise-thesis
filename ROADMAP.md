@@ -52,33 +52,50 @@ Publication tag: `stage3b-b0-evidence-v1`.
 Evidence boundary: `full_b0_campaign_complete=true`,
 `full_stage3b_campaign_complete=false`.
 
-## Фаза 10 — B0 statistical and engineering analysis — следующая
+## Фаза 10 — B0 statistical and engineering analysis завершена
 
-В отдельной ветке `stage3b-b0-analysis-v1` выполнить:
+- published sealed B0 evidence использован без повторного execution;
+- `model_seed` закреплён как независимая единица, 3 seeds на configuration;
+- опубликованы paired timing/memory effects, region attribution, saved tensors
+  и log2 scaling summaries;
+- median Strict/FixedPred device-time ratio — `2.327×`;
+- median peak-allocated ratio — `1.328×`;
+- dominant region — `state_inference`;
+- state-inference saved-tensor ratio — `11.998×`;
+- опубликованы 8 derived tables, 4 PDF figures, bilingual report, metadata и
+  `SHA256SUMS`;
+- decision gate разрешает candidate-specific B1/B2 equivalence work и сохраняет
+  full matched profiling заблокированным.
 
-- paired seed-level analysis `Strict` относительно `FixedPred`;
-- decomposition времени по profiling regions;
-- peak-memory и saved-tensor attribution;
-- scaling по depth, width и batch size;
-- bounded descriptive uncertainty при трёх model seeds на configuration;
-- двуязычный report и decision gate для дальнейших candidates.
+Publication tag: `stage3b-b0-analysis-evidence-v1`.
 
-## Фаза 11 — exact execution и mechanism attribution
+## Фаза 11 — B1/B2 candidate-specific numerical equivalence gates — следующая
 
-После B0 analysis пройти B1/B2 numerical gates, определить layer/module
-hotspots и только затем фиксировать exact execution candidates.
+- формализовать B1 и B2 candidates относительно B0;
+- реализовать candidates отдельно и без изменения B0 evidence;
+- пройти cosine, relative-L2, finite-value и stability gates;
+- выполнить малый profiling pilot только после equivalence acceptance;
+- сохранить test access выключенным;
+- отдельным decision gate определить допуск full matched B1/B2 profiling.
 
-## Фаза 12 — core approximations и predict-correct
+## Фаза 12 — mechanism attribution и matched profiling
+
+Для прошедших B1/B2 candidates определить layer/module hotspots, graph-retention
+costs и только затем выполнить зарегистрированную matched profiling matrix.
+Structural locality claims требуют отдельных dependency-radius,
+graph-span/lifetime, feedback-operator и orchestration-barrier measurements.
+
+## Фаза 13 — core approximations и predict-correct
 
 C1/C2 и C4/C5 проходят отдельные validation-only screening campaigns с
 residual, fallback, non-inferiority, VJP-reduction и stability gates.
 
-## Фаза 13 — расширенный Stage 3: freeze и final
+## Фаза 14 — расширенный Stage 3: freeze и final
 
 Заморозить выбранные candidates и параметры, создать отдельные execution и
 publication states и только после freeze разрешить final test evaluation.
 
-## Фаза 14 — диссертация и статья
+## Фаза 15 — диссертация и статья
 
 Объединить Stage 1/2, Stage 3A и последующие profiling/locality/acceleration
 результаты; подготовить replication bundles и clean-room reproduction.

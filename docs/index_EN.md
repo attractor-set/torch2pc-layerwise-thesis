@@ -18,3 +18,4 @@ Core documents:
 - [Data management](data-management_EN.md)
 - [Hardware](hardware_EN.md)
 - [ADR index](decisions/index_EN.md)
+- [Stage 3B B0 validation and sealing](stage3b-b0-sealing_EN.md)

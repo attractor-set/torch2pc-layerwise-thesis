@@ -74,37 +74,44 @@ State boundary: `full_b0_campaign_complete=true`,
 
 Publication tag: `stage3b-b0-analysis-evidence-v1`.
 
-## Stage 11 — B1/B2 numerical-equivalence testing — next
+## Phase 11 — primary Scenario A design freeze — complete
 
-- formalize B1 and B2 relative to B0;
-- implement each candidate separately without modifying B0 evidence;
-- apply registered cosine, relative-L2, finite-value, and stability criteria;
-- run a small profiling pilot only after numerical-equivalence acceptance;
-- keep test-dataset access disabled;
-- use a separate decision gate to authorize the full matched B1/B2 profiling
-  matrix.
+- remove the erroneous former ECZ meaning and reserve `Error-Cancellation Zone`;
+- freeze PC-TREF Balanced Core and PC-CATM for canonical channels, NCZ/ECZ, and TNZ;
+- adopt Scenario A as the single primary experimental path;
+- retain PNZ and the parameter tangent kernel as a limited extension;
+- leave B0 evidence unchanged and keep test access disabled.
 
-## Stage 12 — mechanism attribution and matched profiling
+## Phase 12 — shortcut, observer, and deterministic controls — next
 
-For accepted B1/B2 candidates, identify layer and module hotspots, graph
-retention cost, and measured-region contributions. Then run the registered
-matched profiling matrix.
+- compare BP, iterative FixedPred with `eta=1`, `n=L`, and the reduced shortcut;
+- verify observer non-interference before measuring overhead;
+- run deterministic NCZ, ECZ, orthogonality, TNZ, and block-probe controls;
+- use the Rosenbaum wavefront as an indexing and completion oracle.
 
-Structural-locality claims require dedicated measurements of dependency radius,
-graph span and lifetime, the feedback operator, and orchestration barriers.
+## Phase 13 — SI-MA0, B1/B2, and EX-IF0
 
-## Stage 13 — core approximations and predict–correct
+- decompose `state_inference` and verify reconstruction of the observed update;
+- run candidate-specific B1 and B2 gates;
+- compare device time, memory, saved tensors, and graph lifetime;
+- select and freeze the exact implementation before predictor-label generation.
 
-Run C1/C2 and C4/C5 in separate validation-only screening campaigns. Evaluate
-residuals, the exact fallback path, non-inferiority, VJP reduction, and
-stability.
+## Phase 14 — passive diagnostics and QWake-PC
 
-## Stage 14 — extended Stage 3 freeze and final evaluation
+- collect correction-geometry, transport, and temporal-persistence features;
+- train and validate the local predictor with `model_seed`-grouped splits;
+- run counterfactual exact verification of next-sweep utility;
+- evaluate QWake-PC in shadow mode first;
+- permit active control only at full-sweep granularity after safety and runtime gates.
 
-Freeze selected candidates and parameters, create distinct execution and
-publication states, and enable final test evaluation only after the freeze.
+## Phase 15 — extended Stage 3 freeze and final evaluation
 
-## Stage 15 — thesis and article
+Freeze the selected implementation, features, thresholds, predictor, fallback
+rules, and statistical plan. Enable one final test evaluation only after this
+freeze.
 
-Integrate Stage 1/2, Stage 3A, and later profiling, locality, and acceleration
-results. Publish replication bundles and complete clean-room reproduction.
+## Phase 16 — thesis and article
+
+Integrate Stage 1/2, Stage 3A, B0, and Scenario A. Keep active parameter-kernel
+learning, plasticity control, and layer-level skipping as future work or a
+separate publication.

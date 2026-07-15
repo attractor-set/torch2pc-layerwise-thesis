@@ -27,6 +27,10 @@ nav:
       - Результаты Stage 3A: stage3a-statistical-results.md
       - Stage 3B B0 validation и sealing: stage3b-b0-sealing.md
       - Stage 3B B0 analysis pipeline: stage3b-b0-analysis-pipeline.md
+      - План магистерской диссертации: masters-thesis-plan.md
+      - PC-TREF Balanced Core: pc-tref-balanced-core.md
+      - PC-CATM: pc-catm-operator-model.md
+      - Основной сценарий A: stage3b-primary-scenario-a.md
       - Эквивалентность Torch2PC patched-v1: torch2pc-patched-v1-equivalence.md
       - Настройка GitHub: github-setup.md
   - Дизайн:
@@ -43,6 +47,7 @@ nav:
       - ADR-006 Scope Stage 3: decisions/ADR-006-stage3-scope.md
       - ADR-007 Таксономия локальности: decisions/ADR-007-stage3-locality-taxonomy.md
       - ADR-008 Predict-correct acceleration: decisions/ADR-008-predict-correct-acceleration.md
+      - ADR-012 Основной сценарий A: decisions/ADR-012-pc-tref-pc-catm-scenario-a.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

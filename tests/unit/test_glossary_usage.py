@@ -12,8 +12,15 @@ from scripts.check_glossary_usage import (
 
 def test_real_glossary_has_paired_terms_and_anchors() -> None:
     terms = parse_terms()
-    assert len(terms) == 61
+    assert len(terms) == 83
     assert len({term.term_id for term in terms}) == len(terms)
+
+
+def test_ecz_has_the_error_cancellation_meaning_only() -> None:
+    terms = {term.term_id: term for term in parse_terms()}
+    ecz = terms["TERM-ECZ"]
+    assert ecz.russian == "зона компенсации ошибок"
+    assert ecz.english == "Error-Cancellation Zone"
 
 
 def test_russian_prose_rejects_unformatted_english_term(tmp_path: Path) -> None:

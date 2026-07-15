@@ -423,9 +423,10 @@ equivalence and limits each meaning to the scope of this project.
 
 ## Reserved terms for the next research line
 
-The following definitions establish terminology for local-predictor design and
-passive ECZ diagnostics. They do not change current B0 findings or authorize
-full profiling of new candidates.
+The following definitions establish terminology for operator diagnostics,
+local-predictor design, and the primary post-B0 working scenario. They do not
+change current B0 findings or authorize candidate execution without separate
+checks and decision gates.
 
 <a id="term-mechanism-attribution"></a>
 ### TERM-MECHANISM-ATTRIBUTION — mechanism attribution
@@ -462,12 +463,166 @@ full profiling of new candidates.
 - **Project meaning:** A mode in which a candidate computes predictions and diagnostics but does not affect the primary computational path, updates, or published result.
 - **Usage rule:** Use it for passive evaluation before the candidate is allowed to control computation.
 
-<a id="term-ecz"></a>
-### TERM-ECZ — equivalence-certified zone (ECZ)
+<a id="term-pc-tref"></a>
+### TERM-PC-TREF — Predictive-Coding Task-Relative Equivalence Framework (PC-TREF)
 
-- **Russian equivalent:** зона подтверждённой эквивалентности (ECZ).
-- **Project meaning:** An operationally defined region of states, configurations, or observations in which a candidate satisfies registered equivalence criteria relative to a reference.
-- **Usage rule:** “Certified” does not mean a global mathematical proof or external certification. ECZ boundaries are protocol-defined and do not extend beyond tested conditions.
+- **Russian equivalent:** рамка относительной к задаче эквивалентности predictive coding (PC-TREF).
+- **Project meaning:** The upper-level framework linking a diagnostic state representation to the required computational action and evaluating whether the retained distinctions are sufficient for adaptive inference.
+- **Usage rule:** PC-TREF specializes established equivalence, sufficiency, and quotient-space concepts; it is not presented as a universal theory beyond the registered predictive-coding scope.
+
+<a id="term-pc-catm"></a>
+### TERM-PC-CATM — Predictive-Coding Correction Aggregation and Transport Model (PC-CATM)
+
+- **Russian equivalent:** операторная модель агрегации коррекций и переноса ошибок в predictive coding (PC-CATM).
+- **Project meaning:** The mechanism operator model of canonical channels, their aggregation, state-error transport, and the NCZ, ECZ, and TNZ null regimes.
+- **Usage rule:** PC-CATM is the mechanism layer of PC-TREF; PNZ is included only as a limited parameter-accessibility extension.
+
+<a id="term-task-relative-equivalence"></a>
+### TERM-TASK-RELATIVE-EQUIVALENCE — task-relative equivalence
+
+- **Russian equivalent:** относительная к задаче эквивалентность.
+- **Project meaning:** An equivalence relation under which two states are equivalent when the same registered computational action is admissible for both under the specified regret bound.
+- **Usage rule:** This is decision-relative equivalence, not numerical equality of states, gradients, or diagnostic features.
+
+<a id="term-diagnostic-quotient"></a>
+### TERM-DIAGNOSTIC-QUOTIENT — diagnostic quotient
+
+- **Russian equivalent:** диагностическое фактор-пространство.
+- **Project meaning:** The space of equivalence classes induced by the selected diagnostic representation of an inference state.
+- **Usage rule:** Minimality is claimed only within the preregistered representation family and only after diagnostic cost and the safety gate are considered.
+
+<a id="term-task-relative-equivalence-defect"></a>
+### TERM-TASK-RELATIVE-EQUIVALENCE-DEFECT — task-relative equivalence defect
+
+- **Russian equivalent:** дефект относительной к задаче эквивалентности.
+- **Project meaning:** State pairs merged by diagnostic equivalence but requiring different computational actions; formally $\mathfrak D_{I\to R}=E_I\setminus E_R$.
+- **Usage rule:** The experiment estimates it through registered operational proxies such as regret, dangerous misses, and unnecessary wake-ups rather than exhaustive enumeration of all state pairs.
+
+<a id="term-canonical-correction-channel"></a>
+### TERM-CANONICAL-CORRECTION-CHANNEL — canonical correction channel
+
+- **Russian equivalent:** канонический канал коррекции.
+- **Project meaning:** A preregistered causally meaningful group of local gradient contributions whose sum is invariant to technical subdivision of one energy term.
+- **Usage rule:** Null-regime diagnostics operate on canonical channels rather than arbitrary automatic-differentiation fragments.
+
+<a id="term-correction-geometry"></a>
+### TERM-CORRECTION-GEOMETRY — correction geometry
+
+- **Russian equivalent:** геометрия коррекции.
+- **Project meaning:** The norms, resultant efficiency, and pairwise interactions of canonical channels that describe their aggregation into a local state correction.
+- **Usage rule:** Correction geometry describes observed channel aggregation and does not by itself establish the utility of another exact sweep.
+
+<a id="term-correction-zero-set"></a>
+### TERM-CORRECTION-ZERO-SET — correction-zero set
+
+- **Russian equivalent:** множество коррекционного нуля.
+- **Project meaning:** The kernel of the linear canonical-channel summation operator: all contribution tuples whose resultant correction is zero.
+- **Usage rule:** The exact set is partitioned into the trivial NCZ part and nontrivial ECZ part; numerical neighborhoods require separate thresholds.
+
+<a id="term-ncz"></a>
+### TERM-NCZ — Null-Contribution Zone (NCZ)
+
+- **Russian equivalent:** зона нулевого вклада (NCZ).
+- **Project meaning:** The trivial part of the correction-zero set in which all canonical channels are zero; operationally, a registered neighborhood of low channel activity.
+- **Usage rule:** NCZ does not imply input familiarity, completed learning, or permission to skip computation.
+
+<a id="term-ecz"></a>
+### TERM-ECZ — Error-Cancellation Zone (ECZ)
+
+- **Russian equivalent:** зона компенсации ошибок (ECZ).
+- **Project meaning:** The nontrivial part of the correction-zero set in which at least one canonical channel is nonzero while their sum is zero; operationally, an active neighborhood with low resultant efficiency and high destructive interaction.
+- **Usage rule:** ECZ has only this meaning. The erroneous former definition is removed completely and is not retained under another abbreviation.
+
+<a id="term-resultant-efficiency"></a>
+### TERM-RESULTANT-EFFICIENCY — resultant efficiency
+
+- **Russian equivalent:** результирующая эффективность.
+- **Project meaning:** The norm of the summed canonical channels divided by the sum of their norms when activity is nonzero: the fraction of activity retained in the resultant direction.
+- **Usage rule:** Its complement is an aggregation deficit, not a cancellation fraction, because orthogonal channels can also reduce the ratio.
+
+<a id="term-destructive-interaction"></a>
+### TERM-DESTRUCTIVE-INTERACTION — destructive interaction
+
+- **Russian equivalent:** разрушительное взаимодействие.
+- **Project meaning:** The negative part of pairwise canonical-channel inner products normalized by individual and constructive quadratic activity.
+- **Usage rule:** Combine it with activity and resultant efficiency to distinguish cancellation, orthogonality, and coherent motion.
+
+<a id="term-state-transport"></a>
+### TERM-STATE-TRANSPORT — state-error transport
+
+- **Russian equivalent:** перенос ошибки к состоянию.
+- **Project meaning:** Application of the next layer's adjoint Jacobian to a registered error source to obtain the current state's upper correction channel.
+- **Usage rule:** Local and cumulative transport are recorded separately and tied to explicit state and Jacobian versions.
+
+<a id="term-tnz"></a>
+### TERM-TNZ — Transport-Null Zone (TNZ)
+
+- **Russian equivalent:** зона нулевого переноса (TNZ).
+- **Project meaning:** A nonzero source error in the kernel of the adjoint state-transport operator, producing a zero upper channel.
+- **Usage rule:** TNZ differs from ECZ: TNZ concerns transport of one source, while ECZ concerns aggregation of channels already obtained.
+
+<a id="term-directional-transport-gain"></a>
+### TERM-DIRECTIONAL-TRANSPORT-GAIN — directional transport gain
+
+- **Russian equivalent:** направленный коэффициент переноса.
+- **Project meaning:** The norm ratio between a transported signal and its particular input error direction for one registered operator.
+- **Usage rule:** It characterizes only the observed direction and is not a full-Jacobian spectral estimate or proof of dynamical isometry.
+
+<a id="term-block-jacobian-probe"></a>
+### TERM-BLOCK-JACOBIAN-PROBE — block-Jacobian probe
+
+- **Russian equivalent:** блочная проба Якобиана.
+- **Project meaning:** A matrix-free computation of multiple local vector–Jacobian or Jacobian–vector products on one frozen state snapshot without materializing the full Jacobian.
+- **Usage rule:** One logical automatic-differentiation call does not imply one GPU kernel, lower asymptotic work, lower memory, or guaranteed acceleration.
+
+<a id="term-exact-verification"></a>
+### TERM-EXACT-VERIFICATION — counterfactual exact verification
+
+- **Russian equivalent:** точная контрфактическая проверка.
+- **Project meaning:** A comparison between a proposed control decision and a separate exact branch started from identical state to measure the actual utility of a skipped or executed exact sweep.
+- **Usage rule:** Run this verification before a controller is allowed to alter the primary computational path.
+
+<a id="term-endpoint-gradient-utility"></a>
+### TERM-ENDPOINT-GRADIENT-UTILITY — endpoint-gradient utility
+
+- **Russian equivalent:** полезность для конечного градиента.
+- **Project meaning:** Improvement in the distance between the current parameter gradient and a frozen exact reference after one additional exact state-inference sweep.
+- **Usage rule:** This is the primary next-sweep utility measure in Scenario A; energy reduction and runtime remain separate outcomes.
+
+<a id="term-dangerous-miss"></a>
+### TERM-DANGEROUS-MISS — dangerous miss
+
+- **Russian equivalent:** опасный пропуск.
+- **Project meaning:** A case where the controller proposes skipping an exact sweep while the counterfactual exact branch shows a preregistered material endpoint-gradient improvement.
+- **Usage rule:** Dangerous-miss rate is a mandatory active-control gate and is not replaced by average predictor accuracy.
+
+<a id="term-qwake-pc"></a>
+### TERM-QWAKE-PC — QWake-PC
+
+- **Russian equivalent:** QWake-PC.
+- **Project meaning:** A research controller combining correction geometry, state-error transport, temporal persistence, predictor uncertainty, and counterfactual exact verification to allocate full exact state-inference sweeps.
+- **Usage rule:** It operates in shadow mode first; active control requires registered safety and runtime gates.
+
+<a id="term-primary-working-scenario"></a>
+### TERM-PRIMARY-WORKING-SCENARIO — primary working scenario
+
+- **Russian equivalent:** основной рабочий сценарий.
+- **Project meaning:** A frozen sequence of mandatory and optional stages used to plan future work without claiming that those experiments have already been executed.
+- **Usage rule:** Scenario A is the primary post-B0 working scenario; changing its mandatory boundary requires a new ADR decision.
+
+<a id="term-exact-implementation-freeze"></a>
+### TERM-EXACT-IMPLEMENTATION-FREEZE — exact-implementation freeze
+
+- **Russian equivalent:** фиксация точной реализации.
+- **Project meaning:** Selection and immutable freezing of the exact computational path after B1/B2 gates and before predictor-label generation and counterfactual evidence collection.
+- **Usage rule:** The stage identifier is `EX-IF0`; avoid `kernel` here to separate execution implementation from mathematical kernel operators.
+
+<a id="term-pnz"></a>
+### TERM-PNZ — Plasticity-Null Zone (PNZ)
+
+- **Russian equivalent:** зона нулевой пластичности (PNZ).
+- **Project meaning:** A nonzero local error in the kernel of the adjoint parameter Jacobian and therefore inaccessible to first-order parameter change of that layer.
+- **Usage rule:** In Scenario A, PNZ is a limited theoretical extension with a deterministic control; it does not imply global unlearnability or authorize skipped learning.
 
 ## Glossary change procedure
 

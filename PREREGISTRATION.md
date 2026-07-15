@@ -111,3 +111,27 @@ equal-wall-clock эксперимент.
 создают test loader. Exact implementation candidates требуют equivalence gates;
 approximation candidates получают отдельный non-inferiority rule и не получают
 claim эквивалентности Stage 2. Candidate selection, stopping tolerance, refresh interval, predict-correct correction budget, EMA/secant parameters, fallback rule и margin замораживаются до Stage 3 test access. A0 использует отдельный endpoint-equivalence gate; C4/C5 требуют хотя бы одну точную коррекцию и публикуемый fallback rate.
+
+
+## Дополнение: основной рабочий сценарий A после B0
+
+Это дополнение имеет статус design-only и принимает PC-TREF Balanced Core как верхнеуровневую рамку, а PC-CATM как механизмную модель. Оно фиксирует порядок будущих работ,
+но не разрешает подтверждающее выполнение. Нормативные документы:
+
+- `docs/pc-tref-balanced-core.md`;
+- `docs/pc-catm-operator-model.md`;
+- `docs/masters-thesis-plan.md`;
+- `docs/stage3b-primary-scenario-a.md`;
+- `docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a.md`.
+
+Обязательный порядок: shortcut и временной контроль; невозмущение и стоимость
+наблюдения; детерминированные проверки; SI-MA0; отдельные B1/B2; EX-IF0;
+пассивная диагностика; предиктор; точная контрфактическая проверка; теневой
+QWake-PC; активное управление только полными проходами после отдельного
+решения о допуске.
+
+Независимая статистическая единица — `model_seed`. Пороговые значения, признаки,
+разбиение моделей, определение полезности конечного градиента, предел опасных
+пропусков и правила резервного точного пути должны быть заморожены до доступа
+к тестовой выборке. PNZ и параметрический ядерный оператор не входят в
+обязательное подтверждающее выполнение.

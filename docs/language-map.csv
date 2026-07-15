@@ -77,3 +77,8 @@ docs/stage3a-publication-finalization.md,docs/stage3a-publication-finalization_E
 docs/stage3b-b0-analysis-pipeline.md,docs/stage3b-b0-analysis-pipeline_EN.md,required
 docs/stage3b-b0-sealing.md,docs/stage3b-b0-sealing_EN.md,required
 docs/torch2pc-patched-v1-equivalence.md,docs/torch2pc-patched-v1-equivalence_EN.md,required
+docs/pc-tref-balanced-core.md,docs/pc-tref-balanced-core_EN.md,required
+docs/pc-catm-operator-model.md,docs/pc-catm-operator-model_EN.md,required
+docs/masters-thesis-plan.md,docs/masters-thesis-plan_EN.md,required
+docs/stage3b-primary-scenario-a.md,docs/stage3b-primary-scenario-a_EN.md,required
+docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a.md,docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md,required

@@ -28,6 +28,16 @@ Under which algorithmic and computational conditions do `Exact`, `FixedPred`,
 and `Strict` produce behavior close to BP, and when do their differences exceed
 preregistered numerical or statistical bounds?
 
+After Stage 3A and B0, the primary post-B0 question is refined to:
+
+> Can a cost-efficient diagnostic representation of `state_inference` retain
+> enough information to safely choose the number of subsequent full exact
+> sweeps?
+
+The upper-level framework is [PC-TREF](docs/pc-tref-balanced-core_EN.md), the
+mechanism model is [PC-CATM](docs/pc-catm-operator-model_EN.md), and the
+realistic experimental path is [Scenario A](docs/stage3b-primary-scenario-a_EN.md).
+
 The comparison covers:
 
 - implementation correctness and numerical controls;
@@ -162,14 +172,18 @@ GitHub Releases:
 
 ## Next stage
 
-The next stage is candidate-specific numerical-equivalence testing for B1 and
-B2. Each candidate must separately pass registered cosine, relative-L2,
-finite-value, and stability criteria. A small profiling pilot is permitted only
-after these checks pass. The full matched profiling matrix requires a separate
-decision gate.
+The next factual Scenario A stage is validity control before any execution-path
+change:
 
-Structural-locality claims require dedicated measurements of dependency radius,
-graph span and lifetime, the feedback operator, and orchestration barriers.
+1. shortcut/equivalence controls with instrumentation disabled;
+2. observer non-interference;
+3. observer overhead;
+4. deterministic NCZ/ECZ/TNZ controls;
+5. then SI-MA0 and candidate-specific B1/B2 gates.
+
+B0 remains immutable and test access stays closed. The full sequence and
+calendar boundary are frozen in the
+[realistic thesis plan](docs/masters-thesis-plan_EN.md).
 
 ## Numerical controls
 

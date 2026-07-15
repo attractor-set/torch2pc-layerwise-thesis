@@ -25,6 +25,7 @@ nav:
       - Готовность Stage 3: stage-3-readiness.md
       - Результаты Stage 3A: stage3a-statistical-results.md
       - Stage 3B B0 validation и sealing: stage3b-b0-sealing.md
+      - Stage 3B B0 analysis pipeline: stage3b-b0-analysis-pipeline.md
       - Эквивалентность Torch2PC patched-v1: torch2pc-patched-v1-equivalence.md
       - Настройка GitHub: github-setup.md
   - Дизайн:

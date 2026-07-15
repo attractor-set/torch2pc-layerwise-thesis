@@ -9,6 +9,9 @@ MODEL ?= lenet_classic
 SEED ?= 0
 ETA ?=
 INFERENCE_STEPS ?=
+EQ_S0_MAX_BATCHES ?= 1
+EQ_S0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s0-cpu-smoke
+EQ_S0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s0-gpu-smoke
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
@@ -18,7 +21,7 @@ INFERENCE_STEPS ?=
         freeze-environment configure-stage2 prepare-stage2 freeze-stage2-environment \
         control-stage2-cpu control-stage2-gpu stage2-plan freeze-stage2 final-stage2 \
         snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2 \
-        stage3-ready stage3-plan
+        stage3-ready stage3-plan stage3b-a1-eq-s0-cpu stage3b-a1-eq-s0-gpu
 
 help:
 	@printf '%s\n' \
@@ -56,6 +59,8 @@ help:
 	  '  diagnostics           Run diagnostic experiments' \
 	  '  stage3-ready          Validate the Stage 3 design-ready scaffold' \
 	  '  stage3-plan           Generate the deterministic Stage 3 design plan' \
+	  '  stage3b-a1-eq-s0-cpu  Run EQ-S0 in the controlled Docker CPU lane' \
+	  '  stage3b-a1-eq-s0-gpu  Run EQ-S0 in the controlled Docker/ROCm lane' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \
@@ -240,6 +245,16 @@ stage3-ready:
 
 stage3-plan:
 	PYTHONPATH=src $(PYTHON) scripts/generate_stage3_design_plan.py
+
+stage3b-a1-eq-s0-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s0_container.py cpu \
+		--max-batches "$(EQ_S0_MAX_BATCHES)" \
+		--output-dir "$(EQ_S0_CPU_OUTPUT_DIR)"
+
+stage3b-a1-eq-s0-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s0_container.py gpu \
+		--max-batches "$(EQ_S0_MAX_BATCHES)" \
+		--output-dir "$(EQ_S0_GPU_OUTPUT_DIR)"
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

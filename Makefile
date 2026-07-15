@@ -21,6 +21,13 @@ EQ_S2_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq
 OBS_NI0_MAX_BATCHES ?= 1
 OBS_NI0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-ni0-cpu-smoke
 OBS_NI0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-ni0-gpu-smoke
+OBS_OH0_EXECUTION_SCOPE ?= smoke
+OBS_OH0_MAX_BATCHES ?= 1
+OBS_OH0_TIMING_REPEATS ?= 3
+OBS_OH0_WARMUP_PAIRS ?= 1
+OBS_OH0_RSS_SAMPLER_INTERVAL_MS ?= 1.0
+OBS_OH0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-oh0-cpu-smoke
+OBS_OH0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-oh0-gpu-smoke
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
@@ -33,7 +40,8 @@ OBS_NI0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/
         stage3-ready stage3-plan stage3b-a1-eq-s0-cpu stage3b-a1-eq-s0-gpu \
         stage3b-a1-eq-s1-cpu stage3b-a1-eq-s1-gpu \
         stage3b-a1-eq-s2-cpu stage3b-a1-eq-s2-gpu \
-        stage3b-a1-obs-ni0-cpu stage3b-a1-obs-ni0-gpu
+        stage3b-a1-obs-ni0-cpu stage3b-a1-obs-ni0-gpu \
+        stage3b-a1-obs-oh0-cpu stage3b-a1-obs-oh0-gpu
 
 help:
 	@printf '%s\n' \
@@ -79,6 +87,8 @@ help:
 	  '  stage3b-a1-eq-s2-gpu  Run EQ-S2 FixedPred/shortcut in Docker/ROCm' \
 	  '  stage3b-a1-obs-ni0-cpu Run OBS-NI0 passive observer in Docker CPU' \
 	  '  stage3b-a1-obs-ni0-gpu Run OBS-NI0 passive observer in Docker/ROCm' \
+	  '  stage3b-a1-obs-oh0-cpu Run OBS-OH0 observer overhead in Docker CPU' \
+	  '  stage3b-a1-obs-oh0-gpu Run OBS-OH0 observer overhead in Docker/ROCm' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \
@@ -303,6 +313,24 @@ stage3b-a1-obs-ni0-gpu:
 	$(PYTHON) scripts/run_stage3b_a1_obs_ni0_container.py gpu \
 		--max-batches "$(OBS_NI0_MAX_BATCHES)" \
 		--output-dir "$(OBS_NI0_GPU_OUTPUT_DIR)"
+
+stage3b-a1-obs-oh0-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_obs_oh0_container.py cpu \
+		--execution-scope "$(OBS_OH0_EXECUTION_SCOPE)" \
+		--max-batches "$(OBS_OH0_MAX_BATCHES)" \
+		--timing-repeats "$(OBS_OH0_TIMING_REPEATS)" \
+		--warmup-pairs "$(OBS_OH0_WARMUP_PAIRS)" \
+		--rss-sampler-interval-ms "$(OBS_OH0_RSS_SAMPLER_INTERVAL_MS)" \
+		--output-dir "$(OBS_OH0_CPU_OUTPUT_DIR)"
+
+stage3b-a1-obs-oh0-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_obs_oh0_container.py gpu \
+		--execution-scope "$(OBS_OH0_EXECUTION_SCOPE)" \
+		--max-batches "$(OBS_OH0_MAX_BATCHES)" \
+		--timing-repeats "$(OBS_OH0_TIMING_REPEATS)" \
+		--warmup-pairs "$(OBS_OH0_WARMUP_PAIRS)" \
+		--rss-sampler-interval-ms "$(OBS_OH0_RSS_SAMPLER_INTERVAL_MS)" \
+		--output-dir "$(OBS_OH0_GPU_OUTPUT_DIR)"
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

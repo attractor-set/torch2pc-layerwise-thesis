@@ -1,0 +1,40 @@
+{
+  "aggregation_branch": "research/stage3b-si-ma0-confirmatory-aggregation",
+  "aggregation_runtime": "host_static_analysis",
+  "aggregation_source_git_commit": "b13a3ff10b87c4f65514b9cb45e6c97e977f8a9e",
+  "attempt_count": 10,
+  "contract_id": "stage3b-si-ma0-v2",
+  "evidence_schema_id": "stage3b-si-ma0-confirmatory-evidence-v1",
+  "execution_image_revision": "03016e68ecc7a850da7148d676f47acfb07cc99e",
+  "execution_source_git_commit": "03016e68ecc7a850da7148d676f47acfb07cc99e",
+  "frozen_contract_sha256": "1f66a5f0081da6198a7203ab11b3d4b800dff00be80f0ce97974e850e5e1a9d5",
+  "model_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "prerequisites": {
+    "decision_path": "results/stage-3/a1-mechanism-controls/confirmatory/mechanism-controls-decision.json",
+    "decision_sha256": "5103a3fbccd9dfa215fdaadc3622f371e065e6bae314e04d5007ac6806258dad",
+    "required_fields": {
+      "core_controls_passed": true,
+      "mechanism_controls_confirmatory_passed": true,
+      "si_ma0_open": true
+    },
+    "verified": true
+  },
+  "source_attempt_manifest_sha256": "43c0ccc6841be55271b67ba3deb42eb53952d799f22a82410f158159f4f3aa92",
+  "test_split_access": false,
+  "validation_batch_ids": [
+    0,
+    1,
+    2
+  ]
+}

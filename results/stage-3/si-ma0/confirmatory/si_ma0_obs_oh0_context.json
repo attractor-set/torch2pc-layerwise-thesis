@@ -1,0 +1,23 @@
+{
+  "absolute_difference_to_off_first_overhead": 0.0022414850675778752,
+  "absolute_difference_to_on_first_overhead": 0.05710766847907828,
+  "absolute_difference_to_primary_overhead": 0.0229736791607022,
+  "arm": "joint_vjp",
+  "estimands_are_identical": false,
+  "interpretation": "The SI-MA0 accounting residual is descriptively consistent with the previously sealed ROCm joint-VJP observer-overhead scale, but the estimands and execution paths differ. This context does not override the frozen COST-MA0 threshold or decision.",
+  "lane": "rocm",
+  "runtime_overheads": {
+    "off_first_median_runtime_ratio": 0.1628492316451302,
+    "on_first_median_runtime_ratio": 0.10350007809847406,
+    "primary_runtime_ratio": 0.13763406741685014
+  },
+  "runtime_ratios": {
+    "off_first_median_runtime_ratio": 1.1628492316451302,
+    "on_first_median_runtime_ratio": 1.103500078098474,
+    "primary_runtime_ratio": 1.1376340674168501
+  },
+  "scope": "confirmatory",
+  "si_ma0_median_accounting_residual": 0.16060774657755233,
+  "source_path": "results/stage-3/a1-shortcut-observer-controls/sealed/obs-oh0-v1/rocm/obs_oh0_timing_summary.json",
+  "source_sha256": "e10a930d2c3e408def44a5ef66794318383f66700defcdde21b684f67d9526a0"
+}

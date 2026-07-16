@@ -1,0 +1,16 @@
+{
+  "CAL-COST-MA1": null,
+  "attempt_complete": true,
+  "attempt_id": "si-ma1-confirmatory-seed-2-19506ac1870041c896ba09afbc464b0d",
+  "attempt_valid": true,
+  "cohort_aggregation_required": true,
+  "confirmatory_decision_made": false,
+  "contract_id": "stage3b-si-ma1-v1",
+  "decision_scope": "model_seed_attempt",
+  "decision_state": null,
+  "ecz_evaluator_cost_included": false,
+  "historical_si_ma0_result_retained": true,
+  "implementation_schema_id": "stage3b-si-ma1-implementation-v1",
+  "model_seed": 2,
+  "si_ma1_passed": null
+}

@@ -93,6 +93,17 @@ def require_environment(name: str) -> str:
     return value
 
 
+def require_commit_environment(name: str) -> str:
+    value = require_environment(name)
+    if len(value) != 40 or any(
+        character not in "0123456789abcdef" for character in value
+    ):
+        raise SIMA0Error(
+            f"controlled provenance variable {name} must be a 40-hex commit"
+        )
+    return value
+
+
 def git_output(path: Path, *args: str) -> str:
     return subprocess.check_output(
         ["git", "-C", str(path), *args],
@@ -157,7 +168,11 @@ def load_checkpoint(path: Path) -> tuple[dict[str, Any], dict[str, Tensor]]:
     )
 
 
-def verify_prerequisites(repo: Path) -> dict[str, Any]:
+def verify_prerequisites(
+    repo: Path,
+    *,
+    prereg_v2_commit: str,
+) -> dict[str, Any]:
     evidence_root = (
         repo
         / "results/stage-3/a1-mechanism-controls/confirmatory"
@@ -185,25 +200,11 @@ def verify_prerequisites(repo: Path) -> dict[str, Any]:
         check=True,
         stdout=subprocess.DEVNULL,
     )
-    prereg_commit = git_output(
-        repo,
-        "rev-list",
-        "-n",
-        "1",
-        "stage3b-si-ma0-prereg-v2",
-    )
-    head = git_output(repo, "rev-parse", "HEAD")
-    ancestry = subprocess.run(
-        ["git", "-C", str(repo), "merge-base", "--is-ancestor",
-         prereg_commit, head],
-        check=False,
-    )
-    if ancestry.returncode != 0:
-        raise SIMA0Error("SI-MA0 preregistration v2 is absent from HEAD")
     return {
         "a1_decision_sha256": sha256_file(decision_path),
         "a1_sha256_manifest_sha256": sha256_file(checksum_path),
-        "si_ma0_prereg_v2_commit": prereg_commit,
+        "si_ma0_prereg_v2_commit": prereg_v2_commit,
+        "si_ma0_prereg_v2_ancestry_verified_by_host_runner": True,
     }
 
 
@@ -513,17 +514,21 @@ def main() -> None:
         raise ValueError("--max-batches must be positive")
     scope = str(args.execution_scope)
     repo = Path(__file__).resolve().parents[1]
-    source_commit = require_environment("SOURCE_GIT_COMMIT")
+    source_commit = require_commit_environment("SOURCE_GIT_COMMIT")
     source_branch = require_environment("SOURCE_GIT_BRANCH")
     experiment_image = require_environment("EXPERIMENT_IMAGE")
-    image_revision = require_environment("IMAGE_REVISION")
+    image_revision = require_commit_environment("IMAGE_REVISION")
+    prereg_v2_commit = require_commit_environment(
+        "SI_MA0_PREREG_V2_COMMIT"
+    )
     if source_commit != image_revision:
         raise SIMA0Error("controlled image revision differs from source")
-    if git_output(repo, "rev-parse", "HEAD") != source_commit:
-        raise SIMA0Error("container source commit differs from provenance")
     contract_path = repo / args.contract
     contract = load_contract(contract_path)
-    prerequisites = verify_prerequisites(repo)
+    prerequisites = verify_prerequisites(
+        repo,
+        prereg_v2_commit=prereg_v2_commit,
+    )
     checkpoint_path = repo / args.checkpoint
     if not checkpoint_path.is_file():
         raise SIMA0Error(f"checkpoint is missing: {args.checkpoint}")
@@ -817,6 +822,7 @@ def main() -> None:
         "source_git_branch": source_branch,
         "experiment_image": experiment_image,
         "image_revision": image_revision,
+        "si_ma0_prereg_v2_commit": prereg_v2_commit,
         "model_seed": args.model_seed,
         "expected_counts": counts,
         "observed_counts": observed_counts,

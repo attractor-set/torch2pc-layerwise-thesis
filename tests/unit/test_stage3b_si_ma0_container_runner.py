@@ -81,6 +81,7 @@ def test_validate_summary_accepts_smoke_payload() -> None:
         "source_git_branch": "research/stage3b-si-ma0-implementation",
         "experiment_image": "image@sha256:abc",
         "image_revision": "a" * 40,
+        "si_ma0_prereg_v2_commit": "b" * 40,
         "model_seed": 0,
         "expected_counts": counts,
         "observed_counts": counts,
@@ -105,6 +106,7 @@ def test_validate_summary_accepts_smoke_payload() -> None:
         branch="research/stage3b-si-ma0-implementation",
         image="image@sha256:abc",
         image_revision="a" * 40,
+        prereg_v2_commit="b" * 40,
     )
 
 
@@ -124,6 +126,7 @@ def test_validate_summary_rejects_confirmatory_claim() -> None:
         "source_git_branch": "branch",
         "experiment_image": "image",
         "image_revision": "a" * 40,
+        "si_ma0_prereg_v2_commit": "b" * 40,
         "model_seed": 0,
         "expected_counts": counts,
         "observed_counts": counts,
@@ -149,6 +152,7 @@ def test_validate_summary_rejects_confirmatory_claim() -> None:
             branch="branch",
             image="image",
             image_revision="a" * 40,
+            prereg_v2_commit="b" * 40,
         )
 
 

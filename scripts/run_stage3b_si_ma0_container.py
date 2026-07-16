@@ -122,18 +122,51 @@ def verify_controlled_image(
     return head, branch, image, str(image_revision)
 
 
+def resolve_prereg_v2_commit(repo: Path, *, head: str) -> str:
+    prereg_commit = output(
+        [
+            "git",
+            "rev-list",
+            "-n",
+            "1",
+            "stage3b-si-ma0-prereg-v2",
+        ],
+        cwd=repo,
+    )
+    if not re.fullmatch(r"[0-9a-f]{40}", prereg_commit):
+        raise RuntimeError("unable to resolve SI-MA0 preregistration v2")
+    ancestry = subprocess.run(
+        [
+            "git",
+            "merge-base",
+            "--is-ancestor",
+            prereg_commit,
+            head,
+        ],
+        cwd=repo,
+        check=False,
+    )
+    if ancestry.returncode != 0:
+        raise RuntimeError(
+            "SI-MA0 preregistration v2 is absent from implementation HEAD"
+        )
+    return prereg_commit
+
+
 def controlled_environment(
     *,
     head: str,
     branch: str,
     image: str,
     image_revision: str,
+    prereg_v2_commit: str,
 ) -> dict[str, str]:
     environment = os.environ.copy()
     environment["SOURCE_GIT_COMMIT"] = head
     environment["SOURCE_GIT_BRANCH"] = branch
     environment["EXPERIMENT_IMAGE"] = image
     environment["IMAGE_REVISION"] = image_revision
+    environment["SI_MA0_PREREG_V2_COMMIT"] = prereg_v2_commit
     return environment
 
 
@@ -160,6 +193,7 @@ def validate_summary(
     branch: str,
     image: str,
     image_revision: str,
+    prereg_v2_commit: str,
 ) -> None:
     if summary.get("contract_id") != CONTRACT_ID:
         raise RuntimeError("SI-MA0 summary contract mismatch")
@@ -172,6 +206,7 @@ def validate_summary(
         "source_git_branch": branch,
         "experiment_image": image,
         "image_revision": image_revision,
+        "si_ma0_prereg_v2_commit": prereg_v2_commit,
     }
     observed = {key: summary.get(key) for key in expected_provenance}
     if observed != expected_provenance:
@@ -251,6 +286,7 @@ def main() -> None:
     if not checkpoint.is_file():
         raise RuntimeError(f"checkpoint is missing: {args.checkpoint}")
     head, branch, image, image_revision = verify_controlled_image(repo)
+    prereg_v2_commit = resolve_prereg_v2_commit(repo, head=head)
     lane = "rocm" if args.device == "gpu" else "cpu"
     service = "control-gpu" if args.device == "gpu" else "control-cpu"
     command = [
@@ -270,6 +306,8 @@ def main() -> None:
         f"EXPERIMENT_IMAGE={image}",
         "-e",
         f"IMAGE_REVISION={image_revision}",
+        "-e",
+        f"SI_MA0_PREREG_V2_COMMIT={prereg_v2_commit}",
         service,
         "python",
         "scripts/run_stage3b_si_ma0.py",
@@ -289,6 +327,7 @@ def main() -> None:
     print(f"source_branch={branch}")
     print(f"experiment_image={image}")
     print(f"image_revision={image_revision}")
+    print(f"si_ma0_prereg_v2_commit={prereg_v2_commit}")
     print(f"execution_lane={lane}")
     subprocess.run(
         command,
@@ -299,6 +338,7 @@ def main() -> None:
             branch=branch,
             image=image,
             image_revision=image_revision,
+            prereg_v2_commit=prereg_v2_commit,
         ),
     )
     output_dir = repo / args.output_dir
@@ -322,6 +362,7 @@ def main() -> None:
         branch=branch,
         image=image,
         image_revision=image_revision,
+        prereg_v2_commit=prereg_v2_commit,
     )
     validate_record_counts(
         output_dir,

@@ -1,0 +1,30 @@
+{
+  "accounting_residual": {
+    "iqr": 0.003916923175318082,
+    "max": 0.6857425656892209,
+    "mean": 0.16365806505487943,
+    "median": 0.16060774657755233,
+    "min": 0.05776940645398814,
+    "n": 7500,
+    "p95": 0.16819846390925425,
+    "q1": 0.15871705727611063,
+    "q3": 0.1626339804514287
+  },
+  "cost_ma0_passed": false,
+  "counts": {
+    "finite_failures": 0,
+    "measured_steps": 7500,
+    "nonnegative_failures": 0,
+    "passing_measured_steps": 0,
+    "passing_repetitions": 0,
+    "repetition_aggregates": 150,
+    "stored_vs_recomputed_region_sum_mismatches": 0
+  },
+  "passing_measured_step_fraction": 0.0,
+  "passing_repetition_fraction": 0.0,
+  "thresholds": {
+    "max_relative_residual": 0.05,
+    "minimum_passing_measured_step_fraction": 0.99,
+    "minimum_passing_repetition_fraction": 1.0
+  }
+}

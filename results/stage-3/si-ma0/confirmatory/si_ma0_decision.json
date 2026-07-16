@@ -1,0 +1,25 @@
+{
+  "authorization": {
+    "model_level_passive_ncz_ecz_tnz_interpretation": false,
+    "reason": "COST-MA0 failed the frozen accounting threshold.",
+    "stage3b_b1_b2_open": false
+  },
+  "confirmatory_decision_made": true,
+  "contract_id": "stage3b-si-ma0-v2",
+  "decision_state": "fail",
+  "evidence_complete": true,
+  "evidence_schema_id": "stage3b-si-ma0-confirmatory-evidence-v1",
+  "final_gate_expression": "prerequisites_verified and REC-MA0 and OBS-MA0 and VER-MA0 and COST-MA0 and CMP-MA0",
+  "gates": {
+    "CMP-MA0": true,
+    "COST-MA0": false,
+    "OBS-MA0": true,
+    "REC-MA0": true,
+    "VER-MA0": true,
+    "prerequisites_verified": true
+  },
+  "negative_results_retained": true,
+  "records_excluded_after_first_output": false,
+  "si_ma0_passed": false,
+  "threshold_retuned": false
+}

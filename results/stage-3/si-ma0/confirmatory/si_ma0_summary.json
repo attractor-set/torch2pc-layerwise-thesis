@@ -1,0 +1,101 @@
+{
+  "accounting_residual_statistics": {
+    "accounting_residual": {
+      "iqr": 0.003916923175318082,
+      "max": 0.6857425656892209,
+      "mean": 0.16365806505487943,
+      "median": 0.16060774657755233,
+      "min": 0.05776940645398814,
+      "n": 7500,
+      "p95": 0.16819846390925425,
+      "q1": 0.15871705727611063,
+      "q3": 0.1626339804514287
+    },
+    "cost_ma0_passed": false,
+    "counts": {
+      "finite_failures": 0,
+      "measured_steps": 7500,
+      "nonnegative_failures": 0,
+      "passing_measured_steps": 0,
+      "passing_repetitions": 0,
+      "repetition_aggregates": 150,
+      "stored_vs_recomputed_region_sum_mismatches": 0
+    },
+    "passing_measured_step_fraction": 0.0,
+    "passing_repetition_fraction": 0.0,
+    "thresholds": {
+      "max_relative_residual": 0.05,
+      "minimum_passing_measured_step_fraction": 0.99,
+      "minimum_passing_repetition_fraction": 1.0
+    }
+  },
+  "aggregation_source_commit": "b13a3ff10b87c4f65514b9cb45e6c97e977f8a9e",
+  "confirmatory_decision_made": true,
+  "contract_id": "stage3b-si-ma0-v2",
+  "cost_share_statistics_file": "si_ma0_cost_share_statistics.csv",
+  "decision_state": "fail",
+  "evidence_schema_id": "stage3b-si-ma0-confirmatory-evidence-v1",
+  "execution_image_revision": "03016e68ecc7a850da7148d676f47acfb07cc99e",
+  "execution_source_commit": "03016e68ecc7a850da7148d676f47acfb07cc99e",
+  "expected_counts": {
+    "diagnostic_records": 3600,
+    "mode_comparisons": 150,
+    "model_region_summary_rows": 70,
+    "output_error_records": 600,
+    "region_timing_records": 52500,
+    "state_update_events": 3000,
+    "total_timing_records": 7500
+  },
+  "gates": {
+    "CMP-MA0": true,
+    "COST-MA0": false,
+    "OBS-MA0": true,
+    "REC-MA0": true,
+    "VER-MA0": true,
+    "prerequisites_verified": true
+  },
+  "independent_unit": "model_seed",
+  "interpretation_boundary": {
+    "allowed": "On the registered final FashionMNIST Strict checkpoints, controlled ROCm lane, and fixed validation batches, the observed state-inference correction is reproduced by registered PC-CATM channels, observation is numerically non-interfering, versions are coherent, and call cost closes over prespecified regions within the accounting threshold.",
+    "not_allowed": [
+      "universal_time_shares",
+      "permission_to_skip_computation",
+      "prediction_of_endpoint_gradient_utility",
+      "proportional_speedup_from_vjp_reduction",
+      "minimal_sufficient_quotient_space",
+      "active_control_safety"
+    ]
+  },
+  "lane": "rocm",
+  "model_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "n_model_seeds": 10,
+  "next_stage_open": false,
+  "obs_oh0_context_file": "si_ma0_obs_oh0_context.json",
+  "observed_counts": {
+    "diagnostic_records": 3600,
+    "mode_comparisons": 150,
+    "model_region_summary_rows": 70,
+    "output_error_records": 600,
+    "region_timing_records": 52500,
+    "state_update_events": 3000,
+    "total_timing_records": 7500
+  },
+  "scope": "confirmatory",
+  "si_ma0_passed": false,
+  "validation_batch_ids": [
+    0,
+    1,
+    2
+  ]
+}

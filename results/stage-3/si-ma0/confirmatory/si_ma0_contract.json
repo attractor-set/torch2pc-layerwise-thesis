@@ -1,0 +1,388 @@
+{
+  "amendment": {
+    "made_before_any_si_ma0_results": true,
+    "made_before_first_implementation_smoke": true,
+    "reason": "Frozen StrictPCPredErrs updates len(model)-1 internal belief states per sweep; the output error is a separate non-update record.",
+    "supersedes_commit": "1c5d910ccc0fd75468e84f487ae7cc035b4e0770",
+    "supersedes_contract_id": "stage3b-si-ma0-v1",
+    "supersedes_tag": "stage3b-si-ma0-prereg-v1"
+  },
+  "canonical_channels": [
+    "self",
+    "upper"
+  ],
+  "contract_id": "stage3b-si-ma0-v2",
+  "decision_states": {
+    "fail": "at least one scientific or contract sub-gate false with complete evidence",
+    "inconclusive": "evidence incomplete for documented infrastructure reason and no scientific failure established",
+    "pass": "all sub-gates true"
+  },
+  "execution_scopes": {
+    "confirmatory": {
+      "lanes": [
+        "rocm"
+      ],
+      "model_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "record_exclusion_after_first_output": false,
+      "threshold_retuning_after_first_output": false,
+      "validation_batch_ids": [
+        0,
+        1,
+        2
+      ]
+    },
+    "smoke": {
+      "included_in_confirmatory_evidence": false,
+      "lanes": [
+        "cpu",
+        "rocm"
+      ],
+      "model_seeds": [
+        0
+      ],
+      "threshold_retuning_allowed": false,
+      "validation_batch_ids": [
+        0
+      ]
+    }
+  },
+  "expected_counts": {
+    "confirmatory_diagnostic_records": 3600,
+    "confirmatory_output_error_records": 600,
+    "confirmatory_state_update_events": 3000,
+    "counters_only_region_timing_records": 52500,
+    "counters_only_total_timing_records": 7500,
+    "mode_comparison_rows": 150,
+    "model_region_summary_rows": 70
+  },
+  "final_gate_expression": "prerequisites_verified and REC-MA0 and OBS-MA0 and VER-MA0 and COST-MA0 and CMP-MA0",
+  "gates": {
+    "CMP-MA0": {
+      "requirements": [
+        "all_model_seeds_present",
+        "all_batch_ids_present",
+        "all_expected_records_present",
+        "all_attempts_retained",
+        "hashes_verified",
+        "source_commit_immutable",
+        "image_digest_immutable",
+        "test_split_not_accessed",
+        "dataset_loading_outside_measured_region",
+        "sha256_manifests_verified",
+        "frozen_contract_verified",
+        "all_output_error_records_present"
+      ]
+    },
+    "COST-MA0": {
+      "requirements": [
+        "timing_records_complete",
+        "times_finite",
+        "times_nonnegative",
+        "step_accounting_pass_fraction_at_least_0_99",
+        "all_repetition_aggregates_pass",
+        "no_missing_measured_steps"
+      ]
+    },
+    "OBS-MA0": {
+      "candidate_modes": [
+        "instrumented_disabled",
+        "counters_only",
+        "tensor_summaries",
+        "full_attribution"
+      ],
+      "overhead_is_descriptive_not_pass_threshold": true,
+      "reference_mode": "no_hooks",
+      "requirements": [
+        "final_beliefs_equivalent",
+        "loss_equivalent",
+        "parameter_gradients_equivalent",
+        "model_state_fingerprint_equal",
+        "input_target_fingerprint_equal",
+        "rng_fingerprint_valid"
+      ]
+    },
+    "REC-MA0": {
+      "all_events_required": true,
+      "record_scope": "state_update_events_only",
+      "requirements": [
+        "canonical_channels_complete",
+        "reconstructed_update_equivalent_to_observed_update",
+        "state_transition_equivalent",
+        "finite",
+        "no_duplicate_event_keys",
+        "no_missing_mandatory_fields",
+        "zero_safe_comparison_valid"
+      ]
+    },
+    "VER-MA0": {
+      "requirements": [
+        "version_fields_complete",
+        "state_version_increments_once_per_update",
+        "state_versions_monotone",
+        "jacobian_version_matches_used_snapshot",
+        "no_mixed_version_channel_record",
+        "snapshot_fingerprints_equal",
+        "strict_ordering_matches_frozen_implementation",
+        "one_output_error_record_per_sweep",
+        "output_error_precedes_state_updates",
+        "output_error_records_finite"
+      ]
+    }
+  },
+  "interpretation_boundary": {
+    "allowed": "On the registered final FashionMNIST Strict checkpoints, controlled ROCm lane, and fixed validation batches, the observed state-inference correction is reproduced by registered PC-CATM channels, observation is numerically non-interfering, versions are coherent, and call cost closes over prespecified regions within the accounting threshold.",
+    "not_allowed": [
+      "universal_time_shares",
+      "permission_to_skip_computation",
+      "prediction_of_endpoint_gradient_utility",
+      "proportional_speedup_from_vjp_reduction",
+      "minimal_sufficient_quotient_space",
+      "active_control_safety"
+    ]
+  },
+  "language_documents": {
+    "en": "experiments/planned/STAGE3B-SI-MA0_EN.md",
+    "ru": "experiments/planned/STAGE3B-SI-MA0.md"
+  },
+  "multiplicity": {
+    "future_inferential_comparisons_require_separate_preregistration": true,
+    "statistical_null_hypothesis_family_registered": false
+  },
+  "numerical_reference_mode": "no_hooks",
+  "observer_modes": [
+    "no_hooks",
+    "instrumented_disabled",
+    "counters_only",
+    "tensor_summaries",
+    "full_attribution"
+  ],
+  "outputs": {
+    "confirmatory_root": "results/stage-3/si-ma0/confirmatory",
+    "mandatory_files": [
+      "si_ma0_contract.json",
+      "si_ma0_attempts.jsonl",
+      "si_ma0_environment.json",
+      "si_ma0_event_records.csv",
+      "si_ma0_output_error_records.csv",
+      "si_ma0_mode_comparisons.csv",
+      "si_ma0_total_timing_records.csv",
+      "si_ma0_region_timing_records.csv",
+      "si_ma0_vjp_records.csv",
+      "si_ma0_saved_tensor_records.csv",
+      "si_ma0_graph_lifetime_records.csv",
+      "si_ma0_batch_summaries.csv",
+      "si_ma0_model_region_summaries.csv",
+      "si_ma0_summary.json",
+      "si_ma0_decision.json",
+      "SHA256SUMS"
+    ],
+    "raw_tensor_manifest_and_hashes_required": true,
+    "raw_tensors_may_be_outside_git": true,
+    "working_root": "results/stage-3/si-ma0/working"
+  },
+  "prerequisite_assertions": {
+    "core_controls_passed": true,
+    "mechanism_controls_confirmatory_passed": true,
+    "si_ma0_open": true,
+    "verify_a1_sha256_manifest": true
+  },
+  "primary_estimands": {
+    "cost_share": {
+      "between_model_summaries": [
+        "all_seed_values",
+        "median",
+        "iqr",
+        "mean",
+        "bootstrap_95_ci"
+      ],
+      "bootstrap_repeats": 10000,
+      "bootstrap_seed": 20260715,
+      "per_model_expression": "sum(region_device_time) / sum(state_inference_total_device_time)",
+      "required_dominant_region": null,
+      "resampling_unit": "model_seed",
+      "within_model_aggregation": [
+        "batch",
+        "timing_repetition",
+        "measured_step"
+      ]
+    },
+    "mechanism_validity": [
+      "event_relative_l2_reconstruction_error",
+      "event_max_abs_reconstruction_error",
+      "event_relative_l2_state_transition_error",
+      "event_max_abs_state_transition_error",
+      "passed_event_fraction",
+      "nonfinite_record_count",
+      "missing_record_count",
+      "duplicate_record_count"
+    ]
+  },
+  "primary_timing_mode": "counters_only",
+  "reconstruction": {
+    "group_technical_parts_by_canonical_channel_id": true,
+    "implementation_update_map_is_normative": true,
+    "observed_tensor": "u_observed",
+    "output_error_is_not_state_update": true,
+    "reconstructed_expression": "c_self + c_upper",
+    "record_scope": "state_update_events_only",
+    "state_transition_check": "h_after ~= canonical_update_map(h_before, u_observed, eta)"
+  },
+  "regions": [
+    "inference_setup",
+    "lower_prediction_and_error",
+    "upper_state_vjp",
+    "component_aggregation",
+    "belief_update",
+    "sweep_bookkeeping",
+    "inference_finalize"
+  ],
+  "registered_starting_point": {
+    "a1_decision_path": "results/stage-3/a1-mechanism-controls/confirmatory/mechanism-controls-decision.json",
+    "a1_evidence_commit": "474ce9fcac73ff53565f8da91da5688d72b6f475",
+    "a1_evidence_tag": "stage3b-a1-mechanism-controls-evidence-v1",
+    "a1_implementation_commit": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+    "base_commit": "30de25c50a970fcdb8038fe1ce20273f5efb9b3c",
+    "si_ma0_v1_prereg_commit": "1c5d910ccc0fd75468e84f487ae7cc035b4e0770",
+    "si_ma0_v1_prereg_tag": "stage3b-si-ma0-prereg-v1",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "rerun_policy": {
+    "immutable_attempt_id": true,
+    "replacement_only_for_infrastructure_failure": true,
+    "replacement_requires_same_source_image_contract_seed_batch_checkpoint": true,
+    "retain_failed_attempt": true,
+    "scientific_failure_is_not_replacement_reason": true
+  },
+  "scenario": "primary_scenario_a",
+  "schema_version": 2,
+  "scope": {
+    "architecture": "lenet_classic",
+    "batch_size": 256,
+    "checkpoint": "final",
+    "dataset": "FashionMNIST",
+    "dataset_loader_used": true,
+    "dtype": "float32",
+    "eta": 0.05,
+    "inference_steps": 20,
+    "loader_workers": 0,
+    "method": "strict",
+    "model_modules": 6,
+    "model_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "optimizer_step": false,
+    "output_error_records_per_sweep": 1,
+    "parameter_update": false,
+    "primary_device": "rocm",
+    "restore_checkpoint_before_run": true,
+    "restore_initial_belief_before_measured_step": true,
+    "shuffle": false,
+    "split": "validation",
+    "test_split_access": false,
+    "updated_state_layers_per_sweep": 5,
+    "validation_batch_ids": [
+      0,
+      1,
+      2
+    ]
+  },
+  "secondary_diagnostics": [
+    "observer_mode_device_time_overhead",
+    "observer_mode_wall_time_overhead",
+    "vjp_count_by_layer_and_sweep",
+    "saved_tensor_count_and_bytes",
+    "graph_lifetime_event_units",
+    "synchronization_count",
+    "correction_geometry",
+    "transport_summaries",
+    "accounting_residual_distribution",
+    "memory_allocation_summaries"
+  ],
+  "stage": "stage3b",
+  "stage_separation": {
+    "analysis_in_separate_commit": true,
+    "confirmatory_execution_in_separate_evidence": true,
+    "implementation_in_separate_commit": true,
+    "preregistration_files_only": [
+      "experiments/planned/STAGE3B-SI-MA0.md",
+      "experiments/planned/STAGE3B-SI-MA0_EN.md",
+      "experiments/planned/STAGE3B-SI-MA0-CONTRACT.json"
+    ],
+    "smoke_in_separate_evidence": true
+  },
+  "statistical_unit": {
+    "identifier": "model_seed",
+    "independent_unit": "independently_trained_model",
+    "nested_observations": [
+      "batch",
+      "layer",
+      "sweep",
+      "channel",
+      "vjp",
+      "saved_tensor",
+      "technical_repetition"
+    ]
+  },
+  "status": "frozen_preregistration_amendment",
+  "step": "A8",
+  "thresholds": {
+    "cpu_smoke_float64": {
+      "max_abs": 1e-09,
+      "max_relative_l2": 1e-07,
+      "min_cosine": 0.99999,
+      "zero_atol": 1e-12
+    },
+    "rocm_float32": {
+      "max_abs": 1e-05,
+      "max_relative_l2": 0.001,
+      "min_cosine": 0.999,
+      "zero_atol": 1e-06
+    },
+    "timing_accounting": {
+      "max_relative_residual": 0.05,
+      "minimum_passing_measured_step_fraction": 0.99,
+      "minimum_passing_repetition_fraction": 1.0,
+      "negative_time_allowed": false,
+      "nonfinite_time_allowed": false
+    },
+    "zero_safe": {
+      "both_zero_like_use_max_abs": true,
+      "cosine_for_both_zero_like": null,
+      "nonfinite_passes": false,
+      "single_zero_like_pair_passes": false
+    }
+  },
+  "timing_protocol": {
+    "accounting_residual_expression": "abs(total_device_time - sum(exclusive_region_device_times)) / max(total_device_time, 1e-12)",
+    "checkpoint_loading_inside_measured_region": false,
+    "dataset_loading_inside_measured_region": false,
+    "device_timing": "rocm_events",
+    "measured_steps_per_repetition": 50,
+    "per_region_device_synchronization": false,
+    "required_sync_point": "end_of_repetition",
+    "serialize_inside_measured_region": false,
+    "timing_repetitions": 5,
+    "warmup_steps": 20
+  },
+  "title": "SI-MA0 state_inference mechanism and cost attribution (amended cardinality)"
+}

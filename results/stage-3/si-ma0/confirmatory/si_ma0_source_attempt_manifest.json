@@ -1,0 +1,181 @@
+{
+  "aggregation_source_commit": "b13a3ff10b87c4f65514b9cb45e6c97e977f8a9e",
+  "attempt_name": "primary-03016e68ecc7",
+  "cells": [
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-0-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "752c57eb25f447d575f053a9ebd06575ea62710864c5264238124c28445880c7"
+      },
+      "attempt_id": "host-confirmatory-seed-0-736fddb328374baab53bf151107f836e",
+      "cell_sha256_manifest_sha256": "747fcf88853901d6a9b7f2595f9e5dece6796f35db8da635f25aa283e852cf96",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s0-a40f82a66c-140e77cc-ec7d5437/20260713T024726Z-fb0117d4/checkpoint.pt",
+        "checkpoint_sha256": "5cacbe9ab6afeffdef2e201f076138af4778e3b414735b8c88ec9adf972a421a"
+      },
+      "decision_sha256": "705aff6c6dab1e72c25e7ac998bde83e911564f93593fb2e900fc25bc80f1244",
+      "model_seed": 0,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-0/primary-03016e68ecc7",
+      "summary_sha256": "1666bba9f61394535e507e956cfb84d108bad17880446567287601ca653c1e9c"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-1-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "69a625278a55d1ec5976201a382dda5f8823b647a4fb63287e51af42c4ac67d3"
+      },
+      "attempt_id": "host-confirmatory-seed-1-0f9312d9a4c9493d91eed3d678f6b040",
+      "cell_sha256_manifest_sha256": "1b1233abaa035d2ca85d13a08cc480a573f9426d0cc7c38e860349145a59f673",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s1-40e4147aa4-140e77cc-ec7d5437/20260713T025144Z-34ec5219/checkpoint.pt",
+        "checkpoint_sha256": "fa454eaf2cf632eba073e3b5fce98c1ba91712c735947e146ff16a4640e19050"
+      },
+      "decision_sha256": "c5f09d3bab2ab40b01e8d0af36ce04ab63d05f38b188bdb37eeffe315d1aa285",
+      "model_seed": 1,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-1/primary-03016e68ecc7",
+      "summary_sha256": "4f6b988370ba0f35342ca331469e79c3f27bbbbc40a84a8370b38931f765b8d6"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-2-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "8f4bf4e6f577e994952b6433aef6b8470b48a5dcc1b1f2f5cc5526f840f76c95"
+      },
+      "attempt_id": "host-confirmatory-seed-2-b6dd692b107d4633b608dc11cf66f93e",
+      "cell_sha256_manifest_sha256": "275ceabc47df3027e2cf8c539fc1abe3e5f1adf0ae5ef4d98d290817de39d4fe",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s2-7d49d26215-140e77cc-ec7d5437/20260713T025907Z-f659c3be/checkpoint.pt",
+        "checkpoint_sha256": "dcc76a6c4ebcb9bd44b9869e4fe0f4397c1917feb11b70722da8b4c87fff26c1"
+      },
+      "decision_sha256": "fcf7f2ff5717a9df0e17648a37cb2665cb5eff1b54364abbff4ca525edce18fa",
+      "model_seed": 2,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-2/primary-03016e68ecc7",
+      "summary_sha256": "3e278d365e93289293c33fd48aedf93a0216f5a01e9e251624ee1aa16b8c6e18"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-3-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "be63386ae821a85afd2784e86b08a105b7e96382eb153bfc90edfed611b3c1e9"
+      },
+      "attempt_id": "host-confirmatory-seed-3-6a5b12d98ec84c018f7d004f06e09c21",
+      "cell_sha256_manifest_sha256": "3e85d65c8450cf33ceaca4b50f19ac7532760cf18307ca27ed64bfc29d73f06e",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s3-01f7e37a53-140e77cc-ec7d5437/20260713T030203Z-aa25d56d/checkpoint.pt",
+        "checkpoint_sha256": "52f3641cd89ecf43747e6b376deedf64964abb0e7e57a8c586d68d5f012e0388"
+      },
+      "decision_sha256": "ca30c46085d621ebf30797c5c37ef4ced833836e4061bbecd3f8c64890d7b42a",
+      "model_seed": 3,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-3/primary-03016e68ecc7",
+      "summary_sha256": "4a75068e185e96c203c0e06f4c6ae313609f31930cc97947ecd3414f70fc5a8c"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-4-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "b35ee8bca89ea247a574ec948483494b01188b5b83504f7dc14539de66d9857c"
+      },
+      "attempt_id": "host-confirmatory-seed-4-aa05071688814b56a68564a15a68d7d9",
+      "cell_sha256_manifest_sha256": "8389d8d8aeb045d3c2d9766d0b05505a4558349cfebcccc61df295d4e288ec78",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s4-633e5453f6-140e77cc-ec7d5437/20260713T030654Z-85ec6fc0/checkpoint.pt",
+        "checkpoint_sha256": "fc5832009b6b8c8927493ebf6645c96835d4029a034d2ea81701452392849bf2"
+      },
+      "decision_sha256": "aa25f40683f969386115ac4d5cda26229ebac64d588e89bec29620c6d593c667",
+      "model_seed": 4,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-4/primary-03016e68ecc7",
+      "summary_sha256": "04a41317152cd3949350f9d1660571fe2ea6800b921bdd798c5086e8d7192905"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-5-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "288499af2f03c81c63ff6c40cf19b93dfac5ef8b3c019e909d98c293d45253ef"
+      },
+      "attempt_id": "host-confirmatory-seed-5-f2c48abf76f4403282da222bed3aba6e",
+      "cell_sha256_manifest_sha256": "5e437e89a79c01dc2f84a5666ea6d242715531bef18b0fc527e1b2d5cb10c29a",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s5-8e90fc1f17-140e77cc-ec7d5437/20260713T031231Z-6734e4d9/checkpoint.pt",
+        "checkpoint_sha256": "ac364f9706a49410c9bf33180f9b9c3bc20c24b71d77e4f8c2a0970117f2d805"
+      },
+      "decision_sha256": "41177ca2e455d48b2dda34af63081654fce2836e43fe7e0aa86a7c4658c1702b",
+      "model_seed": 5,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-5/primary-03016e68ecc7",
+      "summary_sha256": "c9c76b2e1fe0e12cb49484e0122033fd3eca869503362365a365f932870ee803"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-6-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "f2d3d714912a8c639a07651384203e7cb41044ac639451c6993e04272613e3cc"
+      },
+      "attempt_id": "host-confirmatory-seed-6-0ef2d5237c84492f81e3e7f3c3496ec2",
+      "cell_sha256_manifest_sha256": "2c1f85648cf3bfe754e3da5560c471626ce6d7d8444553bea732b97d99dd5c1c",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s6-1da08f16b7-140e77cc-ec7d5437/20260713T031639Z-14532cdf/checkpoint.pt",
+        "checkpoint_sha256": "7ff30eeb343804730620e57baa74be0a11fa2fbdac66b610a45fa3d4771eeb81"
+      },
+      "decision_sha256": "af983d242f96822fcd7fe238c7eca2b382a9bbd732e9cd6dc60e76a50241b4b2",
+      "model_seed": 6,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-6/primary-03016e68ecc7",
+      "summary_sha256": "602764fa2a1040d4b1a3bbd774ecae7e1dead290ae9010f02968eb82898fed76"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-7-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "f230734652646f1d783e0a6118c2467cf7a805b76ae32f05e553ad5eb929ed2f"
+      },
+      "attempt_id": "host-confirmatory-seed-7-216620dd49614b3898a82492834f89a9",
+      "cell_sha256_manifest_sha256": "e368c50c5e488d681044f0d5f40e4c8af574a1ad7aa995d226af41ab5d37d5a1",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s7-aa317a37e1-140e77cc-ec7d5437/20260713T032331Z-7406125f/checkpoint.pt",
+        "checkpoint_sha256": "f63b1f7a1cf5061bb8b5f939844cfcf273abe587c789ba29e64d1292c8b7cdc5"
+      },
+      "decision_sha256": "edceb8faa1dbb375cfb7d7c01fe0f46e0832f3acd1171f67c55ea13bb03c587a",
+      "model_seed": 7,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-7/primary-03016e68ecc7",
+      "summary_sha256": "b1ed2bd5d01cd12a623dff3d4dc69ac6a6908b7d2fac8b44eb14ed45d088a7dc"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-8-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "d1a7cbc5a909d05b10c0dc9a04e33541622470ab2663a334b8e749ec299c42e5"
+      },
+      "attempt_id": "host-confirmatory-seed-8-f4dcedfd53aa44baa5da22e5737b9941",
+      "cell_sha256_manifest_sha256": "87b1afd136ad49c5771e90986d19ce958aae2f36276c72d1cc1aae5936b032dc",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s8-2c92751463-140e77cc-ec7d5437/20260713T032822Z-67c5c47d/checkpoint.pt",
+        "checkpoint_sha256": "ffe4f7cf4af87fac66a1eb95b37106938aa3ec05f040a75895eebc8b1815ad2c"
+      },
+      "decision_sha256": "713f758fd7085e6dae906f1f4eae2b9ee68e61984b5722ef2fd494d548b7b682",
+      "model_seed": 8,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-8/primary-03016e68ecc7",
+      "summary_sha256": "616572175935a7aa740c0166473f6065847539a5ea1c8df1a41d2c3b5fd255b6"
+    },
+    {
+      "archive": {
+        "archive": "/tmp/si-ma0-confirmatory-seed-9-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+        "archive_sha256": "629316e31d3378c302a2ae352b19cb25071b5a10f9e7b22b0c9e700e508476d4"
+      },
+      "attempt_id": "host-confirmatory-seed-9-8d23d486894e4ddfbc5b3e081db36200",
+      "cell_sha256_manifest_sha256": "a7f6ac99f9e17e5c9220c97d3fec079e012cc1a62188e0f3085a08d19afe8c50",
+      "checkpoint": {
+        "checkpoint": "/home/dzmitry-prychyna/torch2pc-layerwise-thesis/results/runs/final-fashionmnist-strict-s9-f2bfb812f7-140e77cc-ec7d5437/20260713T033039Z-a246611d/checkpoint.pt",
+        "checkpoint_sha256": "ccefbd6c6efe5e3d2b3615463d443b7cf48a811f27682073032867ed8a9e0d6f"
+      },
+      "decision_sha256": "12e2dffa441460cf702c615d7999413da40caedfc81f05c116c9c9ff992a94ac",
+      "model_seed": 9,
+      "output_root": "results/stage-3/si-ma0/working/confirmatory/seed-9/primary-03016e68ecc7",
+      "summary_sha256": "4c723ba16e162e691d77bb651aa0e13ba80443cd032201afffbef3eb95e3469c"
+    }
+  ],
+  "checkpoint_inventory": {
+    "path": "/tmp/si-ma0-confirmatory-checkpoint-inventory.json",
+    "sha256": "d36e37914be4bcd99e36e4ecc2e64b594d1bb84a2a807e49324f8623a1e13d4b"
+  },
+  "contract_id": "stage3b-si-ma0-v2",
+  "execution_source_commit": "03016e68ecc7a850da7148d676f47acfb07cc99e",
+  "full_archive": {
+    "path": "/tmp/si-ma0-confirmatory-all-seeds-03016e68ecc7a850da7148d676f47acfb07cc99e.tar.gz",
+    "sha256": "b5c22e1429ce2095b787c697a19c7883b38ff6e73925e0fbafe4d0f7bbe26beb"
+  },
+  "ledger": {
+    "path": "/tmp/si-ma0-confirmatory-cell-ledger.tsv",
+    "sha256": "0c9e50453c23558243623a111a9bdb80c4a245d1ee5c3ba09b7075a81eb82366"
+  },
+  "schema_id": "stage3b-si-ma0-source-attempt-manifest-v1"
+}

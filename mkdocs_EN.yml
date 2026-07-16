@@ -1,3 +1,4 @@
+# Language-pair numeric parity for research-log paths: 0 07
 site_name: Torch2PC Layer-wise Thesis
 site_description: Reproducible master's thesis and publication repository
 site_dir: site_en
@@ -28,6 +29,7 @@ nav:
       - Stage 3B B0 validation and sealing: stage3b-b0-sealing_EN.md
       - Stage 3B B0 analysis pipeline: stage3b-b0-analysis-pipeline_EN.md
       - Master's thesis plan: masters-thesis-plan_EN.md
+      - PC-TREF/PC-CATM theoretical foundation: pc-tref-pc-catm-theoretical-foundation_EN.md
       - PC-TREF Balanced Core: pc-tref-balanced-core_EN.md
       - PC-CATM: pc-catm-operator-model_EN.md
       - Primary Scenario A: stage3b-primary-scenario-a_EN.md
@@ -48,6 +50,7 @@ nav:
       - ADR-007 Locality taxonomy: decisions/ADR-007-stage3-locality-taxonomy_EN.md
       - ADR-008 Predict-correct acceleration: decisions/ADR-008-predict-correct-acceleration_EN.md
       - ADR-012 Primary Scenario A: decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md
+      - ADR-013 Operational semantics: decisions/ADR-013-pc-tref-operational-semantics_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

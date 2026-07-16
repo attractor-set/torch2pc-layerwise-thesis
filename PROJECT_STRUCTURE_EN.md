@@ -52,3 +52,11 @@ and freeze artifacts exist.
 
 Stage 1/2 evidence, tags, and published manifests remain immutable. Stage 3 uses
 its own registry, results tree, execution commit, and publication state.
+
+### Theoretical package after `SI-MA1`
+
+- `docs/pc-tref-pc-catm-theoretical-foundation.md` and `_EN` freeze normative operational semantics;
+- `docs/decisions/ADR-013-pc-tref-operational-semantics.md` and `_EN` record B1/B2 admission to preregistration;
+- documentation changes do not modify `results/stage-3/si-ma1/` or earlier sealed evidence.
+
+Published configuration and evidence references retain their recorded SHA-256 identifiers.

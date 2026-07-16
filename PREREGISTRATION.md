@@ -135,3 +135,51 @@ QWake-PC; активное управление только полными пр
 пропусков и правила резервного точного пути должны быть заморожены до доступа
 к тестовой выборке. PNZ и параметрический ядерный оператор не входят в
 обязательное подтверждающее выполнение.
+
+## Дополнение после `SI-MA1`: условия предварительной регистрации B1/B2
+
+Это дополнение не переписывает исходную спецификацию Stage 1/2, дополнение
+Stage 3, design-only порядок Scenario A, контракты или результаты B0,
+`SI-MA0` и `SI-MA1`. Итоговый результат `SI-MA1` заморожен тегом
+`stage3b-si-ma1-confirmatory-v1`: `CAL-COST-MA1` пройден, а стоимость будущего
+`ECZ` evaluator и action selection не включена.
+
+Нормативными для следующего шага являются:
+
+- [`PC-TREF`/`PC-CATM`: теоретическое основание после `SI-MA1`](docs/pc-tref-pc-catm-theoretical-foundation.md);
+- [`PC-TREF` Balanced Core](docs/pc-tref-balanced-core.md);
+- [операторная модель `PC-CATM`](docs/pc-catm-operator-model.md);
+- [ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics.md);
+- [план основного Scenario A](docs/stage3b-primary-scenario-a.md).
+
+После публикации теоретического пакета разрешена подготовка отдельных
+предварительных регистраций B1 и B2. Реализация и подтверждающее выполнение
+каждого кандидата остаются закрытыми до публикации его собственного контракта,
+тега предварительной регистрации и решения о допуске.
+
+Каждый candidate-specific контракт обязан до реализации и доступа к тестовой
+выборке заморозить:
+
+- точный диагностический `partition map` $q_I$ либо явно нетранзитивное правило
+  операциональной близости с метрикой, нормировкой и допуском;
+- `decision-class map` $q_R$, пространство действий, primary outcome,
+  [regret решения](docs/glossary.md#term-decision-regret), допустимый regret и
+  предел опасных пропусков;
+- измерительные контракты норм: пространство, норма, масштаб, `epsilon`, порог,
+  слой, шаг и правило агрегации;
+- [вектор стоимости](docs/glossary.md#term-cost-vector), единицы каждой
+  компоненты и заранее выбранную scalarization либо
+  [Pareto-допустимость](docs/glossary.md#term-pareto-admissibility);
+- раздельный учёт [стоимости диагностического механизма](docs/glossary.md#term-diagnostic-mechanism-cost),
+  [стоимости наблюдателя](docs/glossary.md#term-observer-cost),
+  [стоимости управляющего контура](docs/glossary.md#term-control-plane-cost) и
+  fallback;
+- уравнения и кодовый путь кандидата, восстановление состояния, beliefs и RNG,
+  численный equivalence или non-inferiority gate и fallback validation;
+- независимую единицу `model_seed`, execution matrix, replacement policy,
+  provenance, append-only ledger, evidence layout и правила остановки;
+- закрытый test loader до соответствующей заморозки.
+
+Отрицательный `D_seed` или `over-closure` из `SI-MA1` сохраняется как signed
+результат observer calibration и не трактуется как отрицательная физическая
+стоимость, end-to-end ускорение или бюджет для будущего control plane.

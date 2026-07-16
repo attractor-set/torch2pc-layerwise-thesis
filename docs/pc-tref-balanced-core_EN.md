@@ -1,133 +1,182 @@
-# PC-TREF Balanced Core for adaptive predictive-coding inference
+# `PC-TREF`: Balanced Core for adaptive predictive-coding inference
 
 [Русская версия](pc-tref-balanced-core.md)
 
 ## 1. Status and boundary
 
 [PC-TREF](glossary_EN.md#term-pc-tref) is the upper-level framework of the
-current master's thesis. It specializes established equivalence, sufficiency,
-and quotient-space concepts to the decision problem of allocating exact
-predictive-coding inference.
+current master's project. It specializes established equivalence, sufficiency,
+and quotient-space concepts for selecting the amount of exact
+[state inference](glossary_EN.md#term-state-inference) in Torch2PC.
 
-The framework does not claim a universal theory of information zero, a proof
-of a globally minimal quotient, or validity beyond the registered Torch2PC
-implementation. The contribution is the PC specialization, the PC-CATM
-mechanism model, and empirical evaluation of diagnostic sufficiency.
+It does not claim a universal information-zero theory, a globally minimal
+representation, or transfer beyond the registered architectures, datasets,
+dtypes, devices, and action space. Cross-document normative semantics are
+frozen in the [theoretical foundation](pc-tref-pc-catm-theoretical-foundation_EN.md)
+and [ADR-013](decisions/ADR-013-pc-tref-operational-semantics_EN.md).
 
-## 2. Induced and required equivalence
+## 2. Diagnostic classes and threshold proximity
 
-Let $x\in\mathcal X$ be an inference state and $\phi_I(x)$ a diagnostic
-representation. It induces
+Let $x\in\mathcal X$ and $\phi_I(x)\in\mathcal Y_I$. The equivalence relation
+required for a [diagnostic quotient](glossary_EN.md#term-diagnostic-quotient) is
+defined by a registered partition map $q_I$:
 
-$x\sim_I y \Longleftrightarrow \phi_I(x)=\phi_I(y).$
+```math
+x\sim_I^q y
+\Longleftrightarrow
+q_I(\phi_I(x))=q_I(\phi_I(y)).
+```
 
-[Task-relative equivalence](glossary_EN.md#term-task-relative-equivalence) is
-specified by the required response or action:
+Continuous features also use
+[operational diagnostic indistinguishability](glossary_EN.md#term-operational-diagnostic-indistinguishability):
 
-$x\sim_R y \Longleftrightarrow \mathcal A^*(x)=\mathcal A^*(y),$
+```math
+x\approx_{I,\varepsilon}y
+\Longleftrightarrow
+d_I(\phi_I(x),\phi_I(y))\leq\varepsilon_I.
+```
 
-where $\mathcal A^*$ is the set of admissible decisions under the registered
-regret bound. Scenario A restricts actions to full sweeps:
+Metric, normalization, tolerance, and aggregation unit are frozen before
+analysis. Threshold proximity is not assumed transitive and does not create a
+quotient by itself.
+
+## 3. Required equivalence and regret
+
+Let $\mathcal A$ be the registered action space and $L_R(a,x)$ the task-relative
+loss. [Decision regret](glossary_EN.md#term-decision-regret) is
+
+```math
+\operatorname{Regret}_R(a;x)
+=
+L_R(a,x)-\inf_{b\in\mathcal A}L_R(b,x).
+```
+
+Two states are commonly admissible at tolerance $\delta_R$ when one action has
+regret at or below $\delta_R$ for both. Literal
+[required equivalence](glossary_EN.md#term-required-equivalence) uses a
+registered decision-class map $q_R$ whose classes separately pass the regret
+criterion.
+
+The Scenario A action set is preregistered, for example:
 
 ```text
 continue_exact
-sleep_candidate
-wake_candidate
+local_sweep_candidate
+composite_sweep_candidate
 stop_candidate
 fallback_exact
 ```
 
-## 3. Equivalence defect
+[Candidate](glossary_EN.md#term-candidate)-specific B1/B2 contracts freeze the final list and semantics.
 
-Let $E_I$ and $E_R$ be the diagnostic and required equivalence pair sets. The
+## 4. Task-relative equivalence defect
+
+For partition-based diagnostic and required classes, the
 [task-relative equivalence defect](glossary_EN.md#term-task-relative-equivalence-defect)
 is
 
-$\mathfrak D_{I\to R}=E_I\setminus E_R.$
+```math
+\mathfrak D_{I\to R}^{q}
+=
+E_I^q\setminus E_R^q.
+```
 
-It contains state pairs merged by the diagnostic representation even though
-they require different computational actions. The experiment uses registered
-operational proxies rather than exhaustive pair enumeration:
+It contains pairs merged by a diagnostic class but assigned to different
+required-decision classes. The separate operational safety defect
+$\mathfrak D_{I\to R}^{q,\delta}=E_I^q\setminus A_R^{\delta}$ contains pairs
+for which no common action has admissible regret. Registered operational
+manifestations include dangerous misses,
+[endpoint](glossary_EN.md#term-endpoint)-utility regret, unnecessary exact
+sweeps, [fallback](glossary_EN.md#term-fallback) rate, and numerical-equivalence
+or safety-gate violations.
 
-- dangerous-miss rate;
-- [endpoint](glossary_EN.md#term-endpoint)-gradient regret;
-- unnecessary wake-ups;
-- exact-[fallback](glossary_EN.md#term-fallback) rate;
-- preservation of equivalence bounds.
+When only $\approx_{I,\varepsilon}$ is used, the result is an operational defect
+relation rather than a quotient defect.
 
-## 4. Diagnostic quotient
+## 5. Nested representation family
 
-The [diagnostic quotient](glossary_EN.md#term-diagnostic-quotient) is the space
-of equivalence classes induced by $\phi_I$. The study compares a preregistered
-nested family:
+The preregistered family contains:
 
-$\phi_0=$ layer, sweep index, and residual norm;
+- $\phi_0$: layer, sweep index, and registered residual norm;
+- $\phi_1$: $\phi_0$ plus activity and resultant correction;
+- $\phi_2$: $\phi_1$ plus canonical-channel geometry;
+- $\phi_3$: $\phi_2$ plus [state-error transport](glossary_EN.md#term-state-transport);
+- $\phi_4$: $\phi_3$ plus temporal persistence;
+- $\phi_5$: $\phi_4$ plus predicted utility and uncertainty.
 
-$\phi_1=\phi_0+\{A_l,R_l\}$;
+Protocols define the exact features, norms, and thresholds. A level is retained
+only when it yields a registered reduction in regret or safety errors relative
+to its cost.
 
-$\phi_2=\phi_1+\{\chi_l,Z_l,D_l,P_l,N_l\}$;
+## 6. `PC-CATM` as the mechanism layer
 
-$\phi_3=\phi_2+\{\gamma_{h,l},\Gamma_{h,l},\text{transport status}\}$;
+[PC-CATM](glossary_EN.md#term-pc-catm) distinguishes:
 
-$\phi_4=\phi_3+\{\text{persistence},\text{transition history}\}$;
+- $\ker S_l$: exact `NCZ` and `ECZ` in canonical-channel aggregation;
+- $\ker \widetilde J_{h,l+1}^{*}$: `TNZ` in state-error transport;
+- $\ker \widetilde J_{\theta,l}^{*}$: limited `PNZ` extension.
 
-$\phi_5=\phi_4+\{\text{predicted utility},\text{uncertainty}\}$.
+Exact kernels are separated from
+[precision-masked zero](glossary_EN.md#term-precision-masked-zero), diagnostic
+indistinguishability, and decision-equivalent zero. A diagnostic regime does
+not authorize a computational-path change.
 
-Each representation refines the previous one. A refinement is retained only
-when regret reduction justifies its computational cost.
+## 7. Sufficiency and cost vector
 
-## 5. PC-CATM as the mechanism refinement
+Global minimality is not claimed. The admissible statement is:
 
-[PC-CATM](glossary_EN.md#term-pc-catm) distinguishes three operator mechanisms:
+> within the preregistered family, identify the least costly representation
+> that passes the specified regret, safety, and equivalence gates.
 
-- $\ker S_l$: `NCZ` and `ECZ` in canonical-channel aggregation;
-- $\ker \widetilde J_{h,l+1}^{*}$: `TNZ` in [state-error transport](glossary_EN.md#term-state-transport);
-- $\ker \widetilde J_{\theta,l}^{*}$: the limited `PNZ` extension for
-  parameter accessibility.
+Each $\phi_k$ is evaluated with a [cost vector](glossary_EN.md#term-cost-vector):
 
-Aggregation and state transport are mandatory in Scenario A. `PNZ` remains a
-theoretical extension, deterministic control, and optional small passive audit.
+```math
+\mathbf C=
+(C_{\mathrm{compute}},C_{\mathrm{latency}},C_{\mathrm{memory}},
+C_{\mathrm{diagnostic}},C_{\mathrm{observer}},C_{\mathrm{control}},
+C_{\mathrm{fallback}}).
+```
 
-## 6. Empirical sufficiency and cost
+Selection uses preregistered scalarization or
+[Pareto admissibility](glossary_EN.md#term-pareto-admissibility) followed by a
+separate primary rule. Costs are not combined implicitly.
 
-Global minimality is not claimed. The admissible main claim is:
+## 8. Cost boundaries after `SI-MA1`
 
-> among the registered family $\phi_0,\ldots,\phi_5$, the study identifies the
-> least costly representation that passes the preregistered safety gate.
+The project separates [diagnostic-mechanism cost](glossary_EN.md#term-diagnostic-mechanism-cost), [observer cost](glossary_EN.md#term-observer-cost), and
+[control-plane cost](glossary_EN.md#term-control-plane-cost). `SI-MA1` passed the one-sided observer-calibrated gate but
+did not measure `ECZ` evaluation, action selection, fallback validation, or
+end-to-end B1/B2 benefit. Negative `D_seed` values indicate calibration
+over-closure, not negative physical cost.
 
-For each $\phi_k$, the study measures dangerous misses, endpoint-gradient
-regret, sweep and VJP reduction, device and wall time, memory, [saved tensors](glossary_EN.md#term-saved-tensors),
-synchronization, and observer cost. Results form an empirical cost-sufficiency
-frontier rather than a proof of a universally minimal quotient.
+## 9. Counterfactual exact verification
 
-## 7. Exact verification
+[Counterfactual exact verification](glossary_EN.md#term-exact-verification) from
+identical state is the empirical arbiter of required equivalence. Primary
+utility, regret margin, and the dangerous-miss rule are frozen before analysis.
+Active control is blocked by a safety-gate failure.
 
-A counterfactual exact branch from identical state acts as the empirical
-adjudicator of required equivalence. The primary utility is
+## 10. Consequences for B1/B2
 
-$U_{G,t+1}=d(G_t,G_*)-d(G_{t+1},G_*).$
+After theoretical-package publication:
 
-A materially positive utility for a proposed skipped sweep is a [dangerous miss](glossary_EN.md#term-dangerous-miss)
-and blocks active control.
+- B1/B2 preregistration is permitted;
+- implementation and confirmatory [execution](glossary_EN.md#term-execution) remain closed until separate
+  candidate-specific contracts exist;
+- each contract freezes $q_I$ or explicitly marks a proximity relation, $q_R$,
+  $\delta_R$, norm contracts, the cost vector, and decision rule;
+- `SI-MA0` and `SI-MA1` remain unchanged;
+- the test split remains closed.
 
-## 8. Primary hypotheses
+## 11. Hypotheses and claim boundaries
 
-- **H-TREF1:** [correction geometry](glossary_EN.md#term-correction-geometry) and state transport reduce operational
-  manifestations of $\mathfrak D_{I\to R}$ relative to residual-only
-  representation;
-- **H-TREF2:** one registered $\phi_k$ reaches a point where further features
-  do not provide practically meaningful regret reduction relative to cost;
-- **H-Q1:** shadow [QWake-PC](glossary_EN.md#term-qwake-pc) generalizes across `model_seed`;
-- **H-R1:** sweep reduction passing the safety gate produces device-time
-  reduction.
+`H-TREF1` expects [correction geometry](glossary_EN.md#term-correction-geometry) and transport to reduce operational
+manifestations of $\mathfrak D_{I\to R}^{q}$ and its safety version
+$\mathfrak D_{I\to R}^{q,\delta}$ relative to residual-only
+representations. `H-TREF2` expects a representation level after which added
+features do not materially reduce regret relative to cost. `H-R1` expects safe
+exact-sweep reduction to lower end-to-end [runtime](glossary_EN.md#term-runtime) after all costs are included.
 
-## 9. Claim boundaries
-
-- task-relative equivalence means the same admissible action, not tensor
-  equality;
-- sufficiency is evaluated only for the registered action space;
-- `NCZ`, `ECZ`, and `TNZ` are diagnostics rather than control decisions;
-- findings remain bounded by the studied [architecture](glossary_EN.md#term-architecture), data, seeds, exact
-  implementation, and environment;
-- a negative QWake result preserves the value of PC-CATM and diagnostic
-  sufficiency analysis.
+PC-TREF does not establish these hypotheses, transitivity of threshold
+proximity, representation minimality, or active-control safety. Negative and
+mixed results remain valid.

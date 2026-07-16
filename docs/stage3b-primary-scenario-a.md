@@ -15,7 +15,15 @@
 кандидаты создаются отдельно и не меняют опубликованные доказательные
 материалы.
 
-Статус: A0 завершён настоящей проектной фиксацией; A1–A15 остаются невыполненными до собственных проверок и решений о допуске.
+## Текущее состояние на 16 июля 2026 года
+
+A0–A8 завершены в объёме, необходимом для допуска к следующему этапу:
+B0, `validity` `controls`, `SI-MA0` и `corrective` `SI-MA1` опубликованы. Итоговый
+`SI-MA1` прошёл `CAL-COST-MA1`, сохранив отрицательный результат `SI-MA0` и
+исключив `future` `control-plane` `cost`. [Теоретическое основание](pc-tref-pc-catm-theoretical-foundation.md)
+и [ADR-013](decisions/ADR-013-pc-tref-operational-semantics.md) разрешают
+предварительную регистрацию B1/B2. Реализация и [выполнение](glossary.md#term-execution) остаются закрытыми
+до `candidate-specific` контрактов.
 
 ## Теоретическая связка
 
@@ -128,9 +136,18 @@ $u_l^{(\mathrm{reconstructed})}\approx u_l^{(\mathrm{observed})}.$
 
 ### A9 — B1/B2
 
-Отдельно проверить `isolated_layer_vjp` и `composite_vjp` по численной
-эквивалентности, времени на устройстве, памяти, сохранённым тензорам и времени
-жизни графа.
+Следующий этап — **раздельная предварительная регистрация**, а не немедленное
+[профилирование](glossary.md#term-profiling):
+
+- B1: `isolated_layer_vjp`;
+- B2: `composite_vjp` или заранее определённый `block-composite` `variant`.
+
+Каждый контракт фиксирует `reference` `path`, `state`/`belief`/`RNG` `restoration`,
+`numerical-equivalence` `endpoints` и `tolerances`, [regret решения](glossary.md#term-decision-regret),
+`norm` `contracts`, [вектор стоимости](glossary.md#term-cost-vector), `observer`/
+`control-plane` `separation`, `fallback`, `independent` `unit` и `stop` `rules`. Только
+`candidate`, прошедший `deterministic` `controls`, ROCm `smoke` и отдельный `numerical`-
+`equivalence`/`safety` `gate`, может быть допущен к `matched` `confirmatory` `profiling`.
 
 ### A10 — `EX-IF0`
 

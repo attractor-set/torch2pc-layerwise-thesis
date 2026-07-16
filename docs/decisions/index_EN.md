@@ -14,3 +14,4 @@
 - [ADR-010](ADR-010-stage3b-per-cell-process-isolation_EN.md): a fresh Python child process per Stage 3B B0 canonical cell with fail-fast handling for systemic OOM.
 - [ADR-011](ADR-011-stage3b-b0-derived-evidence-seal_EN.md): read-only validation, aggregation, and a content-addressed Stage 3B B0 [evidence](../glossary_EN.md#term-evidence) seal.
 - [ADR-012](ADR-012-pc-tref-pc-catm-scenario-a_EN.md): PC-TREF Balanced Core, PC-CATM, and Scenario A as one realistic post-B0 path.
+- [ADR-013](ADR-013-pc-tref-operational-semantics_EN.md): operational `PC-TREF`/`PC-CATM` semantics, separate cost boundaries, and B1/B2 admission to preregistration.

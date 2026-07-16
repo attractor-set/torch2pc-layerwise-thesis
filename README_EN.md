@@ -2,9 +2,18 @@
 
 [Русская версия](README.md)
 
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
+![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
+![License](https://img.shields.io/badge/code-Apache--2.0-green)
+![Status](https://img.shields.io/badge/stage-SI--MA1%20confirmed%3B%20B1%2FB2%20prereg%20next-blue)
+
 A master's thesis repository comparing backpropagation (BP) with predictive
 coding regimes in Torch2PC. The project separates assumptions from
 observations, procedures from results, and results from interpretation.
+
+Normative definitions and Russian–English mappings are in the
+[research glossary](docs/glossary_EN.md).
 
 ## Research stance
 
@@ -48,28 +57,33 @@ The comparison covers:
 - compute time and memory;
 - reproducibility across independent runs.
 
-## Current state as of 15 July 2026
+## Current state as of 16 July 2026
 
-The following are complete in the pinned Ubuntu/ROCm environment:
+Completed in the pinned Ubuntu/ROCm environment:
 
-- validation-only pilot: **96/96**, without test-dataset access;
-- Stage 1: **80/80** with original Torch2PC
+- pilot campaign: **96/96**, without test-split access;
+- Stage 1: **80/80** on original Torch2PC
   `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
-- Stage 2: **80/80** with patched Torch2PC
+- Stage 2: **80/80** on patched Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
-- Stage 3A: layer-wise diagnostics, model-seed statistics, depth analysis, and
+- Stage 3A layer-wise diagnostics, model-level statistics, depth analysis, and
   publication figures;
-- Stage 3B B0: ROCm/float32 canonical baseline, 96/96 cells, with no failed
-  attempts or systemic resource failures;
-- Stage 3B B0: statistical and engineering analysis published without
-  rerunning the baseline campaign.
+- Stage 3B B0 ROCm/float32 canonical baseline, 96/96 cells, and published
+  statistical and engineering analysis;
+- `SI-MA0`: mechanism reconstruction, observer non-interference, version
+  coherence, and comparison gates passed, while `COST-MA0` failed with a
+  median accounting residual of approximately `0.1606`;
+- `SI-MA1`: ten `model_seed` units, 180 matched blocks, and passing
+  observer-calibrated `CAL-COST-MA1` and global `SI-MA1` decisions;
+- the `PC-TREF`/`PC-CATM` theoretical package now freezes operational
+  proximity, regret-based required equivalence, norm contracts, and separate
+  cost boundaries before B1/B2.
 
-Stage 3A and Stage 3B B0 did not access the test dataset. CI is the source of
-truth for current regression checks; the documentation does not pin a quickly
-stale test count.
+Stage 3A, B0, `SI-MA0`, and `SI-MA1` did not access the test split. Raw and
+sealed results are not rewritten by documentation updates. CI remains the
+source of truth for the current regression-test count.
 
-See [STATUS_EN.md](STATUS_EN.md) for details and
-[ROADMAP_EN.md](ROADMAP_EN.md) for the remaining sequence.
+See [STATUS_EN.md](STATUS_EN.md) and [ROADMAP_EN.md](ROADMAP_EN.md).
 
 ## Main published results
 
@@ -148,6 +162,31 @@ These results are descriptive engineering analysis of the pinned matrix, not a
 universal method ranking. The full Stage 3B program remains incomplete:
 `full_stage3b_campaign_complete=false`.
 
+### Stage 3B `SI-MA0` and `SI-MA1`
+
+`SI-MA0` completed the registered mechanism-attribution checks across ten
+independently trained models. `REC-MA0`, `OBS-MA0`, `VER-MA0`, and `CMP-MA0`
+passed, while `COST-MA0` failed with a median uncovered accounting residual of
+approximately `0.1606`. The negative result is retained unchanged.
+
+`SI-MA1` evaluated separate observer calibration with matched A/B/C blocks and
+signed residuals:
+
+- `10` model seeds and `180` matched blocks;
+- observed median `D_seed = -0.190635073373`;
+- one-sided 95% bootstrap upper bound `-0.188621876160`;
+- registered threshold `0.01`;
+- `CAL-COST-MA1=true`, `si_ma1_passed=true`.
+
+Negative `D_seed` is calibration over-closure, not negative physical cost.
+`SI-MA1` excludes `ECZ` evaluation, action selection, fallback validation, and
+end-to-end B1/B2 benefit. Final artifacts are under
+[`results/stage-3/si-ma1/confirmatory/`](results/stage-3/si-ma1/confirmatory/).
+
+The B1/B2 theoretical prerequisite is closed by the
+[theoretical package](docs/pc-tref-pc-catm-theoretical-foundation_EN.md) and
+[ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md).
+
 ## Execution and publication chain
 
 | Role | Identifier |
@@ -163,6 +202,11 @@ universal method ranking. The full Stage 3B program remains incomplete:
 | Stage 3B B0 analysis implementation | `e7a1632a947fae578e877826f0c923342669430e` |
 | Stage 3B B0 analysis publication state | `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3` |
 | Stage 3B B0 analysis tag | `stage3b-b0-analysis-evidence-v1` |
+| `SI-MA1` preregistration | `stage3b-si-ma1-prereg-v1` |
+| `SI-MA1` implementation tag | `stage3b-si-ma1-implementation-v1` |
+| `SI-MA1` execution tag | `stage3b-si-ma1-confirmatory-execution-v1` |
+| Final `SI-MA1` tag | `stage3b-si-ma1-confirmatory-v1` |
+| Final `SI-MA1` publication state | `9bf500a2494267e83cbf9657ad2f075e349a8a75` |
 
 GitHub Releases:
 
@@ -172,18 +216,18 @@ GitHub Releases:
 
 ## Next stage
 
-The next factual Scenario A stage is validity control before any execution-path
-change:
+The next Scenario A stage is a separate B1/B2 preregistration. The theoretical
+package permits contract preparation but does not automatically permit
+implementation or confirmatory execution.
 
-1. shortcut/equivalence controls with instrumentation disabled;
-2. observer non-interference;
-3. observer overhead;
-4. deterministic NCZ/ECZ/TNZ controls;
-5. then SI-MA0 and candidate-specific B1/B2 gates.
+Each candidate contract must freeze the candidate path and reference,
+state/RNG restoration, numerical-equivalence endpoints, partition or explicitly
+nontransitive proximity relation, task-relative loss and regret margin, norm
+contracts, cost vector and selection rule, separate observer/diagnostic/control
+costs, fallback, and stop rules.
 
-B0 remains immutable and test access stays closed. The full sequence and
-calendar boundary are frozen in the
-[realistic thesis plan](docs/masters-thesis-plan_EN.md).
+B0, `SI-MA0`, `SI-MA1`, and the test-split policy remain unchanged. See the
+[master's thesis plan](docs/masters-thesis-plan_EN.md).
 
 ## Numerical controls
 

@@ -2,116 +2,91 @@
 
 [Русская версия](ROADMAP.md)
 
-The roadmap separates completed stages from planned work. Progression requires
-verified artifacts, preserved claim boundaries, and an explicit decision gate.
+The roadmap separates completed, permitted, and blocked work. Every transition
+requires verified artifacts, preserved claim boundaries, and a separate
+decision gate.
 
-## Stages 1–5 — complete
+## Stages 1–10 — complete
 
-1. Established the research scaffold and preregistration draft.
-2. Pinned the controlled environment and completed the 96/96 validation-only
-   pilot without accessing the test dataset.
-3. Completed the Stage 1 confirmatory campaign, 80/80.
-4. Completed the Stage 2 implementation study, 80/80.
-5. Published the results and verified protection against unauthorized test
-   access.
+Infrastructure and pilot, Stage 1/2, Stage 3A, Stage 3B B0 evidence, and B0
+statistical/engineering analysis are complete. The test split remained closed
+through Stage 3A and Stage 3B.
 
-## Stage 6 — Stage 3 design revision complete
+Publication tags include `stage3a-statistical-publication-v1`,
+`stage3b-b0-evidence-v1`, and `stage3b-b0-analysis-evidence-v1`.
 
-The locality and profiling contracts, exact candidates, core approximations,
-and predict–correct candidates are specified.
+## Stage 11 — Scenario A and initial theory — complete
 
-## Stage 7 — Stage 3A layer-wise diagnostics complete
+`ADR-012` froze PC-TREF Balanced Core, PC-CATM, and Scenario A. `ECZ` has the
+single meaning `Error-Cancellation Zone`; B0 remains immutable.
 
-- same-state gradient probes completed for seeds 0–9;
-- independently trained representation probes completed for seeds 0–9;
-- Exact–BP numerical controls passed 10/10;
-- aggregate gradient, CKA, RSA, and cross-layer CKA evidence published;
-- raw observations retained outside Git.
+## Stage 12 — validity controls and `SI-MA0` — complete
 
-## Stage 8 — Stage 3A statistical publication complete
+Shortcut/equivalence controls, observer non-interference, deterministic
+mechanism controls, and `SI-MA0` mechanism attribution are complete.
+`SI-MA0` passed `REC`, `OBS`, `VER`, and `CMP`, failed `COST`, and retained a
+global failure. The uncovered residual motivated a separate observer-calibration
+experiment rather than a frozen-contract change.
 
-- the independently trained model is the statistical unit;
-- 40 gradient and 20 representation comparisons completed;
-- within-family Holm correction applied;
-- effect sizes, confidence intervals, and Exact controls published;
-- confirmatory depth analysis completed;
-- 8 PDF figures, metadata, and SHA-256 manifests published;
-- a bilingual bounded-findings report published.
+## Stage 13 — `SI-MA1` observer-calibrated closure — complete
 
-Publication tag: `stage3a-statistical-publication-v1`.
+- preregistration: `stage3b-si-ma1-prereg-v1`;
+- implementation: `stage3b-si-ma1-implementation-v1`;
+- confirmatory execution: `stage3b-si-ma1-confirmatory-execution-v1`;
+- final decision: `stage3b-si-ma1-confirmatory-v1`;
+- 10 model seeds and 180 matched blocks;
+- one-sided bootstrap upper bound below threshold `0.01`;
+- `CAL-COST-MA1=true`, `SI-MA1=pass`;
+- `SI-MA0` unchanged and `ECZ` evaluator cost excluded.
 
-## Stage 9 — Stage 3B preregistration and B0 baseline complete
+## Stage 14 — theoretical freeze before B1/B2 — current publication step
 
-- profiling/locality preregistration and the measurement contract frozen;
-- B0 candidate fixed as `stage2_baseline` for `FixedPred` and `Strict`;
-- ROCm/float32 canonical campaign completed 96/96;
-- every cell executed in a fresh Python child process;
-- 0 failed attempts and 0 systemic resource failures recorded;
-- 96 cell, 480 region, 48 paired, and 32 configuration rows published;
-- validation, integrity sealing, tag, and GitHub Release completed;
-- the test dataset was not accessed.
+- separate partition-based quotient from nontransitive threshold proximity;
+- define required equivalence and safety through decision regret;
+- formalize task-relative defect;
+- freeze precision-masked zero and explicit norm contracts;
+- use a cost vector and preregistered scalarization/Pareto rule;
+- separate diagnostic-mechanism, observer, and control-plane costs;
+- record the decision in `ADR-013`;
+- update paired documentation without changing sealed evidence.
 
-Publication tag: `stage3b-b0-evidence-v1`.
+After merge and tagging, the B1/B2 theoretical prerequisite is satisfied.
 
-State boundary: `full_b0_campaign_complete=true`,
-`full_stage3b_campaign_complete=false`.
+## Stage 15 — B1/B2 preregistration — next
 
-## Stage 10 — B0 statistical and engineering analysis complete
+Prepare separate candidate contracts for B1 isolated-layer probes and B2
+composite/block-composite probes. Each contract freezes the reference and
+candidate boundary, state/belief/RNG restoration, numerical-equivalence
+endpoints and tolerances, norm contracts, decision-regret and fallback
+semantics, the cost vector and primary selection rule, execution matrix,
+independent unit, replacement policy, and immutable provenance layout.
+Preregistration is not implementation permission.
 
-- published sealed B0 evidence analyzed without rerunning execution;
-- the independently trained model identified by `model_seed` is the unit, with
-  three models per configuration;
-- paired time and memory effects, measured-region attribution, saved-tensor
-  analysis, and `log2` scaling summaries published;
-- median Strict/FixedPred device-time ratio: `2.327×`;
-- median peak-allocated-memory ratio: `1.328×`;
-- dominant device-time region: state inference (`state_inference`);
-- saved-tensor ratio within `state_inference`: `11.998×`;
-- 8 derived tables, 4 PDF figures, a bilingual report, metadata, and
-  `SHA256SUMS` published;
-- the decision gate permits B1/B2 equivalence testing while keeping full
-  matched profiling blocked.
+## Stage 16 — B1/B2 implementation and candidate gates
 
-Publication tag: `stage3b-b0-analysis-evidence-v1`.
+After tagged preregistration, implement candidates on a separate branch, run
+deterministic and CPU structural tests, controlled ROCm smoke, and numerical
+equivalence before full profiling. Retain negative and mixed results.
+Confirmatory execution requires another decision gate.
 
-## Phase 11 — primary Scenario A design freeze — complete
+## Stage 17 — `EX-IF0` and passive diagnostics
 
-- remove the erroneous former ECZ meaning and reserve `Error-Cancellation Zone`;
-- freeze PC-TREF Balanced Core and PC-CATM for canonical channels, NCZ/ECZ, and TNZ;
-- adopt Scenario A as the single primary experimental path;
-- retain PNZ and the parameter tangent kernel as a limited extension;
-- leave B0 evidence unchanged and keep test access disabled.
+Freeze the selected exact implementation before label creation. Then collect
+passive PC-CATM representations and compare preregistered $\phi_k$ levels on a
+regret/cost frontier.
 
-## Phase 12 — shortcut, observer, and deterministic controls — next
+## Stage 18 — predictor, exact verification, and `QWake-PC`
 
-- compare BP, iterative FixedPred with `eta=1`, `n=L`, and the reduced shortcut;
-- verify observer non-interference before measuring overhead;
-- run deterministic NCZ, ECZ, orthogonality, TNZ, and block-probe controls;
-- use the Rosenbaum wavefront as an indexing and completion oracle.
+Use model-seed splits, counterfactual exact verification from identical state,
+shadow mode first, and active full-sweep allocation only after safety and
+end-to-end runtime gates. Measure control-plane cost separately.
 
-## Phase 13 — SI-MA0, B1/B2, and EX-IF0
+## Stage 19 — final freeze and test evaluation
 
-- decompose `state_inference` and verify reconstruction of the observed update;
-- run candidate-specific B1 and B2 gates;
-- compare device time, memory, saved tensors, and graph lifetime;
-- select and freeze the exact implementation before predictor-label generation.
+Freeze implementation, features, thresholds, predictor, fallback, and the
+statistical plan before one final test evaluation.
 
-## Phase 14 — passive diagnostics and QWake-PC
+## Stage 20 — thesis and article
 
-- collect correction-geometry, transport, and temporal-persistence features;
-- train and validate the local predictor with `model_seed`-grouped splits;
-- run counterfactual exact verification of next-sweep utility;
-- evaluate QWake-PC in shadow mode first;
-- permit active control only at full-sweep granularity after safety and runtime gates.
-
-## Phase 15 — extended Stage 3 freeze and final evaluation
-
-Freeze the selected implementation, features, thresholds, predictor, fallback
-rules, and statistical plan. Enable one final test evaluation only after this
-freeze.
-
-## Phase 16 — thesis and article
-
-Integrate Stage 1/2, Stage 3A, B0, and Scenario A. Keep active parameter-kernel
-learning, plasticity control, and layer-level skipping as future work or a
-separate publication.
+Integrate Stage 1/2, Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1/B2, and available
+Scenario A results. Mark unexecuted extensions as future work.

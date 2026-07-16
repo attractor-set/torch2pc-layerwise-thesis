@@ -2,131 +2,105 @@
 
 [Русская версия](STATUS.md)
 
-Stage 1 and Stage 2 are complete immutable published baselines. Stage 3A
-diagnostics and statistical publication are complete within the
-validation-only scope. Stage 3B B0 canonical execution, validation, integrity
-sealing, evidence publication, and statistical and engineering analysis are
-complete. The full Stage 3B program remains incomplete.
+As of 16 July 2026, immutable Stage 1/2, Stage 3A, Stage 3B B0, `SI-MA0`, and
+`SI-MA1` results are published. Full Stage 3B remains incomplete: B1/B2,
+`EX-IF0`, passive diagnostics, the predictor, counterfactual exact verification,
+and `QWake-PC` have not been executed.
 
 ## Status summary
 
-| Component | Verified state |
+| Component | Confirmed state |
 |---|---|
-| Validation-only pilot | 96/96; the test dataset was not accessed |
+| Pilot | 96/96; no test-split access |
 | Stage 1 / Stage 2 | 80/80 and 80/80 |
-| Stage 2 runtime | `BP ≈ Exact < FixedPred << Strict` |
-| Stage 3A same-state gradient probes | 10/10 seeds |
-| Stage 3A representation probes | 10/10 seeds |
-| Exact–BP numerical controls | 10/10 seeds; 30/30 statistical control rows passed |
-| Stage 3A observations | 2250 gradient; 150 representation; 750 cross-layer CKA |
-| Stage 3A confirmatory statistics | 40 gradient and 20 representation comparisons |
-| Stage 3A depth analysis | 180 seed-level rows; 24 statistical rows |
-| Stage 3A publication figures | 8 PDF files |
-| Stage 3B B0 candidate | `stage2_baseline`; `FixedPred` and `Strict` |
-| Stage 3B B0 scope | ROCm/float32; synthetic scaling; validation-only |
-| Stage 3B B0 execution | 96/96 cells; 96 completed attempts; 0 failed |
-| Process isolation | 96 records; 96 unique child PIDs; fresh process per cell |
-| B0 aggregate evidence | 96 cell, 480 region, 48 paired, and 32 configuration rows |
-| B0 integrity | non-perturbation, completeness, finite-value, and SHA-256 checks passed |
-| Stage 3A/B0 test access | the test dataset was not accessed |
-| B0 publication | tag and Release `stage3b-b0-evidence-v1` |
-| B0 independent unit | independently trained model identified by `model_seed`; 3 per configuration |
-| B0 bounded timing result | median Strict/FixedPred device-time ratio `2.327×` |
-| B0 bounded memory result | peak allocated memory `1.328×`; state-inference saved tensors `11.998×` |
-| B0 dominant region | `state_inference` for both methods |
-| B0 analysis publication | tag and Release `stage3b-b0-analysis-evidence-v1` |
-| Post-B0 decision | continue candidate-specific B1/B2 equivalence testing |
+| Stage 3A | layer-wise confirmatory evidence and publication complete |
+| Stage 3B B0 | 96/96 ROCm/float32 cells; evidence and analysis published |
+| `SI-MA0` | `REC/OBS/VER/CMP=true`, `COST=false`, global failure retained |
+| `SI-MA1` execution | 10 model seeds, 3 batches/seed, 180 matched blocks |
+| `SI-MA1` decision | `CAL-COST-MA1=true`, `si_ma1_passed=true` |
+| B1/B2 theoretical prerequisite | satisfied by this `PC-TREF`/`PC-CATM` package |
+| B1/B2 preregistration | permitted after package publication |
+| B1/B2 implementation/execution | closed until candidate-specific contracts |
+| Test split | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
-| Regression checks | CI reports the current state |
 
-## Published result boundaries
+## Published results and boundaries
 
 ### Stage 3A
 
-The detailed report is published in
-[docs/stage3a-statistical-results_EN.md](docs/stage3a-statistical-results_EN.md).
-The independently trained model is the statistical unit. Layers, batches,
-parameters, and samples are repeated observations within one `model_seed`.
-
-Within FashionMNIST, `lenet_classic`, seeds 0–9, and the pinned implementation:
-
-- `FixedPred` nearly preserves gradient direction while strongly attenuating
-  the norm in early layers; layer 5 approaches the BP target;
-- `Strict` differs from BP in direction and scale in hidden layers, while the
-  output layer remains close to BP;
-- `FixedPred` representations are closer to BP than `Strict` representations;
-- gradient-norm ratio increases with depth and relative L2 decreases;
-- CKA has no reliable monotonic depth trend, whereas RSA has a moderate
-  positive trend.
-
-These observations do not automatically generalize to other architectures,
-datasets, implementations, or compute environments.
+Within FashionMNIST, `lenet_classic`, and `model_seed=0..9`, `FixedPred`
+largely preserves gradient direction while reducing early-layer norm, `Strict`
+differs from BP in hidden-layer direction and scale, and `FixedPred`
+representations are closer to BP than `Strict` representations. Layers,
+batches, and images are not independent model replications.
 
 ### Stage 3B B0
 
-The B0 publication establishes completeness, provenance, and integrity for the
-canonical `stage2_baseline` profiling baseline. The published analysis adds
-bounded comparisons of time, memory, measured-region attribution, and scaling.
-The number of independent units remains three models per configuration.
+B0 froze `stage2_baseline` for `FixedPred` and `Strict` in the synthetic
+ROCm/float32 matrix. In the registered scope, the median Strict/FixedPred device
+time ratio is `2.327×`, the peak allocated memory ratio is `1.328×`,
+`state_inference` is the dominant time region, and the saved-tensor ratio in
+that region is `11.998×`. This is bounded descriptive engineering analysis.
 
-Recorded provenance:
+### `SI-MA0`
 
-- execution source `95c25d35224abd5e741f1df9327662ff2fde23ad`;
-- integrity-sealing source `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
-- publication state `ed0d48063a17e2d9c6679869a4d930f933877052`;
-- archive inventory checksum
-  `9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed`;
-- sealed-bundle digest
-  `6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`;
-- analysis implementation `e7a1632a947fae578e877826f0c923342669430e`;
-- analysis publication state
-  `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3`;
-- analysis publication tag `stage3b-b0-analysis-evidence-v1`.
+Across ten independently trained models, reconstruction, observer
+non-interference, version coherence, and comparison gates passed, while
+`COST-MA0` failed. The median accounting residual was approximately
+`0.1606077466` against the registered `0.05` threshold. The global failure is
+retained and is not rewritten by `SI-MA1`.
 
-Published bounded findings:
+### `SI-MA1`
 
-- median Strict/FixedPred device-time ratio: `2.327×`, with a configuration
-  range of `1.966–2.619×`;
-- median Strict/FixedPred peak-allocated-memory ratio: `1.328×`;
-- `state_inference` is the dominant device-time region for `FixedPred` and
-  `Strict`;
-- median Strict/FixedPred saved-tensor ratio within `state_inference`: `11.998×`.
+The matched A/B/C observer-calibration cohort contains 10 model seeds, 180
+matched blocks, 27,000 arm-timing rows, 63,000 live-region rows, 360 numerical
+comparisons, and 180 topology comparisons. The observed median
+`D_seed=-0.190635073373`; the one-sided 95% bootstrap upper bound is
+`-0.188621876160` against threshold `0.01`. `CAL-COST-MA1` and global `SI-MA1`
+passed.
 
-This is descriptive engineering analysis of the pinned ROCm/float32 synthetic
-matrix. It is not a universal method ranking and does not establish structural
-locality without dedicated measurements.
+Signed values are retained. Negative residual is observer-calibration
+over-closure, not negative physical cost. `SI-MA1` excludes future `ECZ`
+evaluation, action selection, fallback validation, and end-to-end B1/B2
+savings.
 
-## Publication artifacts
+## Theoretical state
 
-- Stage 3A [statistics](results/stage3/layerwise/confirmatory/statistics/) and
-  [figures](results/stage3/layerwise/confirmatory/figures/);
-- Stage 3B B0 [sealed evidence](results/stage-3/profiling/b0/sealed-v1/);
-- Stage 3B B0 [engineering analysis](results/stage-3/profiling/b0/analysis-v1/);
-- GitHub Releases
-  [`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
-  and
-  [`stage3b-b0-analysis-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1).
+[PC-TREF Balanced Core](docs/pc-tref-balanced-core_EN.md),
+[PC-CATM](docs/pc-catm-operator-model_EN.md), the
+[theoretical foundation](docs/pc-tref-pc-catm-theoretical-foundation_EN.md), and
+[ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md) freeze a
+partition-based diagnostic quotient, separate nontransitive threshold
+proximity, regret-based required equivalence, operational task-relative defect,
+precision-masked zero, explicit norm contracts, a cost vector, a preregistered
+scalarization/Pareto rule, and separate diagnostic-mechanism, observer, and
+control-plane costs.
 
-Published evidence is not regenerated by documentation changes.
+This satisfies the B1/B2 theoretical prerequisite but does not establish
+candidate speedup or safety.
+
+## Provenance
+
+| Artifact | Identifier |
+|---|---|
+| B0 evidence | `stage3b-b0-evidence-v1` |
+| B0 analysis | `stage3b-b0-analysis-evidence-v1` |
+| `SI-MA1` preregistration | `stage3b-si-ma1-prereg-v1` |
+| `SI-MA1` implementation | `stage3b-si-ma1-implementation-v1` |
+| `SI-MA1` execution | `stage3b-si-ma1-confirmatory-execution-v1` |
+| `SI-MA1` final | `stage3b-si-ma1-confirmatory-v1` |
+| `SI-MA1` publication commit | `9bf500a2494267e83cbf9657ad2f075e349a8a75` |
+
+Raw and confirmatory outputs remain under
+`results/stage-3/si-ma1/working/confirmatory/` and
+`results/stage-3/si-ma1/confirmatory/`; documentation updates do not recreate
+them.
 
 ## Next stage
 
-The next factual stage is Scenario A validity control:
-
-- shortcut/equivalence controls with instrumentation disabled;
-- observer non-interference and observer overhead;
-- deterministic NCZ/ECZ/TNZ controls;
-- after they pass, SI-MA0 and candidate-specific B1/B2 gates.
-
-Full matched profiling, active QWake-PC, and test access remain blocked pending
-their own authorization decisions.
-
-## Accepted post-B0 design decision
-
-Scenario A is adopted as the primary Stage 3B working plan. The decision is
-recorded in [ADR-012](docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md),
-the upper-level framework in [PC-TREF Balanced Core](docs/pc-tref-balanced-core_EN.md), the mechanism model in [PC-CATM](docs/pc-catm-operator-model_EN.md), and the
-sequence in the [Scenario A plan](docs/stage3b-primary-scenario-a_EN.md). This is
-a design freeze, not completed experimental execution. This freeze completes
-only A0; the next factual stage is shortcut and observer controls. B0 and test
-access remain unchanged.
+The next permitted step is candidate-specific B1/B2 preregistration. Before
+implementation, each contract defines the reference path, state/RNG
+restoration, numerical-equivalence endpoints, regret and safety margins, norm
+contracts, the cost vector, observer/control separation, fallback, and stop
+rules. Full matched profiling, `EX-IF0`, active control, and test-split access
+remain closed until their own decision gates.

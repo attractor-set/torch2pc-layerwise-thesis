@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 from pathlib import Path
 from typing import Any, cast
@@ -50,6 +51,88 @@ def git_output(repo: Path, *args: str) -> str:
         text=True,
         stderr=subprocess.STDOUT,
     ).strip()
+
+
+def require_environment(name: str) -> str:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        raise SIMA1ConfirmatoryError(
+            f"missing controlled provenance variable: {name}"
+        )
+    return value
+
+
+def require_commit_environment(name: str) -> str:
+    value = require_environment(name)
+    if len(value) != 40 or any(
+        character not in "0123456789abcdef" for character in value
+    ):
+        raise SIMA1ConfirmatoryError(
+            f"{name} must be a lowercase 40-character commit"
+        )
+    return value
+
+
+def resolve_source_commit(repo: Path) -> str:
+    """Resolve source provenance with host verification for gitless images."""
+
+    if (repo / ".git").exists():
+        head = git_output(repo, "rev-parse", "HEAD")
+        implementation_commit = git_output(
+            repo,
+            "rev-list",
+            "-n",
+            "1",
+            IMPLEMENTATION_TAG,
+        )
+        if implementation_commit != IMPLEMENTATION_COMMIT:
+            raise SIMA1ConfirmatoryError(
+                "SI-MA1 implementation tag target differs"
+            )
+        ancestry = subprocess.run(
+            [
+                "git",
+                "merge-base",
+                "--is-ancestor",
+                implementation_commit,
+                head,
+            ],
+            cwd=repo,
+            check=False,
+        )
+        if ancestry.returncode != 0:
+            raise SIMA1ConfirmatoryError(
+                "SI-MA1 implementation tag is not an ancestor of HEAD"
+            )
+        environment_head = os.environ.get("SOURCE_GIT_COMMIT", "").strip()
+        if environment_head and environment_head != head:
+            raise SIMA1ConfirmatoryError(
+                "SOURCE_GIT_COMMIT differs from repository HEAD"
+            )
+        return head
+
+    source_commit = require_commit_environment("SOURCE_GIT_COMMIT")
+    image_revision = require_commit_environment("IMAGE_REVISION")
+    implementation_commit = require_commit_environment(
+        "SI_MA1_IMPLEMENTATION_COMMIT"
+    )
+    ancestry_verified = require_environment(
+        "SI_MA1_IMPLEMENTATION_ANCESTRY_VERIFIED"
+    )
+
+    if source_commit != image_revision:
+        raise SIMA1ConfirmatoryError(
+            "controlled image revision differs from source commit"
+        )
+    if implementation_commit != IMPLEMENTATION_COMMIT:
+        raise SIMA1ConfirmatoryError(
+            "SI-MA1 implementation commit differs from frozen tag target"
+        )
+    if ancestry_verified != "1":
+        raise SIMA1ConfirmatoryError(
+            "host implementation ancestry verification is missing"
+        )
+    return source_commit
 
 
 def inspect_checkpoint(
@@ -148,33 +231,7 @@ def parse_checkpoint_overrides(
 def main() -> None:
     args = parse_args()
     repo = Path(__file__).resolve().parents[1]
-    head = git_output(repo, "rev-parse", "HEAD")
-    implementation_commit = git_output(
-        repo,
-        "rev-list",
-        "-n",
-        "1",
-        IMPLEMENTATION_TAG,
-    )
-    if implementation_commit != IMPLEMENTATION_COMMIT:
-        raise SIMA1ConfirmatoryError(
-            "SI-MA1 implementation tag target differs"
-        )
-    ancestry = subprocess.run(
-        [
-            "git",
-            "merge-base",
-            "--is-ancestor",
-            implementation_commit,
-            head,
-        ],
-        cwd=repo,
-        check=False,
-    )
-    if ancestry.returncode != 0:
-        raise SIMA1ConfirmatoryError(
-            "SI-MA1 implementation tag is not an ancestor of HEAD"
-        )
+    head = resolve_source_commit(repo)
     root = repo / args.search_root
     if not root.is_dir():
         raise SIMA1ConfirmatoryError(

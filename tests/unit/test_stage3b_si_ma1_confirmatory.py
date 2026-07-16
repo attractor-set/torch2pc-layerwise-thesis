@@ -6,9 +6,13 @@ from pathlib import Path
 
 import pytest
 
+from scripts.build_stage3b_si_ma1_checkpoint_inventory import (
+    resolve_source_commit,
+)
 from torch2pc_thesis.stage3b_si_ma1_confirmatory import (
     CONFIRMATORY_SCHEMA_ID,
     EXPECTED_MODEL_SEEDS,
+    IMPLEMENTATION_COMMIT,
     CheckpointInventoryEntry,
     SIMA1ConfirmatoryError,
     append_ledger_event,
@@ -257,3 +261,76 @@ def test_only_started_attempt_can_be_marked_infrastructure(
             read_ledger(ledger),
             attempt_id="started-5",
         )
+
+
+def test_inventory_builder_accepts_host_verified_gitless_provenance(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repo = tmp_path / "workspace"
+    repo.mkdir()
+    source_commit = "1" * 40
+
+    monkeypatch.setenv("SOURCE_GIT_COMMIT", source_commit)
+    monkeypatch.setenv("IMAGE_REVISION", source_commit)
+    monkeypatch.setenv(
+        "SI_MA1_IMPLEMENTATION_COMMIT",
+        IMPLEMENTATION_COMMIT,
+    )
+    monkeypatch.setenv(
+        "SI_MA1_IMPLEMENTATION_ANCESTRY_VERIFIED",
+        "1",
+    )
+
+    assert resolve_source_commit(repo) == source_commit
+
+
+def test_inventory_builder_rejects_gitless_image_revision_mismatch(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repo = tmp_path / "workspace"
+    repo.mkdir()
+
+    monkeypatch.setenv("SOURCE_GIT_COMMIT", "1" * 40)
+    monkeypatch.setenv("IMAGE_REVISION", "2" * 40)
+    monkeypatch.setenv(
+        "SI_MA1_IMPLEMENTATION_COMMIT",
+        IMPLEMENTATION_COMMIT,
+    )
+    monkeypatch.setenv(
+        "SI_MA1_IMPLEMENTATION_ANCESTRY_VERIFIED",
+        "1",
+    )
+
+    with pytest.raises(
+        SIMA1ConfirmatoryError,
+        match="image revision",
+    ):
+        resolve_source_commit(repo)
+
+
+def test_inventory_builder_requires_host_ancestry_attestation(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    repo = tmp_path / "workspace"
+    repo.mkdir()
+    source_commit = "1" * 40
+
+    monkeypatch.setenv("SOURCE_GIT_COMMIT", source_commit)
+    monkeypatch.setenv("IMAGE_REVISION", source_commit)
+    monkeypatch.setenv(
+        "SI_MA1_IMPLEMENTATION_COMMIT",
+        IMPLEMENTATION_COMMIT,
+    )
+    monkeypatch.delenv(
+        "SI_MA1_IMPLEMENTATION_ANCESTRY_VERIFIED",
+        raising=False,
+    )
+
+    with pytest.raises(
+        SIMA1ConfirmatoryError,
+        match="ANCESTRY_VERIFIED",
+    ):
+        resolve_source_commit(repo)

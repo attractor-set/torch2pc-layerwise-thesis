@@ -34,7 +34,7 @@
 3. Определять `required` `equivalence` через зарегистрированные `decision` `classes`,
    проверенные по `regret`-границе $\delta_R$.
 4. Определять точный `task-relative` `equivalence` `defect` как
-   $E_I^q\setminus E_R^q$, а отдельный операционный safety-дефект — как
+   $E_I^q\setminus E_R^q$, а отдельный операционный дефект безопасности — как
    $E_I^q\setminus A_R^{\delta}$.
 5. Ввести `precision-masked` `zero` с явными пространством, нормой, масштабом,
    `dtype`, порогом, слоем, шагом и правилом агрегации.

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "control_id": "OBS-OH0",
+  "benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+  "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+  "preregistration_commit": "9df364cbfbebb7293e78e1b4b26575aeab1171a1",
+  "experiment_source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "runtime_budget": {
+    "primary_runtime_ratio_limit": 1.25,
+    "seed_runtime_ratio_limit": 1.35
+  },
+  "memory_budget": {
+    "payload_limit_bytes": 67108864,
+    "cpu_bound": "median paired peak RSS difference <= payload + max(8 MiB, 0.25 * payload)",
+    "rocm_bound": "median paired peak allocated difference <= payload + max(1 MiB, 0.10 * payload)"
+  },
+  "registered_scope": {
+    "lanes": [
+      "cpu",
+      "rocm"
+    ],
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "batches_per_seed": 10,
+    "timing_repeats": 3,
+    "warmup_pairs_per_lane_arm": 3
+  }
+}

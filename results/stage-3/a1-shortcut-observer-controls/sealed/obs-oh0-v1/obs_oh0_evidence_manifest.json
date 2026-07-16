@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "evidence_id": "stage3b-a1-obs-oh0-v1",
+  "control_id": "OBS-OH0",
+  "status": "passed",
+  "sealed_at_utc": "2026-07-15T23:30:21.626969+00:00",
+  "preregistration_commit": "9df364cbfbebb7293e78e1b4b26575aeab1171a1",
+  "experiment_source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+  "parent_evidence_commit": "f80d070d79982f6420dce00d504c60dbdf1abc1b",
+  "parent_evidence_tag": "stage3b-a1-obs-ni0-v1",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+  "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 10,
+  "independent_unit": "model_seed",
+  "repeated_control_unit": "batch and timing repeat within model seed and arm",
+  "lanes": {
+    "cpu": {
+      "passed": true,
+      "dtype": "torch.float64",
+      "execution_environment": {
+        "controlled_container": true,
+        "lane": "cpu",
+        "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+        "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+        "torch_hip_version": "7.2.53211-e1a6bc5663",
+        "torch_cuda_available": false,
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+        "device_name": "cpu",
+        "cpu_thread_count": 1,
+        "visible_rocm_devices": null
+      },
+      "guard_records": 60,
+      "warmup_timing_records": 6,
+      "measured_timing_records": 180,
+      "total_timing_records": 186,
+      "memory_records": 60,
+      "fixedpred_primary_runtime_ratio": 1.0069936359263374,
+      "joint_vjp_primary_runtime_ratio": 1.0213827029059899,
+      "fixedpred_primary_payload_bytes": 11046912.0,
+      "joint_vjp_primary_payload_bytes": 11046912.0
+    },
+    "rocm": {
+      "passed": true,
+      "dtype": "torch.float32",
+      "execution_environment": {
+        "controlled_container": true,
+        "lane": "rocm",
+        "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+        "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+        "torch_hip_version": "7.2.53211-e1a6bc5663",
+        "torch_cuda_available": true,
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+        "device_name": "AMD Radeon RX 7700 XT",
+        "cpu_thread_count": 4,
+        "visible_rocm_devices": "0"
+      },
+      "guard_records": 60,
+      "warmup_timing_records": 6,
+      "measured_timing_records": 180,
+      "total_timing_records": 186,
+      "memory_records": 60,
+      "fixedpred_primary_runtime_ratio": 1.0701120929291685,
+      "joint_vjp_primary_runtime_ratio": 1.1376340674168501,
+      "fixedpred_primary_payload_bytes": 5523456.0,
+      "joint_vjp_primary_payload_bytes": 5523456.0
+    }
+  },
+  "aggregate": {
+    "lanes": 2,
+    "correctness_guard_records": 120,
+    "measured_timing_pairs": 360,
+    "timed_executions": 720,
+    "memory_pairs": 120,
+    "memory_workers": 240,
+    "failed_records": 0,
+    "budget_failures": 0
+  },
+  "registered_budget": {
+    "primary_runtime_ratio_limit": 1.25,
+    "seed_runtime_ratio_limit": 1.35,
+    "payload_limit_bytes": 67108864
+  },
+  "supported_claim": "For iterative FixedPred and the joint-VJP reduced shortcut, the registered passive observer remained within the preregistered runtime and retained-memory budgets in the controlled CPU and ROCm confirmatory sample.",
+  "claim_boundary": "This gate measures bounded runtime and retained-memory overhead for the sealed passive observer in the registered one-step FixedPred and joint-VJP paths. It does not establish zero overhead, full-training overhead, stateful-optimizer overhead, mechanistic validity, or universality outside the registered environment.",
+  "environmental_notes": [
+    "The controlled runs emitted PyTorch DataLoader warnings because the configured loader requested four workers while the CPU lane exposed a suggested maximum of one. Data loading and worker creation were outside the registered measured timing and incremental-memory regions. Both lanes completed, correctness guards passed, and the warning did not change the pass decision.",
+    "The Tini subreaper warning concerns container process reaping and did not alter benchmark calculations or provenance checks."
+  ],
+  "not_established": [
+    "zero observer overhead",
+    "full-training overhead",
+    "overhead for stateful optimizers",
+    "overhead for other models, batch sizes, or devices",
+    "mechanistic validity of captured payload",
+    "causal validity of PC-CATM",
+    "universal production suitability"
+  ],
+  "artifacts": [
+    "cpu/obs_oh0_guard_records.csv",
+    "cpu/obs_oh0_timing_records.csv",
+    "cpu/obs_oh0_timing_summary.json",
+    "cpu/obs_oh0_memory_records.csv",
+    "cpu/obs_oh0_memory_summary.json",
+    "cpu/obs_oh0_benchmark_schema.json",
+    "cpu/obs_oh0_summary.json",
+    "rocm/obs_oh0_guard_records.csv",
+    "rocm/obs_oh0_timing_records.csv",
+    "rocm/obs_oh0_timing_summary.json",
+    "rocm/obs_oh0_memory_records.csv",
+    "rocm/obs_oh0_memory_summary.json",
+    "rocm/obs_oh0_benchmark_schema.json",
+    "rocm/obs_oh0_summary.json",
+    "obs_oh0_benchmark_manifest.json",
+    "obs_oh0_evidence_manifest.json",
+    "OBS-OH0-SEAL.md",
+    "OBS-OH0-SEAL_EN.md"
+  ]
+}

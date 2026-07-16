@@ -1,0 +1,295 @@
+{
+  "control_id": "OBS-OH0",
+  "benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+  "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+  "scope": "confirmatory",
+  "device": "gpu",
+  "dtype": "torch.float32",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "execution_environment": {
+    "controlled_container": true,
+    "lane": "rocm",
+    "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+    "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+    "torch_hip_version": "7.2.53211-e1a6bc5663",
+    "torch_cuda_available": true,
+    "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+    "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+    "device_name": "AMD Radeon RX 7700 XT",
+    "cpu_thread_count": 4,
+    "visible_rocm_devices": "0"
+  },
+  "correctness_guard_thresholds": {
+    "min_cosine": 0.999,
+    "max_relative_l2": 0.001,
+    "zero_atol": 1e-07
+  },
+  "model_architecture": "lenet_classic",
+  "batch_size": 256,
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 10,
+  "timing_repeats": 3,
+  "warmup_pairs_per_lane_arm": 3,
+  "rss_sampler_interval_ms": 1.0,
+  "guards": {
+    "runs": 60,
+    "passed": true
+  },
+  "timing": {
+    "benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+    "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+    "lane": "rocm",
+    "scope": "confirmatory",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+    "execution_environment": {
+      "controlled_container": true,
+      "lane": "rocm",
+      "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+      "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+      "torch_hip_version": "7.2.53211-e1a6bc5663",
+      "torch_cuda_available": true,
+      "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+      "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+      "device_name": "AMD Radeon RX 7700 XT",
+      "cpu_thread_count": 4,
+      "visible_rocm_devices": "0"
+    },
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "batches_per_seed": 10,
+    "timing_repeats": 3,
+    "warmup_pairs_per_lane_arm": 3,
+    "arm_summaries": {
+      "fixedpred": {
+        "arm": "fixedpred",
+        "seed_summaries": [
+          {
+            "arm": "fixedpred",
+            "model_seed": 0,
+            "paired_records": 30,
+            "median_runtime_ratio": 1.068517274961926,
+            "median_runtime_delta_ns": 764801.5,
+            "passed": true
+          },
+          {
+            "arm": "fixedpred",
+            "model_seed": 1,
+            "paired_records": 30,
+            "median_runtime_ratio": 1.0732443039007402,
+            "median_runtime_delta_ns": 819300.0,
+            "passed": true
+          },
+          {
+            "arm": "fixedpred",
+            "model_seed": 2,
+            "paired_records": 30,
+            "median_runtime_ratio": 1.0701120929291685,
+            "median_runtime_delta_ns": 782360.0,
+            "passed": true
+          }
+        ],
+        "primary_runtime_ratio": 1.0701120929291685,
+        "min_seed_median_runtime_ratio": 1.068517274961926,
+        "max_seed_median_runtime_ratio": 1.0732443039007402,
+        "median_absolute_runtime_delta_ns": 786693.5,
+        "off_first_median_runtime_ratio": 1.066917514726137,
+        "on_first_median_runtime_ratio": 1.0739674273944542,
+        "primary_runtime_ratio_limit": 1.25,
+        "seed_runtime_ratio_limit": 1.35,
+        "primary_budget_passed": true,
+        "seed_budget_passed": true,
+        "passed": true
+      },
+      "joint_vjp": {
+        "arm": "joint_vjp",
+        "seed_summaries": [
+          {
+            "arm": "joint_vjp",
+            "model_seed": 0,
+            "paired_records": 30,
+            "median_runtime_ratio": 1.137854561543366,
+            "median_runtime_delta_ns": 675708.5,
+            "passed": true
+          },
+          {
+            "arm": "joint_vjp",
+            "model_seed": 1,
+            "paired_records": 30,
+            "median_runtime_ratio": 1.1376340674168501,
+            "median_runtime_delta_ns": 672824.0,
+            "passed": true
+          },
+          {
+            "arm": "joint_vjp",
+            "model_seed": 2,
+            "paired_records": 30,
+            "median_runtime_ratio": 1.1311336826656124,
+            "median_runtime_delta_ns": 644129.5,
+            "passed": true
+          }
+        ],
+        "primary_runtime_ratio": 1.1376340674168501,
+        "min_seed_median_runtime_ratio": 1.1311336826656124,
+        "max_seed_median_runtime_ratio": 1.137854561543366,
+        "median_absolute_runtime_delta_ns": 671356.0,
+        "off_first_median_runtime_ratio": 1.1628492316451302,
+        "on_first_median_runtime_ratio": 1.103500078098474,
+        "primary_runtime_ratio_limit": 1.25,
+        "seed_runtime_ratio_limit": 1.35,
+        "primary_budget_passed": true,
+        "seed_budget_passed": true,
+        "passed": true
+      }
+    },
+    "budget_enforced": true,
+    "budget_passed": true
+  },
+  "memory": {
+    "benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+    "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+    "lane": "rocm",
+    "scope": "confirmatory",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+    "execution_environment": {
+      "controlled_container": true,
+      "lane": "rocm",
+      "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+      "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+      "torch_hip_version": "7.2.53211-e1a6bc5663",
+      "torch_cuda_available": true,
+      "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+      "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+      "device_name": "AMD Radeon RX 7700 XT",
+      "cpu_thread_count": 4,
+      "visible_rocm_devices": "0"
+    },
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "batches_per_seed": 10,
+    "memory_pairs_per_seed_batch_arm": 1,
+    "rss_sampler_interval_ms": 1.0,
+    "arm_summaries": {
+      "fixedpred": {
+        "arm": "fixedpred",
+        "seed_summaries": [
+          {
+            "arm": "fixedpred",
+            "model_seed": 0,
+            "paired_records": 10,
+            "median_payload_bytes": 5523456.0,
+            "median_paired_peak_memory_difference_bytes": 4352000.0,
+            "median_memory_accounting_residual_bytes": -1171456.0,
+            "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+            "payload_budget_passed": true,
+            "peak_memory_budget_passed": true,
+            "passed_structure": true,
+            "passed": true
+          },
+          {
+            "arm": "fixedpred",
+            "model_seed": 1,
+            "paired_records": 10,
+            "median_payload_bytes": 5523456.0,
+            "median_paired_peak_memory_difference_bytes": 4352000.0,
+            "median_memory_accounting_residual_bytes": -1171456.0,
+            "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+            "payload_budget_passed": true,
+            "peak_memory_budget_passed": true,
+            "passed_structure": true,
+            "passed": true
+          },
+          {
+            "arm": "fixedpred",
+            "model_seed": 2,
+            "paired_records": 10,
+            "median_payload_bytes": 5523456.0,
+            "median_paired_peak_memory_difference_bytes": 4352000.0,
+            "median_memory_accounting_residual_bytes": -1171456.0,
+            "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+            "payload_budget_passed": true,
+            "peak_memory_budget_passed": true,
+            "passed_structure": true,
+            "passed": true
+          }
+        ],
+        "primary_median_payload_bytes": 5523456.0,
+        "primary_median_paired_peak_memory_difference_bytes": 4352000.0,
+        "primary_median_memory_accounting_residual_bytes": -1171456.0,
+        "payload_limit_bytes": 67108864,
+        "passed": true
+      },
+      "joint_vjp": {
+        "arm": "joint_vjp",
+        "seed_summaries": [
+          {
+            "arm": "joint_vjp",
+            "model_seed": 0,
+            "paired_records": 10,
+            "median_payload_bytes": 5523456.0,
+            "median_paired_peak_memory_difference_bytes": 5523456.0,
+            "median_memory_accounting_residual_bytes": 0.0,
+            "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+            "payload_budget_passed": true,
+            "peak_memory_budget_passed": true,
+            "passed_structure": true,
+            "passed": true
+          },
+          {
+            "arm": "joint_vjp",
+            "model_seed": 1,
+            "paired_records": 10,
+            "median_payload_bytes": 5523456.0,
+            "median_paired_peak_memory_difference_bytes": 5523456.0,
+            "median_memory_accounting_residual_bytes": 0.0,
+            "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+            "payload_budget_passed": true,
+            "peak_memory_budget_passed": true,
+            "passed_structure": true,
+            "passed": true
+          },
+          {
+            "arm": "joint_vjp",
+            "model_seed": 2,
+            "paired_records": 10,
+            "median_payload_bytes": 5523456.0,
+            "median_paired_peak_memory_difference_bytes": 5523456.0,
+            "median_memory_accounting_residual_bytes": 0.0,
+            "allowed_paired_peak_memory_difference_bytes": 6572032.0,
+            "payload_budget_passed": true,
+            "peak_memory_budget_passed": true,
+            "passed_structure": true,
+            "passed": true
+          }
+        ],
+        "primary_median_payload_bytes": 5523456.0,
+        "primary_median_paired_peak_memory_difference_bytes": 5523456.0,
+        "primary_median_memory_accounting_residual_bytes": 0.0,
+        "payload_limit_bytes": 67108864,
+        "passed": true
+      }
+    },
+    "budget_enforced": true,
+    "budget_passed": true
+  },
+  "aggregate": {
+    "warmup_timing_pairs": 6,
+    "measured_timing_pairs": 180,
+    "timed_executions": 360,
+    "memory_pairs": 60,
+    "memory_workers": 120
+  },
+  "structural_passed": true,
+  "budget_enforced": true,
+  "passed": true,
+  "claim_boundary": "This gate measures bounded runtime and retained-memory overhead for the sealed passive observer in the registered one-step FixedPred and joint-VJP paths. It does not establish zero overhead, full-training overhead, stateful-optimizer overhead, mechanistic validity, or universality outside the registered environment."
+}

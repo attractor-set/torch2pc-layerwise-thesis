@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "evidence_id": "stage3b-a1-obs-ni0-v1",
+  "control_id": "OBS-NI0",
+  "status": "passed",
+  "sealed_at_utc": "2026-07-15T21:22:19.347970+00:00",
+  "preregistration_commit": "9cb6399b4ad4b30397386a81af887e8b438c5251",
+  "experiment_source_git_commit": "3cbda083bc5747732a51295da9a4494ffde48436",
+  "parent_evidence": [
+    "stage3b-a1-eq-s0-v1",
+    "stage3b-a1-eq-s1-v1",
+    "stage3b-a1-eq-s2-v1"
+  ],
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "scope": "Passive-observer non-interference for iterative FixedPred and the opt-in joint-VJP reduced shortcut",
+  "observer_schema": {
+    "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+    "capture_implementation": "top-level forward-pre and forward hooks",
+    "capture_policy": "first forward invocation per top-level layer",
+    "additional_forward_calls": "counted but not captured",
+    "payload_copy": "tensor.detach().clone()",
+    "roles": [
+      "layer_input",
+      "layer_output"
+    ],
+    "records_per_top_level_layer": 2,
+    "expected_top_level_layers": 6,
+    "expected_records_per_arm_run": 12,
+    "record_key_format": "layer-{index:02d}:{role}:00",
+    "expected_occurrences_per_role": 1,
+    "cleanup_rule": "remove all observer handles and restore baseline hook ids",
+    "serialization_phase": "after observed execution and hook cleanup"
+  },
+  "arms": {
+    "fixedpred": {
+      "method": "fixedpred",
+      "eta": 1.0,
+      "inference_steps": "len(model)",
+      "initialization": "feed-forward"
+    },
+    "joint_vjp": {
+      "reverse_policy": "one joint state-and-parameter VJP per layer",
+      "forward_graph_policy": "detached graph island per top-level layer"
+    }
+  },
+  "reference_observer_mode": "no_hooks",
+  "candidate_observer_mode": "passive_first_forward_io",
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 10,
+  "independent_unit": "model_seed",
+  "repeated_control_unit": "batch within model seed and observer arm",
+  "optimizer": {
+    "name": "SGD",
+    "lr": 0.001,
+    "momentum": 0.0
+  },
+  "threshold_policy": {
+    "type": "lane_specific",
+    "cpu": {
+      "min_cosine": 0.99999,
+      "max_relative_l2": 1e-07,
+      "zero_atol": 1e-12
+    },
+    "rocm": {
+      "min_cosine": 0.999,
+      "max_relative_l2": 0.001,
+      "zero_atol": 1e-07
+    }
+  },
+  "lanes": {
+    "cpu": {
+      "passed": true,
+      "runs": 60,
+      "endpoint_counts": {
+        "endpoint_gradient": 600,
+        "parameter_after_optimizer_step": 600
+      },
+      "endpoint_records": 1200,
+      "state_records": 540,
+      "payload_records": 720,
+      "dtype": "torch.float64",
+      "execution_environment": {
+        "controlled_container": true,
+        "lane": "cpu",
+        "source_git_commit": "3cbda083bc5747732a51295da9a4494ffde48436",
+        "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+        "torch_hip_version": "7.2.53211-e1a6bc5663",
+        "torch_cuda_available": false,
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "device_name": "cpu"
+      }
+    },
+    "rocm": {
+      "passed": true,
+      "runs": 60,
+      "endpoint_counts": {
+        "endpoint_gradient": 600,
+        "parameter_after_optimizer_step": 600
+      },
+      "endpoint_records": 1200,
+      "state_records": 540,
+      "payload_records": 720,
+      "dtype": "torch.float32",
+      "execution_environment": {
+        "controlled_container": true,
+        "lane": "rocm",
+        "source_git_commit": "3cbda083bc5747732a51295da9a4494ffde48436",
+        "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+        "torch_hip_version": "7.2.53211-e1a6bc5663",
+        "torch_cuda_available": true,
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "device_name": "AMD Radeon RX 7700 XT"
+      }
+    }
+  },
+  "aggregate": {
+    "lanes": 2,
+    "paired_runs": 120,
+    "endpoint_gradient_comparisons": 1200,
+    "parameter_after_optimizer_step_comparisons": 1200,
+    "total_endpoint_records": 2400,
+    "total_state_records": 1080,
+    "total_payload_records": 1440,
+    "failed_records": 0,
+    "nonfinite_records": 0
+  },
+  "supported_claim": "For iterative FixedPred and the joint-VJP reduced shortcut, enabling the registered passive observer did not change endpoint parameter gradients, parameters after one stateless SGD step, optimizer state, model buffers, input or target tensors, or registered RNG states in the controlled CPU and ROCm confirmatory sample.",
+  "claim_boundary": "This gate concerns one paired stateless-SGD execution per arm in the pinned environment. It does not establish full-training non-interference, stateful-optimizer non-interference, runtime or memory overhead, or mechanistic validity of captured signals.",
+  "not_established": [
+    "non-interference over a full training trajectory",
+    "non-interference for stateful optimizers",
+    "absence of runtime overhead",
+    "absence of memory overhead",
+    "mechanistic validity of captured payload",
+    "causal validity of PC-CATM",
+    "universal applicability outside the registered model"
+  ],
+  "artifacts": [
+    "cpu/obs_ni0_summary.json",
+    "cpu/obs_ni0_records.csv",
+    "cpu/obs_ni0_state_records.csv",
+    "cpu/obs_ni0_payload_records.csv",
+    "rocm/obs_ni0_summary.json",
+    "rocm/obs_ni0_records.csv",
+    "rocm/obs_ni0_state_records.csv",
+    "rocm/obs_ni0_payload_records.csv",
+    "observer_schema_manifest.json",
+    "OBS-NI0-SEAL.md",
+    "OBS-NI0-SEAL_EN.md",
+    "obs_ni0_evidence_manifest.json"
+  ]
+}

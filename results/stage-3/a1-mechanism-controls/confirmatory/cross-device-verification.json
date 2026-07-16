@@ -1,0 +1,91 @@
+{
+  "allowed_runtime_differences": [
+    {
+      "cpu": "cpu",
+      "gpu": "rocm",
+      "kind": "value",
+      "path": "provenance.lane"
+    }
+  ],
+  "blocking_contract_differences": [],
+  "csv_row_counts": {
+    "mechanism_block_probe_records.csv": {
+      "cpu": 60,
+      "gpu": 60
+    },
+    "mechanism_geometry_records.csv": {
+      "cpu": 24,
+      "gpu": 24
+    },
+    "mechanism_pnz_records.csv": {
+      "cpu": 3,
+      "gpu": 3
+    },
+    "mechanism_temporal_events.csv": {
+      "cpu": 108,
+      "gpu": 108
+    },
+    "mechanism_temporal_summary.csv": {
+      "cpu": 3,
+      "gpu": 3
+    },
+    "mechanism_transport_records.csv": {
+      "cpu": 30,
+      "gpu": 30
+    }
+  },
+  "csv_row_counts_equal": true,
+  "decision": {
+    "core_controls_passed": true,
+    "pnz_l0_passed_non_blocking": true,
+    "si_ma0_open": true
+  },
+  "full_contract_equal": false,
+  "gates": {
+    "core_passed": {
+      "cpu": true,
+      "gpu": true
+    },
+    "geo_c0_passed": {
+      "cpu": true,
+      "gpu": true
+    },
+    "jac_c0_passed": {
+      "cpu": true,
+      "gpu": true
+    },
+    "passed": {
+      "cpu": true,
+      "gpu": true
+    },
+    "pnz_l0_passed": {
+      "cpu": true,
+      "gpu": true
+    },
+    "si_ma0_open": {
+      "cpu": true,
+      "gpu": true
+    },
+    "tmp_c0_passed": {
+      "cpu": true,
+      "gpu": true
+    },
+    "tr_c0_passed": {
+      "cpu": true,
+      "gpu": true
+    }
+  },
+  "implementation_head": null,
+  "observed_counts": {
+    "block_probe_records": 60,
+    "geometry_records": 24,
+    "pnz_records": 3,
+    "temporal_event_records": 108,
+    "temporal_summary_records": 3,
+    "transport_records": 30
+  },
+  "observed_counts_equal": true,
+  "schema_version": 1,
+  "scientific_contract_equal": true,
+  "status": "passed"
+}

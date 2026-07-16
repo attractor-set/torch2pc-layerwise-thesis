@@ -1,0 +1,721 @@
+model_seed,batch_index,arm,observer_schema_id,key,layer_index,layer_name,role,occurrence,shape,dtype,device,numel,requires_grad,grad_fn_is_none,detached,finite,metadata_preserved
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+0,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+1,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,0,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,0,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,1,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,1,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,2,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,2,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,3,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,3,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,4,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,4,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,5,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,5,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,6,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,6,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,7,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,7,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,8,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,8,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,9,fixedpred,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_input:00,0,0,layer_input,0,"[256, 1, 32, 32]",torch.float64,cpu,262144,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-00:layer_output:00,0,0,layer_output,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_input:00,1,1,layer_input,0,"[256, 6, 14, 14]",torch.float64,cpu,301056,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-01:layer_output:00,1,1,layer_output,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_input:00,2,2,layer_input,0,"[256, 16, 5, 5]",torch.float64,cpu,102400,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-02:layer_output:00,2,2,layer_output,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_input:00,3,3,layer_input,0,"[256, 400]",torch.float64,cpu,102400,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-03:layer_output:00,3,3,layer_output,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_input:00,4,4,layer_input,0,"[256, 120]",torch.float64,cpu,30720,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-04:layer_output:00,4,4,layer_output,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_input:00,5,5,layer_input,0,"[256, 84]",torch.float64,cpu,21504,False,True,True,True,True
+2,9,joint_vjp,stage3b-a1-obs-ni0-first-forward-io-v1,layer-05:layer_output:00,5,5,layer_output,0,"[256, 10]",torch.float64,cpu,2560,False,True,True,True,True

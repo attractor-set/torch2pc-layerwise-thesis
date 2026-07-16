@@ -9,6 +9,28 @@ MODEL ?= lenet_classic
 SEED ?= 0
 ETA ?=
 INFERENCE_STEPS ?=
+EQ_S0_MAX_BATCHES ?= 1
+EQ_S0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s0-cpu-smoke
+EQ_S0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s0-gpu-smoke
+EQ_S1_MAX_BATCHES ?= 1
+EQ_S1_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s1-cpu-smoke
+EQ_S1_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s1-gpu-smoke
+EQ_S2_MAX_BATCHES ?= 1
+EQ_S2_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s2-cpu-smoke
+EQ_S2_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/eq-s2-gpu-smoke
+OBS_NI0_MAX_BATCHES ?= 1
+OBS_NI0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-ni0-cpu-smoke
+OBS_NI0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-ni0-gpu-smoke
+OBS_OH0_EXECUTION_SCOPE ?= smoke
+OBS_OH0_MAX_BATCHES ?= 1
+OBS_OH0_TIMING_REPEATS ?= 3
+OBS_OH0_WARMUP_PAIRS ?= 1
+OBS_OH0_RSS_SAMPLER_INTERVAL_MS ?= 1.0
+OBS_OH0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-oh0-cpu-smoke
+OBS_OH0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-oh0-gpu-smoke
+MECH_CONTROLS_EXECUTION_SCOPE ?= smoke
+MECH_CONTROLS_CPU_OUTPUT_DIR ?= results/stage-3/a1-mechanism-controls/working/mechanism-controls-cpu-smoke
+MECH_CONTROLS_GPU_OUTPUT_DIR ?= results/stage-3/a1-mechanism-controls/working/mechanism-controls-gpu-smoke
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
@@ -18,7 +40,12 @@ INFERENCE_STEPS ?=
         freeze-environment configure-stage2 prepare-stage2 freeze-stage2-environment \
         control-stage2-cpu control-stage2-gpu stage2-plan freeze-stage2 final-stage2 \
         snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2 \
-        stage3-ready stage3-plan
+        stage3-ready stage3-plan stage3b-a1-eq-s0-cpu stage3b-a1-eq-s0-gpu \
+        stage3b-a1-eq-s1-cpu stage3b-a1-eq-s1-gpu \
+        stage3b-a1-eq-s2-cpu stage3b-a1-eq-s2-gpu \
+        stage3b-a1-obs-ni0-cpu stage3b-a1-obs-ni0-gpu \
+        stage3b-a1-obs-oh0-cpu stage3b-a1-obs-oh0-gpu \
+        stage3b-a1-mechanism-controls-cpu stage3b-a1-mechanism-controls-gpu
 
 help:
 	@printf '%s\n' \
@@ -56,6 +83,18 @@ help:
 	  '  diagnostics           Run diagnostic experiments' \
 	  '  stage3-ready          Validate the Stage 3 design-ready scaffold' \
 	  '  stage3-plan           Generate the deterministic Stage 3 design plan' \
+	  '  stage3b-a1-eq-s0-cpu  Run EQ-S0 in the controlled Docker CPU lane' \
+	  '  stage3b-a1-eq-s0-gpu  Run EQ-S0 in the controlled Docker/ROCm lane' \
+	  '  stage3b-a1-eq-s1-cpu  Run EQ-S1 joint-VJP shortcut in Docker CPU' \
+	  '  stage3b-a1-eq-s1-gpu  Run EQ-S1 joint-VJP shortcut in Docker/ROCm' \
+	  '  stage3b-a1-eq-s2-cpu  Run EQ-S2 FixedPred/shortcut in Docker CPU' \
+	  '  stage3b-a1-eq-s2-gpu  Run EQ-S2 FixedPred/shortcut in Docker/ROCm' \
+	  '  stage3b-a1-obs-ni0-cpu Run OBS-NI0 passive observer in Docker CPU' \
+	  '  stage3b-a1-obs-ni0-gpu Run OBS-NI0 passive observer in Docker/ROCm' \
+	  '  stage3b-a1-obs-oh0-cpu Run OBS-OH0 observer overhead in Docker CPU' \
+	  '  stage3b-a1-obs-oh0-gpu Run OBS-OH0 observer overhead in Docker/ROCm' \
+	  '  stage3b-a1-mechanism-controls-cpu Run deterministic PC-CATM controls in Docker CPU' \
+	  '  stage3b-a1-mechanism-controls-gpu Run deterministic PC-CATM controls in Docker/ROCm' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \
@@ -240,6 +279,74 @@ stage3-ready:
 
 stage3-plan:
 	PYTHONPATH=src $(PYTHON) scripts/generate_stage3_design_plan.py
+
+stage3b-a1-eq-s0-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s0_container.py cpu \
+		--max-batches "$(EQ_S0_MAX_BATCHES)" \
+		--output-dir "$(EQ_S0_CPU_OUTPUT_DIR)"
+
+stage3b-a1-eq-s0-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s0_container.py gpu \
+		--max-batches "$(EQ_S0_MAX_BATCHES)" \
+		--output-dir "$(EQ_S0_GPU_OUTPUT_DIR)"
+
+stage3b-a1-eq-s1-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s1_container.py cpu \
+		--max-batches "$(EQ_S1_MAX_BATCHES)" \
+		--output-dir "$(EQ_S1_CPU_OUTPUT_DIR)"
+
+stage3b-a1-eq-s1-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s1_container.py gpu \
+		--max-batches "$(EQ_S1_MAX_BATCHES)" \
+		--output-dir "$(EQ_S1_GPU_OUTPUT_DIR)"
+
+stage3b-a1-eq-s2-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s2_container.py cpu \
+		--max-batches "$(EQ_S2_MAX_BATCHES)" \
+		--output-dir "$(EQ_S2_CPU_OUTPUT_DIR)"
+
+stage3b-a1-eq-s2-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_eq_s2_container.py gpu \
+		--max-batches "$(EQ_S2_MAX_BATCHES)" \
+		--output-dir "$(EQ_S2_GPU_OUTPUT_DIR)"
+
+stage3b-a1-obs-ni0-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_obs_ni0_container.py cpu \
+		--max-batches "$(OBS_NI0_MAX_BATCHES)" \
+		--output-dir "$(OBS_NI0_CPU_OUTPUT_DIR)"
+
+stage3b-a1-obs-ni0-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_obs_ni0_container.py gpu \
+		--max-batches "$(OBS_NI0_MAX_BATCHES)" \
+		--output-dir "$(OBS_NI0_GPU_OUTPUT_DIR)"
+
+stage3b-a1-obs-oh0-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_obs_oh0_container.py cpu \
+		--execution-scope "$(OBS_OH0_EXECUTION_SCOPE)" \
+		--max-batches "$(OBS_OH0_MAX_BATCHES)" \
+		--timing-repeats "$(OBS_OH0_TIMING_REPEATS)" \
+		--warmup-pairs "$(OBS_OH0_WARMUP_PAIRS)" \
+		--rss-sampler-interval-ms "$(OBS_OH0_RSS_SAMPLER_INTERVAL_MS)" \
+		--output-dir "$(OBS_OH0_CPU_OUTPUT_DIR)"
+
+stage3b-a1-obs-oh0-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_obs_oh0_container.py gpu \
+		--execution-scope "$(OBS_OH0_EXECUTION_SCOPE)" \
+		--max-batches "$(OBS_OH0_MAX_BATCHES)" \
+		--timing-repeats "$(OBS_OH0_TIMING_REPEATS)" \
+		--warmup-pairs "$(OBS_OH0_WARMUP_PAIRS)" \
+		--rss-sampler-interval-ms "$(OBS_OH0_RSS_SAMPLER_INTERVAL_MS)" \
+		--output-dir "$(OBS_OH0_GPU_OUTPUT_DIR)"
+
+stage3b-a1-mechanism-controls-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_mechanism_controls_container.py cpu \
+		--execution-scope "$(MECH_CONTROLS_EXECUTION_SCOPE)" \
+		--output-dir "$(MECH_CONTROLS_CPU_OUTPUT_DIR)"
+
+stage3b-a1-mechanism-controls-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_mechanism_controls_container.py gpu \
+		--execution-scope "$(MECH_CONTROLS_EXECUTION_SCOPE)" \
+		--output-dir "$(MECH_CONTROLS_GPU_OUTPUT_DIR)"
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

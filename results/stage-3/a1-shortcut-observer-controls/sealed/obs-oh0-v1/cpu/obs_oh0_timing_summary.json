@@ -1,0 +1,112 @@
+{
+  "benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+  "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+  "lane": "cpu",
+  "scope": "confirmatory",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "execution_environment": {
+    "controlled_container": true,
+    "lane": "cpu",
+    "source_git_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+    "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+    "torch_hip_version": "7.2.53211-e1a6bc5663",
+    "torch_cuda_available": false,
+    "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+    "source_git_branch": "research/stage3b-a1-obs-oh0-observer-overhead",
+    "device_name": "cpu",
+    "cpu_thread_count": 1,
+    "visible_rocm_devices": null
+  },
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "batches_per_seed": 10,
+  "timing_repeats": 3,
+  "warmup_pairs_per_lane_arm": 3,
+  "arm_summaries": {
+    "fixedpred": {
+      "arm": "fixedpred",
+      "seed_summaries": [
+        {
+          "arm": "fixedpred",
+          "model_seed": 0,
+          "paired_records": 30,
+          "median_runtime_ratio": 1.0069309727449545,
+          "median_runtime_delta_ns": 1806576.0,
+          "passed": true
+        },
+        {
+          "arm": "fixedpred",
+          "model_seed": 1,
+          "paired_records": 30,
+          "median_runtime_ratio": 1.0814314655370945,
+          "median_runtime_delta_ns": 21429213.5,
+          "passed": true
+        },
+        {
+          "arm": "fixedpred",
+          "model_seed": 2,
+          "paired_records": 30,
+          "median_runtime_ratio": 1.0069936359263374,
+          "median_runtime_delta_ns": 1823885.5,
+          "passed": true
+        }
+      ],
+      "primary_runtime_ratio": 1.0069936359263374,
+      "min_seed_median_runtime_ratio": 1.0069309727449545,
+      "max_seed_median_runtime_ratio": 1.0814314655370945,
+      "median_absolute_runtime_delta_ns": 27182084.5,
+      "off_first_median_runtime_ratio": 1.0729720907118654,
+      "on_first_median_runtime_ratio": 0.842754093120034,
+      "primary_runtime_ratio_limit": 1.25,
+      "seed_runtime_ratio_limit": 1.35,
+      "primary_budget_passed": true,
+      "seed_budget_passed": true,
+      "passed": true
+    },
+    "joint_vjp": {
+      "arm": "joint_vjp",
+      "seed_summaries": [
+        {
+          "arm": "joint_vjp",
+          "model_seed": 0,
+          "paired_records": 30,
+          "median_runtime_ratio": 1.017996151084895,
+          "median_runtime_delta_ns": 1470469.5,
+          "passed": true
+        },
+        {
+          "arm": "joint_vjp",
+          "model_seed": 1,
+          "paired_records": 30,
+          "median_runtime_ratio": 1.0213827029059899,
+          "median_runtime_delta_ns": 1518647.5,
+          "passed": true
+        },
+        {
+          "arm": "joint_vjp",
+          "model_seed": 2,
+          "paired_records": 30,
+          "median_runtime_ratio": 1.0217570878185915,
+          "median_runtime_delta_ns": 1543599.5,
+          "passed": true
+        }
+      ],
+      "primary_runtime_ratio": 1.0213827029059899,
+      "min_seed_median_runtime_ratio": 1.017996151084895,
+      "max_seed_median_runtime_ratio": 1.0217570878185915,
+      "median_absolute_runtime_delta_ns": 1543599.5,
+      "off_first_median_runtime_ratio": 1.0184465762448904,
+      "on_first_median_runtime_ratio": 1.0244643697600235,
+      "primary_runtime_ratio_limit": 1.25,
+      "seed_runtime_ratio_limit": 1.35,
+      "primary_budget_passed": true,
+      "seed_budget_passed": true,
+      "passed": true
+    }
+  },
+  "budget_enforced": true,
+  "budget_passed": true
+}

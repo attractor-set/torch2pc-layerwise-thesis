@@ -1,9 +1,17 @@
 {
+  "amendment": {
+    "made_before_any_si_ma0_results": true,
+    "made_before_first_implementation_smoke": true,
+    "reason": "Frozen StrictPCPredErrs updates len(model)-1 internal belief states per sweep; the output error is a separate non-update record.",
+    "supersedes_commit": "1c5d910ccc0fd75468e84f487ae7cc035b4e0770",
+    "supersedes_contract_id": "stage3b-si-ma0-v1",
+    "supersedes_tag": "stage3b-si-ma0-prereg-v1"
+  },
   "canonical_channels": [
     "self",
     "upper"
   ],
-  "contract_id": "stage3b-si-ma0-v1",
+  "contract_id": "stage3b-si-ma0-v2",
   "decision_states": {
     "fail": "at least one scientific or contract sub-gate false with complete evidence",
     "inconclusive": "evidence incomplete for documented infrastructure reason and no scientific failure established",
@@ -50,7 +58,9 @@
     }
   },
   "expected_counts": {
-    "confirmatory_layer_sweep_events": 3600,
+    "confirmatory_diagnostic_records": 3600,
+    "confirmatory_output_error_records": 600,
+    "confirmatory_state_update_events": 3000,
     "counters_only_region_timing_records": 52500,
     "counters_only_total_timing_records": 7500,
     "mode_comparison_rows": 150,
@@ -70,7 +80,8 @@
         "test_split_not_accessed",
         "dataset_loading_outside_measured_region",
         "sha256_manifests_verified",
-        "frozen_contract_verified"
+        "frozen_contract_verified",
+        "all_output_error_records_present"
       ]
     },
     "COST-MA0": {
@@ -103,6 +114,7 @@
     },
     "REC-MA0": {
       "all_events_required": true,
+      "record_scope": "state_update_events_only",
       "requirements": [
         "canonical_channels_complete",
         "reconstructed_update_equivalent_to_observed_update",
@@ -121,7 +133,10 @@
         "jacobian_version_matches_used_snapshot",
         "no_mixed_version_channel_record",
         "snapshot_fingerprints_equal",
-        "strict_ordering_matches_frozen_implementation"
+        "strict_ordering_matches_frozen_implementation",
+        "one_output_error_record_per_sweep",
+        "output_error_precedes_state_updates",
+        "output_error_records_finite"
       ]
     }
   },
@@ -159,6 +174,7 @@
       "si_ma0_attempts.jsonl",
       "si_ma0_environment.json",
       "si_ma0_event_records.csv",
+      "si_ma0_output_error_records.csv",
       "si_ma0_mode_comparisons.csv",
       "si_ma0_total_timing_records.csv",
       "si_ma0_region_timing_records.csv",
@@ -217,7 +233,9 @@
     "group_technical_parts_by_canonical_channel_id": true,
     "implementation_update_map_is_normative": true,
     "observed_tensor": "u_observed",
+    "output_error_is_not_state_update": true,
     "reconstructed_expression": "c_self + c_upper",
+    "record_scope": "state_update_events_only",
     "state_transition_check": "h_after ~= canonical_update_map(h_before, u_observed, eta)"
   },
   "regions": [
@@ -235,6 +253,8 @@
     "a1_evidence_tag": "stage3b-a1-mechanism-controls-evidence-v1",
     "a1_implementation_commit": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
     "base_commit": "30de25c50a970fcdb8038fe1ce20273f5efb9b3c",
+    "si_ma0_v1_prereg_commit": "1c5d910ccc0fd75468e84f487ae7cc035b4e0770",
+    "si_ma0_v1_prereg_tag": "stage3b-si-ma0-prereg-v1",
     "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
   },
   "rerun_policy": {
@@ -245,7 +265,7 @@
     "scientific_failure_is_not_replacement_reason": true
   },
   "scenario": "primary_scenario_a",
-  "schema_version": 1,
+  "schema_version": 2,
   "scope": {
     "architecture": "lenet_classic",
     "batch_size": 256,
@@ -254,10 +274,10 @@
     "dataset_loader_used": true,
     "dtype": "float32",
     "eta": 0.05,
-    "expected_state_layers": 6,
     "inference_steps": 20,
     "loader_workers": 0,
     "method": "strict",
+    "model_modules": 6,
     "model_seeds": [
       0,
       1,
@@ -271,6 +291,7 @@
       9
     ],
     "optimizer_step": false,
+    "output_error_records_per_sweep": 1,
     "parameter_update": false,
     "primary_device": "rocm",
     "restore_checkpoint_before_run": true,
@@ -278,6 +299,7 @@
     "shuffle": false,
     "split": "validation",
     "test_split_access": false,
+    "updated_state_layers_per_sweep": 5,
     "validation_batch_ids": [
       0,
       1,
@@ -321,7 +343,7 @@
       "technical_repetition"
     ]
   },
-  "status": "frozen_preregistration",
+  "status": "frozen_preregistration_amendment",
   "step": "A8",
   "thresholds": {
     "cpu_smoke_float64": {
@@ -362,5 +384,5 @@
     "timing_repetitions": 5,
     "warmup_steps": 20
   },
-  "title": "SI-MA0 state_inference mechanism and cost attribution"
+  "title": "SI-MA0 state_inference mechanism and cost attribution (amended cardinality)"
 }

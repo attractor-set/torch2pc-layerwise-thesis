@@ -15,8 +15,31 @@ or authorize computational control.
 Contract id:
 
 ```text
-stage3b-si-ma0-v1
+stage3b-si-ma0-v2
 ```
+
+## Amendment to v1
+
+This version supersedes `stage3b-si-ma0-v1`, sealed by
+`stage3b-si-ma0-prereg-v1`. The amendment is made before the first
+implementation smoke run and before any `SI-MA0` result exists.
+
+In frozen `StrictPCPredErrs`, a six-module model updates five internal belief
+states per sweep. The output-layer error is computed once per sweep but is not
+passed to the belief update map. Version v1 therefore incorrectly counted six
+reconstruction/update events per sweep.
+
+Version v2 separates:
+
+```text
+state-update events per sweep = 5
+output-error records per sweep = 1
+```
+
+The total diagnostic-record count remains 3600, but `REC-MA0` applies only to
+the 3000 actual state-update events. The 600 output-error records are checked
+for completeness, order, finite values, and provenance without manufacturing
+a fictitious `u_observed` or state transition.
 
 ## Registered starting point
 
@@ -204,9 +227,12 @@ Definitions:
 No measured operation may belong to more than one region. Unattributed
 residual time is retained and is not reassigned.
 
-## Canonical layer-sweep event
+## Canonical sweep records
 
-Every `(model_seed, batch_id, sweep_index, layer_index)` stores:
+### State-update event
+
+For each of the five actual belief updates at
+`(model_seed, batch_id, sweep_index, layer_index)`, store:
 
 ```text
 contract_id
@@ -265,9 +291,42 @@ passed
 
 Non-applicable values are stored as `null`.
 
+### Output-error record
+
+For every sweep, store the output-layer error separately:
+
+```text
+contract_id
+source_git_commit
+experiment_image
+image_revision
+torch_version
+torch_hip_version
+torch2pc_commit
+checkpoint_sha256
+config_sha256
+split_manifest_sha256
+input_sha256
+target_sha256
+model_seed
+batch_id
+sweep_index
+observer_mode
+output_error_norm
+output_error_vjp_call_count
+graph_birth_event
+graph_release_event
+synchronization_count
+finite
+passed
+```
+
+An output-error record is not a state-update event. It has no manufactured
+`u_observed`, canonical-channel pair, or state-transition metrics.
+
 ## Correction reconstruction
 
-For every event, the implementation must export:
+For every state-update event, the implementation must export:
 
 ```text
 u_observed
@@ -326,10 +385,10 @@ confirmatory decision.
 
 ### `REC-MA0` — reconstruction gate
 
-It passes only if all 3600 confirmatory layer-sweep events are valid:
+It passes only if all 3000 confirmatory state-update events are valid:
 
 ```text
-10 model seeds * 3 batches * 20 sweeps * 6 layers = 3600
+10 model seeds * 3 batches * 20 sweeps * 5 updated states = 3000
 ```
 
 Requirements:
@@ -343,6 +402,15 @@ Requirements:
 - correct zero-safe behavior.
 
 Any failed reconstruction event fails `REC-MA0`.
+
+A separate 600 output-error records are expected:
+
+```text
+10 model seeds * 3 batches * 20 sweeps = 600
+```
+
+They participate in `VER-MA0` and `CMP-MA0`, not in the reconstruction
+conjunction.
 
 Model-level `NCZ` and `ECZ` labels are not interpreted before `REC-MA0`
 passes.
@@ -374,13 +442,16 @@ failure.
 
 It passes only if:
 
-- version fields are present for every event;
+- version fields are present for every state-update event;
 - `state_version_after = state_version_before + 1` at every belief update;
 - state versions are monotone within each layer;
 - the Jacobian version identifies the snapshot actually used;
 - no channel record combines incompatible versions;
 - snapshot fingerprints agree across reconstruction branches;
-- sweep/layer order matches frozen `Strict`.
+- sweep/layer order matches frozen `Strict`;
+- exactly one output-error record precedes the five state-update events in
+  every sweep;
+- output-error records are finite and use the matching snapshot fingerprint.
 
 ### `COST-MA0` — accounting gate
 
@@ -448,7 +519,7 @@ data inspection.
 It passes only if:
 
 - all 10 model seeds and three batch ids are present;
-- all expected layer-sweep and timing records are present;
+- all expected state-update, output-error, and timing records are present;
 - all attempts are retained;
 - checkpoint/config/input/target hashes verify;
 - source commit and image digest are immutable;
@@ -588,6 +659,7 @@ si_ma0_contract.json
 si_ma0_attempts.jsonl
 si_ma0_environment.json
 si_ma0_event_records.csv
+si_ma0_output_error_records.csv
 si_ma0_mode_comparisons.csv
 si_ma0_total_timing_records.csv
 si_ma0_region_timing_records.csv

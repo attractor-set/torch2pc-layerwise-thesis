@@ -85,3 +85,5 @@ results/stage3/layerwise/confirmatory/raw/
 # Canonical compact gates, summaries, tables and manifests are promoted
 # separately through explicit evidence commits.
 /results/stage-3/a1-shortcut-observer-controls/working/
+# Stage 3B SI-MA0 local implementation and smoke outputs.
+/results/stage-3/si-ma0/working/

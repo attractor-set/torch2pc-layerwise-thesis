@@ -31,6 +31,12 @@ OBS_OH0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/
 MECH_CONTROLS_EXECUTION_SCOPE ?= smoke
 MECH_CONTROLS_CPU_OUTPUT_DIR ?= results/stage-3/a1-mechanism-controls/working/mechanism-controls-cpu-smoke
 MECH_CONTROLS_GPU_OUTPUT_DIR ?= results/stage-3/a1-mechanism-controls/working/mechanism-controls-gpu-smoke
+SI_MA0_EXECUTION_SCOPE ?= smoke
+SI_MA0_CHECKPOINT ?=
+SI_MA0_MODEL_SEED ?= 0
+SI_MA0_MAX_BATCHES ?= 1
+SI_MA0_CPU_OUTPUT_DIR ?= results/stage-3/si-ma0/working/si-ma0-cpu-smoke
+SI_MA0_GPU_OUTPUT_DIR ?= results/stage-3/si-ma0/working/si-ma0-gpu-smoke
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
@@ -45,7 +51,8 @@ MECH_CONTROLS_GPU_OUTPUT_DIR ?= results/stage-3/a1-mechanism-controls/working/me
         stage3b-a1-eq-s2-cpu stage3b-a1-eq-s2-gpu \
         stage3b-a1-obs-ni0-cpu stage3b-a1-obs-ni0-gpu \
         stage3b-a1-obs-oh0-cpu stage3b-a1-obs-oh0-gpu \
-        stage3b-a1-mechanism-controls-cpu stage3b-a1-mechanism-controls-gpu
+        stage3b-a1-mechanism-controls-cpu stage3b-a1-mechanism-controls-gpu \
+        stage3b-si-ma0-cpu stage3b-si-ma0-gpu
 
 help:
 	@printf '%s\n' \
@@ -95,6 +102,8 @@ help:
 	  '  stage3b-a1-obs-oh0-gpu Run OBS-OH0 observer overhead in Docker/ROCm' \
 	  '  stage3b-a1-mechanism-controls-cpu Run deterministic PC-CATM controls in Docker CPU' \
 	  '  stage3b-a1-mechanism-controls-gpu Run deterministic PC-CATM controls in Docker/ROCm' \
+	  '  stage3b-si-ma0-cpu  Run SI-MA0 implementation smoke in Docker CPU' \
+	  '  stage3b-si-ma0-gpu  Run SI-MA0 implementation smoke in Docker/ROCm' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \
@@ -347,6 +356,26 @@ stage3b-a1-mechanism-controls-gpu:
 	$(PYTHON) scripts/run_stage3b_a1_mechanism_controls_container.py gpu \
 		--execution-scope "$(MECH_CONTROLS_EXECUTION_SCOPE)" \
 		--output-dir "$(MECH_CONTROLS_GPU_OUTPUT_DIR)"
+
+stage3b-si-ma0-cpu:
+	@test -n "$(SI_MA0_CHECKPOINT)" || \
+		(echo "SI_MA0_CHECKPOINT=<results/.../checkpoint.pt> is required" >&2; exit 2)
+	$(PYTHON) scripts/run_stage3b_si_ma0_container.py cpu \
+		--execution-scope "$(SI_MA0_EXECUTION_SCOPE)" \
+		--checkpoint "$(SI_MA0_CHECKPOINT)" \
+		--model-seed "$(SI_MA0_MODEL_SEED)" \
+		--max-batches "$(SI_MA0_MAX_BATCHES)" \
+		--output-dir "$(SI_MA0_CPU_OUTPUT_DIR)"
+
+stage3b-si-ma0-gpu:
+	@test -n "$(SI_MA0_CHECKPOINT)" || \
+		(echo "SI_MA0_CHECKPOINT=<results/.../checkpoint.pt> is required" >&2; exit 2)
+	$(PYTHON) scripts/run_stage3b_si_ma0_container.py gpu \
+		--execution-scope "$(SI_MA0_EXECUTION_SCOPE)" \
+		--checkpoint "$(SI_MA0_CHECKPOINT)" \
+		--model-seed "$(SI_MA0_MODEL_SEED)" \
+		--max-batches "$(SI_MA0_MAX_BATCHES)" \
+		--output-dir "$(SI_MA0_GPU_OUTPUT_DIR)"
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

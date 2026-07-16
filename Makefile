@@ -102,8 +102,8 @@ help:
 	  '  stage3b-a1-obs-oh0-gpu Run OBS-OH0 observer overhead in Docker/ROCm' \
 	  '  stage3b-a1-mechanism-controls-cpu Run deterministic PC-CATM controls in Docker CPU' \
 	  '  stage3b-a1-mechanism-controls-gpu Run deterministic PC-CATM controls in Docker/ROCm' \
-	  '  stage3b-si-ma0-cpu  Run SI-MA0 implementation smoke in Docker CPU' \
-	  '  stage3b-si-ma0-gpu  Run SI-MA0 implementation smoke in Docker/ROCm' \
+	  '  stage3b-si-ma0-cpu  Run SI-MA0 smoke in Docker CPU' \
+	  '  stage3b-si-ma0-gpu  Run SI-MA0 smoke or one confirmatory cell in Docker/ROCm' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \

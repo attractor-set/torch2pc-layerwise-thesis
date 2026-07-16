@@ -7,6 +7,7 @@ import pytest
 
 from scripts.run_stage3b_si_ma0_container import (
     read_dotenv,
+    validate_confirmatory_output_path,
     validate_record_counts,
     validate_repo_relative,
     validate_summary,
@@ -15,6 +16,7 @@ from torch2pc_thesis.stage3b_si_ma0 import (
     CONTRACT_ID,
     IMPLEMENTATION_SCHEMA_ID,
     expected_record_counts,
+    expected_timing_record_counts,
 )
 
 
@@ -176,3 +178,118 @@ def test_validate_record_counts(tmp_path: Path) -> None:
         counts["mode_comparisons"],
     )
     validate_record_counts(tmp_path, max_batches=1)
+
+def test_validate_confirmatory_output_path() -> None:
+    validate_confirmatory_output_path(
+        Path(
+            "results/stage-3/si-ma0/working/confirmatory/"
+            "seed-3/attempt-001"
+        ),
+        model_seed=3,
+    )
+    with pytest.raises(ValueError, match="working/confirmatory"):
+        validate_confirmatory_output_path(
+            Path("results/stage-3/si-ma0/confirmatory/seed-3"),
+            model_seed=3,
+        )
+
+
+def test_validate_summary_accepts_confirmatory_cell() -> None:
+    counts = expected_record_counts(
+        model_count=1,
+        batch_count=3,
+        inference_steps=20,
+        updated_state_layers=5,
+        include_reference_mode=True,
+    )
+    counts.update(
+        expected_timing_record_counts(
+            model_count=1,
+            batch_count=3,
+            timing_repetitions=5,
+            measured_steps_per_repetition=50,
+        )
+    )
+    summary = {
+        "contract_id": CONTRACT_ID,
+        "implementation_schema_id": IMPLEMENTATION_SCHEMA_ID,
+        "scope": "confirmatory",
+        "lane": "rocm",
+        "source_git_commit": "a" * 40,
+        "source_git_branch": "research/stage3b-si-ma0-confirmatory-implementation",
+        "experiment_image": "image@sha256:abc",
+        "image_revision": "a" * 40,
+        "si_ma0_prereg_v2_commit": "b" * 40,
+        "model_seed": 3,
+        "expected_counts": counts,
+        "observed_counts": counts,
+        "rec_ma0_cell_passed": True,
+        "obs_ma0_cell_passed": True,
+        "ver_ma0_cell_passed": True,
+        "cost_ma0_cell_passed": True,
+        "cmp_ma0_cell_passed": True,
+        "confirmatory_cell_decision_made": True,
+        "confirmatory_cell_passed": True,
+        "confirmatory_decision_made": False,
+        "si_ma0_passed": None,
+        "dataset_loader_used": True,
+        "test_split_access": False,
+        "passed": True,
+    }
+    validate_summary(
+        summary,
+        scope="confirmatory",
+        lane="rocm",
+        model_seed=3,
+        max_batches=3,
+        head="a" * 40,
+        branch="research/stage3b-si-ma0-confirmatory-implementation",
+        image="image@sha256:abc",
+        image_revision="a" * 40,
+        prereg_v2_commit="b" * 40,
+    )
+
+
+def test_validate_confirmatory_record_counts(tmp_path: Path) -> None:
+    counts = expected_record_counts(
+        model_count=1,
+        batch_count=3,
+        inference_steps=20,
+        updated_state_layers=5,
+        include_reference_mode=True,
+    )
+    timing = expected_timing_record_counts(
+        model_count=1,
+        batch_count=3,
+        timing_repetitions=5,
+        measured_steps_per_repetition=50,
+    )
+    write_rows(
+        tmp_path / "si_ma0_event_records.csv",
+        counts["state_update_events"],
+    )
+    write_rows(
+        tmp_path / "si_ma0_output_error_records.csv",
+        counts["output_error_records"],
+    )
+    write_rows(
+        tmp_path / "si_ma0_mode_comparisons.csv",
+        counts["mode_comparisons"],
+    )
+    write_rows(
+        tmp_path / "si_ma0_total_timing_records.csv",
+        timing["total_timing_records"],
+    )
+    write_rows(
+        tmp_path / "si_ma0_region_timing_records.csv",
+        timing["region_timing_records"],
+    )
+    write_rows(
+        tmp_path / "si_ma0_model_region_summaries.csv",
+        timing["model_region_summary_rows"],
+    )
+    validate_record_counts(
+        tmp_path,
+        scope="confirmatory",
+        max_batches=3,
+    )

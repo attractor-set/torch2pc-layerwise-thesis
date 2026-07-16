@@ -23,7 +23,7 @@ import torch
 from torch import Tensor, nn
 
 CONTRACT_ID: Final[str] = "stage3b-si-ma0-v2"
-IMPLEMENTATION_SCHEMA_ID: Final[str] = "stage3b-si-ma0-implementation-v1"
+IMPLEMENTATION_SCHEMA_ID: Final[str] = "stage3b-si-ma0-implementation-v2"
 TORCH2PC_COMMIT: Final[str] = "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
 
 ObserverMode = Literal[
@@ -308,9 +308,12 @@ class SIMA0Recorder:
     saved_tensor_count: int = 0
     saved_tensor_bytes: int = 0
     synchronization_count: int = 0
+    aggregate_regions: bool = False
+    defer_timing_resolution: bool = False
     _sequence_index: int = 0
     _pending_regions: list[_PendingRegion] = field(default_factory=list)
     _pending_total: _PendingTotal | None = None
+    _timing_finalized: bool = False
 
     @property
     def capture_timing(self) -> bool:
@@ -409,17 +412,26 @@ class SIMA0Recorder:
             else:
                 pending.end_ns = time.perf_counter_ns()
 
-    def finalize_timing(self) -> None:
+    def finalize_timing(
+        self,
+        *,
+        synchronize: bool = True,
+        repetition_synchronization_count: int = 0,
+    ) -> None:
         if not self.capture_timing:
             return
+        if self._timing_finalized:
+            raise SIMA0Error("state-inference timing was finalized twice")
         if self._pending_total is None:
             raise SIMA0Error("state-inference total timer was not recorded")
-        if self.device.type == "cuda":
+        if self.device.type == "cuda" and synchronize:
             torch.cuda.synchronize(self.device)
             self.synchronization_count += 1
+
+        raw_regions: list[dict[str, Any]] = []
         for pending in self._pending_regions:
             duration_ms = _pending_duration_ms(pending)
-            self.region_records.append(
+            raw_regions.append(
                 {
                     **self.metadata,
                     "implementation_schema_id": IMPLEMENTATION_SCHEMA_ID,
@@ -432,6 +444,31 @@ class SIMA0Recorder:
                     "nonnegative": duration_ms >= 0.0,
                 }
             )
+
+        if self.aggregate_regions:
+            duration_by_region = {region: 0.0 for region in REGIONS}
+            occurrences = {region: 0 for region in REGIONS}
+            for record in raw_regions:
+                region = cast(RegionName, record["region"])
+                duration_by_region[region] += float(record["duration_ms"])
+                occurrences[region] += 1
+            for region in REGIONS:
+                duration_ms = duration_by_region[region]
+                self.region_records.append(
+                    {
+                        **self.metadata,
+                        "implementation_schema_id": IMPLEMENTATION_SCHEMA_ID,
+                        "observer_mode": self.mode,
+                        "region": region,
+                        "occurrence_count": occurrences[region],
+                        "duration_ms": duration_ms,
+                        "finite": math.isfinite(duration_ms),
+                        "nonnegative": duration_ms >= 0.0,
+                    }
+                )
+        else:
+            self.region_records.extend(raw_regions)
+
         total_ms = _pending_total_duration_ms(self._pending_total)
         region_sum_ms = sum(
             float(record["duration_ms"]) for record in self.region_records
@@ -446,10 +483,15 @@ class SIMA0Recorder:
                 "exclusive_region_time_sum_ms": region_sum_ms,
                 "accounting_residual": residual,
                 "synchronization_count": self.synchronization_count,
+                "repetition_synchronization_count": (
+                    repetition_synchronization_count
+                ),
                 "finite": math.isfinite(total_ms) and math.isfinite(residual),
                 "nonnegative": total_ms >= 0.0,
             }
         )
+        self._timing_finalized = True
+
 
 
 @dataclass(frozen=True)
@@ -468,6 +510,8 @@ class ModeRunResult:
     target_fingerprint_after: str
     rng_fingerprint_before: str
     rng_fingerprint_after: str
+    wall_time_ms: float
+    device_time_ms: float
     recorder: SIMA0Recorder | None
 
 
@@ -631,6 +675,10 @@ def load_contract(path: Path) -> dict[str, Any]:
         "confirmatory_state_update_events": 3000,
         "confirmatory_output_error_records": 600,
         "confirmatory_diagnostic_records": 3600,
+        "mode_comparison_rows": 150,
+        "counters_only_total_timing_records": 7500,
+        "counters_only_region_timing_records": 52500,
+        "model_region_summary_rows": 70,
     }
     for key, expected in expected_counts.items():
         if counts.get(key) != expected:
@@ -670,16 +718,38 @@ def expected_record_counts(
     batch_count: int,
     inference_steps: int,
     updated_state_layers: int,
+    include_reference_mode: bool = False,
 ) -> dict[str, int]:
     output_errors = model_count * batch_count * inference_steps
     updates = output_errors * updated_state_layers
+    comparison_count = len(OBSERVER_MODES)
+    if not include_reference_mode:
+        comparison_count -= 1
     return {
         "state_update_events": updates,
         "output_error_records": output_errors,
         "diagnostic_records": updates + output_errors,
-        "mode_comparisons": model_count
+        "mode_comparisons": model_count * batch_count * comparison_count,
+    }
+
+
+def expected_timing_record_counts(
+    *,
+    model_count: int,
+    batch_count: int,
+    timing_repetitions: int,
+    measured_steps_per_repetition: int,
+) -> dict[str, int]:
+    total = (
+        model_count
         * batch_count
-        * (len(OBSERVER_MODES) - 1),
+        * timing_repetitions
+        * measured_steps_per_repetition
+    )
+    return {
+        "total_timing_records": total,
+        "region_timing_records": total * len(REGIONS),
+        "model_region_summary_rows": model_count * len(REGIONS),
     }
 
 
@@ -964,7 +1034,7 @@ def _strict_instrumented(
             if len(v) != depth_plus_one or len(epsilon) != depth_plus_one:
                 raise SIMA0Error("Strict state-inference result is incomplete")
 
-    if recorder is not None:
+    if recorder is not None and not recorder.defer_timing_resolution:
         recorder.finalize_timing()
     return v, epsilon
 
@@ -1022,8 +1092,11 @@ def run_observer_mode(
     mode: ObserverMode,
     thresholds: NumericalThresholds,
     metadata: Mapping[str, Any],
+    aggregate_regions: bool = False,
+    defer_timing_resolution: bool = False,
+    capture_external_timing: bool = True,
 ) -> ModeRunResult:
-    """Run one fresh-model observer arm without an optimizer update."""
+    """Run one observer arm without an optimizer or parameter update."""
 
     model.zero_grad(set_to_none=True)
     before_model = model_state_digest(model)
@@ -1038,8 +1111,18 @@ def run_observer_mode(
             device=inputs.device,
             thresholds=thresholds,
             metadata=metadata,
+            aggregate_regions=aggregate_regions,
+            defer_timing_resolution=defer_timing_resolution,
         )
     )
+
+    start_event: torch.cuda.Event | None = None
+    end_event: torch.cuda.Event | None = None
+    if capture_external_timing and inputs.device.type == "cuda":
+        start_event = torch.cuda.Event(enable_timing=True)
+        end_event = torch.cuda.Event(enable_timing=True)
+        start_event.record()
+    wall_start = time.perf_counter_ns()
     with instrument_strict_pcinfer(pc_infer, recorder=recorder):
         output = pc_infer(
             model,
@@ -1051,6 +1134,15 @@ def run_observer_mode(
             inference_steps,
             None,
         )
+    wall_end = time.perf_counter_ns()
+    wall_time_ms = (wall_end - wall_start) / 1_000_000.0
+    if start_event is not None and end_event is not None:
+        end_event.record()
+        torch.cuda.synchronize(inputs.device)
+        device_time_ms = float(start_event.elapsed_time(end_event))
+    else:
+        device_time_ms = wall_time_ms
+
     if not isinstance(output, tuple) or len(output) != 5:
         raise SIMA0Error("PCInfer returned an unexpected result")
     _vhat, loss, _dldy, beliefs, _epsilon = output
@@ -1073,8 +1165,11 @@ def run_observer_mode(
         target_fingerprint_after=after_target,
         rng_fingerprint_before=before_rng,
         rng_fingerprint_after=after_rng,
+        wall_time_ms=wall_time_ms,
+        device_time_ms=device_time_ms,
         recorder=recorder,
     )
+
 
 
 def compare_mode_results(
@@ -1174,6 +1269,16 @@ def compare_mode_results(
         "model_state_unchanged": model_unchanged,
         "input_target_fingerprint_unchanged": input_target_unchanged,
         "rng_fingerprint_equal": rng_equal,
+        "reference_wall_time_ms": reference.wall_time_ms,
+        "candidate_wall_time_ms": candidate.wall_time_ms,
+        "wall_time_ratio": (
+            candidate.wall_time_ms / max(reference.wall_time_ms, 1e-12)
+        ),
+        "reference_device_time_ms": reference.device_time_ms,
+        "candidate_device_time_ms": candidate.device_time_ms,
+        "device_time_ratio": (
+            candidate.device_time_ms / max(reference.device_time_ms, 1e-12)
+        ),
         "finite": (
             loss_comparison.finite
             and all(item.finite for item in belief_metrics)
@@ -1381,4 +1486,100 @@ def validate_region_accounting(
         "finite": finite,
         "nonnegative": nonnegative,
         "passed": finite and nonnegative and residual <= maximum_residual,
+    }
+
+def validate_confirmatory_timing_records(
+    total_records: Sequence[Mapping[str, Any]],
+    region_records: Sequence[Mapping[str, Any]],
+    *,
+    timing_repetitions: int,
+    measured_steps_per_repetition: int,
+    maximum_residual: float,
+    minimum_step_fraction: float,
+    minimum_repetition_fraction: float = 1.0,
+) -> dict[str, Any]:
+    expected_total = timing_repetitions * measured_steps_per_repetition
+    if len(total_records) != expected_total:
+        raise SIMA0Error("confirmatory total-timing count is invalid")
+    if len(region_records) != expected_total * len(REGIONS):
+        raise SIMA0Error("confirmatory region-timing count is invalid")
+
+    keys = {
+        (int(record["timing_repetition"]), int(record["measured_step"]))
+        for record in total_records
+    }
+    if len(keys) != expected_total:
+        raise SIMA0Error("duplicate confirmatory timing step key")
+    for record in total_records:
+        if int(record.get("synchronization_count", -1)) != 0:
+            raise SIMA0Error("measured step performed an internal synchronization")
+        if int(record.get("repetition_synchronization_count", -1)) != 1:
+            raise SIMA0Error("repetition synchronization metadata is invalid")
+        if float(record.get("wall_time_ms", math.nan)) < 0.0:
+            raise SIMA0Error("confirmatory wall time is invalid")
+        if int(record.get("peak_allocated_bytes", -1)) < 0:
+            raise SIMA0Error("confirmatory peak allocation is invalid")
+        if int(record.get("peak_reserved_bytes", -1)) < 0:
+            raise SIMA0Error("confirmatory peak reservation is invalid")
+
+    passing_steps = 0
+    repetition_passes: list[bool] = []
+    for repetition in range(timing_repetitions):
+        rep_totals = [
+            record
+            for record in total_records
+            if int(record["timing_repetition"]) == repetition
+        ]
+        rep_regions = [
+            record
+            for record in region_records
+            if int(record["timing_repetition"]) == repetition
+        ]
+        if len(rep_totals) != measured_steps_per_repetition:
+            raise SIMA0Error("confirmatory timing repetition is incomplete")
+        if len(rep_regions) != measured_steps_per_repetition * len(REGIONS):
+            raise SIMA0Error("confirmatory region repetition is incomplete")
+        for measured_step in range(measured_steps_per_repetition):
+            step_regions = [
+                record
+                for record in rep_regions
+                if int(record["measured_step"]) == measured_step
+            ]
+            observed_regions = {str(record["region"]) for record in step_regions}
+            if observed_regions != set(REGIONS) or len(step_regions) != len(REGIONS):
+                raise SIMA0Error("confirmatory timing regions are incomplete")
+            if not all(
+                bool(record["finite"])
+                and bool(record["nonnegative"])
+                and math.isfinite(float(record["duration_ms"]))
+                for record in step_regions
+            ):
+                raise SIMA0Error("confirmatory region timing is invalid")
+        for record in rep_totals:
+            passed = (
+                bool(record["finite"])
+                and bool(record["nonnegative"])
+                and float(record["accounting_residual"])
+                <= maximum_residual
+            )
+            passing_steps += int(passed)
+        total_ms = sum(float(record["total_device_time_ms"]) for record in rep_totals)
+        region_ms = sum(float(record["duration_ms"]) for record in rep_regions)
+        residual = abs(total_ms - region_ms) / max(total_ms, 1e-12)
+        repetition_passes.append(
+            math.isfinite(residual) and residual <= maximum_residual
+        )
+
+    step_fraction = passing_steps / expected_total
+    repetition_fraction = sum(repetition_passes) / timing_repetitions
+    return {
+        "expected_total_timing_records": expected_total,
+        "observed_total_timing_records": len(total_records),
+        "observed_region_timing_records": len(region_records),
+        "passing_measured_step_fraction": step_fraction,
+        "passing_repetition_fraction": repetition_fraction,
+        "passed": (
+            step_fraction >= minimum_step_fraction
+            and repetition_fraction >= minimum_repetition_fraction
+        ),
     }

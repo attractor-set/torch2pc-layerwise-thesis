@@ -18,12 +18,14 @@ from torch2pc_thesis.stage3b_si_ma0 import (
     compare_mode_results,
     compare_tensors,
     expected_record_counts,
+    expected_timing_record_counts,
     instrument_strict_pcinfer,
     load_contract,
     materialize_output_error_records,
     materialize_state_update_records,
     run_observer_mode,
     supports_si_ma0_instrumentation,
+    validate_confirmatory_timing_records,
     validate_event_order,
     verify_a1_evidence_manifest,
 )
@@ -204,6 +206,10 @@ def minimal_contract() -> dict[str, Any]:
             "confirmatory_state_update_events": 3000,
             "confirmatory_output_error_records": 600,
             "confirmatory_diagnostic_records": 3600,
+            "mode_comparison_rows": 150,
+            "counters_only_total_timing_records": 7500,
+            "counters_only_region_timing_records": 52500,
+            "model_region_summary_rows": 70,
         },
         "reconstruction": {
             "record_scope": "state_update_events_only",
@@ -240,6 +246,125 @@ def test_expected_record_counts_separate_output_errors() -> None:
         "diagnostic_records": 3600,
         "mode_comparisons": 120,
     }
+
+
+def test_confirmatory_expected_counts_include_reference_mode() -> None:
+    assert expected_record_counts(
+        model_count=10,
+        batch_count=3,
+        inference_steps=20,
+        updated_state_layers=5,
+        include_reference_mode=True,
+    )["mode_comparisons"] == 150
+    assert expected_timing_record_counts(
+        model_count=10,
+        batch_count=3,
+        timing_repetitions=5,
+        measured_steps_per_repetition=50,
+    ) == {
+        "total_timing_records": 7500,
+        "region_timing_records": 52500,
+        "model_region_summary_rows": 70,
+    }
+
+
+def test_validate_confirmatory_timing_records() -> None:
+    totals = []
+    regions = []
+    region_names = (
+        "inference_setup",
+        "lower_prediction_and_error",
+        "upper_state_vjp",
+        "component_aggregation",
+        "belief_update",
+        "sweep_bookkeeping",
+        "inference_finalize",
+    )
+    for repetition in range(2):
+        for measured_step in range(2):
+            totals.append(
+                {
+                    "timing_repetition": repetition,
+                    "measured_step": measured_step,
+                    "total_device_time_ms": 7.0,
+                    "accounting_residual": 0.0,
+                    "synchronization_count": 0,
+                    "repetition_synchronization_count": 1,
+                    "wall_time_ms": 8.0,
+                    "peak_allocated_bytes": 1,
+                    "peak_reserved_bytes": 1,
+                    "finite": True,
+                    "nonnegative": True,
+                }
+            )
+            for region in region_names:
+                regions.append(
+                    {
+                        "timing_repetition": repetition,
+                        "measured_step": measured_step,
+                        "region": region,
+                        "duration_ms": 1.0,
+                        "finite": True,
+                        "nonnegative": True,
+                    }
+                )
+    result = validate_confirmatory_timing_records(
+        totals,
+        regions,
+        timing_repetitions=2,
+        measured_steps_per_repetition=2,
+        maximum_residual=0.05,
+        minimum_step_fraction=0.99,
+    )
+    assert result["passed"] is True
+    assert result["passing_measured_step_fraction"] == 1.0
+    assert result["passing_repetition_fraction"] == 1.0
+
+
+def test_confirmatory_timing_rejects_internal_sync() -> None:
+    totals = [
+        {
+            "timing_repetition": 0,
+            "measured_step": 0,
+            "total_device_time_ms": 7.0,
+            "accounting_residual": 0.0,
+            "synchronization_count": 1,
+            "repetition_synchronization_count": 1,
+            "wall_time_ms": 8.0,
+            "peak_allocated_bytes": 1,
+            "peak_reserved_bytes": 1,
+            "finite": True,
+            "nonnegative": True,
+        }
+    ]
+    regions = [
+        {
+            "timing_repetition": 0,
+            "measured_step": 0,
+            "region": region,
+            "duration_ms": 1.0,
+            "finite": True,
+            "nonnegative": True,
+        }
+        for region in (
+            "inference_setup",
+            "lower_prediction_and_error",
+            "upper_state_vjp",
+            "component_aggregation",
+            "belief_update",
+            "sweep_bookkeeping",
+            "inference_finalize",
+        )
+    ]
+    with pytest.raises(SIMA0Error, match="internal synchronization"):
+        validate_confirmatory_timing_records(
+            totals,
+            regions,
+            timing_repetitions=1,
+            measured_steps_per_repetition=1,
+            maximum_residual=0.05,
+            minimum_step_fraction=0.99,
+        )
 
 
 def test_zero_safe_tensor_comparison(
@@ -329,6 +454,53 @@ def test_all_observer_modes_match_reference_and_record_cardinality(
     )
     assert recorder.vjp_call_count == 3 * 3
     assert recorder.synchronization_count == 0
+
+
+def test_deferred_timing_aggregates_exact_registered_regions(
+    thresholds: NumericalThresholds,
+    model_state: dict[str, Tensor],
+) -> None:
+    result = run_observer_mode(
+        pc_infer=PCInfer,
+        model=build_model(model_state),
+        loss_function=nn.CrossEntropyLoss(),
+        inputs=torch.randn(2, 4, dtype=torch.float64),
+        targets=torch.tensor([0, 1]),
+        eta=0.05,
+        inference_steps=2,
+        mode="counters_only",
+        thresholds=thresholds,
+        metadata={
+            "model_seed": 0,
+            "batch_id": 0,
+            "timing_repetition": 0,
+            "measured_step": 0,
+            "wall_time_ms": 1.0,
+            "peak_allocated_bytes": 0,
+            "peak_reserved_bytes": 0,
+        },
+        aggregate_regions=True,
+        defer_timing_resolution=True,
+        capture_external_timing=False,
+    )
+    recorder = result.recorder
+    assert recorder is not None
+    assert recorder.total_records == []
+    recorder.finalize_timing(
+        synchronize=False,
+        repetition_synchronization_count=1,
+    )
+    assert len(recorder.total_records) == 1
+    assert len(recorder.region_records) == 7
+    assert {row["region"] for row in recorder.region_records} == {
+        "inference_setup",
+        "lower_prediction_and_error",
+        "upper_state_vjp",
+        "component_aggregation",
+        "belief_update",
+        "sweep_bookkeeping",
+        "inference_finalize",
+    }
 
 
 def test_output_error_precedes_each_sweep_update(

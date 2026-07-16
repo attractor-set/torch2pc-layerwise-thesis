@@ -11,6 +11,7 @@ import json
 import math
 import os
 import subprocess
+import time
 import uuid
 from collections.abc import Callable
 from pathlib import Path
@@ -27,20 +28,25 @@ from torch2pc_thesis.stage3b_si_ma0 import (
     CONTRACT_ID,
     IMPLEMENTATION_SCHEMA_ID,
     OBSERVER_MODES,
+    REGIONS,
     TORCH2PC_COMMIT,
     ModeRunResult,
     NumericalThresholds,
     ObserverMode,
     SIMA0Error,
+    SIMA0Recorder,
     canonical_json_digest,
     compare_mode_results,
     expected_record_counts,
+    expected_timing_record_counts,
+    instrument_strict_pcinfer,
     load_contract,
     materialize_output_error_records,
     materialize_state_update_records,
     run_observer_mode,
     tensor_digest,
     thresholds_for,
+    validate_confirmatory_timing_records,
     validate_event_order,
     verify_a1_evidence_manifest,
 )
@@ -70,13 +76,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("device", choices=["cpu", "gpu"])
     parser.add_argument(
         "--execution-scope",
-        choices=["smoke"],
+        choices=["smoke", "confirmatory"],
         default="smoke",
     )
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--model-seed", type=int, required=True)
     parser.add_argument("--max-batches", type=int, default=1)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--attempt-id")
+    parser.add_argument("--replacement-of")
+    parser.add_argument(
+        "--replacement-reason",
+        choices=["infrastructure_failure"],
+    )
     parser.add_argument(
         "--contract",
         type=Path,
@@ -353,6 +365,8 @@ def run_modes_for_batch(
     eta: float,
     inference_steps: int,
     updated_state_layers: int,
+    include_reference_mode: bool = False,
+    include_mode_timing_records: bool = True,
 ) -> tuple[
     list[dict[str, Any]],
     list[dict[str, Any]],
@@ -384,6 +398,11 @@ def run_modes_for_batch(
             metadata=metadata,
         )
     reference = results["no_hooks"]
+    comparison_modes = (
+        OBSERVER_MODES
+        if include_reference_mode
+        else tuple(mode for mode in OBSERVER_MODES if mode != "no_hooks")
+    )
     comparison_records = [
         compare_mode_results(
             reference,
@@ -391,8 +410,7 @@ def run_modes_for_batch(
             thresholds,
             metadata=metadata,
         )
-        for mode in OBSERVER_MODES
-        if mode != "no_hooks"
+        for mode in comparison_modes
     ]
     full = results["full_attribution"].recorder
     if full is None:
@@ -407,12 +425,13 @@ def run_modes_for_batch(
     )
     region_records: list[dict[str, Any]] = []
     total_records: list[dict[str, Any]] = []
-    for mode in OBSERVER_MODES:
-        recorder = results[mode].recorder
-        if recorder is None:
-            continue
-        region_records.extend(recorder.region_records)
-        total_records.extend(recorder.total_records)
+    if include_mode_timing_records:
+        for mode in OBSERVER_MODES:
+            recorder = results[mode].recorder
+            if recorder is None:
+                continue
+            region_records.extend(recorder.region_records)
+            total_records.extend(recorder.total_records)
     return (
         comparison_records,
         state_records,
@@ -420,6 +439,169 @@ def run_modes_for_batch(
         region_records,
         total_records,
     )
+
+
+def run_counters_only_timing_step(
+    *,
+    pc_infer: Callable[..., Any],
+    model: nn.Module,
+    loss_function: nn.Module,
+    inputs: Tensor,
+    targets: Tensor,
+    eta: float,
+    inference_steps: int,
+    thresholds: NumericalThresholds,
+    metadata: dict[str, Any],
+) -> tuple[SIMA0Recorder, float]:
+    """Queue one timing step without tensor digests or device syncs."""
+
+    model.zero_grad(set_to_none=True)
+    recorder = SIMA0Recorder(
+        mode="counters_only",
+        device=inputs.device,
+        thresholds=thresholds,
+        metadata=metadata,
+        aggregate_regions=True,
+        defer_timing_resolution=True,
+    )
+    wall_start = time.perf_counter_ns()
+    with instrument_strict_pcinfer(pc_infer, recorder=recorder):
+        output = pc_infer(
+            model,
+            loss_function,
+            inputs,
+            targets,
+            "Strict",
+            eta,
+            inference_steps,
+            None,
+        )
+    enqueue_time_ms = (time.perf_counter_ns() - wall_start) / 1_000_000.0
+    if not isinstance(output, tuple) or len(output) != 5:
+        raise SIMA0Error("timing PCInfer returned an unexpected result")
+    return recorder, enqueue_time_ms
+
+
+def run_confirmatory_timing_protocol(
+    *,
+    pc_infer: Callable[..., Any],
+    config: dict[str, Any],
+    state_dict: dict[str, Tensor],
+    inputs: Tensor,
+    targets: Tensor,
+    device: torch.device,
+    dtype: torch.dtype,
+    thresholds: NumericalThresholds,
+    metadata: dict[str, Any],
+    eta: float,
+    inference_steps: int,
+    warmup_steps: int,
+    timing_repetitions: int,
+    measured_steps_per_repetition: int,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Measure counters-only inference with one sync per repetition."""
+
+    loss_function = nn.CrossEntropyLoss()
+    initial_rng = capture_rng_state(device)
+    model = build_probe_model(
+        config,
+        state_dict,
+        device=device,
+        dtype=dtype,
+    )
+
+    warmup_recorders: list[SIMA0Recorder] = []
+    for warmup_index in range(warmup_steps):
+        restore_rng_state(device, initial_rng)
+        recorder, _enqueue_ms = run_counters_only_timing_step(
+            pc_infer=pc_infer,
+            model=model,
+            loss_function=loss_function,
+            inputs=inputs,
+            targets=targets,
+            eta=eta,
+            inference_steps=inference_steps,
+            thresholds=thresholds,
+            metadata={
+                **metadata,
+                "warmup": True,
+                "warmup_step": warmup_index,
+            },
+        )
+        warmup_recorders.append(recorder)
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+    warmup_recorders.clear()
+
+    total_records: list[dict[str, Any]] = []
+    region_records: list[dict[str, Any]] = []
+    for repetition in range(timing_repetitions):
+        repetition_wall_start = time.perf_counter_ns()
+        pending: list[tuple[SIMA0Recorder, dict[str, Any]]] = []
+        for measured_step in range(measured_steps_per_repetition):
+            restore_rng_state(device, initial_rng)
+            if device.type == "cuda":
+                torch.cuda.reset_peak_memory_stats(device)
+            step_metadata: dict[str, Any] = {
+                **metadata,
+                "warmup": False,
+                "timing_repetition": repetition,
+                "measured_step": measured_step,
+            }
+            recorder, enqueue_time_ms = run_counters_only_timing_step(
+                pc_infer=pc_infer,
+                model=model,
+                loss_function=loss_function,
+                inputs=inputs,
+                targets=targets,
+                eta=eta,
+                inference_steps=inference_steps,
+                thresholds=thresholds,
+                metadata=step_metadata,
+            )
+            step_metadata["host_enqueue_time_ms"] = enqueue_time_ms
+            step_metadata["peak_allocated_bytes"] = (
+                int(torch.cuda.max_memory_allocated(device))
+                if device.type == "cuda"
+                else 0
+            )
+            step_metadata["peak_reserved_bytes"] = (
+                int(torch.cuda.max_memory_reserved(device))
+                if device.type == "cuda"
+                else 0
+            )
+            step_metadata["peak_memory_semantics"] = (
+                "allocator_peak_since_step_reset_without_device_sync"
+            )
+            pending.append((recorder, step_metadata))
+
+        repetition_sync_count = 0
+        if device.type == "cuda":
+            torch.cuda.synchronize(device)
+            repetition_sync_count = 1
+        repetition_wall_time_ms = (
+            time.perf_counter_ns() - repetition_wall_start
+        ) / 1_000_000.0
+        amortized_wall_time_ms = (
+            repetition_wall_time_ms / measured_steps_per_repetition
+        )
+        for recorder, step_metadata in pending:
+            step_metadata["wall_time_ms"] = amortized_wall_time_ms
+            step_metadata["repetition_wall_time_ms"] = (
+                repetition_wall_time_ms
+            )
+            step_metadata["wall_time_semantics"] = (
+                "amortized_repetition_wall"
+            )
+            recorder.finalize_timing(
+                synchronize=False,
+                repetition_synchronization_count=repetition_sync_count,
+            )
+            total_records.extend(recorder.total_records)
+            region_records.extend(recorder.region_records)
+
+    return total_records, region_records
+
 
 
 def make_derived_records(
@@ -493,6 +675,33 @@ def summarize_regions(
     ]
 
 
+def summarize_confirmatory_regions(
+    region_records: list[dict[str, Any]],
+    *,
+    model_seed: int,
+) -> list[dict[str, Any]]:
+    duration_by_region: dict[str, float] = {
+        region: 0.0 for region in REGIONS
+    }
+    for record in region_records:
+        region = str(record["region"])
+        if region not in duration_by_region:
+            raise SIMA0Error(f"unregistered timing region: {region}")
+        duration_by_region[region] += float(record["duration_ms"])
+    total = sum(duration_by_region.values())
+    return [
+        {
+            "model_seed": model_seed,
+            "observer_mode": "counters_only",
+            "region": region,
+            "duration_ms": duration,
+            "cost_share": duration / max(total, 1e-12),
+        }
+        for region, duration in duration_by_region.items()
+    ]
+
+
+
 def write_sha256_manifest(output_dir: Path) -> None:
     lines = []
     for path in sorted(output_dir.iterdir(), key=lambda item: item.name):
@@ -510,6 +719,10 @@ def main() -> None:
     if args.max_batches < 1:
         raise ValueError("--max-batches must be positive")
     scope = str(args.execution_scope)
+    if (args.replacement_of is None) != (args.replacement_reason is None):
+        raise SIMA0Error(
+            "replacement-of and replacement-reason must be provided together"
+        )
     repo = Path(__file__).resolve().parents[1]
     source_commit = require_commit_environment("SOURCE_GIT_COMMIT")
     source_branch = require_environment("SOURCE_GIT_BRANCH")
@@ -575,6 +788,17 @@ def main() -> None:
         configured_threads=configured_threads,
     )
     thresholds = thresholds_for(contract, lane=lane)
+    if scope == "confirmatory":
+        confirmatory = contract["execution_scopes"]["confirmatory"]
+        if lane != "rocm":
+            raise SIMA0Error("SI-MA0 confirmatory execution requires ROCm")
+        if args.model_seed not in confirmatory["model_seeds"]:
+            raise SIMA0Error("model seed is outside confirmatory scope")
+        expected_batch_count = len(confirmatory["validation_batch_ids"])
+        if args.max_batches != expected_batch_count:
+            raise SIMA0Error(
+                "confirmatory execution requires all three validation batches"
+            )
     set_global_seed(
         args.model_seed,
         deterministic=True,
@@ -643,12 +867,36 @@ def main() -> None:
             updated_state_layers=int(
                 contract["scope"]["updated_state_layers_per_sweep"]
             ),
+            include_reference_mode=(scope == "confirmatory"),
+            include_mode_timing_records=(scope == "smoke"),
         )
         all_comparisons.extend(comparisons)
         all_states.extend(state_records)
         all_outputs.extend(output_records)
         all_regions.extend(region_records)
         all_totals.extend(total_records)
+        if scope == "confirmatory":
+            timing = contract["timing_protocol"]
+            batch_totals, batch_regions = run_confirmatory_timing_protocol(
+                pc_infer=pc_infer,
+                config=config,
+                state_dict=state_dict,
+                inputs=inputs,
+                targets=targets,
+                device=device,
+                dtype=dtype,
+                thresholds=thresholds,
+                metadata=metadata,
+                eta=float(contract["scope"]["eta"]),
+                inference_steps=int(contract["scope"]["inference_steps"]),
+                warmup_steps=int(timing["warmup_steps"]),
+                timing_repetitions=int(timing["timing_repetitions"]),
+                measured_steps_per_repetition=int(
+                    timing["measured_steps_per_repetition"]
+                ),
+            )
+            all_totals.extend(batch_totals)
+            all_regions.extend(batch_regions)
         batch_summaries.append(
             {
                 "model_seed": args.model_seed,
@@ -674,34 +922,42 @@ def main() -> None:
         updated_state_layers=int(
             contract["scope"]["updated_state_layers_per_sweep"]
         ),
+        include_reference_mode=(scope == "confirmatory"),
     )
+    if scope == "confirmatory":
+        timing = contract["timing_protocol"]
+        counts.update(
+            expected_timing_record_counts(
+                model_count=1,
+                batch_count=args.max_batches,
+                timing_repetitions=int(timing["timing_repetitions"]),
+                measured_steps_per_repetition=int(
+                    timing["measured_steps_per_repetition"]
+                ),
+            )
+        )
     observed_counts = {
         "state_update_events": len(all_states),
         "output_error_records": len(all_outputs),
         "diagnostic_records": len(all_states) + len(all_outputs),
         "mode_comparisons": len(all_comparisons),
     }
+    if scope == "confirmatory":
+        observed_counts.update(
+            {
+                "total_timing_records": len(all_totals),
+                "region_timing_records": len(all_regions),
+                "model_region_summary_rows": 7,
+            }
+        )
     if observed_counts != counts:
         raise SIMA0Error(
             f"SI-MA0 count mismatch: {observed_counts} != {counts}"
         )
-    accounting_limit = float(
-        contract["thresholds"]["timing_accounting"][
-            "max_relative_residual"
-        ]
-    )
-    timer_operational = all(
-        bool(record["finite"]) and bool(record["nonnegative"])
-        for record in all_totals
-    ) and bool(all_totals)
-    accounting_threshold_passed = all(
-        float(record["accounting_residual"]) <= accounting_limit
-        for record in all_totals
-    )
+    accounting_cfg = contract["thresholds"]["timing_accounting"]
+    accounting_limit = float(accounting_cfg["max_relative_residual"])
     rec_passed = all(bool(record["passed"]) for record in all_states)
-    obs_passed = all(
-        bool(record["passed"]) for record in all_comparisons
-    )
+    obs_passed = all(bool(record["passed"]) for record in all_comparisons)
     ver_passed = all(
         int(record["state_version_after"])
         == int(record["state_version_before"]) + 1
@@ -711,15 +967,85 @@ def main() -> None:
         observed_counts == counts
         and all(bool(record["passed"]) for record in all_outputs)
     )
-    smoke_passed = (
+    timing_validation: dict[str, Any] | None = None
+    if scope == "confirmatory":
+        timing = contract["timing_protocol"]
+        batch_validations = []
+        for batch_id in range(args.max_batches):
+            batch_validations.append(
+                validate_confirmatory_timing_records(
+                    [
+                        record
+                        for record in all_totals
+                        if int(record["batch_id"]) == batch_id
+                    ],
+                    [
+                        record
+                        for record in all_regions
+                        if int(record["batch_id"]) == batch_id
+                    ],
+                    timing_repetitions=int(timing["timing_repetitions"]),
+                    measured_steps_per_repetition=int(
+                        timing["measured_steps_per_repetition"]
+                    ),
+                    maximum_residual=accounting_limit,
+                    minimum_step_fraction=float(
+                        accounting_cfg[
+                            "minimum_passing_measured_step_fraction"
+                        ]
+                    ),
+                    minimum_repetition_fraction=float(
+                        accounting_cfg[
+                            "minimum_passing_repetition_fraction"
+                        ]
+                    ),
+                )
+            )
+        timing_validation = {
+            "batch_validations": batch_validations,
+            "passing_measured_step_fraction": sum(
+                float(item["passing_measured_step_fraction"])
+                for item in batch_validations
+            )
+            / len(batch_validations),
+            "passing_repetition_fraction": sum(
+                float(item["passing_repetition_fraction"])
+                for item in batch_validations
+            )
+            / len(batch_validations),
+            "passed": all(bool(item["passed"]) for item in batch_validations),
+        }
+        timer_operational = bool(all_totals) and all(
+            bool(record["finite"]) and bool(record["nonnegative"])
+            for record in all_totals
+        )
+        cost_passed = timer_operational and bool(timing_validation["passed"])
+    else:
+        timer_operational = all(
+            bool(record["finite"]) and bool(record["nonnegative"])
+            for record in all_totals
+        ) and bool(all_totals)
+        cost_passed = timer_operational
+
+    cell_passed = (
         rec_passed
         and obs_passed
         and ver_passed
-        and timer_operational
+        and cost_passed
         and cmp_passed
     )
     output_dir = repo / args.output_dir
+    if scope == "confirmatory" and output_dir.exists():
+        existing_names = {path.name for path in output_dir.iterdir()}
+        if existing_names - {"si_ma0_attempts.jsonl"}:
+            raise SIMA0Error(
+                "confirmatory output directory contains prior artifacts"
+            )
     output_dir.mkdir(parents=True, exist_ok=True)
+    attempt_id = args.attempt_id or (
+        f"{source_commit[:12]}-{lane}-seed-{args.model_seed}-"
+        f"{scope}-{uuid.uuid4().hex}"
+    )
     contract_text = contract_path.read_text(encoding="utf-8")
     (output_dir / "si_ma0_contract.json").write_text(
         contract_text,
@@ -757,16 +1083,14 @@ def main() -> None:
         encoding="utf-8",
     )
     attempt = {
-        "attempt_id": (
-            f"{source_commit[:12]}-{lane}-seed-{args.model_seed}-"
-            f"{scope}-{uuid.uuid4().hex}"
-        ),
+        "attempt_id": attempt_id,
         "scope": scope,
         "lane": lane,
         "model_seed": args.model_seed,
         "checkpoint_sha256": checkpoint_sha256,
-        "status": "passed" if smoke_passed else "failed",
-        "replacement_of": None,
+        "status": "passed" if cell_passed else "failed",
+        "replacement_of": args.replacement_of,
+        "replacement_reason": args.replacement_reason,
     }
     (output_dir / "si_ma0_attempts.jsonl").write_text(
         json.dumps(attempt, sort_keys=True) + "\n",
@@ -806,11 +1130,19 @@ def main() -> None:
         output_dir / "si_ma0_batch_summaries.csv",
         batch_summaries,
     )
+    model_region_summaries = (
+        summarize_confirmatory_regions(
+            all_regions,
+            model_seed=args.model_seed,
+        )
+        if scope == "confirmatory"
+        else summarize_regions(all_regions)
+    )
     write_records(
         output_dir / "si_ma0_model_region_summaries.csv",
-        summarize_regions(all_regions),
+        model_region_summaries,
     )
-    summary = {
+    summary: dict[str, Any] = {
         "contract_id": CONTRACT_ID,
         "implementation_schema_id": IMPLEMENTATION_SCHEMA_ID,
         "scope": scope,
@@ -820,23 +1152,41 @@ def main() -> None:
         "experiment_image": experiment_image,
         "image_revision": image_revision,
         "si_ma0_prereg_v2_commit": prereg_v2_commit,
+        "attempt_id": attempt_id,
         "model_seed": args.model_seed,
         "expected_counts": counts,
         "observed_counts": observed_counts,
-        "rec_ma0_smoke_passed": rec_passed,
-        "obs_ma0_smoke_passed": obs_passed,
-        "ver_ma0_smoke_passed": ver_passed,
-        "cost_ma0_timer_operational": timer_operational,
-        "cost_ma0_accounting_threshold_passed": (
-            accounting_threshold_passed
-        ),
-        "cmp_ma0_smoke_passed": cmp_passed,
-        "confirmatory_decision_made": False,
-        "si_ma0_passed": None,
-        "passed": smoke_passed,
         "dataset_loader_used": True,
         "test_split_access": False,
+        "confirmatory_decision_made": False,
+        "si_ma0_passed": None,
+        "passed": cell_passed,
     }
+    if scope == "smoke":
+        summary.update(
+            {
+                "rec_ma0_smoke_passed": rec_passed,
+                "obs_ma0_smoke_passed": obs_passed,
+                "ver_ma0_smoke_passed": ver_passed,
+                "cost_ma0_timer_operational": timer_operational,
+                "cmp_ma0_smoke_passed": cmp_passed,
+                "confirmatory_cell_decision_made": False,
+                "confirmatory_cell_passed": None,
+            }
+        )
+    else:
+        summary.update(
+            {
+                "rec_ma0_cell_passed": rec_passed,
+                "obs_ma0_cell_passed": obs_passed,
+                "ver_ma0_cell_passed": ver_passed,
+                "cost_ma0_cell_passed": cost_passed,
+                "cmp_ma0_cell_passed": cmp_passed,
+                "confirmatory_cell_decision_made": True,
+                "confirmatory_cell_passed": cell_passed,
+                "timing_validation": timing_validation,
+            }
+        )
     (output_dir / "si_ma0_summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -844,13 +1194,21 @@ def main() -> None:
     decision = {
         "contract_id": CONTRACT_ID,
         "scope": scope,
-        "smoke_passed": smoke_passed,
+        "attempt_id": attempt_id,
+        "model_seed": args.model_seed,
+        "cell_decision": "pass" if cell_passed else "fail",
+        "confirmatory_cell_decision_made": scope == "confirmatory",
+        "confirmatory_cell_passed": (
+            cell_passed if scope == "confirmatory" else None
+        ),
         "confirmatory_decision_made": False,
         "si_ma0_passed": None,
         "authorized_next_step": (
-            "controlled implementation smoke review"
-            if smoke_passed
-            else "inspect failed smoke records"
+            "retain immutable cell output for ten-seed aggregation"
+            if scope == "confirmatory" and cell_passed
+            else "controlled implementation smoke review"
+            if scope == "smoke" and cell_passed
+            else "retain and inspect failed cell records"
         ),
     }
     (output_dir / "si_ma0_decision.json").write_text(
@@ -864,7 +1222,7 @@ def main() -> None:
     if missing:
         raise SIMA0Error(f"SI-MA0 outputs are missing: {missing}")
     print(json.dumps(summary, indent=2, sort_keys=True))
-    if not smoke_passed:
+    if not cell_passed:
         raise SystemExit("SI-MA0 implementation cell failed")
     print("OK: SI-MA0 implementation cell passed")
 

@@ -1,0 +1,65 @@
+{
+  "control_id": "MECH-C0",
+  "contract_id": "stage3b-a1-mechanism-controls-v1",
+  "implementation_schema_id": "stage3b-a1-mechanism-controls-implementation-v1",
+  "scope": "confirmatory",
+  "lane": "rocm",
+  "device": "gpu",
+  "dtype": "torch.float32",
+  "source_git_commit": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+  "source_git_branch": "research/stage3b-a1-mechanism-controls-implementation",
+  "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+  "image_revision": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "contract_digest": "aa5509e4be6c5cd79c76ae12209d7313ecd588321b1e5265a98978e1cafa7430",
+  "construction_registry_digest": "0c6c96d1fde5ccade1287c7014b06fa33f31f570c916bf1a187af6710e9f22ab",
+  "threshold_registry_digest": "296ac0805aec6e344bced0dfa97f519d1b91512cd52fe69d16b168a03f897b64",
+  "expected_counts": {
+    "geometry_records": 24,
+    "transport_records": 30,
+    "temporal_event_records": 108,
+    "temporal_summary_records": 3,
+    "block_probe_records": 60,
+    "pnz_records": 3
+  },
+  "observed_counts": {
+    "geometry_records": 24,
+    "transport_records": 30,
+    "temporal_event_records": 108,
+    "temporal_summary_records": 3,
+    "block_probe_records": 60,
+    "pnz_records": 3
+  },
+  "geo_c0_passed": true,
+  "tr_c0_passed": true,
+  "tmp_c0_passed": true,
+  "jac_c0_passed": true,
+  "core_passed": true,
+  "pnz_l0_passed": true,
+  "si_ma0_open": true,
+  "passed": true,
+  "claim_boundary": "This deterministic gate validates the registered correction-geometry, state-error transport, FixedPred temporal-wave, and block-VJP controls. It does not reconstruct actual Strict.state_inference, estimate training prevalence, establish next-sweep utility, or authorize active control.",
+  "execution_environment": {
+    "contract_digest": "aa5509e4be6c5cd79c76ae12209d7313ecd588321b1e5265a98978e1cafa7430",
+    "construction_registry_digest": "0c6c96d1fde5ccade1287c7014b06fa33f31f570c916bf1a187af6710e9f22ab",
+    "threshold_registry_digest": "296ac0805aec6e344bced0dfa97f519d1b91512cd52fe69d16b168a03f897b64",
+    "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+    "torch_hip_version": "7.2.53211-e1a6bc5663",
+    "device_name": "AMD Radeon RX 7700 XT",
+    "cpu_thread_count": 4,
+    "visible_rocm_devices": "0",
+    "deterministic_algorithms_enabled": true,
+    "dataset_loader_used": false,
+    "test_split_access": false
+  },
+  "construction_seeds": [
+    0,
+    1,
+    2
+  ],
+  "model_seeds": [
+    0,
+    1,
+    2
+  ]
+}

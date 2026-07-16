@@ -1,0 +1,354 @@
+{
+  "contract_id": "stage3b-a1-mechanism-controls-v1",
+  "implementation_schema_id": "stage3b-a1-mechanism-controls-implementation-v1",
+  "execution_scope": "confirmatory",
+  "contract_digest": "aa5509e4be6c5cd79c76ae12209d7313ecd588321b1e5265a98978e1cafa7430",
+  "construction_registry_digest": "0c6c96d1fde5ccade1287c7014b06fa33f31f570c916bf1a187af6710e9f22ab",
+  "threshold_registry_digest": "296ac0805aec6e344bced0dfa97f519d1b91512cd52fe69d16b168a03f897b64",
+  "expected_counts": {
+    "geometry_records": 24,
+    "transport_records": 30,
+    "temporal_event_records": 108,
+    "temporal_summary_records": 3,
+    "block_probe_records": 60,
+    "pnz_records": 3
+  },
+  "output_files": {
+    "geometry": "mechanism_geometry_records.csv",
+    "transport": "mechanism_transport_records.csv",
+    "temporal_events": "mechanism_temporal_events.csv",
+    "temporal_summary": "mechanism_temporal_summary.csv",
+    "block_probe": "mechanism_block_probe_records.csv",
+    "pnz": "mechanism_pnz_records.csv",
+    "contract": "mechanism_controls_contract.json",
+    "summary": "mechanism_controls_summary.json"
+  },
+  "provenance": {
+    "source_git_commit": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+    "source_git_branch": "research/stage3b-a1-mechanism-controls-implementation",
+    "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+    "image_revision": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+    "lane": "rocm"
+  },
+  "frozen_preregistration": {
+    "schema_version": 1,
+    "contract_id": "stage3b-a1-mechanism-controls-v1",
+    "status": "preregistered",
+    "implementation_present": false,
+    "results_present": false,
+    "baseline": {
+      "repository_evidence_commit": "0b6a9e4aa0ac665adcc82d897845a0179fa3f990",
+      "obs_oh0_implementation_commit": "59dbcfa41a9c35cc8b72e75288aaa505459499d8",
+      "obs_oh0_tag": "stage3b-a1-obs-oh0-v1",
+      "obs_oh0_benchmark_schema_id": "stage3b-a1-obs-oh0-v1",
+      "observer_schema_id": "stage3b-a1-obs-ni0-first-forward-io-v1",
+      "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+    },
+    "immutable_prerequisites": [
+      "eq-s0-v1",
+      "eq-s1-v1",
+      "eq-s2-v1",
+      "obs-ni0-v1",
+      "obs-oh0-v1"
+    ],
+    "gate_hierarchy": {
+      "core_sub_gates": [
+        "GEO-C0",
+        "TR-C0",
+        "TMP-C0",
+        "JAC-C0"
+      ],
+      "limited_extension": "PNZ-L0",
+      "core_pass_rule": "all core_sub_gates pass on cpu and rocm",
+      "si_ma0_open_rule": "si_ma0_open == core_passed",
+      "pnz_controls_si_ma0": false
+    },
+    "environment": {
+      "lanes": {
+        "cpu": {
+          "device": "cpu",
+          "dtype": "float64"
+        },
+        "rocm": {
+          "device": "gpu",
+          "dtype": "float32"
+        }
+      },
+      "controlled_container_required": true,
+      "deterministic_algorithms_required": true,
+      "test_split_access": false,
+      "dataset_loader_used": false,
+      "synthetic_inputs_only": true
+    },
+    "common_record_fields": [
+      "control_id",
+      "sub_gate",
+      "case_id",
+      "lane",
+      "device",
+      "dtype",
+      "model_seed",
+      "construction_seed",
+      "layer_index",
+      "sweep_index",
+      "contract_id",
+      "source_git_commit",
+      "experiment_image",
+      "image_revision",
+      "torch2pc_commit",
+      "finite",
+      "passed"
+    ],
+    "threshold_profiles": {
+      "cpu": {
+        "algebraic_zero": {
+          "zero_atol": 1e-12
+        },
+        "analytic_vector": {
+          "max_relative_l2": 1e-10,
+          "max_abs": 1e-10,
+          "min_cosine": 0.999999999
+        },
+        "implementation_snapshot": {
+          "max_relative_l2": 1e-07,
+          "max_abs": 1e-09,
+          "min_cosine": 0.99999
+        },
+        "temporal_insufficient_separation_floor_relative_l2": 1e-08
+      },
+      "rocm": {
+        "algebraic_zero": {
+          "zero_atol": 1e-06
+        },
+        "analytic_vector": {
+          "max_relative_l2": 0.0001,
+          "max_abs": 1e-05,
+          "min_cosine": 0.9999
+        },
+        "implementation_snapshot": {
+          "max_relative_l2": 0.001,
+          "max_abs": 1e-05,
+          "min_cosine": 0.999
+        },
+        "temporal_insufficient_separation_floor_relative_l2": 1e-05
+      },
+      "active_floor_multiplier": 100,
+      "zero_safe_cosine_for_two_zero_vectors": null,
+      "nonfinite_policy": "fail"
+    },
+    "construction_registry": {
+      "space_dimension": 8,
+      "construction_seeds": [
+        0,
+        1,
+        2
+      ],
+      "seed_to_scale": {
+        "0": 0.25,
+        "1": 1.0,
+        "2": 4.0
+      },
+      "model_seeds": [
+        0,
+        1,
+        2
+      ],
+      "geometry": [
+        "GEO-01-exact-ncz",
+        "GEO-02-two-channel-exact-ecz",
+        "GEO-03-two-channel-near-ecz",
+        "GEO-04-aligned",
+        "GEO-05-orthogonal",
+        "GEO-06-three-channel-120-degree-ecz",
+        "GEO-07-channel-refinement-invariance",
+        "GEO-08-zero-safe-comparison"
+      ],
+      "transport": {
+        "scaled_identity_values": [
+          1.0,
+          0.5,
+          0.1,
+          0.01,
+          0.0
+        ],
+        "families": [
+          "TR-01-scaled-identity",
+          "TR-02-exact-tnz-nonzero-operator",
+          "TR-03-active-projection-control",
+          "TR-04-orthogonal-norm-preserving",
+          "TR-05-direct-cumulative-transport",
+          "TR-06-tnz-ecz-separation"
+        ]
+      },
+      "temporal": {
+        "depth": 6,
+        "eta": 1.0,
+        "initialization": "feed_forward",
+        "sweep_counts": [
+          5,
+          6,
+          7
+        ],
+        "primary_trace_sweeps": 6,
+        "first_nonzero_dv_formula": "L - state_layer",
+        "first_nonzero_epsilon_formula": "L - state_layer + 1 for state_layer 1..L-1",
+        "fixed_jacobian_version_required": true
+      },
+      "block_probe": {
+        "forms": [
+          "isolated_vjp",
+          "composite_vjp",
+          "chunked_composite_vjp"
+        ],
+        "materialized_oracle_blocks": 4,
+        "lenet_top_level_blocks": 6,
+        "lenet_batch_size": 8,
+        "lenet_input_shape": [
+          8,
+          1,
+          28,
+          28
+        ],
+        "lenet_targets": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "chunk_partition": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ]
+        ],
+        "dataset_loader_used": false
+      },
+      "pnz": {
+        "operator": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "source_direction": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "expected_rank": 2,
+        "controls_core_gate": false
+      }
+    },
+    "scope": {
+      "smoke_per_lane": {
+        "construction_seeds": [
+          0
+        ],
+        "model_seeds": [
+          0
+        ],
+        "geometry_records": 8,
+        "transport_records": 10,
+        "temporal_event_records": 36,
+        "temporal_summary_records": 1,
+        "block_probe_records": 20,
+        "pnz_records": 1,
+        "included_in_confirmatory_evidence": false
+      },
+      "confirmatory_per_lane": {
+        "construction_seeds": [
+          0,
+          1,
+          2
+        ],
+        "model_seeds": [
+          0,
+          1,
+          2
+        ],
+        "geometry_records": 24,
+        "transport_records": 30,
+        "temporal_event_records": 108,
+        "temporal_summary_records": 3,
+        "block_probe_records": 60,
+        "pnz_records": 3
+      },
+      "confirmatory_cross_lane": {
+        "geometry_records": 48,
+        "transport_records": 60,
+        "temporal_event_records": 216,
+        "temporal_summary_records": 6,
+        "block_probe_records": 120,
+        "pnz_records": 6
+      }
+    },
+    "expected_output_files": [
+      "mechanism_geometry_records.csv",
+      "mechanism_transport_records.csv",
+      "mechanism_temporal_events.csv",
+      "mechanism_temporal_summary.csv",
+      "mechanism_block_probe_records.csv",
+      "mechanism_pnz_records.csv",
+      "mechanism_controls_contract.json",
+      "mechanism_controls_summary.json"
+    ],
+    "summary_fields": [
+      "geo_c0_passed",
+      "tr_c0_passed",
+      "tmp_c0_passed",
+      "jac_c0_passed",
+      "core_passed",
+      "pnz_l0_passed",
+      "si_ma0_open"
+    ],
+    "pass_policy": {
+      "all_core_records_required": true,
+      "all_expected_records_required": true,
+      "unique_record_keys_required": true,
+      "finite_values_required": true,
+      "cross_lane_source_commit_match_required": true,
+      "cross_lane_contract_match_required": true,
+      "cross_lane_registry_digest_match_required": true,
+      "threshold_retuning_after_output": false,
+      "outlier_deletion": false,
+      "failed_record_retention": true
+    },
+    "claim": {
+      "supported": "The registered implementation reproduces the analytic correction-geometry and transport mechanisms, the expected FixedPred temporal wave, and equivalent matrix-free block-VJP forms in the controlled CPU/ROCm deterministic suite.",
+      "not_established": [
+        "empirical prevalence during training",
+        "reconstruction of actual Strict.state_inference",
+        "next exact-sweep utility",
+        "PC-TREF feature sufficiency",
+        "composite-VJP acceleration",
+        "permission for active control",
+        "universality beyond registered environments"
+      ]
+    },
+    "evidence": {
+      "working_results_are_ignored": true,
+      "sealed_tag": "stage3b-a1-mechanism-controls-v1",
+      "sha256_required": true,
+      "separate_evidence_commit_required": true
+    }
+  }
+}

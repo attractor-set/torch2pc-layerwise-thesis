@@ -1,0 +1,106 @@
+{
+  "created_at_utc": "2026-07-16T00:55:10Z",
+  "cross_device_verification": {
+    "allowed_runtime_differences": [
+      {
+        "cpu": "cpu",
+        "gpu": "rocm",
+        "kind": "value",
+        "path": "provenance.lane"
+      }
+    ],
+    "csv_row_counts_equal": true,
+    "full_contract_equal": false,
+    "observed_counts_equal": true,
+    "scientific_contract_equal": true,
+    "status": "passed"
+  },
+  "decision": {
+    "core_controls_passed": true,
+    "mechanism_controls_confirmatory_passed": true,
+    "pnz_l0_passed_non_blocking": true,
+    "si_ma0_open": true
+  },
+  "decision_id": "stage3b-a1-mechanism-controls-confirmatory-v1",
+  "execution_scope": "confirmatory",
+  "gates": {
+    "core_passed": {
+      "cpu": true,
+      "rocm": true
+    },
+    "geo_c0_passed": {
+      "cpu": true,
+      "rocm": true
+    },
+    "jac_c0_passed": {
+      "cpu": true,
+      "rocm": true
+    },
+    "passed": {
+      "cpu": true,
+      "rocm": true
+    },
+    "pnz_l0_passed": {
+      "cpu": true,
+      "rocm": true
+    },
+    "si_ma0_open": {
+      "cpu": true,
+      "rocm": true
+    },
+    "tmp_c0_passed": {
+      "cpu": true,
+      "rocm": true
+    },
+    "tr_c0_passed": {
+      "cpu": true,
+      "rocm": true
+    }
+  },
+  "implementation": {
+    "binding_method": "Evidence branch pointed directly at the implementation commit before evidence sealing; controlled runners had also required a clean committed tree.",
+    "evidence_branch": "research/stage3b-a1-mechanism-controls-evidence",
+    "git_head": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+    "source_ref": "research/stage3b-a1-mechanism-controls-implementation"
+  },
+  "interpretation_boundary": {
+    "authorized_next_step": "SI-MA0 model-level empirical execution may begin.",
+    "established": "The preregistered deterministic mechanism-control gate passed independently on controlled CPU and ROCm execution lanes.",
+    "not_established": "This evidence does not itself establish a model-level SI-MA0 effect, predictive advantage, or causal result."
+  },
+  "lanes": {
+    "cpu": {
+      "directory": "cpu",
+      "environment": null,
+      "provenance": {
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "image_revision": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+        "lane": "cpu",
+        "source_git_branch": "research/stage3b-a1-mechanism-controls-implementation",
+        "source_git_commit": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+        "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+      }
+    },
+    "rocm": {
+      "directory": "rocm",
+      "environment": null,
+      "provenance": {
+        "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+        "image_revision": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+        "lane": "rocm",
+        "source_git_branch": "research/stage3b-a1-mechanism-controls-implementation",
+        "source_git_commit": "69455e6e77e447ff72609d1c8af5fa6136a7e88a",
+        "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+      }
+    }
+  },
+  "observed_counts": {
+    "block_probe_records": 60,
+    "geometry_records": 24,
+    "pnz_records": 3,
+    "temporal_event_records": 108,
+    "temporal_summary_records": 3,
+    "transport_records": 30
+  },
+  "schema_version": 1
+}

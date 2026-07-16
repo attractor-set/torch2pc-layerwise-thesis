@@ -42,6 +42,7 @@ from torch2pc_thesis.stage3b_si_ma0 import (
     tensor_digest,
     thresholds_for,
     validate_event_order,
+    verify_a1_evidence_manifest,
 )
 
 OUTPUT_NAMES = (
@@ -194,15 +195,11 @@ def verify_prerequisites(
     ):
         if decision_fields.get(key) is not True:
             raise SIMA0Error(f"A1 prerequisite is not satisfied: {key}")
-    subprocess.run(
-        ["sha256sum", "-c", "SHA256SUMS"],
-        cwd=evidence_root,
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
+    manifest_verification = verify_a1_evidence_manifest(evidence_root)
     return {
         "a1_decision_sha256": sha256_file(decision_path),
         "a1_sha256_manifest_sha256": sha256_file(checksum_path),
+        **manifest_verification,
         "si_ma0_prereg_v2_commit": prereg_v2_commit,
         "si_ma0_prereg_v2_ancestry_verified_by_host_runner": True,
     }

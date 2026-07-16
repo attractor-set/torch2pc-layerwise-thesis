@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,7 @@ from torch2pc_thesis.stage3b_si_ma0 import (
     run_observer_mode,
     supports_si_ma0_instrumentation,
     validate_event_order,
+    verify_a1_evidence_manifest,
 )
 
 
@@ -363,3 +365,77 @@ def test_output_error_precedes_each_sweep_update(
             if int(row["sweep_index"]) == sweep
         ]
         assert output_sequence < min(update_sequences)
+
+A1_CSV_FILENAMES = (
+    "mechanism_block_probe_records.csv",
+    "mechanism_geometry_records.csv",
+    "mechanism_pnz_records.csv",
+    "mechanism_temporal_events.csv",
+    "mechanism_temporal_summary.csv",
+    "mechanism_transport_records.csv",
+)
+
+
+def write_a1_manifest_fixture(
+    root: Path,
+    *,
+    working_tree_uses_lf: bool,
+    include_unregistered_mismatch: bool = False,
+) -> None:
+    lines: list[str] = []
+    crlf_data = b"column_a,column_b\r\n1,2\r\n"
+    working_data = (
+        crlf_data.replace(b"\r\n", b"\n")
+        if working_tree_uses_lf
+        else crlf_data
+    )
+    for lane in ("cpu", "rocm"):
+        lane_root = root / lane
+        lane_root.mkdir(parents=True, exist_ok=True)
+        for filename in A1_CSV_FILENAMES:
+            relative_name = f"{lane}/{filename}"
+            (root / relative_name).write_bytes(working_data)
+            digest = hashlib.sha256(crlf_data).hexdigest()
+            lines.append(f"{digest}  {relative_name}")
+    if include_unregistered_mismatch:
+        path = root / "mechanism-controls-decision.json"
+        path.write_bytes(b"current\n")
+        digest = hashlib.sha256(b"different\n").hexdigest()
+        lines.append(f"{digest}  {path.name}")
+    (root / "SHA256SUMS").write_text(
+        "\n".join(lines) + "\n",
+        encoding="utf-8",
+    )
+
+
+def test_verify_a1_manifest_accepts_registered_git_lf_normalization(
+    tmp_path: Path,
+) -> None:
+    write_a1_manifest_fixture(tmp_path, working_tree_uses_lf=True)
+    result = verify_a1_evidence_manifest(tmp_path)
+    assert result["a1_sha256_manifest_verification_mode"] == (
+        "registered_crlf_source_to_git_lf"
+    )
+    assert result["a1_sha256_manifest_entry_count"] == 12
+    assert result["a1_sha256_exact_match_count"] == 0
+    assert result["a1_sha256_registered_csv_normalization_count"] == 12
+
+
+def test_verify_a1_manifest_accepts_exact_crlf_bytes(tmp_path: Path) -> None:
+    write_a1_manifest_fixture(tmp_path, working_tree_uses_lf=False)
+    result = verify_a1_evidence_manifest(tmp_path)
+    assert result["a1_sha256_manifest_verification_mode"] == "exact"
+    assert result["a1_sha256_exact_match_count"] == 12
+    assert result["a1_sha256_registered_csv_normalization_count"] == 0
+
+
+def test_verify_a1_manifest_rejects_unregistered_mismatch(
+    tmp_path: Path,
+) -> None:
+    write_a1_manifest_fixture(
+        tmp_path,
+        working_tree_uses_lf=True,
+        include_unregistered_mismatch=True,
+    )
+    with pytest.raises(SIMA0Error, match="unregistered A1 checksum mismatch"):
+        verify_a1_evidence_manifest(tmp_path)

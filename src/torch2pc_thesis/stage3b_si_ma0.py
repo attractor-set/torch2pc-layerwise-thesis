@@ -60,10 +60,144 @@ REGIONS: Final[tuple[RegionName, ...]] = (
     "sweep_bookkeeping",
     "inference_finalize",
 )
+A1_REGISTERED_CRLF_NORMALIZED_CSV_PATHS: Final[frozenset[str]] = frozenset(
+    f"{lane}/{filename}"
+    for lane in ("cpu", "rocm")
+    for filename in (
+        "mechanism_block_probe_records.csv",
+        "mechanism_geometry_records.csv",
+        "mechanism_pnz_records.csv",
+        "mechanism_temporal_events.csv",
+        "mechanism_temporal_summary.csv",
+        "mechanism_transport_records.csv",
+    )
+)
 
 
 class SIMA0Error(RuntimeError):
     """Raised when the frozen SI-MA0 implementation contract is violated."""
+
+
+def verify_a1_evidence_manifest(evidence_root: Path) -> dict[str, Any]:
+    """Verify sealed A1 evidence including registered Git CSV normalization.
+
+    The v1 A1 manifests were created from CSV files written with CRLF record
+    terminators. Git subsequently stored and checked out those text files with
+    LF terminators. Exact bytes remain mandatory for every other artifact. A
+    CSV mismatch is accepted only for the twelve frozen paths and only when a
+    deterministic LF-to-CRLF conversion reproduces the registered digest.
+    """
+
+    manifest_path = evidence_root / "SHA256SUMS"
+    if not manifest_path.is_file():
+        raise SIMA0Error("sealed A1 SHA256SUMS is missing")
+
+    entries: dict[str, str] = {}
+    for line_number, raw_line in enumerate(
+        manifest_path.read_text(encoding="utf-8").splitlines(),
+        start=1,
+    ):
+        if not raw_line:
+            raise SIMA0Error(
+                f"empty A1 SHA256SUMS line at {line_number}"
+            )
+        digest, separator, relative_name = raw_line.partition("  ")
+        if (
+            separator != "  "
+            or len(digest) != 64
+            or any(character not in "0123456789abcdef" for character in digest)
+        ):
+            raise SIMA0Error(
+                f"invalid A1 SHA256SUMS line at {line_number}"
+            )
+        relative_path = Path(relative_name)
+        if (
+            not relative_name
+            or relative_path.is_absolute()
+            or ".." in relative_path.parts
+            or "\\" in relative_name
+        ):
+            raise SIMA0Error(
+                f"unsafe A1 manifest path at line {line_number}"
+            )
+        normalized_name = relative_path.as_posix()
+        if normalized_name in entries:
+            raise SIMA0Error(
+                f"duplicate A1 manifest path: {normalized_name}"
+            )
+        entries[normalized_name] = digest
+
+    manifest_files = set(entries)
+    missing_registered = (
+        A1_REGISTERED_CRLF_NORMALIZED_CSV_PATHS - manifest_files
+    )
+    if missing_registered:
+        raise SIMA0Error(
+            "A1 manifest is missing registered CSV artifacts: "
+            + ", ".join(sorted(missing_registered))
+        )
+
+    observed_files = {
+        path.relative_to(evidence_root).as_posix()
+        for path in evidence_root.rglob("*")
+        if path.is_file() and path != manifest_path
+    }
+    if observed_files != manifest_files:
+        missing = sorted(manifest_files - observed_files)
+        unexpected = sorted(observed_files - manifest_files)
+        raise SIMA0Error(
+            "A1 evidence inventory differs from SHA256SUMS: "
+            f"missing={missing}, unexpected={unexpected}"
+        )
+
+    exact_match_count = 0
+    normalized_paths: list[str] = []
+    for relative_name, expected_digest in entries.items():
+        path = evidence_root / relative_name
+        if path.is_symlink():
+            raise SIMA0Error(
+                f"A1 evidence contains a symbolic link: {relative_name}"
+            )
+        data = path.read_bytes()
+        actual_digest = hashlib.sha256(data).hexdigest()
+        if actual_digest == expected_digest:
+            exact_match_count += 1
+            continue
+        if relative_name not in A1_REGISTERED_CRLF_NORMALIZED_CSV_PATHS:
+            raise SIMA0Error(
+                f"unregistered A1 checksum mismatch: {relative_name}"
+            )
+        if b"\r" in data:
+            raise SIMA0Error(
+                "registered A1 CSV compatibility requires LF-only bytes: "
+                f"{relative_name}"
+            )
+        crlf_digest = hashlib.sha256(
+            data.replace(b"\n", b"\r\n")
+        ).hexdigest()
+        if crlf_digest != expected_digest:
+            raise SIMA0Error(
+                "registered A1 CSV normalization does not reproduce digest: "
+                f"{relative_name}"
+            )
+        normalized_paths.append(relative_name)
+
+    mode = (
+        "exact"
+        if not normalized_paths
+        else "registered_crlf_source_to_git_lf"
+    )
+    return {
+        "a1_sha256_manifest_verification_mode": mode,
+        "a1_sha256_manifest_entry_count": len(entries),
+        "a1_sha256_exact_match_count": exact_match_count,
+        "a1_sha256_registered_csv_normalization_count": len(
+            normalized_paths
+        ),
+        "a1_sha256_registered_csv_normalization_paths": sorted(
+            normalized_paths
+        ),
+    }
 
 
 @dataclass(frozen=True)

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import math
 import os
 import subprocess
 from pathlib import Path
@@ -135,6 +136,34 @@ def resolve_source_commit(repo: Path) -> str:
     return source_commit
 
 
+def parse_finite_float(value: Any) -> float | None:
+    """Return one finite float or None for an incompatible config value."""
+
+    if value is None or isinstance(value, bool):
+        return None
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError, OverflowError):
+        return None
+    if not math.isfinite(parsed):
+        return None
+    return parsed
+
+
+def parse_integral_value(value: Any) -> int | None:
+    """Return one exact finite integer or None without lossy coercion."""
+
+    if value is None or isinstance(value, bool):
+        return None
+    try:
+        numeric = float(value)
+    except (TypeError, ValueError, OverflowError):
+        return None
+    if not math.isfinite(numeric) or not numeric.is_integer():
+        return None
+    return int(numeric)
+
+
 def inspect_checkpoint(
     repo: Path,
     path: Path,
@@ -166,9 +195,11 @@ def inspect_checkpoint(
     dataset = str(data.get("dataset", ""))
     architecture = str(model.get("architecture", ""))
     method_name = str(method.get("name", ""))
-    eta = float(method.get("eta", float("nan")))
-    inference_steps = int(method.get("inference_steps", -1))
-    model_seed = int(reproducibility.get("model_seed", -1))
+    eta = parse_finite_float(method.get("eta"))
+    inference_steps = parse_integral_value(method.get("inference_steps"))
+    model_seed = parse_integral_value(reproducibility.get("model_seed"))
+    if eta is None or inference_steps is None or model_seed is None:
+        return None
 
     if (
         dataset.lower() != "fashionmnist"

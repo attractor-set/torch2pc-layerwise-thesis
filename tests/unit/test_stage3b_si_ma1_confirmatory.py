@@ -5,8 +5,12 @@ import json
 from pathlib import Path
 
 import pytest
+import torch
 
 from scripts.build_stage3b_si_ma1_checkpoint_inventory import (
+    inspect_checkpoint,
+    parse_finite_float,
+    parse_integral_value,
     resolve_source_commit,
 )
 from torch2pc_thesis.stage3b_si_ma1_confirmatory import (
@@ -334,3 +338,129 @@ def test_inventory_builder_requires_host_ancestry_attestation(
         match="ANCESTRY_VERIFIED",
     ):
         resolve_source_commit(repo)
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        (0.05, 0.05),
+        ("0.05", 0.05),
+        (None, None),
+        (True, None),
+        ("not-a-number", None),
+        (float("nan"), None),
+        (float("inf"), None),
+    ],
+)
+def test_parse_finite_float_is_nonthrowing(
+    value: object,
+    expected: float | None,
+) -> None:
+    assert parse_finite_float(value) == expected
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        (20, 20),
+        (20.0, 20),
+        ("20", 20),
+        (None, None),
+        (False, None),
+        (20.5, None),
+        ("20.5", None),
+        ("invalid", None),
+        (float("nan"), None),
+    ],
+)
+def test_parse_integral_value_rejects_lossy_values(
+    value: object,
+    expected: int | None,
+) -> None:
+    assert parse_integral_value(value) == expected
+
+
+def write_checkpoint_candidate(
+    path: Path,
+    *,
+    eta: object = 0.05,
+    inference_steps: object = 20,
+    model_seed: object = 0,
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    torch.save(
+        {
+            "config": {
+                "data": {"dataset": "FashionMNIST"},
+                "model": {"architecture": "lenet_classic"},
+                "method": {
+                    "name": "Strict",
+                    "eta": eta,
+                    "inference_steps": inference_steps,
+                },
+                "reproducibility": {"model_seed": model_seed},
+            },
+            "state_dict": {"weight": torch.tensor([1.0])},
+        },
+        path,
+    )
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("eta", None),
+        ("eta", "invalid"),
+        ("inference_steps", None),
+        ("inference_steps", 20.5),
+        ("model_seed", None),
+        ("model_seed", "invalid"),
+    ],
+)
+def test_inspect_checkpoint_skips_incompatible_numeric_config(
+    tmp_path: Path,
+    field: str,
+    value: object,
+) -> None:
+    repo = tmp_path / "repo"
+    checkpoint = (
+        repo
+        / "results/stage-2/runs"
+        / "final_stage_2-fashionmnist-strict-s0-test"
+        / "run"
+        / "checkpoint.pt"
+    )
+    values: dict[str, object] = {
+        "eta": 0.05,
+        "inference_steps": 20,
+        "model_seed": 0,
+    }
+    values[field] = value
+    write_checkpoint_candidate(
+        checkpoint,
+        eta=values["eta"],
+        inference_steps=values["inference_steps"],
+        model_seed=values["model_seed"],
+    )
+
+    assert inspect_checkpoint(repo, checkpoint) is None
+
+
+def test_inspect_checkpoint_accepts_valid_strict_candidate(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    checkpoint = (
+        repo
+        / "results/stage-2/runs"
+        / "final_stage_2-fashionmnist-strict-s0-test"
+        / "run"
+        / "checkpoint.pt"
+    )
+    write_checkpoint_candidate(checkpoint)
+
+    entry = inspect_checkpoint(repo, checkpoint)
+
+    assert entry is not None
+    assert entry.model_seed == 0
+    assert entry.eta == 0.05
+    assert entry.inference_steps == 20

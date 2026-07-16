@@ -28,6 +28,9 @@ OBS_OH0_WARMUP_PAIRS ?= 1
 OBS_OH0_RSS_SAMPLER_INTERVAL_MS ?= 1.0
 OBS_OH0_CPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-oh0-cpu-smoke
 OBS_OH0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/obs-oh0-gpu-smoke
+MECH_CONTROLS_EXECUTION_SCOPE ?= smoke
+MECH_CONTROLS_CPU_OUTPUT_DIR ?= results/stage-3/a1-mechanism-controls/working/mechanism-controls-cpu-smoke
+MECH_CONTROLS_GPU_OUTPUT_DIR ?= results/stage-3/a1-mechanism-controls/working/mechanism-controls-gpu-smoke
 
 .PHONY: help init host-check image-check pin-base-image build validate prepare pin-torch2pc \
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
@@ -41,7 +44,8 @@ OBS_OH0_GPU_OUTPUT_DIR ?= results/stage-3/a1-shortcut-observer-controls/working/
         stage3b-a1-eq-s1-cpu stage3b-a1-eq-s1-gpu \
         stage3b-a1-eq-s2-cpu stage3b-a1-eq-s2-gpu \
         stage3b-a1-obs-ni0-cpu stage3b-a1-obs-ni0-gpu \
-        stage3b-a1-obs-oh0-cpu stage3b-a1-obs-oh0-gpu
+        stage3b-a1-obs-oh0-cpu stage3b-a1-obs-oh0-gpu \
+        stage3b-a1-mechanism-controls-cpu stage3b-a1-mechanism-controls-gpu
 
 help:
 	@printf '%s\n' \
@@ -89,6 +93,8 @@ help:
 	  '  stage3b-a1-obs-ni0-gpu Run OBS-NI0 passive observer in Docker/ROCm' \
 	  '  stage3b-a1-obs-oh0-cpu Run OBS-OH0 observer overhead in Docker CPU' \
 	  '  stage3b-a1-obs-oh0-gpu Run OBS-OH0 observer overhead in Docker/ROCm' \
+	  '  stage3b-a1-mechanism-controls-cpu Run deterministic PC-CATM controls in Docker CPU' \
+	  '  stage3b-a1-mechanism-controls-gpu Run deterministic PC-CATM controls in Docker/ROCm' \
 	  '' \
 	  'Quality and outputs:' \
 	  '  lint                  Run Ruff' \
@@ -331,6 +337,16 @@ stage3b-a1-obs-oh0-gpu:
 		--warmup-pairs "$(OBS_OH0_WARMUP_PAIRS)" \
 		--rss-sampler-interval-ms "$(OBS_OH0_RSS_SAMPLER_INTERVAL_MS)" \
 		--output-dir "$(OBS_OH0_GPU_OUTPUT_DIR)"
+
+stage3b-a1-mechanism-controls-cpu:
+	$(PYTHON) scripts/run_stage3b_a1_mechanism_controls_container.py cpu \
+		--execution-scope "$(MECH_CONTROLS_EXECUTION_SCOPE)" \
+		--output-dir "$(MECH_CONTROLS_CPU_OUTPUT_DIR)"
+
+stage3b-a1-mechanism-controls-gpu:
+	$(PYTHON) scripts/run_stage3b_a1_mechanism_controls_container.py gpu \
+		--execution-scope "$(MECH_CONTROLS_EXECUTION_SCOPE)" \
+		--output-dir "$(MECH_CONTROLS_GPU_OUTPUT_DIR)"
 
 status:
 	$(PYTHON) -m torch2pc_thesis.cli registry

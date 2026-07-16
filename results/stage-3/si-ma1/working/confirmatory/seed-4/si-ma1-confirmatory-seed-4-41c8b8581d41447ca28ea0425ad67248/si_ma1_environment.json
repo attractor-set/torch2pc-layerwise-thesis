@@ -1,0 +1,25 @@
+{
+  "checkpoint_sha256": "8d1942681e1f8557fd81423870d8f980db5b640007218e3b28c0ce4d6f8146b7",
+  "config_sha256": "ce2001078fb580e7cb016c1113ec4766c4295424446aadbf962342b2c060e6b2",
+  "contract_id": "stage3b-si-ma1-v1",
+  "dtype": "torch.float32",
+  "ecz_evaluator_executed": false,
+  "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+  "image_revision": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "implementation_schema_id": "stage3b-si-ma1-implementation-v1",
+  "lane": "rocm",
+  "prerequisites": {
+    "manifest_sha256": "9d6f85c58cda9a8950d7638cb9fa6871857aadc1ad043745cbc9d8705643a972",
+    "si_ma0_decision_sha256": "1cf2be4a9e2608451e0fe1a106c21c4e7aca1c53362c9dd542db341f2fff9eb6",
+    "si_ma0_summary_sha256": "3ba52a33eeea20f9f9e7a0984eea3c6d013bf8f3c2d5ca98c2f8c838aff360ca",
+    "verified_file_count": 23
+  },
+  "si_ma1_prereg_commit": "5b8adfb404b5dd7f1a11d778c0d531e6e2b4c69b",
+  "source_git_branch": "research/stage3b-si-ma1-confirmatory-execution",
+  "source_git_commit": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "test_split_accessed": false,
+  "thread_count": 4,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "torch_hip_version": "7.2.53211-e1a6bc5663",
+  "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc"
+}

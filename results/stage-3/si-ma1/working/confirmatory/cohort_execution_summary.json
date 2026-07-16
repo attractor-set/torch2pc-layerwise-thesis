@@ -1,0 +1,99 @@
+{
+  "CAL-COST-MA1": null,
+  "aggregation_required": true,
+  "attempts": [
+    {
+      "archive_path": "attempts/seed-0/si-ma1-confirmatory-seed-0-350ca0ef5a804c93a914cbd523a21b5f",
+      "attempt_id": "si-ma1-confirmatory-seed-0-350ca0ef5a804c93a914cbd523a21b5f",
+      "checkpoint_sha256": "27d43c71523b70cae4b9fde1a2b064916165cb09b8087a84e9bf6ecaab10ac8e",
+      "d_seed": -0.18797248545840936,
+      "model_seed": 0
+    },
+    {
+      "archive_path": "attempts/seed-1/si-ma1-confirmatory-seed-1-33c8ed2564734b9c9aa3b34c450a1ff2",
+      "attempt_id": "si-ma1-confirmatory-seed-1-33c8ed2564734b9c9aa3b34c450a1ff2",
+      "checkpoint_sha256": "5538421b8f5d791ad47159b179065b686459837f1911c47c23deb85af73b15f7",
+      "d_seed": -0.1911865144475936,
+      "model_seed": 1
+    },
+    {
+      "archive_path": "attempts/seed-2/si-ma1-confirmatory-seed-2-19506ac1870041c896ba09afbc464b0d",
+      "attempt_id": "si-ma1-confirmatory-seed-2-19506ac1870041c896ba09afbc464b0d",
+      "checkpoint_sha256": "0c925343efe191381b49777680f0fe59d8d7db454f450ac2111f9dde9f75ced9",
+      "d_seed": -0.18016698531213707,
+      "model_seed": 2
+    },
+    {
+      "archive_path": "attempts/seed-3/si-ma1-confirmatory-seed-3-4aa710fff7ad41588dfd425991974f6f",
+      "attempt_id": "si-ma1-confirmatory-seed-3-4aa710fff7ad41588dfd425991974f6f",
+      "checkpoint_sha256": "bbcc7340ff075cc8049db6e4f7e897b9a7918c655f376205dd9211b162720763",
+      "d_seed": -0.19069109346537144,
+      "model_seed": 3
+    },
+    {
+      "archive_path": "attempts/seed-4/si-ma1-confirmatory-seed-4-41c8b8581d41447ca28ea0425ad67248",
+      "attempt_id": "si-ma1-confirmatory-seed-4-41c8b8581d41447ca28ea0425ad67248",
+      "checkpoint_sha256": "8d1942681e1f8557fd81423870d8f980db5b640007218e3b28c0ce4d6f8146b7",
+      "d_seed": -0.19057905328028377,
+      "model_seed": 4
+    },
+    {
+      "archive_path": "attempts/seed-5/si-ma1-confirmatory-seed-5-ef530fd436f0448896ac0794fce8605c",
+      "attempt_id": "si-ma1-confirmatory-seed-5-ef530fd436f0448896ac0794fce8605c",
+      "checkpoint_sha256": "65f86c72ebf29ddd9ba6cc2709dc2b942bc2eb0eafcc15809607dd78e2549fa1",
+      "d_seed": -0.19019312702398197,
+      "model_seed": 5
+    },
+    {
+      "archive_path": "attempts/seed-6/si-ma1-confirmatory-seed-6-cb632a2914e94a6693a56290b0e72ed1",
+      "attempt_id": "si-ma1-confirmatory-seed-6-cb632a2914e94a6693a56290b0e72ed1",
+      "checkpoint_sha256": "1170bd01762d54d2e9dfaed11eec365c16864bb7f9bb7b42e66280db82a4b631",
+      "d_seed": -0.1957111993747536,
+      "model_seed": 6
+    },
+    {
+      "archive_path": "attempts/seed-7/si-ma1-confirmatory-seed-7-2f4830e33d904e34a8c6da85a6d5af30",
+      "attempt_id": "si-ma1-confirmatory-seed-7-2f4830e33d904e34a8c6da85a6d5af30",
+      "checkpoint_sha256": "1a64b803eba8e9e92be5a28491e0ed878748727d6ff3e5f06beb1eec3c7d3255",
+      "d_seed": -0.20117356769581987,
+      "model_seed": 7
+    },
+    {
+      "archive_path": "attempts/seed-8/si-ma1-confirmatory-seed-8-9e0c39f568ba40eb8ac8250d9cea1013",
+      "attempt_id": "si-ma1-confirmatory-seed-8-9e0c39f568ba40eb8ac8250d9cea1013",
+      "checkpoint_sha256": "81d7c0bf7c2b593e8a77086db2ed7c984ba6f13725b49ed67cbec73216e79611",
+      "d_seed": -0.18862187616037485,
+      "model_seed": 8
+    },
+    {
+      "archive_path": "attempts/seed-9/si-ma1-confirmatory-seed-9-90e6eaaff68f4f19a394cf73454a38f1",
+      "attempt_id": "si-ma1-confirmatory-seed-9-90e6eaaff68f4f19a394cf73454a38f1",
+      "checkpoint_sha256": "98c0e87a31f3b8d63c0b9ef08f991b8fa023206fb8c8ee4a2945375ef1700286",
+      "d_seed": -0.20788127820454141,
+      "model_seed": 9
+    }
+  ],
+  "cohort_complete": true,
+  "confirmatory_decision_made": false,
+  "contract_id": "stage3b-si-ma1-v1",
+  "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+  "image_revision": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "ledger_event_count": 20,
+  "missing_seeds": [],
+  "model_seed_count": 10,
+  "passed_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "schema_id": "stage3b-si-ma1-confirmatory-execution-v1",
+  "si_ma1_passed": null,
+  "source_git_commit": "55e05efabc223b3473fdea02a5b7ea424a79f759"
+}

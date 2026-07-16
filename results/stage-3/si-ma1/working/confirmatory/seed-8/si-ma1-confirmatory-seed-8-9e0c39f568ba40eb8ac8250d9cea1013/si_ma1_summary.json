@@ -1,0 +1,73 @@
+{
+  "attempt_id": "si-ma1-confirmatory-seed-8-9e0c39f568ba40eb8ac8250d9cea1013",
+  "batch_count": 3,
+  "checkpoint_sha256": "81d7c0bf7c2b593e8a77086db2ed7c984ba6f13725b49ed67cbec73216e79611",
+  "config_sha256": "6f8de775a8ccc0db45e4646aac0e944d116c7745835be79eff57b3bf47986b45",
+  "confirmatory_decision_made": false,
+  "contract_id": "stage3b-si-ma1-v1",
+  "decision_state": null,
+  "dtype": "torch.float32",
+  "ecz_evaluator_executed": false,
+  "expected_counts": {
+    "arm_blocks": 54,
+    "arm_timing_records": 2700,
+    "block_summary_rows": 18,
+    "live_region_timing_records": 6300,
+    "matched_blocks": 18,
+    "model_seed_batch_pairs": 3,
+    "numerical_comparison_rows": 36,
+    "order_seed_value_rows": 6,
+    "seed_summary_rows": 1,
+    "topology_comparison_rows": 18
+  },
+  "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+  "gates": {
+    "BAL-MA1-cell": true,
+    "CAL-COST-MA1": null,
+    "CMP-MA1-cell": true,
+    "NUM-MA1-cell": true,
+    "TOPO-MA1-cell": true,
+    "prerequisites_verified": true
+  },
+  "image_revision": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "implementation_schema_id": "stage3b-si-ma1-implementation-v1",
+  "lane": "rocm",
+  "model_seed": 8,
+  "observed_counts": {
+    "arm_blocks": 54,
+    "arm_timing_records": 2700,
+    "block_summary_rows": 18,
+    "live_region_timing_records": 6300,
+    "matched_blocks": 18,
+    "model_seed_batch_pairs": 3,
+    "numerical_comparison_rows": 36,
+    "order_seed_value_rows": 6,
+    "seed_summary_rows": 1,
+    "topology_comparison_rows": 18
+  },
+  "prerequisites": {
+    "manifest_sha256": "9d6f85c58cda9a8950d7638cb9fa6871857aadc1ad043745cbc9d8705643a972",
+    "si_ma0_decision_sha256": "1cf2be4a9e2608451e0fe1a106c21c4e7aca1c53362c9dd542db341f2fff9eb6",
+    "si_ma0_summary_sha256": "3ba52a33eeea20f9f9e7a0984eea3c6d013bf8f3c2d5ca98c2f8c838aff360ca",
+    "verified_file_count": 23
+  },
+  "scope": "confirmatory",
+  "seed_summary": {
+    "confirmatory_decision_made": false,
+    "d_seed": -0.18862187616037485,
+    "matched_block_count": 18,
+    "max_d": -0.14507052782788135,
+    "mean_d": -0.18872530373965857,
+    "min_d": -0.22858074407834325,
+    "model_seed": 8
+  },
+  "si_ma1_passed": null,
+  "si_ma1_prereg_commit": "5b8adfb404b5dd7f1a11d778c0d531e6e2b4c69b",
+  "source_git_branch": "research/stage3b-si-ma1-confirmatory-execution",
+  "source_git_commit": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "test_split_accessed": false,
+  "thread_count": 4,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "torch_hip_version": "7.2.53211-e1a6bc5663",
+  "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc"
+}

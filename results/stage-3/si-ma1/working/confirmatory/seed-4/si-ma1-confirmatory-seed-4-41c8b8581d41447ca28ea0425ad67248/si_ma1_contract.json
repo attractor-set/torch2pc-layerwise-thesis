@@ -1,0 +1,429 @@
+{
+  "arms": {
+    "A": {
+      "id": "baseline_no_observer",
+      "observer_mode": "no_hooks",
+      "region_records_retained": false,
+      "role": "baseline"
+    },
+    "B": {
+      "id": "calibration_observer",
+      "observer_mode": "counters_only",
+      "region_records_retained": false,
+      "role": "observer_cost_calibration"
+    },
+    "B_C_identity_requirements": [
+      "same instrumented callable",
+      "same hook topology",
+      "same event topology",
+      "same region boundary topology",
+      "same tensor-summary policy",
+      "same buffer-write policy",
+      "same synchronization policy",
+      "role label assigned outside measured region",
+      "serialization performed outside measured region"
+    ],
+    "C": {
+      "id": "live_attribution",
+      "observer_mode": "counters_only",
+      "region_records_retained": true,
+      "role": "live_region_accounting"
+    }
+  },
+  "balanced_order": {
+    "blocks_per_model_seed_batch": 6,
+    "each_arm_occurs_twice_in_each_position": true,
+    "each_permutation_exactly_once_per_model_seed_batch": true,
+    "missing_or_repeated_permutation_passes": false,
+    "outcome_dependent_order_change_allowed": false,
+    "permutations": [
+      "ABC",
+      "BCA",
+      "CAB",
+      "ACB",
+      "CBA",
+      "BAC"
+    ],
+    "schedule_rule": "rotate the registered permutation list by (model_seed + validation_batch_id) mod 6"
+  },
+  "contract_id": "stage3b-si-ma1-v1",
+  "decision_states": {
+    "fail": "at least one scientific or contract gate false with complete evidence",
+    "inconclusive": "evidence incomplete for a documented infrastructure reason and no scientific failure established",
+    "pass": "all registered gates true with complete evidence"
+  },
+  "ecz_evaluator_boundary": {
+    "delta_excess_is_not_evaluator_budget": true,
+    "future_b1_b2_requirement": "B1/B2 must measure the complete incremental ECZ control-plane cost and must test end-to-end net savings after feature acquisition, evaluation, dispatch, selected action, and fallback costs",
+    "future_control_plane_regions": [
+      "diagnostic_feature_acquisition",
+      "ecz_evaluation",
+      "action_selection",
+      "fallback_validation"
+    ],
+    "included_in_si_ma1": false,
+    "reason": "SI-MA1 calibrates the observer cost of measuring the existing state_inference implementation; no ECZ decision mechanism is executed in arms A, B, or C"
+  },
+  "execution_scopes": {
+    "confirmatory": {
+      "adaptive_stopping": false,
+      "lanes": [
+        "rocm"
+      ],
+      "model_seeds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "record_exclusion_after_first_output": false,
+      "threshold_retuning_after_first_output": false,
+      "validation_batch_ids": [
+        0,
+        1,
+        2
+      ]
+    },
+    "smoke": {
+      "included_in_confirmatory_evidence": false,
+      "lanes": [
+        "cpu",
+        "rocm"
+      ],
+      "model_seeds": [
+        0
+      ],
+      "threshold_retuning_allowed": false,
+      "validation_batch_ids": [
+        0
+      ]
+    }
+  },
+  "expected_counts": {
+    "arm_blocks": 540,
+    "arm_timing_records": 27000,
+    "confirmatory_attempts": 10,
+    "live_region_timing_records": 63000,
+    "matched_blocks": 180,
+    "model_seed_batch_pairs": 30,
+    "numerical_comparison_rows": 360,
+    "order_sensitivity_rows": 6,
+    "seed_summary_rows": 10,
+    "topology_comparison_rows": 180
+  },
+  "final_gate_expression": "prerequisites_verified and NUM-MA1 and TOPO-MA1 and BAL-MA1 and CAL-COST-MA1 and CMP-MA1",
+  "gates": {
+    "BAL-MA1": {
+      "requirements": [
+        "all_six_permutations_present_once_per_model_seed_batch",
+        "each_arm_twice_per_position",
+        "registered_rotation_rule_verified",
+        "no_outcome_dependent_order_change"
+      ]
+    },
+    "CAL-COST-MA1": {
+      "requirements": [
+        "all_block_times_complete",
+        "all_times_finite",
+        "all_times_nonnegative",
+        "all_block_estimands_finite",
+        "all_ten_seed_values_present",
+        "bootstrap_bound_reproducible",
+        "upper_95_bound_not_greater_than_0_01"
+      ]
+    },
+    "CMP-MA1": {
+      "requirements": [
+        "all_model_seeds_present",
+        "all_validation_batches_present",
+        "all_expected_records_present",
+        "all_attempts_retained",
+        "source_commit_immutable",
+        "image_revision_immutable",
+        "checkpoint_hashes_verified",
+        "configuration_hashes_verified",
+        "input_target_hashes_verified",
+        "test_split_not_accessed",
+        "contract_snapshot_verified",
+        "sha256_manifests_verified"
+      ]
+    },
+    "NUM-MA1": {
+      "requirements": [
+        "A_vs_B_loss_equivalent",
+        "A_vs_C_loss_equivalent",
+        "A_vs_B_final_beliefs_equivalent",
+        "A_vs_C_final_beliefs_equivalent",
+        "A_vs_B_parameter_gradients_equivalent",
+        "A_vs_C_parameter_gradients_equivalent",
+        "model_state_fingerprints_equal",
+        "input_target_fingerprints_equal",
+        "rng_snapshots_valid",
+        "all_comparisons_pass"
+      ]
+    },
+    "TOPO-MA1": {
+      "requirements": [
+        "B_C_hook_counts_equal",
+        "B_C_event_counts_equal",
+        "B_C_region_counts_equal",
+        "B_C_saved_tensor_policy_equal",
+        "B_C_buffer_write_counts_equal",
+        "B_C_synchronization_counts_equal",
+        "B_C_instrumentation_configuration_hash_equal",
+        "all_topology_comparisons_pass"
+      ]
+    }
+  },
+  "interpretation_boundary": {
+    "allowed_if_pass": "Within the registered FashionMNIST Strict ROCm scope, the un-attributed live timing gap does not exceed the independently matched observer-cost calibration by more than the registered one-percent excess margin at the one-sided 95-percent model-seed confidence bound.",
+    "allowed_stage_transition": "A pass permits separate preregistration and implementation of B1/B2; it does not itself authorize active compute control.",
+    "not_allowed": [
+      "changing the historical SI-MA0 COST-MA0 result",
+      "universal observer-cost claims",
+      "universal time shares",
+      "permission to skip computation",
+      "active control safety",
+      "minimal sufficient quotient-space claims",
+      "proportional speedup claims",
+      "generalization to another GPU, ROCm version, architecture, dataset, or observer topology",
+      "treating the SI-MA1 one-percent excess margin as an ECZ evaluator budget",
+      "claiming that SI-MA1 measures ECZ evaluator runtime"
+    ]
+  },
+  "language_documents": {
+    "en": "experiments/planned/STAGE3B-SI-MA1_EN.md",
+    "ru": "experiments/planned/STAGE3B-SI-MA1.md"
+  },
+  "multiplicity": {
+    "multiplicity_adjustment_required": false,
+    "secondary_analyses_are_non_authorizing": true,
+    "single_primary_gate": "CAL-COST-MA1"
+  },
+  "numerical_thresholds": {
+    "rocm_float32": {
+      "max_abs": 1e-05,
+      "max_relative_l2": 0.001,
+      "min_cosine": 0.999,
+      "zero_atol": 1e-06
+    },
+    "zero_safe": {
+      "both_zero_like_use_max_abs": true,
+      "cosine_for_both_zero_like": null,
+      "nonfinite_passes": false,
+      "single_zero_like_pair_passes": false
+    }
+  },
+  "outputs": {
+    "confirmatory_root": "results/stage-3/si-ma1/confirmatory",
+    "mandatory_files": [
+      "si_ma1_contract.json",
+      "si_ma1_attempts.jsonl",
+      "si_ma1_environment.json",
+      "si_ma1_arm_timing_records.csv",
+      "si_ma1_region_timing_records.csv",
+      "si_ma1_numerical_comparisons.csv",
+      "si_ma1_topology_comparisons.csv",
+      "si_ma1_block_summaries.csv",
+      "si_ma1_seed_summaries.csv",
+      "si_ma1_order_sensitivity.csv",
+      "si_ma1_summary.json",
+      "si_ma1_decision.json",
+      "si_ma1_report.md",
+      "si_ma1_report_EN.md",
+      "SHA256SUMS"
+    ],
+    "working_root": "results/stage-3/si-ma1/working"
+  },
+  "prerequisite_assertions": {
+    "implementation_allowed_only_after_preregistration_tag": true,
+    "si_ma0_cmp_passed": true,
+    "si_ma0_confirmatory_decision_made": true,
+    "si_ma0_cost_failed": true,
+    "si_ma0_evidence_complete": true,
+    "si_ma0_negative_result_retained": true,
+    "si_ma0_obs_passed": true,
+    "si_ma0_rec_passed": true,
+    "si_ma0_ver_passed": true
+  },
+  "primary_estimand": {
+    "absolute_values_are_secondary_only": true,
+    "aggregation_level": "balanced_order_block",
+    "between_seed_statistic": "median of the ten D_seed values",
+    "block_totals": {
+      "A": "sum baseline_no_observer device time over 50 measured steps",
+      "B": "sum calibration_observer device time over 50 measured steps",
+      "C": "sum live_attribution device time over 50 measured steps",
+      "K": "sum seven exclusive live_attribution region device times over the same 50 measured steps"
+    },
+    "calibrated_excess_gap": "D = E / max(A, epsilon)",
+    "confidence_bound": {
+      "bootstrap_repeats": 10000,
+      "bootstrap_seed": 20260716,
+      "level": 0.95,
+      "resampling_unit": "model_seed",
+      "type": "one-sided percentile bootstrap upper bound"
+    },
+    "decision_rule": "CAL-COST-MA1 passes iff the one-sided 95-percent bootstrap upper bound for median(D_seed) is <= 0.01",
+    "excess_margin": 0.01,
+    "excess_time": "E = R - H = (C - K) - (B - A)",
+    "live_unattributed_time": "R = C - K",
+    "margin_interpretation": "the 0.01 excess margin is one percent of baseline_no_observer device time and is reserved for residual SI-MA1 accounting error; it is not a runtime budget for an ECZ evaluator or any future control-plane mechanism",
+    "no_truncation": true,
+    "normalization_reference": "baseline_no_observer block total A; all subtractions occur in absolute device time before normalization",
+    "observer_cost_time": "H = B - A",
+    "within_seed_value": "D_seed = median D over 3 validation batches and 6 balanced order blocks"
+  },
+  "purpose": "Test whether the un-attributed live state_inference timing gap is explained by a locally matched observer-cost calibration, up to a pre-registered excess margin.",
+  "regions": [
+    "inference_setup",
+    "lower_prediction_and_error",
+    "upper_state_vjp",
+    "component_aggregation",
+    "belief_update",
+    "sweep_bookkeeping",
+    "inference_finalize"
+  ],
+  "registered_starting_point": {
+    "base_commit": "784459f7beade1980a12368283cf2dcb18642ad7",
+    "required_preregistration_tag": "stage3b-si-ma1-prereg-v1",
+    "si_ma0_evidence_commit": "3db5eecaf4e7fb8f1de9a9d635465b95bb1bef93",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "relationship_to_si_ma0": {
+    "does_not_supersede_si_ma0": true,
+    "forbidden_reinterpretations": [
+      "changing COST-MA0 to pass",
+      "changing the frozen five-percent COST-MA0 threshold",
+      "redistributing the SI-MA0 residual among registered regions",
+      "excluding SI-MA0 records after observing the result"
+    ],
+    "retained_si_ma0_decision": {
+      "CMP-MA0": true,
+      "COST-MA0": false,
+      "OBS-MA0": true,
+      "REC-MA0": true,
+      "VER-MA0": true,
+      "confirmatory_decision_made": true,
+      "decision_state": "fail",
+      "si_ma0_passed": false
+    },
+    "si_ma0_contract_id": "stage3b-si-ma0-v2",
+    "si_ma0_decision_path": "results/stage-3/si-ma0/confirmatory/si_ma0_decision.json",
+    "si_ma0_evidence_commit": "3db5eecaf4e7fb8f1de9a9d635465b95bb1bef93",
+    "si_ma0_publication_commit": "784459f7beade1980a12368283cf2dcb18642ad7",
+    "si_ma0_summary_path": "results/stage-3/si-ma0/confirmatory/si_ma0_summary.json"
+  },
+  "rerun_policy": {
+    "immutable_attempt_id": true,
+    "replacement_only_for_infrastructure_failure": true,
+    "replacement_requires_same_source_image_contract_seed_batches_checkpoints": true,
+    "retain_failed_attempt": true,
+    "scientific_failure_is_not_replacement_reason": true
+  },
+  "scenario": "primary_scenario_a",
+  "schema_version": 1,
+  "scope": {
+    "architecture": "lenet_classic",
+    "batch_size": 256,
+    "checkpoint": "final",
+    "checkpoint_loading_inside_measured_region": false,
+    "dataset": "FashionMNIST",
+    "dataset_loading_inside_measured_region": false,
+    "dtype": "float32",
+    "eta": 0.05,
+    "inference_steps": 20,
+    "loader_workers": 0,
+    "method": "strict",
+    "model_seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "optimizer_step": false,
+    "parameter_update": false,
+    "primary_device": "rocm",
+    "restore_checkpoint_before_each_arm": true,
+    "restore_initial_beliefs_before_each_measured_step": true,
+    "restore_rng_snapshot_before_each_arm": true,
+    "serialization_inside_measured_region": false,
+    "shuffle": false,
+    "split": "validation",
+    "test_split_access": false,
+    "validation_batch_ids": [
+      0,
+      1,
+      2
+    ]
+  },
+  "secondary_analyses": {
+    "items": [
+      "all D_seed values",
+      "mean D_seed and one-sided bootstrap upper bound",
+      "two-sided 95-percent bootstrap intervals",
+      "observer overhead distribution",
+      "signed live gap distribution",
+      "absolute live accounting residual",
+      "absolute calibrated gap",
+      "order-stratified estimates",
+      "arm-position effects",
+      "validation-batch-stratified estimates",
+      "leave-one-order-out sensitivity",
+      "wall-time analogues"
+    ],
+    "not_used_to_override_primary_decision": true
+  },
+  "stage": "stage3b",
+  "stage_separation": {
+    "analysis_in_separate_commit": true,
+    "confirmatory_execution_in_separate_evidence": true,
+    "implementation_in_separate_commit": true,
+    "preregistration_before_implementation": true,
+    "preregistration_commit_allowed_files": [
+      "docs/language-map.csv",
+      "experiments/planned/STAGE3B-SI-MA1.md",
+      "experiments/planned/STAGE3B-SI-MA1_EN.md",
+      "experiments/planned/STAGE3B-SI-MA1-CONTRACT.json"
+    ],
+    "smoke_in_separate_evidence": true
+  },
+  "statistical_unit": {
+    "identifier": "model_seed",
+    "independent_unit": "independently_trained_model",
+    "nested_observations": [
+      "validation_batch",
+      "balanced_order_block",
+      "arm",
+      "measured_step",
+      "region"
+    ]
+  },
+  "status": "frozen_preregistration",
+  "step": "A9",
+  "timing_protocol": {
+    "device_timing": "rocm_events",
+    "epsilon": 1e-12,
+    "measured_steps_per_arm_block": 50,
+    "missing_measured_steps_allowed": false,
+    "per_region_device_synchronization": false,
+    "required_sync_point": "end_of_arm_block",
+    "same_process_scope": "one isolated process per model_seed",
+    "times_must_be_finite": true,
+    "times_must_be_nonnegative": true,
+    "warmup_steps_per_arm_before_measured_blocks": 20
+  },
+  "title": "SI-MA1 observer-calibrated state_inference cost closure"
+}

@@ -1,0 +1,124 @@
+{
+  "contract_id": "stage3b-si-ma1-v1",
+  "entries": [
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s0-440c5bb620-6d66b0a6-0ffe23c9/20260713T133102Z-0716dd9e/checkpoint.pt",
+      "checkpoint_sha256": "27d43c71523b70cae4b9fde1a2b064916165cb09b8087a84e9bf6ecaab10ac8e",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 0
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s1-753fa7d1a8-6d66b0a6-0ffe23c9/20260713T133419Z-c51449cf/checkpoint.pt",
+      "checkpoint_sha256": "5538421b8f5d791ad47159b179065b686459837f1911c47c23deb85af73b15f7",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 1
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s2-a408a071d1-6d66b0a6-0ffe23c9/20260713T134015Z-404a9a31/checkpoint.pt",
+      "checkpoint_sha256": "0c925343efe191381b49777680f0fe59d8d7db454f450ac2111f9dde9f75ced9",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 2
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s3-0889df93ee-6d66b0a6-0ffe23c9/20260713T134235Z-e1f6611c/checkpoint.pt",
+      "checkpoint_sha256": "bbcc7340ff075cc8049db6e4f7e897b9a7918c655f376205dd9211b162720763",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 3
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s4-ce2001078f-6d66b0a6-0ffe23c9/20260713T134627Z-44bbf20d/checkpoint.pt",
+      "checkpoint_sha256": "8d1942681e1f8557fd81423870d8f980db5b640007218e3b28c0ce4d6f8146b7",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 4
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s5-3f3dd7ea7c-6d66b0a6-0ffe23c9/20260713T135042Z-77a01a82/checkpoint.pt",
+      "checkpoint_sha256": "65f86c72ebf29ddd9ba6cc2709dc2b942bc2eb0eafcc15809607dd78e2549fa1",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 5
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s6-4d60a56b59-6d66b0a6-0ffe23c9/20260713T135413Z-ec9b85a9/checkpoint.pt",
+      "checkpoint_sha256": "1170bd01762d54d2e9dfaed11eec365c16864bb7f9bb7b42e66280db82a4b631",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 6
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s7-8bbf585989-6d66b0a6-0ffe23c9/20260713T135936Z-b3403b99/checkpoint.pt",
+      "checkpoint_sha256": "1a64b803eba8e9e92be5a28491e0ed878748727d6ff3e5f06beb1eec3c7d3255",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 7
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s8-6f8de775a8-6d66b0a6-0ffe23c9/20260713T140329Z-592655e3/checkpoint.pt",
+      "checkpoint_sha256": "81d7c0bf7c2b593e8a77086db2ed7c984ba6f13725b49ed67cbec73216e79611",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 8
+    },
+    {
+      "architecture": "lenet_classic",
+      "checkpoint": "results/stage-2/runs/final_stage_2-fashionmnist-strict-s9-ec3a3eb4a5-6d66b0a6-0ffe23c9/20260713T140514Z-a65b1aff/checkpoint.pt",
+      "checkpoint_sha256": "98c0e87a31f3b8d63c0b9ef08f991b8fa023206fb8c8ee4a2945375ef1700286",
+      "dataset": "FashionMNIST",
+      "eta": 0.05,
+      "inference_steps": 20,
+      "method": "strict",
+      "model_seed": 9
+    }
+  ],
+  "entries_sha256": "adae03666416889c49b4de549bf3977dec53761b14485ba9158a814f9f11852d",
+  "expected_model_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "implementation_commit": "f14a7cb640ee96a292ad5c664ae60c036df7e62f",
+  "implementation_schema_id": "stage3b-si-ma1-implementation-v1",
+  "implementation_tag": "stage3b-si-ma1-implementation-v1",
+  "preregistration_commit": "5b8adfb404b5dd7f1a11d778c0d531e6e2b4c69b",
+  "schema_id": "stage3b-si-ma1-confirmatory-execution-v1",
+  "source_commit_at_inventory_creation": "55e05efabc223b3473fdea02a5b7ea424a79f759"
+}

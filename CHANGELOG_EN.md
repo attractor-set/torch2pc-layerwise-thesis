@@ -2,29 +2,38 @@
 
 [Русская версия](CHANGELOG.md)
 
-## [Unreleased] — terminology and editorial synchronization
+## [Unreleased] — theoretical freeze after `SI-MA1`
+
+### Added
+
+- a bilingual normative `PC-TREF`/`PC-CATM` foundation after `SI-MA1`;
+- `ADR-013` covering operational diagnostic indistinguishability, regret-based
+  required equivalence, precision-masked zero, explicit norm contracts, and
+  separate cost boundaries;
+- new glossary entries with identical `TERM-*` identifiers in both languages.
 
 ### Changed
 
-- aligned the central Russian and English documents to the same structure and
-  claim boundaries;
-- standardized Russian terminology while retaining English only for code,
-  fields, tags, and artifact names;
-- clarified the connections among README, STATUS, ROADMAP, CHANGELOG, and the
-  documentation index;
-- added a separate normative glossary with stable `TERM-*` identifiers,
-  bilingual equivalents, definitions, and usage boundaries;
-- linked terminology updates to the glossary and required repository-wide
-  usage checks in the language policy;
-- preserved the machine-readable boundary
-  `full_stage3b_campaign_complete=false`.
+- README, STATUS, ROADMAP, and the documentation index now reflect final
+  `SI-MA1` and tag `stage3b-si-ma1-confirmatory-v1`;
+- the research questions, hypotheses, analysis pre-specification,
+  methodology, analysis plan, thesis plan, and Scenario A now define
+  candidate-specific B1/B2 preregistration without retrospectively changing
+  completed protocols;
+- PC-TREF separates an exact partition-based quotient from nontransitive
+  threshold proximity;
+- PC-CATM requires explicit spaces, norms, scales, dtypes, thresholds, and
+  aggregation rules;
+- B1/B2 preregistration is permitted after publication, while implementation
+  and execution remain closed pending separate contracts and gates.
 
 ### Preserved unchanged
 
-- all numerical Stage 1/2, Stage 3A, and Stage 3B B0 results;
-- the `sealed-v1` and `analysis-v1` evidence bundles;
-- provenance hashes, checksums, tags, and GitHub Releases;
-- test-dataset access controls and decision gates.
+- frozen B0, `SI-MA0`, and `SI-MA1` protocols and results;
+- negative `COST-MA0` and final `CAL-COST-MA1=true`;
+- raw/derived evidence, hashes, manifests, tags, and provenance;
+- exclusion of future `ECZ` evaluator and control-plane cost from `SI-MA1`;
+- `full_stage3b_campaign_complete=false` and the closed test split.
 
 ## [stage3b-b0-analysis-evidence-v1] — 2026-07-15
 

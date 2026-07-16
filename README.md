@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-Stage%203B%20B0%20analysis%20published-blue)
+![Статус](https://img.shields.io/badge/этап-SI--MA1%20confirmed%3B%20B1%2FB2%20prereg%20next-blue)
 
 Репозиторий магистерской диссертации по сравнению обратного распространения
 ошибки (backpropagation, BP) и режимов предиктивного кодирования в Torch2PC.
@@ -58,7 +58,7 @@
 - вычислительное время и память;
 - воспроизводимость между независимыми запусками.
 
-## Текущее состояние на 15 июля 2026 года
+## Текущее состояние на 16 июля 2026 года
 
 В закреплённой среде Ubuntu/ROCm завершены:
 
@@ -67,16 +67,23 @@
   `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
 - Stage 2: **80/80** на изменённом Torch2PC
   `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
-- Stage 3A: послойная диагностика, статистика на уровне независимо обученных
-  моделей, анализ по глубине и публикационные рисунки;
-- Stage 3B B0: каноническая базовая линия ROCm/float32, 96/96 ячеек, без
-  неудачных попыток и системных отказов ресурсов;
-- Stage 3B B0: статистический и инженерный анализ опубликован без повторного
-  выполнения базовой кампании.
+- Stage 3A: послойная диагностика, model-level statistics, анализ по глубине и
+  публикационные рисунки;
+- Stage 3B B0: каноническая базовая линия ROCm/float32, 96/96 ячеек и
+  опубликованный статистический и инженерный анализ;
+- `SI-MA0`: механизмная реконструкция, observer non-interference и version
+  coherence прошли, но исходный `COST-MA0` не прошёл из-за медианного
+  accounting residual около `0.1606`;
+- `SI-MA1`: десять `model_seed`, 180 matched blocks, observer-calibrated
+  `CAL-COST-MA1` и итоговый `SI-MA1` прошли;
+- теоретический пакет `PC-TREF`/`PC-CATM` фиксирует operational proximity,
+  regret-based required equivalence, norm contracts и раздельные cost
+  boundaries перед B1/B2.
 
-Stage 3A и Stage 3B B0 не обращались к тестовой выборке. Актуальное состояние
-регрессионных проверок фиксирует CI; документация не закрепляет быстро
-устаревающее число пройденных тестов.
+Stage 3A, B0, `SI-MA0` и `SI-MA1` не обращались к test split. Raw и sealed
+результаты не переписываются документационными обновлениями. Актуальное
+состояние регрессионных проверок фиксирует CI; документация не закрепляет
+быстро устаревающее число пройденных тестов.
 
 Подробный статус: [STATUS.md](STATUS.md). Последовательность дальнейшей работы:
 [ROADMAP.md](ROADMAP.md).
@@ -160,6 +167,32 @@ B0 закрепляет кандидата `stage2_baseline` для `FixedPred` 
 незавершённым:
 `full_stage3b_campaign_complete=false`.
 
+### Stage 3B `SI-MA0` и `SI-MA1`
+
+`SI-MA0` выполнил зарегистрированные mechanism-attribution checks на десяти
+независимо обученных моделях. `REC-MA0`, `OBS-MA0`, `VER-MA0` и `CMP-MA0`
+прошли, но `COST-MA0` не прошёл: медианный непокрытый accounting residual
+составил примерно `0.1606`. Этот результат сохранён как отрицательный и не
+переписывается.
+
+`SI-MA1` проверил отдельную observer calibration с matched A/B/C blocks и
+signed residual:
+
+- `10` model seeds и `180` matched blocks;
+- observed median `D_seed = -0.190635073373`;
+- one-sided 95% bootstrap upper bound `-0.188621876160`;
+- registered threshold `0.01`;
+- `CAL-COST-MA1=true`, `si_ma1_passed=true`.
+
+Отрицательный `D_seed` означает over-closure калибровки, а не отрицательную
+физическую стоимость. `SI-MA1` не включает `ECZ` evaluator, action selection,
+fallback validation или end-to-end B1/B2 benefit. Итоговые материалы:
+[`results/stage-3/si-ma1/confirmatory/`](results/stage-3/si-ma1/confirmatory/).
+
+Теоретическое предварительное условие B1/B2 закрывается
+[теоретическим пакетом](docs/pc-tref-pc-catm-theoretical-foundation.md) и
+[ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics.md).
+
 ## Цепочка выполнения и публикации
 
 | Роль | Идентификатор |
@@ -175,6 +208,11 @@ B0 закрепляет кандидата `stage2_baseline` для `FixedPred` 
 | Реализация анализа Stage 3B B0 | `e7a1632a947fae578e877826f0c923342669430e` |
 | Публикационное состояние анализа Stage 3B B0 | `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3` |
 | Тег анализа Stage 3B B0 | `stage3b-b0-analysis-evidence-v1` |
+| Предварительная регистрация `SI-MA1` | `stage3b-si-ma1-prereg-v1` |
+| Тег реализации `SI-MA1` | `stage3b-si-ma1-implementation-v1` |
+| Тег выполнения `SI-MA1` | `stage3b-si-ma1-confirmatory-execution-v1` |
+| Итоговый тег `SI-MA1` | `stage3b-si-ma1-confirmatory-v1` |
+| Публикационное состояние итогового `SI-MA1` | `9bf500a2494267e83cbf9657ad2f075e349a8a75` |
 
 Выпуски GitHub:
 
@@ -184,18 +222,24 @@ B0 закрепляет кандидата `stage2_baseline` для `FixedPred` 
 
 ## Следующий этап
 
-Следующий фактический этап Scenario A — validity controls до изменения
-исполняемого пути:
+Следующий этап Scenario A — отдельная предварительная регистрация B1/B2.
+Теоретический пакет разрешает подготовку контрактов, но не разрешает
+implementation или confirmatory execution автоматически.
 
-1. shortcut/equivalence controls при выключенной instrumentation;
-2. observer non-interference;
-3. observer overhead;
-4. deterministic NCZ/ECZ/TNZ controls;
-5. затем SI-MA0 и отдельные B1/B2 gates.
+Каждый B1/B2 контракт должен заранее фиксировать:
 
-B0 остаётся неизменяемым. Доступ к test split сохраняется закрытым. Полная
-последовательность и календарная граница зафиксированы в
-[реалистичном плане диссертации](docs/masters-thesis-plan.md).
+1. candidate path и frozen reference;
+2. state/RNG restoration и numerical-equivalence endpoints;
+3. partition map или явно нетранзитивную proximity relation;
+4. task-relative loss, regret margin и dangerous-miss rule;
+5. norm contracts для всех сравнений;
+6. cost vector, scalarization или Pareto decision rule;
+7. observer, diagnostic-mechanism и control-plane costs раздельно;
+8. fallback и stop rules.
+
+B0, `SI-MA0`, `SI-MA1` и test-split policy остаются неизменными. Полная
+последовательность зафиксирована в
+[плане диссертации](docs/masters-thesis-plan.md).
 
 ## Контрольные проверки
 

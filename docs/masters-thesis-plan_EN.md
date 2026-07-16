@@ -2,152 +2,145 @@
 
 [Русская версия](masters-thesis-plan.md)
 
-## 1. Starting point
+## 1. Current point
 
-As of 15 July 2026, Stage 1, Stage 2, Stage 3A, the 96/96 Stage 3B B0 campaign,
-its statistical/engineering analysis, and the bilingual terminology migration
-are complete and published. B0 remains immutable; future work creates separate
-controls, candidates, and [evidence](glossary_EN.md#term-evidence).
+As of 16 July 2026, Stage 1/2, Stage 3A, Stage 3B B0, `SI-MA0`, and `SI-MA1`
+are complete. The final `SI-MA1` result is published under
+`stage3b-si-ma1-confirmatory-v1`: `CAL-COST-MA1=true`, while the negative
+`COST-MA0` result remains unchanged. B0 and both SI experiments are immutable
+[evidence](glossary_EN.md#term-evidence) packages.
+
+The current package completes the B1/B2 theoretical prerequisite. The next
+permitted work is separate B1 and B2 preregistration.
 
 ## 2. Primary scientific line
 
-The thesis has three levels:
+1. [PC-TREF](pc-tref-balanced-core_EN.md) defines [task-relative equivalence](glossary_EN.md#term-task-relative-equivalence),
+   [diagnostic quotient](glossary_EN.md#term-diagnostic-quotient), regret, and sufficiency boundaries.
+2. [PC-CATM](pc-catm-operator-model_EN.md) defines canonical correction
+   channels, `NCZ`, `ECZ`, `TNZ`, [state-error transport](glossary_EN.md#term-state-transport), and measurement norm
+   contracts.
+3. [Scenario A](stage3b-primary-scenario-a_EN.md) turns the theory into validity
+   controls, exact candidates, [passive diagnostics](glossary_EN.md#term-passive-diagnostics), a predictor, exact
+   verification, and a controller.
 
-1. [PC-TREF](pc-tref-balanced-core_EN.md), the upper-level framework for
-   task-relative diagnostic sufficiency;
-2. [PC-CATM](pc-catm-operator-model_EN.md), the mechanism model of correction
-   aggregation and error transport;
-3. [Scenario A](stage3b-primary-scenario-a_EN.md), the single primary
-   experimental path.
+## 3. Mandatory scope
 
-Central question:
+### Completed
 
-> Can a cost-efficient diagnostic representation of `state_inference` retain
-> enough information to safely choose the number of subsequent full exact
-> sweeps?
+- reproducible ROCm/Docker environment and frozen baselines;
+- Stage 3A layer-wise evidence;
+- B0 [execution](glossary_EN.md#term-execution), sealing, and engineering analysis;
+- shortcut/observer/mechanism controls;
+- `SI-MA0` and corrective `SI-MA1`;
+- operational `PC-TREF`/`PC-CATM` semantics and ADR-013.
 
-## 3. Frozen mandatory scope
+### Required before the main defense
 
-### Mandatory
-
-Mandatory work includes shortcut/equivalence controls, observer
-non-interference and overhead, deterministic NCZ/ECZ/TNZ controls, SI-MA0,
-[candidate](glossary_EN.md#term-candidate)-specific B1/B2 gates, `EX-IF0`, passive PC-CATM diagnostics, nested
-$\phi_0,\ldots,\phi_5$ ablations, [endpoint](glossary_EN.md#term-endpoint)-gradient utility, counterfactual
-exact verification, shadow [QWake-PC](glossary_EN.md#term-qwake-pc), and active full-sweep QWake-PC only after
-the safety gate passes.
+- [candidate](glossary_EN.md#term-candidate)-specific B1/B2 preregistration and gates;
+- `EX-IF0`, freezing the admissible exact implementation;
+- passive PC-CATM diagnostics and registered-representation comparison;
+- a [local predictor](glossary_EN.md#term-local-predictor) with `model_seed` splits;
+- [counterfactual exact verification](glossary_EN.md#term-exact-verification);
+- shadow-mode and final end-to-end evaluation;
+- one final test evaluation after complete freeze.
 
 ### Limited extension
 
-`PNZ` is limited to theory, one deterministic parameter-accessibility control,
-and an optional small passive audit.
-
-### Outside mandatory scope
-
-Active kernel-preconditioned learning,
-dual Gauss–Newton, layer-aware skipping, plasticity control, continual
-learning, and universal TREF are outside mandatory scope.
+`PNZ`, additional architectures or datasets, and active `QWake-PC` are included
+only if the mandatory path remains protected and a separate protocol exists.
 
 ## 4. Completion levels
 
-### A-Min
+### `A-Min`
 
-Observer and deterministic controls pass, SI-MA0 reconstructs the observed
-update, passive NCZ/ECZ/TNZ diagnostics are published, and PC-TREF
-cost-sufficiency ablations are complete.
+The theoretical package, B1/B2 candidate gates, passive diagnostics, and
+representation comparison are published. Negative candidate results are a
+valid completion of the mechanistic contribution.
 
-### A-Core
+### `A-Core`
 
-B1/B2 are evaluated, `EX-IF0` is frozen, the predictor is evaluated with
-`model_seed` grouping, exact verification is complete, and QWake-PC passes
-through shadow evaluation.
+An admissible B1/B2 path, `EX-IF0`, predictor, counterfactual exact verification,
+and shadow controller with regret/cost analysis are also complete.
 
-### A-Max
+### `A-Max`
 
-Active QWake-PC passes the dangerous-miss gate, reduces exact sweeps/VJPs and
-[device time](glossary_EN.md#term-device-time), and preserves endpoint-gradient bounds. Failure to reach A-Max
-does not invalidate A-Min or A-Core.
+Active control and broader transfer are added only after safety and end-to-end
+gates.
 
 ## 5. Work sequence
 
 ### July–August 2026
 
-Freeze PC-TREF/PC-CATM/Scenario A, implement shortcut controls, validate
-observer non-interference, and measure observer overhead.
+- publish the theoretical package and ADR-013;
+- prepare separate B1/B2 preregistration contracts;
+- freeze numerical equivalence, regret, norms, [cost vector](glossary_EN.md#term-cost-vector), and stop rules;
+- implement deterministic/unit controls after tagged preregistration.
 
 ### September–October 2026
 
-Implement deterministic correction/transport controls, Rosenbaum temporal
-control, the frozen [block-Jacobian probe](glossary_EN.md#term-block-jacobian-probe), and SI-MA0 reconstruction.
+- run controlled ROCm smoke and candidate-specific equivalence gates;
+- make separate admission decisions for full [profiling](glossary_EN.md#term-profiling);
+- run matched B1/B2 confirmatory campaigns for admitted candidates;
+- freeze `EX-IF0`.
 
-### November–December 2026
+### November 2026 – January 2027
 
-Evaluate B1/B2, compare time/memory/[saved tensors](glossary_EN.md#term-saved-tensors)/graph lifetime, and freeze
-`EX-IF0` before predictor-label collection.
+- collect passive PC-CATM features;
+- compare $\phi_0,\ldots,\phi_k$ on the regret–cost frontier;
+- freeze the representation and label protocol;
+- train the predictor only on development splits by `model_seed`.
 
-### January–February 2027
+### February–March 2027
 
-Collect passive PC-CATM observations, compare $\phi_0,\ldots,\phi_4$, construct
-the empirical cost-sufficiency frontier, and prepare predictor data without
-test access.
+- run counterfactual exact verification;
+- evaluate dangerous misses, unnecessary wakes, [fallback](glossary_EN.md#term-fallback), and tail latency;
+- evaluate shadow-mode `QWake-PC` without changing the primary path.
 
-### March–April 2027
+### April–May 2027
 
-Train/evaluate the grouped-seed predictor, run counterfactual exact
-verification, measure dangerous misses and regret, and complete shadow QWake-PC.
-
-### May 2027
-
-Conditionally run active full-sweep QWake-PC, freeze code/image/features/policy
-and analysis, then open the final test split once.
+- freeze final implementation, thresholds, and predictor [configuration](glossary_EN.md#term-configuration);
+- run the one final test evaluation;
+- close evidence manifests, bilingual reports, and claim boundaries.
 
 ### June 2027
 
-Complete statistics, figures, bounded claims, reproducibility audit, thesis
-consolidation, and defense materials.
+- consolidate the thesis, article, limitations, and future work;
+- perform a reproducible release audit.
 
 ## 6. Writing in parallel
 
-Write background/methodology/Stage 1–3A by September 2026, B0 and PC-TREF/
-PC-CATM theory by November, [mechanism attribution](glossary_EN.md#term-mechanism-attribution) by February 2027, diagnostic
-sufficiency and shadow QWake by April, and discussion/conclusion in May–June.
+The `PC-TREF`/`PC-CATM` theory, Stage 3A, B0, `SI-MA0`, and `SI-MA1` chapters
+can be written now. B1/B2 and control chapters are updated only after their
+frozen evidence packages.
 
-## 7. Primary measurements
+## 7. Primary endpoints
 
-### Validity
-
-Validity: endpoint-gradient cosine/relative L2, zero-safe absolute error,
-optimizer-step parity, update reconstruction, and observer non-interference.
-
-### Diagnostic sufficiency
-
-Diagnostic sufficiency: dangerous misses, endpoint-gradient regret,
-unnecessary wake-ups, [fallback](glossary_EN.md#term-fallback) rate, calibration, and generalization across
-`model_seed`.
-
-### Engineering measurements
-
-Engineering: sweeps, VJPs, device/wall time, memory, saved tensors, graph
-lifetime, synchronization, host transfer, and serialization cost.
+- candidate/reference numerical equivalence;
+- [decision regret](glossary_EN.md#term-decision-regret) and dangerous-miss rate;
+- gradient and representation endpoints;
+- device/wall time, memory, [saved tensors](glossary_EN.md#term-saved-tensors), and tail latency;
+- diagnostic-mechanism, observer, control-plane, and fallback costs;
+- end-to-end utility relative to the frozen exact reference.
 
 ## 8. Statistical contract
 
-The independent unit is the separately trained model identified by
-`model_seed`. Layer, sweep, batch, sample, and timing repetitions are nested.
-Predictor splits are grouped by seed. Thresholds, features, and policy are
-frozen before final test access.
+The independent unit is `model_seed`. Nested observations are reduced to
+seed-level. Primary estimand, direction, bootstrap seed/replications,
+multiplicity, and threshold are frozen in advance. The test split is not used
+for selection.
 
 ## 9. Risk control
 
-Shortcut failure does not block canonical Strict analysis. Composite-VJP
-failure leaves B1 or canonical Strict. ECZ can remain descriptive if it lacks
-incremental value. Predictor failure ends active control without invalidating
-A-Min/A-Core. Sweep reduction without device-time benefit is retained as a
-negative engineering result. Additional scope is accepted only after A-Core.
+- B2 failure leaves B1 or canonical Strict;
+- failure of both candidates remains a valid negative result;
+- weak diagnostics leave a descriptive PC-CATM analysis;
+- high regret or [control-plane cost](glossary_EN.md#term-control-plane-cost) blocks active control;
+- the timeline protects `A-Min` before `A-Core`.
 
 ## 10. Contribution boundary
 
-The intended contribution is PC-TREF-oriented and PC-CATM-grounded
-`state_inference` diagnostics that test which mechanism distinctions are
-necessary for safe allocation of full exact sweeps under controlled
-endpoint-gradient regret.
+The intended contribution is a registered, mechanism-interpretable, cost-aware
+test of which state distinctions must be preserved for a computational decision
+under bounded regret. The thesis does not claim a global theory of zero or
+universal representation minimality.

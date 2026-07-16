@@ -12,8 +12,17 @@ from scripts.check_glossary_usage import (
 
 def test_real_glossary_has_paired_terms_and_anchors() -> None:
     terms = parse_terms()
-    assert len(terms) == 83
-    assert len({term.term_id for term in terms}) == len(terms)
+    assert len(terms) == 92
+    term_ids = {term.term_id for term in terms}
+    assert len(term_ids) == len(terms)
+    assert {
+        "TERM-PRECISION-MASKED-ZERO",
+        "TERM-COST-VECTOR",
+        "TERM-PARETO-ADMISSIBILITY",
+        "TERM-DIAGNOSTIC-MECHANISM-COST",
+        "TERM-OBSERVER-COST",
+        "TERM-CONTROL-PLANE-COST",
+    } <= term_ids
 
 
 def test_ecz_has_the_error_cancellation_meaning_only() -> None:

@@ -14,7 +14,15 @@ normative post-B0 plan. Its central question is:
 Scenario A keeps B0 immutable. New documents, controls, and candidates remain
 separate from published B0 [evidence](glossary_EN.md#term-evidence).
 
-Status: A0 is complete through this design freeze; A1–A15 remain unexecuted until their own gates and authorization decisions.
+## Current state as of 16 July 2026
+
+A0–A8 are complete to the extent required for admission to the next stage: B0,
+validity controls, `SI-MA0`, and corrective `SI-MA1` are published. Final
+`SI-MA1` passed `CAL-COST-MA1` while retaining the negative `SI-MA0` result and
+excluding future [control-plane cost](glossary_EN.md#term-control-plane-cost). The [theoretical foundation](pc-tref-pc-catm-theoretical-foundation_EN.md)
+and [ADR-013](decisions/ADR-013-pc-tref-operational-semantics_EN.md) permit
+B1/B2 preregistration. Implementation and [execution](glossary_EN.md#term-execution) remain closed until
+[candidate](glossary_EN.md#term-candidate)-specific contracts exist.
 
 ## Theoretical linkage
 
@@ -117,8 +125,17 @@ Real NCZ/ECZ observations are not interpreted before this gate passes.
 
 ### A9 — B1/B2
 
-Evaluate `isolated_layer_vjp` and `composite_vjp` separately for numerical
-equivalence, [device time](glossary_EN.md#term-device-time), memory, [saved tensors](glossary_EN.md#term-saved-tensors), and graph lifetime.
+The next stage is **separate preregistration**, not immediate [profiling](glossary_EN.md#term-profiling):
+
+- B1: `isolated_layer_vjp`;
+- B2: `composite_vjp` or a prespecified block-composite variant.
+
+Each contract freezes reference path, state/belief/RNG restoration, numerical-
+equivalence endpoints and tolerances, [decision regret](glossary_EN.md#term-decision-regret),
+norm contracts, the [cost vector](glossary_EN.md#term-cost-vector), observer/
+control-plane separation, [fallback](glossary_EN.md#term-fallback), independent unit, and stop rules. Only a
+candidate that passes deterministic controls, ROCm smoke, and a separate
+numerical-equivalence/safety gate may enter matched confirmatory profiling.
 
 ### A10 — EX-IF0
 
@@ -194,7 +211,7 @@ complete.
 
 ### A-Max
 
-Active QWake-PC reduces device time while preserving registered endpoint-gradient
+Active QWake-PC reduces [device time](glossary_EN.md#term-device-time) while preserving registered endpoint-gradient
 and safety bounds.
 
 Failure to reach A-Max does not invalidate A-Min or A-Core.

@@ -2,85 +2,82 @@
 
 [Русская версия](analysis-plan.md)
 
-## Primary analysis
+## Principles
 
-FashionMNIST is the primary [dataset](glossary_EN.md#term-dataset), macro-F1 is the primary metric, and an
-independently trained model is the [independent statistical unit](glossary_EN.md#term-statistical-unit). The primary
-paired comparisons are FixedPred versus BP and Strict versus BP. Each
-comparison requires at least ten complete pairs with matching `model_seed`
-values.
+Analysis begins only after a frozen protocol and provenance check. The primary
+inference level is `model_seed`. Signed outcomes are retained; values are not
+clipped at zero, inconvenient seeds are not excluded post hoc, and exploratory
+results remain separate from confirmatory results.
 
-For each primary comparison, publish:
+## Completed analyses
 
-- raw values for every independently trained model;
-- mean paired difference;
-- 95% confidence interval;
-- `Cohen dz`;
-- an exact paired sign-flip permutation test or the preregistered approximation;
-- the Holm-adjusted value;
-- a separate equivalence assessment.
+- Stage 1/2: quality, time, and method comparability;
+- Stage 3A: gradient cosine, relative L2, norm ratio, sign agreement, CKA, RSA,
+  cross-layer CKA, and depth statistics;
+- Stage 3B B0: matched time/memory, region attribution, and [saved tensors](glossary_EN.md#term-saved-tensors);
+- `SI-MA0`: reconstruction, observer, version, cost, and comparison gates;
+- `SI-MA1`: observer-calibrated closure with bootstrap by `model_seed`.
 
-## Equivalence
+`SI-MA0` and `SI-MA1` are analyzed as sequential, separate experiments. The
+first result is not replaced by the second.
 
-Equivalence is not inferred from the absence of a statistically detectable
-difference. It is assessed separately: the 90% confidence interval for the
-paired macro-F1 difference must lie entirely inside a prespecified margin. The
-working margin of 0.01 is fixed before the [pilot study](glossary_EN.md#term-pilot-study) and is not changed after
-pilot or final results are observed.
+## Operational theoretical definitions
 
-## Secondary analysis
+An exact [diagnostic quotient](glossary_EN.md#term-diagnostic-quotient) requires a partition map $q_I$. Continuous
+features may use
+[operational diagnostic indistinguishability](glossary_EN.md#term-operational-diagnostic-indistinguishability),
+but transitivity is not assumed. Safety is evaluated through
+[decision regret](glossary_EN.md#term-decision-regret), dangerous misses, and
+[fallback](glossary_EN.md#term-fallback), not literal feature equality.
 
-Secondary outcomes include MNIST, accuracy, loss, training trajectory, Exact,
-run success rate, and computational metrics. Secondary analysis is marked
-separately and does not replace the primary analysis.
+Every norm and [precision-masked zero](glossary_EN.md#term-precision-masked-zero)
+has a registered measurement contract. Layer/time aggregation occurs only
+after authorized normalization.
 
-## Layer-wise analysis
+## B1/B2 analysis preregistration
 
-Gradient measures are aggregated first within one trained model and then across
-models with different `model_seed` values. Individual parameters, layers, and
-batches are not treated as independent model replications.
+B1 and B2 separately freeze:
 
-## Representation analysis
+- [candidate](glossary_EN.md#term-candidate)/reference pair and scope;
+- primary numerical-equivalence [endpoint](glossary_EN.md#term-endpoint);
+- absolute and/or relative tolerance with a zero-denominator rule;
+- safety endpoint, $\delta_R$, and allowed dangerous-miss rate;
+- independent unit `model_seed` and nesting;
+- [execution](glossary_EN.md#term-execution) matrix, order balancing, and replacement policy;
+- the [cost vector](glossary_EN.md#term-cost-vector);
+- scalarization or [Pareto admissibility](glossary_EN.md#term-pareto-admissibility);
+- multiplicity, bootstrap/random seed, replication count, and decision rule;
+- stop/fallback rules and conditions for opening full [profiling](glossary_EN.md#term-profiling).
 
-Uncertainty for CKA and RSA must include between-model variation. Resampling
-images alone is insufficient. The analysis uses hierarchical resampling or
-comparisons of model-level estimates.
+## Primary candidate gates
 
-## Robustness
+1. **NUM-B1/B2:** candidate matches the frozen reference within registered
+   numerical tolerances.
+2. **STATE:** state, beliefs, and RNG are restored before matched arms.
+3. **SAFETY:** regret/dangerous-miss stays within the registered limit.
+4. **COST:** benefit persists after separate diagnostic-mechanism, observer,
+   control-plane, and fallback accounting.
+5. **CMP:** cardinality, provenance, manifests, and planned comparisons are
+   complete.
 
-The same [checkpoint](glossary_EN.md#term-checkpoint) is evaluated on deterministic corruptions with fixed
-corruption-generator seeds. Report the clean-data metric, relative degradation,
-the slope across severity, and the value at maximum severity.
+Failure of numerical equivalence or safety closes the candidate to confirmatory
+profiling. Failure of cost remains a scientific result but does not support a
+speedup claim.
 
-## Computational cost
+## Secondary analyses
 
-Equal-update and equal-wall-clock comparisons are reported separately. The
-measurements include [warm-up](glossary_EN.md#term-warm-up), GPU synchronization, deterministic method-order
-counterbalancing, repeated measurements, and host-state recording before and
-after each series. The post-pilot order and telemetry freeze are documented in
-`docs/decisions/ADR-005-post-pilot-final-execution_EN.md`.
+- layer, [dataset](glossary_EN.md#term-dataset), method, and seed heterogeneity;
+- sensitivity to prespecified norm/threshold variants;
+- order and thermal effects;
+- descriptive relation between PC-CATM features and candidate error;
+- regret–cost frontier across registered representations;
+- fallback frequency and tail latency.
 
-## Confirmatory-analysis completeness
+Secondary analyses do not alter the primary decision.
 
-A primary contrast is confirmatory only when at least ten complete pairs with
-prespecified seed values are available. With fewer pairs, descriptive estimates
-are retained, but no Holm-adjusted p-value or equivalence conclusion is formed.
+## Completeness and publication
 
-The pilot [configuration](glossary_EN.md#term-configuration) is selected using FashionMNIST validation data only. MNIST is
-a secondary transfer assessment and does not participate in [candidate](glossary_EN.md#term-candidate) ranking.
-
-## Stage 3 addendum
-
-Stage 3 does not modify the Stage 1/2 [confirmatory analysis](glossary_EN.md#term-confirmatory-analysis). It uses separate
-analysis units:
-
-- training quality: an independently trained model;
-- [profiling](glossary_EN.md#term-profiling): a matched [experiment cell](glossary_EN.md#term-experiment-cell) or repetition within a hardware block;
-- locality: events aggregated within a run before analysis across trained models;
-- gradient alignment: layers aggregated within a model before between-model
-  analysis.
-
-B1 and B2 use numerical-equivalence checks and paired [runtime](glossary_EN.md#term-runtime)/memory
-observations. C1 and C2 use validation [non-inferiority](glossary_EN.md#term-non-inferiority), gradient alignment, and
-compute reduction. The final [non-inferiority](glossary_EN.md#term-non-inferiority) margin is fixed before Stage 3
-test access. See the [Stage 3 protocol](stage-3-protocol_EN.md).
+Publish raw retained attempts, compact derived tables, machine-readable
+summary/decision, bilingual report, environment record, and `SHA256SUMS`.
+Aggregation does not modify raw [evidence](glossary_EN.md#term-evidence). The test split is not used before a
+separate final-evaluation contract.

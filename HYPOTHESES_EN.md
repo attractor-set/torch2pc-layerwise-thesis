@@ -96,3 +96,41 @@ completed B0 findings.
 
 PNZ and the parameter tangent kernel are a limited exploratory extension and
 are not part of the mandatory confirmatory hypothesis family.
+
+## Post-`SI-MA1` hypothesis refinement
+
+This prospective refinement applies only to future B1/B2 preregistration. It
+does not change the wording or results of completed Stage 1/2, B0, `SI-MA0`, or
+`SI-MA1`. Normative semantics are defined by the
+[`PC-TREF`/`PC-CATM` theoretical foundation](docs/pc-tref-pc-catm-theoretical-foundation_EN.md)
+and [ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md).
+
+- **H-TREF1-OP:** registered diagnostic classes through $q_I$, or explicitly
+  nontransitive operational indistinguishability, permit assessment of the
+  task-relative equivalence defect through [decision regret](docs/glossary_EN.md#term-decision-regret),
+  dangerous misses, or an equivalent prespecified outcome. No effect direction
+  or magnitude is assumed.
+- **H-TREF2-OP:** a nondominated representation may exist among preregistered
+  representations under the [cost vector](docs/glossary_EN.md#term-cost-vector)
+  and decision regret. This is not a global-minimality claim; the selection
+  criterion, scalarization, or
+  [Pareto admissibility](docs/glossary_EN.md#term-pareto-admissibility) is frozen
+  before analysis.
+- **H-R1-COST:** exact-sweep reduction counts as an end-to-end benefit only
+  after separate accounting for [diagnostic-mechanism cost](docs/glossary_EN.md#term-diagnostic-mechanism-cost),
+  [observer cost](docs/glossary_EN.md#term-observer-cost),
+  [control-plane cost](docs/glossary_EN.md#term-control-plane-cost), and
+  fallback. The negative `SI-MA1` residual is not used to offset future control
+  cost.
+- **H-B1:** a B1 candidate with an isolated layer-wise execution path may
+  preserve registered numerical and safety bounds while improving at least one
+  cost-vector component without degrading the others beyond prespecified
+  tolerances.
+- **H-B2:** a B2 candidate with a composite execution path may preserve the same
+  bounds while producing a different locality/runtime/memory trade-off. No B1
+  or B2 superiority direction is assumed.
+
+These hypotheses permit only preparation of separate B1/B2 contracts.
+Implementation and confirmatory execution remain closed until $q_I$ or the
+proximity rule, $q_R$, the regret tolerance, norms, cost rule, fallback,
+provenance, and candidate-specific decision gates are frozen.

@@ -88,3 +88,51 @@ The independent statistical unit is `model_seed`. Thresholds, features, model
 splits, endpoint-gradient utility, dangerous-miss limit, and exact fallback
 rules must be frozen before test access. PNZ and the parameter tangent kernel
 are outside mandatory confirmatory execution.
+
+## Post-`SI-MA1` amendment: B1/B2 preregistration conditions
+
+This amendment does not rewrite the original Stage 1/2 specification, the
+Stage 3 addendum, the design-only Scenario A ordering, or the B0, `SI-MA0`, and
+`SI-MA1` contracts or results. The final `SI-MA1` result is frozen by tag
+`stage3b-si-ma1-confirmatory-v1`: `CAL-COST-MA1` passed, while future `ECZ`
+evaluator and action-selection cost was excluded.
+
+The normative documents for the next step are:
+
+- [`PC-TREF`/`PC-CATM` theoretical foundation after `SI-MA1`](docs/pc-tref-pc-catm-theoretical-foundation_EN.md);
+- [`PC-TREF` Balanced Core](docs/pc-tref-balanced-core_EN.md);
+- [`PC-CATM` operator model](docs/pc-catm-operator-model_EN.md);
+- [ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md);
+- [primary Scenario A plan](docs/stage3b-primary-scenario-a_EN.md).
+
+After publication of the theoretical package, preparation of separate B1 and
+B2 preregistrations is permitted. Implementation and confirmatory execution of
+each candidate remain closed until its own contract, preregistration tag, and
+authorization decision are published.
+
+Before implementation and test access, every candidate-specific contract must
+freeze:
+
+- an exact diagnostic partition map $q_I$, or an explicitly nontransitive
+  operational-proximity rule with its metric, normalization, and tolerance;
+- a decision-class map $q_R$, action space, primary outcome,
+  [decision regret](docs/glossary_EN.md#term-decision-regret), regret tolerance,
+  and dangerous-miss limit;
+- norm measurement contracts covering the space, norm, scale, `epsilon`,
+  threshold, layer, step, and aggregation rule;
+- the [cost vector](docs/glossary_EN.md#term-cost-vector), units for every
+  component, and a prespecified scalarization or
+  [Pareto admissibility](docs/glossary_EN.md#term-pareto-admissibility);
+- separate accounting for [diagnostic-mechanism cost](docs/glossary_EN.md#term-diagnostic-mechanism-cost),
+  [observer cost](docs/glossary_EN.md#term-observer-cost),
+  [control-plane cost](docs/glossary_EN.md#term-control-plane-cost), and
+  fallback;
+- candidate equations and code path, restoration of state, beliefs, and RNG,
+  the numerical-equivalence or non-inferiority gate, and fallback validation;
+- the independent `model_seed` unit, execution matrix, replacement policy,
+  provenance, append-only ledger, evidence layout, and stopping rules;
+- a closed test loader until the corresponding freeze.
+
+A negative `D_seed` or `SI-MA1` over-closure remains a signed
+observer-calibration result and is not interpreted as negative physical cost,
+end-to-end acceleration, or a budget for the future control plane.

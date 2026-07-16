@@ -481,8 +481,29 @@ checks and decision gates.
 ### TERM-TASK-RELATIVE-EQUIVALENCE — task-relative equivalence
 
 - **Russian equivalent:** относительная к задаче эквивалентность.
-- **Project meaning:** An equivalence relation under which two states are equivalent when the same registered computational action is admissible for both under the specified regret bound.
-- **Usage rule:** This is decision-relative equivalence, not numerical equality of states, gradients, or diagnostic features.
+- **Project meaning:** A registered identification of states relative to a computational decision: every decision class must satisfy the specified regret tolerance for all states in the class.
+- **Usage rule:** A quotient claim requires an explicit partition map. Threshold proximity of continuous features is not itself called an equivalence relation because transitivity is not assumed.
+
+<a id="term-operational-diagnostic-indistinguishability"></a>
+### TERM-OPERATIONAL-DIAGNOSTIC-INDISTINGUISHABILITY — operational diagnostic indistinguishability
+
+- **Russian equivalent:** операциональная диагностическая неразличимость.
+- **Project meaning:** The threshold relation $d_I(\phi_I(x),\phi_I(y))\leq\varepsilon_I$ for a registered diagnostic space, metric, normalization, and tolerance.
+- **Usage rule:** Use it as a proximity criterion; it is not assumed transitive and does not induce a quotient without a separate partition map.
+
+<a id="term-decision-regret"></a>
+### TERM-DECISION-REGRET — decision regret
+
+- **Russian equivalent:** regret решения.
+- **Project meaning:** The additional registered loss of a selected action relative to the best available action in the same state and action space.
+- **Usage rule:** Freeze the loss function, improvement direction, aggregation unit, and admissible tolerance $\delta_R$ before confirmatory analysis.
+
+<a id="term-required-equivalence"></a>
+### TERM-REQUIRED-EQUIVALENCE — required equivalence
+
+- **Russian equivalent:** требуемая эквивалентность.
+- **Project meaning:** A partition-based relation merging states with the same registered decision class after that class satisfies the specified regret tolerance.
+- **Usage rule:** Common admissibility of one action at regret no greater than $\delta_R$ may be a safety relation, but is not called equivalence without transitivity or an explicit partition map.
 
 <a id="term-diagnostic-quotient"></a>
 ### TERM-DIAGNOSTIC-QUOTIENT — diagnostic quotient
@@ -495,8 +516,8 @@ checks and decision gates.
 ### TERM-TASK-RELATIVE-EQUIVALENCE-DEFECT — task-relative equivalence defect
 
 - **Russian equivalent:** дефект относительной к задаче эквивалентности.
-- **Project meaning:** State pairs merged by diagnostic equivalence but requiring different computational actions; formally $\mathfrak D_{I\to R}=E_I\setminus E_R$.
-- **Usage rule:** The experiment estimates it through registered operational proxies such as regret, dangerous misses, and unnecessary wake-ups rather than exhaustive enumeration of all state pairs.
+- **Project meaning:** State pairs merged by registered diagnostic equivalence but assigned to different required-equivalence classes; formally $\mathfrak D_{I\to R}^{q}=E_I^q\setminus E_R^q$.
+- **Usage rule:** A separate common-admissibility safety defect may be estimated through regret, dangerous misses, and unnecessary wake-ups, but it is not called a quotient defect without two explicit partition maps.
 
 <a id="term-canonical-correction-channel"></a>
 ### TERM-CANONICAL-CORRECTION-CHANNEL — canonical correction channel
@@ -602,6 +623,48 @@ checks and decision gates.
 - **Russian equivalent:** QWake-PC.
 - **Project meaning:** A research controller combining correction geometry, state-error transport, temporal persistence, predictor uncertainty, and counterfactual exact verification to allocate full exact state-inference sweeps.
 - **Usage rule:** It operates in shadow mode first; active control requires registered safety and runtime gates.
+
+<a id="term-precision-masked-zero"></a>
+### TERM-PRECISION-MASKED-ZERO — precision-masked zero
+
+- **Russian equivalent:** ноль, маскированный точностью.
+- **Project meaning:** A registered numerical neighborhood $Z_{\tau}^{\mathcal N}=\{z:\|z\|_{\mathcal N}\leq\tau_{\mathcal N}\}$ with explicit space, norm, scale, dtype, device, and aggregation rule.
+- **Usage rule:** Do not conflate it with mathematical zero, diagnostic indistinguishability, or permission to take a zero-like action.
+
+<a id="term-cost-vector"></a>
+### TERM-COST-VECTOR — cost vector
+
+- **Russian equivalent:** вектор стоимости.
+- **Project meaning:** Separate compute, latency, memory, diagnostic-mechanism, observer, control-plane, and fallback components associated with one action and diagnostic representation.
+- **Usage rule:** Do not combine components implicitly; freeze scalarization, units, and weights before analysis or use a registered Pareto rule.
+
+<a id="term-pareto-admissibility"></a>
+### TERM-PARETO-ADMISSIBILITY — Pareto admissibility
+
+- **Russian equivalent:** Pareto-допустимость.
+- **Project meaning:** An action is not dominated by another action on every registered quality and cost component with strict improvement on at least one component.
+- **Usage rule:** Pareto admissibility does not select one winner; a separate primary decision rule is preregistered.
+
+<a id="term-diagnostic-mechanism-cost"></a>
+### TERM-DIAGNOSTIC-MECHANISM-COST — diagnostic-mechanism cost
+
+- **Russian equivalent:** стоимость диагностического механизма.
+- **Project meaning:** The computational cost of operations required to form diagnostic features in the candidate's executed path.
+- **Usage rule:** Separate it from measurement instrumentation and the future control plane.
+
+<a id="term-observer-cost"></a>
+### TERM-OBSERVER-COST — observer cost
+
+- **Russian equivalent:** стоимость наблюдателя.
+- **Project meaning:** Overhead from instrumentation, timers, hooks, counters, and measurement-evidence production.
+- **Usage rule:** `SI-MA1` calibrates this boundary; a negative calibrated residual is over-closure, not negative physical cost.
+
+<a id="term-control-plane-cost"></a>
+### TERM-CONTROL-PLANE-COST — control-plane cost
+
+- **Russian equivalent:** стоимость управляющего контура.
+- **Project meaning:** Cost of additional feature acquisition, `ECZ` evaluation, action selection, coordination, and fallback validation in a future controller.
+- **Usage rule:** It is excluded from `SI-MA1` and must be measured separately before end-to-end B1/B2 or `QWake-PC` claims.
 
 <a id="term-primary-working-scenario"></a>
 ### TERM-PRIMARY-WORKING-SCENARIO — primary working scenario

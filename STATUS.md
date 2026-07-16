@@ -2,139 +2,127 @@
 
 [English version](STATUS_EN.md)
 
-Этапы Stage 1 и Stage 2 завершены и опубликованы как неизменяемые базовые
-линии. Диагностика и статистическая публикация **Stage 3A** завершены в области,
-ограниченной валидационной выборкой. Для **Stage 3B B0** завершены каноническое
-выполнение, проверка, фиксация целостности, публикация доказательных материалов,
-а также статистический и инженерный анализ. Полный этап Stage 3B остаётся
-незавершённым.
+На 16 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
+Stage 3B B0, `SI-MA0` и `SI-MA1`. Полный Stage 3B остаётся незавершённым:
+B1/B2, `EX-IF0`, passive diagnostics, predictor, counterfactual exact
+verification и `QWake-PC` ещё не выполнены.
 
 ## Сводка состояния
 
 | Компонент | Подтверждённое состояние |
 |---|---|
-| Пилотная кампания | 96/96; тестовая выборка не использовалась |
+| Pilot | 96/96; test split не использовался |
 | Stage 1 / Stage 2 | 80/80 и 80/80 |
-| Время выполнения Stage 2 | `BP ≈ Exact < FixedPred << Strict` |
-| Проверки градиентов Stage 3A при одинаковом состоянии | 10/10 случайных начальных значений |
-| Проверки представлений Stage 3A | 10/10 случайных начальных значений |
-| Численные проверки Exact–BP | 10/10; пройдены 30/30 строк статистического контроля |
-| Наблюдения Stage 3A | 2250 градиентных; 150 по представлениям; 750 cross-layer CKA |
-| Подтверждающая статистика Stage 3A | 40 сравнений градиентов и 20 сравнений представлений |
-| Анализ Stage 3A по глубине | 180 строк по случайным начальным значениям; 24 статистические строки |
-| Публикационные рисунки Stage 3A | 8 PDF-файлов |
-| Кандидат Stage 3B B0 | `stage2_baseline`; методы `FixedPred` и `Strict` |
-| Область Stage 3B B0 | ROCm/float32; синтетическое масштабирование; без тестовой выборки |
-| Выполнение Stage 3B B0 | 96/96 ячеек; 96 завершённых попыток; 0 неудачных |
-| Изоляция процессов | 96 записей; 96 уникальных дочерних PID; новый процесс на ячейку |
-| Сводные доказательные материалы B0 | 96 строк по ячейкам, 480 по областям, 48 парных и 32 по конфигурациям |
-| Целостность B0 | пройдены проверки отсутствия возмущения, полноты, конечности и SHA-256 |
-| Доступ к тестовой выборке в Stage 3A/B0 | отсутствовал |
-| Публикация B0 | тег и выпуск `stage3b-b0-evidence-v1` |
-| Независимая единица анализа B0 | независимо обученная модель, заданная `model_seed`; 3 на конфигурацию |
-| Ограниченный результат по времени | медиана Strict/FixedPred для времени на устройстве `2.327×` |
-| Ограниченный результат по памяти | пиковая выделенная память `1.328×`; сохранённые тензоры при выводе состояний `11.998×` |
-| Основная область времени B0 | вывод состояний (`state_inference`) для обоих методов |
-| Публикация анализа B0 | тег и выпуск `stage3b-b0-analysis-evidence-v1` |
-| Решение после B0 | продолжить проверки эквивалентности для кандидатов B1/B2 |
+| Stage 3A | layer-wise confirmatory evidence и publication complete |
+| Stage 3B B0 | 96/96 ROCm/float32 cells; evidence и analysis published |
+| `SI-MA0` | `REC/OBS/VER/CMP=true`, `COST=false`, global fail retained |
+| `SI-MA1` execution | 10 model seeds, 3 batches/seed, 180 matched blocks |
+| `SI-MA1` decision | `CAL-COST-MA1=true`, `si_ma1_passed=true` |
+| Теоретический prerequisite B1/B2 | выполнен этим `PC-TREF`/`PC-CATM` package |
+| B1/B2 preregistration | разрешена после публикации пакета |
+| B1/B2 implementation/execution | закрыты до candidate-specific contracts |
+| Test split | закрыт |
 | Полный Stage 3B | `full_stage3b_campaign_complete=false` |
-| Регрессионные проверки | актуальное состояние фиксирует CI |
 
-## Границы опубликованных результатов
+## Опубликованные результаты и границы
 
 ### Stage 3A
 
-Подробный отчёт опубликован в
-[docs/stage3a-statistical-results.md](docs/stage3a-statistical-results.md).
-Независимой статистической единицей является отдельно обученная модель. Слои,
-пакеты данных, параметры и отдельные примеры рассматриваются как повторные
-наблюдения внутри одного `model_seed`.
+В области FashionMNIST, `lenet_classic` и `model_seed=0..9`:
 
-В пределах FashionMNIST, архитектуры `lenet_classic`, случайных начальных
-значений 0–9 и закреплённой реализации наблюдается следующее:
-
-- `FixedPred` почти сохраняет направление градиента, но существенно уменьшает
-  его норму в ранних слоях; в слое 5 значения приближаются к целям BP;
-- `Strict` в скрытых слоях отличается от BP по направлению и масштабу, тогда
-  как выходной слой остаётся близким к BP;
+- `FixedPred` почти сохраняет направление градиента, но уменьшает его норму в
+  ранних слоях;
+- `Strict` в скрытых слоях отличается от BP по направлению и масштабу;
 - представления `FixedPred` ближе к BP, чем представления `Strict`;
-- отношение норм градиента увеличивается с глубиной, а relative L2 уменьшается;
-- CKA не показывает устойчивого монотонного изменения с глубиной, тогда как
-  RSA показывает умеренную положительную тенденцию.
+- отдельные слои, batches и изображения не считаются независимыми моделями.
 
-Эти наблюдения не переносятся автоматически на другие архитектуры, наборы
-данных, реализации или вычислительные среды.
+Результаты ограничены зарегистрированными checkpoints, реализацией и средой.
 
 ### Stage 3B B0
 
-Публикация B0 подтверждает полноту, происхождение и целостность канонической
-базовой линии профилирования для кандидата `stage2_baseline`. Опубликованный
-анализ добавляет ограниченные сравнительные результаты по времени, памяти,
-областям измерения и масштабированию. Число независимых единиц остаётся равным
-трём моделям на конфигурацию.
+B0 закрепил `stage2_baseline` для `FixedPred` и `Strict` в синтетической
+ROCm/float32 matrix. В зарегистрированной области:
 
-Зафиксированная цепочка происхождения:
+- median Strict/FixedPred device-time ratio: `2.327×`;
+- peak allocated memory ratio: `1.328×`;
+- `state_inference` — основная область времени;
+- saved-tensor ratio в `state_inference`: `11.998×`.
 
-- источник выполнения `95c25d35224abd5e741f1df9327662ff2fde23ad`;
-- источник фиксации целостности `caa226cc1cd5d4aa0f9772c1fb997f7388d60730`;
-- публикационное состояние `ed0d48063a17e2d9c6679869a4d930f933877052`;
-- контрольная сумма архива
-  `9abc6434b0f59b510e14ef0ad09d5c3b92a4a9472a90974cb92cdb1657e232ed`;
-- контрольная сумма зафиксированного набора
-  `6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`;
-- реализация анализа `e7a1632a947fae578e877826f0c923342669430e`;
-- публикационное состояние анализа
-  `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3`;
-- тег публикации анализа `stage3b-b0-analysis-evidence-v1`.
+Это описательный инженерный анализ, а не универсальное ranking claim.
 
-Опубликованные результаты в зарегистрированной области:
+### `SI-MA0`
 
-- медианное отношение Strict/FixedPred для времени на устройстве — `2.327×`;
-  диапазон по конфигурациям — `1.966–2.619×`;
-- медианное отношение Strict/FixedPred для пиковой выделенной памяти — `1.328×`;
-- вывод состояний (`state_inference`) является основной областью времени для
-  `FixedPred` и `Strict`;
-- медианное отношение Strict/FixedPred для сохранённых тензоров в области
-  `state_inference` — `11.998×`.
+`SI-MA0` проверил mechanism attribution на десяти независимо обученных моделях:
 
-Это описательный инженерный анализ закреплённой синтетической матрицы
-ROCm/float32. Он не задаёт универсального ранжирования методов и не подтверждает
-структурную локальность без дополнительных измерений.
+- reconstruction, observer non-interference, version coherence и comparison
+  gates прошли;
+- `COST-MA0` не прошёл;
+- median accounting residual: приблизительно `0.1606077466` при
+  зарегистрированном max-relative-residual threshold `0.05`;
+- `si_ma0_passed=false`, next stage remained closed.
 
-## Публикационные материалы
+Отрицательный результат сохранён и не переписывается итогом `SI-MA1`.
 
-- Stage 3A: [статистика](results/stage3/layerwise/confirmatory/statistics/) и
-  [рисунки](results/stage3/layerwise/confirmatory/figures/);
-- Stage 3B B0:
-  [зафиксированные доказательные материалы](results/stage-3/profiling/b0/sealed-v1/);
-- Stage 3B B0:
-  [инженерный анализ](results/stage-3/profiling/b0/analysis-v1/);
-- выпуски GitHub
-  [`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
-  и
-  [`stage3b-b0-analysis-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1).
+### `SI-MA1`
 
-Опубликованные доказательные материалы не пересоздаются при изменении
-документации.
+`SI-MA1` использовал matched A/B/C observer calibration:
+
+- `10` model seeds, `180` matched blocks;
+- `27000` arm timing rows;
+- `63000` live-region timing rows;
+- `360` numerical-comparison rows;
+- `180` topology-comparison rows;
+- observed median `D_seed=-0.190635073373`;
+- one-sided 95% bootstrap upper bound `-0.188621876160`;
+- registered threshold `0.01`;
+- `CAL-COST-MA1=true`, global `SI-MA1=pass`.
+
+Signed values сохранены. Отрицательный residual является over-closure
+observer calibration и не считается отрицательной физической стоимостью.
+`SI-MA1` исключает future `ECZ` evaluator, action selection, fallback
+validation и end-to-end B1/B2 savings.
+
+## Теоретическое состояние
+
+[PC-TREF Balanced Core](docs/pc-tref-balanced-core.md),
+[PC-CATM](docs/pc-catm-operator-model.md),
+[теоретическое основание](docs/pc-tref-pc-catm-theoretical-foundation.md) и
+[ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics.md) фиксируют:
+
+- partition-based diagnostic quotient и отдельно threshold proximity без
+  предположения транзитивности;
+- regret-based required equivalence;
+- operational task-relative defect;
+- precision-masked zero и explicit norm contracts;
+- cost vector и preregistered scalarization/Pareto rule;
+- разделение diagnostic-mechanism, observer и control-plane costs.
+
+Эта фиксация выполняет теоретическое предварительное условие B1/B2. Она не
+является доказательством ускорения или safety кандидатов.
+
+## Provenance
+
+| Артефакт | Идентификатор |
+|---|---|
+| B0 evidence | `stage3b-b0-evidence-v1` |
+| B0 analysis | `stage3b-b0-analysis-evidence-v1` |
+| `SI-MA1` preregistration | `stage3b-si-ma1-prereg-v1` |
+| `SI-MA1` implementation | `stage3b-si-ma1-implementation-v1` |
+| `SI-MA1` execution | `stage3b-si-ma1-confirmatory-execution-v1` |
+| `SI-MA1` final | `stage3b-si-ma1-confirmatory-v1` |
+| `SI-MA1` publication commit | `9bf500a2494267e83cbf9657ad2f075e349a8a75` |
+
+Raw execution evidence и confirmatory outputs сохраняются в
+`results/stage-3/si-ma1/working/confirmatory/` и
+`results/stage-3/si-ma1/confirmatory/`. Документационные изменения не
+пересоздают эти материалы.
 
 ## Следующий этап
 
-Следующий фактический этап — validity controls Scenario A:
+Следующий разрешённый шаг — B1/B2 candidate-specific preregistration. До
+реализации каждый контракт должен определить reference path, state/RNG
+restoration, numerical-equivalence endpoints, regret и safety margins, norm
+contracts, cost vector, observer/control separation, fallback и stop rules.
 
-- shortcut/equivalence controls без instrumentation;
-- observer non-interference и observer overhead;
-- deterministic NCZ/ECZ/TNZ controls;
-- после их прохождения — SI-MA0 и отдельные B1/B2 gates.
-
-Полное сопоставленное профилирование, active QWake-PC и доступ к test split
-остаются заблокированными до собственных решений о допуске.
-
-## Принятое проектное решение после B0
-
-Сценарий A принят как основной рабочий план дальнейшего Stage 3B. Решение
-зафиксировано в [ADR-012](docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a.md),
-верхнеуровневая рамка — в [PC-TREF Balanced Core](docs/pc-tref-balanced-core.md), механизмная модель — в [PC-CATM](docs/pc-catm-operator-model.md), последовательность
-работы — в [плане сценария A](docs/stage3b-primary-scenario-a.md). Это проектная
-фиксация, а не сообщение о завершённом экспериментальном выполнении. Эта
-фиксация завершает только A0; следующий фактический этап — проверки shortcut и
-наблюдателя. B0 и доступ к тестовой выборке не изменяются.
+Full matched profiling, `EX-IF0`, active control и test-split access остаются
+закрыты до собственных решений о допуске.

@@ -1,0 +1,100 @@
+{
+  "b1_b2_gate_condition_satisfied": true,
+  "b1_b2_opened": false,
+  "combined_csv_row_counts": {
+    "si_ma1_arm_timing_records.csv": 27000,
+    "si_ma1_block_summaries.csv": 180,
+    "si_ma1_numerical_comparisons.csv": 360,
+    "si_ma1_region_timing_records.csv": 63000,
+    "si_ma1_seed_summaries.csv": 10,
+    "si_ma1_topology_comparisons.csv": 180
+  },
+  "confirmatory_decision_made": true,
+  "contract_id": "stage3b-si-ma1-v1",
+  "decision_state": "pass",
+  "ecz_evaluator_cost_included": false,
+  "ecz_evaluator_executed": false,
+  "execution_schema_id": "stage3b-si-ma1-confirmatory-execution-v1",
+  "execution_tag": "stage3b-si-ma1-confirmatory-execution-v1",
+  "execution_tag_commit": "bbbfb73c66d91ad28bf4cba32744e2dd039ea397",
+  "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+  "gates": {
+    "BAL-MA1-cell": true,
+    "CAL-COST-MA1": true,
+    "CMP-MA1-cell": true,
+    "NUM-MA1-cell": true,
+    "TOPO-MA1-cell": true,
+    "prerequisites_verified": true
+  },
+  "image_revision": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "implementation_schema_id": "stage3b-si-ma1-implementation-v1",
+  "input_tree_sha256": "71e9539488c4b6055be9c48a6572950f49fdf2ab0017fdf05a0bd75c0212377c",
+  "matched_block_count": 180,
+  "model_seed_count": 10,
+  "order_seed_value_source_rows": 60,
+  "order_sensitivity_rows": 12,
+  "primary_estimand": {
+    "bootstrap_quantile_method": "numpy linear",
+    "bootstrap_type": "one-sided percentile bootstrap upper bound",
+    "confidence_level": 0.95,
+    "lower_two_sided_95": -0.19618004107170672,
+    "mean": -0.1924177180423267,
+    "observed": -0.1906350733728276,
+    "repeats": 10000,
+    "resampling_unit": "model_seed",
+    "seed": 20260716,
+    "statistic": "median(D_seed)",
+    "threshold": 0.01,
+    "upper_one_sided_95": -0.18862187616037485,
+    "upper_two_sided_95": -0.18862187616037485
+  },
+  "schema_id": "stage3b-si-ma1-confirmatory-aggregation-v1",
+  "secondary_analyses_authorize_decision": false,
+  "seed_values": [
+    {
+      "d_seed": -0.18797248545840936,
+      "model_seed": 0
+    },
+    {
+      "d_seed": -0.1911865144475936,
+      "model_seed": 1
+    },
+    {
+      "d_seed": -0.18016698531213707,
+      "model_seed": 2
+    },
+    {
+      "d_seed": -0.19069109346537144,
+      "model_seed": 3
+    },
+    {
+      "d_seed": -0.19057905328028377,
+      "model_seed": 4
+    },
+    {
+      "d_seed": -0.19019312702398197,
+      "model_seed": 5
+    },
+    {
+      "d_seed": -0.1957111993747536,
+      "model_seed": 6
+    },
+    {
+      "d_seed": -0.20117356769581987,
+      "model_seed": 7
+    },
+    {
+      "d_seed": -0.18862187616037485,
+      "model_seed": 8
+    },
+    {
+      "d_seed": -0.20788127820454141,
+      "model_seed": 9
+    }
+  ],
+  "si_ma0_result_rewritten": false,
+  "si_ma1_passed": true,
+  "si_ma1_prereg_commit": "5b8adfb404b5dd7f1a11d778c0d531e6e2b4c69b",
+  "source_git_commit": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "theoretical_pc_tref_patch_required_before_b1_b2": true
+}

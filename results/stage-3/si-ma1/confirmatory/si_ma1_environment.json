@@ -1,0 +1,16 @@
+{
+  "aggregation_git_commit": "c2fa8bd3964df1b04e731f185d8d7b10db5d03d4",
+  "contract_id": "stage3b-si-ma1-v1",
+  "ecz_evaluator_cost_included": false,
+  "ecz_evaluator_executed": false,
+  "execution_image_revision": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "execution_source_git_commit": "55e05efabc223b3473fdea02a5b7ea424a79f759",
+  "execution_tag": "stage3b-si-ma1-confirmatory-execution-v1",
+  "execution_tag_commit": "bbbfb73c66d91ad28bf4cba32744e2dd039ea397",
+  "experiment_image": "torch2pc-layerwise-thesis:0.1.0",
+  "input_root": "results/stage-3/si-ma1/working/confirmatory",
+  "input_tree_sha256": "71e9539488c4b6055be9c48a6572950f49fdf2ab0017fdf05a0bd75c0212377c",
+  "model_seed_count": 10,
+  "schema_id": "stage3b-si-ma1-confirmatory-aggregation-v1",
+  "test_split_accessed": false
+}

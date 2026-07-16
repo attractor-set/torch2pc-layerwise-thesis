@@ -1,0 +1,17 @@
+{
+  "CAL-COST-MA1": true,
+  "b1_b2_gate_condition_satisfied": true,
+  "b1_b2_implementation_permitted": false,
+  "b1_b2_preregistration_permitted": false,
+  "confirmatory_decision_made": true,
+  "contract_id": "stage3b-si-ma1-v1",
+  "decision_rule": "upper_one_sided_95 <= 0.01",
+  "decision_state": "pass",
+  "ecz_evaluator_cost_included": false,
+  "schema_id": "stage3b-si-ma1-confirmatory-aggregation-v1",
+  "si_ma0_result_rewritten": false,
+  "si_ma1_passed": true,
+  "theoretical_pc_tref_patch_required_before_b1_b2": true,
+  "threshold": 0.01,
+  "upper_one_sided_95": -0.18862187616037485
+}

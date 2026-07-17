@@ -1,0 +1,205 @@
+{
+  "architecture": "lenet_classic",
+  "attempt_id": "stage3b-b2-smoke-attempt-001",
+  "b1_decision": {
+    "path": "results/stage-3/b1/stage3b-b1-smoke-attempt-001/decision.json",
+    "sha256": "8f261abf0424bf6889561715e7359377b1c262e55b8922d3d3133bcd76a40f27"
+  },
+  "b1_decision_commit": "7c8df38084cd936b6c7d97afcc5685a497fdaf62",
+  "b1_implementation_commit": "ec12e9a",
+  "b2_harness_contract": {
+    "path": "experiments/planned/STAGE3B-B2-SMOKE-HARNESS-CONTRACT.json",
+    "sha256": "b8b5f3f9d5d94026d12bf6788afe0c2449d6b98155c9f1fdd13dd23ed938a972"
+  },
+  "b2_implementation_commit": "8a8a4559cda5f5750b05e14b614b95386329c952",
+  "b2_implementation_contract": {
+    "path": "experiments/planned/STAGE3B-B2-IMPLEMENTATION-CONTRACT.json",
+    "sha256": "4f3199559759ef191987569b9f63938b6e8f5b2a6ce8b26f532eb8ff2ec0094a"
+  },
+  "b2_implementation_tag": "stage3b-b2-composite-vjp-implementation-v1",
+  "b2_preregistration_contract": {
+    "path": "experiments/planned/STAGE3B-B2-CONTRACT.json",
+    "sha256": "b250b042a8fe8118b51841b27b6cf70e167ced1d44f4587fe41aa50735c78b26"
+  },
+  "batches": {
+    "0": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    },
+    "1": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    },
+    "2": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    }
+  },
+  "batches_per_seed": 1,
+  "candidate_id": "composite_vjp",
+  "checkpoints": {
+    "0": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s0-bd621d5a3e-6d66b0a6-0ffe23c9/20260713T133027Z-19fac746/checkpoint.pt",
+      "sha256": "7de252afaf6a171dc5b384cf595f1111ec98bca6a3fc789da89e4aa8383a1f2f"
+    },
+    "1": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/checkpoint.pt",
+      "sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82"
+    },
+    "2": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/checkpoint.pt",
+      "sha256": "0f9206bc44097dc94e5937e1027643f23441dd6f39b44892680369409cf8f3a4"
+    }
+  },
+  "control_candidate_id": "isolated_layer_vjp",
+  "dangerous_miss_limit": 0,
+  "dataset": "FashionMNIST",
+  "lane_controls": {
+    "cpu_float64": {
+      "device": "cpu",
+      "dtype": "float64"
+    },
+    "rocm_float32": {
+      "device": "cuda",
+      "dtype": "float32"
+    }
+  },
+  "lanes": [
+    "cpu_float64",
+    "rocm_float32"
+  ],
+  "matched_triples": 12,
+  "method_controls": {
+    "FixedPred": {
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "Strict": {
+      "eta": 0.05,
+      "inference_steps": 20
+    }
+  },
+  "methods": [
+    "FixedPred",
+    "Strict"
+  ],
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "observer_mode": "no_hooks",
+  "optimizer": {
+    "learning_rate": 0.001,
+    "momentum": 0.0,
+    "name": "SGD"
+  },
+  "pairwise_comparisons": 24,
+  "project_base_commit": "f74a08818f653a27e8d04044cf59e2c2930b688c",
+  "reference_id": "stage2_baseline",
+  "request_id": "stage3b-b2-smoke-v1",
+  "resolved_config": {
+    "architecture": "lenet_classic",
+    "b2_harness_commit": "c9c8a5ce2996ac087aa110abb98d7bf036c2b102",
+    "batch_index": 0,
+    "batches": {
+      "0": {
+        "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+        "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+      },
+      "1": {
+        "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+        "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+      },
+      "2": {
+        "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+        "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+      }
+    },
+    "candidate_id": "composite_vjp",
+    "checkpoints": {
+      "0": {
+        "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s0-bd621d5a3e-6d66b0a6-0ffe23c9/20260713T133027Z-19fac746/checkpoint.pt",
+        "sha256": "7de252afaf6a171dc5b384cf595f1111ec98bca6a3fc789da89e4aa8383a1f2f"
+      },
+      "1": {
+        "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/checkpoint.pt",
+        "sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82"
+      },
+      "2": {
+        "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/checkpoint.pt",
+        "sha256": "0f9206bc44097dc94e5937e1027643f23441dd6f39b44892680369409cf8f3a4"
+      }
+    },
+    "contracts": {
+      "b1_decision": {
+        "path": "results/stage-3/b1/stage3b-b1-smoke-attempt-001/decision.json",
+        "sha256": "8f261abf0424bf6889561715e7359377b1c262e55b8922d3d3133bcd76a40f27"
+      },
+      "b2_harness_contract": {
+        "path": "experiments/planned/STAGE3B-B2-SMOKE-HARNESS-CONTRACT.json",
+        "sha256": "b8b5f3f9d5d94026d12bf6788afe0c2449d6b98155c9f1fdd13dd23ed938a972"
+      },
+      "b2_implementation_contract": {
+        "path": "experiments/planned/STAGE3B-B2-IMPLEMENTATION-CONTRACT.json",
+        "sha256": "4f3199559759ef191987569b9f63938b6e8f5b2a6ce8b26f532eb8ff2ec0094a"
+      },
+      "b2_preregistration_contract": {
+        "path": "experiments/planned/STAGE3B-B2-CONTRACT.json",
+        "sha256": "b250b042a8fe8118b51841b27b6cf70e167ced1d44f4587fe41aa50735c78b26"
+      }
+    },
+    "control_candidate_id": "isolated_layer_vjp",
+    "dataset": "FashionMNIST",
+    "execution_branch_base": "a4a1f3d059f8ed4f8fed68eb77df95883a48b308",
+    "lanes": {
+      "cpu_float64": {
+        "device": "cpu",
+        "dtype": "float64"
+      },
+      "rocm_float32": {
+        "device": "cuda",
+        "dtype": "float32"
+      }
+    },
+    "matched_triples": 12,
+    "method_controls": {
+      "FixedPred": {
+        "eta": 0.1,
+        "inference_steps": 10
+      },
+      "Strict": {
+        "eta": 0.05,
+        "inference_steps": 20
+      }
+    },
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "observer_mode": "no_hooks",
+    "pairwise_comparisons": 24,
+    "reference_id": "stage2_baseline",
+    "resolution_id": "stage3b-b2-smoke-resolved-v1",
+    "schema_version": 1,
+    "source_image_digest": "3ef8f97848bd02da6b74941be322d7c7ec6d8af4c194901cfd2d0eac4dfc3312",
+    "split": "validation",
+    "structural_observer_mode": "counters_only",
+    "test_split_access": false
+  },
+  "resolved_config_digest": "a897a269f1d714b930d6f5146dd25b119d38dc81b1e4f2bd356ca44791f4c2f4",
+  "run_seed_base": 20260717,
+  "schema_version": 1,
+  "scope": "smoke",
+  "source_image_digest": "3ef8f97848bd02da6b74941be322d7c7ec6d8af4c194901cfd2d0eac4dfc3312",
+  "split": "validation",
+  "structural_observer_mode": "counters_only",
+  "test_split_access": false,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "training_mode": true
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "schema_id": "stage3b-b2-implementation-contract-v1",
+  "implementation_id": "stage3b-b2-composite-vjp-implementation-v1",
+  "status": "implementation_ready_not_executed",
+  "project_base": {
+    "main_merge_commit_short": "1a90644",
+    "eq_b1_decision_commit_short": "7c8df38",
+    "preregistration_tag": "stage3b-b1-b2-prereg-v1",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "opening_gate": {
+    "decision_id": "EQ-B1",
+    "required_status": "pass",
+    "required_sealed": true,
+    "evidence_path": "results/stage-3/b1/stage3b-b1-smoke-attempt-001/decision.json"
+  },
+  "candidate": {
+    "candidate_id": "composite_vjp",
+    "module": "torch2pc_thesis.stage3b_b2_composite_vjp",
+    "entry_point": "load_b2_pc_infer",
+    "opt_in_only": true,
+    "canonical_reference_modified": false,
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "exact_supported": false
+  },
+  "reference_boundary": {
+    "delegated_functions": [
+      "FwdPassPlus",
+      "SetPCGrads"
+    ],
+    "state_inference_helpers_delegated": false,
+    "loss_backward_delegated": false,
+    "parameter_vjp_path_unchanged": true
+  },
+  "structural_contract": {
+    "one_composite_state_vjp_per_sweep": true,
+    "registered_outputs_and_inputs_cover_all_logical_upper_state_edges": true,
+    "per_layer_state_vjp_calls": false,
+    "chunked_or_block_composite_fallback": false,
+    "layer_update_order_matches_reference": true,
+    "state_snapshot_version_matches_reference": true,
+    "graph_lifetime": "single_sweep_composite_vjp_call",
+    "events": [
+      "logical_edge_count",
+      "composite_vjp_call_count",
+      "graph_module_set",
+      "graph_span",
+      "graph_lifetime"
+    ]
+  },
+  "trajectory_support": {
+    "initial_beliefs": true,
+    "beliefs_after_every_sweep": true,
+    "prediction_errors_after_every_sweep": true,
+    "state_corrections_by_layer_and_sweep": true
+  },
+  "observer_modes": {
+    "primary": "no_hooks",
+    "structural": "counters_only",
+    "hooks_used": false
+  },
+  "execution_boundary": {
+    "synthetic_unit_tests_allowed": true,
+    "patched_reference_correctness_tests_allowed": true,
+    "registered_cpu_smoke_executed": false,
+    "registered_rocm_smoke_executed": false,
+    "confirmatory_equivalence_executed": false,
+    "matched_profiling_executed": false,
+    "results_present": false,
+    "test_split_access": false
+  },
+  "future_policy_boundary": {
+    "estimator_present": false,
+    "oracle_branching_present": false,
+    "cheap_diagnostic_loop_present": false,
+    "hysteresis_policy_present": false,
+    "offline_trace_collection_present": false
+  },
+  "validation_surface": {
+    "unit_tests": [
+      "tests/unit/test_stage3b_b2_composite_vjp.py",
+      "tests/unit/test_stage3b_b2_implementation_contract.py"
+    ],
+    "actual_patched_reference_test": "tests/correctness/test_stage3b_b2_patched_reference.py",
+    "registered_smoke": false
+  }
+}

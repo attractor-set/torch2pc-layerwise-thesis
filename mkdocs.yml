@@ -33,6 +33,7 @@ nav:
       - PC-TREF Balanced Core: pc-tref-balanced-core.md
       - PC-CATM: pc-catm-operator-model.md
       - Основной сценарий A: stage3b-primary-scenario-a.md
+      - Предварительная регистрация B1/B2: stage3b-b1-b2-preregistration.md
       - Эквивалентность Torch2PC patched-v1: torch2pc-patched-v1-equivalence.md
       - Настройка GitHub: github-setup.md
   - Дизайн:
@@ -51,6 +52,7 @@ nav:
       - ADR-008 Predict-correct acceleration: decisions/ADR-008-predict-correct-acceleration.md
       - ADR-012 Основной сценарий A: decisions/ADR-012-pc-tref-pc-catm-scenario-a.md
       - ADR-013 Операциональная семантика: decisions/ADR-013-pc-tref-operational-semantics.md
+      - ADR-014 Контракты B1/B2: decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

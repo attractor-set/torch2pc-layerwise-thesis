@@ -2,9 +2,14 @@
 
 [English version](CHANGELOG_EN.md)
 
-## [Unreleased] — теоретическая фиксация после `SI-MA1`
+## [Не опубликовано] — предварительная регистрация B1/B2
 
 ### Добавлено
+
+- отдельные paired documents и JSON-контракты B1/B2;
+- общий обзор, ADR-014 и sequential B1 → B2 gate;
+- нулевая допустимость dangerous admissions и direct B1/B2 control;
+- явная граница с estimator, offline policy, hysteresis и `QWake-PC`;
 
 - двуязычное нормативное основание `PC-TREF`/`PC-CATM` после `SI-MA1`;
 - `ADR-013` об операциональной диагностической неразличимости, regret-based

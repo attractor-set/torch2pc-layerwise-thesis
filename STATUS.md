@@ -18,9 +18,11 @@ verification и `QWake-PC` ещё не выполнены.
 | `SI-MA0` | `REC/OBS/VER/CMP=true`, `COST=false`, global fail retained |
 | `SI-MA1` execution | 10 model seeds, 3 batches/seed, 180 matched blocks |
 | `SI-MA1` decision | `CAL-COST-MA1=true`, `si_ma1_passed=true` |
-| Теоретический prerequisite B1/B2 | выполнен этим `PC-TREF`/`PC-CATM` package |
-| B1/B2 preregistration | разрешена после публикации пакета |
-| B1/B2 implementation/execution | закрыты до candidate-specific contracts |
+| Теоретический prerequisite B1/B2 | выполнен `PC-TREF`/`PC-CATM` package |
+| Предварительная регистрация B1/B2 | заморожена отдельными contracts; ожидает publication tag |
+| Реализация B1 | открывается после preregistration tag |
+| Реализация B2 | закрыта до sealed `EQ-B1` |
+| Shared profiling B1/B2 | закрыто до sealed `EQ-B1` и `EQ-B2` |
 | Test split | закрыт |
 | Полный Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -119,10 +121,7 @@ Raw execution evidence и confirmatory outputs сохраняются в
 
 ## Следующий этап
 
-Следующий разрешённый шаг — B1/B2 candidate-specific preregistration. До
-реализации каждый контракт должен определить reference path, state/RNG
-restoration, numerical-equivalence endpoints, regret и safety margins, norm
-contracts, cost vector, observer/control separation, fallback и stop rules.
-
-Full matched profiling, `EX-IF0`, active control и test-split access остаются
-закрыты до собственных решений о допуске.
+После publication tag `stage3b-b1-b2-prereg-v1` разрешается отдельная
+реализация B1. B2 остаётся закрытым до sealed `EQ-B1`; shared matched profiling
+— до `EQ-B1` и `EQ-B2`. `EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor,
+hysteresis, active control и test access требуют собственных decision gates.

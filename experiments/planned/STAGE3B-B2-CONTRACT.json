@@ -1,0 +1,347 @@
+{
+  "schema_version": 1,
+  "schema_id": "stage3b-b2-candidate-contract-v1",
+  "contract_id": "stage3b-b2-composite_vjp-v1",
+  "status": "preregistered",
+  "implementation_present": false,
+  "results_present": false,
+  "preregistration_base": {
+    "project_commit": "e4893545b89d0cfad76f3039c58a997b5c97820c",
+    "theory_tag": "stage3b-pc-tref-pc-catm-theory-v1",
+    "si_ma1_tag": "stage3b-si-ma1-confirmatory-v1",
+    "b0_evidence_tag": "stage3b-b0-evidence-v1",
+    "b0_analysis_tag": "stage3b-b0-analysis-evidence-v1",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "immutable_prerequisites": [
+    "stage3b-pc-tref-pc-catm-theory-v1",
+    "stage3b-si-ma1-confirmatory-v1",
+    "stage3b-a1-mechanism-controls-v1",
+    "sealed EQ-B1 evidence produced under STAGE3B-B1-CONTRACT.json"
+  ],
+  "reference": {
+    "candidate_id": "stage2_baseline",
+    "path": "canonical Torch2PC FixedPred/Strict state_inference",
+    "observer_mode": "no_hooks",
+    "instrumentation": "disabled for primary equivalence"
+  },
+  "candidate": {
+    "candidate_id": "composite_vjp",
+    "track": "implementation_preserving",
+    "opt_in_only": true,
+    "canonical_reference_modified": false,
+    "structural_contract": {
+      "form": "composite_vjp",
+      "one_composite_state_vjp_per_sweep": true,
+      "registered_outputs_and_inputs_cover_all_logical_upper_state_edges": true,
+      "per_layer_state_vjp_calls_forbidden": true,
+      "chunked_or_block_composite_fallback_forbidden": true,
+      "layer_update_order_matches_reference": true,
+      "state_snapshot_version_matches_reference": true,
+      "parameter_vjp_path_unchanged": true,
+      "loss_backward_delegation_forbidden": true,
+      "events_required": [
+        "logical_edge_count",
+        "composite_vjp_call_count",
+        "graph_module_set",
+        "graph_span",
+        "graph_lifetime"
+      ]
+    }
+  },
+  "pc_tref_decision_semantics": {
+    "diagnostic_partition_map_q_i": "tuple of structural, finite-value, trajectory, endpoint, observer, and provenance gate outcomes",
+    "required_partition_map_q_r": {
+      "safe_candidate": "all registered gates pass",
+      "fallback_reference": "otherwise"
+    },
+    "action_space": [
+      "accept_candidate_for_matched_profiling",
+      "fallback_reference"
+    ],
+    "decision_regret_margin_delta_r": 0.0,
+    "dangerous_miss": "accept_candidate_for_matched_profiling when any registered safety or equivalence gate fails",
+    "dangerous_miss_limit": 0,
+    "cost_cannot_compensate_safety_failure": true,
+    "selection_order": [
+      "structural admissibility",
+      "finite-value admissibility",
+      "full-trajectory numerical admissibility",
+      "endpoint admissibility",
+      "observer admissibility",
+      "provenance admissibility",
+      "cost-vector Pareto admissibility"
+    ]
+  },
+  "state_restoration": {
+    "identical_state_dict": true,
+    "identical_buffers": true,
+    "identical_beliefs": true,
+    "identical_rng_state": true,
+    "identical_batch": true,
+    "separate_model_clones": true,
+    "separate_optimizer_clones": true,
+    "training_mode_match": true,
+    "resolved_config_digest_match": true
+  },
+  "full_trajectory_endpoints": [
+    "initial beliefs by layer",
+    "beliefs after every inference sweep",
+    "prediction errors after every inference sweep",
+    "state corrections by layer and sweep",
+    "final loss",
+    "named parameter gradients",
+    "parameters after one identical stateless SGD step",
+    "optimizer scalar and tensor state",
+    "actual inference-step count",
+    "RNG-state digest before and after the matched pair"
+  ],
+  "optimizer_control": {
+    "name": "SGD",
+    "learning_rate": 0.001,
+    "momentum": 0.0
+  },
+  "norm_contract": {
+    "space": "named tensor component at a registered layer and sweep",
+    "difference_norm": "L2",
+    "scale": "max(reference_l2, candidate_l2, zero_atol)",
+    "relative_l2": "||candidate-reference||_2 / scale",
+    "cosine": "zero-safe cosine; null when both vectors are below zero_atol",
+    "zero_policy": "pass when both are below zero_atol; fail when exactly one is active",
+    "aggregation": "all components must pass; no averaging across failed components"
+  },
+  "threshold_profiles": {
+    "cpu_float64": {
+      "min_cosine": 0.99999,
+      "max_relative_l2": 1e-07,
+      "max_abs": 1e-09,
+      "zero_atol": 1e-12
+    },
+    "rocm_float32": {
+      "min_cosine": 0.999,
+      "max_relative_l2": 0.001,
+      "max_abs": 1e-05,
+      "zero_atol": 1e-07
+    }
+  },
+  "equivalence_scope": {
+    "test_split_access": false,
+    "dataset": "FashionMNIST",
+    "architecture": "lenet_classic",
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "checkpoint_model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "observer_mode": "no_hooks",
+    "smoke": {
+      "lanes": [
+        "cpu_float64",
+        "rocm_float32"
+      ],
+      "model_seeds": [
+        0,
+        1,
+        2
+      ],
+      "batches_per_seed": 1,
+      "matched_pairs": 12
+    },
+    "confirmatory_equivalence": {
+      "lanes": [
+        "cpu_float64",
+        "rocm_float32"
+      ],
+      "model_seeds": [
+        0,
+        1,
+        2
+      ],
+      "batches_per_seed": 10,
+      "matched_pairs": 120
+    },
+    "independent_unit": "model_seed",
+    "nested_units": [
+      "lane",
+      "method",
+      "batch",
+      "layer",
+      "sweep",
+      "tensor component"
+    ]
+  },
+  "pass_policy": {
+    "finite_values_required": true,
+    "all_registered_components_required": true,
+    "all_runs_must_pass": true,
+    "dangerous_miss_limit": 0,
+    "threshold_retuning_after_output": false,
+    "outlier_deletion": false,
+    "failed_record_retention": true,
+    "test_split_access": false,
+    "source_image_revision_match_required": true,
+    "torch2pc_revision_match_required": true,
+    "canonical_paths_must_remain_unchanged": true
+  },
+  "replacement_policy": {
+    "scientific_failure_replacement": false,
+    "infrastructure_failure_replacement": true,
+    "replacement_requires_new_attempt_id": true,
+    "append_only_ledger_required": true,
+    "original_failure_retained": true
+  },
+  "direct_comparison": {
+    "required_control_candidate": "isolated_layer_vjp",
+    "smoke_matched_triples": 12,
+    "smoke_pairwise_comparisons": 24,
+    "confirmatory_matched_triples": 120,
+    "confirmatory_pairwise_comparisons": 240,
+    "common_snapshot_required": true,
+    "block_composite_variant_requires_new_preregistration": true,
+    "any_b1_b2_disagreement_blocks_b2": true
+  },
+  "profiling_scope": {
+    "inherited_protocol": "experiments/planned/STAGE3B-PROFILING-LOCALITY.md",
+    "lane": {
+      "device": "rocm",
+      "dtype": "float32"
+    },
+    "family": "controlled MLP",
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "depth": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "width": [
+      64,
+      256
+    ],
+    "batch_size": [
+      64,
+      256
+    ],
+    "model_seeds": [
+      70,
+      71,
+      72
+    ],
+    "cells_per_candidate": 96,
+    "measurement_lanes": {
+      "primary_timing": {
+        "observer_mode": "no_hooks",
+        "purpose": "device-time and wall-time comparison"
+      },
+      "structural_counters": {
+        "observer_mode": "counters_only",
+        "purpose": "VJP, graph, and saved-tensor structure"
+      }
+    },
+    "observer_cost_rule": {
+      "reported_separately": true,
+      "not_subtracted_from_primary_timing": true
+    },
+    "cost_vector": [
+      "device_time_ns",
+      "wall_time_ns",
+      "peak_allocated_bytes",
+      "peak_reserved_bytes",
+      "saved_tensor_bytes",
+      "state_vjp_calls",
+      "graph_span",
+      "graph_lifetime",
+      "observer_cost_ms",
+      "fallback_validation_cost_ms"
+    ],
+    "scientific_rule": "lexicographic: equivalence and safety first; then Pareto comparison of registered cost components",
+    "hidden_scalar_score_forbidden": true,
+    "engineering_continuation_thresholds": {
+      "fixedpred_min_device_time_reduction": 0.15,
+      "strict_min_device_time_reduction": 0.2,
+      "max_baseline_regression": 0.03,
+      "max_peak_memory_growth_without_new_adr": 0.15,
+      "ex_if0_selection_deferred": true
+    }
+  },
+  "execution_and_replacement": {
+    "implementation_opens_after": "sealed EQ-B1 evidence",
+    "confirmatory_opens_after": "sealed EQ-B2 smoke and equivalence decision",
+    "shared_matched_profiling_opens_after": [
+      "sealed EQ-B1",
+      "sealed EQ-B2"
+    ],
+    "scientific_failure_retained": true,
+    "replacement_allowed_only_for_documented_infrastructure_failure": true,
+    "test_split_access": false
+  },
+  "gate_hierarchy": {
+    "structural": "STRUCT-B2",
+    "numerical": "NUM-B2",
+    "trajectory": "TRAJ-B2",
+    "observer": "OBS-B2",
+    "provenance": "PROV-B2",
+    "equivalence": "EQ-B2",
+    "engineering": "ENG-B2",
+    "equivalence_open_rule": "EQ-B2 passes only when STRUCT/NUM/TRAJ/OBS/PROV all pass",
+    "matched_profiling_open_rule": "both B1 and B2 equivalence evidence are sealed"
+  },
+  "evidence_layout": {
+    "decision_id": "EQ-B2",
+    "root": "results/stage-3/b2",
+    "required": [
+      "request.json",
+      "resolved-config.json",
+      "trajectory-metrics.csv",
+      "endpoint-metrics.csv",
+      "direct-b1-b2-metrics.csv",
+      "structural-events.jsonl",
+      "decision.json",
+      "SHA256SUMS"
+    ]
+  },
+  "future_policy_boundary": {
+    "estimator_present": false,
+    "oracle_branching_present": false,
+    "cheap_diagnostic_loop_present": false,
+    "hysteresis_policy_present": false,
+    "offline_trace_collection_present": false,
+    "future_sequence": [
+      "EX-IF0",
+      "A11-OFF0",
+      "A11-OFF1",
+      "predictor_preregistration",
+      "shadow_QWake-PC"
+    ],
+    "counterfactual_branch_labels": [
+      "stop",
+      "native_one",
+      "exact_one"
+    ],
+    "branch_labels_are_controller_actions": false,
+    "test_split_access": false
+  },
+  "claim": {
+    "supported_after_equivalence_pass": "The opt-in candidate preserves the registered full state trajectory and endpoints within lane-specific numerical bounds in the pinned CPU/ROCm scope and agrees directly with admitted B1.",
+    "not_established": [
+      "runtime benefit",
+      "memory benefit",
+      "training-trajectory equivalence beyond one registered step",
+      "generalization beyond registered architectures and environments",
+      "permission for active QWake-PC control",
+      "QWake estimator or oracle validity",
+      "cheap diagnostic-loop benefit",
+      "hysteresis or persistence-policy safety",
+      "offline policy selection",
+      "test-set performance",
+      "superiority over B1"
+    ]
+  }
+}

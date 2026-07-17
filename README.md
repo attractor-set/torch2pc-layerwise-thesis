@@ -222,24 +222,17 @@ fallback validation или end-to-end B1/B2 benefit. Итоговые матер
 
 ## Следующий этап
 
-Следующий этап Scenario A — отдельная предварительная регистрация B1/B2.
-Теоретический пакет разрешает подготовку контрактов, но не разрешает
-implementation или confirmatory execution автоматически.
+Предварительная регистрация B1/B2 заморожена отдельными
+`STAGE3B-B1-CONTRACT.json` и `STAGE3B-B2-CONTRACT.json`,
+[обзором](docs/stage3b-b1-b2-preregistration.md) и
+[ADR-014](docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md).
 
-Каждый B1/B2 контракт должен заранее фиксировать:
-
-1. candidate path и frozen reference;
-2. state/RNG restoration и numerical-equivalence endpoints;
-3. partition map или явно нетранзитивную proximity relation;
-4. task-relative loss, regret margin и dangerous-miss rule;
-5. norm contracts для всех сравнений;
-6. cost vector, scalarization или Pareto decision rule;
-7. observer, diagnostic-mechanism и control-plane costs раздельно;
-8. fallback и stop rules.
-
-B0, `SI-MA0`, `SI-MA1` и test-split policy остаются неизменными. Полная
-последовательность зафиксирована в
-[плане диссертации](docs/masters-thesis-plan.md).
+После publication tag разрешается реализация только B1 `isolated_layer_vjp`.
+B2 `composite_vjp` открывается после sealed `EQ-B1`; shared matched profiling —
+после `EQ-B1` и `EQ-B2`. B1/B2 не являются `QWake-PC` policies и не содержат
+estimator, oracle, cheap diagnostic loop или hysteresis. После `EX-IF0`
+планируются policy-neutral `A11-OFF0`, offline `A11-OFF1`, отдельная predictor
+preregistration и shadow control. Test split остаётся закрытым.
 
 ## Контрольные проверки
 

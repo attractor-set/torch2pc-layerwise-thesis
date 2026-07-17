@@ -2,9 +2,14 @@
 
 [Русская версия](CHANGELOG.md)
 
-## [Unreleased] — theoretical freeze after `SI-MA1`
+## [Unreleased] — B1/B2 preregistration
 
 ### Added
+
+- separate paired documents and JSON contracts for B1/B2;
+- a shared overview, ADR-014, and sequential B1 → B2 gate;
+- zero dangerous admissions and a direct B1/B2 control;
+- an explicit boundary to estimator, offline policy, hysteresis, and `QWake-PC`;
 
 - a bilingual normative `PC-TREF`/`PC-CATM` foundation after `SI-MA1`;
 - `ADR-013` covering operational diagnostic indistinguishability, regret-based

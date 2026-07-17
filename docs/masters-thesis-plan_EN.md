@@ -10,8 +10,9 @@ are complete. The final `SI-MA1` result is published under
 `COST-MA0` result remains unchanged. B0 and both SI experiments are immutable
 [evidence](glossary_EN.md#term-evidence) packages.
 
-The current package completes the B1/B2 theoretical prerequisite. The next
-permitted work is separate B1 and B2 preregistration.
+The B1/B2 theoretical prerequisite is complete and published. This package
+freezes separate B1/B2 contracts; after its publication tag, B1 implementation
+is authorized.
 
 ## 2. Primary scientific line
 
@@ -87,9 +88,10 @@ gates.
 ### November 2026 – January 2027
 
 - collect passive PC-CATM features;
-- compare $\phi_0,\ldots,\phi_k$ on the regret–cost frontier;
+- run policy-neutral `A11-OFF0` with `stop`/`native_one`/`exact_one` branches;
+- run offline `A11-OFF1` on the regret–cost frontier;
 - freeze the representation and label protocol;
-- train the predictor only on development splits by `model_seed`.
+- preregister and train the predictor only on development splits by `model_seed`.
 
 ### February–March 2027
 

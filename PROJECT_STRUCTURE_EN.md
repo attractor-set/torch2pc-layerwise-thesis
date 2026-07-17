@@ -59,4 +59,14 @@ its own registry, results tree, execution commit, and publication state.
 - `docs/decisions/ADR-013-pc-tref-operational-semantics.md` and `_EN` record B1/B2 admission to preregistration;
 - documentation changes do not modify `results/stage-3/si-ma1/` or earlier sealed evidence.
 
+### B1/B2 preregistration
+
+- `experiments/planned/STAGE3B-B1.md` and `_EN`: B1 `isolated_layer_vjp`;
+- `experiments/planned/STAGE3B-B1-CONTRACT.json`: machine-readable B1 contract;
+- `experiments/planned/STAGE3B-B2.md` and `_EN`: B2 `composite_vjp`;
+- `experiments/planned/STAGE3B-B2-CONTRACT.json`: machine-readable B2 contract;
+- `docs/stage3b-b1-b2-preregistration.md` and `_EN`: shared admission boundary;
+- `docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md` and `_EN`: sequential admission;
+- `tests/unit/test_stage3b_future_policy_boundary.py`: boundary to future policy.
+
 Published configuration and evidence references retain their recorded SHA-256 identifiers.

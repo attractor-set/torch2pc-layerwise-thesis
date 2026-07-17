@@ -136,3 +136,16 @@ freeze:
 A negative `D_seed` or `SI-MA1` over-closure remains a signed
 observer-calibration result and is not interpreted as negative physical cost,
 end-to-end acceleration, or a budget for the future control plane.
+
+## Amendment: B1/B2 v1 freeze
+
+On the basis of `stage3b-pc-tref-pc-catm-theory-v1`, separate B1/B2 prose/JSON
+contracts, a shared overview, and ADR-014 are preregistered. B1 is frozen as
+`isolated_layer_vjp`; B2 is frozen only as `composite_vjp`. Block/chunk
+composite requires a new protocol.
+
+After the publication tag, B1 implementation is authorized. B2 requires sealed
+`EQ-B1`; the shared matched profiling matrix requires `EQ-B1` and `EQ-B2`. Zero
+dangerous admissions are permitted. `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the
+predictor, hysteresis, active `QWake-PC`, and the test split remain closed until
+their own decisions.

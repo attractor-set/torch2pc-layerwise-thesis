@@ -1,0 +1,107 @@
+{
+  "comparison_plan": {
+    "primary": "stage2_baseline_vs_composite_vjp",
+    "required_direct_control": "isolated_layer_vjp_vs_composite_vjp"
+  },
+  "gates": {
+    "NUM-B2": {
+      "gate_id": "NUM-B2",
+      "passed": true,
+      "reasons": []
+    },
+    "OBS-B2": {
+      "gate_id": "OBS-B2",
+      "passed": true,
+      "reasons": []
+    },
+    "PROV-B2": {
+      "gate_id": "PROV-B2",
+      "passed": true,
+      "reasons": []
+    },
+    "STRUCT-B2": {
+      "gate_id": "STRUCT-B2",
+      "passed": true,
+      "reasons": []
+    },
+    "TRAJ-B2": {
+      "gate_id": "TRAJ-B2",
+      "passed": true,
+      "reasons": []
+    }
+  },
+  "pair_admissible": true,
+  "pair_id": "rocm_float32__fixedpred__seed-1__batch-0",
+  "pair_spec": {
+    "attempt_id": "stage3b-b2-smoke-attempt-001",
+    "b1_decision": {
+      "path": "results/stage-3/b1/stage3b-b1-smoke-attempt-001/decision.json",
+      "sha256": "8f261abf0424bf6889561715e7359377b1c262e55b8922d3d3133bcd76a40f27"
+    },
+    "b2_harness_contract": {
+      "path": "experiments/planned/STAGE3B-B2-SMOKE-HARNESS-CONTRACT.json",
+      "sha256": "b8b5f3f9d5d94026d12bf6788afe0c2449d6b98155c9f1fdd13dd23ed938a972"
+    },
+    "b2_implementation_contract": {
+      "path": "experiments/planned/STAGE3B-B2-IMPLEMENTATION-CONTRACT.json",
+      "sha256": "4f3199559759ef191987569b9f63938b6e8f5b2a6ce8b26f532eb8ff2ec0094a"
+    },
+    "b2_preregistration_contract": {
+      "path": "experiments/planned/STAGE3B-B2-CONTRACT.json",
+      "sha256": "b250b042a8fe8118b51841b27b6cf70e167ced1d44f4587fe41aa50735c78b26"
+    },
+    "batch": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    },
+    "batch_index": 0,
+    "checkpoint": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/checkpoint.pt",
+      "sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82"
+    },
+    "lane": "rocm_float32",
+    "lane_control": {
+      "device": "cuda",
+      "dtype": "float32"
+    },
+    "method": "FixedPred",
+    "method_control": {
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "model_seed": 1,
+    "request_id": "stage3b-b2-smoke-v1",
+    "resolved_config_digest": "a897a269f1d714b930d6f5146dd25b119d38dc81b1e4f2bd356ca44791f4c2f4",
+    "run_seed": 20260718,
+    "source_image_digest": "3ef8f97848bd02da6b74941be322d7c7ec6d8af4c194901cfd2d0eac4dfc3312",
+    "training_mode": true
+  },
+  "provenance": {
+    "attempt_id": "stage3b-b2-smoke-attempt-001",
+    "b1_decision_commit": "7c8df38084cd936b6c7d97afcc5685a497fdaf62",
+    "b1_decision_sha256": "8f261abf0424bf6889561715e7359377b1c262e55b8922d3d3133bcd76a40f27",
+    "b1_implementation_commit": "ec12e9a",
+    "b2_harness_contract_sha256": "b8b5f3f9d5d94026d12bf6788afe0c2449d6b98155c9f1fdd13dd23ed938a972",
+    "b2_implementation_commit": "8a8a4559cda5f5750b05e14b614b95386329c952",
+    "b2_implementation_contract_sha256": "4f3199559759ef191987569b9f63938b6e8f5b2a6ce8b26f532eb8ff2ec0094a",
+    "b2_implementation_tag": "stage3b-b2-composite-vjp-implementation-v1",
+    "b2_preregistration_contract_sha256": "b250b042a8fe8118b51841b27b6cf70e167ced1d44f4587fe41aa50735c78b26",
+    "batch_sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99",
+    "candidate_id": "composite_vjp",
+    "checkpoint_sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82",
+    "control_candidate_id": "isolated_layer_vjp",
+    "project_base_commit": "f74a08818f653a27e8d04044cf59e2c2930b688c",
+    "reference_id": "stage2_baseline",
+    "request_id": "stage3b-b2-smoke-v1",
+    "resolved_config_digest": "a897a269f1d714b930d6f5146dd25b119d38dc81b1e4f2bd356ca44791f4c2f4",
+    "rng_pair_digest": "4a05fa6b2b16a47fabf30d01b05359aecea9a9b9f6fc2f4a86663b42ceedae8d",
+    "source_image_digest": "3ef8f97848bd02da6b74941be322d7c7ec6d8af4c194901cfd2d0eac4dfc3312",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "structural_summary": {
+    "block_or_chunk_fallback_call_count": 0,
+    "composite_vjp_call_count": 10,
+    "isolated_state_vjp_call_count": 0,
+    "sweeps_observed": 10
+  }
+}

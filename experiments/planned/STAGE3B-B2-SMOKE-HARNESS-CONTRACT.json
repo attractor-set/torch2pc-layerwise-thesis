@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "contract_id": "stage3b-b2-smoke-harness-v1",
+  "status": "implementation_only",
+  "project_base_commit": "f74a08818f653a27e8d04044cf59e2c2930b688c",
+  "b2_implementation_commit": "8a8a4559cda5f5750b05e14b614b95386329c952",
+  "b2_implementation_tag": "stage3b-b2-composite-vjp-implementation-v1",
+  "candidate_id": "composite_vjp",
+  "required_control_candidate_id": "isolated_layer_vjp",
+  "reference_id": "stage2_baseline",
+  "matrix": {
+    "dataset": "FashionMNIST",
+    "architecture": "lenet_classic",
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "batches_per_seed": 1,
+    "lanes": [
+      "cpu_float64",
+      "rocm_float32"
+    ],
+    "matched_triples": 12,
+    "pairwise_comparisons": 24,
+    "split": "validation",
+    "test_split_access": false
+  },
+  "comparison_plan": {
+    "primary": "stage2_baseline_vs_composite_vjp",
+    "required_direct_control": "isolated_layer_vjp_vs_composite_vjp"
+  },
+  "observer_modes": {
+    "primary": "no_hooks",
+    "structural": "counters_only"
+  },
+  "structural_invariants": {
+    "composite_state_vjp_calls_per_sweep": 1,
+    "isolated_state_vjp_calls_per_sweep": 0,
+    "block_or_chunk_fallback_calls": 0,
+    "parameter_vjp_path": "SetPCGrads",
+    "state_update_order": "reverse_layer_order",
+    "graph_lifetime": "single_sweep_composite_vjp_call"
+  },
+  "gate_order": [
+    "STRUCT-B2",
+    "NUM-B2",
+    "TRAJ-B2",
+    "OBS-B2",
+    "PROV-B2",
+    "EQ-B2"
+  ],
+  "dangerous_miss_limit": 0,
+  "required_pair_artifacts": [
+    "pair.json",
+    "trajectory-metrics.csv",
+    "endpoint-metrics.csv",
+    "direct-b1-b2-metrics.csv",
+    "structural-events.jsonl",
+    "SHA256SUMS"
+  ],
+  "required_attempt_artifacts": [
+    "request.json",
+    "resolved-config.json",
+    "trajectory-metrics.csv",
+    "endpoint-metrics.csv",
+    "direct-b1-b2-metrics.csv",
+    "structural-events.jsonl",
+    "decision.json",
+    "SHA256SUMS"
+  ],
+  "forbidden_in_this_change": [
+    "sealed_request",
+    "execution_results",
+    "profiling_results",
+    "performance_claims",
+    "b2_candidate_changes",
+    "b1_evidence_changes",
+    "test_split_access",
+    "ecz_policy",
+    "qwake_policy",
+    "local_sweep_policy"
+  ]
+}

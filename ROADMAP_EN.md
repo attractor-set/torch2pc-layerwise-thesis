@@ -51,18 +51,27 @@ They are frozen. Publication tag `stage3b-b1-b2-prereg-v1` preserves those
 definitions unchanged. `ECZ`, local sweeps, and `QWake-PC` are outside B1/B2
 and cannot be retrofitted into them.
 
-## Stage 16 — B1/B2 implementation and candidate gates — current stage
+## Stage 16 — B1/B2 implementation and candidate gates — complete
 
-B1 implementation and the B1 equivalence smoke harness are merged into `main`.
-The next permitted step is separate CPU `float64` and ROCm `float32` smoke
-execution, full-trajectory aggregation, and sealed `EQ-B1`.
+B1 `isolated_layer_vjp` and B2 `composite_vjp` are implemented. Separate CPU
+`float64` and ROCm `float32` smoke lanes were executed for each candidate,
+full trajectories were aggregated, and positive sealed `EQ-B1` and `EQ-B2`
+decisions were published.
 
-- B2 remains closed until positive sealed `EQ-B1`;
-- shared profiling remains closed until positive `EQ-B1` and `EQ-B2`;
-- scientific failures are retained;
-- design-only future-policy updates do not block B1 smoke execution.
+Scientific failures were retained and the test split remained closed.
 
-## Stage 17 — `EX-IF0`, passive diagnostics, and neutral branches
+## Stage 17 — matched B0/B1/B2 profiling — current stage
+
+The opening condition is satisfied. The current slice freezes the 288-cell
+matrix for `stage2_baseline`, `isolated_layer_vjp`, and `composite_vjp`, plus a
+request that separates scientific admission from runtime authorization.
+
+A candidate-aware runner and a separate ROCm/float32 runtime freeze are then
+permitted. No measurements are executed before that freeze. A0, `EX-IF0`, the
+estimator, active `ECZ`, `QWake-PC`, controller actions, and the test split
+remain closed.
+
+## Stage 18 — `EX-IF0`, passive diagnostics, and neutral branches
 
 After `EQ-B1`, `EQ-B2`, and matched exact-candidate profiling, select an
 admissible exact implementation and freeze `EX-IF0` before policy-label
@@ -73,7 +82,7 @@ Those branches remain offline labels and are not controller actions.
 Active `ECZ` use is forbidden before `EX-IF0`. See the
 [future-policy boundary](docs/stage3b-future-policy-boundary_EN.md).
 
-## Stage 18 — `A11-OFF1`, ECZ-targeted local sweep, and offline screening
+## Stage 19 — `A11-OFF1`, ECZ-targeted local sweep, and offline screening
 
 After `EX-IF0`, a separate preregistration may add the counterfactual branch
 `local_sweep(block_id)`. `ECZ` may select only a candidate block; local-action
@@ -104,12 +113,12 @@ cost gates pass. `A-Max` is conditional and opens only after positive shadow
 evidence. See the [QWake-PC design](docs/qwake-pc-design_EN.md) and
 [ECZ local-sweep design](docs/ecz-targeted-local-sweep_EN.md).
 
-## Stage 19 — final freeze and test evaluation
+## Stage 20 — final freeze and test evaluation
 
 Freeze implementation, features, thresholds, predictor, fallback, and the
 statistical plan before one final test evaluation.
 
-## Stage 20 — thesis and article
+## Stage 21 — thesis and article
 
 Integrate Stage 1/2, Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1/B2, and available
 Scenario A results. Mark unexecuted extensions as future work.

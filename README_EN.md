@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![License](https://img.shields.io/badge/code-Apache--2.0-green)
-![Status](https://img.shields.io/badge/stage-B1%2FB2%20preregistration%20frozen-blue)
+![Status](https://img.shields.io/badge/stage-EQ--B1%2FEQ--B2%20sealed%3B%20matched%20profiling%20open-blue)
 
 A master's thesis repository comparing backpropagation (BP) with predictive
 coding regimes in Torch2PC. The project separates assumptions from
@@ -57,7 +57,7 @@ The comparison covers:
 - compute time and memory;
 - reproducibility across independent runs.
 
-## Current state as of 16 July 2026
+## Current state as of 17 July 2026
 
 Completed in the pinned Ubuntu/ROCm environment:
 
@@ -78,6 +78,11 @@ Completed in the pinned Ubuntu/ROCm environment:
 - the `PC-TREF`/`PC-CATM` theoretical package now freezes operational
   proximity, regret-based required equivalence, norm contracts, and separate
   cost boundaries before B1/B2.
+- B1 `isolated_layer_vjp` and B2 `composite_vjp` are implemented; their CPU
+  `float64` and ROCm `float32` smoke evidence is aggregated into positive
+  sealed `EQ-B1` and `EQ-B2` decisions;
+- scientific admission for shared B0/B1/B2 matched profiling is open; no
+  matched measurements or separate runtime authorization have been performed.
 
 Stage 3A, B0, `SI-MA0`, and `SI-MA1` did not access the test split. Raw and
 sealed results are not rewritten by documentation updates. CI remains the
@@ -216,18 +221,14 @@ GitHub Releases:
 
 ## Next stage
 
-B1/B2 preregistration is frozen by separate `STAGE3B-B1-CONTRACT.json` and
-`STAGE3B-B2-CONTRACT.json`, the
-[overview](docs/stage3b-b1-b2-preregistration_EN.md), and
-[ADR-014](docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md).
+Positive sealed `EQ-B1` and `EQ-B2` satisfy the registered opening rule for
+shared matched profiling. The current slice freezes the 288-cell B0/B1/B2
+matrix and a machine-readable request without executing measurements:
+[matched profiling opening](experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING_EN.md).
 
-After the publication tag, only B1 `isolated_layer_vjp` implementation is
-authorized. B2 `composite_vjp` opens after sealed `EQ-B1`; shared matched
-profiling opens after `EQ-B1` and `EQ-B2`. B1/B2 are not `QWake-PC` policies
-and contain no estimator, oracle, cheap diagnostic loop, or hysteresis. After
-`EX-IF0`, the plan proceeds through policy-neutral `A11-OFF0`, offline
-`A11-OFF1`, separate predictor preregistration, and shadow control. The test
-split remains closed.
+The next permitted step is a candidate-aware matched runner and a separate
+ROCm/float32 runtime freeze. `EX-IF0`, the estimator, active `ECZ`, `QWake-PC`,
+controller actions, offline policy selection, and the test split remain closed.
 
 ## Numerical controls
 

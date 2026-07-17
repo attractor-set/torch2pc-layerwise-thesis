@@ -134,3 +134,13 @@ These hypotheses permit only preparation of separate B1/B2 contracts.
 Implementation and confirmatory execution remain closed until $q_I$ or the
 proximity rule, $q_R$, the regret tolerance, norms, cost rule, fallback,
 provenance, and candidate-specific decision gates are frozen.
+
+### Operationalization of H-B1 and H-B2
+
+H-B1 and H-B2 are linked to separate preregistered contracts,
+`STAGE3B-B1-CONTRACT.json` and `STAGE3B-B2-CONTRACT.json`. Their numerical
+component permits zero dangerous admissions, and their engineering component is
+evaluated only after the full-trajectory gate. Effect direction and candidate
+selection remain unresolved until execution, while `EX-IF0` remains a separate
+decision. The contracts establish no estimator, oracle, hysteresis, or
+`QWake-PC` policy.

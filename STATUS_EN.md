@@ -18,9 +18,11 @@ and `QWake-PC` have not been executed.
 | `SI-MA0` | `REC/OBS/VER/CMP=true`, `COST=false`, global failure retained |
 | `SI-MA1` execution | 10 model seeds, 3 batches/seed, 180 matched blocks |
 | `SI-MA1` decision | `CAL-COST-MA1=true`, `si_ma1_passed=true` |
-| B1/B2 theoretical prerequisite | satisfied by this `PC-TREF`/`PC-CATM` package |
-| B1/B2 preregistration | permitted after package publication |
-| B1/B2 implementation/execution | closed until candidate-specific contracts |
+| B1/B2 theoretical prerequisite | satisfied by the `PC-TREF`/`PC-CATM` package |
+| B1/B2 preregistration | frozen in separate contracts; awaiting publication tag |
+| B1 implementation | opens after the preregistration tag |
+| B2 implementation | closed until sealed `EQ-B1` |
+| Shared B1/B2 profiling | closed until sealed `EQ-B1` and `EQ-B2` |
 | Test split | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -98,9 +100,8 @@ them.
 
 ## Next stage
 
-The next permitted step is candidate-specific B1/B2 preregistration. Before
-implementation, each contract defines the reference path, state/RNG
-restoration, numerical-equivalence endpoints, regret and safety margins, norm
-contracts, the cost vector, observer/control separation, fallback, and stop
-rules. Full matched profiling, `EX-IF0`, active control, and test-split access
-remain closed until their own decision gates.
+After publication of `stage3b-b1-b2-prereg-v1`, separate B1 implementation is
+authorized. B2 remains closed until sealed `EQ-B1`; shared matched profiling
+remains closed until `EQ-B1` and `EQ-B2`. `EX-IF0`, `A11-OFF0`, `A11-OFF1`,
+the predictor, hysteresis, active control, and test access require their own
+decision gates.

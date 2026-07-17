@@ -125,77 +125,82 @@ Real NCZ/ECZ observations are not interpreted before this gate passes.
 
 ### A9 — B1/B2
 
-The next stage is **separate preregistration**, not immediate [profiling](glossary_EN.md#term-profiling):
+Separate B1/B2 preregistration is frozen by `STAGE3B-B1*`, `STAGE3B-B2*`,
+the [overview](stage3b-b1-b2-preregistration_EN.md), and
+[ADR-014](decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md).
 
 - B1: `isolated_layer_vjp`;
-- B2: `composite_vjp` or a prespecified block-composite variant.
+- B2: only `composite_vjp`; a block/chunk variant requires a new protocol.
 
-Each contract freezes reference path, state/belief/RNG restoration, numerical-
-equivalence endpoints and tolerances, [decision regret](glossary_EN.md#term-decision-regret),
-norm contracts, the [cost vector](glossary_EN.md#term-cost-vector), observer/
-control-plane separation, [fallback](glossary_EN.md#term-fallback), independent unit, and stop rules. Only a
-candidate that passes deterministic controls, ROCm smoke, and a separate
-numerical-equivalence/safety gate may enter matched confirmatory profiling.
+After the publication tag, B1 is implemented. B2 remains closed until sealed
+`EQ-B1`; [matched profiling](glossary_EN.md#term-matched-profiling) remains closed until `EQ-B1` and `EQ-B2`.
 
-### A10 — EX-IF0
+### A10 — `EX-IF0`
 
 The [exact-implementation freeze](glossary_EN.md#term-exact-implementation-freeze)
-selects canonical `Strict`, B1, B2, or chunked B2 before predictor-label and
-counterfactual-evidence generation.
+selects canonical `Strict`, B1, or B2 before predictor-label and counterfactual-
+evidence generation.
 
 ### A11 — passive diagnostics
 
-Record:
+Record `NCZ[intrinsic]`, `NCZ[state_transport_masked]`, `NCZ[unresolved]`,
+`ECZ`, `active_non_ecz`, `activity_guard`, and `invalid`. Analyze frequencies,
+layer/sweep structure, transitions, and association with next exact-sweep
+utility.
+
+#### A11-OFF0 — policy-neutral counterfactual traces
+
+After `EX-IF0` and before predictor training, one restored snapshot is branched
+into:
 
 ```text
-NCZ[intrinsic]
-NCZ[state_transport_masked]
-NCZ[unresolved]
-ECZ
-active_non_ecz
-activity_guard
-invalid
+stop
+native_one
+exact_one
 ```
 
-Analyze frequencies, layer and sweep structure, transitions, persistence across
-models, and association with next exact-sweep utility.
+Each branch records $\phi_0,\ldots,\phi_k$, temporal history, endpoint
+utility/regret, feature costs, transitions, [fallback](glossary_EN.md#term-fallback) reasons, and complete
+provenance. Branches are offline labels and `controls_execution=false`. The
+independent unit is `model_seed`; the test split remains closed.
+
+#### A11-OFF1 — offline Pareto screening
+
+On development splits, nested representations, feature sets, and threshold
+families are compared by dangerous misses, regret, unnecessary wakes, fallback,
+[device time](glossary_EN.md#term-device-time), memory, and observer/control-plane cost. The result is a Pareto set
+of promising directions rather than a post-hoc active policy.
 
 ### A12 — local predictor
 
-The [local predictor](glossary_EN.md#term-local-predictor) remains in shadow
-mode and uses preregistered geometry, transport, layer/sweep, residual-history,
-and uncertainty features. Splits are grouped by `model_seed`.
+The [local predictor](glossary_EN.md#term-local-predictor) is preregistered only
+after `A11-OFF1`, remains in [shadow mode](glossary_EN.md#term-shadow-mode), and uses frozen geometry, transport,
+layer/sweep, residual-history, and uncertainty features. Splits are grouped by
+`model_seed`. It estimates the utility of the next full exact sweep and does not
+modify beliefs.
 
 ### A13 — exact verification
 
 [Counterfactual exact verification](glossary_EN.md#term-exact-verification)
 creates proposed and exact branches from identical state. The primary target is
-[endpoint-gradient utility](glossary_EN.md#term-endpoint-gradient-utility). A
+[endpoint-gradient utility](glossary_EN.md#term-endpoint-gradient-utility); a
 [dangerous miss](glossary_EN.md#term-dangerous-miss) is the primary safety gate.
 
-### A14 — QWake-PC shadow
+### A14 — `QWake-PC` shadow
 
-[QWake-PC](glossary_EN.md#term-qwake-pc) emits only proposals:
+`QWake-PC` emits only `continue_exact`, `sleep_candidate`, `wake_candidate`,
+`stop_candidate`, and `fallback_exact` proposals; `controls_execution=false`.
 
-```text
-continue_exact
-sleep_candidate
-wake_candidate
-stop_candidate
-fallback_exact
-```
-
-`controls_execution=false`.
+Future hysteresis is a policy guard rather than a substitute for the utility
+threshold. Its separate contract freezes stop and wake thresholds, minimum
+persistence, and emergency `fallback_exact`. These parameters do not control
+execution before shadow and safety gates.
 
 ### A15 — active full-sweep allocation
 
-After the shadow gate, the controller may manage only full exact sweeps.
-Compare frozen exact execution, a fixed budget, C1, C2, predictor-only,
-regime-only, QWake-PC, and a post-hoc oracle upper bound.
-
-Primary outcomes are endpoint-gradient preservation, exact sweeps and VJPs,
-device and wall time, memory and saved tensors, dangerous misses, [fallback](glossary_EN.md#term-fallback)
-frequency, and stability across `model_seed`.
+Only after shadow, dangerous-miss, and end-to-end cost gates may the controller
+manage full exact sweeps. Observer and control-plane costs are measured
+separately; the test split is not used for selection.
 
 ## Completion levels
 

@@ -39,47 +39,46 @@ experiment rather than a frozen-contract change.
 - `CAL-COST-MA1=true`, `SI-MA1=pass`;
 - `SI-MA0` unchanged and `ECZ` evaluator cost excluded.
 
-## Stage 14 — theoretical freeze before B1/B2 — current publication step
+## Stage 14 — theoretical freeze before B1/B2 — complete
 
-- separate partition-based quotient from nontransitive threshold proximity;
-- define required equivalence and safety through decision regret;
-- formalize task-relative defect;
-- freeze precision-masked zero and explicit norm contracts;
-- use a cost vector and preregistered scalarization/Pareto rule;
-- separate diagnostic-mechanism, observer, and control-plane costs;
-- record the decision in `ADR-013`;
-- update paired documentation without changing sealed evidence.
+Operational PC-TREF/PC-CATM semantics, regret, norm contracts, precision-
+masked zero, the cost vector, and cost separation are published under ADR-013.
 
-After merge and tagging, the B1/B2 theoretical prerequisite is satisfied.
+## Stage 15 — B1/B2 preregistration — current publication step
 
-## Stage 15 — B1/B2 preregistration — next
-
-Prepare separate candidate contracts for B1 isolated-layer probes and B2
-composite/block-composite probes. Each contract freezes the reference and
-candidate boundary, state/belief/RNG restoration, numerical-equivalence
-endpoints and tolerances, norm contracts, decision-regret and fallback
-semantics, the cost vector and primary selection rule, execution matrix,
-independent unit, replacement policy, and immutable provenance layout.
-Preregistration is not implementation permission.
+B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and ADR-014
+are frozen. B1 implementation opens after the publication tag; B2 opens after
+sealed `EQ-B1`. Block/chunk B2 requires a new protocol.
 
 ## Stage 16 — B1/B2 implementation and candidate gates
 
-After tagged preregistration, implement candidates on a separate branch, run
-deterministic and CPU structural tests, controlled ROCm smoke, and numerical
-equivalence before full profiling. Retain negative and mixed results.
-Confirmatory execution requires another decision gate.
+- implement B1 separately and pass deterministic/CPU controls;
+- run controlled ROCm smoke and full-trajectory `EQ-B1`;
+- after sealed `EQ-B1`, open B2 separately;
+- run direct baseline/B2 and B1/B2 gates;
+- open shared profiling only after `EQ-B1` and `EQ-B2`;
+- retain negative and mixed results.
 
-## Stage 17 — `EX-IF0` and passive diagnostics
+## Stage 17 — `EX-IF0`, passive diagnostics, and `A11-OFF0`
 
 Freeze the selected exact implementation before label creation. Then collect
-passive PC-CATM representations and compare preregistered $\phi_k$ levels on a
-regret/cost frontier.
+passive PC-CATM representations and branch an identical snapshot into policy-
+neutral `stop`/`native_one`/`exact_one` outcomes while retaining utility/regret,
+temporal history, feature cost, transitions, and provenance. The independent
+unit is `model_seed`; the test split remains closed.
 
-## Stage 18 — predictor, exact verification, and `QWake-PC`
+## Stage 18 — `A11-OFF1`, predictor, exact verification, and shadow `QWake-PC`
 
-Use model-seed splits, counterfactual exact verification from identical state,
-shadow mode first, and active full-sweep allocation only after safety and
-end-to-end runtime gates. Measure control-plane cost separately.
+- run offline Pareto screening of nested $\phi_k$, features, and thresholds by
+  regret, dangerous misses, and the complete cost vector;
+- freeze representation, labels, split, Pareto rule, and fallback before
+  confirmatory access;
+- preregister the predictor separately with `model_seed` grouping;
+- run counterfactual exact verification from an identical state;
+- start in shadow mode;
+- preregister hysteresis as stop/wake thresholds, persistence, and emergency
+  `fallback_exact`, not as a substitute for utility;
+- permit active allocation only after safety/end-to-end gates.
 
 ## Stage 19 — final freeze and test evaluation
 

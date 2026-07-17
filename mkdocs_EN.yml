@@ -33,6 +33,7 @@ nav:
       - PC-TREF Balanced Core: pc-tref-balanced-core_EN.md
       - PC-CATM: pc-catm-operator-model_EN.md
       - Primary Scenario A: stage3b-primary-scenario-a_EN.md
+      - B1/B2 preregistration: stage3b-b1-b2-preregistration_EN.md
       - Torch2PC patched-v1 equivalence: torch2pc-patched-v1-equivalence_EN.md
       - GitHub setup: github-setup_EN.md
   - Design:
@@ -51,6 +52,7 @@ nav:
       - ADR-008 Predict-correct acceleration: decisions/ADR-008-predict-correct-acceleration_EN.md
       - ADR-012 Primary Scenario A: decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md
       - ADR-013 Operational semantics: decisions/ADR-013-pc-tref-operational-semantics_EN.md
+      - ADR-014 B1/B2 contracts: decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

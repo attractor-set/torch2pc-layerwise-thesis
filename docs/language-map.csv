@@ -86,3 +86,7 @@ docs/research-design/stage3b-si-ma0-confirmatory-aggregation.md,docs/research-de
 experiments/planned/STAGE3B-SI-MA1.md,experiments/planned/STAGE3B-SI-MA1_EN.md,required
 docs/pc-tref-pc-catm-theoretical-foundation.md,docs/pc-tref-pc-catm-theoretical-foundation_EN.md,required
 docs/decisions/ADR-013-pc-tref-operational-semantics.md,docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md,required
+experiments/planned/STAGE3B-B1.md,experiments/planned/STAGE3B-B1_EN.md,required
+experiments/planned/STAGE3B-B2.md,experiments/planned/STAGE3B-B2_EN.md,required
+docs/stage3b-b1-b2-preregistration.md,docs/stage3b-b1-b2-preregistration_EN.md,required
+docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md,docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md,required

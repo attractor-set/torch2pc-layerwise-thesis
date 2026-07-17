@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![License](https://img.shields.io/badge/code-Apache--2.0-green)
-![Status](https://img.shields.io/badge/stage-SI--MA1%20confirmed%3B%20B1%2FB2%20prereg%20next-blue)
+![Status](https://img.shields.io/badge/stage-B1%2FB2%20preregistration%20frozen-blue)
 
 A master's thesis repository comparing backpropagation (BP) with predictive
 coding regimes in Torch2PC. The project separates assumptions from
@@ -216,18 +216,18 @@ GitHub Releases:
 
 ## Next stage
 
-The next Scenario A stage is a separate B1/B2 preregistration. The theoretical
-package permits contract preparation but does not automatically permit
-implementation or confirmatory execution.
+B1/B2 preregistration is frozen by separate `STAGE3B-B1-CONTRACT.json` and
+`STAGE3B-B2-CONTRACT.json`, the
+[overview](docs/stage3b-b1-b2-preregistration_EN.md), and
+[ADR-014](docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md).
 
-Each candidate contract must freeze the candidate path and reference,
-state/RNG restoration, numerical-equivalence endpoints, partition or explicitly
-nontransitive proximity relation, task-relative loss and regret margin, norm
-contracts, cost vector and selection rule, separate observer/diagnostic/control
-costs, fallback, and stop rules.
-
-B0, `SI-MA0`, `SI-MA1`, and the test-split policy remain unchanged. See the
-[master's thesis plan](docs/masters-thesis-plan_EN.md).
+After the publication tag, only B1 `isolated_layer_vjp` implementation is
+authorized. B2 `composite_vjp` opens after sealed `EQ-B1`; shared matched
+profiling opens after `EQ-B1` and `EQ-B2`. B1/B2 are not `QWake-PC` policies
+and contain no estimator, oracle, cheap diagnostic loop, or hysteresis. After
+`EX-IF0`, the plan proceeds through policy-neutral `A11-OFF0`, offline
+`A11-OFF1`, separate predictor preregistration, and shadow control. The test
+split remains closed.
 
 ## Numerical controls
 

@@ -183,3 +183,16 @@ Stage 3, design-only порядок Scenario A, контракты или рез
 Отрицательный `D_seed` или `over-closure` из `SI-MA1` сохраняется как signed
 результат observer calibration и не трактуется как отрицательная физическая
 стоимость, end-to-end ускорение или бюджет для будущего control plane.
+
+## Дополнение: заморозка B1/B2 v1
+
+На основании `stage3b-pc-tref-pc-catm-theory-v1` предварительно
+зарегистрированы отдельные B1/B2 prose/JSON contracts, общий обзор и ADR-014.
+B1 фиксируется как `isolated_layer_vjp`; B2 — только как `composite_vjp`.
+Block/chunk composite требует нового protocol.
+
+После publication tag разрешается реализация B1. B2 требует sealed `EQ-B1`;
+общая matched profiling matrix требует `EQ-B1` и `EQ-B2`. Допустимое число
+dangerous admissions равно нулю. `EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor,
+hysteresis, active `QWake-PC` и test split остаются закрытыми до собственных
+решений.

@@ -41,60 +41,46 @@ observer-calibration эксперимента, а не для изменения
 - `CAL-COST-MA1=true`, `SI-MA1=pass`;
 - `SI-MA0` unchanged; `ECZ` evaluator cost excluded.
 
-## Этап 14 — теоретическая фиксация перед B1/B2 — текущий publication step
+## Этап 14 — теоретическая фиксация перед B1/B2 — завершён
 
-- разделить partition-based quotient и нетранзитивную threshold proximity;
-- определить required equivalence и safety через decision regret;
-- формализовать task-relative defect;
-- закрепить precision-masked zero и explicit norm contracts;
-- использовать cost vector и preregistered scalarization/Pareto rule;
-- разделить diagnostic-mechanism, observer и control-plane costs;
-- зафиксировать решение в `ADR-013`;
-- обновить двуязычную документацию без изменения sealed evidence.
+Операциональная semantics PC-TREF/PC-CATM, regret, norm contracts, precision-
+masked zero, cost vector и разделение costs опубликованы под ADR-013.
 
-После merge и тега этого пакета теоретический prerequisite B1/B2 считается
-выполненным.
+## Этап 15 — предварительная регистрация B1/B2 — текущий publication step
 
-## Этап 15 — B1/B2 preregistration — следующий
-
-Для B1 isolated-layer probe и B2 composite/block-composite probe подготовить
-раздельные candidate contracts. Каждый контракт фиксирует:
-
-- frozen reference и candidate implementation boundary;
-- state, belief и RNG restoration;
-- numerical-equivalence endpoints и tolerances;
-- norm contracts;
-- decision regret, dangerous-miss и fallback semantics;
-- cost vector и primary selection rule;
-- execution matrix, independent unit и replacement policy;
-- immutable provenance and evidence layout.
-
-Preregistration не означает implementation permission.
+Заморожены B1 `isolated_layer_vjp`, B2 `composite_vjp`, общий обзор и ADR-014.
+B1 implementation открывается после publication tag; B2 — после sealed
+`EQ-B1`. Block/chunk B2 требует нового protocol.
 
 ## Этап 16 — B1/B2 implementation и candidate gates
 
-После tagged preregistration:
+- реализовать B1 отдельно и пройти deterministic/CPU controls;
+- выполнить controlled ROCm smoke и full-trajectory `EQ-B1`;
+- после sealed `EQ-B1` отдельно открыть B2;
+- выполнить direct baseline/B2 и B1/B2 gates;
+- открыть shared profiling только после `EQ-B1` и `EQ-B2`;
+- сохранить отрицательные и смешанные результаты.
 
-- реализовать кандидатов в отдельной ветке;
-- выполнить deterministic и CPU structural tests;
-- выполнить controlled ROCm smoke;
-- проверить numerical equivalence до full profiling;
-- сохранить отрицательные и смешанные результаты;
-- открыть confirmatory execution только отдельным decision gate.
-
-## Этап 17 — `EX-IF0` и passive diagnostics
+## Этап 17 — `EX-IF0`, passive diagnostics и `A11-OFF0`
 
 После выбора допустимой exact implementation зафиксировать её до label
-creation. Затем собирать passive PC-CATM representations и сравнивать
-зарегистрированные $\phi_k$ по regret/cost frontier.
+creation. Затем собирать passive PC-CATM representations и из идентичного
+snapshot создавать policy-neutral ветви `stop`/`native_one`/`exact_one`,
+сохраняя utility/regret, temporal history, feature cost, transitions и
+provenance. Independent unit — `model_seed`; test split закрыт.
 
-## Этап 18 — predictor, exact verification и `QWake-PC`
+## Этап 18 — `A11-OFF1`, predictor, exact verification и shadow `QWake-PC`
 
-- split по `model_seed`;
-- counterfactual exact verification из идентичного состояния;
-- shadow mode first;
-- active full-sweep allocation только после safety и end-to-end runtime gates;
-- control-plane cost измеряется отдельно.
+- провести offline Pareto screening nested $\phi_k$, features и thresholds по
+  regret, dangerous misses и полному cost vector;
+- до confirmatory access заморозить representation, labels, split, Pareto rule
+  и fallback;
+- отдельно preregister predictor с split по `model_seed`;
+- выполнить counterfactual exact verification из идентичного состояния;
+- начать с shadow mode;
+- hysteresis регистрировать как stop/wake thresholds, persistence и emergency
+  `fallback_exact`, а не как замену utility;
+- active allocation разрешать только после safety/end-to-end gates.
 
 ## Этап 19 — финальная фиксация и test evaluation
 

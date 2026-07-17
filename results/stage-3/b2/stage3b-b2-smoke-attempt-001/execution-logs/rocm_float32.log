@@ -1,0 +1,28 @@
+ Container torch2pc-layerwise-thesis-run-run-5c36046f40a3 Creating
+ Container torch2pc-layerwise-thesis-run-run-5c36046f40a3 Created
+[WARN  tini (7)] Tini is not running as PID 1 and isn't registered as a child subreaper.
+Zombie processes will not be re-parented to Tini, so zombie reaping won't work.
+To fix the problem, use the -s option or set the environment variable TINI_SUBREAPER to register Tini as a child subreaper, or run Tini as PID 1.
+{
+  "attempt_id": "stage3b-b2-smoke-attempt-001",
+  "execute": true,
+  "matched_triples": 6,
+  "pairwise_comparisons": 12,
+  "request_id": "stage3b-b2-smoke-v1",
+  "selected_pairs": [
+    "rocm_float32__fixedpred__seed-0__batch-0",
+    "rocm_float32__fixedpred__seed-1__batch-0",
+    "rocm_float32__fixedpred__seed-2__batch-0",
+    "rocm_float32__strict__seed-0__batch-0",
+    "rocm_float32__strict__seed-1__batch-0",
+    "rocm_float32__strict__seed-2__batch-0"
+  ]
+}
+Running TorchSeq2PC.py
+Running TorchSeq2PC.py
+wrote results/stage-3/b2/stage3b-b2-smoke-attempt-001/pairs/rocm_float32__fixedpred__seed-0__batch-0
+wrote results/stage-3/b2/stage3b-b2-smoke-attempt-001/pairs/rocm_float32__fixedpred__seed-1__batch-0
+wrote results/stage-3/b2/stage3b-b2-smoke-attempt-001/pairs/rocm_float32__fixedpred__seed-2__batch-0
+wrote results/stage-3/b2/stage3b-b2-smoke-attempt-001/pairs/rocm_float32__strict__seed-0__batch-0
+wrote results/stage-3/b2/stage3b-b2-smoke-attempt-001/pairs/rocm_float32__strict__seed-1__batch-0
+wrote results/stage-3/b2/stage3b-b2-smoke-attempt-001/pairs/rocm_float32__strict__seed-2__batch-0

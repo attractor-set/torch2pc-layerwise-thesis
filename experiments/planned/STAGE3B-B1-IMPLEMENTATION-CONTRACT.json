@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "schema_id": "stage3b-b1-implementation-contract-v1",
+  "implementation_id": "stage3b-b1-isolated-layer-vjp-implementation-v1",
+  "status": "implementation_ready_not_executed",
+  "project_base": {
+    "main_merge_commit_short": "1ed1cff",
+    "preregistration_commit_short": "8263935",
+    "preregistration_tag": "stage3b-b1-b2-prereg-v1",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "candidate": {
+    "candidate_id": "isolated_layer_vjp",
+    "module": "torch2pc_thesis.stage3b_b1_isolated_vjp",
+    "entry_point": "load_b1_pc_infer",
+    "opt_in_only": true,
+    "canonical_reference_modified": false,
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "exact_supported": false
+  },
+  "reference_boundary": {
+    "delegated_functions": [
+      "FwdPassPlus",
+      "SetPCGrads"
+    ],
+    "state_inference_helpers_delegated": false,
+    "loss_backward_delegated": false,
+    "parameter_vjp_path_unchanged": true
+  },
+  "structural_contract": {
+    "one_graph_island_per_logical_upper_state_edge": true,
+    "cross_layer_composite_state_vjp": false,
+    "graph_span": 1,
+    "graph_lifetime": "single_vjp_call",
+    "events": [
+      "logical_edge_count",
+      "state_vjp_call_count",
+      "graph_island_count",
+      "graph_span",
+      "graph_lifetime"
+    ]
+  },
+  "trajectory_support": {
+    "initial_beliefs": true,
+    "beliefs_after_every_sweep": true,
+    "prediction_errors_after_every_sweep": true,
+    "state_corrections_by_layer_and_sweep": true
+  },
+  "observer_modes": {
+    "primary": "no_hooks",
+    "structural": "counters_only",
+    "hooks_used": false
+  },
+  "execution_boundary": {
+    "synthetic_unit_tests_allowed": true,
+    "registered_cpu_smoke_executed": false,
+    "registered_rocm_smoke_executed": false,
+    "confirmatory_equivalence_executed": false,
+    "matched_profiling_executed": false,
+    "b2_implementation_present": false,
+    "results_present": false,
+    "test_split_access": false
+  },
+  "validation_surface": {
+    "unit_tests": [
+      "tests/unit/test_stage3b_b1_isolated_vjp.py",
+      "tests/unit/test_stage3b_b1_implementation_contract.py"
+    ],
+    "actual_patched_reference_test": "tests/correctness/test_stage3b_b1_patched_reference.py",
+    "registered_smoke": false
+  }
+}

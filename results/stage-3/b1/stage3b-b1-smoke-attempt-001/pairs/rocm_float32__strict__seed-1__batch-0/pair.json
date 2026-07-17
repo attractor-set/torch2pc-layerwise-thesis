@@ -1,0 +1,71 @@
+{
+  "gates": {
+    "NUM-B1": {
+      "gate_id": "NUM-B1",
+      "passed": true,
+      "reasons": []
+    },
+    "OBS-B1": {
+      "gate_id": "OBS-B1",
+      "passed": true,
+      "reasons": []
+    },
+    "PROV-B1": {
+      "gate_id": "PROV-B1",
+      "passed": true,
+      "reasons": []
+    },
+    "STRUCT-B1": {
+      "gate_id": "STRUCT-B1",
+      "passed": true,
+      "reasons": []
+    },
+    "TRAJ-B1": {
+      "gate_id": "TRAJ-B1",
+      "passed": true,
+      "reasons": []
+    }
+  },
+  "pair_admissible": true,
+  "pair_id": "rocm_float32__strict__seed-1__batch-0",
+  "pair_spec": {
+    "attempt_id": "stage3b-b1-smoke-attempt-001",
+    "batch": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    },
+    "batch_index": 0,
+    "checkpoint": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/checkpoint.pt",
+      "sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82"
+    },
+    "lane": "rocm_float32",
+    "lane_control": {
+      "device": "cuda",
+      "dtype": "float32"
+    },
+    "method": "Strict",
+    "method_control": {
+      "eta": 0.05,
+      "inference_steps": 20
+    },
+    "model_seed": 1,
+    "request_id": "stage3b-b1-smoke-v1",
+    "resolved_config_digest": "aaea646ab3cdc446f597c34f913ec9bde9d0390084aff339ba5cce163aff1f7f",
+    "run_seed": 20260718,
+    "source_image_digest": "279fe959cc64769757d009c2a0cf89c59ecfc0dcf3a8e15176388c7d8e776e8e",
+    "training_mode": true
+  },
+  "provenance": {
+    "attempt_id": "stage3b-b1-smoke-attempt-001",
+    "b1_implementation_commit": "ec12e9a",
+    "batch_sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99",
+    "checkpoint_sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82",
+    "project_base_commit": "542d1dd10cfbc96746c2925c025e3f5311e753db",
+    "request_id": "stage3b-b1-smoke-v1",
+    "resolved_config_digest": "aaea646ab3cdc446f597c34f913ec9bde9d0390084aff339ba5cce163aff1f7f",
+    "rng_pair_digest": "4a05fa6b2b16a47fabf30d01b05359aecea9a9b9f6fc2f4a86663b42ceedae8d",
+    "source_image_digest": "279fe959cc64769757d009c2a0cf89c59ecfc0dcf3a8e15176388c7d8e776e8e",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  }
+}

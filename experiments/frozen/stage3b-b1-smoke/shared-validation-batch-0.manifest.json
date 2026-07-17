@@ -1,0 +1,72 @@
+{
+  "artifact_path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+  "artifact_sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99",
+  "artifact_type": "stage3b_b1_shared_validation_batch",
+  "batch_index": 0,
+  "common_data_protocol": {
+    "data": {
+      "dataset": "FashionMNIST",
+      "root": "data",
+      "split_dir": "results/splits",
+      "train_subset": null,
+      "validation_fraction": 0.15
+    },
+    "reproducibility": {
+      "split_seed": 42
+    },
+    "training": {
+      "batch_size": 256
+    }
+  },
+  "common_data_protocol_sha256": "de72abd170648d015c4b1e094b8f015337670eabfd7f9c8a8c9fbf16631ee7a5",
+  "dataset": "FashionMNIST",
+  "include_test": false,
+  "inputs_dtype": "torch.float32",
+  "inputs_shape": [
+    256,
+    1,
+    32,
+    32
+  ],
+  "schema_version": 1,
+  "shared_across_model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "sources": [
+    {
+      "checkpoint_path": "/workspace/results/stage-2/runs/final_stage_2-fashionmnist-bp-s0-bd621d5a3e-6d66b0a6-0ffe23c9/20260713T133027Z-19fac746/checkpoint.pt",
+      "checkpoint_sha256": "7de252afaf6a171dc5b384cf595f1111ec98bca6a3fc789da89e4aa8383a1f2f",
+      "model_seed": 0,
+      "resolved_config_path": "/workspace/results/stage-2/runs/final_stage_2-fashionmnist-bp-s0-bd621d5a3e-6d66b0a6-0ffe23c9/20260713T133027Z-19fac746/resolved_config.json",
+      "resolved_config_sha256": "cd0f210e09464106df1bf893216ae4036ae5e3285cc2ed96fddbfba6366653fc"
+    },
+    {
+      "checkpoint_path": "/workspace/results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/checkpoint.pt",
+      "checkpoint_sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82",
+      "model_seed": 1,
+      "resolved_config_path": "/workspace/results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/resolved_config.json",
+      "resolved_config_sha256": "3506d0de1629f681aec9f5470fb37726219f250c2cdd743828e378e862bea2b7"
+    },
+    {
+      "checkpoint_path": "/workspace/results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/checkpoint.pt",
+      "checkpoint_sha256": "0f9206bc44097dc94e5937e1027643f23441dd6f39b44892680369409cf8f3a4",
+      "model_seed": 2,
+      "resolved_config_path": "/workspace/results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/resolved_config.json",
+      "resolved_config_sha256": "9cd9f34a88f8c1f9726b607fb2be9261d50866a5142d6ee3ca83c752d30bcb83"
+    }
+  ],
+  "split": "validation",
+  "split_files": [
+    "results/splits/FashionMNIST_train-validation_seed42_subsetall_val0p15.npz"
+  ],
+  "split_sha256": {
+    "FashionMNIST_train-validation_seed42_subsetall_val0p15.npz": "8d1ab9c4ceb5401c3b4c6ca441d02377fffd5800d6ebbdbdc985b496438eabf6"
+  },
+  "targets_dtype": "torch.int64",
+  "targets_shape": [
+    256
+  ],
+  "test_split_accessed": false
+}

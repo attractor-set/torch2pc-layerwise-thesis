@@ -7,3 +7,6 @@
 *.tex text eol=lf
 *.ipynb text eol=lf
 *.npz binary
+
+# Preserve sealed Stage 3B B1 evidence CSV byte-for-byte.
+results/stage-3/b1/**/*.csv binary

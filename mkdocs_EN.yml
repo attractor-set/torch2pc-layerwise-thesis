@@ -33,6 +33,9 @@ nav:
       - PC-TREF Balanced Core: pc-tref-balanced-core_EN.md
       - PC-CATM: pc-catm-operator-model_EN.md
       - Primary Scenario A: stage3b-primary-scenario-a_EN.md
+      - QWake-PC: qwake-pc-design_EN.md
+      - ECZ-targeted local sweep: ecz-targeted-local-sweep_EN.md
+      - Future-policy boundary: stage3b-future-policy-boundary_EN.md
       - B1/B2 preregistration: stage3b-b1-b2-preregistration_EN.md
       - Torch2PC patched-v1 equivalence: torch2pc-patched-v1-equivalence_EN.md
       - GitHub setup: github-setup_EN.md

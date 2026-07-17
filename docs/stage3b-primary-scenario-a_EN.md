@@ -146,12 +146,12 @@ evidence generation.
 Record `NCZ[intrinsic]`, `NCZ[state_transport_masked]`, `NCZ[unresolved]`,
 `ECZ`, `active_non_ecz`, `activity_guard`, and `invalid`. Analyze frequencies,
 layer/sweep structure, transitions, and association with next exact-sweep
-utility.
+utility. Diagnostics cannot control execution before `EX-IF0`.
 
 #### A11-OFF0 — policy-neutral counterfactual traces
 
 After `EX-IF0` and before predictor training, one restored snapshot is branched
-into:
+into the labels frozen by the B1/B2 contracts:
 
 ```text
 stop
@@ -160,47 +160,78 @@ exact_one
 ```
 
 Each branch records $\phi_0,\ldots,\phi_k$, temporal history, endpoint
-utility/regret, feature costs, transitions, [fallback](glossary_EN.md#term-fallback) reasons, and complete
-provenance. Branches are offline labels and `controls_execution=false`. The
-independent unit is `model_seed`; the test split remains closed.
+utility/regret, feature costs, transitions, [fallback](glossary_EN.md#term-fallback)
+reasons, and complete provenance. Branches are offline labels and
+`controls_execution=false`. The independent unit is `model_seed`; the test
+split remains closed.
 
-#### A11-OFF1 — offline Pareto screening
+A separate post-`EX-IF0` preregistration may add `local_sweep(block_id)`.
+That branch is outside B1/B2 and does not modify
+`stage3b-b1-b2-prereg-v1`.
 
-On development splits, nested representations, feature sets, and threshold
-families are compared by dangerous misses, regret, unnecessary wakes, fallback,
-[device time](glossary_EN.md#term-device-time), memory, and observer/control-plane cost. The result is a Pareto set
-of promising directions rather than a post-hoc active policy.
+#### A11-OFF1 — sequential offline screening
 
-### A12 — local predictor
+On the development split, policy families pass:
+
+1. `cost_feasibility`;
+2. `safety` with `zero_dangerous_misses`;
+3. `net_efficiency` over the complete [cost vector](glossary_EN.md#term-cost-vector);
+4. Pareto screening.
+
+Screening returns `0–3` finalists. Retaining exactly three variants is not
+required; `0` is an admissible negative result.
+
+### A12 — local predictor and controller preregistration
 
 The [local predictor](glossary_EN.md#term-local-predictor) is preregistered only
-after `A11-OFF1`, remains in [shadow mode](glossary_EN.md#term-shadow-mode), and uses frozen geometry, transport,
-layer/sweep, residual-history, and uncertainty features. Splits are grouped by
-`model_seed`. It estimates the utility of the next full exact sweep and does not
-modify beliefs.
+after `A11-OFF1`, uses frozen features and `model_seed` splits, and does not
+modify beliefs. A separate controller contract freezes action labels,
+representation, thresholds, hysteresis, fallback, and control-plane cost before
+shadow evaluation.
 
-### A13 — exact verification
+### A13 — exact verification of ECZ-targeted local sweep
 
 [Counterfactual exact verification](glossary_EN.md#term-exact-verification)
-creates proposed and exact branches from identical state. The primary target is
+creates proposed local and full exact branches from identical state. `ECZ` may
+select only a candidate block. It does not establish that
+`local_sweep(block_id)` is safe, cheaper, or sufficient.
+
+The primary target is
 [endpoint-gradient utility](glossary_EN.md#term-endpoint-gradient-utility); a
-[dangerous miss](glossary_EN.md#term-dangerous-miss) is the primary safety gate.
+[dangerous miss](glossary_EN.md#term-dangerous-miss) is the safety barrier.
+The local action cannot enter a policy family before `exact_verification`
+passes.
 
-### A14 — `QWake-PC` shadow
+### A14 — hierarchical `QWake-PC` shadow mode
 
-`QWake-PC` emits only `continue_exact`, `sleep_candidate`, `wake_candidate`,
-`stop_candidate`, and `fallback_exact` proposals; `controls_execution=false`.
+After separate preregistration, `QWake-PC` emits proposals in the hierarchy:
 
-Future hysteresis is a policy guard rather than a substitute for the utility
-threshold. Its separate contract freezes stop and wake thresholds, minimum
-persistence, and emergency `fallback_exact`. These parameters do not control
-execution before shadow and safety gates.
+```text
+stop
+→ ECZ-targeted local sweep
+→ full exact sweep
+→ fallback_exact
+```
 
-### A15 — active full-sweep allocation
+`controls_execution=false`. hysteresis is a policy guard rather than a
+substitute for utility/regret. The contract freezes stop/wake thresholds,
+persistence, and emergency `fallback_exact`.
 
-Only after shadow, dangerous-miss, and end-to-end cost gates may the controller
-manage full exact sweeps. Observer and control-plane costs are measured
-separately; the test split is not used for selection.
+### A15 — conditional active mode and `A-Max`
+
+Only after positive shadow evidence, `zero_dangerous_misses`, and the
+end-to-end cost gate may the controller manage execution. Observer and
+control-plane costs are measured separately; the test split is not used for
+selection.
+
+`A-Max` is not an automatic continuation: it opens only after a successful
+shadow result. Otherwise the study retains `A-Core`, negative policy findings,
+and the applicability boundary.
+
+Normative documents:
+[QWake-PC design](qwake-pc-design_EN.md),
+[ECZ-targeted local sweep](ecz-targeted-local-sweep_EN.md), and
+[future-policy boundary](stage3b-future-policy-boundary_EN.md).
 
 ## Completion levels
 

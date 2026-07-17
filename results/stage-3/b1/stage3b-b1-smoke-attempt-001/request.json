@@ -1,0 +1,197 @@
+{
+  "architecture": "lenet_classic",
+  "attempt_id": "stage3b-b1-smoke-attempt-001",
+  "b1_implementation_commit": "ec12e9a",
+  "batches": {
+    "0": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    },
+    "1": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    },
+    "2": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    }
+  },
+  "batches_per_seed": 1,
+  "checkpoints": {
+    "0": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s0-bd621d5a3e-6d66b0a6-0ffe23c9/20260713T133027Z-19fac746/checkpoint.pt",
+      "sha256": "7de252afaf6a171dc5b384cf595f1111ec98bca6a3fc789da89e4aa8383a1f2f"
+    },
+    "1": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/checkpoint.pt",
+      "sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82"
+    },
+    "2": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/checkpoint.pt",
+      "sha256": "0f9206bc44097dc94e5937e1027643f23441dd6f39b44892680369409cf8f3a4"
+    }
+  },
+  "dangerous_miss_limit": 0,
+  "dataset": "FashionMNIST",
+  "lane_controls": {
+    "cpu_float64": {
+      "device": "cpu",
+      "dtype": "float64"
+    },
+    "rocm_float32": {
+      "device": "cuda",
+      "dtype": "float32"
+    }
+  },
+  "lanes": [
+    "cpu_float64",
+    "rocm_float32"
+  ],
+  "method_controls": {
+    "FixedPred": {
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "Strict": {
+      "eta": 0.05,
+      "inference_steps": 20
+    }
+  },
+  "methods": [
+    "FixedPred",
+    "Strict"
+  ],
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "observer_mode": "no_hooks",
+  "optimizer": {
+    "learning_rate": 0.001,
+    "momentum": 0.0,
+    "name": "SGD"
+  },
+  "project_base_commit": "542d1dd10cfbc96746c2925c025e3f5311e753db",
+  "request_id": "stage3b-b1-smoke-v1",
+  "resolved_config": {
+    "architecture": "lenet_classic",
+    "batch_index": 0,
+    "batch_selection": {
+      "batch_index": 0,
+      "inputs_shape": [
+        256,
+        1,
+        32,
+        32
+      ],
+      "manifest_path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.manifest.json",
+      "manifest_sha256": "a132a6bc42aece34e0294f5dbba638b4f5dc693b157a872ff75ad14539341dc4",
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "selected_before_execution": true,
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99",
+      "shared_across_model_seeds": [
+        0,
+        1,
+        2
+      ],
+      "split_sha256": {
+        "FashionMNIST_train-validation_seed42_subsetall_val0p15.npz": "8d1ab9c4ceb5401c3b4c6ca441d02377fffd5800d6ebbdbdc985b496438eabf6"
+      },
+      "strategy": "shared_fixed_validation_batch",
+      "targets_shape": [
+        256
+      ],
+      "test_split_access": false
+    },
+    "checkpoint_selection": {
+      "family": "stage2_final_fashionmnist_bp",
+      "per_seed": {
+        "0": {
+          "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s0-bd621d5a3e-6d66b0a6-0ffe23c9/20260713T133027Z-19fac746/checkpoint.pt",
+          "sha256": "7de252afaf6a171dc5b384cf595f1111ec98bca6a3fc789da89e4aa8383a1f2f"
+        },
+        "1": {
+          "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/checkpoint.pt",
+          "sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82"
+        },
+        "2": {
+          "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/checkpoint.pt",
+          "sha256": "0f9206bc44097dc94e5937e1027643f23441dd6f39b44892680369409cf8f3a4"
+        }
+      },
+      "role": "method_neutral_common_initial_snapshot",
+      "selected_before_execution": true
+    },
+    "dataset": "FashionMNIST",
+    "execution": {
+      "lanes": {
+        "cpu_float64": {
+          "device": "cpu",
+          "dtype": "float64"
+        },
+        "rocm_float32": {
+          "device": "cuda",
+          "dtype": "float32"
+        }
+      },
+      "observer_mode": "no_hooks",
+      "run_seed_base": 20260717,
+      "source_image_digest": "279fe959cc64769757d009c2a0cf89c59ecfc0dcf3a8e15176388c7d8e776e8e",
+      "source_image_name": "torch2pc-layerwise-thesis:0.1.0",
+      "structural_observer_mode": "counters_only",
+      "training_mode": true
+    },
+    "matched_pairs": 12,
+    "method_controls": {
+      "FixedPred": {
+        "eta": 0.1,
+        "inference_steps": 10,
+        "source_path": "configs/methods/fixedpred.yaml",
+        "source_sha256": "1a083d3a9e175f92326bd509a22bd54b69b310232b6a1bbc4be9bb63379da241"
+      },
+      "Strict": {
+        "eta": 0.05,
+        "inference_steps": 20,
+        "source_path": "configs/methods/strict.yaml",
+        "source_sha256": "96cacef5582d2fa66015ddfe3df6ee100c1a6ef7fb9187f684b3d430e37ecec5"
+      }
+    },
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "optimizer": {
+      "learning_rate": 0.001,
+      "momentum": 0.0,
+      "name": "SGD"
+    },
+    "provenance": {
+      "b1_implementation_commit": "ec12e9a",
+      "batch_freeze_commit": "15efabe60f05f07953c06514b35ccd5e9332e2af",
+      "execution_branch": "research/stage3b-b1-smoke-execution",
+      "execution_head_before_request": "15efabe60f05f07953c06514b35ccd5e9332e2af",
+      "exporter_commit": "12a5edc51fe150ac1baae1ce6269f5a671f526d9",
+      "project_base_commit": "542d1dd10cfbc96746c2925c025e3f5311e753db",
+      "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+    },
+    "resolution_id": "stage3b-b1-smoke-resolved-v1",
+    "schema_version": 1,
+    "split": "validation"
+  },
+  "resolved_config_digest": "aaea646ab3cdc446f597c34f913ec9bde9d0390084aff339ba5cce163aff1f7f",
+  "run_seed_base": 20260717,
+  "schema_version": 1,
+  "scope": "smoke",
+  "source_image_digest": "279fe959cc64769757d009c2a0cf89c59ecfc0dcf3a8e15176388c7d8e776e8e",
+  "split": "validation",
+  "structural_observer_mode": "counters_only",
+  "test_split_access": false,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "training_mode": true
+}

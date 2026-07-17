@@ -2,10 +2,11 @@
 
 [Русская версия](STATUS.md)
 
-As of 16 July 2026, immutable Stage 1/2, Stage 3A, Stage 3B B0, `SI-MA0`, and
-`SI-MA1` results are published. Full Stage 3B remains incomplete: B1/B2,
-`EX-IF0`, passive diagnostics, the predictor, counterfactual exact verification,
-and `QWake-PC` have not been executed.
+As of 17 July 2026, immutable Stage 1/2, Stage 3A, Stage 3B B0, `SI-MA0`,
+`SI-MA1`, and positive sealed `EQ-B1`/`EQ-B2` decisions are published. Full
+Stage 3B remains incomplete: matched profiling, `EX-IF0`, passive diagnostics,
+the predictor, counterfactual exact verification, and `QWake-PC` have not been
+executed.
 
 ## Status summary
 
@@ -19,10 +20,10 @@ and `QWake-PC` have not been executed.
 | `SI-MA1` execution | 10 model seeds, 3 batches/seed, 180 matched blocks |
 | `SI-MA1` decision | `CAL-COST-MA1=true`, `si_ma1_passed=true` |
 | B1/B2 theoretical prerequisite | satisfied by the `PC-TREF`/`PC-CATM` package |
-| B1/B2 preregistration | frozen in separate contracts; awaiting publication tag |
-| B1 implementation | opens after the preregistration tag |
-| B2 implementation | closed until sealed `EQ-B1` |
-| Shared B1/B2 profiling | closed until sealed `EQ-B1` and `EQ-B2` |
+| B1/B2 preregistration | published under `stage3b-b1-b2-prereg-v1` |
+| B1 `isolated_layer_vjp` | implementation complete; sealed `EQ-B1=pass` |
+| B2 `composite_vjp` | implementation complete; sealed `EQ-B2=pass` |
+| Shared B0/B1/B2 profiling | scientific admission open; execution not authorized |
 | Test split | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -66,6 +67,13 @@ over-closure, not negative physical cost. `SI-MA1` excludes future `ECZ`
 evaluation, action selection, fallback validation, and end-to-end B1/B2
 savings.
 
+### B1/B2 equivalence admission
+
+B1 and B2 passed separate CPU `float64` and ROCm `float32` smoke lanes. Sealed
+`EQ-B1` and `EQ-B2` have `status=pass`, `failed_pairs=[]`, and all registered
+gates passed. This opens only matched profiling and does not establish a
+runtime or memory benefit.
+
 ## Theoretical state
 
 [PC-TREF Balanced Core](docs/pc-tref-balanced-core_EN.md),
@@ -100,8 +108,7 @@ them.
 
 ## Next stage
 
-After publication of `stage3b-b1-b2-prereg-v1`, separate B1 implementation is
-authorized. B2 remains closed until sealed `EQ-B1`; shared matched profiling
-remains closed until `EQ-B1` and `EQ-B2`. `EX-IF0`, `A11-OFF0`, `A11-OFF1`,
-the predictor, hysteresis, active control, and test access require their own
-decision gates.
+Freeze and verify the 288-cell B0/B1/B2 matched manifest/request, then implement
+a candidate-aware runner and a separate ROCm/float32 runtime freeze. This does
+not open `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor, hysteresis, active
+control, or test access.

@@ -44,41 +44,65 @@ experiment rather than a frozen-contract change.
 Operational PC-TREF/PC-CATM semantics, regret, norm contracts, precision-
 masked zero, the cost vector, and cost separation are published under ADR-013.
 
-## Stage 15 — B1/B2 preregistration — current publication step
+## Stage 15 — B1/B2 preregistration — complete
 
-B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and ADR-014
-are frozen. B1 implementation opens after the publication tag; B2 opens after
-sealed `EQ-B1`. Block/chunk B2 requires a new protocol.
+B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and ADR-014.
+They are frozen. Publication tag `stage3b-b1-b2-prereg-v1` preserves those
+definitions unchanged. `ECZ`, local sweeps, and `QWake-PC` are outside B1/B2
+and cannot be retrofitted into them.
 
-## Stage 16 — B1/B2 implementation and candidate gates
+## Stage 16 — B1/B2 implementation and candidate gates — current stage
 
-- implement B1 separately and pass deterministic/CPU controls;
-- run controlled ROCm smoke and full-trajectory `EQ-B1`;
-- after sealed `EQ-B1`, open B2 separately;
-- run direct baseline/B2 and B1/B2 gates;
-- open shared profiling only after `EQ-B1` and `EQ-B2`;
-- retain negative and mixed results.
+B1 implementation and the B1 equivalence smoke harness are merged into `main`.
+The next permitted step is separate CPU `float64` and ROCm `float32` smoke
+execution, full-trajectory aggregation, and sealed `EQ-B1`.
 
-## Stage 17 — `EX-IF0`, passive diagnostics, and `A11-OFF0`
+- B2 remains closed until positive sealed `EQ-B1`;
+- shared profiling remains closed until positive `EQ-B1` and `EQ-B2`;
+- scientific failures are retained;
+- design-only future-policy updates do not block B1 smoke execution.
 
-Freeze the selected exact implementation before label creation. Then collect
-passive PC-CATM representations and branch an identical snapshot into policy-
-neutral `stop`/`native_one`/`exact_one` outcomes while retaining utility/regret,
-temporal history, feature cost, transitions, and provenance. The independent
-unit is `model_seed`; the test split remains closed.
+## Stage 17 — `EX-IF0`, passive diagnostics, and neutral branches
 
-## Stage 18 — `A11-OFF1`, predictor, exact verification, and shadow `QWake-PC`
+After `EQ-B1`, `EQ-B2`, and matched exact-candidate profiling, select an
+admissible exact implementation and freeze `EX-IF0` before policy-label
+creation. Then run `A11-OFF0`: collect passive PC-CATM representations and
+branch an identical snapshot into the B1/B2-contract labels `stop`/`native_one`/`exact_one`.
+Those branches remain offline labels and are not controller actions.
 
-- run offline Pareto screening of nested $\phi_k$, features, and thresholds by
-  regret, dangerous misses, and the complete cost vector;
-- freeze representation, labels, split, Pareto rule, and fallback before
-  confirmatory access;
-- preregister the predictor separately with `model_seed` grouping;
-- run counterfactual exact verification from an identical state;
-- start in shadow mode;
-- preregister hysteresis as stop/wake thresholds, persistence, and emergency
-  `fallback_exact`, not as a substitute for utility;
-- permit active allocation only after safety/end-to-end gates.
+Active `ECZ` use is forbidden before `EX-IF0`. See the
+[future-policy boundary](docs/stage3b-future-policy-boundary_EN.md).
+
+## Stage 18 — `A11-OFF1`, ECZ-targeted local sweep, and offline screening
+
+After `EX-IF0`, a separate preregistration may add the counterfactual branch
+`local_sweep(block_id)`. `ECZ` may select only a candidate block; local-action
+utility must pass a separate `exact_verification` gate against `full_exact`.
+
+Screening is sequential:
+
+1. `cost_feasibility`: total policy cost must remain below the corresponding
+   full exact-sweep cost;
+2. `safety`: exactly `zero_dangerous_misses` is allowed;
+3. `net_efficiency`: diagnostics, predictor, local sweep, fallback, and
+   control-plane costs are included;
+4. Pareto screening selects `0–3` finalists and does not guarantee that any
+   admissible candidate exists.
+
+Only after separate predictor and controller preregistration is the
+hierarchical policy evaluated in shadow mode:
+
+```text
+stop
+→ ECZ-targeted local sweep
+→ full exact sweep
+→ fallback_exact
+```
+
+`controls_execution=false` remains in force until shadow safety and end-to-end
+cost gates pass. `A-Max` is conditional and opens only after positive shadow
+evidence. See the [QWake-PC design](docs/qwake-pc-design_EN.md) and
+[ECZ local-sweep design](docs/ecz-targeted-local-sweep_EN.md).
 
 ## Stage 19 — final freeze and test evaluation
 

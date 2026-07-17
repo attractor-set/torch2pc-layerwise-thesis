@@ -64,6 +64,44 @@ Failure of numerical equivalence or safety closes the candidate to confirmatory
 profiling. Failure of cost remains a scientific result but does not support a
 speedup claim.
 
+## Future policy analysis after `EX-IF0`
+
+Before `EX-IF0`, `ECZ` remains a passive diagnostic category and cannot control
+execution. After the exact implementation is frozen, a separate
+development-only counterfactual analysis is permitted. The [baseline](glossary_EN.md#term-baseline)
+`stop`/`native_one`/`exact_one` branches retain their B1/B2-contract meaning as
+offline labels.
+
+A `local_sweep(block_id)` branch may appear only in a new preregistered
+protocol. `ECZ` selects a candidate block but does not establish local-action
+utility. Before a local sweep enters a policy family, it must pass an
+`exact_verification` gate:
+
+```text
+same restored state
+→ proposed local_sweep(block_id)
+→ full_exact
+→ endpoint utility/regret comparison
+```
+
+Offline selection follows a fixed sequence:
+
+1. `cost_feasibility`;
+2. `safety` with `zero_dangerous_misses`;
+3. `net_efficiency` over the complete cost vector;
+4. Pareto screening with `0–3` finalists.
+
+A result of `0` viable policies is a valid scientific result. Finalists,
+representation, features, split, thresholds, fallback, and hysteresis are
+frozen before confirmatory shadow evaluation. Active control is forbidden
+until positive shadow [evidence](glossary_EN.md#term-evidence); `A-Max` is considered only as a conditional
+extension.
+
+Normative documents:
+[QWake-PC](glossary_EN.md#term-qwake-pc) — [QWake-PC design](qwake-pc-design_EN.md),
+[ECZ-targeted local sweep](ecz-targeted-local-sweep_EN.md), and
+[future-policy boundary](stage3b-future-policy-boundary_EN.md).
+
 ## Secondary analyses
 
 - layer, [dataset](glossary_EN.md#term-dataset), method, and seed heterogeneity;

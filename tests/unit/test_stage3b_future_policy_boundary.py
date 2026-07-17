@@ -86,3 +86,78 @@ def test_roadmap_keeps_policy_work_after_ex_if0() -> None:
             tail.index("shadow"),
         ]
         assert positions == sorted(positions)
+
+def test_hierarchical_future_policy_documents_are_guarded() -> None:
+    qwake_documents = (
+        "docs/qwake-pc-design.md",
+        "docs/qwake-pc-design_EN.md",
+        "docs/stage3b-future-policy-boundary.md",
+        "docs/stage3b-future-policy-boundary_EN.md",
+    )
+    required_qwake = {
+        "EX-IF0",
+        "local_sweep(block_id)",
+        "full_exact",
+        "fallback_exact",
+        "cost_feasibility",
+        "zero_dangerous_misses",
+        "net_efficiency",
+        "0–3",
+        "controls_execution=false",
+        "A-Max",
+    }
+    for name in qwake_documents:
+        document = (ROOT / name).read_text(encoding="utf-8")
+        for token in required_qwake:
+            assert token in document
+
+    ecz_documents = (
+        "docs/ecz-targeted-local-sweep.md",
+        "docs/ecz-targeted-local-sweep_EN.md",
+    )
+    required_ecz = {
+        "EX-IF0",
+        "local_sweep(block_id)",
+        "full_exact",
+        "exact_verification",
+        "zero_dangerous_misses",
+    }
+    for name in ecz_documents:
+        document = (ROOT / name).read_text(encoding="utf-8")
+        for token in required_ecz:
+            assert token in document
+
+
+def test_future_policy_is_not_retrofitted_into_exact_candidates() -> None:
+    for name in ("STAGE3B-B1-CONTRACT.json", "STAGE3B-B2-CONTRACT.json"):
+        contract = _contract(name)
+        serialized_candidate = json.dumps(
+            contract["candidate"],
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        assert "local_sweep" not in serialized_candidate
+        assert "ECZ-targeted" not in serialized_candidate
+        boundary = contract["future_policy_boundary"]
+        assert boundary["estimator_present"] is False
+        assert boundary["offline_trace_collection_present"] is False
+
+
+def test_policy_screening_order_is_frozen_in_design_docs() -> None:
+    for name in (
+        "docs/qwake-pc-design.md",
+        "docs/qwake-pc-design_EN.md",
+        "docs/stage3b-future-policy-boundary.md",
+        "docs/stage3b-future-policy-boundary_EN.md",
+    ):
+        document = (ROOT / name).read_text(encoding="utf-8")
+        gate_tail = document[document.index("cost_feasibility") :]
+        positions = [
+            gate_tail.index("cost_feasibility"),
+            gate_tail.index("zero_dangerous_misses"),
+            gate_tail.index("net_efficiency"),
+            gate_tail.index("0–3"),
+            gate_tail.index("shadow"),
+            gate_tail.index("A-Max"),
+        ]
+        assert positions == sorted(positions)

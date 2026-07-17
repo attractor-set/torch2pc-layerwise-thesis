@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "schema_id": "stage3b-b1-smoke-harness-contract-v1",
+  "harness_id": "stage3b-b1-equivalence-smoke-harness-v1",
+  "status": "harness_ready_execution_not_started",
+  "project_base": {
+    "main_merge_commit": "542d1dd10cfbc96746c2925c025e3f5311e753db",
+    "b1_implementation_commit": "ec12e9a",
+    "preregistration_tag": "stage3b-b1-b2-prereg-v1",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "scope": {
+    "candidate_id": "isolated_layer_vjp",
+    "reference_id": "stage2_baseline",
+    "dataset": "FashionMNIST",
+    "split": "validation",
+    "test_split_access": false,
+    "architecture": "lenet_classic",
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "batches_per_seed": 1,
+    "lanes": [
+      "cpu_float64",
+      "rocm_float32"
+    ],
+    "matched_pairs": 12
+  },
+  "request_rule": {
+    "sealed_before_execution": true,
+    "eta_and_inference_steps_required": true,
+    "eta_and_inference_steps_must_come_from_resolved_training_metadata": true,
+    "checkpoint_paths_and_sha256_required": true,
+    "validation_batch_paths_and_sha256_required": true,
+    "resolved_config_digest_required": true,
+    "source_image_digest_required": true,
+    "threshold_retuning_after_output": false
+  },
+  "measurement_lanes": {
+    "primary_equivalence": {
+      "observer_mode": "no_hooks",
+      "instrumentation": "disabled"
+    },
+    "structural": {
+      "observer_mode": "counters_only",
+      "separate_replay": true
+    }
+  },
+  "reference_trace": {
+    "strategy": "canonical_algorithm_trace_adapter",
+    "endpoint_guard_against_actual_PCInfer": true,
+    "guard_failure_gate": "PROV-B1",
+    "canonical_reference_modified": false
+  },
+  "registered_components": [
+    "initial beliefs by layer",
+    "beliefs after every inference sweep",
+    "prediction errors after every inference sweep",
+    "state corrections by layer and sweep",
+    "final loss",
+    "named parameter gradients",
+    "parameters after one identical stateless SGD step",
+    "optimizer scalar and tensor state",
+    "actual inference-step count",
+    "RNG-state digest before and after the matched pair"
+  ],
+  "optimizer": {
+    "name": "SGD",
+    "learning_rate": 0.001,
+    "momentum": 0.0
+  },
+  "gates": [
+    "STRUCT-B1",
+    "NUM-B1",
+    "TRAJ-B1",
+    "OBS-B1",
+    "PROV-B1",
+    "EQ-B1"
+  ],
+  "dangerous_miss_limit": 0,
+  "append_only": true,
+  "execution_boundary": {
+    "registered_cpu_smoke_executed": false,
+    "registered_rocm_smoke_executed": false,
+    "eq_b1_sealed": false,
+    "results_present": false,
+    "b2_implementation_present": false,
+    "matched_profiling_executed": false,
+    "future_policy_work_present": false
+  },
+  "files": {
+    "core_metrics": "src/torch2pc_thesis/stage3b_b1_equivalence.py",
+    "reference_trace": "src/torch2pc_thesis/stage3b_b1_reference_trace.py",
+    "runner": "src/torch2pc_thesis/stage3b_b1_smoke.py",
+    "execution_cli": "scripts/run_stage3b_b1_smoke.py",
+    "aggregation_cli": "scripts/aggregate_stage3b_b1_smoke.py"
+  }
+}

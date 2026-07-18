@@ -316,6 +316,75 @@ def _validated_source_commit(source_commit: str) -> str:
     return normalized
 
 
+def _validate_runtime_project_binding(
+    *,
+    project_root: Path,
+    base_manifest_path: Path,
+    base_manifest: Mapping[str, object],
+    freeze_record: Mapping[str, object],
+    source_commit: str,
+) -> None:
+    """Validate relocated runtime inputs by provenance, not absolute path."""
+
+    resolved_project = project_root.expanduser().resolve()
+    resolved_manifest = base_manifest_path.expanduser().resolve()
+    if not resolved_project.is_dir():
+        raise Stage3BExecutionError(
+            f"matched runtime project root is not a directory: {resolved_project}"
+        )
+    if not resolved_manifest.is_file():
+        raise Stage3BExecutionError(
+            f"matched runtime base manifest is missing: {resolved_manifest}"
+        )
+
+    head = subprocess.run(
+        ["git", "-C", str(resolved_project), "rev-parse", "HEAD"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if head.returncode != 0:
+        raise Stage3BExecutionError(
+            "matched runtime project root is not a readable Git worktree"
+        )
+    if head.stdout.strip().lower() != source_commit:
+        raise Stage3BExecutionError(
+            "matched runtime project HEAD differs from authorized source commit"
+        )
+
+    status = subprocess.run(
+        ["git", "-C", str(resolved_project), "status", "--porcelain"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if status.returncode != 0:
+        raise Stage3BExecutionError(
+            "matched runtime project status could not be verified"
+        )
+    if status.stdout.strip():
+        raise Stage3BExecutionError(
+            "matched runtime project worktree is not clean"
+        )
+
+    if source_commit != str(freeze_record.get("project_source_commit", "")):
+        raise Stage3BExecutionError(
+            "matched cell source commit differs from freeze"
+        )
+    if base_manifest.get("manifest_digest") != freeze_record.get(
+        "source_manifest_digest"
+    ):
+        raise Stage3BExecutionError(
+            "matched cell base manifest digest differs from freeze"
+        )
+    if _sha256_file(resolved_manifest) != freeze_record.get(
+        "source_manifest_sha256"
+    ):
+        raise Stage3BExecutionError(
+            "matched cell base manifest content differs from freeze"
+        )
+
+
 def _validated_lane(
     *,
     device: str,
@@ -1446,13 +1515,13 @@ def execute_matched_cell(
     emergency_stop = Path(str(authorization["emergency_stop_path"]))
     _check_emergency_stop(emergency_stop)
     freeze_record = cast(Mapping[str, object], authorization["freeze_record"])
-    if project_root.expanduser().resolve() != Path(str(freeze_record["project_root"])).resolve():
-        raise Stage3BExecutionError("matched cell project root differs from freeze")
-    if (
-        base_manifest_path.expanduser().resolve()
-        != Path(str(freeze_record["base_manifest_path"])).resolve()
-    ):
-        raise Stage3BExecutionError("matched cell base manifest path differs from freeze")
+    _validate_runtime_project_binding(
+        project_root=project_root,
+        base_manifest_path=base_manifest_path,
+        base_manifest=base_manifest,
+        freeze_record=freeze_record,
+        source_commit=clean_commit,
+    )
     lane_root = _lane_root(
         resolved_root,
         device=normalized_device,

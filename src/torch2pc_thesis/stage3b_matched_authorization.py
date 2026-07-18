@@ -68,9 +68,9 @@ MATCHED_CANONICAL_LANES: Final[tuple[tuple[str, str], ...]] = (
     ("rocm", "float32"),
 )
 MATCHED_AUTHORIZED_CELL_COUNT: Final[int] = MATCHED_PROFILING_EXPECTED_CELL_COUNT
-# The current candidate-aware runner is metadata/mock-dispatch only.
-# A later executable-runner slice must flip this boundary deliberately.
-MATCHED_EXECUTION_RUNNER_READY: Final[bool] = False
+# The matched executor verifies authorization, reconstructs identical block
+# state per candidate, and isolates every cell in a fresh Python process.
+MATCHED_EXECUTION_RUNNER_READY: Final[bool] = True
 MATCHED_DISPATCH_SYMBOLS: Final[tuple[str, ...]] = tuple(
     f"{CANDIDATE_ADAPTERS[candidate_id].module_name}."
     f"{CANDIDATE_ADAPTERS[candidate_id].loader_name}"

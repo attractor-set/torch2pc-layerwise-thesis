@@ -415,7 +415,42 @@ def test_authorization_requires_exact_operator_acknowledgement(
         )
 
 
-def test_authorization_remains_blocked_without_executable_runner(
+def test_authorization_uses_ready_executable_runner_by_default(
+    tmp_path: Path,
+) -> None:
+    (
+        freeze,
+        matched_manifest,
+        request,
+        base_manifest,
+        base_path,
+        project_root,
+        source_commit,
+        torch2pc_dir,
+        _output_root,
+    ) = _freeze(tmp_path)
+    preflight = _preflight(
+        freeze,
+        matched_manifest,
+        request,
+        base_manifest,
+        base_path,
+        project_root,
+        source_commit,
+        torch2pc_dir,
+    )
+
+    authorization = issue_matched_campaign_authorization(
+        freeze,
+        preflight,
+        operator_acknowledgement=MATCHED_OPERATOR_ACKNOWLEDGEMENT,
+    )
+
+    assert authorization["runtime_authorization"] == "issued"
+    assert authorization["execution_permitted"] is True
+
+
+def test_authorization_can_still_be_blocked_by_explicit_readiness_override(
     tmp_path: Path,
 ) -> None:
     (
@@ -445,6 +480,7 @@ def test_authorization_remains_blocked_without_executable_runner(
             freeze,
             preflight,
             operator_acknowledgement=MATCHED_OPERATOR_ACKNOWLEDGEMENT,
+            execution_runner_ready=False,
         )
 
 

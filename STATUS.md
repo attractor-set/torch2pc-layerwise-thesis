@@ -2,7 +2,7 @@
 
 [English version](STATUS_EN.md)
 
-На 17 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
+На 18 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
 Stage 3B B0, `SI-MA0`, `SI-MA1`, а также положительные sealed `EQ-B1` и
 `EQ-B2`. Полный Stage 3B остаётся незавершённым: matched profiling,
 `EX-IF0`, passive diagnostics, predictor, counterfactual exact verification и
@@ -24,6 +24,7 @@ Stage 3B B0, `SI-MA0`, `SI-MA1`, а также положительные sealed
 | B1 `isolated_layer_vjp` | implementation complete; sealed `EQ-B1=pass` |
 | B2 `composite_vjp` | implementation complete; sealed `EQ-B2=pass` |
 | Shared profiling B0/B1/B2 | scientific admission open; execution not authorized |
+| Candidate-aware matched runner | contract complete; 288 cells remain runtime-blocked |
 | Test split | закрыт |
 | Полный Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -129,7 +130,11 @@ Raw execution evidence и confirmatory outputs сохраняются в
 
 ## Следующий этап
 
-Сформировать и проверить frozen 288-cell B0/B1/B2 matched manifest/request,
-затем реализовать candidate-aware runner и отдельную ROCm/float32 runtime
-freeze. Этот шаг не открывает `EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor,
-hysteresis, active control или test access.
+Matched manifest/request и candidate-aware runner contract завершены. Следующий
+разрешённый slice — отдельная ROCm/float32 project/environment freeze, lane
+preflight, operator acknowledgement и authorization-token contract. До неё
+measurements запрещены.
+
+Design-only cheap-certificate semantics не открывает `EX-IF0`, `A11-OFF0`,
+`A11-OFF1`, predictor, hysteresis, active control или test access. ECZ/NCZ
+сертификаты остаются будущей пассивной диагностикой без action permission.

@@ -2,7 +2,7 @@
 
 [Русская версия](STATUS.md)
 
-As of 17 July 2026, immutable Stage 1/2, Stage 3A, Stage 3B B0, `SI-MA0`,
+As of 18 July 2026, immutable Stage 1/2, Stage 3A, Stage 3B B0, `SI-MA0`,
 `SI-MA1`, and positive sealed `EQ-B1`/`EQ-B2` decisions are published. Full
 Stage 3B remains incomplete: matched profiling, `EX-IF0`, passive diagnostics,
 the predictor, counterfactual exact verification, and `QWake-PC` have not been
@@ -24,6 +24,7 @@ executed.
 | B1 `isolated_layer_vjp` | implementation complete; sealed `EQ-B1=pass` |
 | B2 `composite_vjp` | implementation complete; sealed `EQ-B2=pass` |
 | Shared B0/B1/B2 profiling | scientific admission open; execution not authorized |
+| Candidate-aware matched runner | contract complete; 288 cells remain runtime-blocked |
 | Test split | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -108,7 +109,11 @@ them.
 
 ## Next stage
 
-Freeze and verify the 288-cell B0/B1/B2 matched manifest/request, then implement
-a candidate-aware runner and a separate ROCm/float32 runtime freeze. This does
-not open `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor, hysteresis, active
-control, or test access.
+The matched manifest/request and candidate-aware runner contract are complete.
+The next permitted slice is a separate ROCm/float32 project/environment freeze,
+lane preflight, operator acknowledgement, and authorization-token contract.
+Measurements remain prohibited until that slice passes.
+
+The design-only cheap-certificate semantics do not open `EX-IF0`, `A11-OFF0`,
+`A11-OFF1`, the predictor, hysteresis, active control, or test access. ECZ/NCZ
+certificates remain future passive diagnostics without action permission.

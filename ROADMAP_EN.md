@@ -62,14 +62,17 @@ Scientific failures were retained and the test split remained closed.
 
 ## Stage 17 — matched B0/B1/B2 profiling — current stage
 
-The opening condition is satisfied. The current slice freezes the 288-cell
-matrix for `stage2_baseline`, `isolated_layer_vjp`, and `composite_vjp`, plus a
-request that separates scientific admission from runtime authorization.
+The opening condition is satisfied. The 288-cell matrix/request for
+`stage2_baseline`, `isolated_layer_vjp`, and `composite_vjp`, plus the
+candidate-aware runner contract, are published. The runner preserves the
+counterbalanced order, verifies dispatch, and requires model/optimizer/RNG/
+minibatch restoration before each candidate, but executes no measurements.
 
-A candidate-aware runner and a separate ROCm/float32 runtime freeze are then
-permitted. No measurements are executed before that freeze. A0, `EX-IF0`, the
-estimator, active `ECZ`, `QWake-PC`, controller actions, and the test split
-remain closed.
+The currently permitted slice is a separate ROCm/float32 project/environment
+freeze, lane preflight, operator acknowledgement, and authorization token.
+Until it passes, all 288 cells have disposition
+`blocked_runtime_authorization`. A0, `EX-IF0`, the estimator, active `ECZ`,
+`QWake-PC`, controller actions, and the test split remain closed.
 
 ## Stage 18 — `EX-IF0`, passive diagnostics, and neutral branches
 
@@ -81,6 +84,13 @@ Those branches remain offline labels and are not controller actions.
 
 Active `ECZ` use is forbidden before `EX-IF0`. See the
 [future-policy boundary](docs/stage3b-future-policy-boundary_EN.md).
+
+Design-only semantics for future cheap ECZ/NCZ certificates are frozen in a
+[separate document](docs/cheap-diagnostic-certificates_EN.md) and ADR-015.
+Certificates are one-sided passive diagnostics with an `abstain` outcome; they
+do not replace the mechanism label and do not themselves permit `stop`, a local
+sweep, or any other action. Their implementation/data collection requires a
+separate preregistration after clean matched profiling and `EX-IF0`.
 
 ## Stage 19 — `A11-OFF1`, ECZ-targeted local sweep, and offline screening
 

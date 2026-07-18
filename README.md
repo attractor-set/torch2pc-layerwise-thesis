@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-EQ--B1%2FEQ--B2%20sealed%3B%20matched%20profiling%20open-blue)
+![Статус](https://img.shields.io/badge/этап-matched%20runner%20ready%3B%20runtime%20freeze%20next-blue)
 
 Репозиторий магистерской диссертации по сравнению обратного распространения
 ошибки (backpropagation, BP) и режимов предиктивного кодирования в Torch2PC.
@@ -58,7 +58,7 @@
 - вычислительное время и память;
 - воспроизводимость между независимыми запусками.
 
-## Текущее состояние на 17 июля 2026 года
+## Текущее состояние на 18 июля 2026 года
 
 В закреплённой среде Ubuntu/ROCm завершены:
 
@@ -84,6 +84,9 @@
   `EQ-B1` и `EQ-B2`;
 - научный допуск к общему B0/B1/B2 matched profiling открыт; измерения и
   отдельная runtime authorization ещё не выполнялись.
+- candidate-aware matched runner проверяет 288 ячеек, 96 matched-блоков,
+  диспетчеризацию B0/B1/B2 и восстановление state/RNG; все ячейки остаются
+  `blocked_runtime_authorization`.
 
 Stage 3A, B0, `SI-MA0` и `SI-MA1` не обращались к test split. Raw и sealed
 результаты не переписываются документационными обновлениями. Актуальное
@@ -227,14 +230,19 @@ fallback validation или end-to-end B1/B2 benefit. Итоговые матер
 
 ## Следующий этап
 
-Положительные sealed `EQ-B1` и `EQ-B2` выполнили зарегистрированное условие
-открытия общего matched profiling. Текущий slice фиксирует 288-cell B0/B1/B2
-matrix и машиночитаемый request без выполнения измерений:
-[matched profiling opening](experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING.md).
+Положительные sealed `EQ-B1`/`EQ-B2`, frozen 288-cell manifest/request и
+candidate-aware runner contract опубликованы. Runner не выполняет измерений и
+не создаёт evidence:
+[matched runner contract](experiments/planned/STAGE3B-B1-B2-MATCHED-RUNNER.md).
 
-Следующий разрешённый шаг — candidate-aware matched runner и отдельная
-ROCm/float32 runtime freeze. `EX-IF0`, estimator, active `ECZ`, `QWake-PC`,
-controller actions, offline policy selection и test split остаются закрытыми.
+Следующий разрешённый engineering slice — отдельная ROCm/float32 project
+freeze, lane preflight, operator acknowledgement и authorization-token
+contract. `EX-IF0`, estimator, active `ECZ`, `QWake-PC`, controller actions,
+offline policy selection и test split остаются закрытыми.
+
+Будущая пассивная ECZ/NCZ-диагностика использует односторонние дешёвые
+сертификаты с правом `abstain`; сертификат не является разрешением stop или
+local sweep: [design note](docs/cheap-diagnostic-certificates.md).
 
 ## Контрольные проверки
 

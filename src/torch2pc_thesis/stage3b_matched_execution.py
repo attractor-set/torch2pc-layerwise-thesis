@@ -43,6 +43,11 @@ from torch2pc_thesis.stage3b_matched_authorization import (
     validate_matched_campaign_authorization,
     verify_matched_authorization_for_lane,
 )
+from torch2pc_thesis.stage3b_matched_measurement import (
+    MATCHED_PRIMARY_TIMING_LANE,
+    MATCHED_STRUCTURAL_COUNTERS_LANE,
+    observer_cost_measurement,
+)
 from torch2pc_thesis.stage3b_matched_profiling import (
     MATCHED_PROFILING_CANDIDATES,
     MATCHED_PROFILING_EXPECTED_CELL_COUNT,
@@ -1309,8 +1314,13 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
     )
 
     region_records: list[RegionMeasurement] = []
-    composite_records: list[dict[str, object]] = []
+    primary_timing_records: list[dict[str, object]] = []
+    structural_timing_records: list[dict[str, object]] = []
+    observer_cost_records: list[dict[str, object]] = []
+    structural_records: list[dict[str, object]] = []
     integrity_records: list[dict[str, object]] = []
+    locality_event_count = 0
+    locality_events_path = context.attempt_directory / "locality-events.jsonl"
     warmup_gate_count = 0
     measured_gate_count = 0
 
@@ -1325,7 +1335,7 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
             pc_infer=pc_infer,
             config=gate_config,
         )
-        if not report.full_preregistered_gate_complete:
+        if not report.full_preregistered_gate_complete or not report.structural_measurement_ready:
             raise Stage3BExecutionError(
                 "matched candidate gate did not pass: "
                 f"candidate_id={candidate_id}, "
@@ -1351,17 +1361,67 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
             method=method,
         )
         region_records.extend(aggregated)
-        composite_records.append(
+        primary_timing_records.append(
             {
-                **report.measurement.to_record(),
-                # The inherited B0 gate may label its aggregate with the
-                # baseline candidate. The matched executor owns candidate
-                # identity and must override that inherited label.
+                **(report.primary_measurement or report.measurement).to_record(),
+                "measurement_lane": MATCHED_PRIMARY_TIMING_LANE,
+                "observer_mode": "no_hooks",
                 "candidate_id": candidate_id,
                 "repetition": protocol_step.repetition,
                 "step": protocol_step.step,
             }
         )
+        structural_timing_records.append(
+            {
+                **report.measurement.to_record(),
+                "measurement_lane": MATCHED_STRUCTURAL_COUNTERS_LANE,
+                "observer_mode": "counters_only",
+                "candidate_id": candidate_id,
+                "repetition": protocol_step.repetition,
+                "step": protocol_step.step,
+            }
+        )
+        observer_cost_records.append(
+            {
+                **observer_cost_measurement(
+                    candidate_id=candidate_id,
+                    method=method,
+                    primary=report.primary_measurement or report.measurement,
+                    structural=report.measurement,
+                ).to_record(),
+                "repetition": protocol_step.repetition,
+                "step": protocol_step.step,
+            }
+        )
+        if report.structural_measurement is None:
+            raise Stage3BExecutionError(
+                "matched structural measurement is missing after a complete gate"
+            )
+        structural_records.append(
+            {
+                **report.structural_measurement.to_record(),
+                "repetition": protocol_step.repetition,
+                "step": protocol_step.step,
+            }
+        )
+        for event in report.locality_events:
+            _append_jsonl(
+                locality_events_path,
+                {
+                    **event.to_record(),
+                    "block_id": block_id,
+                    "cell_id": str(cell["cell_id"]),
+                    "candidate_id": candidate_id,
+                    "method": method,
+                    "depth": depth,
+                    "width": width,
+                    "batch_size": batch_size,
+                    "model_seed": model_seed,
+                    "repetition": protocol_step.repetition,
+                    "step": protocol_step.step,
+                },
+            )
+            locality_event_count += 1
         integrity_records.append(
             {
                 "candidate_id": candidate_id,
@@ -1376,7 +1436,11 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
                 "observed_inference_steps": report.observed_inference_steps,
                 "configured_inference_steps": report.configured_inference_steps,
                 "internal_region_attribution_ready": (report.internal_region_attribution_ready),
-                "passed": report.full_preregistered_gate_complete,
+                "structural_measurement_ready": report.structural_measurement_ready,
+                "passed": (
+                    report.full_preregistered_gate_complete
+                    and report.structural_measurement_ready
+                ),
             }
         )
 
@@ -1385,6 +1449,30 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
         context.protocol,
         required_regions=MATCHED_EXECUTION_REQUIRED_REGIONS,
     )
+    expected_measured_records = (
+        context.protocol.measured_steps * context.protocol.repetitions
+    )
+    if not (
+        len(primary_timing_records)
+        == len(structural_timing_records)
+        == len(observer_cost_records)
+        == len(structural_records)
+        == len(integrity_records)
+        == expected_measured_records
+    ):
+        raise Stage3BExecutionError(
+            "matched primary/structural measurement lanes are incomplete"
+        )
+    expected_locality_events = sum(
+        cast(int, record["event_count"]) for record in structural_records
+    )
+    if locality_event_count != expected_locality_events:
+        raise Stage3BExecutionError(
+            "matched locality event stream count differs from structural summaries"
+        )
+    if not locality_events_path.is_file() or locality_event_count < 1:
+        raise Stage3BExecutionError("matched locality event stream is missing")
+
     expected_warmup = context.protocol.warmup_steps * context.protocol.repetitions
     expected_measured = context.protocol.measured_steps * context.protocol.repetitions
     if warmup_gate_count != expected_warmup or measured_gate_count != expected_measured:
@@ -1462,13 +1550,31 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
                 * len(MATCHED_EXECUTION_REQUIRED_REGIONS)
             ),
             "region_measurements": [record.to_record() for record in region_records],
-            "composite_measurements": composite_records,
+            # Backward-compatible alias: composite measurements now refer to
+            # the frozen primary no-hooks timing lane.
+            "composite_measurements": primary_timing_records,
+            "primary_timing_measurements": primary_timing_records,
+            "structural_timing_measurements": structural_timing_records,
+            "observer_cost_measurements": observer_cost_records,
+            "structural_measurements": structural_records,
+            "locality_events_file": locality_events_path.name,
+            "locality_event_count": locality_event_count,
+            "locality_events_sha256": _sha256_file(locality_events_path),
+            "fallback_validation_cost_status": (
+                "not_applicable_before_ex_if0"
+            ),
             "integrity_measurements": integrity_records,
             "validation": {
                 "dataset": "synthetic_scaling_family",
                 "test_loader_created": False,
                 "test_evaluated": False,
                 "profile_completeness_validated": True,
+                "measurement_lane_completeness_validated": True,
+                "primary_timing_observer_mode": "no_hooks",
+                "structural_counters_observer_mode": "counters_only",
+                "observer_cost_reported_separately": True,
+                "observer_cost_subtracted_from_primary_timing": False,
+                "structural_locality_events_validated": True,
                 "all_non_perturbation_gates_passed": True,
                 "fresh_process_per_candidate": True,
                 "block_state_reconstructed_from_shared_seeds": True,

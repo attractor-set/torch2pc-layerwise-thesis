@@ -93,3 +93,5 @@ docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md,docs/decisions/ADR-0
 docs/qwake-pc-design.md,docs/qwake-pc-design_EN.md,required
 docs/ecz-targeted-local-sweep.md,docs/ecz-targeted-local-sweep_EN.md,required
 docs/stage3b-future-policy-boundary.md,docs/stage3b-future-policy-boundary_EN.md,required
+docs/decisions/ADR-015-stage3b-matched-measurement-sealing.md,docs/decisions/ADR-015-stage3b-matched-measurement-sealing_EN.md,required
+docs/stage3b-matched-evidence.md,docs/stage3b-matched-evidence_EN.md,required

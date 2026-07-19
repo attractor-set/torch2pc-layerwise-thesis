@@ -28,9 +28,20 @@ from torch2pc_thesis.profiling import (
     Stage3ProfilingError,
     synchronize_device,
 )
+from torch2pc_thesis.stage3b_b1_isolated_vjp import B1ObserverMode
 from torch2pc_thesis.stage3b_candidate_instrumentation import (
     NativeCandidateInstrumentation,
     native_candidate_id,
+)
+from torch2pc_thesis.stage3b_matched_measurement import (
+    MATCHED_PRIMARY_TIMING_LANE,
+    MATCHED_STRUCTURAL_COUNTERS_LANE,
+    MatchedLocalityEvent,
+    MatchedStructuralCollector,
+    MatchedStructuralMeasurement,
+    baseline_locality_events,
+    observer_cost_measurement,
+    structural_measurement_from_events,
 )
 from torch2pc_thesis.stage3b_profiling import (
     RegionMeasurement,
@@ -117,6 +128,8 @@ class B0StepSnapshot:
     observed_inference_steps: int | None = None
     region_measurements: tuple[RegionMeasurement, ...] = ()
     instrumentation: PCInferInstrumentationSummary | None = None
+    structural_measurement: MatchedStructuralMeasurement | None = None
+    locality_events: tuple[MatchedLocalityEvent, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -130,6 +143,9 @@ class B0GateReport:
     observed_inference_steps: int | None = None
     region_measurements: tuple[RegionMeasurement, ...] = ()
     instrumentation: PCInferInstrumentationSummary | None = None
+    structural_measurement: MatchedStructuralMeasurement | None = None
+    locality_events: tuple[MatchedLocalityEvent, ...] = ()
+    primary_measurement: B0CompositeMeasurement | None = None
 
     @property
     def passed(self) -> bool:
@@ -154,6 +170,16 @@ class B0GateReport:
     @property
     def actual_inference_step_count_observed(self) -> bool:
         return self.observed_inference_steps == self.configured_inference_steps
+
+    @property
+    def structural_measurement_ready(self) -> bool:
+        return bool(
+            self.structural_measurement is not None
+            and self.structural_measurement.actual_inference_steps
+            == self.configured_inference_steps
+            and len(self.locality_events)
+            == self.structural_measurement.event_count
+        )
 
     @property
     def full_preregistered_gate_complete(self) -> bool:
@@ -207,7 +233,31 @@ class B0GateReport:
             "evidence": False,
             "observed_tensor_gate_passed": self.passed,
             "passed": self.passed,
+            "measurement_lanes": {
+                "primary_timing": MATCHED_PRIMARY_TIMING_LANE,
+                "structural_counters": MATCHED_STRUCTURAL_COUNTERS_LANE,
+            },
+            "primary_measurement": (
+                self.primary_measurement or self.measurement
+            ).to_record(),
             "measurement": self.measurement.to_record(),
+            "observer_cost": observer_cost_measurement(
+                candidate_id=(
+                    self.structural_measurement.candidate_id
+                    if self.structural_measurement is not None
+                    else "stage2_baseline"
+                ),
+                method=self.method,
+                primary=self.primary_measurement or self.measurement,
+                structural=self.measurement,
+            ).to_record(),
+            "structural_measurement_ready": self.structural_measurement_ready,
+            "structural_measurement": (
+                self.structural_measurement.to_record()
+                if self.structural_measurement is not None
+                else None
+            ),
+            "locality_event_count": len(self.locality_events),
         }
 
 
@@ -305,6 +355,7 @@ def _run_step(
     pc_infer: PCInferCallable,
     config: B0GateConfig,
     instrumented: bool,
+    measure_composite: bool,
 ) -> tuple[B0StepSnapshot, B0CompositeMeasurement | None]:
     model.train()
     optimizer.zero_grad(set_to_none=True)
@@ -313,7 +364,7 @@ def _run_step(
     start_event: torch.cuda.Event | None = None
     end_event: torch.cuda.Event | None = None
     synchronization_points = 0
-    if instrumented and config.device.type == "cuda" and torch.cuda.is_available():
+    if measure_composite and config.device.type == "cuda" and torch.cuda.is_available():
         synchronize_device(config.device)
         synchronization_points += 1
         torch.cuda.reset_peak_memory_stats(config.device)
@@ -324,6 +375,8 @@ def _run_step(
     profiler: Stage3BProfiler | None = None
     instrumentation: PCInferInstrumentationSummary | None = None
     observed_inference_steps: int | None = None
+    structural_measurement: MatchedStructuralMeasurement | None = None
+    locality_events: tuple[MatchedLocalityEvent, ...] = ()
     started_ns = time.perf_counter_ns()
     candidate_id = native_candidate_id(pc_infer)
     if instrumented and supports_pcinfer_instrumentation(pc_infer):
@@ -345,9 +398,23 @@ def _run_step(
                 )
             instrumentation = observer.summary()
             observed_inference_steps = instrumentation.actual_inference_steps
+            locality_events = baseline_locality_events(
+                method=config.method,
+                model_depth=len(model),
+                inference_steps=config.inference_steps,
+                instrumentation=instrumentation,
+            )
+            structural_measurement = structural_measurement_from_events(
+                locality_events,
+                actual_inference_steps=instrumentation.actual_inference_steps,
+            )
     elif instrumented and candidate_id is not None:
         profiler = Stage3BProfiler(
             device=config.device,
+            candidate_id=candidate_id,
+            method=config.method,
+        )
+        structural_collector = MatchedStructuralCollector(
             candidate_id=candidate_id,
             method=config.method,
         )
@@ -366,10 +433,16 @@ def _run_step(
                 config.torch2pc_method,
                 eta=config.eta,
                 n=config.inference_steps,
+                observer_mode=B1ObserverMode.COUNTERS_ONLY,
+                event_sink=structural_collector,
                 _stage3b_instrumentation=native_observer,
             )
         instrumentation = native_observer.summary()
         observed_inference_steps = instrumentation.actual_inference_steps
+        locality_events = structural_collector.events
+        structural_measurement = structural_collector.summary(
+            actual_inference_steps=instrumentation.actual_inference_steps
+        )
     elif instrumented:
         with torch.autograd.profiler.record_function(B0_COMPOSITE_LABEL):
             output = pc_infer(
@@ -405,7 +478,7 @@ def _run_step(
     device_time_us = 0.0
     peak_allocated_bytes = 0
     peak_reserved_bytes = 0
-    if instrumented and config.device.type == "cuda" and torch.cuda.is_available():
+    if measure_composite and config.device.type == "cuda" and torch.cuda.is_available():
         synchronize_device(config.device)
         synchronization_points += 1
     if start_event is not None and end_event is not None:
@@ -422,8 +495,10 @@ def _run_step(
         observed_inference_steps=observed_inference_steps,
         region_measurements=profiler.records if profiler is not None else (),
         instrumentation=instrumentation,
+        structural_measurement=structural_measurement,
+        locality_events=locality_events,
     )
-    if not instrumented:
+    if not measure_composite:
         return snapshot, None
 
     measurement = B0CompositeMeasurement(
@@ -465,9 +540,10 @@ def run_b0_non_perturbation_gate(
         pc_infer=pc_infer,
         config=config,
         instrumented=False,
+        measure_composite=True,
     )
-    if reference_measurement is not None:
-        raise Stage3ProfilingError("reference B0 step unexpectedly produced a measurement")
+    if reference_measurement is None:
+        raise Stage3ProfilingError("reference no-hooks timing lane produced no measurement")
 
     _restore_rng_state(rng_state)
     candidate, measurement = _run_step(
@@ -479,6 +555,7 @@ def run_b0_non_perturbation_gate(
         pc_infer=pc_infer,
         config=config,
         instrumented=True,
+        measure_composite=True,
     )
     if measurement is None:
         raise Stage3ProfilingError("instrumented B0 step produced no measurement")
@@ -495,7 +572,10 @@ def run_b0_non_perturbation_gate(
         configured_inference_steps=config.inference_steps,
         comparisons=comparisons,
         measurement=measurement,
+        primary_measurement=reference_measurement,
         observed_inference_steps=candidate.observed_inference_steps,
         region_measurements=candidate.region_measurements,
         instrumentation=candidate.instrumentation,
+        structural_measurement=candidate.structural_measurement,
+        locality_events=candidate.locality_events,
     )

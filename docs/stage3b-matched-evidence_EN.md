@@ -71,3 +71,25 @@ superiority claim are generated at `n=3`.
 
 An engineering continuation eligibility flag does not open EX-IF0 and does not
 permit policy activation.
+
+## Repair gate before a new 288-cell campaign
+
+After `ADR-017`, production
+[execution](glossary_EN.md#term-execution) is fail-closed. A new freeze and
+authorization do not replace the scientific gate. Launch simultaneously
+requires:
+
+- confirmatory `EQ-B1` with `120/120` matched pairs;
+- confirmatory `EQ-B2` with `120/120` triples and `240/240` comparisons;
+- exact [candidate](glossary_EN.md#term-candidate)-order balance per method: all
+  six permutations eight times, `16/16/16` positions, and `24/24` pairwise
+  precedence;
+- one untimed cross-candidate correctness record per
+  [profiling](glossary_EN.md#term-profiling) block;
+- a new empty output root, new immutable image, and new authorization.
+
+Retry is permitted only for records with `retry_eligible=true` and failure class
+`infrastructure`, `operator_interruption`, or `system_interruption`. Scientific,
+correctness, and unknown failures block retry and sealing. Sealing preserves
+`attempt-history.jsonl` and `block-correctness.jsonl`; there must be exactly one
+successful attempt and it must be last.

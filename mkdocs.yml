@@ -59,6 +59,7 @@ nav:
       - ADR-014 Контракты B1/B2: decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md
       - ADR-015 Сопоставленные измерения: decisions/ADR-015-stage3b-matched-measurement-sealing.md
       - ADR-016 Граница достаточности: decisions/ADR-016-stage3b-sufficiency-boundary.md
+      - ADR-017 Корректность 288-cell: decisions/ADR-017-stage3b-288cell-correctness-repair.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

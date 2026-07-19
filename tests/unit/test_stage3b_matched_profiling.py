@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import copy
+from collections import Counter, defaultdict
+from itertools import permutations
 from pathlib import Path
 from typing import cast
 
@@ -13,6 +15,7 @@ from torch2pc_thesis.stage3b_matched_profiling import (
     build_matched_manifest,
     decision_ids,
     validate_matched_manifest,
+    validate_matched_prelaunch_scientific_gate,
 )
 
 
@@ -71,6 +74,27 @@ def test_build_matched_manifest_selects_288_cells() -> None:
     cells = cast(list[dict[str, object]], manifest["cells"])
     assert all(cell["matched_profiling_eligible"] is True for cell in cells)
     assert all(cell["candidate_gate_status"] == "equivalence_gate_passed" for cell in cells)
+
+    by_method_and_block: defaultdict[
+        str, defaultdict[str, list[dict[str, object]]]
+    ] = defaultdict(lambda: defaultdict(list))
+    for cell in cells:
+        by_method_and_block[str(cell["method"])][str(cell["block_id"])].append(cell)
+    expected_permutations = set(
+        permutations(("stage2_baseline", "isolated_layer_vjp", "composite_vjp"))
+    )
+    for blocks in by_method_and_block.values():
+        permutation_counts: Counter[tuple[str, ...]] = Counter()
+        position_counts: Counter[tuple[str, int]] = Counter()
+        for block_cells in blocks.values():
+            ordered = sorted(block_cells, key=lambda cell: int(cell["candidate_order"]))
+            permutation = tuple(str(cell["candidate_id"]) for cell in ordered)
+            permutation_counts[permutation] += 1
+            for position, candidate_id in enumerate(permutation):
+                position_counts[(candidate_id, position)] += 1
+        assert set(permutation_counts) == expected_permutations
+        assert set(permutation_counts.values()) == {8}
+        assert set(position_counts.values()) == {16}
 
 
 def test_build_matched_manifest_rejects_scope_drift() -> None:
@@ -146,6 +170,21 @@ def _decision(decision_id: str) -> dict[str, object]:
             f"OBS-{suffix}": {"passed": True, "failed_pairs": []},
         },
     }
+
+
+def _confirmatory_decision(decision_id: str) -> dict[str, object]:
+    decision = _decision(decision_id)
+    decision["scope"] = "confirmatory"
+    decision["confirmatory_equivalence_executed"] = True
+    if decision_id == "EQ-B1":
+        decision["matched_pairs_expected"] = 120
+        decision["matched_pairs_observed"] = 120
+    else:
+        decision["matched_triples_expected"] = 120
+        decision["matched_triples_observed"] = 120
+        decision["pairwise_comparisons_expected"] = 240
+        decision["pairwise_comparisons_observed"] = 240
+    return decision
 
 
 def _write_json(path: Path, payload: object) -> None:
@@ -249,3 +288,111 @@ def test_build_matched_request_rejects_unsealed_decision(
             b2_decision=b2_decision,
             matched_manifest=matched_manifest,
         )
+
+
+def test_prelaunch_gate_requires_confirmatory_equivalence(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from torch2pc_thesis import stage3b_matched_profiling as matched
+
+    monkeypatch.setattr(matched, "require_opening_base_ancestor", lambda _root: None)
+    base_manifest = generate_manifest()
+    b1_contract = _contract("isolated_layer_vjp")
+    b2_contract = _contract("composite_vjp")
+    b1_decision = _decision("EQ-B1")
+    b2_decision = _decision("EQ-B2")
+    manifest = build_matched_manifest(base_manifest, b1_contract, b2_contract)
+
+    base_path = tmp_path / "base.json"
+    b1_contract_path = tmp_path / "b1-contract.json"
+    b2_contract_path = tmp_path / "b2-contract.json"
+    b1_decision_path = tmp_path / "b1-decision.json"
+    b2_decision_path = tmp_path / "b2-decision.json"
+    matched_path = tmp_path / "matched.json"
+    for path, payload in (
+        (base_path, base_manifest),
+        (b1_contract_path, b1_contract),
+        (b2_contract_path, b2_contract),
+        (b1_decision_path, b1_decision),
+        (b2_decision_path, b2_decision),
+    ):
+        _write_json(path, payload)
+
+    request = matched.build_matched_request(
+        project_root=tmp_path,
+        base_manifest_path=base_path,
+        b1_contract_path=b1_contract_path,
+        b2_contract_path=b2_contract_path,
+        b1_decision_path=b1_decision_path,
+        b2_decision_path=b2_decision_path,
+        matched_manifest_path=matched_path,
+        base_manifest=base_manifest,
+        b1_contract=b1_contract,
+        b2_contract=b2_contract,
+        b1_decision=b1_decision,
+        b2_decision=b2_decision,
+        matched_manifest=manifest,
+    )
+
+    with pytest.raises(MatchedProfilingError, match="scope=confirmatory"):
+        validate_matched_prelaunch_scientific_gate(
+            manifest,
+            request,
+            project_root=tmp_path,
+        )
+
+
+def test_prelaunch_gate_accepts_confirmatory_equivalence_and_balance(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from torch2pc_thesis import stage3b_matched_profiling as matched
+
+    monkeypatch.setattr(matched, "require_opening_base_ancestor", lambda _root: None)
+    base_manifest = generate_manifest()
+    b1_contract = _contract("isolated_layer_vjp")
+    b2_contract = _contract("composite_vjp")
+    b1_decision = _confirmatory_decision("EQ-B1")
+    b2_decision = _confirmatory_decision("EQ-B2")
+    manifest = build_matched_manifest(base_manifest, b1_contract, b2_contract)
+
+    base_path = tmp_path / "base.json"
+    b1_contract_path = tmp_path / "b1-contract.json"
+    b2_contract_path = tmp_path / "b2-contract.json"
+    b1_decision_path = tmp_path / "b1-decision.json"
+    b2_decision_path = tmp_path / "b2-decision.json"
+    matched_path = tmp_path / "matched.json"
+    for path, payload in (
+        (base_path, base_manifest),
+        (b1_contract_path, b1_contract),
+        (b2_contract_path, b2_contract),
+        (b1_decision_path, b1_decision),
+        (b2_decision_path, b2_decision),
+    ):
+        _write_json(path, payload)
+
+    request = matched.build_matched_request(
+        project_root=tmp_path,
+        base_manifest_path=base_path,
+        b1_contract_path=b1_contract_path,
+        b2_contract_path=b2_contract_path,
+        b1_decision_path=b1_decision_path,
+        b2_decision_path=b2_decision_path,
+        matched_manifest_path=matched_path,
+        base_manifest=base_manifest,
+        b1_contract=b1_contract,
+        b2_contract=b2_contract,
+        b1_decision=b1_decision,
+        b2_decision=b2_decision,
+        matched_manifest=manifest,
+    )
+
+    gate = validate_matched_prelaunch_scientific_gate(
+        manifest,
+        request,
+        project_root=tmp_path,
+    )
+    assert gate["status"] == "pass"
+    assert gate["confirmatory_equivalence"] is True
+    assert gate["exact_counterbalance"] is True

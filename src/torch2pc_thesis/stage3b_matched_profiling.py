@@ -7,8 +7,9 @@ import json
 import subprocess
 from collections import Counter
 from collections.abc import Mapping, Sequence
+from itertools import permutations
 from pathlib import Path
-from typing import Final, cast
+from typing import Any, Final, cast
 
 from torch2pc_thesis.stage3b_execution import (
     STAGE3B_CAMPAIGN_ID,
@@ -37,6 +38,13 @@ MATCHED_PROFILING_EXPECTED_CELL_COUNT: Final[int] = 288
 MATCHED_PROFILING_EXPECTED_CANDIDATE_COUNT: Final[int] = 96
 MATCHED_PROFILING_EXPECTED_METHOD_COUNT: Final[int] = 144
 MATCHED_PROFILING_EXPECTED_PAIR_COUNT: Final[int] = 48
+MATCHED_PROFILING_EXPECTED_BLOCK_COUNT_PER_METHOD: Final[int] = 48
+MATCHED_PROFILING_EXPECTED_PERMUTATION_COUNT: Final[int] = 8
+MATCHED_PROFILING_EXPECTED_POSITION_COUNT: Final[int] = 16
+MATCHED_PROFILING_EXPECTED_PRECEDENCE_COUNT: Final[int] = 24
+MATCHED_PROFILING_CONFIRMATORY_B1_PAIRS: Final[int] = 120
+MATCHED_PROFILING_CONFIRMATORY_B2_TRIPLES: Final[int] = 120
+MATCHED_PROFILING_CONFIRMATORY_B2_COMPARISONS: Final[int] = 240
 
 
 class MatchedProfilingError(Stage3BExecutionError):
@@ -51,7 +59,7 @@ def _digest(value: object) -> str:
     return hashlib.sha256(_canonical_json(value).encode("utf-8")).hexdigest()
 
 
-def _string_keyed_dict(value: Mapping[object, object], *, field: str) -> dict[str, object]:
+def _string_keyed_dict(value: Mapping[Any, Any], *, field: str) -> dict[str, object]:
     result: dict[str, object] = {}
     for key, item in value.items():
         if not isinstance(key, str):
@@ -292,7 +300,237 @@ def _selected_cells(base_manifest: Mapping[str, object]) -> list[dict[str, objec
         raise MatchedProfilingError(
             f"matched profiling requires {MATCHED_PROFILING_EXPECTED_CELL_COUNT} cells"
         )
-    return selected
+    return _exactly_counterbalanced_cells(selected)
+
+
+def _exactly_counterbalanced_cells(
+    selected: Sequence[Mapping[str, object]],
+) -> list[dict[str, object]]:
+    """Assign all six three-candidate permutations equally within each method."""
+
+    candidate_permutations = tuple(permutations(MATCHED_PROFILING_CANDIDATES))
+    by_method_and_block: dict[str, dict[str, list[dict[str, object]]]] = {}
+    for raw_cell in selected:
+        cell = _string_keyed_dict(raw_cell, field="selected matched cell")
+        method = str(cell["method"])
+        block_id = str(cell["block_id"])
+        by_method_and_block.setdefault(method, {}).setdefault(block_id, []).append(cell)
+
+    output: list[dict[str, object]] = []
+    for method in sorted(by_method_and_block):
+        blocks = by_method_and_block[method]
+        if len(blocks) != MATCHED_PROFILING_EXPECTED_BLOCK_COUNT_PER_METHOD:
+            raise MatchedProfilingError(
+                f"matched {method} block count differs: {len(blocks)}"
+            )
+        ranked_block_ids = sorted(
+            blocks,
+            key=lambda block_id: _digest(
+                {
+                    "method": method,
+                    "block_id": block_id,
+                    "scope": "matched_three_candidate_counterbalance_v2",
+                }
+            ),
+        )
+        order_by_block = {
+            block_id: candidate_permutations[index % len(candidate_permutations)]
+            for index, block_id in enumerate(ranked_block_ids)
+        }
+        for block_id, block_cells in blocks.items():
+            by_candidate = {
+                str(cell["candidate_id"]): dict(cell) for cell in block_cells
+            }
+            if set(by_candidate) != set(MATCHED_PROFILING_CANDIDATES):
+                raise MatchedProfilingError(
+                    f"matched block candidate set changed: {block_id}"
+                )
+            for candidate_order, candidate_id in enumerate(order_by_block[block_id]):
+                cell = by_candidate[candidate_id]
+                cell["candidate_order"] = candidate_order
+                output.append(cell)
+
+    output.sort(
+        key=lambda cell: (
+            int(cast(int, cell["block_order"])),
+            int(cast(int, cell["candidate_order"])),
+        )
+    )
+    _validate_exact_counterbalance(output)
+    return output
+
+
+def _validate_exact_counterbalance(
+    cells: Sequence[Mapping[str, object]],
+) -> None:
+    """Fail closed unless each method has exact permutation and precedence balance."""
+
+    expected_candidates = tuple(MATCHED_PROFILING_CANDIDATES)
+    by_method_and_block: dict[str, dict[str, list[Mapping[str, object]]]] = {}
+    for cell in cells:
+        method = str(cell.get("method"))
+        block_id = str(cell.get("block_id"))
+        by_method_and_block.setdefault(method, {}).setdefault(block_id, []).append(cell)
+
+    if set(by_method_and_block) != {"fixedpred", "strict"}:
+        raise MatchedProfilingError("matched counterbalance methods changed")
+
+    all_permutations = set(permutations(expected_candidates))
+    for method, blocks in sorted(by_method_and_block.items()):
+        if len(blocks) != MATCHED_PROFILING_EXPECTED_BLOCK_COUNT_PER_METHOD:
+            raise MatchedProfilingError(
+                f"matched {method} block count differs: {len(blocks)}"
+            )
+        permutation_counts: Counter[tuple[str, ...]] = Counter()
+        position_counts: Counter[tuple[str, int]] = Counter()
+        precedence_counts: Counter[tuple[str, str]] = Counter()
+        for block_id, block_cells in blocks.items():
+            if len(block_cells) != len(expected_candidates):
+                raise MatchedProfilingError(
+                    f"matched block does not contain three candidates: {block_id}"
+                )
+            ordered = sorted(
+                block_cells,
+                key=lambda cell: int(cast(int, cell.get("candidate_order"))),
+            )
+            orders = [int(cast(int, cell.get("candidate_order"))) for cell in ordered]
+            if orders != [0, 1, 2]:
+                raise MatchedProfilingError(
+                    f"matched candidate order is not contiguous: {block_id}={orders}"
+                )
+            permutation = tuple(str(cell.get("candidate_id")) for cell in ordered)
+            if permutation not in all_permutations:
+                raise MatchedProfilingError(
+                    f"matched block candidate permutation changed: {block_id}"
+                )
+            permutation_counts[permutation] += 1
+            for position, candidate_id in enumerate(permutation):
+                position_counts[(candidate_id, position)] += 1
+            for left_index, left in enumerate(permutation):
+                for right in permutation[left_index + 1 :]:
+                    precedence_counts[(left, right)] += 1
+
+        for permutation in all_permutations:
+            if permutation_counts[permutation] != MATCHED_PROFILING_EXPECTED_PERMUTATION_COUNT:
+                raise MatchedProfilingError(
+                    f"matched {method} permutation count differs: "
+                    f"{permutation}={permutation_counts[permutation]}"
+                )
+        for candidate_id in expected_candidates:
+            for position in range(3):
+                observed = position_counts[(candidate_id, position)]
+                if observed != MATCHED_PROFILING_EXPECTED_POSITION_COUNT:
+                    raise MatchedProfilingError(
+                        f"matched {method} position balance differs: "
+                        f"{candidate_id}/{position}={observed}"
+                    )
+        for left in expected_candidates:
+            for right in expected_candidates:
+                if left == right:
+                    continue
+                observed = precedence_counts[(left, right)]
+                if observed != MATCHED_PROFILING_EXPECTED_PRECEDENCE_COUNT:
+                    raise MatchedProfilingError(
+                        f"matched {method} precedence balance differs: "
+                        f"{left}>{right}={observed}"
+                    )
+
+
+def validate_matched_prelaunch_scientific_gate(
+    manifest: Mapping[str, object],
+    request: Mapping[str, object],
+    *,
+    project_root: Path,
+) -> dict[str, object]:
+    """Require confirmatory equivalence and exact balance before production execution."""
+
+    validate_matched_manifest(manifest)
+    validate_matched_request(request)
+    raw_cells = manifest.get("cells")
+    if not isinstance(raw_cells, list) or not all(
+        isinstance(cell, Mapping) for cell in raw_cells
+    ):
+        raise MatchedProfilingError("matched prelaunch cells are malformed")
+    _validate_exact_counterbalance(cast(list[Mapping[str, object]], raw_cells))
+
+    raw_records = request.get("prerequisite_decisions")
+    if not isinstance(raw_records, list) or len(raw_records) != 2:
+        raise MatchedProfilingError(
+            "matched production launch requires two prerequisite decisions"
+        )
+    records = {
+        str(cast(Mapping[str, object], record).get("decision_id")): cast(
+            Mapping[str, object], record
+        )
+        for record in raw_records
+        if isinstance(record, Mapping)
+    }
+    if set(records) != set(MATCHED_PROFILING_DECISIONS):
+        raise MatchedProfilingError(
+            "matched production launch prerequisite decision set changed"
+        )
+
+    root = project_root.expanduser().resolve()
+    decisions: dict[str, dict[str, object]] = {}
+    for decision_id in MATCHED_PROFILING_DECISIONS:
+        record = records[decision_id]
+        relative = record.get("path")
+        expected_sha = record.get("sha256")
+        if not isinstance(relative, str) or not isinstance(expected_sha, str):
+            raise MatchedProfilingError(
+                f"{decision_id} prerequisite path or digest is missing"
+            )
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError as error:
+            raise MatchedProfilingError(
+                f"{decision_id} prerequisite escapes project root"
+            ) from error
+        if not path.is_file() or sha256_file(path) != expected_sha:
+            raise MatchedProfilingError(
+                f"{decision_id} prerequisite content differs from opening request"
+            )
+        decision = load_json_object(path)
+        _validate_decision(decision, expected_decision_id=decision_id)
+        if decision.get("scope") != "confirmatory":
+            raise MatchedProfilingError(
+                f"{decision_id} production launch requires scope=confirmatory"
+            )
+        if decision.get("confirmatory_equivalence_executed") is not True:
+            raise MatchedProfilingError(
+                f"{decision_id} confirmatory equivalence was not executed"
+            )
+        decisions[decision_id] = decision
+
+    b1 = decisions["EQ-B1"]
+    if (
+        b1.get("matched_pairs_expected") != MATCHED_PROFILING_CONFIRMATORY_B1_PAIRS
+        or b1.get("matched_pairs_observed") != MATCHED_PROFILING_CONFIRMATORY_B1_PAIRS
+    ):
+        raise MatchedProfilingError(
+            "EQ-B1 production launch requires 120/120 confirmatory pairs"
+        )
+    b2 = decisions["EQ-B2"]
+    if (
+        b2.get("matched_triples_expected") != MATCHED_PROFILING_CONFIRMATORY_B2_TRIPLES
+        or b2.get("matched_triples_observed") != MATCHED_PROFILING_CONFIRMATORY_B2_TRIPLES
+        or b2.get("pairwise_comparisons_expected")
+        != MATCHED_PROFILING_CONFIRMATORY_B2_COMPARISONS
+        or b2.get("pairwise_comparisons_observed")
+        != MATCHED_PROFILING_CONFIRMATORY_B2_COMPARISONS
+    ):
+        raise MatchedProfilingError(
+            "EQ-B2 production launch requires 120/120 triples and 240/240 comparisons"
+        )
+    return {
+        "status": "pass",
+        "confirmatory_equivalence": True,
+        "exact_counterbalance": True,
+        "b1_pairs": MATCHED_PROFILING_CONFIRMATORY_B1_PAIRS,
+        "b2_triples": MATCHED_PROFILING_CONFIRMATORY_B2_TRIPLES,
+        "b2_comparisons": MATCHED_PROFILING_CONFIRMATORY_B2_COMPARISONS,
+    }
 
 
 def build_matched_manifest(
@@ -329,7 +567,7 @@ def build_matched_manifest(
         "protocol": dict(raw_protocol),
         "profiling_scope": profiling_scope,
         "candidate_order_policy": (
-            "preserve source Stage 3B counterbalanced order after excluding A0"
+            "six_permutations_repeated_eight_times_per_method_after_excluding_a0"
         ),
         "execution_policy": {
             "scientific_admission": "open",
@@ -371,6 +609,12 @@ def validate_matched_manifest(manifest: Mapping[str, object]) -> None:
         raise MatchedProfilingError("matched opening cannot complete full Stage 3B")
     if manifest.get("selected_cell_count") != MATCHED_PROFILING_EXPECTED_CELL_COUNT:
         raise MatchedProfilingError("matched opening manifest cell count changed")
+    raw_cells = manifest.get("cells")
+    if not isinstance(raw_cells, list) or not all(
+        isinstance(cell, Mapping) for cell in raw_cells
+    ):
+        raise MatchedProfilingError("matched opening manifest cells are malformed")
+    _validate_exact_counterbalance(cast(list[Mapping[str, object]], raw_cells))
 
     supplied_digest = manifest.get("manifest_digest")
     if not isinstance(supplied_digest, str):

@@ -10,7 +10,15 @@ from pathlib import Path
 from typing import cast
 
 import pytest
+import torch
+from torch import Tensor, nn
 
+from torch2pc_thesis import stage3b_matched_execution as matched_execution
+from torch2pc_thesis.profiling import ProfilingProtocol
+from torch2pc_thesis.stage3b_b0_integration import (
+    B0GateConfig,
+    torch2pc_method_label,
+)
 from torch2pc_thesis.stage3b_execution import (
     Stage3BExecutionError,
     generate_manifest,
@@ -29,6 +37,8 @@ from torch2pc_thesis.stage3b_matched_execution import (
     MatchedCellContext,
     MatchedCellResult,
     MatchedLanePlan,
+    MatchedRetryableInfrastructureError,
+    MatchedScientificCorrectnessError,
     execute_matched_authorized_lane,
     execute_matched_cell,
     plan_matched_authorized_lane,
@@ -285,18 +295,14 @@ def test_plan_selects_all_288_cells_in_frozen_order(tmp_path: Path) -> None:
     ]
 
 
-def test_first_block_preserves_counterbalanced_candidate_order(tmp_path: Path) -> None:
+def test_first_block_uses_contiguous_balanced_candidate_order(tmp_path: Path) -> None:
     plan, _inputs = _plan(tmp_path)
     first_block = plan.cells[0].block_id
     cells = [cell for cell in plan.cells if cell.block_id == first_block]
 
     assert len(cells) == 3
-    assert [cell.candidate_order for cell in cells] == [1, 2, 3]
-    assert [cell.candidate_id for cell in cells] == [
-        "isolated_layer_vjp",
-        "composite_vjp",
-        "stage2_baseline",
-    ]
+    assert [cell.candidate_order for cell in cells] == [0, 1, 2]
+    assert {cell.candidate_id for cell in cells} == set(MATCHED_PROFILING_CANDIDATES)
 
 
 def test_verify_returns_non_evidence_execution_contract(tmp_path: Path) -> None:
@@ -599,9 +605,12 @@ def test_failed_attempt_requires_explicit_retry(tmp_path: Path) -> None:
     first_cell = cast(list[dict[str, object]], matched_manifest["cells"])[0]
 
     def fail(_context: MatchedCellContext) -> MatchedCellResult:
-        raise RuntimeError("synthetic matched failure")
+        raise MatchedRetryableInfrastructureError("synthetic matched failure")
 
-    with pytest.raises(RuntimeError, match="synthetic matched failure"):
+    with pytest.raises(
+        MatchedRetryableInfrastructureError,
+        match="synthetic matched failure",
+    ):
         execute_matched_cell(
             matched_manifest,
             request,
@@ -657,6 +666,68 @@ def test_failed_attempt_requires_explicit_retry(tmp_path: Path) -> None:
     retry_cell = next(cell for cell in retried.cells if cell.cell_id == first_cell["cell_id"])
     assert retry_cell.state == "retryable"
     assert retry_cell.selected_for_execution is True
+
+
+def test_scientific_failure_is_non_retryable_and_blocks_lane(tmp_path: Path) -> None:
+    (
+        authorization,
+        matched_manifest,
+        request,
+        base_manifest,
+        base_path,
+        project_root,
+        source_commit,
+        torch2pc_dir,
+        output_root,
+    ) = _authorized_inputs(tmp_path)
+    first_cell = cast(list[dict[str, object]], matched_manifest["cells"])[0]
+
+    def fail(_context: MatchedCellContext) -> MatchedCellResult:
+        raise MatchedScientificCorrectnessError("synthetic correctness failure")
+
+    with pytest.raises(
+        MatchedScientificCorrectnessError,
+        match="synthetic correctness failure",
+    ):
+        execute_matched_cell(
+            matched_manifest,
+            request,
+            base_manifest,
+            authorization,
+            output_root=output_root,
+            cell_id=str(first_cell["cell_id"]),
+            device="cpu",
+            dtype="float64",
+            project_root=project_root,
+            base_manifest_path=base_path,
+            torch2pc_dir=torch2pc_dir,
+            source_commit=source_commit,
+            image_digest=ROCM_IMAGE,
+            executor=fail,
+        )
+
+    plan = plan_matched_authorized_lane(
+        authorization,
+        matched_manifest,
+        request,
+        base_manifest,
+        base_manifest_path=base_path,
+        project_root=project_root,
+        output_root=output_root,
+        device="cpu",
+        dtype="float64",
+        torch2pc_dir=torch2pc_dir,
+        source_commit=source_commit,
+        image_digest=ROCM_IMAGE,
+        retry_failed=True,
+        probe=_rocm_probe(),
+    )
+    blocked = next(
+        cell for cell in plan.cells if cell.cell_id == first_cell["cell_id"]
+    )
+    assert blocked.state == "blocked"
+    assert blocked.non_retryable_failed_attempt_count == 1
+    assert blocked.selected_for_execution is False
 
 
 def test_interrupted_attempt_requires_explicit_resume(tmp_path: Path) -> None:
@@ -753,9 +824,12 @@ def test_retry_creates_new_attempt_id(tmp_path: Path) -> None:
     cell_id = str(first_cell["cell_id"])
 
     def fail(_context: MatchedCellContext) -> MatchedCellResult:
-        raise RuntimeError("first matched attempt")
+        raise MatchedRetryableInfrastructureError("first matched attempt")
 
-    with pytest.raises(RuntimeError, match="first matched attempt"):
+    with pytest.raises(
+        MatchedRetryableInfrastructureError,
+        match="first matched attempt",
+    ):
         execute_matched_cell(
             matched_manifest,
             request,
@@ -820,10 +894,13 @@ def test_max_attempts_marks_failed_cell_exhausted(tmp_path: Path) -> None:
     cell_id = str(first_cell["cell_id"])
 
     def fail(_context: MatchedCellContext) -> MatchedCellResult:
-        raise RuntimeError("always fails")
+        raise MatchedRetryableInfrastructureError("always fails")
 
     for _ in range(2):
-        with pytest.raises(RuntimeError, match="always fails"):
+        with pytest.raises(
+            MatchedRetryableInfrastructureError,
+            match="always fails",
+        ):
             execute_matched_cell(
                 matched_manifest,
                 request,
@@ -983,3 +1060,191 @@ def test_production_contract_declares_fresh_child_per_cell() -> None:
     assert MATCHED_EXECUTION_STATE_RECONSTRUCTION == (
         "deterministic_fresh_process_reconstruction_per_candidate"
     )
+
+
+def _fake_reference_pc_infer(
+    model: nn.Module,
+    loss_fn: nn.Module,
+    inputs: Tensor,
+    targets: Tensor,
+    method: str,
+    *,
+    eta: float,
+    n: int,
+) -> tuple[list[Tensor], Tensor, dict[str, object]]:
+    del method
+    predictions = model(inputs)
+    loss = loss_fn(predictions, targets)
+    loss.backward()
+    return [inputs + eta * 0.0, predictions], loss, {"steps": n}
+
+
+def test_cross_candidate_correctness_probe_is_untimed_and_persisted(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        matched_execution,
+        "load_candidate_pc_infer",
+        lambda _candidate_id, _root: _fake_reference_pc_infer,
+    )
+    cell = {
+        "cell_id": "cell-0",
+        "block_id": "block-0",
+        "block_order": 0,
+        "candidate_id": "stage2_baseline",
+        "candidate_order": 0,
+        "method": "fixedpred",
+        "depth": 4,
+        "width": 64,
+        "batch_size": 2,
+        "model_seed": 70,
+    }
+    context = MatchedCellContext(
+        cell=cell,
+        authorization_token="a" * 64,
+        matched_manifest_digest="b" * 64,
+        opening_request_digest="c" * 64,
+        source_manifest_digest="d" * 64,
+        output_root=tmp_path / "runtime",
+        attempt_directory=tmp_path / "attempt",
+        device=torch.device("cpu"),
+        requested_device="cpu",
+        dtype=torch.float64,
+        dtype_name="float64",
+        torch2pc_dir=tmp_path,
+        source_commit="e" * 40,
+        image_digest="sha256:" + "f" * 64,
+        emergency_stop_path=tmp_path / "stop",
+        protocol=ProfilingProtocol(warmup_steps=0, measured_steps=1, repetitions=1),
+    )
+    config = B0GateConfig(
+        method="fixedpred",
+        torch2pc_method=torch2pc_method_label("fixedpred"),
+        eta=0.1,
+        inference_steps=1,
+        device=torch.device("cpu"),
+        dtype=torch.float64,
+    )
+
+    record = matched_execution._run_block_cross_candidate_correctness_gate(
+        context,
+        architecture="mlp_d4_w64",
+        method="fixedpred",
+        depth=4,
+        width=64,
+        batch_size=2,
+        model_seed=70,
+        block_id="block-0",
+        gate_config=config,
+    )
+
+    assert record["passed"] is True
+    assert record["untimed"] is True
+    assert len(cast(list[dict[str, object]], record["pair_comparisons"])) == 2
+    persisted = (
+        context.output_root
+        / "matched/lanes/cpu-float64/blocks/block-0/cross-candidate-correctness.json"
+    )
+    assert persisted.is_file()
+
+
+def test_cross_candidate_correctness_probe_rejects_divergence(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def divergent_pc_infer(
+        model: nn.Module,
+        loss_fn: nn.Module,
+        inputs: Tensor,
+        targets: Tensor,
+        method: str,
+        *,
+        eta: float,
+        n: int,
+    ) -> tuple[list[Tensor], Tensor, dict[str, object]]:
+        beliefs, loss, metadata = _fake_reference_pc_infer(
+            model,
+            loss_fn,
+            inputs,
+            targets,
+            method,
+            eta=eta,
+            n=n,
+        )
+        return [beliefs[0], beliefs[1] + 1.0], loss, metadata
+
+    def loader(candidate_id: str, _root: Path):
+        if candidate_id == "composite_vjp":
+            return divergent_pc_infer
+        return _fake_reference_pc_infer
+
+    monkeypatch.setattr(matched_execution, "load_candidate_pc_infer", loader)
+    cell = {
+        "cell_id": "cell-0",
+        "block_id": "block-0",
+        "block_order": 0,
+        "candidate_id": "stage2_baseline",
+        "candidate_order": 0,
+        "method": "fixedpred",
+        "depth": 4,
+        "width": 64,
+        "batch_size": 2,
+        "model_seed": 70,
+    }
+    context = MatchedCellContext(
+        cell=cell,
+        authorization_token="a" * 64,
+        matched_manifest_digest="b" * 64,
+        opening_request_digest="c" * 64,
+        source_manifest_digest="d" * 64,
+        output_root=tmp_path / "runtime",
+        attempt_directory=tmp_path / "attempt",
+        device=torch.device("cpu"),
+        requested_device="cpu",
+        dtype=torch.float64,
+        dtype_name="float64",
+        torch2pc_dir=tmp_path,
+        source_commit="e" * 40,
+        image_digest="sha256:" + "f" * 64,
+        emergency_stop_path=tmp_path / "stop",
+        protocol=ProfilingProtocol(
+            warmup_steps=0,
+            measured_steps=1,
+            repetitions=1,
+        ),
+    )
+    config = B0GateConfig(
+        method="fixedpred",
+        torch2pc_method=torch2pc_method_label("fixedpred"),
+        eta=0.1,
+        inference_steps=1,
+        device=torch.device("cpu"),
+        dtype=torch.float64,
+    )
+
+    with pytest.raises(
+        MatchedScientificCorrectnessError,
+        match="cross-candidate correctness gate failed",
+    ):
+        matched_execution._run_block_cross_candidate_correctness_gate(
+            context,
+            architecture="mlp_d4_w64",
+            method="fixedpred",
+            depth=4,
+            width=64,
+            batch_size=2,
+            model_seed=70,
+            block_id="block-0",
+            gate_config=config,
+        )
+
+    record_path = (
+        context.output_root
+        / "matched/lanes/cpu-float64/blocks/block-0/"
+        "cross-candidate-correctness.json"
+    )
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    assert record["passed"] is False
+    assert record["status"] == "cross_candidate_correctness_failed"
+    assert record["untimed"] is True

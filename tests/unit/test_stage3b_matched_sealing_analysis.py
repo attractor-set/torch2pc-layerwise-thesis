@@ -4,8 +4,11 @@ import hashlib
 import json
 from pathlib import Path
 
+import pytest
+
 from torch2pc_thesis.stage3b_matched_analysis import generate_matched_analysis
 from torch2pc_thesis.stage3b_matched_sealing import (
+    Stage3BMatchedSealingError,
     seal_matched_runtime,
     validate_sealed_matched_evidence,
 )
@@ -13,6 +16,9 @@ from torch2pc_thesis.stage3b_matched_sealing import (
 SOURCE = "a" * 40
 IMAGE = "sha256:" + "b" * 64
 TOKEN = "c" * 64
+MANIFEST_DIGEST = "d" * 64
+SOURCE_MANIFEST_DIGEST = "e" * 64
+OPENING_REQUEST_DIGEST = "f" * 64
 CANDIDATES = (
     "stage2_baseline",
     "isolated_layer_vjp",
@@ -42,7 +48,8 @@ def _manifest() -> dict[str, object]:
             }
         )
     return {
-        "manifest_digest": "d" * 64,
+        "manifest_digest": MANIFEST_DIGEST,
+        "source_manifest_digest": SOURCE_MANIFEST_DIGEST,
         "protocol": {
             "warmup_steps": 1,
             "measured_steps": 2,
@@ -54,20 +61,80 @@ def _manifest() -> dict[str, object]:
     }
 
 
-def _write_attempt(root: Path, cell: dict[str, object], *, scale: float) -> None:
+def _write_attempt(
+    root: Path,
+    cell: dict[str, object],
+    *,
+    scale: float,
+    attempt_name: str = "attempt-0",
+) -> None:
+    correctness_path = (
+        root
+        / "matched/lanes/rocm-float32/blocks"
+        / str(cell["block_id"])
+        / "cross-candidate-correctness.json"
+    )
+    correctness = {
+        "schema_version": 1,
+        "scope": "stage3b_matched_cross_candidate_correctness_v1",
+        "status": "cross_candidate_correctness_passed",
+        "block_id": cell["block_id"],
+        "method": cell["method"],
+        "depth": cell["depth"],
+        "width": cell["width"],
+        "batch_size": cell["batch_size"],
+        "model_seed": cell["model_seed"],
+        "authorization_token": TOKEN,
+        "matched_manifest_digest": MANIFEST_DIGEST,
+        "source_commit": SOURCE,
+        "image_digest": IMAGE,
+        "candidate_ids": list(CANDIDATES),
+        "initial_state": {
+            "model_state_sha256": "1" * 64,
+            "synthetic_inputs_sha256": "2" * 64,
+            "synthetic_targets_sha256": "3" * 64,
+        },
+        "pair_comparisons": [
+            {
+                "reference_id": "stage2_baseline",
+                "candidate_id": candidate,
+                "comparison_count": 1,
+                "minimum_cosine": 1.0,
+                "maximum_relative_l2": 0.0,
+                "all_finite": True,
+                "passed": True,
+                "comparisons": [],
+            }
+            for candidate in ("isolated_layer_vjp", "composite_vjp")
+        ],
+        "passed": True,
+        "untimed": True,
+        "test_dataset_access": False,
+        "evidence": False,
+    }
+    if not correctness_path.exists():
+        correctness_path.parent.mkdir(parents=True)
+        correctness_path.write_text(json.dumps(correctness), encoding="utf-8")
     attempt = (
         root
         / "matched/lanes/rocm-float32/cells"
         / str(cell["cell_id"])
-        / "attempts/attempt-0"
+        / "attempts"
+        / attempt_name
     )
     attempt.mkdir(parents=True)
     shared = {
         "cell_id": cell["cell_id"],
+        "block_id": cell["block_id"],
         "candidate_id": cell["candidate_id"],
         "method": cell["method"],
         "authorization_token": TOKEN,
+        "matched_manifest_digest": MANIFEST_DIGEST,
+        "opening_request_digest": OPENING_REQUEST_DIGEST,
+        "source_manifest_digest": SOURCE_MANIFEST_DIGEST,
         "source_commit": SOURCE,
+        "device": "rocm",
+        "dtype": "float32",
         "image_digest": IMAGE,
     }
     (attempt / "request.json").write_text(
@@ -93,6 +160,8 @@ def _write_attempt(root: Path, cell: dict[str, object], *, scale: float) -> None
         "project_source_commit": SOURCE,
         "container_image_digest": IMAGE,
         "authorization_token": TOKEN,
+        "block_correctness_path": str(correctness_path),
+        "block_correctness_sha256": _sha(correctness_path),
     }
     (attempt / "environment.json").write_text(
         json.dumps(environment), encoding="utf-8"
@@ -220,6 +289,7 @@ def _write_attempt(root: Path, cell: dict[str, object], *, scale: float) -> None
         "observer_cost_measurements": observer,
         "structural_measurements": structural,
         "integrity_measurements": integrity,
+        "block_correctness": correctness,
         "region_measurements": regions,
         "locality_event_count": 2,
         "locality_events_sha256": _sha(event_path),
@@ -237,10 +307,60 @@ def _write_attempt(root: Path, cell: dict[str, object], *, scale: float) -> None
             "all_non_perturbation_gates_passed": True,
             "fresh_process_per_candidate": True,
             "block_state_reconstructed_from_shared_seeds": True,
+            "cross_candidate_correctness_gate_passed": True,
         },
     }
     (attempt / "measurements.json").write_text(
         json.dumps(measurements), encoding="utf-8"
+    )
+
+
+def _write_failed_attempt(
+    root: Path,
+    cell: dict[str, object],
+    *,
+    attempt_name: str,
+    failure_class: str,
+    retry_eligible: bool,
+) -> None:
+    attempt = (
+        root
+        / "matched/lanes/rocm-float32/cells"
+        / str(cell["cell_id"])
+        / "attempts"
+        / attempt_name
+    )
+    attempt.mkdir(parents=True)
+    shared = {
+        "cell_id": cell["cell_id"],
+        "block_id": cell["block_id"],
+        "candidate_id": cell["candidate_id"],
+        "method": cell["method"],
+        "authorization_token": TOKEN,
+        "matched_manifest_digest": MANIFEST_DIGEST,
+        "opening_request_digest": OPENING_REQUEST_DIGEST,
+        "source_manifest_digest": SOURCE_MANIFEST_DIGEST,
+        "source_commit": SOURCE,
+        "device": "rocm",
+        "dtype": "float32",
+        "image_digest": IMAGE,
+    }
+    (attempt / "request.json").write_text(json.dumps(shared), encoding="utf-8")
+    (attempt / "started.json").write_text(
+        json.dumps(shared | {"status": "matched_cell_running"}),
+        encoding="utf-8",
+    )
+    (attempt / "failed.json").write_text(
+        json.dumps(
+            shared
+            | {
+                "status": "matched_cell_failed",
+                "full_cell_complete": False,
+                "failure_class": failure_class,
+                "retry_eligible": retry_eligible,
+            }
+        ),
+        encoding="utf-8",
     )
 
 
@@ -295,3 +415,133 @@ def test_sealing_and_paired_analysis_are_fail_closed(
     assert summary["policy_activation_permitted"] is False
     assert (analysis / "paired_candidate_metrics.csv").is_file()
     assert (analysis / "SHA256SUMS").is_file()
+
+
+def test_sealing_accepts_retryable_failure_followed_by_success(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    manifest = _manifest()
+    monkeypatch.setattr(
+        "torch2pc_thesis.stage3b_matched_sealing.validate_matched_manifest",
+        lambda _manifest: None,
+    )
+    runtime = tmp_path / "runtime"
+    for cell in manifest["cells"]:
+        if cell["candidate_id"] == "stage2_baseline":
+            _write_failed_attempt(
+                runtime,
+                cell,
+                attempt_name="attempt-0",
+                failure_class="infrastructure",
+                retry_eligible=True,
+            )
+            _write_attempt(runtime, cell, scale=1.0, attempt_name="attempt-1")
+        else:
+            _write_attempt(runtime, cell, scale=1.0)
+
+    evidence = tmp_path / "evidence"
+    seal = seal_matched_runtime(
+        runtime,
+        evidence,
+        manifest,
+        expected_source_commit=SOURCE,
+        expected_image_digest=IMAGE,
+        expected_authorization_token=TOKEN,
+        sealing_source_commit="e" * 40,
+        sealed_at_utc="2026-07-19T00:00:00Z",
+    )
+
+    assert seal["retried_cell_count"] == 1
+    assert seal["attempt_history_count"] == 4
+    history = [
+        json.loads(line)
+        for line in (evidence / "attempt-history.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
+    ]
+    assert any(record["failure_class"] == "infrastructure" for record in history)
+
+
+def test_sealing_rejects_non_retryable_failure_before_success(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    manifest = _manifest()
+    monkeypatch.setattr(
+        "torch2pc_thesis.stage3b_matched_sealing.validate_matched_manifest",
+        lambda _manifest: None,
+    )
+    runtime = tmp_path / "runtime"
+    for cell in manifest["cells"]:
+        if cell["candidate_id"] == "stage2_baseline":
+            _write_failed_attempt(
+                runtime,
+                cell,
+                attempt_name="attempt-0",
+                failure_class="correctness",
+                retry_eligible=False,
+            )
+            _write_attempt(runtime, cell, scale=1.0, attempt_name="attempt-1")
+        else:
+            _write_attempt(runtime, cell, scale=1.0)
+
+    with pytest.raises(Stage3BMatchedSealingError, match="non-retryable"):
+        seal_matched_runtime(
+            runtime,
+            tmp_path / "evidence",
+            manifest,
+            expected_source_commit=SOURCE,
+            expected_image_digest=IMAGE,
+            expected_authorization_token=TOKEN,
+            sealing_source_commit="e" * 40,
+            sealed_at_utc="2026-07-19T00:00:00Z",
+        )
+
+
+def test_sealing_rejects_retry_history_with_mismatched_provenance(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    manifest = _manifest()
+    monkeypatch.setattr(
+        "torch2pc_thesis.stage3b_matched_sealing.validate_matched_manifest",
+        lambda _manifest: None,
+    )
+    runtime = tmp_path / "runtime"
+    for cell in manifest["cells"]:
+        if cell["candidate_id"] == "stage2_baseline":
+            _write_failed_attempt(
+                runtime,
+                cell,
+                attempt_name="attempt-0",
+                failure_class="infrastructure",
+                retry_eligible=True,
+            )
+            bad_request = (
+                runtime
+                / "matched/lanes/rocm-float32/cells"
+                / str(cell["cell_id"])
+                / "attempts/attempt-0/request.json"
+            )
+            record = json.loads(bad_request.read_text(encoding="utf-8"))
+            record["authorization_token"] = "0" * 64
+            bad_request.write_text(json.dumps(record), encoding="utf-8")
+            _write_attempt(runtime, cell, scale=1.0, attempt_name="attempt-1")
+        else:
+            _write_attempt(runtime, cell, scale=1.0)
+
+    with pytest.raises(
+        Stage3BMatchedSealingError,
+        match="request.authorization_token",
+    ):
+        seal_matched_runtime(
+            runtime,
+            tmp_path / "evidence",
+            manifest,
+            expected_source_commit=SOURCE,
+            expected_image_digest=IMAGE,
+            expected_authorization_token=TOKEN,
+            sealing_source_commit="e" * 40,
+            sealed_at_utc="2026-07-19T00:00:00Z",
+        )

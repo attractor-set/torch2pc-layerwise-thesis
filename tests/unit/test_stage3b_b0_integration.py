@@ -14,6 +14,7 @@ from torch2pc_thesis.stage3b_b0_integration import (
     MethodName,
     flatten_output_tensors,
     run_b0_non_perturbation_gate,
+    run_b0_reference_snapshot,
     torch2pc_method_label,
 )
 
@@ -122,6 +123,23 @@ def test_gate_passes_for_real_backward_and_optimizer_step() -> None:
     assert report.configured_inference_steps == 3
     assert len(report.comparisons) > 0
     assert report.measurement.host_time_us >= 0.0
+
+
+def test_reference_snapshot_exposes_untimed_candidate_state() -> None:
+    inputs, targets = _batch()
+    snapshot = run_b0_reference_snapshot(
+        model=_model(),
+        optimizer_factory=_optimizer_factory,
+        loss_fn=nn.CrossEntropyLoss(),
+        inputs=inputs,
+        targets=targets,
+        pc_infer=_fake_pc_infer,
+        config=_config(),
+    )
+
+    assert snapshot.configured_inference_steps == 3
+    assert any(name.startswith("model_state::") for name in snapshot.tensors)
+    assert any(name.startswith("gradient::") for name in snapshot.tensors)
 
 
 def test_gate_preserves_input_model_state() -> None:

@@ -11,6 +11,7 @@ from torch2pc_thesis.stage3b_matched_profiling import (
     build_matched_request,
     compare_json_file,
     load_json_object,
+    validate_matched_prelaunch_scientific_gate,
     write_matched_artifacts,
 )
 
@@ -19,12 +20,6 @@ DEFAULT_BASE_MANIFEST = Path(
 )
 DEFAULT_B1_CONTRACT = Path("experiments/planned/STAGE3B-B1-CONTRACT.json")
 DEFAULT_B2_CONTRACT = Path("experiments/planned/STAGE3B-B2-CONTRACT.json")
-DEFAULT_B1_DECISION = Path(
-    "results/stage-3/b1/stage3b-b1-smoke-attempt-001/decision.json"
-)
-DEFAULT_B2_DECISION = Path(
-    "results/stage-3/b2/stage3b-b2-smoke-attempt-001/decision.json"
-)
 DEFAULT_MATCHED_MANIFEST = Path(
     "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json"
 )
@@ -42,8 +37,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--base-manifest", type=Path, default=DEFAULT_BASE_MANIFEST)
     parser.add_argument("--b1-contract", type=Path, default=DEFAULT_B1_CONTRACT)
     parser.add_argument("--b2-contract", type=Path, default=DEFAULT_B2_CONTRACT)
-    parser.add_argument("--b1-decision", type=Path, default=DEFAULT_B1_DECISION)
-    parser.add_argument("--b2-decision", type=Path, default=DEFAULT_B2_DECISION)
+    parser.add_argument(
+        "--b1-decision",
+        type=Path,
+        required=True,
+        help="sealed confirmatory EQ-B1 decision (120/120 pairs)",
+    )
+    parser.add_argument(
+        "--b2-decision",
+        type=Path,
+        required=True,
+        help=(
+            "sealed confirmatory EQ-B2 decision "
+            "(120/120 triples, 240/240 comparisons)"
+        ),
+    )
     parser.add_argument("--matched-manifest", type=Path, default=DEFAULT_MATCHED_MANIFEST)
     parser.add_argument("--matched-request", type=Path, default=DEFAULT_MATCHED_REQUEST)
     return parser.parse_args()
@@ -92,6 +100,12 @@ def main() -> int:
         matched_manifest=matched_manifest,
     )
 
+    prelaunch = validate_matched_prelaunch_scientific_gate(
+        matched_manifest,
+        matched_request,
+        project_root=project_root,
+    )
+
     if args.write:
         write_matched_artifacts(
             manifest_path=matched_manifest_path,
@@ -111,6 +125,7 @@ def main() -> int:
     print(f"REQUEST={matched_request_path}")
     print(f"REQUEST_DIGEST={matched_request['request_digest']}")
     print(f"SELECTED_CELLS={matched_manifest['selected_cell_count']}")
+    print(f"SCIENTIFIC_PRELAUNCH_GATE={prelaunch['status']}")
     print("SCIENTIFIC_ADMISSION=open")
     print("RUNTIME_AUTHORIZATION=not_issued")
     print("MEASUREMENTS_ALLOWED=false")

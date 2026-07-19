@@ -579,3 +579,37 @@ def run_b0_non_perturbation_gate(
         structural_measurement=candidate.structural_measurement,
         locality_events=candidate.locality_events,
     )
+
+
+def run_b0_reference_snapshot(
+    *,
+    model: nn.Module,
+    optimizer_factory: OptimizerFactory,
+    loss_fn: nn.Module,
+    inputs: Tensor,
+    targets: Tensor,
+    pc_infer: PCInferCallable,
+    config: B0GateConfig,
+) -> B0StepSnapshot:
+    """Run one untimed no-hooks step for cross-candidate correctness checks."""
+
+    reference_model = deepcopy(model).to(device=config.device, dtype=config.dtype)
+    reference_optimizer = optimizer_factory(reference_model)
+    prepared_inputs = inputs.to(device=config.device, dtype=config.dtype)
+    prepared_targets = targets.to(device=config.device)
+    snapshot, measurement = _run_step(
+        model=reference_model,
+        optimizer=reference_optimizer,
+        loss_fn=loss_fn,
+        inputs=prepared_inputs,
+        targets=prepared_targets,
+        pc_infer=pc_infer,
+        config=config,
+        instrumented=False,
+        measure_composite=False,
+    )
+    if measurement is not None:
+        raise Stage3ProfilingError(
+            "untimed reference snapshot unexpectedly produced a measurement"
+        )
+    return snapshot

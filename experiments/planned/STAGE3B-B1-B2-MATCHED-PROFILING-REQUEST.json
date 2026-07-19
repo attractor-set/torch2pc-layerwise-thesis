@@ -58,7 +58,7 @@
   ],
   "prerequisite_rule": "sealed positive EQ-B1 and EQ-B2 are both required",
   "project_source_commit_policy": "record exact clean implementation commit at separate runtime freeze",
-  "request_digest": "4a61bab3151c7fec9b5833a438a866b6e9a5209ef271f5863baab78695deebec",
+  "request_digest": "e93e25a661efe56f3d77380fffa1c70b3d1727e8f3c4811dee4e62b0f4c6d0bd",
   "request_id": "stage3b-b1-b2-matched-profiling-request-v1",
   "runtime_authorization": "not_issued",
   "schema_version": 1,
@@ -78,7 +78,7 @@
       "sha256": "9fe4fbca27dc81daa4748c3944770c6b85ed412bbe5ab1cc868392355f286e03"
     },
     "matched_manifest": {
-      "manifest_digest": "5b4c0e964cba980b225e431e003474be5c9b36c27514e9b78436d8f0cbf79eee",
+      "manifest_digest": "2d54153d2ca6b0870d3bb0ad54380d8e24c680381fa06ae302b414e59f132c99",
       "path": "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json",
       "selected_cell_count": 288
     }

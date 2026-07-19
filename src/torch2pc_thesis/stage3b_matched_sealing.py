@@ -21,6 +21,14 @@ from torch2pc_thesis.stage3b_matched_profiling import (
 
 MATCHED_SEAL_SCHEMA_VERSION: Final[int] = 1
 MATCHED_SEAL_SCOPE: Final[str] = "stage3b_b1_b2_matched_sealed_evidence_v1"
+MATCHED_SEAL_MAX_ATTEMPTS: Final[int] = 3
+MATCHED_SEAL_RETRYABLE_FAILURE_CLASSES: Final[frozenset[str]] = frozenset(
+    {
+        "infrastructure",
+        "operator_interruption",
+        "system_interruption",
+    }
+)
 MATCHED_REQUIRED_VALIDATION: Final[dict[str, object]] = {
     "dataset": "synthetic_scaling_family",
     "test_loader_created": False,
@@ -35,8 +43,11 @@ MATCHED_REQUIRED_VALIDATION: Final[dict[str, object]] = {
     "all_non_perturbation_gates_passed": True,
     "fresh_process_per_candidate": True,
     "block_state_reconstructed_from_shared_seeds": True,
+    "cross_candidate_correctness_gate_passed": True,
 }
 MATCHED_SEALED_FILES: Final[tuple[str, ...]] = (
+    "attempt-history.jsonl",
+    "block-correctness.jsonl",
     "profiling_cells.csv",
     "profiling_repetitions.csv",
     "locality_events.jsonl",
@@ -71,6 +82,8 @@ class ValidatedMatchedRuntime:
     manifest_digest: str
     protocol: Mapping[str, object]
     cells: tuple[ValidatedMatchedCell, ...]
+    attempt_history: tuple[Mapping[str, object], ...]
+    block_correctness: tuple[Mapping[str, object], ...]
     runtime_inventory: tuple[Mapping[str, object], ...]
     runtime_inventory_sha256: str
 
@@ -192,30 +205,181 @@ def validate_matched_runtime(
     expected_region_count = expected_step_count * 5
     raw_cells = _list_of_mappings(matched_manifest.get("cells"), label="manifest.cells")
     validated: list[ValidatedMatchedCell] = []
+    attempt_history: list[Mapping[str, object]] = []
+    block_correctness_by_id: dict[str, Mapping[str, object]] = {}
     inventory_paths: list[Path] = []
     candidate_counts: Counter[str] = Counter()
     block_counts: Counter[str] = Counter()
+    opening_request_digest_seen: str | None = None
+    expected_manifest_digest = str(matched_manifest["manifest_digest"])
+    expected_source_manifest_digest = str(matched_manifest["source_manifest_digest"])
 
     for cell in raw_cells:
         cell_id = str(cell["cell_id"])
+        block_id = str(cell["block_id"])
+        candidate_id = str(cell["candidate_id"])
+        method = str(cell["method"])
         attempts_root = lane_root / "cells" / cell_id / "attempts"
         if not attempts_root.is_dir():
             raise Stage3BMatchedSealingError(f"missing attempts for {cell_id}")
         attempt_dirs = sorted(path for path in attempts_root.iterdir() if path.is_dir())
-        completed_dirs = [path for path in attempt_dirs if (path / "completed.json").is_file()]
-        failed_dirs = [path for path in attempt_dirs if (path / "failed.json").is_file()]
-        running_dirs = [
-            path
-            for path in attempt_dirs
-            if (path / "started.json").is_file()
-            and not (path / "completed.json").is_file()
-            and not (path / "failed.json").is_file()
-        ]
-        if len(completed_dirs) != 1 or failed_dirs or running_dirs:
+        if not attempt_dirs:
+            raise Stage3BMatchedSealingError(f"missing attempt directories for {cell_id}")
+        if len(attempt_dirs) > MATCHED_SEAL_MAX_ATTEMPTS:
+            raise Stage3BMatchedSealingError(
+                f"{cell_id} exceeds the maximum attempt count: {len(attempt_dirs)}"
+            )
+
+        completed_dirs: list[Path] = []
+        running_dirs: list[Path] = []
+        for cell_attempt_order, attempt_dir in enumerate(attempt_dirs):
+            request_path = attempt_dir / "request.json"
+            started_path = attempt_dir / "started.json"
+            completed_path = attempt_dir / "completed.json"
+            failed_path = attempt_dir / "failed.json"
+            interrupted_path = attempt_dir / "interrupted.json"
+            terminal_paths = [
+                path
+                for path in (completed_path, failed_path, interrupted_path)
+                if path.is_file()
+            ]
+            if not request_path.is_file() or not started_path.is_file():
+                raise Stage3BMatchedSealingError(
+                    f"{cell_id} attempt is missing request/start records: {attempt_dir.name}"
+                )
+            attempt_request = _load_json(request_path)
+            attempt_started = _load_json(started_path)
+            for record_name, attempt_record in (
+                ("request", attempt_request),
+                ("started", attempt_started),
+            ):
+                expected_attempt_fields = {
+                    "cell_id": cell_id,
+                    "block_id": block_id,
+                    "candidate_id": candidate_id,
+                    "method": method,
+                    "authorization_token": expected_authorization_token,
+                    "matched_manifest_digest": expected_manifest_digest,
+                    "source_manifest_digest": expected_source_manifest_digest,
+                    "source_commit": expected_source_commit,
+                    "device": "rocm",
+                    "dtype": "float32",
+                    "image_digest": expected_image_digest,
+                }
+                for field, expected in expected_attempt_fields.items():
+                    _require_equal(
+                        attempt_record.get(field),
+                        expected,
+                        label=(
+                            f"{cell_id}.{attempt_dir.name}."
+                            f"{record_name}.{field}"
+                        ),
+                    )
+            _require_equal(
+                attempt_started.get("status"),
+                "matched_cell_running",
+                label=f"{cell_id}.{attempt_dir.name}.started.status",
+            )
+            opening_request_digest = attempt_request.get("opening_request_digest")
+            if not isinstance(opening_request_digest, str) or len(opening_request_digest) != 64:
+                raise Stage3BMatchedSealingError(
+                    f"{cell_id} attempt opening request digest is invalid: "
+                    f"{attempt_dir.name}"
+                )
+            if opening_request_digest_seen is None:
+                opening_request_digest_seen = opening_request_digest
+            else:
+                _require_equal(
+                    opening_request_digest,
+                    opening_request_digest_seen,
+                    label=f"{cell_id}.{attempt_dir.name}.opening_request_digest",
+                )
+            if len(terminal_paths) > 1:
+                raise Stage3BMatchedSealingError(
+                    f"{cell_id} attempt has contradictory terminal records: "
+                    f"{attempt_dir.name}"
+                )
+            inventory_paths.extend((request_path, started_path))
+            if not terminal_paths:
+                running_dirs.append(attempt_dir)
+                continue
+
+            terminal_path = terminal_paths[0]
+            terminal = _load_json(terminal_path)
+            inventory_paths.append(terminal_path)
+            for field in (
+                "cell_id",
+                "block_id",
+                "candidate_id",
+                "method",
+                "authorization_token",
+                "matched_manifest_digest",
+                "opening_request_digest",
+                "source_manifest_digest",
+                "source_commit",
+                "device",
+                "dtype",
+                "image_digest",
+            ):
+                _require_equal(
+                    terminal.get(field),
+                    attempt_request.get(field),
+                    label=f"{cell_id}.{attempt_dir.name}.terminal.{field}",
+                )
+            status = str(terminal.get("status"))
+            if terminal_path == completed_path:
+                _require_equal(
+                    status,
+                    "matched_cell_complete",
+                    label=f"{cell_id}.{attempt_dir.name}.status",
+                )
+                completed_dirs.append(attempt_dir)
+                failure_class: object = None
+                retry_eligible: object = False
+            else:
+                expected_status = (
+                    "matched_cell_failed"
+                    if terminal_path == failed_path
+                    else "matched_cell_interrupted"
+                )
+                _require_equal(
+                    status,
+                    expected_status,
+                    label=f"{cell_id}.{attempt_dir.name}.status",
+                )
+                failure_class = terminal.get("failure_class")
+                retry_eligible = terminal.get("retry_eligible")
+                if (
+                    retry_eligible is not True
+                    or failure_class not in MATCHED_SEAL_RETRYABLE_FAILURE_CLASSES
+                ):
+                    raise Stage3BMatchedSealingError(
+                        f"{cell_id} contains a non-retryable prior attempt: "
+                        f"attempt={attempt_dir.name}, class={failure_class!r}"
+                    )
+            attempt_history.append(
+                {
+                    "cell_id": cell_id,
+                    "attempt_id": attempt_dir.name,
+                    "attempt_order": cell_attempt_order,
+                    "terminal_status": status,
+                    "failure_class": failure_class,
+                    "retry_eligible": retry_eligible,
+                    "request_sha256": sha256_file(request_path),
+                    "terminal_sha256": sha256_file(terminal_path),
+                    "attempt_directory": attempt_dir.relative_to(root).as_posix(),
+                }
+            )
+
+        if len(completed_dirs) != 1 or running_dirs:
             raise Stage3BMatchedSealingError(
                 f"{cell_id} terminal state is not uniquely successful: "
-                f"completed={len(completed_dirs)}, failed={len(failed_dirs)}, "
+                f"completed={len(completed_dirs)}, "
                 f"running={len(running_dirs)}"
+            )
+        if completed_dirs[0] != attempt_dirs[-1]:
+            raise Stage3BMatchedSealingError(
+                f"{cell_id} successful attempt is not the final attempt"
             )
         attempt = completed_dirs[0]
         required = {
@@ -239,9 +403,6 @@ def validate_matched_runtime(
         measurements = _load_json(attempt / "measurements.json")
         events_path = attempt / "locality-events.jsonl"
         events = _read_jsonl(events_path)
-        candidate_id = str(cell["candidate_id"])
-        method = str(cell["method"])
-        block_id = str(cell["block_id"])
         for record_name, record in {"request": request, "completed": completed}.items():
             _require_equal(record.get("cell_id"), cell_id, label=f"{cell_id}.{record_name}.cell_id")
             _require_equal(
@@ -312,8 +473,78 @@ def validate_matched_runtime(
                     f"{cell_id} has a mathematically local event with dependency_radius>1"
                 )
         validation = _mapping(measurements.get("validation"), label=f"{cell_id}.validation")
-        for key, expected in MATCHED_REQUIRED_VALIDATION.items():
-            _require_equal(validation.get(key), expected, label=f"{cell_id}.validation.{key}")
+        for key, expected_value in MATCHED_REQUIRED_VALIDATION.items():
+            _require_equal(
+                validation.get(key),
+                expected_value,
+                label=f"{cell_id}.validation.{key}",
+            )
+        block_correctness = _mapping(
+            measurements.get("block_correctness"),
+            label=f"{cell_id}.block_correctness",
+        )
+        _require_equal(
+            block_correctness.get("status"),
+            "cross_candidate_correctness_passed",
+            label=f"{cell_id}.block_correctness.status",
+        )
+        _require_equal(
+            block_correctness.get("passed"),
+            True,
+            label=f"{cell_id}.block_correctness.passed",
+        )
+        _require_equal(
+            block_correctness.get("block_id"),
+            block_id,
+            label=f"{cell_id}.block_correctness.block_id",
+        )
+        raw_pairs = _list_of_mappings(
+            block_correctness.get("pair_comparisons"),
+            label=f"{cell_id}.block_correctness.pairs",
+        )
+        expected_pairs = {
+            ("stage2_baseline", "isolated_layer_vjp"),
+            ("stage2_baseline", "composite_vjp"),
+        }
+        observed_pairs = {
+            (str(pair.get("reference_id")), str(pair.get("candidate_id")))
+            for pair in raw_pairs
+        }
+        _require_equal(
+            observed_pairs,
+            expected_pairs,
+            label=f"{cell_id}.block_correctness.pair_set",
+        )
+        if not all(pair.get("passed") is True for pair in raw_pairs):
+            raise Stage3BMatchedSealingError(
+                f"{cell_id} contains a failed cross-candidate comparison"
+            )
+        correctness_path = lane_root / "blocks" / block_id / "cross-candidate-correctness.json"
+        if not correctness_path.is_file():
+            raise Stage3BMatchedSealingError(
+                f"missing block correctness record: {block_id}"
+            )
+        _require_equal(
+            environment.get("block_correctness_sha256"),
+            sha256_file(correctness_path),
+            label=f"{cell_id}.block_correctness.sha256",
+        )
+        persisted_correctness = _load_json(correctness_path)
+        _require_equal(
+            persisted_correctness,
+            dict(block_correctness),
+            label=f"{cell_id}.block_correctness.persisted",
+        )
+        previous_correctness = block_correctness_by_id.get(block_id)
+        if previous_correctness is not None:
+            _require_equal(
+                dict(block_correctness),
+                dict(previous_correctness),
+                label=f"{cell_id}.block_correctness.shared",
+            )
+        else:
+            block_correctness_by_id[block_id] = block_correctness
+            inventory_paths.append(correctness_path)
         candidate_counts[candidate_id] += 1
         block_counts[block_id] += 1
         validated.append(
@@ -339,6 +570,10 @@ def validate_matched_runtime(
         )
     if set(block_counts.values()) != {len(expected_candidates)}:
         raise Stage3BMatchedSealingError("matched blocks do not contain all candidates")
+    if len(block_correctness_by_id) != len(block_counts):
+        raise Stage3BMatchedSealingError(
+            "cross-candidate correctness coverage differs from matched blocks"
+        )
     inventory = _inventory(inventory_paths, root=root)
     inventory_sha = _sha256_bytes((_canonical_json(inventory) + "\n").encode("utf-8"))
     return ValidatedMatchedRuntime(
@@ -349,6 +584,11 @@ def validate_matched_runtime(
         manifest_digest=str(matched_manifest["manifest_digest"]),
         protocol=protocol,
         cells=tuple(validated),
+        attempt_history=tuple(attempt_history),
+        block_correctness=tuple(
+            block_correctness_by_id[block_id]
+            for block_id in sorted(block_correctness_by_id)
+        ),
         runtime_inventory=inventory,
         runtime_inventory_sha256=inventory_sha,
     )
@@ -516,6 +756,16 @@ def seal_matched_runtime(
     _write_csv(destination / "profiling_repetitions.csv", repetition_rows)
     _write_csv(destination / "profiling_cells.csv", cell_rows)
     _write_csv(destination / "profiling_summary.csv", summary_rows)
+    with (destination / "attempt-history.jsonl").open(
+        "w", encoding="utf-8"
+    ) as handle:
+        for record in validated.attempt_history:
+            handle.write(_canonical_json(record) + "\n")
+    with (destination / "block-correctness.jsonl").open(
+        "w", encoding="utf-8"
+    ) as handle:
+        for record in validated.block_correctness:
+            handle.write(_canonical_json(record) + "\n")
     with (destination / "locality_events.jsonl").open("w", encoding="utf-8") as handle:
         for cell in validated.cells:
             for event in cell.locality_events:
@@ -557,6 +807,19 @@ def seal_matched_runtime(
             "reported_separately": True,
             "not_subtracted_from_primary_timing": True,
         },
+        "attempt_lifecycle": {
+            "append_only": True,
+            "retryable_prior_attempts_preserved": True,
+            "non_retryable_prior_attempts_rejected": True,
+            "successful_attempt_must_be_last": True,
+            "maximum_attempts": MATCHED_SEAL_MAX_ATTEMPTS,
+        },
+        "cross_candidate_correctness": {
+            "required": True,
+            "block_count": len(validated.block_correctness),
+            "comparisons_per_block": 2,
+            "untimed": True,
+        },
         "fallback_validation": {
             "status": "not_applicable_before_ex_if0",
             "cost_ms": None,
@@ -581,6 +844,17 @@ def seal_matched_runtime(
         "manifest_digest": validated.manifest_digest,
         "runtime_inventory_sha256": validated.runtime_inventory_sha256,
         "matched_cell_count": len(validated.cells),
+        "attempt_history_count": len(validated.attempt_history),
+        "cross_candidate_correctness_block_count": len(
+            validated.block_correctness
+        ),
+        "retried_cell_count": len(
+            {
+                str(record["cell_id"])
+                for record in validated.attempt_history
+                if record.get("terminal_status") != "matched_cell_complete"
+            }
+        ),
         "candidate_counts": dict(Counter(str(cell.cell["candidate_id"]) for cell in validated.cells)),
         "evidence": True,
         "full_lane_complete": True,

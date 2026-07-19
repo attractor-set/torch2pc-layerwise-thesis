@@ -2,6 +2,8 @@
 
 [English version](stage3b-matched-evidence_EN.md)
 
+Этот документ описывает границу артефактов после ADR-015.
+
 ## Артефакты одной ячейки
 
 Каждая успешно завершённая [попытка](glossary.md#term-attempt) содержит:

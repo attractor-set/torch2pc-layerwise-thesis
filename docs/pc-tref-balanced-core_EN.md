@@ -168,7 +168,20 @@ After theoretical-package publication:
 - `SI-MA0` and `SI-MA1` remain unchanged;
 - the test split remains closed.
 
-## 11. Hypotheses and claim boundaries
+## 11. Operational sufficiency boundary after `EX-IF0`
+
+A separate design-only extension,
+[`PC-TREF-SB`](pc-tref-sufficiency-boundary_EN.md), defines one-step oracle skip
+regret, oracle margin $M^*$, its pre-action estimate $\widehat M_b$, and a
+first-order predicted horizon. The oracle label and diagnostic estimate are
+distinct objects; the new theory neither modifies B1/B2 nor authorizes control
+of execution.
+
+Geometric notions of normal, angle, and tangential component are permitted only
+for a registered differentiable surrogate and explicit metric. The primary
+master's claim remains operational and assumes no smooth boundary.
+
+## 12. Hypotheses and claim boundaries
 
 `H-TREF1` expects [correction geometry](glossary_EN.md#term-correction-geometry) and transport to reduce operational
 manifestations of $\mathfrak D_{I\to R}^{q}$ and its safety version

@@ -41,6 +41,8 @@ is authorized.
 - [candidate](glossary_EN.md#term-candidate)-specific B1/B2 preregistration and gates;
 - `EX-IF0`, freezing the admissible exact implementation;
 - passive PC-CATM diagnostics and registered-representation comparison;
+- the oracle one-step sufficiency boundary and pre-action estimator under
+  [`PC-TREF-SB`](pc-tref-sufficiency-boundary_EN.md);
 - a [local predictor](glossary_EN.md#term-local-predictor) with `model_seed` splits;
 - [counterfactual exact verification](glossary_EN.md#term-exact-verification);
 - shadow-mode and final end-to-end evaluation;
@@ -91,6 +93,8 @@ gates.
 - run policy-neutral `A11-OFF0` with `stop`/`native_one`/`exact_one` branches;
 - run offline `A11-OFF1` on the regret–cost frontier;
 - freeze the representation and label protocol;
+- construct oracle $M^*$ only from exact reference and evaluate pre-action
+  $\widehat M_b$ and the first-order horizon as separate nested models;
 - preregister and train the predictor only on development splits by `model_seed`.
 
 ### February–March 2027
@@ -144,5 +148,7 @@ for selection.
 
 The intended contribution is a registered, mechanism-interpretable, cost-aware
 test of which state distinctions must be preserved for a computational decision
-under bounded regret. The thesis does not claim a global theory of zero or
-universal representation minimality.
+under bounded regret, and whether the one-step reserve to an operational
+sufficiency boundary can be estimated passively. The thesis does not claim a
+global theory of zero, universal representation minimality, smooth boundary
+geometry, or trajectory-level safety.

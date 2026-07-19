@@ -31,6 +31,7 @@ nav:
       - План магистерской диссертации: masters-thesis-plan.md
       - Теоретическое основание PC-TREF/PC-CATM: pc-tref-pc-catm-theoretical-foundation.md
       - PC-TREF Balanced Core: pc-tref-balanced-core.md
+      - PC-TREF — граница достаточности: pc-tref-sufficiency-boundary.md
       - PC-CATM: pc-catm-operator-model.md
       - Основной сценарий A: stage3b-primary-scenario-a.md
       - QWake-PC: qwake-pc-design.md
@@ -56,6 +57,8 @@ nav:
       - ADR-012 Основной сценарий A: decisions/ADR-012-pc-tref-pc-catm-scenario-a.md
       - ADR-013 Операциональная семантика: decisions/ADR-013-pc-tref-operational-semantics.md
       - ADR-014 Контракты B1/B2: decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md
+      - ADR-015 Сопоставленные измерения: decisions/ADR-015-stage3b-matched-measurement-sealing.md
+      - ADR-016 Граница достаточности: decisions/ADR-016-stage3b-sufficiency-boundary.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

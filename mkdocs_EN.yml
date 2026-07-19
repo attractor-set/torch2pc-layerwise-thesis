@@ -31,6 +31,7 @@ nav:
       - Master's thesis plan: masters-thesis-plan_EN.md
       - PC-TREF/PC-CATM theoretical foundation: pc-tref-pc-catm-theoretical-foundation_EN.md
       - PC-TREF Balanced Core: pc-tref-balanced-core_EN.md
+      - PC-TREF sufficiency boundary: pc-tref-sufficiency-boundary_EN.md
       - PC-CATM: pc-catm-operator-model_EN.md
       - Primary Scenario A: stage3b-primary-scenario-a_EN.md
       - QWake-PC: qwake-pc-design_EN.md
@@ -56,6 +57,8 @@ nav:
       - ADR-012 Primary Scenario A: decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md
       - ADR-013 Operational semantics: decisions/ADR-013-pc-tref-operational-semantics_EN.md
       - ADR-014 B1/B2 contracts: decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md
+      - ADR-015 Matched measurements: decisions/ADR-015-stage3b-matched-measurement-sealing_EN.md
+      - ADR-016 Sufficiency boundary: decisions/ADR-016-stage3b-sufficiency-boundary_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

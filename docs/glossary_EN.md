@@ -519,6 +519,34 @@ checks and decision gates.
 - **Project meaning:** State pairs merged by registered diagnostic equivalence but assigned to different required-equivalence classes; formally $\mathfrak D_{I\to R}^{q}=E_I^q\setminus E_R^q$.
 - **Usage rule:** A separate common-admissibility safety defect may be estimated through regret, dangerous misses, and unnecessary wake-ups, but it is not called a quotient defect without two explicit partition maps.
 
+<a id="term-operational-sufficiency-boundary"></a>
+### TERM-OPERATIONAL-SUFFICIENCY-BOUNDARY — operational sufficiency boundary
+
+- **Russian equivalent:** операционная граница достаточности.
+- **Project meaning:** The operational threshold level set of registered states where one-step exact-reference regret or defect of a computational action equals the admissible limit; in the primary line, the safety threshold for skipping the next exact sweep.
+- **Usage rule:** This is an operational threshold level set, not automatically a topological boundary; it depends on the task, action space, regret limit, and exact reference, while smoothness, a unique normal, and transferability are not assumed.
+
+<a id="term-oracle-sufficiency-margin"></a>
+### TERM-ORACLE-SUFFICIENCY-MARGIN — oracle sufficiency margin
+
+- **Russian equivalent:** oracle-запас достаточности.
+- **Project meaning:** The post-action quantity $M^*=\varepsilon_R-r_{\mathrm{skip}}^*$ computed through exact reference and representing the sign and reserve relative to the one-step operational boundary.
+- **Usage rule:** Oracle means post-action truth relative to the registered exact reference, not established global optimality; the margin is online-inaccessible before the exact action and remains distinct from its diagnostic estimate.
+
+<a id="term-sufficiency-boundary-estimator"></a>
+### TERM-SUFFICIENCY-BOUNDARY-ESTIMATOR — sufficiency-boundary estimator
+
+- **Russian equivalent:** оцениватель границы достаточности.
+- **Project meaning:** The pre-action mapping $\widehat M_b=g_b(\phi_b(x))$ that estimates the oracle margin from a budgeted diagnostic representation.
+- **Usage rule:** The estimator undergoes separate calibration, uncertainty evaluation, and exact verification; a positive point estimate alone does not authorize an action.
+
+<a id="term-predicted-sufficiency-horizon"></a>
+### TERM-PREDICTED-SUFFICIENCY-HORIZON — predicted sufficiency horizon
+
+- **Russian equivalent:** прогнозируемый горизонт достаточности.
+- **Project meaning:** A local first-order estimate of time or registered diagnostic steps until estimated margin exhaustion under persistence of the current rate.
+- **Usage rule:** The horizon is not a guaranteed count of safe skips and does not replace uncertainty, fallback, or trajectory-level verification.
+
 <a id="term-canonical-correction-channel"></a>
 ### TERM-CANONICAL-CORRECTION-CHANNEL — canonical correction channel
 

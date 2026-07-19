@@ -20,3 +20,6 @@
 - [ADR-015](ADR-015-stage3b-matched-measurement-sealing_EN.md): separated
   primary timing and structural counters, locality event streams, and
   matched-specific evidence sealing.
+- [ADR-016](ADR-016-stage3b-sufficiency-boundary_EN.md): the one-step
+  [operational sufficiency boundary](../glossary_EN.md#term-operational-sufficiency-boundary), separation of oracle label and pre-action
+  estimator, conditional geometry, and the unchanged post-`EX-IF0` admission sequence.

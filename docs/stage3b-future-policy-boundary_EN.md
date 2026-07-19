@@ -26,6 +26,7 @@ retrofitted into B1/B2.
 |---|---|---|
 | B1/B2 gates | exact-candidate equivalence and [profiling](glossary_EN.md#term-profiling) | ECZ control, policy selection |
 | after `EX-IF0` | [passive diagnostics](glossary_EN.md#term-passive-diagnostics), neutral offline labels | active control |
+| `PC-TREF-SB` | oracle margin, pre-action estimate, uncertainty, and first-order horizon | geometric proof or permission to skip |
 | ECZ verification | counterfactual `local_sweep(block_id)` | confirmatory policy without preregistration |
 | offline screening | cost, safety, net efficiency, Pareto | test split, post-hoc thresholds |
 | shadow | proposals, uncertainty, [fallback](glossary_EN.md#term-fallback) reasons | `controls_execution=true` |
@@ -35,13 +36,14 @@ retrofitted into B1/B2.
 
 The order is not changed post hoc:
 
-1. `cost_feasibility`;
-2. `zero_dangerous_misses`;
-3. `net_efficiency`;
-4. Pareto selection `0–3`;
-5. predictor/controller preregistration;
-6. shadow evidence;
-7. conditional active mode.
+1. oracle-label integrity and absence of pre-action leakage;
+2. `cost_feasibility`;
+3. `zero_dangerous_misses` with a preregistered upper confidence bound;
+4. `net_efficiency`;
+5. Pareto selection `0–3`;
+6. predictor/controller preregistration;
+7. shadow evidence;
+8. conditional active mode.
 
 Later benefit cannot compensate for an earlier failure. A result of `0`
 admissible finalists is a valid scientific result.

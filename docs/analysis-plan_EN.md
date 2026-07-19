@@ -70,7 +70,11 @@ Before `EX-IF0`, `ECZ` remains a passive diagnostic category and cannot control
 execution. After the exact implementation is frozen, a separate
 development-only counterfactual analysis is permitted. The [baseline](glossary_EN.md#term-baseline)
 `stop`/`native_one`/`exact_one` branches retain their B1/B2-contract meaning as
-offline labels.
+offline labels. Exact reference separately creates oracle skip regret and
+oracle margin $M^*$; pre-action estimator $\widehat M_b$ is evaluated as a
+predictor of that label under
+[`PC-TREF-SB`](pc-tref-sufficiency-boundary_EN.md), rather than being defined
+through its own prediction.
 
 A `local_sweep(block_id)` branch may appear only in a new preregistered
 protocol. `ECZ` selects a candidate block but does not establish local-action

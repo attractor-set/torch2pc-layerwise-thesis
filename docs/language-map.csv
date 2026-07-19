@@ -95,3 +95,5 @@ docs/ecz-targeted-local-sweep.md,docs/ecz-targeted-local-sweep_EN.md,required
 docs/stage3b-future-policy-boundary.md,docs/stage3b-future-policy-boundary_EN.md,required
 docs/decisions/ADR-015-stage3b-matched-measurement-sealing.md,docs/decisions/ADR-015-stage3b-matched-measurement-sealing_EN.md,required
 docs/stage3b-matched-evidence.md,docs/stage3b-matched-evidence_EN.md,required
+docs/pc-tref-sufficiency-boundary.md,docs/pc-tref-sufficiency-boundary_EN.md,required
+docs/decisions/ADR-016-stage3b-sufficiency-boundary.md,docs/decisions/ADR-016-stage3b-sufficiency-boundary_EN.md,required

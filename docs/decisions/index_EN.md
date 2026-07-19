@@ -23,3 +23,7 @@
 - [ADR-016](ADR-016-stage3b-sufficiency-boundary_EN.md): the one-step
   [operational sufficiency boundary](../glossary_EN.md#term-operational-sufficiency-boundary), separation of oracle label and pre-action
   estimator, conditional geometry, and the unchanged post-`EX-IF0` admission sequence.
+- [ADR-017](ADR-017-stage3b-288cell-correctness-repair_EN.md): fail-closed
+  lifecycle, confirmatory admission, exact counterbalance, and
+  cross-[candidate](../glossary_EN.md#term-candidate) correctness repair before
+  the 288-cell campaign.

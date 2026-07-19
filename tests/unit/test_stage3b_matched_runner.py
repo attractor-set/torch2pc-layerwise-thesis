@@ -50,6 +50,16 @@ def _cells() -> list[dict[str, object]]:
             "composite_vjp",
         ),
         (
+            "stage2_baseline",
+            "composite_vjp",
+            "isolated_layer_vjp",
+        ),
+        (
+            "isolated_layer_vjp",
+            "stage2_baseline",
+            "composite_vjp",
+        ),
+        (
             "isolated_layer_vjp",
             "composite_vjp",
             "stage2_baseline",
@@ -59,11 +69,19 @@ def _cells() -> list[dict[str, object]]:
             "stage2_baseline",
             "isolated_layer_vjp",
         ),
+        (
+            "composite_vjp",
+            "isolated_layer_vjp",
+            "stage2_baseline",
+        ),
     )
     for block_order in range(96):
         method = "fixedpred" if block_order < 48 else "strict"
         block_id = f"block-{block_order:03d}"
-        rotation = candidate_rotations[block_order % len(candidate_rotations)]
+        method_block_order = block_order if method == "fixedpred" else block_order - 48
+        rotation = candidate_rotations[
+            method_block_order % len(candidate_rotations)
+        ]
         for candidate_order, candidate_id in enumerate(rotation):
             cells.append(
                 {

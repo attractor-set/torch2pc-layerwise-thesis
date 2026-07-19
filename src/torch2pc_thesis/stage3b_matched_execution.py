@@ -27,6 +27,7 @@ from torch2pc_thesis.stage3b_b0_integration import (
     B0GateConfig,
     MethodName,
     run_b0_non_perturbation_gate,
+    run_b0_reference_snapshot,
     torch2pc_method_label,
 )
 from torch2pc_thesis.stage3b_execution import (
@@ -52,6 +53,7 @@ from torch2pc_thesis.stage3b_matched_profiling import (
     MATCHED_PROFILING_CANDIDATES,
     MATCHED_PROFILING_EXPECTED_CELL_COUNT,
     validate_matched_manifest,
+    validate_matched_prelaunch_scientific_gate,
     validate_matched_request,
 )
 from torch2pc_thesis.stage3b_matched_runner import (
@@ -62,7 +64,9 @@ from torch2pc_thesis.stage3b_matched_runner import (
 )
 from torch2pc_thesis.stage3b_profiling import (
     RegionMeasurement,
+    compare_named_tensors,
     iter_protocol_steps,
+    thresholds_for_device,
     validate_profile_completeness,
 )
 
@@ -76,6 +80,20 @@ MATCHED_EXECUTION_STATE_RECONSTRUCTION: Final[str] = (
 )
 MATCHED_EXECUTION_DEFAULT_MAX_ATTEMPTS: Final[int] = 2
 MATCHED_EXECUTION_MAX_ATTEMPTS: Final[int] = 3
+MATCHED_RETRYABLE_FAILURE_CLASSES: Final[frozenset[str]] = frozenset(
+    {
+        "infrastructure",
+        "operator_interruption",
+        "system_interruption",
+    }
+)
+MATCHED_NON_RETRYABLE_FAILURE_CLASSES: Final[frozenset[str]] = frozenset(
+    {
+        "correctness",
+        "scientific",
+        "unknown",
+    }
+)
 MATCHED_EXECUTION_ETA: Final[float] = 0.1
 MATCHED_EXECUTION_LEARNING_RATE: Final[float] = 0.01
 MATCHED_EXECUTION_INFERENCE_STEPS: Final[dict[str, int]] = {
@@ -171,6 +189,14 @@ class MatchedCellProcessError(Stage3BExecutionError):
     """Raised when a per-cell child process violates the lifecycle contract."""
 
 
+class MatchedRetryableInfrastructureError(RuntimeError):
+    """Explicitly retryable infrastructure failure for matched execution."""
+
+
+class MatchedScientificCorrectnessError(Stage3BExecutionError):
+    """Non-retryable scientific or numerical correctness failure."""
+
+
 @dataclass(frozen=True)
 class MatchedPlannedCell:
     """Resume-aware state for one authorized matched cell in one lane."""
@@ -188,6 +214,8 @@ class MatchedPlannedCell:
     state: MatchedCellState
     attempt_count: int
     failed_attempt_count: int
+    retryable_failed_attempt_count: int
+    non_retryable_failed_attempt_count: int
     running_attempt_count: int
     selected_for_execution: bool
 
@@ -255,9 +283,19 @@ class MatchedLanePlan:
 @dataclass(frozen=True)
 class _AttemptSummary:
     attempt_count: int = 0
-    failed_count: int = 0
+    completed_count: int = 0
+    retryable_failed_count: int = 0
+    non_retryable_failed_count: int = 0
+    interrupted_count: int = 0
     running_count: int = 0
-    matching_success: bool = False
+
+    @property
+    def failed_count(self) -> int:
+        return self.retryable_failed_count + self.non_retryable_failed_count
+
+    @property
+    def matching_success(self) -> bool:
+        return self.completed_count == 1
 
 
 def _canonical_json(value: object) -> str:
@@ -647,6 +685,30 @@ def _systemic_gpu_oom(
     )
 
 
+def _classify_failure(exc: BaseException) -> tuple[str, bool]:
+    """Return a fail-closed lifecycle class and retry eligibility."""
+
+    text = f"{type(exc).__name__}\n{exc}".lower()
+    if isinstance(exc, KeyboardInterrupt):
+        return "operator_interruption", True
+    if isinstance(exc, MatchedScientificCorrectnessError):
+        return "correctness", False
+    if (
+        isinstance(exc, MatchedRetryableInfrastructureError | OSError)
+        or "outofmemoryerror" in text
+        or "hip out of memory" in text
+        or "cuda out of memory" in text
+        or "hiperroroutofmemory" in text
+        or "cudaerror_memoryallocation" in text
+    ):
+        return "infrastructure", True
+    if isinstance(exc, MatchedCellProcessError):
+        return "infrastructure", True
+    if isinstance(exc, Stage3BExecutionError):
+        return "scientific", False
+    return "unknown", False
+
+
 @dataclass(frozen=True)
 class MatchedSubprocessCellRunner:
     """Run each matched cell in a fresh Python interpreter."""
@@ -791,6 +853,8 @@ class MatchedSubprocessCellRunner:
                 validation_error = str(exc)
 
         systemic_oom = _systemic_gpu_oom(terminal=terminal, stderr=stderr)
+        failure_class = terminal.get("failure_class") if terminal is not None else None
+        retry_eligible = terminal.get("retry_eligible") if terminal is not None else None
         process_record: dict[str, object] = {
             "schema_version": MATCHED_EXECUTION_SCHEMA_VERSION,
             "campaign_id": STAGE3B_CAMPAIGN_ID,
@@ -829,6 +893,8 @@ class MatchedSubprocessCellRunner:
             "terminal_status": (str(terminal.get("status")) if terminal is not None else None),
             "terminal_validation_error": validation_error,
             "systemic_resource_failure": systemic_oom,
+            "failure_class": failure_class,
+            "retry_eligible": retry_eligible,
             "child_stdout_sha256": _sha256_text(stdout),
             "child_stderr_sha256": _sha256_text(stderr),
             "child_stdout_tail": _text_tail(stdout),
@@ -870,6 +936,8 @@ class MatchedSubprocessCellRunner:
                 "terminal_record_sha256": process_record["terminal_record_sha256"],
             },
             "systemic_resource_failure": systemic_oom,
+            "failure_class": failure_class,
+            "retry_eligible": retry_eligible,
         }
 
 
@@ -892,9 +960,11 @@ def _inspect_attempts(
         return _AttemptSummary()
 
     attempt_count = 0
-    failed_count = 0
+    completed_count = 0
+    retryable_failed_count = 0
+    non_retryable_failed_count = 0
+    interrupted_count = 0
     running_count = 0
-    matching_success = False
     for attempt_dir in sorted(path for path in attempts_root.iterdir() if path.is_dir()):
         attempt_request = _load_json_object(attempt_dir / "request.json")
         if attempt_request is None or not _request_matches(
@@ -913,20 +983,100 @@ def _inspect_attempts(
         attempt_count += 1
         completed = _load_json_object(attempt_dir / "completed.json")
         failed = _load_json_object(attempt_dir / "failed.json")
+        interrupted = _load_json_object(attempt_dir / "interrupted.json")
         started = _load_json_object(attempt_dir / "started.json")
         if completed is not None and completed.get("status") == "matched_cell_complete":
-            matching_success = True
+            completed_count += 1
         elif failed is not None and failed.get("status") == "matched_cell_failed":
-            failed_count += 1
+            if (
+                failed.get("retry_eligible") is True
+                and failed.get("failure_class") in MATCHED_RETRYABLE_FAILURE_CLASSES
+            ):
+                retryable_failed_count += 1
+            else:
+                non_retryable_failed_count += 1
+        elif (
+            interrupted is not None
+            and interrupted.get("status") == "matched_cell_interrupted"
+        ):
+            if (
+                interrupted.get("retry_eligible") is True
+                and interrupted.get("failure_class")
+                in MATCHED_RETRYABLE_FAILURE_CLASSES
+            ):
+                interrupted_count += 1
+            else:
+                non_retryable_failed_count += 1
         elif started is not None and started.get("status") == "matched_cell_running":
             running_count += 1
 
     return _AttemptSummary(
         attempt_count=attempt_count,
-        failed_count=failed_count,
+        completed_count=completed_count,
+        retryable_failed_count=retryable_failed_count,
+        non_retryable_failed_count=non_retryable_failed_count,
+        interrupted_count=interrupted_count,
         running_count=running_count,
-        matching_success=matching_success,
     )
+
+
+def _finalize_interrupted_attempts(
+    *,
+    lane_root: Path,
+    cell: Mapping[str, object],
+    authorization_token: str,
+    matched_manifest_digest: str,
+    opening_request_digest: str,
+    source_manifest_digest: str,
+    source_commit: str,
+    device: str,
+    dtype: str,
+    image_digest: str,
+) -> int:
+    """Convert stale running attempts into append-only retryable interruptions."""
+
+    cell_id = str(cell["cell_id"])
+    attempts_root = lane_root / "cells" / cell_id / "attempts"
+    if not attempts_root.is_dir():
+        return 0
+    finalized = 0
+    for attempt_dir in sorted(path for path in attempts_root.iterdir() if path.is_dir()):
+        if (
+            (attempt_dir / "completed.json").is_file()
+            or (attempt_dir / "failed.json").is_file()
+            or (attempt_dir / "interrupted.json").is_file()
+        ):
+            continue
+        started = _load_json_object(attempt_dir / "started.json")
+        request = _load_json_object(attempt_dir / "request.json")
+        if started is None or request is None:
+            continue
+        if started.get("status") != "matched_cell_running" or not _request_matches(
+            request,
+            cell=cell,
+            authorization_token=authorization_token,
+            matched_manifest_digest=matched_manifest_digest,
+            opening_request_digest=opening_request_digest,
+            source_manifest_digest=source_manifest_digest,
+            source_commit=source_commit,
+            device=device,
+            dtype=dtype,
+            image_digest=image_digest,
+        ):
+            continue
+        interrupted = {
+            **request,
+            "status": "matched_cell_interrupted",
+            "full_cell_complete": False,
+            "failure_class": "operator_interruption",
+            "retry_eligible": True,
+            "interrupted_at": _utc_now(),
+            "interruption_reason": "explicit_resume_of_stale_running_attempt",
+            "attempt_directory": str(attempt_dir),
+        }
+        atomic_write_json(attempt_dir / "interrupted.json", interrupted)
+        finalized += 1
+    return finalized
 
 
 def _state_from_attempts(
@@ -936,13 +1086,22 @@ def _state_from_attempts(
     retry_failed: bool,
     max_attempts: int,
 ) -> MatchedCellState:
+    if summary.completed_count > 1:
+        return "blocked"
+    if summary.non_retryable_failed_count:
+        return "blocked"
+    if summary.matching_success and summary.running_count:
+        return "blocked"
     if summary.matching_success:
         return "completed"
-    if summary.attempt_count >= max_attempts and (summary.running_count or summary.failed_count):
+    terminal_failure_count = summary.failed_count + summary.interrupted_count
+    if summary.attempt_count >= max_attempts and (
+        summary.running_count or terminal_failure_count
+    ):
         return "exhausted"
     if summary.running_count:
         return "retryable" if resume else "running"
-    if summary.failed_count:
+    if summary.retryable_failed_count or summary.interrupted_count:
         return "retryable" if retry_failed else "failed"
     return "pending"
 
@@ -1009,6 +1168,12 @@ def verify_matched_authorized_lane(
         raise Stage3BExecutionError("matched lane cannot permit test dataset access")
     if normalized_lane not in MATCHED_CANONICAL_LANES and probe is None:
         raise Stage3BExecutionError("matched production runner rejects engineering-control lanes")
+    if probe is None:
+        validate_matched_prelaunch_scientific_gate(
+            matched_manifest,
+            request,
+            project_root=project_root,
+        )
     emergency_stop = Path(str(authorization["emergency_stop_path"]))
     _check_emergency_stop(emergency_stop)
     return verification
@@ -1116,6 +1281,8 @@ def plan_matched_authorized_lane(
             state=state,
             attempt_count=summary.attempt_count,
             failed_attempt_count=summary.failed_count,
+            retryable_failed_attempt_count=summary.retryable_failed_count,
+            non_retryable_failed_attempt_count=summary.non_retryable_failed_count,
             running_attempt_count=summary.running_count,
             selected_for_execution=str(cell["cell_id"]) in selected_set,
         )
@@ -1256,6 +1423,220 @@ def _aggregate_regions(
     return tuple(aggregated)
 
 
+def _block_correctness_path(
+    context: MatchedCellContext,
+    *,
+    block_id: str,
+) -> Path:
+    lane_root = _lane_root(
+        context.output_root,
+        device=context.requested_device,
+        dtype=context.dtype_name,
+    )
+    return lane_root / "blocks" / block_id / "cross-candidate-correctness.json"
+
+
+def _validate_block_correctness_record(
+    record: Mapping[str, object],
+    context: MatchedCellContext,
+    *,
+    block_id: str,
+    method: str,
+    depth: int,
+    width: int,
+    batch_size: int,
+    model_seed: int,
+) -> None:
+    expected = {
+        "status": "cross_candidate_correctness_passed",
+        "block_id": block_id,
+        "method": method,
+        "depth": depth,
+        "width": width,
+        "batch_size": batch_size,
+        "model_seed": model_seed,
+        "authorization_token": context.authorization_token,
+        "matched_manifest_digest": context.matched_manifest_digest,
+        "source_commit": context.source_commit,
+        "image_digest": context.image_digest,
+        "test_dataset_access": False,
+        "evidence": False,
+        "passed": True,
+    }
+    for key, value in expected.items():
+        if record.get(key) != value:
+            raise MatchedScientificCorrectnessError(
+                "cross-candidate correctness record differs: "
+                f"block_id={block_id}, field={key}"
+            )
+    raw_pairs = record.get("pair_comparisons")
+    if not isinstance(raw_pairs, list) or len(raw_pairs) != 2:
+        raise MatchedScientificCorrectnessError(
+            f"cross-candidate correctness pairs are incomplete: {block_id}"
+        )
+    expected_pairs = {
+        ("stage2_baseline", "isolated_layer_vjp"),
+        ("stage2_baseline", "composite_vjp"),
+    }
+    observed_pairs = {
+        (str(cast(Mapping[str, object], pair).get("reference_id")),
+         str(cast(Mapping[str, object], pair).get("candidate_id")))
+        for pair in raw_pairs
+        if isinstance(pair, Mapping)
+    }
+    if observed_pairs != expected_pairs or not all(
+        cast(Mapping[str, object], pair).get("passed") is True
+        for pair in raw_pairs
+        if isinstance(pair, Mapping)
+    ):
+        raise MatchedScientificCorrectnessError(
+            f"cross-candidate correctness comparison failed: {block_id}"
+        )
+
+
+def _run_block_cross_candidate_correctness_gate(
+    context: MatchedCellContext,
+    *,
+    architecture: str,
+    method: MethodName,
+    depth: int,
+    width: int,
+    batch_size: int,
+    model_seed: int,
+    block_id: str,
+    gate_config: B0GateConfig,
+) -> Mapping[str, object]:
+    """Run one untimed baseline/B1/B2 equivalence probe per profiling block."""
+
+    record_path = _block_correctness_path(context, block_id=block_id)
+    existing = _load_json_object(record_path)
+    if existing is not None:
+        _validate_block_correctness_record(
+            existing,
+            context,
+            block_id=block_id,
+            method=method,
+            depth=depth,
+            width=width,
+            batch_size=batch_size,
+            model_seed=model_seed,
+        )
+        return existing
+
+    candidate_functions = {
+        candidate_id: load_candidate_pc_infer(candidate_id, context.torch2pc_dir)
+        for candidate_id in MATCHED_PROFILING_CANDIDATES
+    }
+
+    def optimizer_factory(candidate: nn.Module) -> torch.optim.Optimizer:
+        return torch.optim.SGD(
+            candidate.parameters(),
+            lr=MATCHED_EXECUTION_LEARNING_RATE,
+        )
+
+    def build_snapshot(
+        candidate_id: str,
+    ) -> tuple[dict[str, object], Mapping[str, Tensor]]:
+        set_global_seed(model_seed, deterministic=True, warn_only=True)
+        model = build_model(architecture, 10).to(dtype=context.dtype)
+        minibatch_seed = stable_int_seed(
+            STAGE3B_CAMPAIGN_ID,
+            block_id,
+            "matched_synthetic_minibatch",
+        )
+        generator = torch.Generator(device="cpu")
+        generator.manual_seed(minibatch_seed)
+        inputs = torch.randn(
+            (batch_size, 1, 28, 28),
+            generator=generator,
+            dtype=context.dtype,
+        )
+        targets = torch.randint(
+            low=0,
+            high=10,
+            size=(batch_size,),
+            generator=generator,
+            dtype=torch.int64,
+        )
+        initial_record: dict[str, object] = {
+            "model_state_sha256": _state_dict_digest(
+                cast(Mapping[str, Tensor], model.state_dict())
+            ),
+            "synthetic_inputs_sha256": _tensor_digest(inputs),
+            "synthetic_targets_sha256": _tensor_digest(targets),
+        }
+        snapshot = run_b0_reference_snapshot(
+            model=model,
+            optimizer_factory=optimizer_factory,
+            loss_fn=nn.CrossEntropyLoss(),
+            inputs=inputs,
+            targets=targets,
+            pc_infer=candidate_functions[candidate_id],
+            config=gate_config,
+        )
+        return initial_record, snapshot.tensors
+
+    reference_id = "stage2_baseline"
+    reference_initial, reference = build_snapshot(reference_id)
+    pair_records: list[dict[str, object]] = []
+    for candidate_id in ("isolated_layer_vjp", "composite_vjp"):
+        candidate_initial, candidate_snapshot = build_snapshot(candidate_id)
+        if candidate_initial != reference_initial:
+            raise MatchedScientificCorrectnessError(
+                f"cross-candidate initial state differs: {block_id}"
+            )
+        comparisons = compare_named_tensors(
+            reference,
+            candidate_snapshot,
+            thresholds=thresholds_for_device(context.device, context.dtype),
+        )
+        pair_records.append(
+            {
+                "reference_id": reference_id,
+                "candidate_id": candidate_id,
+                "comparison_count": len(comparisons),
+                "minimum_cosine": min(item.cosine for item in comparisons),
+                "maximum_relative_l2": max(item.relative_l2 for item in comparisons),
+                "all_finite": all(item.finite for item in comparisons),
+                "passed": all(item.passed for item in comparisons),
+                "comparisons": [item.to_record() for item in comparisons],
+            }
+        )
+    passed = all(record["passed"] is True for record in pair_records)
+    record: dict[str, object] = {
+        "schema_version": MATCHED_EXECUTION_SCHEMA_VERSION,
+        "scope": "stage3b_matched_cross_candidate_correctness_v1",
+        "status": (
+            "cross_candidate_correctness_passed"
+            if passed
+            else "cross_candidate_correctness_failed"
+        ),
+        "block_id": block_id,
+        "method": method,
+        "depth": depth,
+        "width": width,
+        "batch_size": batch_size,
+        "model_seed": model_seed,
+        "authorization_token": context.authorization_token,
+        "matched_manifest_digest": context.matched_manifest_digest,
+        "source_commit": context.source_commit,
+        "image_digest": context.image_digest,
+        "candidate_ids": list(MATCHED_PROFILING_CANDIDATES),
+        "initial_state": reference_initial,
+        "pair_comparisons": pair_records,
+        "passed": passed,
+        "untimed": True,
+        "test_dataset_access": False,
+        "evidence": False,
+    }
+    atomic_write_json(record_path, record)
+    if not passed:
+        raise MatchedScientificCorrectnessError(
+            f"cross-candidate correctness gate failed: {block_id}"
+        )
+    return record
+
+
 def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult:
     cell = context.cell
     candidate_id = str(cell["candidate_id"])
@@ -1312,6 +1693,18 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
         device=context.device,
         dtype=context.dtype,
     )
+    block_correctness = _run_block_cross_candidate_correctness_gate(
+        context,
+        architecture=architecture,
+        method=method,
+        depth=depth,
+        width=width,
+        batch_size=batch_size,
+        model_seed=model_seed,
+        block_id=block_id,
+        gate_config=gate_config,
+    )
+    block_correctness_path = _block_correctness_path(context, block_id=block_id)
 
     region_records: list[RegionMeasurement] = []
     primary_timing_records: list[dict[str, object]] = []
@@ -1530,6 +1923,8 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
             "model_state_sha256": model_state_sha256,
             "synthetic_inputs_sha256": _tensor_digest(inputs),
             "synthetic_targets_sha256": _tensor_digest(targets),
+            "block_correctness_path": str(block_correctness_path),
+            "block_correctness_sha256": _sha256_file(block_correctness_path),
         },
         measurements={
             "status": "matched_cell_complete",
@@ -1564,6 +1959,7 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
                 "not_applicable_before_ex_if0"
             ),
             "integrity_measurements": integrity_records,
+            "block_correctness": dict(block_correctness),
             "validation": {
                 "dataset": "synthetic_scaling_family",
                 "test_loader_created": False,
@@ -1578,6 +1974,7 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
                 "all_non_perturbation_gates_passed": True,
                 "fresh_process_per_candidate": True,
                 "block_state_reconstructed_from_shared_seeds": True,
+                "cross_candidate_correctness_gate_passed": True,
             },
         },
     )
@@ -1729,13 +2126,17 @@ def execute_matched_cell(
         atomic_write_json(attempt_dir / "completed.json", completed)
         return completed
     except Exception as exc:
+        failure_class, retry_eligible = _classify_failure(exc)
         failed = {
             **attempt_request,
             "status": "matched_cell_failed",
+            "full_cell_complete": False,
             "failed_at": _utc_now(),
             "attempt_directory": str(attempt_dir),
             "exception_type": type(exc).__name__,
             "exception_message": str(exc),
+            "failure_class": failure_class,
+            "retry_eligible": retry_eligible,
         }
         atomic_write_json(attempt_dir / "failed.json", failed)
         _append_jsonl(
@@ -1838,6 +2239,10 @@ def execute_matched_authorized_lane(
         raise Stage3BExecutionError(
             "matched lane contains exhausted cells; inspect failure records"
         )
+    if states["blocked"]:
+        raise Stage3BExecutionError(
+            "matched lane contains non-retryable or contradictory attempt history"
+        )
 
     resolved_root = Path(plan.output_root)
     lane_root = _lane_root(
@@ -1932,9 +2337,35 @@ def execute_matched_authorized_lane(
     failures: list[dict[str, object]] = []
     systemic_stop: dict[str, object] | None = None
     emergency_stop = Path(str(authorization["emergency_stop_path"]))
+    planned_by_id = {cell.cell_id: cell for cell in plan.cells}
     try:
         for cell_id in plan.selected_cell_ids:
             _check_emergency_stop(emergency_stop)
+            planned_cell = planned_by_id[cell_id]
+            if resume and planned_cell.running_attempt_count:
+                cell = _select_matched_cell(
+                    matched_manifest,
+                    request,
+                    cell_id=cell_id,
+                )
+                finalized = _finalize_interrupted_attempts(
+                    lane_root=lane_root,
+                    cell=cell,
+                    authorization_token=plan.authorization_token,
+                    matched_manifest_digest=plan.matched_manifest_digest,
+                    opening_request_digest=plan.opening_request_digest,
+                    source_manifest_digest=plan.source_manifest_digest,
+                    source_commit=plan.source_commit,
+                    device=plan.device,
+                    dtype=plan.dtype,
+                    image_digest=plan.image_digest,
+                )
+                if finalized != planned_cell.running_attempt_count:
+                    raise Stage3BExecutionError(
+                        "matched resume could not finalize all interrupted attempts: "
+                        f"cell_id={cell_id}, expected={planned_cell.running_attempt_count}, "
+                        f"finalized={finalized}"
+                    )
             try:
                 result = selected_cell_runner(
                     matched_manifest,
@@ -1983,6 +2414,8 @@ def execute_matched_authorized_lane(
                     "attempt_directory": result_record.get("attempt_directory"),
                     "exception_type": result_record.get("exception_type"),
                     "exception_message": result_record.get("exception_message"),
+                    "failure_class": result_record.get("failure_class"),
+                    "retry_eligible": result_record.get("retry_eligible"),
                     "process_isolation": result_record.get("process_isolation"),
                     "systemic_resource_failure": bool(
                         result_record.get("systemic_resource_failure")

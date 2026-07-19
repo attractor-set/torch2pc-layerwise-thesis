@@ -12,7 +12,7 @@ from scripts.check_glossary_usage import (
 
 def test_real_glossary_has_paired_terms_and_anchors() -> None:
     terms = parse_terms()
-    assert len(terms) == 92
+    assert len(terms) == 96
     term_ids = {term.term_id for term in terms}
     assert len(term_ids) == len(terms)
     assert {
@@ -22,6 +22,10 @@ def test_real_glossary_has_paired_terms_and_anchors() -> None:
         "TERM-DIAGNOSTIC-MECHANISM-COST",
         "TERM-OBSERVER-COST",
         "TERM-CONTROL-PLANE-COST",
+        "TERM-OPERATIONAL-SUFFICIENCY-BOUNDARY",
+        "TERM-ORACLE-SUFFICIENCY-MARGIN",
+        "TERM-SUFFICIENCY-BOUNDARY-ESTIMATOR",
+        "TERM-PREDICTED-SUFFICIENCY-HORIZON",
     } <= term_ids
 
 

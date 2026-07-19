@@ -159,8 +159,10 @@ native_one
 exact_one
 ```
 
-Each branch records $\phi_0,\ldots,\phi_k$, temporal history, endpoint
-utility/regret, feature costs, transitions, [fallback](glossary_EN.md#term-fallback)
+Each branch records $\phi_0,\ldots,\phi_k$, temporal history, and endpoint
+utility/regret. Exact reference creates oracle skip regret, oracle margin $M^*$,
+and the one-step boundary sign; pre-action features remain separate. Each
+branch also records feature costs, transitions, [fallback](glossary_EN.md#term-fallback)
 reasons, and complete provenance. Branches are offline labels and
 `controls_execution=false`. The independent unit is `model_seed`; the test
 split remains closed.
@@ -185,7 +187,10 @@ required; `0` is an admissible negative result.
 
 The [local predictor](glossary_EN.md#term-local-predictor) is preregistered only
 after `A11-OFF1`, uses frozen features and `model_seed` splits, and does not
-modify beliefs. A separate controller contract freezes action labels,
+modify beliefs. Its boundary branch estimates $\widehat M_b$ and uncertainty
+against oracle $M^*$ under
+[`PC-TREF-SB`](pc-tref-sufficiency-boundary_EN.md); the first-order horizon
+remains a separate ablation. A separate controller contract freezes action labels,
 representation, thresholds, hysteresis, fallback, and control-plane cost before
 shadow evaluation.
 

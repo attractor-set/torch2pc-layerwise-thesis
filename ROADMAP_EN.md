@@ -77,14 +77,18 @@ mixed results must be retained.
 Only after matched profiling is complete and sealed, select and freeze the
 admissible exact implementation before label creation. Then collect passive
 PC-CATM representations and branch an identical `snapshot` into policy-neutral
-`stop`, `native_one`, and `exact_one` outcomes while retaining utility,
-decision regret, temporal history, feature cost, transitions, and provenance.
-The independent unit remains `model_seed`; the test dataset remains closed.
+`stop`, `native_one`, and `exact_one` outcomes. Exact reference creates oracle
+skip regret, oracle margin $M^*$, and the one-step sufficiency boundary;
+pre-action features remain separate and receive no permission to control
+execution. Utility, decision regret, temporal history, feature cost,
+transitions, and provenance are also retained. The independent unit remains
+`model_seed`; the test dataset remains closed.
 
 ## Stage 18 — `A11-OFF1`, predictor, exact verification, and shadow `QWake-PC`
 
-- run offline screening of nested representations, features, and thresholds by
-  regret, dangerous misses, and the complete cost vector;
+- run offline screening of nested representations, boundary estimators,
+  first-order horizons, features, and thresholds by regret, dangerous misses,
+  and the complete cost vector;
 - freeze the representation, labels, split, Pareto rule, and [fallback](docs/glossary_EN.md#term-fallback) before
   confirmatory access;
 - preregister the predictor separately with `model_seed` grouping;

@@ -91,6 +91,13 @@ completed B0 findings.
   regret reduction relative to diagnostic cost.
 - **H-Q1:** shadow QWake-PC reduces dangerous misses relative to residual-only
   or fixed-budget rules.
+- **H-SB1:** a pre-action estimate of the oracle sufficiency margin adds
+  out-of-sample information about unsafe next-sweep omission relative to
+  registered magnitude-only baselines.
+- **H-SB2:** temporal dynamics of the estimated margin and the first-order
+  horizon add information beyond the current margin value.
+- **H-SB3:** ECZ-protected non-cancelling activity reduces the false-safe rate
+  relative to a resultant-direction-only feature.
 - **H-R1:** after observer cost is included, exact-sweep reduction yields device
   time reduction while endpoint gradients remain within registered bounds.
 

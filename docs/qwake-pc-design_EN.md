@@ -33,6 +33,8 @@ Inputs are frozen in a separate contract and may include:
 
 - PC-TREF representation $\phi_k$;
 - PC-CATM geometry, transport, layer, and sweep features;
+- oracle-independent pre-action margin estimate, uncertainty, and first-order
+  horizon from [`PC-TREF-SB`](pc-tref-sufficiency-boundary_EN.md);
 - temporal history and uncertainty;
 - complete feature-computation cost;
 - an eligibility mask for local blocks.
@@ -46,15 +48,16 @@ across counterfactual branches.
 1. positive `EQ-B1` and `EQ-B2`;
 2. matched exact-candidate [profiling](glossary_EN.md#term-profiling);
 3. `EX-IF0`;
-4. policy-neutral trace collection;
-5. separate `exact_verification` for `local_sweep(block_id)`;
-6. `cost_feasibility`;
-7. `zero_dangerous_misses`;
-8. `net_efficiency`;
-9. Pareto selection of `0–3` finalists;
-10. predictor/controller preregistration;
-11. shadow evaluation;
-12. conditional active mode.
+4. policy-neutral trace and oracle-label collection;
+5. passive boundary-estimator evaluation without pre-action leakage;
+6. separate `exact_verification` for `local_sweep(block_id)`;
+7. `cost_feasibility`;
+8. `zero_dangerous_misses` with a preregistered upper confidence bound;
+9. `net_efficiency`;
+10. Pareto selection of `0–3` finalists;
+11. predictor/controller preregistration;
+12. shadow evaluation;
+13. conditional active mode.
 
 No later gate compensates for failure of an earlier safety gate.
 

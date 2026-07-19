@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 from copy import deepcopy
 from pathlib import Path
@@ -333,6 +334,95 @@ def test_verify_returns_non_evidence_execution_contract(tmp_path: Path) -> None:
     assert result["evidence"] is False
     assert result["results_publication_permitted"] is False
     assert result["test_dataset_access"] is False
+
+
+def test_single_cell_accepts_runtime_project_relocation(tmp_path: Path) -> None:
+    (
+        authorization,
+        matched_manifest,
+        request,
+        base_manifest,
+        base_path,
+        project_root,
+        source_commit,
+        torch2pc_dir,
+        output_root,
+    ) = _authorized_inputs(tmp_path)
+    relocated_project = tmp_path / "workspace"
+    shutil.copytree(project_root, relocated_project)
+    relocated_manifest = tmp_path / "container-inputs" / base_path.name
+    relocated_manifest.parent.mkdir()
+    shutil.copy2(base_path, relocated_manifest)
+    first_cell = cast(
+        list[dict[str, object]],
+        matched_manifest["cells"],
+    )[0]
+
+    completed = execute_matched_cell(
+        matched_manifest,
+        request,
+        base_manifest,
+        authorization,
+        output_root=output_root,
+        cell_id=str(first_cell["cell_id"]),
+        device="cpu",
+        dtype="float64",
+        project_root=relocated_project,
+        base_manifest_path=relocated_manifest,
+        torch2pc_dir=torch2pc_dir,
+        source_commit=source_commit,
+        image_digest=ROCM_IMAGE,
+        executor=_fake_result,
+    )
+
+    assert completed["status"] == "matched_cell_complete"
+    assert Path(str(completed["attempt_directory"])).is_dir()
+
+
+def test_single_cell_rejects_relocated_manifest_content_change(
+    tmp_path: Path,
+) -> None:
+    (
+        authorization,
+        matched_manifest,
+        request,
+        base_manifest,
+        base_path,
+        project_root,
+        source_commit,
+        torch2pc_dir,
+        output_root,
+    ) = _authorized_inputs(tmp_path)
+    relocated_project = tmp_path / "workspace"
+    shutil.copytree(project_root, relocated_project)
+    relocated_manifest = tmp_path / "container-inputs" / base_path.name
+    relocated_manifest.parent.mkdir()
+    relocated_manifest.write_text("{}\n", encoding="utf-8")
+    first_cell = cast(
+        list[dict[str, object]],
+        matched_manifest["cells"],
+    )[0]
+
+    with pytest.raises(
+        Stage3BExecutionError,
+        match="base manifest content differs from freeze",
+    ):
+        execute_matched_cell(
+            matched_manifest,
+            request,
+            base_manifest,
+            authorization,
+            output_root=output_root,
+            cell_id=str(first_cell["cell_id"]),
+            device="cpu",
+            dtype="float64",
+            project_root=relocated_project,
+            base_manifest_path=relocated_manifest,
+            torch2pc_dir=torch2pc_dir,
+            source_commit=source_commit,
+            image_digest=ROCM_IMAGE,
+            executor=_fake_result,
+        )
 
 
 def test_single_fake_cell_writes_immutable_attempt_layout(tmp_path: Path) -> None:

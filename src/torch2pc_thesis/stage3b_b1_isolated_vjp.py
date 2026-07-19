@@ -9,12 +9,13 @@ from enum import StrEnum
 from functools import cache
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Protocol, cast
+from typing import Any, Final, Protocol, cast
 
 import torch
 import torch.nn as nn
 
 PATCHED_TORCH2PC_COMMIT = "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+PC_INFER_DEFAULT_STEPS: Final[int] = 20
 
 TensorState = list[torch.Tensor | None]
 PcInferOutput = tuple[
@@ -375,6 +376,26 @@ def pc_infer_b1(
     return vhat, loss, dldy, beliefs, epsilon
 
 
+def _resolve_pc_infer_steps(
+    *,
+    n: int | None,
+    inference_steps: int | None,
+) -> int:
+    if n is not None and inference_steps is not None and n != inference_steps:
+        raise ValueError(
+            "conflicting PCInfer step counts: "
+            f"n={n}, inference_steps={inference_steps}"
+        )
+    resolved = PC_INFER_DEFAULT_STEPS
+    if n is not None:
+        resolved = n
+    elif inference_steps is not None:
+        resolved = inference_steps
+    if isinstance(resolved, bool) or not isinstance(resolved, int) or resolved < 1:
+        raise ValueError("PCInfer inference-step count must be a positive integer")
+    return resolved
+
+
 def load_b1_pc_infer(
     torch2pc_dir: str | Path,
     *,
@@ -391,12 +412,17 @@ def load_b1_pc_infer(
         method: str,
         *,
         eta: float = 0.1,
-        inference_steps: int = 20,
+        n: int | None = None,
+        inference_steps: int | None = None,
         vinit: TensorState | None = None,
         observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
         event_sink: StructuralEventSink | None = None,
         trajectory_sink: TrajectorySink | None = None,
     ) -> PcInferOutput:
+        resolved_inference_steps = _resolve_pc_infer_steps(
+            n=n,
+            inference_steps=inference_steps,
+        )
         return pc_infer_b1(
             reference,
             model,
@@ -405,7 +431,7 @@ def load_b1_pc_infer(
             targets,
             method,
             eta=eta,
-            inference_steps=inference_steps,
+            inference_steps=resolved_inference_steps,
             vinit=vinit,
             observer_mode=observer_mode,
             event_sink=event_sink,

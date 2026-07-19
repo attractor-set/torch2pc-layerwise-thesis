@@ -28,6 +28,10 @@ from torch2pc_thesis.profiling import (
     Stage3ProfilingError,
     synchronize_device,
 )
+from torch2pc_thesis.stage3b_candidate_instrumentation import (
+    NativeCandidateInstrumentation,
+    native_candidate_id,
+)
 from torch2pc_thesis.stage3b_profiling import (
     RegionMeasurement,
     Stage3BProfiler,
@@ -159,6 +163,17 @@ class B0GateReport:
             and self.actual_inference_step_count_observed
         )
 
+    @property
+    def completeness_failures(self) -> tuple[str, ...]:
+        failures: list[str] = []
+        if not self.passed:
+            failures.append("numerical_non_perturbation")
+        if not self.internal_region_attribution_ready:
+            failures.append("internal_region_attribution")
+        if not self.actual_inference_step_count_observed:
+            failures.append("inference_step_observation")
+        return tuple(failures)
+
     def to_record(self) -> dict[str, object]:
         return {
             "schema_version": B0_GATE_SCHEMA_VERSION,
@@ -175,6 +190,7 @@ class B0GateReport:
             ),
             "internal_region_attribution_ready": self.internal_region_attribution_ready,
             "full_preregistered_gate_complete": self.full_preregistered_gate_complete,
+            "completeness_failures": list(self.completeness_failures),
             "actual_inference_step_count_observed": (
                 self.actual_inference_step_count_observed
             ),
@@ -309,6 +325,7 @@ def _run_step(
     instrumentation: PCInferInstrumentationSummary | None = None
     observed_inference_steps: int | None = None
     started_ns = time.perf_counter_ns()
+    candidate_id = native_candidate_id(pc_infer)
     if instrumented and supports_pcinfer_instrumentation(pc_infer):
         profiler = Stage3BProfiler(device=config.device, method=config.method)
         with torch.autograd.profiler.record_function(B0_COMPOSITE_LABEL):
@@ -328,6 +345,31 @@ def _run_step(
                 )
             instrumentation = observer.summary()
             observed_inference_steps = instrumentation.actual_inference_steps
+    elif instrumented and candidate_id is not None:
+        profiler = Stage3BProfiler(
+            device=config.device,
+            candidate_id=candidate_id,
+            method=config.method,
+        )
+        native_observer = NativeCandidateInstrumentation(
+            candidate_id=candidate_id,
+            method=config.method,
+            configured_inference_steps=config.inference_steps,
+            profiler=profiler,
+        )
+        with torch.autograd.profiler.record_function(B0_COMPOSITE_LABEL):
+            output = pc_infer(
+                model,
+                loss_fn,
+                run_inputs,
+                run_targets,
+                config.torch2pc_method,
+                eta=config.eta,
+                n=config.inference_steps,
+                _stage3b_instrumentation=native_observer,
+            )
+        instrumentation = native_observer.summary()
+        observed_inference_steps = instrumentation.actual_inference_steps
     elif instrumented:
         with torch.autograd.profiler.record_function(B0_COMPOSITE_LABEL):
             output = pc_infer(

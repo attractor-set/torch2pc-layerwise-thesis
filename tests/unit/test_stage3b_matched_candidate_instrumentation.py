@@ -179,6 +179,11 @@ def test_native_candidate_gate_exposes_complete_regions(
     assert report.internal_region_attribution_ready is True
     assert report.actual_inference_step_count_observed is True
     assert report.full_preregistered_gate_complete is True
+    assert report.structural_measurement_ready is True
+    assert report.primary_measurement is not None
+    assert report.structural_measurement is not None
+    assert report.structural_measurement.event_count == expected_local_calls
+    assert len(report.locality_events) == expected_local_calls
     assert report.completeness_failures == ()
     assert report.observed_inference_steps == 2
     assert report.instrumentation is not None

@@ -1326,7 +1326,18 @@ def _execute_real_matched_cell(context: MatchedCellContext) -> MatchedCellResult
             config=gate_config,
         )
         if not report.full_preregistered_gate_complete:
-            raise Stage3BExecutionError("matched non-perturbation gate did not pass")
+            raise Stage3BExecutionError(
+                "matched candidate gate did not pass: "
+                f"candidate_id={candidate_id}, "
+                f"numerical_passed={report.passed}, "
+                "internal_region_attribution_ready="
+                f"{report.internal_region_attribution_ready}, "
+                "configured_inference_steps="
+                f"{report.configured_inference_steps}, "
+                "observed_inference_steps="
+                f"{report.observed_inference_steps}, "
+                f"failures={list(report.completeness_failures)}"
+            )
         if not protocol_step.measured:
             warmup_gate_count += 1
             continue

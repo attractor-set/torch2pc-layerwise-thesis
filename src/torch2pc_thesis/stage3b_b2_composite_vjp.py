@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import subprocess
 from collections.abc import Callable, Sequence
+from contextlib import nullcontext
 from dataclasses import dataclass, field
 from functools import cache
 from pathlib import Path
@@ -16,6 +17,9 @@ import torch.nn as nn
 from torch2pc_thesis.stage3b_b1_isolated_vjp import (
     B1ObserverMode,
     B1SweepSnapshot,
+)
+from torch2pc_thesis.stage3b_candidate_instrumentation import (
+    NativeCandidateInstrumentation,
 )
 
 PATCHED_TORCH2PC_COMMIT = "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
@@ -124,6 +128,7 @@ def composite_state_vjp(
     layer_indices: Sequence[int],
     observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
     event_sink: StructuralEventSink | None = None,
+    _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
 ) -> tuple[torch.Tensor, ...]:
     """Evaluate all registered state-edge VJPs in one autograd call."""
     _validate_observer(observer_mode, event_sink)
@@ -156,14 +161,22 @@ def composite_state_vjp(
             )
         outputs.append(output)
 
-    gradients = torch.autograd.grad(
-        outputs=tuple(outputs),
-        inputs=local_inputs,
-        grad_outputs=tuple(cotangents),
-        create_graph=False,
-        retain_graph=False,
-        allow_unused=False,
+    profiling_context = (
+        nullcontext()
+        if _stage3b_instrumentation is None
+        else _stage3b_instrumentation.local_state_vjp(
+            sweep_index=sweep_index,
+        )
     )
+    with profiling_context:
+        gradients = torch.autograd.grad(
+            outputs=tuple(outputs),
+            inputs=local_inputs,
+            grad_outputs=tuple(cotangents),
+            create_graph=False,
+            retain_graph=False,
+            allow_unused=False,
+        )
     if len(gradients) != len(indices):
         raise RuntimeError("B2 composite VJP returned an unexpected gradient count")
 
@@ -209,6 +222,7 @@ def fixedpred_composite_errors(
     observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
     event_sink: StructuralEventSink | None = None,
     trajectory_sink: TrajectorySink | None = None,
+    _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
 ) -> tuple[TensorState, TensorState]:
     """B2 FixedPred inference with one composite state VJP per sweep."""
     _validate_model_and_steps(model, inference_steps)
@@ -250,6 +264,7 @@ def fixedpred_composite_errors(
             layer_indices=layer_indices,
             observer_mode=observer_mode,
             event_sink=event_sink,
+            _stage3b_instrumentation=_stage3b_instrumentation,
         )
 
         for layer_index in reversed(layer_indices):
@@ -284,6 +299,7 @@ def strict_composite_errors(
     observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
     event_sink: StructuralEventSink | None = None,
     trajectory_sink: TrajectorySink | None = None,
+    _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
 ) -> tuple[TensorState, TensorState]:
     """B2 Strict inference with one composite state VJP per sweep."""
     _validate_model_and_steps(model, inference_steps)
@@ -322,6 +338,8 @@ def strict_composite_errors(
             retain_graph=False,
             allow_unused=False,
         )[0].detach()
+        if _stage3b_instrumentation is not None:
+            _stage3b_instrumentation.record_state_autograd_call()
 
         with torch.no_grad():
             for layer_index in layer_indices:
@@ -348,6 +366,7 @@ def strict_composite_errors(
             layer_indices=layer_indices,
             observer_mode=observer_mode,
             event_sink=event_sink,
+            _stage3b_instrumentation=_stage3b_instrumentation,
         )
         propagated_by_layer = dict(zip(layer_indices, propagated, strict=True))
 
@@ -388,6 +407,7 @@ def pc_infer_b2(
     observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
     event_sink: StructuralEventSink | None = None,
     trajectory_sink: TrajectorySink | None = None,
+    _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
 ) -> PcInferOutput:
     """Run opt-in B2 while preserving the patched parameter-VJP path."""
     if not isinstance(model, nn.Sequential):
@@ -395,44 +415,69 @@ def pc_infer_b2(
     if method not in {"FixedPred", "Strict"}:
         raise ValueError("B2 supports only FixedPred and Strict")
 
-    raw_vhat, loss, dldy = reference.FwdPassPlus(
-        model,
-        loss_fn,
-        inputs,
-        targets,
+    initial_forward_context = (
+        nullcontext()
+        if _stage3b_instrumentation is None
+        else _stage3b_instrumentation.initial_forward()
     )
+    with initial_forward_context:
+        raw_vhat, loss, dldy = reference.FwdPassPlus(
+            model,
+            loss_fn,
+            inputs,
+            targets,
+        )
     vhat = _require_tensor_state(raw_vhat, expected_length=len(model) + 1)
     if not torch.is_tensor(loss) or loss.ndim != 0:
         raise RuntimeError("Patched Torch2PC did not return a scalar loss")
     if not torch.is_tensor(dldy):
         raise RuntimeError("Patched Torch2PC did not return an output cotangent")
 
-    if method == "FixedPred":
-        beliefs, epsilon = fixedpred_composite_errors(
-            model,
-            vhat,
-            dldy,
-            eta=eta,
-            inference_steps=inference_steps,
-            observer_mode=observer_mode,
-            event_sink=event_sink,
-            trajectory_sink=trajectory_sink,
+    state_context = (
+        nullcontext()
+        if _stage3b_instrumentation is None
+        else _stage3b_instrumentation.state_inference(
+            model_depth=len(model),
         )
-        reference.SetPCGrads(model, epsilon, inputs, vhat)
-    else:
-        strict_initial = vhat if vinit is None else vinit
-        beliefs, epsilon = strict_composite_errors(
-            model,
-            strict_initial,
-            loss_fn,
-            targets,
-            eta=eta,
-            inference_steps=inference_steps,
-            observer_mode=observer_mode,
-            event_sink=event_sink,
-            trajectory_sink=trajectory_sink,
-        )
-        reference.SetPCGrads(model, epsilon, inputs, beliefs)
+    )
+    with state_context:
+        if method == "FixedPred":
+            beliefs, epsilon = fixedpred_composite_errors(
+                model,
+                vhat,
+                dldy,
+                eta=eta,
+                inference_steps=inference_steps,
+                observer_mode=observer_mode,
+                event_sink=event_sink,
+                trajectory_sink=trajectory_sink,
+                _stage3b_instrumentation=_stage3b_instrumentation,
+            )
+        else:
+            strict_initial = vhat if vinit is None else vinit
+            beliefs, epsilon = strict_composite_errors(
+                model,
+                strict_initial,
+                loss_fn,
+                targets,
+                eta=eta,
+                inference_steps=inference_steps,
+                observer_mode=observer_mode,
+                event_sink=event_sink,
+                trajectory_sink=trajectory_sink,
+                _stage3b_instrumentation=_stage3b_instrumentation,
+            )
+
+    parameter_context = (
+        nullcontext()
+        if _stage3b_instrumentation is None
+        else _stage3b_instrumentation.parameter_vjp()
+    )
+    with parameter_context:
+        if method == "FixedPred":
+            reference.SetPCGrads(model, epsilon, inputs, vhat)
+        else:
+            reference.SetPCGrads(model, epsilon, inputs, beliefs)
 
     return vhat, loss, dldy, beliefs, epsilon
 
@@ -479,6 +524,7 @@ def load_b2_pc_infer(
         observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
         event_sink: StructuralEventSink | None = None,
         trajectory_sink: TrajectorySink | None = None,
+        _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
     ) -> PcInferOutput:
         resolved_inference_steps = _resolve_pc_infer_steps(
             n=n,
@@ -497,8 +543,10 @@ def load_b2_pc_infer(
             observer_mode=observer_mode,
             event_sink=event_sink,
             trajectory_sink=trajectory_sink,
+            _stage3b_instrumentation=_stage3b_instrumentation,
         )
 
+    cast(Any, run).__stage3b_candidate_id__ = "composite_vjp"
     return run
 
 

@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import subprocess
 from collections.abc import Callable
+from contextlib import nullcontext
 from dataclasses import dataclass, field
 from enum import StrEnum
 from functools import cache
@@ -13,6 +14,10 @@ from typing import Any, Final, Protocol, cast
 
 import torch
 import torch.nn as nn
+
+from torch2pc_thesis.stage3b_candidate_instrumentation import (
+    NativeCandidateInstrumentation,
+)
 
 PATCHED_TORCH2PC_COMMIT = "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
 PC_INFER_DEFAULT_STEPS: Final[int] = 20
@@ -128,6 +133,7 @@ def isolated_layer_vjp(
     layer_index: int,
     observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
     event_sink: StructuralEventSink | None = None,
+    _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
 ) -> torch.Tensor:
     """Return one input cotangent from one isolated layer-local graph."""
     if observer_mode is B1ObserverMode.NO_HOOKS and event_sink is not None:
@@ -140,14 +146,22 @@ def isolated_layer_vjp(
     if not isinstance(local_output, torch.Tensor):
         raise TypeError("B1 requires every top-level layer to return one tensor")
 
-    input_cotangent = torch.autograd.grad(
-        outputs=local_output,
-        inputs=local_input,
-        grad_outputs=cotangent,
-        create_graph=False,
-        retain_graph=False,
-        allow_unused=False,
-    )[0]
+    profiling_context = (
+        nullcontext()
+        if _stage3b_instrumentation is None
+        else _stage3b_instrumentation.local_state_vjp(
+            sweep_index=sweep_index,
+        )
+    )
+    with profiling_context:
+        input_cotangent = torch.autograd.grad(
+            outputs=local_output,
+            inputs=local_input,
+            grad_outputs=cotangent,
+            create_graph=False,
+            retain_graph=False,
+            allow_unused=False,
+        )[0]
 
     if observer_mode is B1ObserverMode.COUNTERS_ONLY:
         assert event_sink is not None
@@ -173,6 +187,7 @@ def fixedpred_isolated_layer_errors(
     observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
     event_sink: StructuralEventSink | None = None,
     trajectory_sink: TrajectorySink | None = None,
+    _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
 ) -> tuple[TensorState, TensorState]:
     """B1 FixedPred state inference with one graph island per state edge."""
     _validate_model_and_steps(model, inference_steps)
@@ -208,6 +223,7 @@ def fixedpred_isolated_layer_errors(
                 layer_index=layer_index,
                 observer_mode=observer_mode,
                 event_sink=event_sink,
+                _stage3b_instrumentation=_stage3b_instrumentation,
             )
             local_error = _required(epsilon[layer_index])
             correction = eta * (local_error - propagated)
@@ -239,6 +255,7 @@ def strict_isolated_layer_errors(
     observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
     event_sink: StructuralEventSink | None = None,
     trajectory_sink: TrajectorySink | None = None,
+    _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
 ) -> tuple[TensorState, TensorState]:
     """B1 Strict state inference with independently rebuilt edge graphs."""
     _validate_model_and_steps(model, inference_steps)
@@ -273,6 +290,8 @@ def strict_isolated_layer_errors(
             retain_graph=False,
             allow_unused=False,
         )[0].detach()
+        if _stage3b_instrumentation is not None:
+            _stage3b_instrumentation.record_state_autograd_call()
 
         for layer_index in reversed(range(1, len(model))):
             belief = _required(beliefs[layer_index])
@@ -288,6 +307,7 @@ def strict_isolated_layer_errors(
                 layer_index=layer_index,
                 observer_mode=observer_mode,
                 event_sink=event_sink,
+                _stage3b_instrumentation=_stage3b_instrumentation,
             )
             with torch.no_grad():
                 lower_prediction = model[layer_index - 1](lower_belief)
@@ -327,6 +347,7 @@ def pc_infer_b1(
     observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
     event_sink: StructuralEventSink | None = None,
     trajectory_sink: TrajectorySink | None = None,
+    _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
 ) -> PcInferOutput:
     """Run opt-in B1 while preserving the patched reference parameter VJP."""
     if not isinstance(model, nn.Sequential):
@@ -334,44 +355,69 @@ def pc_infer_b1(
     if method not in {"FixedPred", "Strict"}:
         raise ValueError("B1 supports only FixedPred and Strict")
 
-    raw_vhat, loss, dldy = reference.FwdPassPlus(
-        model,
-        loss_fn,
-        inputs,
-        targets,
+    initial_forward_context = (
+        nullcontext()
+        if _stage3b_instrumentation is None
+        else _stage3b_instrumentation.initial_forward()
     )
+    with initial_forward_context:
+        raw_vhat, loss, dldy = reference.FwdPassPlus(
+            model,
+            loss_fn,
+            inputs,
+            targets,
+        )
     vhat = _require_tensor_state(raw_vhat, expected_length=len(model) + 1)
     if not torch.is_tensor(loss) or loss.ndim != 0:
         raise RuntimeError("Patched Torch2PC did not return a scalar loss")
     if not torch.is_tensor(dldy):
         raise RuntimeError("Patched Torch2PC did not return an output cotangent")
 
-    if method == "FixedPred":
-        beliefs, epsilon = fixedpred_isolated_layer_errors(
-            model,
-            vhat,
-            dldy,
-            eta=eta,
-            inference_steps=inference_steps,
-            observer_mode=observer_mode,
-            event_sink=event_sink,
-            trajectory_sink=trajectory_sink,
+    state_context = (
+        nullcontext()
+        if _stage3b_instrumentation is None
+        else _stage3b_instrumentation.state_inference(
+            model_depth=len(model),
         )
-        reference.SetPCGrads(model, epsilon, inputs, vhat)
-    else:
-        strict_initial = vhat if vinit is None else vinit
-        beliefs, epsilon = strict_isolated_layer_errors(
-            model,
-            strict_initial,
-            loss_fn,
-            targets,
-            eta=eta,
-            inference_steps=inference_steps,
-            observer_mode=observer_mode,
-            event_sink=event_sink,
-            trajectory_sink=trajectory_sink,
-        )
-        reference.SetPCGrads(model, epsilon, inputs, beliefs)
+    )
+    with state_context:
+        if method == "FixedPred":
+            beliefs, epsilon = fixedpred_isolated_layer_errors(
+                model,
+                vhat,
+                dldy,
+                eta=eta,
+                inference_steps=inference_steps,
+                observer_mode=observer_mode,
+                event_sink=event_sink,
+                trajectory_sink=trajectory_sink,
+                _stage3b_instrumentation=_stage3b_instrumentation,
+            )
+        else:
+            strict_initial = vhat if vinit is None else vinit
+            beliefs, epsilon = strict_isolated_layer_errors(
+                model,
+                strict_initial,
+                loss_fn,
+                targets,
+                eta=eta,
+                inference_steps=inference_steps,
+                observer_mode=observer_mode,
+                event_sink=event_sink,
+                trajectory_sink=trajectory_sink,
+                _stage3b_instrumentation=_stage3b_instrumentation,
+            )
+
+    parameter_context = (
+        nullcontext()
+        if _stage3b_instrumentation is None
+        else _stage3b_instrumentation.parameter_vjp()
+    )
+    with parameter_context:
+        if method == "FixedPred":
+            reference.SetPCGrads(model, epsilon, inputs, vhat)
+        else:
+            reference.SetPCGrads(model, epsilon, inputs, beliefs)
 
     return vhat, loss, dldy, beliefs, epsilon
 
@@ -418,6 +464,7 @@ def load_b1_pc_infer(
         observer_mode: B1ObserverMode = B1ObserverMode.NO_HOOKS,
         event_sink: StructuralEventSink | None = None,
         trajectory_sink: TrajectorySink | None = None,
+        _stage3b_instrumentation: NativeCandidateInstrumentation | None = None,
     ) -> PcInferOutput:
         resolved_inference_steps = _resolve_pc_infer_steps(
             n=n,
@@ -436,8 +483,10 @@ def load_b1_pc_infer(
             observer_mode=observer_mode,
             event_sink=event_sink,
             trajectory_sink=trajectory_sink,
+            _stage3b_instrumentation=_stage3b_instrumentation,
         )
 
+    cast(Any, run).__stage3b_candidate_id__ = "isolated_layer_vjp"
     return run
 
 

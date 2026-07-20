@@ -6,11 +6,18 @@ from typing import Any
 
 import pytest
 
-from torch2pc_thesis.stage3b_b1_equivalence import canonical_json_digest
+from torch2pc_thesis.stage3b_b1_equivalence import (
+    canonical_json_digest,
+    sha256_file,
+)
 from torch2pc_thesis.stage3b_b1_isolated_vjp import PATCHED_TORCH2PC_COMMIT
 from torch2pc_thesis.stage3b_b2_composite_vjp import B2StructuralEvent
 from torch2pc_thesis.stage3b_b2_smoke import (
-    B1_DECISION_COMMIT,
+    B1_ADMISSION_PATH,
+    B1_ADMISSION_SHA256,
+    B1_CONFIRMATORY_DECISION_PATH,
+    B1_CONFIRMATORY_DECISION_SHA256,
+    B1_EVIDENCE_COMMIT,
     B1_IMPLEMENTATION_COMMIT,
     B2_IMPLEMENTATION_COMMIT,
     B2_IMPLEMENTATION_TAG,
@@ -22,6 +29,7 @@ from torch2pc_thesis.stage3b_b2_smoke import (
     REFERENCE_ID,
     PairSpec,
     _structural_gate,
+    _validate_positive_b1_admission,
     aggregate_attempt,
     build_pair_specs,
     validate_request,
@@ -63,7 +71,7 @@ def request_payload() -> dict[str, Any]:
         "torch2pc_commit": PATCHED_TORCH2PC_COMMIT,
         "project_base_commit": PROJECT_BASE_COMMIT,
         "b1_implementation_commit": B1_IMPLEMENTATION_COMMIT,
-        "b1_decision_commit": B1_DECISION_COMMIT,
+        "b1_evidence_commit": B1_EVIDENCE_COMMIT,
         "b2_implementation_commit": B2_IMPLEMENTATION_COMMIT,
         "b2_implementation_tag": B2_IMPLEMENTATION_TAG,
         "resolved_config": resolved_config,
@@ -86,7 +94,14 @@ def request_payload() -> dict[str, Any]:
         },
         "checkpoints": assets,
         "batches": assets,
-        "b1_decision": {"path": "decision.json", "sha256": SHA},
+        "b1_confirmatory_decision": {
+            "path": B1_CONFIRMATORY_DECISION_PATH,
+            "sha256": B1_CONFIRMATORY_DECISION_SHA256,
+        },
+        "b1_admission": {
+            "path": B1_ADMISSION_PATH,
+            "sha256": B1_ADMISSION_SHA256,
+        },
         "b2_preregistration_contract": {
             "path": "prereg.json",
             "sha256": SHA,
@@ -97,6 +112,110 @@ def request_payload() -> dict[str, Any]:
         },
         "b2_harness_contract": {"path": "harness.json", "sha256": SHA},
     }
+
+
+def _write_b1_admission_records(
+    root: Path,
+) -> tuple[Path, Path, dict[str, Any], dict[str, Any]]:
+    decision_path = root / "decision.json"
+    admission_path = root / "matched-profiling-admission.json"
+    decision = {
+        "decision_id": "EQ-B1-CONFIRMATORY",
+        "scope": "confirmatory",
+        "confirmatory_equivalence_executed": True,
+        "status": "pass",
+        "sealed": True,
+        "registered_pair_count": 120,
+        "observed_pair_count": 120,
+        "failed_pair_count": 0,
+        "failed_pairs": [],
+        "dangerous_misses": 0,
+        "test_dataset_access": False,
+        "results_publication_permitted": False,
+    }
+    decision_path.write_text(
+        json.dumps(decision, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    admission = {
+        "decision_id": "EQ-B1",
+        "source_decision_id": "EQ-B1-CONFIRMATORY",
+        "source_decision_path": "decision.json",
+        "source_decision_sha256": sha256_file(decision_path),
+        "scope": "confirmatory",
+        "confirmatory_equivalence_executed": True,
+        "status": "pass",
+        "sealed": True,
+        "matched_pairs_expected": 120,
+        "matched_pairs_observed": 120,
+        "failed_pairs": [],
+        "test_dataset_access": False,
+        "results_publication_permitted": False,
+    }
+    admission_path.write_text(
+        json.dumps(admission, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return admission_path, decision_path, admission, decision
+
+
+def test_confirmatory_b1_admission_is_accepted(tmp_path: Path) -> None:
+    admission_path, decision_path, _, _ = _write_b1_admission_records(tmp_path)
+
+    _validate_positive_b1_admission(
+        admission_path=admission_path,
+        decision_path=decision_path,
+    )
+
+
+@pytest.mark.parametrize(
+    ("target", "key", "value"),
+    [
+        ("admission", "sealed", False),
+        ("admission", "source_decision_id", "EQ-B1"),
+        ("admission", "source_decision_sha256", "0" * 64),
+        ("admission", "matched_pairs_observed", 119),
+        ("admission", "failed_pairs", ["pair-0"]),
+        ("admission", "test_dataset_access", True),
+        ("decision", "decision_id", "EQ-B1"),
+        ("decision", "dangerous_misses", 1),
+    ],
+)
+def test_confirmatory_b1_admission_rejects_invalid_records(
+    tmp_path: Path,
+    target: str,
+    key: str,
+    value: object,
+) -> None:
+    admission_path, decision_path, admission, decision = (
+        _write_b1_admission_records(tmp_path)
+    )
+    record = admission if target == "admission" else decision
+    record[key] = value
+    path = admission_path if target == "admission" else decision_path
+    path.write_text(
+        json.dumps(record, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError):
+        _validate_positive_b1_admission(
+            admission_path=admission_path,
+            decision_path=decision_path,
+        )
+
+
+def test_legacy_b1_smoke_request_is_rejected() -> None:
+    path = (
+        Path(__file__).resolve().parents[2]
+        / "experiments/frozen/stage3b-b2-smoke/"
+        "STAGE3B-B2-SMOKE-REQUEST.json"
+    )
+    payload = json.loads(path.read_text(encoding="utf-8"))
+
+    with pytest.raises(ValueError, match="b1_evidence_commit"):
+        validate_request(payload)
 
 
 def test_request_resolves_registered_twelve_triples() -> None:
@@ -121,6 +240,7 @@ def test_request_resolves_registered_twelve_triples() -> None:
         ("pairwise_comparisons", 12),
         ("test_split_access", True),
         ("dangerous_miss_limit", 1),
+        ("b1_evidence_commit", "0" * 40),
         ("b2_implementation_commit", "0" * 40),
     ],
 )
@@ -131,6 +251,27 @@ def test_request_rejects_scope_drift(key: str, value: object) -> None:
     with pytest.raises(ValueError):
         validate_request(payload)
 
+
+
+@pytest.mark.parametrize(
+    ("asset_key", "field", "value"),
+    [
+        ("b1_confirmatory_decision", "path", "old-decision.json"),
+        ("b1_confirmatory_decision", "sha256", "0" * 64),
+        ("b1_admission", "path", "old-admission.json"),
+        ("b1_admission", "sha256", "0" * 64),
+    ],
+)
+def test_request_rejects_b1_evidence_substitution(
+    asset_key: str,
+    field: str,
+    value: str,
+) -> None:
+    payload = request_payload()
+    payload[asset_key][field] = value
+
+    with pytest.raises(ValueError):
+        validate_request(payload)
 
 def test_request_rejects_resolved_config_digest_mismatch() -> None:
     payload = request_payload()

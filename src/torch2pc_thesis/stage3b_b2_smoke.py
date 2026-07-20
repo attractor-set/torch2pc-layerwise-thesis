@@ -56,7 +56,22 @@ from torch2pc_thesis.stage3b_b2_composite_vjp import (
 
 PROJECT_BASE_COMMIT = "f74a08818f653a27e8d04044cf59e2c2930b688c"
 B1_IMPLEMENTATION_COMMIT = "ec12e9a"
-B1_DECISION_COMMIT = "7c8df38084cd936b6c7d97afcc5685a497fdaf62"
+B1_EVIDENCE_COMMIT = "f1efe2a01720ad9ecfd7891151315067a79f4682"
+B1_CONFIRMATORY_DECISION_PATH = (
+    "results/stage-3/b1/"
+    "stage3b-b1-confirmatory-ceebdce-v1/decision.json"
+)
+B1_CONFIRMATORY_DECISION_SHA256 = (
+    "a20eabc1e6da8c9634792b4c3457a272419568d5f23f3e7bacc2c38da3c87afc"
+)
+B1_ADMISSION_PATH = (
+    "results/stage-3/b1/"
+    "stage3b-b1-confirmatory-ceebdce-v1/"
+    "matched-profiling-admission.json"
+)
+B1_ADMISSION_SHA256 = (
+    "9dbc684405c77dee5d390052bfcb41527b8a3f40b4af0fae1f469c0e50b7dd9c"
+)
 B2_IMPLEMENTATION_COMMIT = "8a8a4559cda5f5750b05e14b614b95386329c952"
 B2_IMPLEMENTATION_TAG = "stage3b-b2-composite-vjp-implementation-v1"
 CANDIDATE_ID = "composite_vjp"
@@ -101,7 +116,8 @@ class PairSpec:
     run_seed: int
     checkpoint: AssetRef
     batch: AssetRef
-    b1_decision: AssetRef
+    b1_confirmatory_decision: AssetRef
+    b1_admission: AssetRef
     b2_preregistration_contract: AssetRef
     b2_implementation_contract: AssetRef
     b2_harness_contract: AssetRef
@@ -196,7 +212,7 @@ def validate_request(payload: Mapping[str, Any]) -> None:
     _require_equal(payload, "torch2pc_commit", PATCHED_TORCH2PC_COMMIT)
     _require_equal(payload, "project_base_commit", PROJECT_BASE_COMMIT)
     _require_equal(payload, "b1_implementation_commit", B1_IMPLEMENTATION_COMMIT)
-    _require_equal(payload, "b1_decision_commit", B1_DECISION_COMMIT)
+    _require_equal(payload, "b1_evidence_commit", B1_EVIDENCE_COMMIT)
     _require_equal(payload, "b2_implementation_commit", B2_IMPLEMENTATION_COMMIT)
     _require_equal(payload, "b2_implementation_tag", B2_IMPLEMENTATION_TAG)
 
@@ -246,12 +262,26 @@ def validate_request(payload: Mapping[str, Any]) -> None:
         _validate_asset(_require_mapping(batches, str(seed)), f"batch[{seed}]")
 
     for key in (
-        "b1_decision",
+        "b1_confirmatory_decision",
+        "b1_admission",
         "b2_preregistration_contract",
         "b2_implementation_contract",
         "b2_harness_contract",
     ):
         _validate_asset(_require_mapping(payload, key), key)
+
+    _validate_registered_asset(
+        _require_mapping(payload, "b1_confirmatory_decision"),
+        label="b1_confirmatory_decision",
+        expected_path=B1_CONFIRMATORY_DECISION_PATH,
+        expected_sha256=B1_CONFIRMATORY_DECISION_SHA256,
+    )
+    _validate_registered_asset(
+        _require_mapping(payload, "b1_admission"),
+        label="b1_admission",
+        expected_path=B1_ADMISSION_PATH,
+        expected_sha256=B1_ADMISSION_SHA256,
+    )
 
 
 def build_pair_specs(payload: Mapping[str, Any]) -> list[PairSpec]:
@@ -262,7 +292,12 @@ def build_pair_specs(payload: Mapping[str, Any]) -> list[PairSpec]:
     lane_controls = _require_mapping(payload, "lane_controls")
     request_id = cast(str, payload["request_id"])
     attempt_id = cast(str, payload["attempt_id"])
-    b1_decision = _asset_from_mapping(_require_mapping(payload, "b1_decision"))
+    b1_confirmatory_decision = _asset_from_mapping(
+        _require_mapping(payload, "b1_confirmatory_decision")
+    )
+    b1_admission = _asset_from_mapping(
+        _require_mapping(payload, "b1_admission")
+    )
     b2_preregistration_contract = _asset_from_mapping(
         _require_mapping(payload, "b2_preregistration_contract")
     )
@@ -292,7 +327,8 @@ def build_pair_specs(payload: Mapping[str, Any]) -> list[PairSpec]:
                             _require_mapping(checkpoints, str(seed))
                         ),
                         batch=_asset_from_mapping(_require_mapping(batches, str(seed))),
-                        b1_decision=b1_decision,
+                        b1_confirmatory_decision=b1_confirmatory_decision,
+                        b1_admission=b1_admission,
                         b2_preregistration_contract=b2_preregistration_contract,
                         b2_implementation_contract=b2_implementation_contract,
                         b2_harness_contract=b2_harness_contract,
@@ -328,13 +364,17 @@ def run_pair(
     for asset in (
         spec.checkpoint,
         spec.batch,
-        spec.b1_decision,
+        spec.b1_confirmatory_decision,
+        spec.b1_admission,
         spec.b2_preregistration_contract,
         spec.b2_implementation_contract,
         spec.b2_harness_contract,
     ):
         _verify_asset(Path(asset.path), asset.sha256)
-    _validate_positive_b1_decision(Path(spec.b1_decision.path))
+    _validate_positive_b1_admission(
+        admission_path=Path(spec.b1_admission.path),
+        decision_path=Path(spec.b1_confirmatory_decision.path),
+    )
 
     model = model_builder("lenet_classic")
     model.load_state_dict(_load_state_dict(Path(spec.checkpoint.path)), strict=True)
@@ -607,7 +647,7 @@ def run_pair(
         provenance={
             "project_base_commit": PROJECT_BASE_COMMIT,
             "b1_implementation_commit": B1_IMPLEMENTATION_COMMIT,
-            "b1_decision_commit": B1_DECISION_COMMIT,
+            "b1_evidence_commit": B1_EVIDENCE_COMMIT,
             "b2_implementation_commit": B2_IMPLEMENTATION_COMMIT,
             "b2_implementation_tag": B2_IMPLEMENTATION_TAG,
             "torch2pc_commit": PATCHED_TORCH2PC_COMMIT,
@@ -620,7 +660,10 @@ def run_pair(
             "source_image_digest": spec.source_image_digest,
             "checkpoint_sha256": spec.checkpoint.sha256,
             "batch_sha256": spec.batch.sha256,
-            "b1_decision_sha256": spec.b1_decision.sha256,
+            "b1_confirmatory_decision_sha256": (
+                spec.b1_confirmatory_decision.sha256
+            ),
+            "b1_admission_sha256": spec.b1_admission.sha256,
             "b2_preregistration_contract_sha256": (
                 spec.b2_preregistration_contract.sha256
             ),
@@ -1045,18 +1088,60 @@ def _combine_csv_files(sources: Sequence[Path], destination: Path) -> None:
     write_csv_rows(destination, rows)
 
 
-def _validate_positive_b1_decision(path: Path) -> None:
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(payload, dict):
-        raise ValueError("B1 decision must be a JSON object")
-    expected = {
-        "decision_id": "EQ-B1",
+def _validate_positive_b1_admission(
+    *,
+    admission_path: Path,
+    decision_path: Path,
+) -> None:
+    decision = json.loads(decision_path.read_text(encoding="utf-8"))
+    admission = json.loads(admission_path.read_text(encoding="utf-8"))
+    if not isinstance(decision, dict):
+        raise ValueError("B1 confirmatory decision must be a JSON object")
+    if not isinstance(admission, dict):
+        raise ValueError("B1 admission must be a JSON object")
+
+    expected_decision = {
+        "decision_id": "EQ-B1-CONFIRMATORY",
+        "scope": "confirmatory",
+        "confirmatory_equivalence_executed": True,
         "status": "pass",
         "sealed": True,
+        "registered_pair_count": 120,
+        "observed_pair_count": 120,
+        "failed_pair_count": 0,
+        "failed_pairs": [],
+        "dangerous_misses": 0,
+        "test_dataset_access": False,
+        "results_publication_permitted": False,
     }
-    for key, value in expected.items():
-        if payload.get(key) != value:
-            raise ValueError(f"B2 requires positive sealed EQ-B1: {key}")
+    for key, value in expected_decision.items():
+        if decision.get(key) != value:
+            raise ValueError(
+                "B2 requires positive sealed EQ-B1-CONFIRMATORY: "
+                f"{key}"
+            )
+
+    expected_admission = {
+        "decision_id": "EQ-B1",
+        "source_decision_id": "EQ-B1-CONFIRMATORY",
+        "source_decision_path": decision_path.name,
+        "source_decision_sha256": sha256_file(decision_path),
+        "scope": "confirmatory",
+        "confirmatory_equivalence_executed": True,
+        "status": "pass",
+        "sealed": True,
+        "matched_pairs_expected": 120,
+        "matched_pairs_observed": 120,
+        "failed_pairs": [],
+        "test_dataset_access": False,
+        "results_publication_permitted": False,
+    }
+    for key, value in expected_admission.items():
+        if admission.get(key) != value:
+            raise ValueError(
+                "B2 requires confirmatory sealed EQ-B1 admission: "
+                f"{key}"
+            )
 
 
 def _load_state_dict(path: Path) -> Mapping[str, torch.Tensor]:
@@ -1177,6 +1262,19 @@ def _validate_asset(asset: Mapping[str, Any], label: str) -> None:
         or any(character not in "0123456789abcdef" for character in sha256)
     ):
         raise ValueError(f"{label}.sha256 must be a lowercase SHA-256 digest")
+
+
+def _validate_registered_asset(
+    asset: Mapping[str, Any],
+    *,
+    label: str,
+    expected_path: str,
+    expected_sha256: str,
+) -> None:
+    if asset.get("path") != expected_path:
+        raise ValueError(f"{label}.path does not match registered evidence")
+    if asset.get("sha256") != expected_sha256:
+        raise ValueError(f"{label}.sha256 does not match registered evidence")
 
 
 def _validate_lane_control(

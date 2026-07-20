@@ -1,0 +1,42 @@
+{
+  "execution_state": {
+    "attempt_root_created": false,
+    "runner_execute_invoked": false,
+    "scientific_measurements_created": false
+  },
+  "reason": {
+    "classification": "infrastructure_failure",
+    "code": "source_image_revision_mismatch",
+    "detected_by": "pre_execution_fail_closed_gate",
+    "environment_source_git_commit": "b55c37eb64d0659543bdd2294ddacb72f987b8d7",
+    "expected_revision": "c6c17d8c96981605471293fc28ba417b5c56595b",
+    "observed_revision": "b55c37eb64d0659543bdd2294ddacb72f987b8d7",
+    "preregistered_requirement": "source_image_revision_match_required"
+  },
+  "record_type": "pre_execution_request_supersession",
+  "replacement_request": {
+    "attempt_id": "stage3b-b2-smoke-confirmatory-b1-attempt-002",
+    "path": "experiments/frozen/stage3b-b2-smoke-confirmatory-b1-v2/request.json",
+    "request_id": "stage3b-b2-smoke-confirmatory-b1-v2",
+    "sha256": "01048bb8c0b076a8674bddca595471ee9c5cb3a4ada69fabebd8d50a35a183ef",
+    "source_image_created_at": "2026-07-20T12:01:29.526591173-03:00",
+    "source_image_digest": "311f438035d379847ad9e036b70b79becd5d23b09b949e6f5fade895b303d186",
+    "source_image_revision": "c6c17d8c96981605471293fc28ba417b5c56595b",
+    "source_image_tag": "torch2pc-layerwise-thesis:b2-opening-c6c17d8c9698-provenance-v2"
+  },
+  "retention_policy": {
+    "append_only": true,
+    "new_attempt_id_required": true,
+    "superseded_request_retained_unchanged": true
+  },
+  "schema_version": 1,
+  "status": "superseded_before_execution",
+  "superseded_request": {
+    "attempt_id": "stage3b-b2-smoke-confirmatory-b1-attempt-001",
+    "path": "experiments/frozen/stage3b-b2-smoke-confirmatory-b1-v1/request.json",
+    "request_id": "stage3b-b2-smoke-confirmatory-b1-v1",
+    "sha256": "e26e017afba6c04531c41d0065d11e4c51642d7dbde31fde084ce8bfbe6a20ec",
+    "source_image_digest": "9a9af377d417fac9c1e3411b5b18672e7d074596b183f2fdd75d7996cac0a106",
+    "source_image_tag": "torch2pc-layerwise-thesis:b2-opening-c6c17d8c9698"
+  }
+}

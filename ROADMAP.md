@@ -53,13 +53,16 @@ Stage 3B B0 и статистический и инженерный анализ
   сравнениях;
 - реализован candidate-aware matched-profiling runner;
 - зафиксировано fail-closed требование confirmatory B2 перед production launch;
-- предварительно зарегистрирован confirmatory B2 на 120 троек и 240 сравнений.
+- предварительно зарегистрирован confirmatory B2 на 120 троек и 240 сравнений;
+- реализована fail-closed opening-инфраструктура B2 со статусом `implementation_ready_execution_closed`; request, image, authorization и результаты отсутствуют.
 
 Текущая граница:
 
 ```text
 scientific_admission=blocked_pending_eq_b2_confirmatory
 candidate_aware_runner=complete
+b2_confirmatory_opening=implementation_ready_execution_closed
+b2_confirmatory_request_frozen=false
 matched_profiling_request_refresh_required=true
 runtime_authorization=not_issued
 measurements_allowed=false
@@ -67,12 +70,13 @@ measurements_allowed=false
 
 Оставшийся переход внутри этапа 16:
 
-1. отдельная opening ветка confirmatory B2;
-2. frozen request, image, preflight, authorization и dry-run;
-3. выполнение и sealing `EQ-B2-CONFIRMATORY`;
-4. derived confirmatory admission `EQ-B2`;
-5. новая версионированная фиксация 288-cell request/manifest;
-6. отдельная runtime authorization matched profiling.
+1. отдельная prospective фиксация confirmatory B2 request;
+2. immutable image, preflight, authorization и dry-run;
+3. engineering smoke в отдельном non-evidence output root;
+4. выполнение и sealing `EQ-B2-CONFIRMATORY`;
+5. derived confirmatory admission `EQ-B2`;
+6. новая версионированная фиксация 288-cell request/manifest;
+7. отдельная runtime authorization matched profiling.
 
 Прежние smoke decision и matched request сохраняются неизменными, но не
 разрешают production execution. После разрешённого выполнения этап должен

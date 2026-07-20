@@ -158,3 +158,72 @@ def test_matched_pair_runner_passes_with_identical_reference_and_candidate(
     assert (pair_dir / "endpoint-metrics.csv").is_file()
     assert (pair_dir / "trajectory-metrics.csv").is_file()
     assert (pair_dir / "SHA256SUMS").is_file()
+
+
+def test_matched_pair_runner_fails_when_counters_only_perturbs_output(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    reference = _reference()
+    monkeypatch.setattr(smoke, "load_patched_reference", lambda path: reference)
+
+    def candidate(
+        model: nn.Sequential,
+        loss_fn: nn.Module,
+        inputs: torch.Tensor,
+        targets: torch.Tensor,
+        method: str,
+        **kwargs: Any,
+    ) -> object:
+        output = pc_infer_b1(
+            reference,
+            model,
+            loss_fn,
+            inputs,
+            targets,
+            method,
+            **kwargs,
+        )
+        if kwargs.get("observer_mode") is smoke.B1ObserverMode.COUNTERS_ONLY:
+            values = list(output)
+            values[1] = values[1] + 1.0
+            return tuple(values)
+        return output
+
+    monkeypatch.setattr(smoke, "load_b1_pc_infer", lambda path: candidate)
+    checkpoint = tmp_path / "checkpoint.pt"
+    batch = tmp_path / "batch.pt"
+    torch.manual_seed(22)
+    torch.save(_model().state_dict(), checkpoint)
+    torch.save(
+        {
+            "split": "validation",
+            "inputs": torch.randn(8, 4, dtype=torch.float64),
+            "targets": torch.randint(0, 3, (8,)),
+        },
+        batch,
+    )
+    spec = smoke.PairSpec(
+        request_id="unit",
+        attempt_id="unit-attempt",
+        lane="cpu_float64",
+        method="FixedPred",
+        model_seed=0,
+        batch_index=0,
+        run_seed=99,
+        checkpoint=smoke.AssetRef(str(checkpoint), sha256_file(checkpoint)),
+        batch=smoke.AssetRef(str(batch), sha256_file(batch)),
+        method_control=smoke.MethodControl(eta=0.1, inference_steps=3),
+        lane_control=smoke.LaneControl(device="cpu", dtype="float64"),
+        training_mode=True,
+        resolved_config_digest="a" * 64,
+        source_image_digest="b" * 64,
+    )
+    result = smoke.run_pair(
+        spec,
+        torch2pc_dir=tmp_path,
+        model_builder=lambda name: _model(),
+    )
+    assert result.pair_admissible is False
+    assert result.gates["OBS-B1"]["passed"] is False
+    assert "observer/endpoint/final_loss" in result.gates["OBS-B1"]["reasons"]

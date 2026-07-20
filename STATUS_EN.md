@@ -2,11 +2,11 @@
 
 [Русская версия](STATUS.md)
 
-As of 18 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
-`SI-MA0`, and `SI-MA1` results are published. B1 and B2 preregistration,
-implementation, and equivalence admission are complete. The frozen scientific
-admission artifacts for shared [matched profiling](docs/glossary_EN.md#term-matched-profiling) are also complete, and the
-candidate-aware runner has been implemented.
+As of 20 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
+`SI-MA0`, and `SI-MA1` results are published. B1 and B2 preregistration and implementation are complete. Confirmatory B1
+is sealed at 120/120 pairs; B2 passed an engineering smoke at 12 triples and
+24 comparisons. Confirmatory B2 is preregistered while execution remains
+closed. The previous shared [matched-profiling](docs/glossary_EN.md#term-matched-profiling) opening artifacts are retained, but production prelaunch blocks them until confirmatory B2.
 
 The full Stage 3B program remains incomplete.
 
@@ -14,8 +14,9 @@ The full Stage 3B program remains incomplete.
 
 ```text
 matched_profiling_manifest_cells=288
-scientific_admission=open
+scientific_admission=blocked_pending_eq_b2_confirmatory
 candidate_aware_runner=complete
+matched_profiling_request_refresh_required=true
 runtime_authorization=not_issued
 measurements_allowed=false
 test_dataset_access=false
@@ -37,9 +38,9 @@ decision.
 | `SI-MA1` | 10 `model_seed` values, 180 matched blocks; `CAL-COST-MA1=true`, final `pass` |
 | B1/B2 theoretical prerequisite | the `PC-TREF`/`PC-CATM` package is published |
 | B1/B2 preregistration | complete; tag `stage3b-b1-b2-prereg-v1` |
-| B1 `isolated_layer_vjp` | implementation complete; `EQ-B1=pass` |
-| B2 `composite_vjp` | implementation complete; `EQ-B2=pass` |
-| Matched-profiling request and manifest | built and validated; 288 cells |
+| B1 `isolated_layer_vjp` | confirmatory `EQ-B1=pass`; 120/120 pairs |
+| B2 `composite_vjp` | engineering-smoke `EQ-B2=pass`; 12/12 triples and 24/24 comparisons; confirmatory execution closed |
+| Matched-profiling request and manifest | previous version retained; production refresh required after confirmatory B2 |
 | Matched-profiling runner | candidate-aware implementation complete |
 | Matched-profiling execution | not authorized |
 | Test dataset | closed |
@@ -82,27 +83,32 @@ This is descriptive engineering analysis, not a universal method ranking.
 
 ### B1/B2 admission
 
-B1 and B2 passed separate CPU `float64` and ROCm `float32` controls.
-The sealed `EQ-B1` and `EQ-B2` decisions have `status=pass` and
-`failed_pairs=[]`. This opens only scientific admission for shared matched
-profiling; it does not establish a runtime or memory benefit.
+Confirmatory B1 passed CPU `float64` and ROCm `float32` controls over
+120/120 pairs. B2 passed an engineering smoke over 12/12 triples and 24/24
+comparisons. Smoke `EQ-B2=pass` is not confirmatory admission and does not open
+production matched profiling. Admission requires `EQ-B2-CONFIRMATORY`, a
+derived `EQ-B2`, and a new versioned request/manifest freeze.
 
 ## Current transition
 
-The frozen B0/B1/B2 matched-profiling request and manifest contain 288 cells.
-The candidate-aware runner is implemented and merged into `main`.
+Confirmatory B2 is preregistered as 120 matched triples and 240 direct
+comparisons over the same ten validation batches used by confirmatory B1. The
+next incomplete step is a separate B2 opening branch that creates a frozen
+request, immutable image, lane preflight, authorization, and non-measuring
+dry-run.
 
-The next incomplete step in the existing procedure is the separate
-ROCm/float32 runtime freeze. Until a separate admission decision is recorded:
+Until positive sealed `EQ-B2-CONFIRMATORY`, derived `EQ-B2` admission, and a
+new matched-profiling request/manifest freeze exist:
 
 ```text
+scientific_admission=blocked_pending_eq_b2_confirmatory
 runtime_authorization=not_issued
 measurements_allowed=false
 ```
 
-This documentation update does not authorize execution or open `EX-IF0`,
-`A11-OFF0`, `A11-OFF1`, the predictor, hysteresis, active control, or
-test-dataset access.
+This documentation update does not authorize B2 execution, the 288-cell
+campaign, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor, QWake-PC, or test
+split access.
 
 ## Provenance
 

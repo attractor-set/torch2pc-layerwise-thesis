@@ -2,10 +2,13 @@
 
 [English version](STATUS_EN.md)
 
-На 18 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
-Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительная регистрация,
-реализация и проверка эквивалентности точных кандидатов B1 и B2. Также
-сформированы замороженные артефакты научного допуска к [сопоставленному профилированию](docs/glossary.md#term-matched-profiling) и реализован исполнитель, учитывающий кандидата.
+На 20 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
+Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительная регистрация и реализация точных кандидатов B1 и B2.
+Подтверждающий B1 запечатан на 120/120 парах; B2 прошёл инженерный smoke на
+12 тройках и 24 сравнениях. Подтверждающий B2 предварительно зарегистрирован,
+но его выполнение закрыто. Ранее сформированные артефакты открытия
+[сопоставленного профилирования](docs/glossary.md#term-matched-profiling)
+сохраняются, однако production prelaunch блокирует их до confirmatory B2.
 
 Полный Stage 3B остаётся незавершённым.
 
@@ -13,8 +16,9 @@ Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительн
 
 ```text
 matched_profiling_manifest_cells=288
-scientific_admission=open
+scientific_admission=blocked_pending_eq_b2_confirmatory
 candidate_aware_runner=complete
+matched_profiling_request_refresh_required=true
 runtime_authorization=not_issued
 measurements_allowed=false
 test_dataset_access=false
@@ -36,9 +40,9 @@ full_stage3b_campaign_complete=false
 | `SI-MA1` | 10 `model_seed`, 180 сопоставленных блоков; `CAL-COST-MA1=true`, итог `pass` |
 | Теоретическое условие B1/B2 | пакет `PC-TREF`/`PC-CATM` опубликован |
 | Предварительная регистрация B1/B2 | завершена; тег `stage3b-b1-b2-prereg-v1` |
-| B1 `isolated_layer_vjp` | реализация завершена; `EQ-B1=pass` |
-| B2 `composite_vjp` | реализация завершена; `EQ-B2=pass` |
-| Запрос и манифест сопоставленного профилирования | сформированы и проверены; 288 ячеек |
+| B1 `isolated_layer_vjp` | confirmatory `EQ-B1=pass`; 120/120 пар |
+| B2 `composite_vjp` | engineering smoke `EQ-B2=pass`; 12/12 троек и 24/24 сравнения; confirmatory execution закрыт |
+| Запрос и манифест сопоставленного профилирования | прежняя версия сохранена; production refresh требуется после confirmatory B2 |
 | Исполнитель сопоставленного профилирования | реализация с учётом кандидата завершена |
 | Выполнение сопоставленного профилирования | не разрешено |
 | Тестовая выборка | закрыта |
@@ -81,28 +85,31 @@ B0 закрепил `stage2_baseline` для `FixedPred` и `Strict` в синт
 
 ### Допуск B1/B2
 
-B1 и B2 прошли отдельные проверки CPU `float64` и ROCm `float32`.
-Зафиксированные решения `EQ-B1` и `EQ-B2` имеют `status=pass` и
-`failed_pairs=[]`. Это открывает только научный допуск к сопоставленному
-профилированию и не доказывает выигрыш по времени или памяти.
+Confirmatory B1 прошёл CPU `float64` и ROCm `float32` на 120/120 парах.
+B2 прошёл инженерный smoke на 12/12 тройках и 24/24 сравнениях. Smoke
+`EQ-B2=pass` не является confirmatory admission и не открывает production
+matched profiling. Для допуска требуются `EQ-B2-CONFIRMATORY`, derived
+`EQ-B2` и новая версионированная фиксация request/manifest.
 
 ## Текущий переход
 
-Замороженные запрос и манифест сопоставленного профилирования B0/B1/B2
-содержат 288 ячеек. Исполнитель, учитывающий кандидата, реализован и слит в
-`main`.
+Подтверждающий B2 предварительно зарегистрирован как 120 matched triples и
+240 прямых сравнений на тех же десяти validation batches, что и confirmatory
+B1. Следующий незавершённый шаг — отдельная opening ветка B2, которая должна
+создать frozen request, immutable image, lane preflight, authorization и
+неизмеряемый dry-run.
 
-Следующий незавершённый шаг в существующей процедуре — отдельная фиксация
-среды выполнения ROCm/float32. До отдельного решения о допуске:
+До положительного sealed `EQ-B2-CONFIRMATORY`, derived admission `EQ-B2` и
+новой фиксации matched-profiling request/manifest:
 
 ```text
+scientific_admission=blocked_pending_eq_b2_confirmatory
 runtime_authorization=not_issued
 measurements_allowed=false
 ```
 
-Документационное обновление не разрешает выполнение и не открывает `EX-IF0`,
-`A11-OFF0`, `A11-OFF1`, предиктор, гистерезис, активное управление или
-тестовую выборку.
+Документационное обновление не разрешает B2 execution, 288-cell campaign,
+`EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor, QWake-PC или test split.
 
 ## Происхождение
 

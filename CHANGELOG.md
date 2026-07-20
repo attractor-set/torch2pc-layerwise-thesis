@@ -5,6 +5,8 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- предварительная регистрация подтверждающего `EQ-B2`: 120 matched triples, 240 прямых сравнений, точное повторное использование десяти B1 validation batches и закрытая execution boundary;
+
 - отдельные paired documents и JSON-контракты B1/B2;
 - общий обзор, ADR-014 и sequential B1 → B2 gate;
 - нулевая допустимость dangerous admissions и direct B1/B2 control;

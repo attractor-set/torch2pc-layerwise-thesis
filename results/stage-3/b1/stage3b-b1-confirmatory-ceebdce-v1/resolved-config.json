@@ -1,0 +1,46 @@
+{
+  "architecture": "lenet_classic",
+  "common_data_protocol": {
+    "data": {
+      "dataset": "FashionMNIST",
+      "root": "data",
+      "split_dir": "results/splits",
+      "train_subset": null,
+      "validation_fraction": 0.15
+    },
+    "reproducibility": {
+      "split_seed": 42
+    },
+    "training": {
+      "batch_size": 256
+    }
+  },
+  "dataset": "FashionMNIST",
+  "lane_controls": {
+    "cpu_float64": {
+      "device": "cpu",
+      "dtype": "float64"
+    },
+    "rocm_float32": {
+      "device": "cuda",
+      "dtype": "float32"
+    }
+  },
+  "method_controls": {
+    "FixedPred": {
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "Strict": {
+      "eta": 0.05,
+      "inference_steps": 20
+    }
+  },
+  "optimizer": {
+    "learning_rate": 0.001,
+    "momentum": 0.0,
+    "name": "SGD"
+  },
+  "split": "validation",
+  "training_mode": true
+}

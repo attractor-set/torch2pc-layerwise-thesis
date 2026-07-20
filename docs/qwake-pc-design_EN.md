@@ -12,6 +12,59 @@ controller preregistration, does not permit [execution](glossary_EN.md#term-exec
 Until separate preregistration and positive shadow [evidence](glossary_EN.md#term-evidence),
 `controls_execution=false`.
 
+## Semantic boundary of the name
+
+`QWake-PC` is a proper name rather than a conventional acronym. `Q` is
+intentionally left without one expansion and denotes a bounded multidimensional
+semantic marker:
+
+- `Qualified` — an action is admissible only after registered gates;
+- `Quotient` — the decision may use a task-relative
+  [PC-TREF](glossary_EN.md#term-pc-tref) quotient representation;
+- `Quality` — [endpoint](glossary_EN.md#term-endpoint) quality,
+  [decision regret](glossary_EN.md#term-decision-regret), and dangerous misses
+  constrain admissible actions;
+- `Quiet` — low activity, cancellation, and temporal persistence provide
+  diagnostic context but do not automatically permit stopping;
+- `Quick` — reductions in sweeps, VJPs,
+  [runtime](glossary_EN.md#term-runtime), or memory are separately tested
+  engineering outcomes only.
+
+These dimensions are not five sequential runtime conditions and need not all be
+input features of every controller version. They bound the name's semantics;
+adding further expansions of `Q` requires a separate terminology decision.
+
+## Architectural role
+
+`QWake-PC` occupies the control layer in the following hierarchy:
+
+```text
+PC-TREF   — theoretical framework for computational decision sufficiency
+    ↓
+PC-CATM   — mechanism model of correction formation, transport, and aggregation
+    ↓
+QWake-PC  — controller architecture and family for computation allocation
+    ↓
+QW-PC0 / QW-AB0 — versioned concrete-controller designs
+```
+
+[PC-TREF](glossary_EN.md#term-pc-tref) specifies which distinctions between
+states must be preserved for an admissible action. [PC-CATM](glossary_EN.md#term-pc-catm)
+explains the mechanisms that produce observed corrections and zero regimes.
+`QWake-PC` operationalizes those foundations as control proposals or decisions,
+but it is not one fixed algorithm.
+
+In the current design space:
+
+- `QW-PC0` denotes a conservative binary design: skip or run one full exact
+  correction sweep;
+- `QW-AB0` denotes the subsequent adaptive full-exact-sweep budget design.
+
+These identifiers are design-level labels only. Every executable controller
+requires its own contract, preregistration, shadow evaluation, and admission
+decision. A negative result for one concrete controller does not invalidate
+PC-CATM or PC-TREF.
+
 ## Action hierarchy
 
 The future controller considers an ordered ladder:

@@ -31,6 +31,14 @@
   aggregation rules;
 - B1/B2 preregistration is permitted after publication, while implementation
   and execution remain closed pending separate contracts and gates.
+- `QWake-PC` is clarified as a proper name with an intentionally unexpanded,
+  multidimensional `Q`: `Qualified`, `Quotient`, `Quality`, `Quiet`, and the
+  conditionally demonstrated outcome `Quick`; no dimension is the canonical
+  acronym expansion;
+- the architectural hierarchy is frozen: `PC-TREF` is the theoretical
+  framework, `PC-CATM` is the mechanism model, `QWake-PC` is the controller
+  architecture, and `QW-PC0`/`QW-AB0` are separate versioned concrete-controller
+  designs.
 
 ### Preserved unchanged
 

@@ -161,3 +161,87 @@ def test_policy_screening_order_is_frozen_in_design_docs() -> None:
             gate_tail.index("A-Max"),
         ]
         assert positions == sorted(positions)
+
+
+def test_qwake_q_is_intentionally_multidimensional_and_unexpanded() -> None:
+    documents = {
+        "docs/glossary.md": (
+            "намеренно не расшифровывается",
+            (
+                "ни одно измерение не является "
+                "единственной канонической "
+                "расшифровкой"
+            ),
+        ),
+        "docs/glossary_EN.md": (
+            "intentionally left unexpanded",
+            "no dimension is the single canonical expansion",
+        ),
+        "docs/qwake-pc-design.md": (
+            "собственным именем",
+            "добавление новых расшифровок `Q` требует",
+        ),
+        "docs/qwake-pc-design_EN.md": (
+            "proper name",
+            "adding further expansions of `Q` requires",
+        ),
+    }
+    dimensions = ("Qualified", "Quotient", "Quality", "Quiet", "Quick")
+
+    for name, required_phrases in documents.items():
+        document = (ROOT / name).read_text(encoding="utf-8")
+        for dimension in dimensions:
+            assert f"`{dimension}`" in document
+        for phrase in required_phrases:
+            assert phrase in document
+
+    ru_glossary = (ROOT / "docs/glossary.md").read_text(encoding="utf-8")
+    en_glossary = (ROOT / "docs/glossary_EN.md").read_text(encoding="utf-8")
+    quick_ru = (
+        "только отдельно подтверждаемый "
+        "инженерный результат"
+    )
+    assert quick_ru in ru_glossary
+    assert "only a separately demonstrated engineering outcome" in en_glossary
+
+
+def test_qwake_architecture_is_distinct_from_framework_and_mechanism() -> None:
+    documents = (
+        "docs/glossary.md",
+        "docs/glossary_EN.md",
+        "docs/qwake-pc-design.md",
+        "docs/qwake-pc-design_EN.md",
+        "docs/pc-tref-pc-catm-theoretical-foundation.md",
+        "docs/pc-tref-pc-catm-theoretical-foundation_EN.md",
+    )
+
+    for name in documents:
+        document = (ROOT / name).read_text(encoding="utf-8")
+        for token in ("PC-TREF", "PC-CATM", "QWake-PC", "QW-PC0", "QW-AB0"):
+            assert token in document
+
+    ru_design = (ROOT / "docs/qwake-pc-design.md").read_text(encoding="utf-8")
+    en_design = (ROOT / "docs/qwake-pc-design_EN.md").read_text(encoding="utf-8")
+    fixed_algorithm_ru = (
+        "не является единственным "
+        "фиксированным алгоритмом"
+    )
+    assert fixed_algorithm_ru in ru_design
+    assert "is not one fixed algorithm" in en_design
+    assert "не опровергает `PC-CATM` или `PC-TREF`" in ru_design
+    assert "does not invalidate" in en_design
+
+    ru_positions = [
+        ru_design.index("PC-TREF   —"),
+        ru_design.index("PC-CATM   —"),
+        ru_design.index("QWake-PC  —"),
+        ru_design.index("QW-PC0 / QW-AB0"),
+    ]
+    en_positions = [
+        en_design.index("PC-TREF   —"),
+        en_design.index("PC-CATM   —"),
+        en_design.index("QWake-PC  —"),
+        en_design.index("QW-PC0 / QW-AB0"),
+    ]
+    assert ru_positions == sorted(ru_positions)
+    assert en_positions == sorted(en_positions)

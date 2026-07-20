@@ -1,0 +1,45 @@
+{
+  "authorization_token": "c0cadd7ac252c72d70dbc3d69773ac27c9e2fe8e6a9d569a484c9daece19d99e",
+  "candidate_id": "isolated_layer_vjp",
+  "confirmatory_equivalence_executed": true,
+  "control_id": "stage2_baseline",
+  "decision_id": "EQ-B1",
+  "failed_pairs": [],
+  "gates": {
+    "NUM-B1": {
+      "failed_pairs": [],
+      "passed": true
+    },
+    "OBS-B1": {
+      "failed_pairs": [],
+      "passed": true
+    },
+    "PROV-B1": {
+      "failed_pairs": [],
+      "passed": true
+    },
+    "STRUCT-B1": {
+      "failed_pairs": [],
+      "passed": true
+    },
+    "TRAJ-B1": {
+      "failed_pairs": [],
+      "passed": true
+    }
+  },
+  "image_digest": "sha256:3e7f0819ad3b9e37faa8b88fd5a11535e5d9f30d0e389e52ea76fcee94189db1",
+  "matched_pairs_expected": 120,
+  "matched_pairs_observed": 120,
+  "project_source_commit": "ceebdce9835433b0ee28e952597b42668a599be4",
+  "request_digest": "a12b9098966178b73e710a1750291d1eaa4d8d9f7ae6aef41fcade0b05323cd0",
+  "results_publication_permitted": false,
+  "schema_version": 1,
+  "scope": "confirmatory",
+  "sealed": true,
+  "source_decision_id": "EQ-B1-CONFIRMATORY",
+  "source_decision_path": "decision.json",
+  "source_decision_sha256": "a20eabc1e6da8c9634792b4c3457a272419568d5f23f3e7bacc2c38da3c87afc",
+  "status": "pass",
+  "test_dataset_access": false,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+}

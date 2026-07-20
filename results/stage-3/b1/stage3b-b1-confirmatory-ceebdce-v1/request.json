@@ -1,0 +1,252 @@
+{
+  "architecture": "lenet_classic",
+  "batch_registry_digest": "905bd7fe710d68df3702a9c2033b9c2b912bd35ad781b2fc84645526fc084e54",
+  "batch_registry_path": "experiments/frozen/stage3b-b1-confirmatory/validation-batches.json",
+  "batch_registry_sha256": "46bcda9f84deb4df7e46d764ac6123cf54f931c8dca7bc925e1eb99b8e242649",
+  "campaign_id": "stage3b-b1-confirmatory-equivalence-v1",
+  "checkpoints": {
+    "0": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s0-bd621d5a3e-6d66b0a6-0ffe23c9/20260713T133027Z-19fac746/checkpoint.pt",
+      "resolved_config_path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s0-bd621d5a3e-6d66b0a6-0ffe23c9/20260713T133027Z-19fac746/resolved_config.json",
+      "resolved_config_sha256": "cd0f210e09464106df1bf893216ae4036ae5e3285cc2ed96fddbfba6366653fc",
+      "sha256": "7de252afaf6a171dc5b384cf595f1111ec98bca6a3fc789da89e4aa8383a1f2f"
+    },
+    "1": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/checkpoint.pt",
+      "resolved_config_path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s1-77cbcc4b70-6d66b0a6-0ffe23c9/20260713T133659Z-aec7e682/resolved_config.json",
+      "resolved_config_sha256": "3506d0de1629f681aec9f5470fb37726219f250c2cdd743828e378e862bea2b7",
+      "sha256": "993bb732e47c88f6f5b3ed37921dcd1350194c0de2143a74976fa909793c7b82"
+    },
+    "2": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/checkpoint.pt",
+      "resolved_config_path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/resolved_config.json",
+      "resolved_config_sha256": "9cd9f34a88f8c1f9726b607fb2be9261d50866a5142d6ee3ca83c752d30bcb83",
+      "sha256": "0f9206bc44097dc94e5937e1027643f23441dd6f39b44892680369409cf8f3a4"
+    }
+  },
+  "contract_digest": "bfae1bfc35dc8a1e4a02df94e609bdf3e9d091c8212948d96f8a0c2a46028a13",
+  "contract_path": "experiments/planned/STAGE3B-B1-CONFIRMATORY-CONTRACT.json",
+  "dataset": "FashionMNIST",
+  "evidence": false,
+  "execution_boundary": {
+    "eq_b1_confirmatory_sealed": false,
+    "execution_started": false,
+    "matched_profiling_open": false,
+    "request_frozen": true,
+    "results_present": false,
+    "runtime_authorization_issued": false
+  },
+  "lane_controls": {
+    "cpu_float64": {
+      "device": "cpu",
+      "dtype": "float64"
+    },
+    "rocm_float32": {
+      "device": "cuda",
+      "dtype": "float32"
+    }
+  },
+  "lanes": [
+    "cpu_float64",
+    "rocm_float32"
+  ],
+  "matched_pair_count": 120,
+  "max_attempts_per_pair": 2,
+  "method_controls": {
+    "FixedPred": {
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "Strict": {
+      "eta": 0.05,
+      "inference_steps": 20
+    }
+  },
+  "methods": [
+    "FixedPred",
+    "Strict"
+  ],
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "observer_mode": "no_hooks",
+  "optimizer": {
+    "learning_rate": 0.001,
+    "momentum": 0.0,
+    "name": "SGD"
+  },
+  "request_id": "stage3b-b1-confirmatory-120-v1",
+  "request_scope": "stage3b_b1_confirmatory_request",
+  "resolved_config": {
+    "architecture": "lenet_classic",
+    "common_data_protocol": {
+      "data": {
+        "dataset": "FashionMNIST",
+        "root": "data",
+        "split_dir": "results/splits",
+        "train_subset": null,
+        "validation_fraction": 0.15
+      },
+      "reproducibility": {
+        "split_seed": 42
+      },
+      "training": {
+        "batch_size": 256
+      }
+    },
+    "dataset": "FashionMNIST",
+    "lane_controls": {
+      "cpu_float64": {
+        "device": "cpu",
+        "dtype": "float64"
+      },
+      "rocm_float32": {
+        "device": "cuda",
+        "dtype": "float32"
+      }
+    },
+    "method_controls": {
+      "FixedPred": {
+        "eta": 0.1,
+        "inference_steps": 10
+      },
+      "Strict": {
+        "eta": 0.05,
+        "inference_steps": 20
+      }
+    },
+    "optimizer": {
+      "learning_rate": 0.001,
+      "momentum": 0.0,
+      "name": "SGD"
+    },
+    "split": "validation",
+    "training_mode": true
+  },
+  "resolved_config_digest": "24b7c6e706463e696f4fb9c2941ce7f8f6610e653d2d1f852687a1ed2d117359",
+  "results_publication_permitted": false,
+  "run_seed_base": 731000,
+  "schema_version": 1,
+  "scope": "confirmatory",
+  "split": "validation",
+  "structural_observer_mode": "counters_only",
+  "test_split_access": false,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "training_mode": true,
+  "validation_batch_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "validation_batches": {
+    "0": {
+      "batch_index": 0,
+      "batch_size": 256,
+      "content_sha256": "446353d75914a488509546bc2149ea7ac1aed26ad6a303bfe11fff671a6dd9e9",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-000.json",
+      "manifest_sha256": "fde08bb46c9a7c6dd01427f6802c2be62a61df5fe30dec8dbea69764b09ae7a4",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-000.pt",
+      "sha256": "0a364852262cbad9ba4021ead33370e9ad83379a58695517499996bbd94cba7f",
+      "split": "validation"
+    },
+    "1": {
+      "batch_index": 1,
+      "batch_size": 256,
+      "content_sha256": "148320e15e6a7b62d9c14e7e8118bcc108fb728c8e14fc6a29cedfd8c27a373a",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-001.json",
+      "manifest_sha256": "cda36204e2a7a64c6e250154f1e29d3718a8291404b6165bf69d28c6ab639f63",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-001.pt",
+      "sha256": "51f3940a820e6bf5b7d4476a6d9599ccd8bcfd6f398336f6646be21d2b40ec92",
+      "split": "validation"
+    },
+    "2": {
+      "batch_index": 2,
+      "batch_size": 256,
+      "content_sha256": "64dcc307ea00213eb828c9b08d94515fa6e29c903bba667e1ded5b886df68cf0",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-002.json",
+      "manifest_sha256": "8d90b8f9ae71ac75088b6e5c17d52975ec62e2dabd0a67402bcedf165720bff8",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-002.pt",
+      "sha256": "9ef3f1c1b943e21c17f3db7dba3f41fc96794ed2943289f47454ba6616abf685",
+      "split": "validation"
+    },
+    "3": {
+      "batch_index": 3,
+      "batch_size": 256,
+      "content_sha256": "b36242d56d87c71c8bbd5b2da539c0f6b7278121819605b51a705177213211ca",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-003.json",
+      "manifest_sha256": "79cf88816e9a419f1a9110959968e53aee2dc5412549265fb54180a33a1579c7",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-003.pt",
+      "sha256": "708b34258fb521521c354ee0a604586a84a8667b595ad5c10826635201fda953",
+      "split": "validation"
+    },
+    "4": {
+      "batch_index": 4,
+      "batch_size": 256,
+      "content_sha256": "c6a992aa4f03bb16d3d5db41dd3864c3a11c4284a1c4035cb58ab5ab2a8cf740",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-004.json",
+      "manifest_sha256": "36de3aa2ac45879e6a647924c8fdfc7268203902c09e4f06ed26a331d40ee9da",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-004.pt",
+      "sha256": "a56bc5c240f8f10aab63b71521f8607a0e4ef161619b501a1dabc6d6d471f800",
+      "split": "validation"
+    },
+    "5": {
+      "batch_index": 5,
+      "batch_size": 256,
+      "content_sha256": "74b961e01b011f5573133b062474c3b869d9ff715fe5bf5557748bbdecbddee5",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-005.json",
+      "manifest_sha256": "dadbc4918d710cbdd8a8d4b396ec7b7306f9745565de8175111d9823dac87f66",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-005.pt",
+      "sha256": "bcc9fcdfb7b2366118ce0c8cd2cac7d91a0479aa51d8a53aee312708cca079f0",
+      "split": "validation"
+    },
+    "6": {
+      "batch_index": 6,
+      "batch_size": 256,
+      "content_sha256": "0aa60e02c26c60fe9bf99d2b449395c043a62bee112e6da1aac5857caf23f045",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-006.json",
+      "manifest_sha256": "ddc3466b50c13fbae341a11babe23d4a07bd3444a0d382f603cadb4be2d5bf64",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-006.pt",
+      "sha256": "55d594640dd19b21a825d2419d35ee0a4d1687742eaba1c563fc23de89ba0d3a",
+      "split": "validation"
+    },
+    "7": {
+      "batch_index": 7,
+      "batch_size": 256,
+      "content_sha256": "38988ee6afe1c556007af08aa16325512f021dcb21624974c01832a16a27b9ae",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-007.json",
+      "manifest_sha256": "8cd87bd0001fa392abe4b03ad61dad37aba6d89138aa7fb7cfa54988f08a9167",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-007.pt",
+      "sha256": "c614f89810f292775edb23ff41daae97a73e42bf6cb03ee8ecd5c46e15c7f99b",
+      "split": "validation"
+    },
+    "8": {
+      "batch_index": 8,
+      "batch_size": 256,
+      "content_sha256": "006ff21dc3ed3752785c414f0bf587fb16b14955fc6141814d2947a6fbaa049a",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-008.json",
+      "manifest_sha256": "421de12597a18010c9b693b94adc39ec3a687346f8589b54eaeed0eced9a58fb",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-008.pt",
+      "sha256": "798cecf8f176d15d0f8943fa31516b046e635bf35375def04a80bdbf73e2d768",
+      "split": "validation"
+    },
+    "9": {
+      "batch_index": 9,
+      "batch_size": 256,
+      "content_sha256": "7cbd4c9eabb4a38e6735189553b927c55c6fb9398d9a596a1249007369805442",
+      "manifest_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-009.json",
+      "manifest_sha256": "d756c0b81282855302796bee2279ca61d5966e2a4cface5729952b08a18bd367",
+      "path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-009.pt",
+      "sha256": "bcccc2008ac43b0e17520aee3e0a63c6159d9521dea549319dc744dc3573019d",
+      "split": "validation"
+    }
+  }
+}

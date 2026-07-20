@@ -1,0 +1,33 @@
+{
+  "authorization_digest": "0cfd55be73925db2393b9144ee0808a63ed5002982f8dc5a59f434984f77009d",
+  "authorization_scope": "stage3b_b1_confirmatory_cpu_float64_rocm_float32_campaign",
+  "authorization_token": "c0cadd7ac252c72d70dbc3d69773ac27c9e2fe8e6a9d569a484c9daece19d99e",
+  "authorized_lanes": [
+    "cpu_float64",
+    "rocm_float32"
+  ],
+  "authorized_pair_count": 120,
+  "campaign_id": "stage3b-b1-confirmatory-equivalence-v1",
+  "emergency_stop_path": "/tmp/torch2pc-stage3b-b1-confirmatory-ceebdce-attempt-001/EMERGENCY-STOP",
+  "evidence": false,
+  "execution_mode": "confirmatory",
+  "execution_permitted": true,
+  "freeze_digest": "25bec701c0cecc194c79752be44599603dd2c8a881794888596d9bb58980314b",
+  "full_confirmatory_campaign_complete": false,
+  "image_digest": "sha256:3e7f0819ad3b9e37faa8b88fd5a11535e5d9f30d0e389e52ea76fcee94189db1",
+  "lane_preflight_digests": {
+    "cpu_float64": "5df96e9dd913912c9ac4da8afd7a004d9042521a511625fe7aeb4090f2cadff2",
+    "rocm_float32": "e1676c44954c04cf41c03cb70a6bd34e5bc842774a823b036908ec08b90b55d1"
+  },
+  "measurements_allowed": true,
+  "minimum_free_bytes": 21474836480,
+  "operator_acknowledgement": "AUTHORIZE_STAGE3B_B1_CONFIRMATORY_120_MATCHED_PAIRS_CPU_FLOAT64_ROCM_FLOAT32",
+  "output_root": "/tmp/torch2pc-stage3b-b1-confirmatory-ceebdce-attempt-001",
+  "project_source_commit": "ceebdce9835433b0ee28e952597b42668a599be4",
+  "request_digest": "a12b9098966178b73e710a1750291d1eaa4d8d9f7ae6aef41fcade0b05323cd0",
+  "results_publication_permitted": false,
+  "runtime_authorization": "issued",
+  "schema_version": 1,
+  "test_dataset_access": false,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+}

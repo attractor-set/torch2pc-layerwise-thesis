@@ -1,0 +1,51 @@
+{
+  "attempt_id": "stage3b-b2-smoke-confirmatory-b1-attempt-002",
+  "cpu_evidence": {
+    "commit": "c14a697b204f607d9461decf8c7589f09224e994",
+    "log_sha256": "50512120554759268c9d26bbb7ddca36c06f4a2f61fc1253a05facf3ffb30516",
+    "pair_count": 6,
+    "tree_sha256": "e38d2f582e0c5c7bad3041b39e282b71c19c1ed93c49624f10ed5233b952ec94"
+  },
+  "evidence_state": {
+    "aggregate_artifact_count": 0,
+    "cpu_pair_count": 6,
+    "rocm_pair_count": 0
+  },
+  "execution_branch": "research/stage3b-b2-smoke-confirmatory-b1-execution-v2",
+  "execution_commit": "c14a697b204f607d9461decf8c7589f09224e994",
+  "lane": "rocm_float32",
+  "preflight_only": true,
+  "probe": {
+    "device": "cuda:0",
+    "dtype": "float32",
+    "expected_value": 14.0,
+    "finite": true,
+    "observed_value": 14.0,
+    "operation": "sum(square([1,2,3]))",
+    "synchronized": true
+  },
+  "record_type": "stage3b_b2_rocm_preflight",
+  "request_id": "stage3b-b2-smoke-confirmatory-b1-v2",
+  "request_sha256": "01048bb8c0b076a8674bddca595471ee9c5cb3a4ada69fabebd8d50a35a183ef",
+  "runtime": {
+    "cuda_available": true,
+    "device_count": 1,
+    "device_index": 0,
+    "device_name": "AMD Radeon RX 7700 XT",
+    "free_bytes": 12496928768,
+    "hip_version": "7.2.53211-e1a6bc5663",
+    "platform": "Linux-7.0.0-28-generic-x86_64-with-glibc2.39",
+    "python_version": "3.12.3 (main, Mar  3 2026, 12:15:18) [GCC 13.3.0]",
+    "torch_version": "2.9.1+rocm7.2.1.gitff65f5bc",
+    "total_bytes": 12868124672
+  },
+  "schema_version": 1,
+  "scientific_execution": false,
+  "source_commit": "c6c17d8c96981605471293fc28ba417b5c56595b",
+  "source_image": {
+    "id": "sha256:311f438035d379847ad9e036b70b79becd5d23b09b949e6f5fade895b303d186",
+    "tag": "torch2pc-layerwise-thesis:b2-opening-c6c17d8c9698-provenance-v2"
+  },
+  "status": "pass",
+  "test_split_access": false
+}

@@ -25,7 +25,8 @@ RUN python -m pip install --no-cache-dir "pip==${PIP_VERSION}" \
     && python -m pip check
 
 COPY . /workspace
-RUN chmod +x scripts/*.sh
+RUN chmod 0755 /workspace/scripts \
+    && chmod 0755 /workspace/scripts/*.sh
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \

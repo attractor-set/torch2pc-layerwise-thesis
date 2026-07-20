@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, cast
 
 import torch
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 from torch2pc_thesis.data import build_dataloaders
 

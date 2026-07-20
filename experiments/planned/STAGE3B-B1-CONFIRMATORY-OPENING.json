@@ -1,0 +1,108 @@
+{
+  "authorization_requirements": {
+    "authorization_domains_separated": true,
+    "both_preflights_required": true,
+    "clean_exact_source_commit": true,
+    "confirmatory_authorized_pair_count": 120,
+    "confirmatory_execution_mode": "confirmatory",
+    "confirmatory_operator_acknowledgement": "AUTHORIZE_STAGE3B_B1_CONFIRMATORY_120_MATCHED_PAIRS_CPU_FLOAT64_ROCM_FLOAT32",
+    "cpu_float64_preflight": true,
+    "engineering_smoke_authorized_pair_count": 12,
+    "engineering_smoke_execution_mode": "engineering_smoke",
+    "engineering_smoke_operator_acknowledgement": "AUTHORIZE_STAGE3B_B1_ENGINEERING_SMOKE_12_PAIRS_CPU_FLOAT64_ROCM_FLOAT32_NON_EVIDENCE",
+    "immutable_image_digest": true,
+    "rocm_float32_preflight": true
+  },
+  "engineering_smoke": {
+    "authorization_domain_must_differ_from_confirmatory": true,
+    "dedicated_output_root_and_authorization_required": true,
+    "evidence": false,
+    "pair_count": 12,
+    "sealing_as_confirmatory_prohibited": true,
+    "selection": "validation_batch_index=0 across both lanes, both methods, and all three model seeds"
+  },
+  "execution_boundary": {
+    "authorization_issued": false,
+    "confirmatory_evidence_present": false,
+    "confirmatory_execution_started": false,
+    "engineering_smoke_passed": false,
+    "eq_b1_confirmatory_sealed": false,
+    "eq_b2_open": false,
+    "frozen_batches_present": false,
+    "frozen_request_present": false,
+    "immutable_image_built": false,
+    "matched_profiling_open": false,
+    "preflights_present": false
+  },
+  "lanes": [
+    "cpu_float64",
+    "rocm_float32"
+  ],
+  "opening_id": "stage3b-b1-confirmatory-opening-v1",
+  "preregistration_contract": "experiments/planned/STAGE3B-B1-CONFIRMATORY-CONTRACT.json",
+  "recovery_contract": {
+    "append_only_attempts": true,
+    "max_attempts_per_pair": 2,
+    "non_retryable_failure_classes": [
+      "correctness",
+      "scientific",
+      "provenance",
+      "unknown"
+    ],
+    "orphan_reconciliation_acknowledgement": "RECONCILE_STAGE3B_B1_CONFIRMATORY_ORPHANED_RUNNING_ATTEMPTS",
+    "orphan_reconciliation_requires_no_lane_lock": true,
+    "resume_selects_pending_pairs": true,
+    "retry_failed_requires_resume": true,
+    "retryable_failure_classes": [
+      "infrastructure",
+      "operator_interruption",
+      "system_interruption"
+    ]
+  },
+  "registered_pair_count": 120,
+  "required_frozen_assets": {
+    "checkpoint_count": 3,
+    "distinct_batch_content_digests": true,
+    "distinct_batch_paths": true,
+    "test_split_access": false,
+    "validation_batch_count": 10,
+    "validation_batch_size": 256
+  },
+  "runtime_modules": {
+    "authorization": "src/torch2pc_thesis/stage3b_b1_confirmatory_authorization.py",
+    "request_and_lifecycle": "src/torch2pc_thesis/stage3b_b1_confirmatory.py",
+    "sealing": "src/torch2pc_thesis/stage3b_b1_confirmatory_sealing.py"
+  },
+  "runtime_scripts": {
+    "authorize": "scripts/authorize_stage3b_b1_confirmatory.py",
+    "export_batches": "scripts/export_stage3b_b1_confirmatory_validation_batches.py",
+    "freeze_request": "scripts/freeze_stage3b_b1_confirmatory.py",
+    "run": "scripts/run_stage3b_b1_confirmatory.py",
+    "seal": "scripts/seal_stage3b_b1_confirmatory.py"
+  },
+  "schema_version": 1,
+  "sealing_requirements": {
+    "admission_binds_scientific_decision_sha256": true,
+    "all_gate_ids_required": [
+      "STRUCT-B1",
+      "NUM-B1",
+      "TRAJ-B1",
+      "OBS-B1",
+      "PROV-B1"
+    ],
+    "completed_attempt_must_be_last": true,
+    "confirmatory_equivalence_executed": true,
+    "exactly_one_completed_attempt_per_pair": true,
+    "failed_pair_count": 0,
+    "matched_profiling_admission_decision_id": "EQ-B1",
+    "matched_profiling_expected_pairs": 120,
+    "matched_profiling_observed_pairs": 120,
+    "observed_pair_count": 120,
+    "registered_pair_count": 120,
+    "running_attempts_rejected": true,
+    "scientific_decision_id": "EQ-B1-CONFIRMATORY",
+    "scope": "confirmatory",
+    "status": "pass"
+  },
+  "status": "implementation_ready_execution_closed"
+}

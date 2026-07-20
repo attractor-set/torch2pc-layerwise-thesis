@@ -28,3 +28,6 @@
   cross-[candidate](../glossary_EN.md#term-candidate) correctness repair before
   the 288-cell campaign.
 - [ADR-018](ADR-018-stage3b-b1-confirmatory-preregistration_EN.md): freezes confirmatory `EQ-B1` as 120 matched pairs over ten distinct validation batches and keeps [execution](../glossary_EN.md#term-execution) closed pending a separate opening review.
+- [ADR-019](ADR-019-stage3b-b1-confirmatory-opening_EN.md): adds fail-closed
+  batch freezing, two-lane authorization, recovery, and confirmatory `EQ-B1`
+  sealing infrastructure while keeping [runtime](../glossary_EN.md#term-runtime) execution closed.

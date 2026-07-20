@@ -61,6 +61,7 @@ nav:
       - ADR-016 Sufficiency boundary: decisions/ADR-016-stage3b-sufficiency-boundary_EN.md
       - ADR-017 288-cell correctness: decisions/ADR-017-stage3b-288cell-correctness-repair_EN.md
       - ADR-018 Confirmatory EQ-B1: decisions/ADR-018-stage3b-b1-confirmatory-preregistration_EN.md
+      - ADR-019 Confirmatory EQ-B1 opening: decisions/ADR-019-stage3b-b1-confirmatory-opening_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

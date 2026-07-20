@@ -241,6 +241,15 @@ def issue_b1_confirmatory_authorization(
             raise B1ConfirmatoryError("lane preflight request digest mismatch")
         if preflight["execution_mode"] != execution_mode:
             raise B1ConfirmatoryError("lane preflight execution mode mismatch")
+        for preflight_key, freeze_key in (
+            ("project_source_commit", "project_source_commit"),
+            ("output_root", "output_root"),
+            ("minimum_free_bytes", "minimum_free_bytes"),
+        ):
+            if preflight[preflight_key] != freeze_record[freeze_key]:
+                raise B1ConfirmatoryError(
+                    f"lane preflight {preflight_key} mismatch"
+                )
         by_lane[lane] = preflight
     if set(by_lane) != set(B1_CONFIRMATORY_EXPECTED_LANES):
         raise B1ConfirmatoryError("authorization requires cpu_float64 and rocm_float32 preflights")
@@ -267,7 +276,6 @@ def issue_b1_confirmatory_authorization(
         "authorization_scope": authorization_scope,
         "execution_mode": execution_mode,
         "authorization_token": authorization_token,
-        "authorization_digest": authorization_token,
         "freeze_digest": freeze_record["freeze_digest"],
         "request_digest": freeze_record["request_digest"],
         "project_source_commit": freeze_record["project_source_commit"],
@@ -288,6 +296,7 @@ def issue_b1_confirmatory_authorization(
         "results_publication_permitted": False,
         "test_dataset_access": False,
     }
+    payload["authorization_digest"] = _digest(payload)
     return payload
 
 
@@ -358,7 +367,24 @@ def validate_freeze_record(value: Mapping[str, object]) -> None:
     _, _, authorized_pair_count = _execution_contract(execution_mode)
     _require_equal(value, "authorized_pair_count", authorized_pair_count)
     _require_equal(value, "canonical_lanes", list(B1_CONFIRMATORY_EXPECTED_LANES))
+    _validate_commit(_require_string(value, "project_source_commit"))
+    _validate_image_digest(_require_string(value, "source_image_digest"))
+    _require_digest(value, "request_digest")
+    _require_digest(value, "request_file_sha256")
+    _require_digest(value, "contract_digest")
+    _require_digest(value, "resolved_config_digest")
+    _validate_path_binding(value)
+    _require_positive_int(value, "observed_free_bytes")
+    _require_non_negative_int(value, "output_owner_uid")
+    _require_non_negative_int(value, "output_owner_gid")
+    _require_string(value, "request_path")
+    _require_string(value, "torch2pc_path")
+    _validate_commit(_require_string(value, "torch2pc_commit"))
+    _require_string(value, "torch2pc_commit_verification")
+    _require_digest(value, "torch2pc_source_sha256")
     _require_equal(value, "evidence", False)
+    _require_equal(value, "full_confirmatory_campaign_complete", False)
+    _require_equal(value, "results_publication_permitted", False)
     _require_equal(value, "test_dataset_access", False)
     supplied = _require_digest(value, "freeze_digest")
     unsigned = dict(value)
@@ -375,12 +401,22 @@ def validate_lane_preflight(value: Mapping[str, object]) -> None:
     lane = value.get("lane")
     if lane not in B1_CONFIRMATORY_EXPECTED_LANES:
         raise B1ConfirmatoryError("invalid lane preflight lane")
+    _require_digest(value, "freeze_digest")
+    _require_digest(value, "request_digest")
+    _validate_commit(_require_string(value, "project_source_commit"))
+    _validate_image_digest(_require_string(value, "image_digest"))
+    _validate_path_binding(value, require_emergency_stop=False)
+    probe = _runtime_probe_from_record(value.get("runtime"))
+    _validate_runtime_for_lane(str(lane), probe)
+    _require_equal(value, "evidence", False)
+    _require_equal(value, "full_confirmatory_campaign_complete", False)
+    _require_equal(value, "results_publication_permitted", False)
+    _require_equal(value, "test_dataset_access", False)
     supplied = _require_digest(value, "lane_preflight_digest")
     unsigned = dict(value)
     unsigned.pop("lane_preflight_digest", None)
     if _digest(unsigned) != supplied:
         raise B1ConfirmatoryError("lane preflight digest mismatch")
-    _validate_image_digest(str(value.get("image_digest", "")))
 
 
 def validate_authorization(value: Mapping[str, object]) -> None:
@@ -395,8 +431,17 @@ def validate_authorization(value: Mapping[str, object]) -> None:
     _require_equal(value, "authorized_lanes", list(B1_CONFIRMATORY_EXPECTED_LANES))
     _require_equal(value, "execution_permitted", True)
     _require_equal(value, "measurements_allowed", True)
+    _require_equal(value, "runtime_authorization", "issued")
     _require_equal(value, "evidence", False)
+    _require_equal(value, "full_confirmatory_campaign_complete", False)
+    _require_equal(value, "results_publication_permitted", False)
     _require_equal(value, "test_dataset_access", False)
+    _require_digest(value, "freeze_digest")
+    _require_digest(value, "request_digest")
+    _validate_commit(_require_string(value, "project_source_commit"))
+    _validate_commit(_require_string(value, "torch2pc_commit"))
+    _validate_image_digest(_require_string(value, "image_digest"))
+    _validate_path_binding(value)
     acknowledgement = value.get("operator_acknowledgement")
     if acknowledgement != expected_acknowledgement:
         raise B1ConfirmatoryError("authorization acknowledgement mismatch")
@@ -421,7 +466,56 @@ def validate_authorization(value: Mapping[str, object]) -> None:
     token = _require_digest(value, "authorization_token")
     if token != expected_token:
         raise B1ConfirmatoryError("authorization token mismatch")
-    _require_equal(value, "authorization_digest", token)
+    supplied_digest = _require_digest(value, "authorization_digest")
+    unsigned = dict(value)
+    unsigned.pop("authorization_digest", None)
+    if _digest(unsigned) != supplied_digest:
+        raise B1ConfirmatoryError("authorization digest mismatch")
+
+
+def _runtime_probe_from_record(value: object) -> B1ConfirmatoryRuntimeProbe:
+    if not isinstance(value, Mapping):
+        raise B1ConfirmatoryError("runtime probe is missing")
+    record = cast(Mapping[str, object], value)
+    hip_version = record.get("hip_version")
+    if hip_version is not None and (
+        not isinstance(hip_version, str) or not hip_version
+    ):
+        raise B1ConfirmatoryError("runtime hip_version must be null or non-empty")
+    cuda_available = record.get("cuda_available")
+    if not isinstance(cuda_available, bool):
+        raise B1ConfirmatoryError("runtime cuda_available must be boolean")
+    return B1ConfirmatoryRuntimeProbe(
+        python_version=_require_string(record, "python_version"),
+        pytorch_version=_require_string(record, "pytorch_version"),
+        hip_version=hip_version,
+        cuda_available=cuda_available,
+        device_count=_require_non_negative_int(record, "device_count"),
+        device_name=_require_string(record, "device_name"),
+        platform=_require_string(record, "platform"),
+        machine=_require_string(record, "machine"),
+        effective_uid=_require_non_negative_int(record, "effective_uid"),
+        effective_gid=_require_non_negative_int(record, "effective_gid"),
+    )
+
+
+def _validate_path_binding(
+    value: Mapping[str, object],
+    *,
+    require_emergency_stop: bool = True,
+) -> None:
+    output_root = Path(_require_string(value, "output_root"))
+    if not output_root.is_absolute():
+        raise B1ConfirmatoryError("output_root must be absolute")
+    minimum_free_bytes = _require_positive_int(value, "minimum_free_bytes")
+    if "observed_free_bytes" in value:
+        observed_free_bytes = _require_positive_int(value, "observed_free_bytes")
+        if observed_free_bytes < minimum_free_bytes:
+            raise B1ConfirmatoryError("observed_free_bytes is below minimum_free_bytes")
+    if require_emergency_stop:
+        emergency_stop = Path(_require_string(value, "emergency_stop_path"))
+        if emergency_stop != output_root / "EMERGENCY-STOP":
+            raise B1ConfirmatoryError("emergency_stop_path does not match output_root")
 
 
 def _validate_execution_mode(value: str) -> str:
@@ -614,4 +708,25 @@ def _require_digest(mapping: Mapping[str, object], key: str) -> str:
     value = mapping.get(key)
     if not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{64}", value):
         raise B1ConfirmatoryError(f"{key} must be a lowercase SHA-256 digest")
+    return value
+
+
+def _require_string(mapping: Mapping[str, object], key: str) -> str:
+    value = mapping.get(key)
+    if not isinstance(value, str) or not value:
+        raise B1ConfirmatoryError(f"{key} must be a non-empty string")
+    return value
+
+
+def _require_positive_int(mapping: Mapping[str, object], key: str) -> int:
+    value = mapping.get(key)
+    if not isinstance(value, int) or isinstance(value, bool) or value < 1:
+        raise B1ConfirmatoryError(f"{key} must be a positive integer")
+    return value
+
+
+def _require_non_negative_int(mapping: Mapping[str, object], key: str) -> int:
+    value = mapping.get(key)
+    if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+        raise B1ConfirmatoryError(f"{key} must be a non-negative integer")
     return value

@@ -341,7 +341,8 @@ def run_pair(
     structural_model = copy.deepcopy(model)
     structural_collector = B1CounterCollector()
     restore_rng_snapshot(pair_rng)
-    candidate_infer(
+    structural_before = rng_snapshot_digest(capture_rng_snapshot())
+    structural_output = candidate_infer(
         structural_model,
         loss_fn,
         inputs,
@@ -351,6 +352,13 @@ def run_pair(
         inference_steps=spec.method_control.inference_steps,
         observer_mode=B1ObserverMode.COUNTERS_ONLY,
         event_sink=structural_collector,
+    )
+    structural_endpoints = _capture_endpoints_from_output(
+        structural_model,
+        structural_output,
+        spec.method_control.inference_steps,
+        structural_before,
+        rng_snapshot_digest(capture_rng_snapshot()),
     )
 
     trajectory_metrics = tuple(
@@ -371,6 +379,19 @@ def run_pair(
         compare_tensor_maps(
             _endpoint_tensor_map(traced_endpoints),
             _endpoint_tensor_map(canonical_endpoints),
+            profile,
+        )
+    )
+    observer_tensor_metrics = tuple(
+        compare_tensor_maps(
+            {
+                f"observer/{name}": value
+                for name, value in _endpoint_tensor_map(candidate_endpoints).items()
+            },
+            {
+                f"observer/{name}": value
+                for name, value in _endpoint_tensor_map(structural_endpoints).items()
+            },
             profile,
         )
     )
@@ -406,6 +427,43 @@ def run_pair(
             ),
         ]
     )
+    observer_scalar_metrics = tuple(
+        scalar_map_metrics(
+            "observer/optimizer",
+            candidate_endpoints.optimizer.scalar_state,
+            structural_endpoints.optimizer.scalar_state,
+        )
+        + [
+            ScalarMetric(
+                component="observer/inference_steps",
+                passed=(
+                    candidate_endpoints.inference_steps
+                    == structural_endpoints.inference_steps
+                    == spec.method_control.inference_steps
+                ),
+                reference=candidate_endpoints.inference_steps,
+                candidate=structural_endpoints.inference_steps,
+            ),
+            ScalarMetric(
+                component="observer/rng_before",
+                passed=(
+                    candidate_endpoints.rng_before
+                    == structural_endpoints.rng_before
+                ),
+                reference=candidate_endpoints.rng_before,
+                candidate=structural_endpoints.rng_before,
+            ),
+            ScalarMetric(
+                component="observer/rng_after",
+                passed=(
+                    candidate_endpoints.rng_after
+                    == structural_endpoints.rng_after
+                ),
+                reference=candidate_endpoints.rng_after,
+                candidate=structural_endpoints.rng_after,
+            ),
+        ]
+    )
 
     structural_gate = _structural_gate(
         spec,
@@ -420,16 +478,28 @@ def run_pair(
         reasons=tensor_numerical_gate.reasons + scalar_numerical_gate.reasons,
     )
     trajectory_gate = gate_from_tensor_metrics("TRAJ-B1", trajectory_metrics)
+    observer_tensor_gate = gate_from_tensor_metrics(
+        gate_id="OBS-B1",
+        metrics=observer_tensor_metrics,
+    )
+    observer_scalar_gate = gate_from_scalar_metrics(
+        gate_id="OBS-B1",
+        metrics=observer_scalar_metrics,
+    )
     observer_gate = GateOutcome(
         gate_id="OBS-B1",
-        passed=True,
-        reasons=(),
+        passed=observer_tensor_gate.passed and observer_scalar_gate.passed,
+        reasons=observer_tensor_gate.reasons + observer_scalar_gate.reasons,
     )
     guard_gate = gate_from_tensor_metrics("REFERENCE-TRACE-GUARD", guard_metrics)
     provenance_reasons: list[str] = []
     if not guard_gate.passed:
         provenance_reasons.append("canonical_reference_trace_guard_failed")
-    if rng_before != traced_before or rng_before != candidate_before:
+    if (
+        rng_before != traced_before
+        or rng_before != candidate_before
+        or rng_before != structural_before
+    ):
         provenance_reasons.append("rng_restoration_mismatch")
     provenance_gate = GateOutcome(
         gate_id="PROV-B1",
@@ -450,8 +520,8 @@ def run_pair(
         gates={gate.gate_id: gate.to_dict() for gate in gates},
         pair_admissible=pair_admissible,
         trajectory_metrics=trajectory_metrics,
-        endpoint_metrics=endpoint_metrics + guard_metrics,
-        scalar_metrics=scalar_metrics,
+        endpoint_metrics=endpoint_metrics + guard_metrics + observer_tensor_metrics,
+        scalar_metrics=scalar_metrics + observer_scalar_metrics,
         structural_events=tuple(structural_collector.events),
         provenance={
             "project_base_commit": PROJECT_BASE_COMMIT,

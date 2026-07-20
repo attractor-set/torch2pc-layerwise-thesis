@@ -26,6 +26,8 @@ from torch2pc_thesis.stage3b_b1_confirmatory_authorization import (
     B1_CONFIRMATORY_OPERATOR_ACKNOWLEDGEMENT,
     B1_CONFIRMATORY_PREFLIGHT_SCOPE,
     issue_b1_confirmatory_authorization,
+    validate_authorization,
+    validate_lane_preflight,
 )
 from torch2pc_thesis.stage3b_b1_confirmatory_sealing import (
     B1ConfirmatorySealingError,
@@ -110,9 +112,16 @@ def _freeze(
         "schema_version": 1,
         "campaign_id": "stage3b-b1-confirmatory-equivalence-v1",
         "freeze_scope": B1_CONFIRMATORY_FREEZE_SCOPE,
+        "request_path": str((output_root / "request.json").resolve()),
         "request_digest": canonical_json_digest(request),
+        "request_file_sha256": "5" * 64,
+        "contract_digest": request["contract_digest"],
+        "resolved_config_digest": request["resolved_config_digest"],
         "project_source_commit": "1" * 40,
         "torch2pc_commit": request["torch2pc_commit"],
+        "torch2pc_path": str((output_root / "Torch2PC").resolve()),
+        "torch2pc_commit_verification": "git_checkout",
+        "torch2pc_source_sha256": "6" * 64,
         "source_image_digest": "sha256:" + "2" * 64,
         "execution_mode": execution_mode,
         "authorized_pair_count": 120 if execution_mode == "confirmatory" else 12,
@@ -120,7 +129,12 @@ def _freeze(
         "output_root": str(output_root.resolve()),
         "emergency_stop_path": str(output_root.resolve() / "EMERGENCY-STOP"),
         "minimum_free_bytes": 1,
+        "observed_free_bytes": 2,
+        "output_owner_uid": 1000,
+        "output_owner_gid": 1000,
         "evidence": False,
+        "full_confirmatory_campaign_complete": False,
+        "results_publication_permitted": False,
         "test_dataset_access": False,
     }
     value["freeze_digest"] = _digest(value)
@@ -136,9 +150,28 @@ def _preflight(
         "preflight_scope": B1_CONFIRMATORY_PREFLIGHT_SCOPE,
         "freeze_digest": freeze["freeze_digest"],
         "request_digest": freeze["request_digest"],
+        "project_source_commit": freeze["project_source_commit"],
         "lane": lane,
         "image_digest": image or freeze["source_image_digest"],
         "execution_mode": freeze["execution_mode"],
+        "runtime": {
+            "python_version": "3.12.0",
+            "pytorch_version": "2.9.0",
+            "hip_version": "6.3" if lane == "rocm_float32" else None,
+            "cuda_available": lane == "rocm_float32",
+            "device_count": 1 if lane == "rocm_float32" else 0,
+            "device_name": "AMD GPU" if lane == "rocm_float32" else "cpu",
+            "platform": "Linux",
+            "machine": "x86_64",
+            "effective_uid": 1000,
+            "effective_gid": 1000,
+        },
+        "output_root": freeze["output_root"],
+        "minimum_free_bytes": freeze["minimum_free_bytes"],
+        "evidence": False,
+        "full_confirmatory_campaign_complete": False,
+        "results_publication_permitted": False,
+        "test_dataset_access": False,
     }
     value["lane_preflight_digest"] = _digest(value)
     return value
@@ -295,6 +328,7 @@ def test_authorization_requires_both_lanes_and_one_image(tmp_path: Path) -> None
     )
     assert authorization["execution_permitted"] is True
     assert authorization["authorized_pair_count"] == 120
+    assert authorization["authorization_digest"] != authorization["authorization_token"]
     with pytest.raises(B1ConfirmatoryError, match="exactly two"):
         issue_b1_confirmatory_authorization(
             freeze,
@@ -308,6 +342,87 @@ def test_authorization_requires_both_lanes_and_one_image(tmp_path: Path) -> None
             [cpu, bad_rocm],
             operator_acknowledgement=B1_CONFIRMATORY_OPERATOR_ACKNOWLEDGEMENT,
         )
+
+
+@pytest.mark.parametrize(
+    ("field", "replacement"),
+    [
+        ("project_source_commit", "9" * 40),
+        ("torch2pc_commit", "8" * 40),
+        ("image_digest", "sha256:" + "7" * 64),
+        ("output_root", "/tmp/other-output-root"),
+        ("emergency_stop_path", "/tmp/other-output-root/EMERGENCY-STOP"),
+        ("minimum_free_bytes", 2),
+        ("request_digest", "6" * 64),
+    ],
+)
+def test_authorization_digest_rejects_mutated_bound_fields(
+    tmp_path: Path,
+    field: str,
+    replacement: object,
+) -> None:
+    authorization = _authorization(_request(), tmp_path)
+    authorization[field] = replacement
+    with pytest.raises(B1ConfirmatoryError):
+        validate_authorization(authorization)
+
+
+def test_lane_preflight_requires_complete_record(tmp_path: Path) -> None:
+    freeze = _freeze(_request(), tmp_path)
+    preflight = _preflight(freeze, "cpu_float64")
+    preflight.pop("runtime")
+    preflight["lane_preflight_digest"] = _digest(
+        {
+            key: value
+            for key, value in preflight.items()
+            if key != "lane_preflight_digest"
+        }
+    )
+    with pytest.raises(B1ConfirmatoryError, match="runtime probe"):
+        validate_lane_preflight(preflight)
+
+
+@pytest.mark.parametrize("field", ["project_source_commit", "output_root"])
+def test_authorization_rejects_preflight_binding_mismatch(
+    tmp_path: Path,
+    field: str,
+) -> None:
+    request = _request()
+    freeze = _freeze(request, tmp_path)
+    cpu = _preflight(freeze, "cpu_float64")
+    rocm = _preflight(freeze, "rocm_float32")
+    cpu[field] = "9" * 40 if field == "project_source_commit" else "/tmp/other-root"
+    cpu["lane_preflight_digest"] = _digest(
+        {
+            key: value
+            for key, value in cpu.items()
+            if key != "lane_preflight_digest"
+        }
+    )
+    with pytest.raises(B1ConfirmatoryError, match=field):
+        issue_b1_confirmatory_authorization(
+            freeze,
+            [cpu, rocm],
+            operator_acknowledgement=B1_CONFIRMATORY_OPERATOR_ACKNOWLEDGEMENT,
+        )
+
+
+def test_rocm_preflight_requires_hip_device(tmp_path: Path) -> None:
+    freeze = _freeze(_request(), tmp_path)
+    preflight = _preflight(freeze, "rocm_float32")
+    runtime = copy.deepcopy(preflight["runtime"])
+    assert isinstance(runtime, dict)
+    runtime["hip_version"] = None
+    preflight["runtime"] = runtime
+    preflight["lane_preflight_digest"] = _digest(
+        {
+            key: value
+            for key, value in preflight.items()
+            if key != "lane_preflight_digest"
+        }
+    )
+    with pytest.raises(B1ConfirmatoryError, match="HIP runtime"):
+        validate_lane_preflight(preflight)
 
 
 def test_engineering_smoke_rejects_confirmatory_acknowledgement(

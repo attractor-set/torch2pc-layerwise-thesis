@@ -1,0 +1,265 @@
+{
+  "attempt_lifecycle": {
+    "all_attempts_retained": true,
+    "append_only": true,
+    "completed_attempt_must_be_last": true,
+    "exactly_one_completed_attempt_per_pair_required": true,
+    "max_attempts_per_pair": 2,
+    "multiple_completed_attempts_rejected": true,
+    "non_retryable_classes": [
+      "correctness",
+      "scientific",
+      "provenance",
+      "unknown"
+    ],
+    "retry_eligible_classes": [
+      "infrastructure",
+      "operator_interruption",
+      "system_interruption"
+    ],
+    "running_attempts_rejected_at_sealing": true
+  },
+  "candidate": {
+    "candidate_id": "isolated_layer_vjp",
+    "canonical_reference_modified": false,
+    "implementation_commit": "ec12e9a",
+    "implementation_present": true,
+    "reference_id": "stage2_baseline"
+  },
+  "checkpoint_freeze": {
+    "checkpoint_family": "stage2_final_fashionmnist_bp",
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "one_checkpoint_per_seed": true,
+    "path_and_sha256_required": true,
+    "same_checkpoint_used_across_lanes_methods_and_batches_for_seed": true,
+    "selected_before_execution": true
+  },
+  "contract_id": "stage3b-b1-confirmatory-equivalence-v1",
+  "decision_contract": {
+    "confirmatory_equivalence_executed": true,
+    "decision_id": "EQ-B1-CONFIRMATORY",
+    "failed_pair_count_required": 0,
+    "observed_pair_count_required": 120,
+    "production_admission_effect": "opens B2 confirmatory preregistration and execution only; does not open matched profiling until EQ-B2 confirmatory also passes",
+    "registered_pair_count": 120,
+    "scope": "confirmatory",
+    "sealed_required": true,
+    "status_required": "pass"
+  },
+  "execution_boundary": {
+    "confirmatory_request_frozen": false,
+    "eq_b1_confirmatory_sealed": false,
+    "execution_started": false,
+    "immutable_image_built": false,
+    "matched_profiling_open": false,
+    "results_present": false,
+    "runtime_authorization_issued": false,
+    "validation_batches_frozen": false
+  },
+  "gates": [
+    "STRUCT-B1",
+    "NUM-B1",
+    "TRAJ-B1",
+    "OBS-B1",
+    "PROV-B1",
+    "EQ-B1"
+  ],
+  "method_controls": {
+    "FixedPred": {
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "Strict": {
+      "eta": 0.05,
+      "inference_steps": 20
+    }
+  },
+  "opening_requirements": {
+    "checkpoint_paths_and_sha256_required": true,
+    "dry_run_must_report_pending_pairs": 120,
+    "explicit_runtime_authorization_required": true,
+    "frozen_request_required": true,
+    "immutable_image_digest_required": true,
+    "project_source_commit_required": true,
+    "request_digest_required": true,
+    "resolved_config_digest_required": true,
+    "runtime_preflight_required": true,
+    "ten_distinct_validation_batch_paths_and_sha256_required": true,
+    "torch2pc_commit_required": true
+  },
+  "optimizer": {
+    "learning_rate": 0.001,
+    "momentum": 0.0,
+    "name": "SGD"
+  },
+  "pair_identity": {
+    "deterministic_order": [
+      "lane",
+      "method",
+      "model_seed",
+      "validation_batch_index"
+    ],
+    "fields": [
+      "lane",
+      "method",
+      "model_seed",
+      "validation_batch_index"
+    ],
+    "format": "{lane}__{method_lower}__seed-{model_seed}__batch-{validation_batch_index}",
+    "unique_pair_ids_required": 120
+  },
+  "pass_policy": {
+    "all_120_pairs_required": true,
+    "all_gates_must_pass": true,
+    "all_registered_components_required": true,
+    "dangerous_miss_limit": 0,
+    "finite_values_required": true,
+    "outlier_deletion": false,
+    "scientific_failure_replacement": false,
+    "test_split_access": false,
+    "threshold_retuning_after_output": false
+  },
+  "preregistration_base": {
+    "b1_candidate_contract": "experiments/planned/STAGE3B-B1-CONTRACT.json",
+    "b1_smoke_decision": "results/stage-3/b1/stage3b-b1-smoke-attempt-001/decision.json",
+    "project_main_commit": "b4afbfa60714b89345aa9dfd615c2a008f5ee380",
+    "repair_commit": "ec22e8f",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "prohibited": [
+    "test split access",
+    "reusing one validation batch under multiple batch indices",
+    "changing thresholds after observing confirmatory output",
+    "dropping failed pairs",
+    "treating 120 pairs as 120 independent statistical units",
+    "opening matched profiling before sealed EQ-B1 and EQ-B2 confirmatory decisions"
+  ],
+  "registered_components": [
+    "initial beliefs by layer",
+    "beliefs after every inference sweep",
+    "prediction errors after every inference sweep",
+    "state corrections by layer and sweep",
+    "final loss",
+    "named parameter gradients",
+    "parameters after one identical stateless SGD step",
+    "optimizer scalar and tensor state",
+    "actual inference-step count",
+    "RNG-state digest before and after the matched pair"
+  ],
+  "schema_id": "stage3b-b1-confirmatory-preregistration-contract-v1",
+  "schema_version": 1,
+  "scientific_scope": {
+    "architecture": "lenet_classic",
+    "batches_per_seed": 10,
+    "cardinality_formula": "2 lanes * 2 methods * 3 model seeds * 10 validation batches",
+    "dataset": "FashionMNIST",
+    "independent_unit": "model_seed",
+    "lanes": [
+      "cpu_float64",
+      "rocm_float32"
+    ],
+    "matched_pairs": 120,
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "nested_units": [
+      "lane",
+      "method",
+      "validation_batch",
+      "layer",
+      "sweep",
+      "tensor_component"
+    ],
+    "observer_mode": "no_hooks",
+    "split": "validation",
+    "structural_observer_mode": "counters_only",
+    "test_split_access": false,
+    "training_mode": true,
+    "validation_batch_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "state_restoration": {
+    "identical_batch": true,
+    "identical_beliefs": true,
+    "identical_buffers": true,
+    "identical_rng_state": true,
+    "identical_state_dict": true,
+    "resolved_config_digest_match": true,
+    "separate_model_clones": true,
+    "separate_optimizer_clones": true,
+    "training_mode_match": true
+  },
+  "status": "preregistered_execution_closed",
+  "threshold_profiles": {
+    "cpu_float64": {
+      "max_abs": 1e-09,
+      "max_relative_l2": 1e-07,
+      "min_cosine": 0.99999,
+      "zero_atol": 1e-12
+    },
+    "rocm_float32": {
+      "max_abs": 1e-05,
+      "max_relative_l2": 0.001,
+      "min_cosine": 0.999,
+      "zero_atol": 1e-07
+    }
+  },
+  "validation_batch_freeze": {
+    "artifact_per_batch_required": true,
+    "batch_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "batch_size": 256,
+    "distinct_batch_count": 10,
+    "full_batch_required": true,
+    "include_test": false,
+    "manifest_per_batch_required": true,
+    "same_batch_may_not_fill_multiple_indices": true,
+    "selected_before_execution": true,
+    "selection_rule": "first ten full batches from the deterministic shuffle=False validation loader reconstructed from the common Stage 2 BP data protocol",
+    "sha256_per_batch_required": true,
+    "shared_across_lanes": [
+      "cpu_float64",
+      "rocm_float32"
+    ],
+    "shared_across_methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "shared_across_model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "test_split_accessed": false
+  }
+}

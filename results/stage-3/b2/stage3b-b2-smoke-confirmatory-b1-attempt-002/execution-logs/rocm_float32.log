@@ -1,0 +1,39 @@
+ROCM_EXECUTION_START=2026-07-20T13:40:20-03:00
+BRANCH=research/stage3b-b2-smoke-confirmatory-b1-execution-v2
+HEAD=636cee19f4b880d9fbd51341d27de9f92a8d2fef
+CPU_EVIDENCE_COMMIT=c14a697b204f607d9461decf8c7589f09224e994
+PREFLIGHT_COMMIT=636cee19f4b880d9fbd51341d27de9f92a8d2fef
+REQUEST_SHA256=01048bb8c0b076a8674bddca595471ee9c5cb3a4ada69fabebd8d50a35a183ef
+IMAGE=torch2pc-layerwise-thesis:b2-opening-c6c17d8c9698-provenance-v2
+IMAGE_ID=sha256:311f438035d379847ad9e036b70b79becd5d23b09b949e6f5fade895b303d186
+IMAGE_REVISION=c6c17d8c96981605471293fc28ba417b5c56595b
+TORCH2PC_COMMIT=b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4
+PREFLIGHT_JSON_SHA256=325f2b0ec6c3fa43dbc1e9e10c3b72b209b3ee1f1a5c7da5fda52150f5d45e81
+CPU_TREE_SHA256=e38d2f582e0c5c7bad3041b39e282b71c19c1ed93c49624f10ed5233b952ec94
+ Container torch2pc-layerwise-thesis-run-run-80fb15aa4212 Creating 
+ Container torch2pc-layerwise-thesis-run-run-80fb15aa4212 Created 
+{
+  "attempt_id": "stage3b-b2-smoke-confirmatory-b1-attempt-002",
+  "execute": true,
+  "matched_triples": 6,
+  "pairwise_comparisons": 12,
+  "request_id": "stage3b-b2-smoke-confirmatory-b1-v2",
+  "selected_pairs": [
+    "rocm_float32__fixedpred__seed-0__batch-0",
+    "rocm_float32__fixedpred__seed-1__batch-0",
+    "rocm_float32__fixedpred__seed-2__batch-0",
+    "rocm_float32__strict__seed-0__batch-0",
+    "rocm_float32__strict__seed-1__batch-0",
+    "rocm_float32__strict__seed-2__batch-0"
+  ]
+}
+Running TorchSeq2PC.py
+Running TorchSeq2PC.py
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/rocm_float32__fixedpred__seed-0__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/rocm_float32__fixedpred__seed-1__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/rocm_float32__fixedpred__seed-2__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/rocm_float32__strict__seed-0__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/rocm_float32__strict__seed-1__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/rocm_float32__strict__seed-2__batch-0
+DOCKER_STATUS=0
+ROCM_EXECUTION_END=2026-07-20T13:40:36-03:00

@@ -26,6 +26,30 @@ The empirical sequence at this [publication state](glossary_EN.md#term-publicati
 The measurement-readiness gate is therefore satisfied, while equivalence,
 zero, regret, and cost semantics must be frozen before B1/B2 contracts exist.
 
+## 1.1. Architectural levels
+
+The theoretical and control contribution is separated into four levels:
+
+1. `PC-TREF` is the framework defining
+   [task-relative equivalence](glossary_EN.md#term-task-relative-equivalence),
+   representation sufficiency, admissible actions, and regret bounds;
+2. `PC-CATM` is the mechanism model of correction sources, transport,
+   aggregation, and cancellation;
+3. [QWake-PC](glossary_EN.md#term-qwake-pc) is the controller
+   [architecture](glossary_EN.md#term-architecture) and policy family that
+   operationalizes the framework and mechanism model;
+4. `QW-PC0`, `QW-AB0`, and later versioned contracts are concrete controller
+   designs.
+
+`QWake-PC` is not part of the definition of PC-TREF or PC-CATM and does not
+denote one fixed algorithm. A negative result for a concrete policy therefore
+bounds that control embodiment without invalidating the theoretical framework
+or supported mechanism observations.
+
+The `QW-PC0` and `QW-AB0` identifiers are design-level labels here and do not
+permit [execution](glossary_EN.md#term-execution) without separate
+preregistration and an admission decision.
+
 ## 2. Spaces, representations, and registered relations
 
 Let:

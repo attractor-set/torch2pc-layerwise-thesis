@@ -649,8 +649,10 @@ checks and decision gates.
 ### TERM-QWAKE-PC — QWake-PC
 
 - **Russian equivalent:** QWake-PC.
-- **Project meaning:** A research controller combining correction geometry, state-error transport, temporal persistence, predictor uncertainty, and counterfactual exact verification to allocate full exact state-inference sweeps.
-- **Usage rule:** It operates in shadow mode first; active control requires registered safety and runtime gates.
+- **Name semantics:** `Q` is intentionally left unexpanded rather than treated as a conventional acronym. It is a bounded multidimensional semantic marker spanning `Qualified`, `Quotient`, `Quality`, `Quiet`, and `Quick`; no dimension is the single canonical expansion.
+- **Project meaning:** A research controller architecture and family that operationalizes PC-TREF representations, PC-CATM mechanism features, temporal persistence, predictor uncertainty, and counterfactual exact verification to allocate predictive-coding computation.
+- **Architectural role:** PC-TREF is the theoretical decision-sufficiency framework, PC-CATM is the mechanism model of correction formation and cancellation, and QWake-PC is their control-layer embodiment. `QW-PC0` and `QW-AB0` denote separate versioned concrete-controller designs and are not synonyms for QWake-PC.
+- **Usage rule:** `Qualified` governs action admissibility, `Quotient` links the controller to task-relative PC-TREF representation, `Quality` constrains result quality and decision regret, `Quiet` denotes diagnostic context without automatic permission to stop, and `Quick` is only a separately demonstrated engineering outcome. QWake-PC does not denote one fixed algorithm. A controller is evaluated in shadow mode first; active control requires registered safety and complete-cost gates.
 
 <a id="term-precision-masked-zero"></a>
 ### TERM-PRECISION-MASKED-ZERO — precision-masked zero

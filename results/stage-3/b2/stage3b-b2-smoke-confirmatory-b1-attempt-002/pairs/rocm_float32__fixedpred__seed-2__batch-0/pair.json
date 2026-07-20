@@ -1,0 +1,112 @@
+{
+  "comparison_plan": {
+    "primary": "stage2_baseline_vs_composite_vjp",
+    "required_direct_control": "isolated_layer_vjp_vs_composite_vjp"
+  },
+  "gates": {
+    "NUM-B2": {
+      "gate_id": "NUM-B2",
+      "passed": true,
+      "reasons": []
+    },
+    "OBS-B2": {
+      "gate_id": "OBS-B2",
+      "passed": true,
+      "reasons": []
+    },
+    "PROV-B2": {
+      "gate_id": "PROV-B2",
+      "passed": true,
+      "reasons": []
+    },
+    "STRUCT-B2": {
+      "gate_id": "STRUCT-B2",
+      "passed": true,
+      "reasons": []
+    },
+    "TRAJ-B2": {
+      "gate_id": "TRAJ-B2",
+      "passed": true,
+      "reasons": []
+    }
+  },
+  "pair_admissible": true,
+  "pair_id": "rocm_float32__fixedpred__seed-2__batch-0",
+  "pair_spec": {
+    "attempt_id": "stage3b-b2-smoke-confirmatory-b1-attempt-002",
+    "b1_admission": {
+      "path": "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/matched-profiling-admission.json",
+      "sha256": "9dbc684405c77dee5d390052bfcb41527b8a3f40b4af0fae1f469c0e50b7dd9c"
+    },
+    "b1_confirmatory_decision": {
+      "path": "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/decision.json",
+      "sha256": "a20eabc1e6da8c9634792b4c3457a272419568d5f23f3e7bacc2c38da3c87afc"
+    },
+    "b2_harness_contract": {
+      "path": "experiments/planned/STAGE3B-B2-SMOKE-HARNESS-CONTRACT.json",
+      "sha256": "b8b5f3f9d5d94026d12bf6788afe0c2449d6b98155c9f1fdd13dd23ed938a972"
+    },
+    "b2_implementation_contract": {
+      "path": "experiments/planned/STAGE3B-B2-IMPLEMENTATION-CONTRACT.json",
+      "sha256": "883f509d73d90995cbb6dc3cc9036a1d499aab3e3d594897a7bbb32f3c8bea05"
+    },
+    "b2_preregistration_contract": {
+      "path": "experiments/planned/STAGE3B-B2-CONTRACT.json",
+      "sha256": "b250b042a8fe8118b51841b27b6cf70e167ced1d44f4587fe41aa50735c78b26"
+    },
+    "batch": {
+      "path": "experiments/frozen/stage3b-b1-smoke/shared-validation-batch-0.pt",
+      "sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99"
+    },
+    "batch_index": 0,
+    "checkpoint": {
+      "path": "results/stage-2/runs/final_stage_2-fashionmnist-bp-s2-efad30e2bc-6d66b0a6-0ffe23c9/20260713T133906Z-aa3ad4d2/checkpoint.pt",
+      "sha256": "0f9206bc44097dc94e5937e1027643f23441dd6f39b44892680369409cf8f3a4"
+    },
+    "lane": "rocm_float32",
+    "lane_control": {
+      "device": "cuda",
+      "dtype": "float32"
+    },
+    "method": "FixedPred",
+    "method_control": {
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "model_seed": 2,
+    "request_id": "stage3b-b2-smoke-confirmatory-b1-v2",
+    "resolved_config_digest": "9514399955516e23e29409b7fc7ad9cca3412f2da84e07df7927a2eceb361564",
+    "run_seed": 20260719,
+    "source_image_digest": "311f438035d379847ad9e036b70b79becd5d23b09b949e6f5fade895b303d186",
+    "training_mode": true
+  },
+  "provenance": {
+    "attempt_id": "stage3b-b2-smoke-confirmatory-b1-attempt-002",
+    "b1_admission_sha256": "9dbc684405c77dee5d390052bfcb41527b8a3f40b4af0fae1f469c0e50b7dd9c",
+    "b1_confirmatory_decision_sha256": "a20eabc1e6da8c9634792b4c3457a272419568d5f23f3e7bacc2c38da3c87afc",
+    "b1_evidence_commit": "f1efe2a01720ad9ecfd7891151315067a79f4682",
+    "b1_implementation_commit": "ec12e9a",
+    "b2_harness_contract_sha256": "b8b5f3f9d5d94026d12bf6788afe0c2449d6b98155c9f1fdd13dd23ed938a972",
+    "b2_implementation_commit": "8a8a4559cda5f5750b05e14b614b95386329c952",
+    "b2_implementation_contract_sha256": "883f509d73d90995cbb6dc3cc9036a1d499aab3e3d594897a7bbb32f3c8bea05",
+    "b2_implementation_tag": "stage3b-b2-composite-vjp-implementation-v1",
+    "b2_preregistration_contract_sha256": "b250b042a8fe8118b51841b27b6cf70e167ced1d44f4587fe41aa50735c78b26",
+    "batch_sha256": "d34399eea93fbc280f1df6d72fda3dc6b3dde4d93046355dc902d3e1f8ee9b99",
+    "candidate_id": "composite_vjp",
+    "checkpoint_sha256": "0f9206bc44097dc94e5937e1027643f23441dd6f39b44892680369409cf8f3a4",
+    "control_candidate_id": "isolated_layer_vjp",
+    "project_base_commit": "f74a08818f653a27e8d04044cf59e2c2930b688c",
+    "reference_id": "stage2_baseline",
+    "request_id": "stage3b-b2-smoke-confirmatory-b1-v2",
+    "resolved_config_digest": "9514399955516e23e29409b7fc7ad9cca3412f2da84e07df7927a2eceb361564",
+    "rng_pair_digest": "5181ca9b6777000ab7788b363d2bdf6f7cf6844fdf65890a8e4715709f06c50c",
+    "source_image_digest": "311f438035d379847ad9e036b70b79becd5d23b09b949e6f5fade895b303d186",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "structural_summary": {
+    "block_or_chunk_fallback_call_count": 0,
+    "composite_vjp_call_count": 10,
+    "isolated_state_vjp_call_count": 0,
+    "sweeps_observed": 10
+  }
+}

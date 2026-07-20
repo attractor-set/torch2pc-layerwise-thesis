@@ -60,6 +60,7 @@ nav:
       - ADR-015 Сопоставленные измерения: decisions/ADR-015-stage3b-matched-measurement-sealing.md
       - ADR-016 Граница достаточности: decisions/ADR-016-stage3b-sufficiency-boundary.md
       - ADR-017 Корректность 288-cell: decisions/ADR-017-stage3b-288cell-correctness-repair.md
+      - ADR-018 Confirmatory EQ-B1: decisions/ADR-018-stage3b-b1-confirmatory-preregistration.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

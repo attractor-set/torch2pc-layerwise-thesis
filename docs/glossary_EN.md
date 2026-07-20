@@ -723,3 +723,38 @@ Changing the meaning of a canonical term requires updating both language
 versions, checking every repository-wide use, and explicitly documenting the
 migration from the previous wording. Change a `TERM-*` identifier only when
 concepts are split or merged, and record the change in the changelog.
+
+<a id="term-multiscale-mechanism-decision-architecture"></a>
+### TERM-MULTISCALE-MECHANISM-DECISION-ARCHITECTURE — multiscale mechanism–decision architecture
+
+- **Russian equivalent:** многомасштабная механизмно-решающая архитектура.
+- **Project meaning:** A compositional architecture in which PC-CATM describes a mechanism at a selected scale, PC-TREF tests decision sufficiency, and QWake-PC selects scale, action, and budget.
+- **Usage rule:** The term does not imply exact self-similarity or scale invariance; norms, aggregation, actions, regret, and cost are defined separately for every scale.
+
+<a id="term-correction-composition-defect"></a>
+### TERM-CORRECTION-COMPOSITION-DEFECT — correction-composition defect
+
+- **Russian equivalent:** дефект композиции коррекции.
+- **Project meaning:** A normalized discrepancy between an aggregated fine-scale correction and the correction computed directly at a coarser scale.
+- **Usage rule:** Cross-scale transfer of NCZ, ECZ, or action permission requires a registered norm, tolerance, and separate defect gate.
+
+<a id="term-adaptive-escalation"></a>
+### TERM-ADAPTIVE-ESCALATION — adaptive escalation
+
+- **Russian equivalent:** адаптивная эскалация.
+- **Project meaning:** Conservative transition from a cheaper local scale to more complete computation when coverage, sufficiency, verification, or a safety gate blocks local action.
+- **Usage rule:** Insufficiency must increase computational completeness; it does not permit more aggressive reduction.
+
+<a id="term-spike-like-control-dynamics"></a>
+### TERM-SPIKE-LIKE-CONTROL-DYNAMICS — spike-like control dynamics
+
+- **Russian equivalent:** спайкоподобная управляющая динамика.
+- **Project meaning:** Thresholded, temporally sparse, and scale-selective organization of QWake-PC correction events while the base network retains non-spiking state and error dynamics.
+- **Usage rule:** The term does not denote a spiking neural network, spike-native communication, or biological equivalence.
+
+<a id="term-qwake-spc"></a>
+### TERM-QWAKE-SPC — QWake-SPC
+
+- **Russian equivalent:** QWake-SPC.
+- **Project meaning:** A prospective PhD line in which qualified QWake correction events become native spikes and predictive-coding state, error transport, communication, and learning receive spike-native implementations.
+- **Usage rule:** It is not an implemented controller or an execution permission; QWake-SPC remains outside the mandatory boundary of the current master's thesis.

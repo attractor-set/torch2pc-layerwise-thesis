@@ -53,6 +53,18 @@ is authorized.
 `PNZ`, additional architectures or datasets, and active `QWake-PC` are included
 only if the mandatory path remains protected and a separate protocol exists.
 
+## 3.1. Subsequent PhD-program boundary
+
+The current study may formalize the
+[multiscale mechanism–decision architecture](glossary_EN.md#term-multiscale-mechanism-decision-architecture)
+and evaluate [QWake-PC](glossary_EN.md#term-qwake-pc) in [shadow mode](glossary_EN.md#term-shadow-mode) while preserving continuous states and
+errors. Transforming qualified correction events into native spikes,
+spike-native error transport, and learning belongs to the future `QWake-SPC`
+line.
+
+This line is outside the mandatory path and does not change the definitions of
+`A-Min`, `A-Core`, or `A-Max`.
+
 ## 4. Completion levels
 
 ### `A-Min`

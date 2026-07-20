@@ -3,7 +3,6 @@
 [Русская версия](CHANGELOG.md)
 
 ## [Unreleased] — B1/B2 preregistration
-
 ### Added
 
 - separate paired documents and JSON contracts for B1/B2;
@@ -16,6 +15,12 @@
   required equivalence, precision-masked zero, explicit norm contracts, and
   separate cost boundaries;
 - new glossary entries with identical `TERM-*` identifiers in both languages.
+
+- added the normative multiscale mechanism–decision architecture and ADR-020;
+- froze the boundary between continuous-state spike-like QWake-PC and the prospective spike-native `QWake-SPC` line;
+- preserved the B1/B2 → matched profiling → `EX-IF0` → shadow `QWake-PC` critical path unchanged.
+
+- Documented the independent legacy A1 CSV compatibility boundary: sealed `CRLF` digests are verified from a bounded Git `LF`-normalized checkout without rewriting historical manifests; Stage 2/3A/B0 release assets do not replace this check.
 
 ### Changed
 

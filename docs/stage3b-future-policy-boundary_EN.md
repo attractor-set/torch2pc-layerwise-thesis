@@ -60,6 +60,17 @@ stop
 Before the shadow gate, this hierarchy is only a set of proposals and
 counterfactual actions; `controls_execution=false`.
 
+## Multiscale and PhD boundary
+
+The [multiscale mechanism–decision architecture](glossary_EN.md#term-multiscale-mechanism-decision-architecture)
+is not retrofitted into B1/B2 and does not change the current post-`EX-IF0`
+sequence. A possible block/layer pilot requires a separate exploratory contract.
+
+The [spike-like control dynamics](glossary_EN.md#term-spike-like-control-dynamics)
+of [QWake-PC](glossary_EN.md#term-qwake-pc) preserve non-spiking states and errors. `QWake-SPC`, spike-native
+communication, and learning remain outside the current study and are not
+conditions of `A-Core` or `A-Max`.
+
 ## Test split and A-Max
 
 The test split remains closed for feature, threshold, finalist, and policy

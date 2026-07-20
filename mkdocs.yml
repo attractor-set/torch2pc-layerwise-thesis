@@ -65,6 +65,7 @@ nav:
       - ADR-019 Confirmatory EQ-B1 opening: decisions/ADR-019-stage3b-b1-confirmatory-opening.md
       - ADR-020 Многомасштабная архитектура: decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md
       - ADR-021 Confirmatory EQ-B2: decisions/ADR-021-stage3b-b2-confirmatory-preregistration.md
+      - ADR-022 Confirmatory EQ-B2 opening: decisions/ADR-022-stage3b-b2-confirmatory-opening.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

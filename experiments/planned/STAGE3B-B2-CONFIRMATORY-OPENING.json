@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "opening_id": "stage3b-b2-confirmatory-opening-v1",
+  "status": "implementation_ready_execution_closed",
+  "preregistration_contract": "experiments/planned/STAGE3B-B2-CONFIRMATORY-CONTRACT.json",
+  "opening_base_commit": "cebf658e78c37313b78b0b586f3c05328be2d076",
+  "registered_scope": {
+    "lanes": [
+      "cpu_float64",
+      "rocm_float32"
+    ],
+    "methods": [
+      "FixedPred",
+      "Strict"
+    ],
+    "model_seeds": [
+      0,
+      1,
+      2
+    ],
+    "validation_batch_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "matched_triples": 120,
+    "pairwise_comparisons": 240,
+    "comparison_pairs": [
+      [
+        "stage2_baseline",
+        "composite_vjp"
+      ],
+      [
+        "isolated_layer_vjp",
+        "composite_vjp"
+      ]
+    ],
+    "test_split_access": false
+  },
+  "required_reused_inputs": {
+    "b1_frozen_request": "experiments/frozen/stage3b-b1-confirmatory/request.json",
+    "b1_validation_batch_registry": "experiments/frozen/stage3b-b1-confirmatory/validation-batches.json",
+    "b1_confirmatory_decision": "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/decision.json",
+    "b1_matched_profiling_admission": "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/matched-profiling-admission.json",
+    "exact_batch_reuse_required": true,
+    "exact_checkpoint_reuse_required": true,
+    "new_validation_batch_selection": false
+  },
+  "runtime_modules": {
+    "request_and_lifecycle": "src/torch2pc_thesis/stage3b_b2_confirmatory.py",
+    "authorization": "src/torch2pc_thesis/stage3b_b2_confirmatory_authorization.py",
+    "sealing": "src/torch2pc_thesis/stage3b_b2_confirmatory_sealing.py"
+  },
+  "runtime_scripts": {
+    "freeze_request": "scripts/freeze_stage3b_b2_confirmatory.py",
+    "authorize": "scripts/authorize_stage3b_b2_confirmatory.py",
+    "run": "scripts/run_stage3b_b2_confirmatory.py",
+    "seal": "scripts/seal_stage3b_b2_confirmatory.py"
+  },
+  "authorization_requirements": {
+    "clean_exact_source_commit": true,
+    "immutable_image_digest": true,
+    "cpu_float64_preflight": true,
+    "rocm_float32_preflight": true,
+    "both_preflights_required": true,
+    "authorization_domains_separated": true,
+    "confirmatory_execution_mode": "confirmatory",
+    "confirmatory_authorized_triple_count": 120,
+    "confirmatory_authorized_comparison_count": 240,
+    "confirmatory_operator_acknowledgement": "AUTHORIZE_STAGE3B_B2_CONFIRMATORY_120_MATCHED_TRIPLES_240_COMPARISONS_CPU_FLOAT64_ROCM_FLOAT32",
+    "engineering_smoke_execution_mode": "engineering_smoke",
+    "engineering_smoke_authorized_triple_count": 12,
+    "engineering_smoke_authorized_comparison_count": 24,
+    "engineering_smoke_operator_acknowledgement": "AUTHORIZE_STAGE3B_B2_ENGINEERING_SMOKE_12_MATCHED_TRIPLES_24_COMPARISONS_CPU_FLOAT64_ROCM_FLOAT32_NON_EVIDENCE"
+  },
+  "recovery_contract": {
+    "append_only_attempts": true,
+    "max_attempts_per_triple": 2,
+    "resume_selects_pending_triples": true,
+    "retry_failed_requires_resume": true,
+    "retryable_failure_classes": [
+      "infrastructure",
+      "operator_interruption",
+      "system_interruption"
+    ],
+    "non_retryable_failure_classes": [
+      "correctness",
+      "scientific",
+      "provenance",
+      "unknown"
+    ],
+    "orphan_reconciliation_acknowledgement": "RECONCILE_STAGE3B_B2_CONFIRMATORY_ORPHANED_RUNNING_ATTEMPTS",
+    "orphan_reconciliation_requires_no_lane_lock": true
+  },
+  "sealing_requirements": {
+    "scientific_decision_id": "EQ-B2-CONFIRMATORY",
+    "derived_admission_decision_id": "EQ-B2",
+    "scope": "confirmatory",
+    "registered_triple_count": 120,
+    "observed_triple_count": 120,
+    "registered_comparison_count": 240,
+    "observed_comparison_count": 240,
+    "failed_pair_count": 0,
+    "dangerous_miss_limit": 0,
+    "all_gate_ids_required": [
+      "STRUCT-B2",
+      "NUM-B2",
+      "TRAJ-B2",
+      "OBS-B2",
+      "PROV-B2"
+    ],
+    "exactly_one_completed_attempt_per_triple": true,
+    "completed_attempt_must_be_last": true,
+    "running_attempts_rejected": true,
+    "admission_binds_scientific_decision_sha256": true,
+    "status": "pass"
+  },
+  "execution_boundary": {
+    "frozen_request_present": false,
+    "immutable_image_built": false,
+    "preflights_present": false,
+    "authorization_issued": false,
+    "engineering_smoke_passed": false,
+    "confirmatory_execution_started": false,
+    "confirmatory_evidence_present": false,
+    "eq_b2_confirmatory_sealed": false,
+    "derived_eq_b2_admission_present": false,
+    "matched_profiling_refrozen": false,
+    "matched_profiling_open": false,
+    "results_present": false
+  }
+}

@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- confirmatory `EQ-B2` preregistration: 120 matched triples, 240 direct comparisons, exact reuse of the ten B1 validation batches, and a closed execution boundary;
+
 - separate paired documents and JSON contracts for B1/B2;
 - a shared overview, ADR-014, and sequential B1 → B2 gate;
 - zero dangerous admissions and a direct B1/B2 control;

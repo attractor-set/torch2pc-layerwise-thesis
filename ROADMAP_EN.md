@@ -43,34 +43,41 @@ B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and
 `block`/`chunk` variants are outside this contract and require separate
 preregistration.
 
-## Stage 16 — exact candidates and [matched-profiling](docs/glossary_EN.md#term-matched-profiling) preparation — current
+## Stage 16 — exact candidates and confirmatory admission to [matched profiling](docs/glossary_EN.md#term-matched-profiling) — current
 
 Complete:
 
-- B1 is implemented and passed deterministic, CPU, and ROCm controls;
-- sealed `EQ-B1` is positive;
-- B2 was implemented after B1 admission and passed the registered controls;
-- sealed `EQ-B2` is positive;
-- scientific admission for shared matched profiling is open;
-- the frozen 288-cell request and manifest are built and validated;
-- the candidate-aware runner is implemented.
+- B1 is implemented and sealed as confirmatory `EQ-B1` over 120/120 pairs;
+- B2 is implemented and passed engineering smoke over 12/12 triples and 24/24
+  comparisons;
+- the candidate-aware matched-profiling runner is implemented;
+- the fail-closed confirmatory-B2 requirement before production launch is
+  frozen;
+- confirmatory B2 is preregistered for 120 triples and 240 comparisons.
 
 Current boundary:
 
 ```text
-scientific_admission=open
+scientific_admission=blocked_pending_eq_b2_confirmatory
 candidate_aware_runner=complete
+matched_profiling_request_refresh_required=true
 runtime_authorization=not_issued
 measurements_allowed=false
 ```
 
-The remaining transition within Stage 16 is the separate ROCm/float32 runtime
-freeze already retained by the frozen request. Documentation does not replace
-a separate admission decision and does not authorize measurements.
+Remaining Stage 16 transition:
 
-After authorized execution, Stage 16 must conclude with matched B0/B1/B2
-analysis, completeness and integrity checks, and evidence sealing. Negative and
-mixed results must be retained.
+1. a separate confirmatory-B2 opening branch;
+2. frozen request, image, preflight, authorization, and dry-run;
+3. execution and sealing of `EQ-B2-CONFIRMATORY`;
+4. a derived confirmatory `EQ-B2` admission;
+5. a new versioned 288-cell request/manifest freeze;
+6. separate matched-profiling runtime authorization.
+
+The previous smoke decision and matched request remain immutable but do not
+authorize production execution. After authorized execution, the stage must
+conclude with matched B0/B1/B2 analysis, integrity checks, and evidence sealing.
+Negative and mixed outcomes must be retained.
 
 ## Stage 17 — `EX-IF0`, passive diagnostics, and `A11-OFF0`
 

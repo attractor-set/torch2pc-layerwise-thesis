@@ -103,3 +103,5 @@ experiments/planned/STAGE3B-B1-CONFIRMATORY.md,experiments/planned/STAGE3B-B1-CO
 docs/decisions/ADR-019-stage3b-b1-confirmatory-opening.md,docs/decisions/ADR-019-stage3b-b1-confirmatory-opening_EN.md,required
 docs/pc-multiscale-mechanism-decision-architecture.md,docs/pc-multiscale-mechanism-decision-architecture_EN.md,required
 docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md,docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md,required
+docs/decisions/ADR-021-stage3b-b2-confirmatory-preregistration.md,docs/decisions/ADR-021-stage3b-b2-confirmatory-preregistration_EN.md,required
+experiments/planned/STAGE3B-B2-CONFIRMATORY.md,experiments/planned/STAGE3B-B2-CONFIRMATORY_EN.md,required

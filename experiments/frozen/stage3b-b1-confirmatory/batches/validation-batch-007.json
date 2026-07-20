@@ -1,0 +1,25 @@
+{
+  "artifact_path": "experiments/frozen/stage3b-b1-confirmatory/batches/validation-batch-007.pt",
+  "artifact_sha256": "c614f89810f292775edb23ff41daae97a73e42bf6cb03ee8ecd5c46e15c7f99b",
+  "artifact_type": "stage3b_b1_confirmatory_validation_batch",
+  "batch_index": 7,
+  "batch_size": 256,
+  "common_data_protocol_sha256": "de72abd170648d015c4b1e094b8f015337670eabfd7f9c8a8c9fbf16631ee7a5",
+  "content_sha256": "38988ee6afe1c556007af08aa16325512f021dcb21624974c01832a16a27b9ae",
+  "dataset": "FashionMNIST",
+  "include_test": false,
+  "inputs_dtype": "torch.float32",
+  "inputs_shape": [
+    256,
+    1,
+    32,
+    32
+  ],
+  "schema_version": 1,
+  "split": "validation",
+  "targets_dtype": "torch.int64",
+  "targets_shape": [
+    256
+  ],
+  "test_split_accessed": false
+}

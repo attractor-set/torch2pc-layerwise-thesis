@@ -1,0 +1,35 @@
+CPU_EXECUTION_START=2026-07-20T13:20:09-03:00
+BRANCH=research/stage3b-b2-smoke-confirmatory-b1-execution-v2
+HEAD=0f076ad9bd0249ee92c47d7ded5c75d3559fbc36
+REQUEST_SHA256=01048bb8c0b076a8674bddca595471ee9c5cb3a4ada69fabebd8d50a35a183ef
+IMAGE=torch2pc-layerwise-thesis:b2-opening-c6c17d8c9698-provenance-v2
+IMAGE_ID=sha256:311f438035d379847ad9e036b70b79becd5d23b09b949e6f5fade895b303d186
+IMAGE_REVISION=c6c17d8c96981605471293fc28ba417b5c56595b
+TORCH2PC_COMMIT=b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4
+ Container torch2pc-layerwise-thesis-control-cpu-run-c28a42d005a3 Creating 
+ Container torch2pc-layerwise-thesis-control-cpu-run-c28a42d005a3 Created 
+{
+  "attempt_id": "stage3b-b2-smoke-confirmatory-b1-attempt-002",
+  "execute": true,
+  "matched_triples": 6,
+  "pairwise_comparisons": 12,
+  "request_id": "stage3b-b2-smoke-confirmatory-b1-v2",
+  "selected_pairs": [
+    "cpu_float64__fixedpred__seed-0__batch-0",
+    "cpu_float64__fixedpred__seed-1__batch-0",
+    "cpu_float64__fixedpred__seed-2__batch-0",
+    "cpu_float64__strict__seed-0__batch-0",
+    "cpu_float64__strict__seed-1__batch-0",
+    "cpu_float64__strict__seed-2__batch-0"
+  ]
+}
+Running TorchSeq2PC.py
+Running TorchSeq2PC.py
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/cpu_float64__fixedpred__seed-0__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/cpu_float64__fixedpred__seed-1__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/cpu_float64__fixedpred__seed-2__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/cpu_float64__strict__seed-0__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/cpu_float64__strict__seed-1__batch-0
+wrote /workspace/results/stage-3/b2/stage3b-b2-smoke-confirmatory-b1-attempt-002/pairs/cpu_float64__strict__seed-2__batch-0
+DOCKER_STATUS=0
+CPU_EXECUTION_END=2026-07-20T13:20:46-03:00

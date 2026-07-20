@@ -1,19 +1,30 @@
 {
-  "schema_version": 1,
-  "schema_id": "stage3b-b2-implementation-contract-v1",
+  "schema_version": 2,
+  "schema_id": "stage3b-b2-implementation-contract-v2",
   "implementation_id": "stage3b-b2-composite-vjp-implementation-v1",
   "status": "implementation_ready_not_executed",
   "project_base": {
-    "main_merge_commit_short": "1a90644",
-    "eq_b1_decision_commit_short": "7c8df38",
+    "main_merge_commit_short": "f1efe2a",
+    "eq_b1_evidence_merge_commit_short": "f1efe2a",
     "preregistration_tag": "stage3b-b1-b2-prereg-v1",
     "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
   },
   "opening_gate": {
     "decision_id": "EQ-B1",
+    "source_decision_id": "EQ-B1-CONFIRMATORY",
+    "required_scope": "confirmatory",
+    "required_confirmatory_equivalence_executed": true,
     "required_status": "pass",
     "required_sealed": true,
-    "evidence_path": "results/stage-3/b1/stage3b-b1-smoke-attempt-001/decision.json"
+    "matched_pairs_expected": 120,
+    "matched_pairs_observed": 120,
+    "required_failed_pairs": [],
+    "required_test_dataset_access": false,
+    "required_results_publication_permitted": false,
+    "admission_path": "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/matched-profiling-admission.json",
+    "admission_sha256": "9dbc684405c77dee5d390052bfcb41527b8a3f40b4af0fae1f469c0e50b7dd9c",
+    "source_decision_path": "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/decision.json",
+    "source_decision_sha256": "a20eabc1e6da8c9634792b4c3457a272419568d5f23f3e7bacc2c38da3c87afc"
   },
   "candidate": {
     "candidate_id": "composite_vjp",

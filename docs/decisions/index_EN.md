@@ -31,3 +31,4 @@
 - [ADR-019](ADR-019-stage3b-b1-confirmatory-opening_EN.md): adds fail-closed
   batch freezing, two-lane authorization, recovery, and confirmatory `EQ-B1`
   sealing infrastructure while keeping [runtime](../glossary_EN.md#term-runtime) execution closed.
+- [ADR-020](ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md): [multiscale mechanism–decision architecture](../glossary_EN.md#term-multiscale-mechanism-decision-architecture), scale-specific contracts, and the boundary of the future `QWake-SPC` line.

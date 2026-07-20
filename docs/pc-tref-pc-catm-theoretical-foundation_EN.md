@@ -50,6 +50,20 @@ The `QW-PC0` and `QW-AB0` identifiers are design-level labels here and do not
 permit [execution](glossary_EN.md#term-execution) without separate
 preregistration and an admission decision.
 
+
+## 1.2. Prospective multiscale extension
+
+The [multiscale mechanism–decision architecture](glossary_EN.md#term-multiscale-mechanism-decision-architecture)
+indexes the mechanism model, representation sufficiency, and control action by
+computational scale. It does not assume that local and global `NCZ`, `ECZ`, or
+`TNZ` regimes are equivalent. A cross-scale claim requires a separate
+[correction-composition defect](glossary_EN.md#term-correction-composition-defect),
+norm, and tolerance.
+
+This extension does not change the current single-level B1/B2, `EX-IF0`, and
+shadow `QWake-PC` path. A complete multiscale policy and `QWake-SPC` remain
+future research directions.
+
 ## 2. Spaces, representations, and registered relations
 
 Let:

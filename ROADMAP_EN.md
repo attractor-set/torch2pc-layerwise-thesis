@@ -107,3 +107,12 @@ statistical plan. Only then permit one final test-dataset evaluation.
 
 Integrate Stage 1/2, Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1/B2, and the
 available Scenario A results. Mark unexecuted extensions as future work.
+
+## Post-master's boundary — prospective PhD line
+
+After the current critical path is complete, a separate `QWake-SPC` program may
+move from QWake-PC
+[spike-like control dynamics](docs/glossary_EN.md#term-spike-like-control-dynamics)
+to native spikes, spike-native error transport, local learning, and
+neuromorphic validation. This program is not Stage 21, does not open execution,
+and does not change the master's-thesis completion criteria.

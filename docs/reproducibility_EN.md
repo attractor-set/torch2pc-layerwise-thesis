@@ -48,6 +48,38 @@ After a source or [configuration](glossary_EN.md#term-configuration) change, the
 repeated. Control results contain the lock-file SHA-256, so an artifact from a
 different environment is not accepted automatically.
 
+## Canonical release assets and A1 CSV byte integrity
+
+Large artifacts from completed Stage 2, Stage 3A, and Stage 3B B0 phases are
+published as separate canonical assets in GitHub Releases. Their absence from
+an automatically generated GitHub source archive does not mean that [evidence](glossary_EN.md#term-evidence)
+is unavailable: each release asset is verified against its published SHA-256
+and, where provided by the package, its internal inventory manifest.
+
+The existence of those release assets does not resolve a separate historical
+A1 CSV byte-reproducibility issue. The A1 v1 manifests were created for six CSV
+types in each of the `cpu` and `rocm` lanes — twelve registered paths in total
+— when records used `CRLF` terminators. Git subsequently normalized those text
+files and checks them out, including through source archives, with `LF` line
+endings. A direct `sha256sum -c` may therefore report mismatches for those
+registered CSV files even though their tabular content has not changed.
+
+The canonical compatibility check is implemented by
+`verify_a1_evidence_manifest`. It accepts a mismatch only for the exact closed
+set of twelve A1 CSV paths and only when a deterministic `LF`-to-`CRLF`
+conversion reproduces the sealed digest. Every other artifact requires an
+exact byte-for-byte match. Existing A1 manifests and digests are not rewritten
+for the normalized `LF` bytes, because doing so would alter already sealed
+evidence instead of documenting historical compatibility.
+
+Two independent policies therefore apply:
+
+- Stage 2, Stage 3A, and Stage 3B B0 release assets provide availability and
+  integrity verification for the large artifacts of those phases;
+- the registered `CRLF` → Git `LF` rule provides a bounded compatibility path
+  for legacy A1 CSV files and does not extend to other files or new evidence
+  packages.
+
 ## Metric verifiability
 
 Every completed [run](glossary_EN.md#term-run) stores validation predictions. [Final execution](glossary_EN.md#term-final-execution) also stores test

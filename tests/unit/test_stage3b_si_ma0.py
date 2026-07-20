@@ -611,3 +611,29 @@ def test_verify_a1_manifest_rejects_unregistered_mismatch(
     )
     with pytest.raises(SIMA0Error, match="unregistered A1 checksum mismatch"):
         verify_a1_evidence_manifest(tmp_path)
+
+
+def test_reproducibility_docs_record_a1_crlf_git_lf_boundary() -> None:
+    repo_root = Path(__file__).resolve().parents[2]
+    expected = {
+        "docs/reproducibility.md": (
+            "двенадцати зарегистрированных",
+            "`CRLF`",
+            "`LF`",
+            "verify_a1_evidence_manifest",
+            "этапов 2, 3A и 3B B0",
+            "не устраняет",
+        ),
+        "docs/reproducibility_EN.md": (
+            "twelve registered",
+            "`CRLF`",
+            "`LF`",
+            "verify_a1_evidence_manifest",
+            "Stage 2, Stage 3A, and Stage 3B B0",
+            "does not resolve",
+        ),
+    }
+    for relative_name, phrases in expected.items():
+        content = (repo_root / relative_name).read_text(encoding="utf-8")
+        for phrase in phrases:
+            assert phrase in content, (relative_name, phrase)

@@ -101,3 +101,5 @@ docs/decisions/ADR-017-stage3b-288cell-correctness-repair.md,docs/decisions/ADR-
 docs/decisions/ADR-018-stage3b-b1-confirmatory-preregistration.md,docs/decisions/ADR-018-stage3b-b1-confirmatory-preregistration_EN.md,required
 experiments/planned/STAGE3B-B1-CONFIRMATORY.md,experiments/planned/STAGE3B-B1-CONFIRMATORY_EN.md,required
 docs/decisions/ADR-019-stage3b-b1-confirmatory-opening.md,docs/decisions/ADR-019-stage3b-b1-confirmatory-opening_EN.md,required
+docs/pc-multiscale-mechanism-decision-architecture.md,docs/pc-multiscale-mechanism-decision-architecture_EN.md,required
+docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md,docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md,required

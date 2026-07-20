@@ -65,6 +65,31 @@ requires its own contract, preregistration, shadow evaluation, and admission
 decision. A negative result for one concrete controller does not invalidate
 PC-CATM or PC-TREF.
 
+
+## Multiscale extension and spike-like boundary
+
+In the prospective
+[multiscale mechanism–decision architecture](glossary_EN.md#term-multiscale-mechanism-decision-architecture),
+a QWake policy may select the triple
+
+```math
+(scale, action, budget).
+```
+
+Norms, aggregation, admissible actions, regret, and cost remain separate at
+every scale. Insufficient local diagnostics trigger
+[adaptive escalation](glossary_EN.md#term-adaptive-escalation) toward a more
+complete exact path.
+
+The current [QWake-PC](glossary_EN.md#term-qwake-pc) may exhibit
+[spike-like control dynamics](glossary_EN.md#term-spike-like-control-dynamics):
+thresholded and sparse correction events, hysteresis, persistence, and a
+discrete budget. The base states and errors remain non-spiking.
+
+[`QWake-SPC`](glossary_EN.md#term-qwake-spc) is reserved for a possible PhD line
+in which events become native spikes. It is not part of the current execution
+plan and does not change the `A-Core` completion boundary.
+
 ## Action hierarchy
 
 The future controller considers an ordered ladder:

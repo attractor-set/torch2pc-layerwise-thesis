@@ -245,3 +245,91 @@ def test_qwake_architecture_is_distinct_from_framework_and_mechanism() -> None:
     ]
     assert ru_positions == sorted(ru_positions)
     assert en_positions == sorted(en_positions)
+
+
+def test_multiscale_architecture_preserves_current_execution_boundary() -> None:
+    documents = (
+        "docs/pc-multiscale-mechanism-decision-architecture.md",
+        "docs/pc-multiscale-mechanism-decision-architecture_EN.md",
+        "docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md",
+        "docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md",
+    )
+    required = {
+        "PC-CATM",
+        "PC-TREF",
+        "QWake-PC",
+        "QWake-SPC",
+        "B1/B2",
+        "matched profiling",
+        "EX-IF0",
+        "A-Core",
+        "fallback_exact",
+    }
+    for name in documents:
+        text = (ROOT / name).read_text(encoding="utf-8")
+        for token in required:
+            assert token in text
+
+    for name in (
+        "docs/pc-multiscale-mechanism-decision-architecture.md",
+        "docs/pc-multiscale-mechanism-decision-architecture_EN.md",
+    ):
+        text = (ROOT / name).read_text(encoding="utf-8")
+        positions = [
+            text.index("B1/B2"),
+            text.index("matched profiling"),
+            text.index("EX-IF0", text.index("## 10.")),
+            text.index("passive PC-CATM"),
+            text.index("offline screening"),
+            text.index("predictor"),
+            text.index("exact verification"),
+            text.index("shadow QWake-PC"),
+            text.index("conditional active control"),
+        ]
+        assert positions == sorted(positions)
+
+
+def test_multiscale_claims_require_scale_specific_contracts() -> None:
+    for name in (
+        "docs/pc-multiscale-mechanism-decision-architecture.md",
+        "docs/pc-multiscale-mechanism-decision-architecture_EN.md",
+    ):
+        text = (ROOT / name).read_text(encoding="utf-8")
+        for token in (
+            "\\Delta^u_{s\\rightarrow t}",
+            "\\tau^u_{s\\rightarrow t}",
+            "NCZ_s \\Rightarrow NCZ_t",
+            "ECZ_s \\Rightarrow ECZ_t",
+            "local_sweep(block_id)",
+            "scale, action, budget",
+        ):
+            assert token in text
+
+
+def test_qwake_spc_is_post_thesis_and_not_an_execution_permission() -> None:
+    boundary_documents = (
+        "docs/pc-multiscale-mechanism-decision-architecture.md",
+        "docs/pc-multiscale-mechanism-decision-architecture_EN.md",
+        "docs/qwake-pc-design.md",
+        "docs/qwake-pc-design_EN.md",
+        "docs/stage3b-future-policy-boundary.md",
+        "docs/stage3b-future-policy-boundary_EN.md",
+        "docs/masters-thesis-plan.md",
+        "docs/masters-thesis-plan_EN.md",
+        "ROADMAP.md",
+        "ROADMAP_EN.md",
+    )
+    for name in boundary_documents:
+        text = (ROOT / name).read_text(encoding="utf-8")
+        assert "QWake-SPC" in text
+
+    ru = (ROOT / "docs/pc-multiscale-mechanism-decision-architecture.md").read_text(
+        encoding="utf-8"
+    )
+    en = (ROOT / "docs/pc-multiscale-mechanism-decision-architecture_EN.md").read_text(
+        encoding="utf-8"
+    )
+    assert "за границей текущей магистерской работы" in ru
+    assert "outside the current master's-thesis boundary" in en
+    assert "не разрешает эксперимент" in ru
+    assert "permit an experiment" in en

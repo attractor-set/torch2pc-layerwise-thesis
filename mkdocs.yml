@@ -35,6 +35,7 @@ nav:
       - PC-CATM: pc-catm-operator-model.md
       - Основной сценарий A: stage3b-primary-scenario-a.md
       - QWake-PC: qwake-pc-design.md
+      - Многомасштабная механизмно-решающая архитектура: pc-multiscale-mechanism-decision-architecture.md
       - ECZ-targeted local sweep: ecz-targeted-local-sweep.md
       - Граница будущей политики: stage3b-future-policy-boundary.md
       - Предварительная регистрация B1/B2: stage3b-b1-b2-preregistration.md
@@ -62,6 +63,7 @@ nav:
       - ADR-017 Корректность 288-cell: decisions/ADR-017-stage3b-288cell-correctness-repair.md
       - ADR-018 Confirmatory EQ-B1: decisions/ADR-018-stage3b-b1-confirmatory-preregistration.md
       - ADR-019 Confirmatory EQ-B1 opening: decisions/ADR-019-stage3b-b1-confirmatory-opening.md
+      - ADR-020 Многомасштабная архитектура: decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

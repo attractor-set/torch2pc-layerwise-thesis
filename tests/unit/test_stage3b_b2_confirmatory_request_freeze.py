@@ -98,5 +98,6 @@ def test_status_and_roadmap_keep_runtime_closed() -> None:
     for name in ("STATUS.md", "STATUS_EN.md", "ROADMAP.md", "ROADMAP_EN.md"):
         text = (ROOT / name).read_text(encoding="utf-8")
         assert "b2_confirmatory_request_frozen=true" in text
-        assert "runtime_authorization=not_issued" in text
+        assert "runtime_authorization=issued_consumed" in text
         assert "measurements_allowed=false" in text
+        assert "matched_profiling_analysis_open=false" in text

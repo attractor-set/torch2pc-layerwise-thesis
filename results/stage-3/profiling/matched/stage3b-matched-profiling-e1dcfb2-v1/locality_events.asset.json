@@ -1,0 +1,18 @@
+{
+  "compressed_sha256": "59a1479d66f170970b4d0f2b0712b8a825ccca01eab677c887a9046fc4c16f76",
+  "compressed_size_bytes": 25110445,
+  "compression_format": "zstd",
+  "compression_level": 19,
+  "evidence": true,
+  "long_distance_window_log": 27,
+  "release_asset_name": "stage3b-matched-profiling-locality-events-v1.jsonl.zst",
+  "release_publication_permitted": false,
+  "release_tag": "stage3b-matched-profiling-evidence-v1",
+  "repository_name": "locality_events.jsonl.zst",
+  "results_publication_permitted": false,
+  "schema_version": 1,
+  "source_name": "locality_events.jsonl",
+  "status": "lossless_compressed_repository_representation",
+  "uncompressed_sha256": "3228baaa0f6479b1b4296f96632bd2d99c49642dc38f28f5ed7bc978d9dc538a",
+  "uncompressed_size_bytes": 6544044000
+}

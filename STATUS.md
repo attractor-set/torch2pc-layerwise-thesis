@@ -2,16 +2,15 @@
 
 [English version](STATUS_EN.md)
 
-На 20 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
-Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительная регистрация и реализация точных кандидатов B1 и B2.
-Подтверждающий B1 запечатан на 120/120 парах. Подтверждающий B2 также
-завершён и запечатан: 120/120 троек, 240/240 прямых сравнений, все пять gates
-прошли, failed pairs отсутствуют; производный admission `EQ-B2` сохранён.
-Исторические артефакты открытия
+На 21 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
+Stage 3B B0, `SI-MA0` и `SI-MA1`. Подтверждающие B1 и B2 запечатаны с
+положительными решениями. Новый пакет `v2`
 [сопоставленного профилирования](docs/glossary.md#term-matched-profiling)
-сохранены byte-for-byte. Новый пакет `v2` prospectively привязан к sealed
-admissions B1/B2 и прошёл научный prelaunch gate; runtime authorization и
-измерения всё ещё не разрешены.
+был prospectively связан с этими admissions, прошёл immutable-image,
+ROCm/float32 preflight, authorization и dry-run gates, после чего завершены
+288/288 ячеек в 96 matched blocks. Runtime validation прошла, failures и
+повторы отсутствуют, а компактный evidence package запечатан и сохранён.
+Описательный анализ и публикация результатов ещё не разрешены.
 
 Полный Stage 3B остаётся незавершённым.
 
@@ -27,8 +26,15 @@ b2_confirmatory_admission=present
 matched_profiling_request_refrozen=true
 matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
-runtime_authorization=not_issued
+matched_profiling_execution_complete=true
+matched_profiling_runtime_validation=valid
+matched_profiling_evidence=sealed
+matched_profiling_analysis_open=false
+runtime_authorization=issued_consumed
 measurements_allowed=false
+results_publication_permitted=false
+release_draft_required=true
+release_publication_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false
 ```
@@ -52,7 +58,7 @@ full_stage3b_campaign_complete=false
 | B2 `composite_vjp` | `EQ-B2-CONFIRMATORY=pass`; 120/120 троек, 240/240 сравнений, 0 failed pairs; derived `EQ-B2` сохранён |
 | Запрос и манифест сопоставленного профилирования | новый `v2` refreeze сохранён; исторический `v1` неизменен |
 | Исполнитель сопоставленного профилирования | реализация с учётом кандидата завершена |
-| Выполнение сопоставленного профилирования | не разрешено |
+| Выполнение сопоставленного профилирования | 288/288 ячеек, 96/96 блоков, 0 failures; sealed evidence сохранён |
 | Тестовая выборка | закрыта |
 | Полный Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -96,37 +102,40 @@ B0 закрепил `stage2_baseline` для `FixedPred` и `Strict` в синт
 Confirmatory B1 прошёл CPU `float64` и ROCm `float32` на 120/120 парах.
 B2 прошёл инженерный smoke, а затем подтверждающую кампанию на 120/120
 тройках и 240/240 прямых сравнениях. `EQ-B2-CONFIRMATORY=pass` запечатан;
-derived `EQ-B2` связан с ним SHA-256. Эта научная цепочка допуска завершена,
-но production matched profiling остаётся закрытым до новой версионированной
-фиксации request/manifest и отдельной runtime authorization.
+derived `EQ-B2` связан с ним SHA-256. Эта цепочка допуска позволила выполнить
+новое matched profiling `v2`. Само выполнение завершено, но сравнительные
+выводы ещё не сформированы.
 
 ## Текущий переход
 
-Запечатанный набор B2 опубликован в
-`results/stage-3/b2/stage3b-b2-confirmatory-63885e5-v1/`. Он содержит
-`EQ-B2-CONFIRMATORY=pass`, derived `EQ-B2`, 120 завершённых append-only
-историй, агрегированные метрики и 1800 структурных событий. Test split не
+Запечатанный набор сопоставленного профилирования опубликован в
+`results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`.
+Он содержит 288 агрегированных ячеек, 1440 строк повторов, 96 matched-block
+сводок, 288 append-only histories, 96 untimed correctness records, поток
+событий локальности, environment lock и runtime inventory. Test split не
 использовался.
 
-Новый версионированный `v2` freeze 288-cell matched-profiling request/manifest
-сохранён в `experiments/frozen/stage3b-matched-profiling-v2/` и prospectively
-ссылается на запечатанные admissions B1 и B2. Прежний `v1` request/manifest
-сохранён byte-for-byte и не получает допуска задним числом. Следующий шаг —
-отдельные immutable image, ROCm preflight, runtime authorization и dry-run gates.
-
-До отдельной проверки runtime:
+После evidence-preservation PR граница остаётся закрытой:
 
 ```text
-scientific_admission=open
-matched_profiling_request_refrozen=true
-matched_profiling_request_refresh_required=false
-matched_profiling_execution_open=false
-runtime_authorization=not_issued
+matched_profiling_execution_complete=true
+matched_profiling_runtime_validation=valid
+matched_profiling_evidence=sealed
+matched_profiling_analysis_open=false
+runtime_authorization=issued_consumed
 measurements_allowed=false
+results_publication_permitted=false
+release_draft_required=true
+release_publication_permitted=false
+full_stage3b_campaign_complete=false
 ```
 
-Документационное обновление и сохранение evidence не разрешают 288-cell
-campaign, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor, QWake-PC или test split.
+Следующий допустимый переход — merge evidence PR, зелёный CI и создание
+чернового релиза `stage3b-matched-profiling-evidence-v1` с sealed evidence и
+артефактами запуска. Затем отдельный analysis-opening checkpoint должен
+разрешить только описательный paired analysis. Сохранение evidence и draft
+release не разрешают утверждения о превосходстве, `EX-IF0`, `A11-OFF0`,
+`A11-OFF1`, predictor, QWake-PC или test split.
 
 ## Происхождение
 
@@ -144,5 +153,9 @@ campaign, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor, QWake-PC или test spli
 | Candidate-aware runner merge | `a44e7c8` |
 | B2 confirmatory source | `63885e530fa38540ef684a6820a966eee96a58f9` |
 | B2 confirmatory evidence | `stage3b-b2-confirmatory-63885e5-v1` |
+| Matched-profiling execution source | `e1dcfb26823e1191b98d2aa2a598499b13197583` |
+| Matched-profiling immutable image | `sha256:3c269b4278026b5b69968b3265b506ce626f2baf693859989de3371d639da4d0` |
+| Matched-profiling evidence | `stage3b-matched-profiling-e1dcfb2-v1` |
+| Planned draft release | `stage3b-matched-profiling-evidence-v1` |
 
 Документационные изменения не пересоздают опубликованные результаты.

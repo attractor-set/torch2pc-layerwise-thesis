@@ -44,7 +44,7 @@ Stage 3B B0 и статистический и инженерный анализ
 `block`/`chunk` не входят в этот контракт и требуют отдельной предварительной
 регистрации.
 
-## Этап 16 — точные кандидаты и подтверждающий допуск к [сопоставленному профилированию](docs/glossary.md#term-matched-profiling) — текущий
+## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — evidence сохранён, анализ закрыт
 
 Завершено:
 
@@ -67,21 +67,35 @@ b2_confirmatory_admission=present
 matched_profiling_request_refrozen=true
 matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
-runtime_authorization=not_issued
+matched_profiling_execution_complete=true
+matched_profiling_runtime_validation=valid
+matched_profiling_evidence=sealed
+matched_profiling_analysis_open=false
+runtime_authorization=issued_consumed
 measurements_allowed=false
+results_publication_permitted=false
+release_draft_required=true
+release_publication_permitted=false
+full_stage3b_campaign_complete=false
 ```
 
 Новый версионированный `v2` request/manifest freeze со ссылками на sealed
-admissions B1 и B2 завершён. Оставшийся переход внутри этапа 16:
+admissions B1 и B2 завершён. Immutable image, ROCm/float32 preflight,
+authorization и dry-run прошли. Все 288 ячеек и 96 matched blocks выполнены без
+failures и retries, runtime validation прошла, а compact evidence package
+запечатан и перенесён в репозиторий.
 
-1. новый immutable image и отдельные preflight/authorization/dry-run gates;
-2. выполнение 288-cell matched profiling;
-3. сопоставленный анализ B0/B1/B2, проверка целостности и sealing.
+Оставшийся переход внутри этапа 16:
 
-Прежние smoke decision и matched request сохраняются неизменными, но не
-разрешают production execution. После разрешённого выполнения этап должен
-завершиться сопоставленным анализом B0/B1/B2, проверкой целостности и sealing.
-Отрицательные и смешанные результаты сохраняются.
+1. merge evidence-preservation PR и зелёный CI;
+2. draft release `stage3b-matched-profiling-evidence-v1` с sealed evidence и
+   артефактами запуска;
+3. отдельный analysis-opening checkpoint;
+4. описательный paired analysis B0/B1/B2 и формальное решение
+   `retain / conditional / reject`.
+
+До analysis-opening запрещены сравнительные утверждения, публикация и переход к
+`EX-IF0`. Отрицательные и смешанные результаты сохраняются.
 
 ## Этап 17 — `EX-IF0`, пассивная диагностика и `A11-OFF0`
 

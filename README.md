@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-EQ--B1%2FEQ--B2%20pass%3B%20matched%20profiling%20prep-blue)
+![Статус](https://img.shields.io/badge/этап-matched%20profiling%20sealed%3B%20analysis%20closed-blue)
 
 Репозиторий магистерской диссертации по сравнению обратного распространения
 ошибки (backpropagation, BP) и режимов предиктивного кодирования в Torch2PC.
@@ -83,26 +83,29 @@
   request/manifest пакетом [сопоставленного профилирования](docs/glossary.md#term-matched-profiling)
   B0/B1/B2 на 288 ячеек;
 - исторический `v1` request/manifest сохранён byte-for-byte;
-- реализован исполнитель сопоставленного профилирования, учитывающий выбранного
-  кандидата.
+- 288/288 ячеек и 96/96 matched blocks выполнены в immutable ROCm/float32
+  окружении без failures и retries;
+- runtime validation прошла, а compact evidence package запечатан и сохранён в
+  `results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`.
 
-Для общего сопоставленного профилирования открыт научный допуск, однако
-выполнение ещё не разрешено:
+Текущая граница:
 
 ```text
-scientific_admission=open
-matched_profiling_request_refrozen=true
-matched_profiling_request_refresh_required=false
-matched_profiling_execution_open=false
-runtime_authorization=not_issued
+matched_profiling_execution_complete=true
+matched_profiling_runtime_validation=valid
+matched_profiling_evidence=sealed
+matched_profiling_analysis_open=false
+runtime_authorization=issued_consumed
 measurements_allowed=false
+results_publication_permitted=false
+release_draft_required=true
+release_publication_permitted=false
 ```
 
-Следующий незавершённый шаг — отдельные immutable image, ROCm/float32
-preflight, runtime authorization и non-measuring dry-run gates.
-Документационное обновление не выдаёт
-разрешения на измерения, не создаёт доказательных материалов и не открывает
-`EX-IF0`, пассивную диагностику, предиктор, `QWake-PC` или тестовую выборку.
+Следующий незавершённый шаг — evidence PR, зелёный CI, draft release с
+артефактами запуска и отдельный analysis-opening checkpoint. Сохранение evidence
+не разрешает сравнительных выводов и не открывает `EX-IF0`, пассивную
+диагностику, предиктор, `QWake-PC` или тестовую выборку.
 
 Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1 и B2 не обращались к тестовой выборке.
 Исходные и зафиксированные результаты не переписываются документационными

@@ -2,13 +2,15 @@
 
 [Русская версия](STATUS.md)
 
-As of 20 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
-`SI-MA0`, and `SI-MA1` results are published. B1 and B2 preregistration and implementation are complete. Confirmatory B1 is sealed at 120/120 pairs. Confirmatory B2 is also complete
-and sealed: 120/120 triples, 240/240 direct comparisons, all five gates passed,
-no failed pairs, and the derived `EQ-B2` admission is preserved. The previous
-shared [matched-profiling](docs/glossary_EN.md#term-matched-profiling) opening
-artifacts remain historical; production prelaunch requires a new versioned
-request/manifest freeze.
+As of 21 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
+`SI-MA0`, and `SI-MA1` results are published. Confirmatory B1 and B2 are sealed
+with positive decisions. The new `v2`
+[matched-profiling](docs/glossary_EN.md#term-matched-profiling) package was
+prospectively bound to those admissions and passed immutable-image,
+ROCm/float32 preflight, authorization, and dry-run gates. All 288 cells in 96
+matched blocks then completed, runtime validation passed, no failures or
+retries occurred, and the compact evidence package is sealed and preserved.
+Descriptive analysis and result publication are not yet authorized.
 
 The full Stage 3B program remains incomplete.
 
@@ -24,8 +26,15 @@ b2_confirmatory_admission=present
 matched_profiling_request_refrozen=true
 matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
-runtime_authorization=not_issued
+matched_profiling_execution_complete=true
+matched_profiling_runtime_validation=valid
+matched_profiling_evidence=sealed
+matched_profiling_analysis_open=false
+runtime_authorization=issued_consumed
 measurements_allowed=false
+results_publication_permitted=false
+release_draft_required=true
+release_publication_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false
 ```
@@ -49,7 +58,7 @@ decision.
 | B2 `composite_vjp` | `EQ-B2-CONFIRMATORY=pass`; 120/120 triples, 240/240 comparisons, 0 failed pairs; derived `EQ-B2` preserved |
 | Matched-profiling request and manifest | previous version retained; production refresh required after confirmatory B2 |
 | Matched-profiling runner | candidate-aware implementation complete |
-| Matched-profiling execution | not authorized |
+| Matched-profiling execution | 288/288 cells, 96/96 blocks, 0 failures; sealed evidence preserved |
 | Test dataset | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -91,40 +100,42 @@ This is descriptive engineering analysis, not a universal method ranking.
 ### B1/B2 admission
 
 Confirmatory B1 passed CPU `float64` and ROCm `float32` controls over
-120/120 pairs. B2 passed an engineering smoke and then the confirmatory campaign over
-120/120 triples and 240/240 direct comparisons. `EQ-B2-CONFIRMATORY=pass` is
-sealed, and the derived `EQ-B2` is linked to it by SHA-256. This completes the
-scientific-admission chain, while production matched profiling remains closed
-until a new versioned request/manifest freeze and separate runtime
-authorization.
+120/120 pairs. B2 passed an engineering smoke and then the confirmatory campaign
+over 120/120 triples and 240/240 direct comparisons.
+`EQ-B2-CONFIRMATORY=pass` is sealed, and the derived `EQ-B2` is linked to it by
+SHA-256. This admission chain supported the new `v2` matched-profiling run. The
+execution is complete, but comparative conclusions have not yet been produced.
 
 ## Current transition
 
-The sealed B2 set is published at
-`results/stage-3/b2/stage3b-b2-confirmatory-63885e5-v1/`. It contains
-`EQ-B2-CONFIRMATORY=pass`, the derived `EQ-B2`, 120 completed append-only
-histories, aggregate metrics, and 1,800 structural events. The test split was
-not accessed.
+The sealed matched-profiling set is published at
+`results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`.
+It contains 288 aggregate cells, 1,440 repetition rows, 96 matched-block
+summaries, 288 append-only histories, 96 untimed correctness records, the
+locality-event stream, the environment lock, and the runtime inventory. The
+test split was not accessed.
 
-The next incomplete step is a new versioned 288-cell matched-profiling
-request/manifest freeze that prospectively references the sealed B1 and B2
-admissions. The previous request/manifest remains byte-for-byte historical and
-is not admitted retrospectively.
-
-Until the new freeze and a separate runtime review exist:
+After the evidence-preservation PR, the boundary remains closed:
 
 ```text
-scientific_admission=open
-matched_profiling_request_refrozen=true
-matched_profiling_request_refresh_required=false
-matched_profiling_execution_open=false
-runtime_authorization=not_issued
+matched_profiling_execution_complete=true
+matched_profiling_runtime_validation=valid
+matched_profiling_evidence=sealed
+matched_profiling_analysis_open=false
+runtime_authorization=issued_consumed
 measurements_allowed=false
+results_publication_permitted=false
+release_draft_required=true
+release_publication_permitted=false
+full_stage3b_campaign_complete=false
 ```
 
-This documentation update and evidence preservation do not authorize the
-288-cell campaign, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor, QWake-PC,
-or test-split access.
+The next admissible transition is the evidence PR merge, green CI, and creation
+of the draft `stage3b-matched-profiling-evidence-v1` release with sealed evidence
+and run artifacts. A separate analysis-opening checkpoint must then authorize
+only descriptive paired analysis. Evidence preservation and a draft release do
+not authorize superiority claims, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the
+predictor, QWake-PC, or test-split access.
 
 ## Provenance
 
@@ -142,5 +153,9 @@ or test-split access.
 | Candidate-aware runner merge | `a44e7c8` |
 | B2 confirmatory source | `63885e530fa38540ef684a6820a966eee96a58f9` |
 | B2 confirmatory evidence | `stage3b-b2-confirmatory-63885e5-v1` |
+| Matched-profiling execution source | `e1dcfb26823e1191b98d2aa2a598499b13197583` |
+| Matched-profiling immutable image | `sha256:3c269b4278026b5b69968b3265b506ce626f2baf693859989de3371d639da4d0` |
+| Matched-profiling evidence | `stage3b-matched-profiling-e1dcfb2-v1` |
+| Planned draft release | `stage3b-matched-profiling-evidence-v1` |
 
 Documentation changes do not regenerate published results.

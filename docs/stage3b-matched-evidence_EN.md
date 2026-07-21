@@ -34,7 +34,7 @@ python scripts/seal_stage3b_matched.py \
   --validate-only \
   --runtime-root "$OUTPUT_ROOT" \
   --matched-manifest \
-    experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json \
+    experiments/frozen/stage3b-matched-profiling-v2/manifest.json \
   --expected-source-commit "$PROJECT_SOURCE_COMMIT" \
   --expected-image-digest "$IMAGE_DIGEST" \
   --expected-authorization-token "$AUTHORIZATION_TOKEN"
@@ -55,6 +55,27 @@ The seal creates:
 
 Sealing sets `evidence=true` but keeps
 `results_publication_permitted=false`.
+
+The completed evidence package is preserved at:
+
+```text
+results/stage-3/profiling/matched/
+  stage3b-matched-profiling-e1dcfb2-v1/
+```
+
+It contains 288 cells, 1,440 repetition rows, 96 matched-block summaries,
+288 append-only [attempt](glossary_EN.md#term-attempt) histories, 96 untimed
+cross-[candidate](glossary_EN.md#term-candidate) correctness records, locality
+events for every cell, the environment lock, and the
+[runtime](glossary_EN.md#term-runtime) inventory. Preservation does not open descriptive analysis.
+
+After the evidence PR and green CI, tag
+`stage3b-matched-profiling-evidence-v1` creates a draft-only GitHub Release.
+Repository evidence is packaged by
+`scripts/package_stage3b_matched_release.py --mode repository`; the local
+`--mode full` additionally packages the control plane, run records, image
+[checkpoint](glossary_EN.md#term-checkpoint), and sealing logs from the verified external release-source record.
+Public release publication remains prohibited.
 
 ## Analysis
 

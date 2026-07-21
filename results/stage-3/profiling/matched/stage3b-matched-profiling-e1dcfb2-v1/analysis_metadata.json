@@ -1,0 +1,48 @@
+{
+  "aggregation_order": [
+    "measured_steps_to_repetition",
+    "repetitions_to_cell",
+    "cells_to_model_seed"
+  ],
+  "attempt_lifecycle": {
+    "append_only": true,
+    "maximum_attempts": 3,
+    "non_retryable_prior_attempts_rejected": true,
+    "retryable_prior_attempts_preserved": true,
+    "successful_attempt_must_be_last": true
+  },
+  "cross_candidate_correctness": {
+    "block_count": 96,
+    "comparisons_per_block": 2,
+    "required": true,
+    "untimed": true
+  },
+  "fallback_validation": {
+    "cost_ms": null,
+    "status": "not_applicable_before_ex_if0"
+  },
+  "independent_unit": "model_seed",
+  "measurement_lanes": {
+    "primary_timing": {
+      "observer_mode": "no_hooks"
+    },
+    "structural_counters": {
+      "observer_mode": "counters_only"
+    }
+  },
+  "observer_cost_rule": {
+    "not_subtracted_from_primary_timing": true,
+    "reported_separately": true
+  },
+  "protocol": {
+    "candidate_order": "exactly_counterbalanced_hash_ranked_rotation_within_method",
+    "independent_unit": "model_seed",
+    "measured_steps": 50,
+    "repetitions": 5,
+    "warmup_steps": 20
+  },
+  "results_publication_permitted": false,
+  "schema_version": 1,
+  "scope": "stage3b_b1_b2_matched_sealed_evidence_v1",
+  "test_dataset_access": false
+}

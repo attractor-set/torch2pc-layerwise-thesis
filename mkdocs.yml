@@ -69,6 +69,7 @@ nav:
       - ADR-023 Confirmatory EQ-B2 request freeze: decisions/ADR-023-stage3b-b2-confirmatory-request-freeze.md
       - ADR-024 Confirmatory EQ-B2 evidence: decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation.md
       - ADR-025 Matched profiling refreeze: decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md
+      - ADR-026 Matched profiling evidence: decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

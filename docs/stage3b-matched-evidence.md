@@ -36,7 +36,7 @@ python scripts/seal_stage3b_matched.py \
   --validate-only \
   --runtime-root "$OUTPUT_ROOT" \
   --matched-manifest \
-    experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json \
+    experiments/frozen/stage3b-matched-profiling-v2/manifest.json \
   --expected-source-commit "$PROJECT_SOURCE_COMMIT" \
   --expected-image-digest "$IMAGE_DIGEST" \
   --expected-authorization-token "$AUTHORIZATION_TOKEN"
@@ -49,6 +49,28 @@ python scripts/seal_stage3b_matched.py \
 
 Фиксация устанавливает `evidence=true`, но сохраняет
 `results_publication_permitted=false`.
+
+Завершённый пакет [доказательных материалов](glossary.md#term-evidence)
+сохранён в:
+
+```text
+results/stage-3/profiling/matched/
+  stage3b-matched-profiling-e1dcfb2-v1/
+```
+
+Он содержит 288 ячеек, 1440 строк повторов, 96 сводок сопоставленных блоков,
+288 неизменяемых историй попыток, 96 неизмеряемых записей межкандидатной
+корректности, события локальности для каждой ячейки, фиксацию среды и реестр
+[времени выполнения](glossary.md#term-runtime). Сохранение не открывает
+описательный анализ.
+
+После PR сохранения доказательных материалов и зелёного CI тег
+`stage3b-matched-profiling-evidence-v1` создаёт только черновой `GitHub Release`.
+Репозиторные активы формируются командой
+`scripts/package_stage3b_matched_release.py --mode repository`; локальный режим
+`--mode full` дополнительно упаковывает контрольный контур, артефакты запуска,
+контрольную запись образа и журналы фиксации из проверенной внешней записи
+происхождения релиза. Публичная публикация релиза остаётся запрещённой.
 
 ## Анализ
 

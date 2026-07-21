@@ -38,3 +38,5 @@
 - [ADR-024](ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md): preserves byte-for-byte sealed `EQ-B2-CONFIRMATORY=pass` and derived `EQ-B2`, completes the B1/B2 scientific-admission chain, and keeps matched profiling closed until a new versioned freeze.
 
 - [ADR-025](ADR-025-stage3b-matched-profiling-request-refreeze_EN.md): creates a new `v2` request/manifest freeze from sealed confirmatory B1/B2 admissions, preserves historical `v1`, and keeps runtime execution closed.
+
+- [ADR-026](ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md): preserves the sealed 288-cell matched-profiling evidence byte-for-byte, keeps analysis closed, and introduces a draft-only release with separate run artifacts.

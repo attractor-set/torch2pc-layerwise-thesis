@@ -1,0 +1,26 @@
+{
+  "attempt_history_count": 288,
+  "authorization_token": "d833a6919328bdbc3f29dd5fc6fb90f235fd48f52d712fd14709fb26b8194b1b",
+  "candidate_counts": {
+    "composite_vjp": 96,
+    "isolated_layer_vjp": 96,
+    "stage2_baseline": 96
+  },
+  "cross_candidate_correctness_block_count": 96,
+  "evidence": true,
+  "full_lane_complete": true,
+  "full_stage3b_campaign_complete": false,
+  "image_digest": "sha256:3c269b4278026b5b69968b3265b506ce626f2baf693859989de3371d639da4d0",
+  "manifest_digest": "772128de13431c6cbab0e6527745e54654dcf874a3d041651b6c5d7fe21e45ba",
+  "matched_cell_count": 288,
+  "results_publication_permitted": false,
+  "retried_cell_count": 0,
+  "runtime_inventory_sha256": "0c2a5092807f787f84c940a8d1da2f5c5e1b39610856f26b73df26bfc8a2452c",
+  "schema_version": 1,
+  "scope": "stage3b_b1_b2_matched_sealed_evidence_v1",
+  "sealed_at": "2026-07-21T15:32:56.209807Z",
+  "sealing_source_commit": "e1dcfb26823e1191b98d2aa2a598499b13197583",
+  "source_commit": "e1dcfb26823e1191b98d2aa2a598499b13197583",
+  "status": "sealed",
+  "test_dataset_access": false
+}

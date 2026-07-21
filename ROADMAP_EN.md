@@ -43,7 +43,7 @@ B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and
 `block`/`chunk` variants are outside this contract and require separate
 preregistration.
 
-## Stage 16 — exact candidates and confirmatory admission to [matched profiling](docs/glossary_EN.md#term-matched-profiling) — current
+## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — evidence preserved, analysis closed
 
 Complete:
 
@@ -67,22 +67,33 @@ b2_confirmatory_admission=present
 matched_profiling_request_refrozen=true
 matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
-runtime_authorization=not_issued
+matched_profiling_execution_complete=true
+matched_profiling_runtime_validation=valid
+matched_profiling_evidence=sealed
+matched_profiling_analysis_open=false
+runtime_authorization=issued_consumed
 measurements_allowed=false
+results_publication_permitted=false
+release_draft_required=true
+release_publication_permitted=false
+full_stage3b_campaign_complete=false
 ```
 
 Remaining Stage 16 transition:
 
-1. a new versioned 288-cell request/manifest freeze referencing the sealed B1
-   and B2 admissions;
-2. a new immutable image and separate preflight/authorization/dry-run gates;
-3. 288-cell matched-profiling execution;
-4. matched B0/B1/B2 analysis, integrity verification, and sealing.
+1. merge the evidence-preservation PR and obtain green CI;
+2. create the draft `stage3b-matched-profiling-evidence-v1` release with sealed
+   evidence and run artifacts;
+3. pass a separate analysis-opening checkpoint;
+4. perform descriptive paired B0/B1/B2 analysis and issue the formal
+   `retain / conditional / reject` decision.
 
-The previous smoke decision and matched request remain immutable but do not
-authorize production execution. After authorized execution, the stage must
-conclude with matched B0/B1/B2 analysis, integrity checks, and evidence sealing.
-Negative and mixed outcomes must be retained.
+The immutable image, ROCm/float32 preflight, authorization, dry run, and all
+288 cells in 96 matched blocks completed without failures or retries. Runtime
+validation passed, and the compact evidence package is sealed and copied into
+the repository. Comparative claims, publication, and `EX-IF0` remain
+prohibited before the analysis-opening checkpoint. Negative and mixed results
+must be retained.
 
 ## Stage 17 — `EX-IF0`, passive diagnostics, and `A11-OFF0`
 

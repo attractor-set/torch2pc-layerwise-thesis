@@ -223,6 +223,9 @@ def test_documentation_keeps_matched_profiling_execution_closed() -> None:
         assert "b2_confirmatory_admission=present" in text
         assert "matched_profiling_request_refrozen=true" in text
         assert "matched_profiling_request_refresh_required=false" in text
-        assert "matched_profiling_execution_open=false" in text
-        assert "runtime_authorization=not_issued" in text
+        assert "matched_profiling_execution_complete=true" in text
+        assert "matched_profiling_evidence=sealed" in text
+        assert "matched_profiling_analysis_open=false" in text
+        assert "runtime_authorization=issued_consumed" in text
         assert "measurements_allowed=false" in text
+        assert "results_publication_permitted=false" in text

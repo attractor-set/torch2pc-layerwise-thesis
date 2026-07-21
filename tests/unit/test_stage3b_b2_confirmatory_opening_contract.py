@@ -121,9 +121,12 @@ def test_opening_adr_is_historical_and_status_advances_after_sealing() -> None:
         assert "b2_confirmatory_decision=pass_sealed" in text
         assert "b2_confirmatory_request_frozen=true" in text
         assert "b2_confirmatory_admission=present" in text
-        assert "matched_profiling_execution_open=false" in text
-        assert "runtime_authorization=not_issued" in text
+        assert "matched_profiling_execution_complete=true" in text
+        assert "matched_profiling_evidence=sealed" in text
+        assert "matched_profiling_analysis_open=false" in text
+        assert "runtime_authorization=issued_consumed" in text
         assert "measurements_allowed=false" in text
+        assert "results_publication_permitted=false" in text
 
 
 def test_opening_navigation_and_language_pair_are_registered() -> None:

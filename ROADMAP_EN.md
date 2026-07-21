@@ -54,7 +54,7 @@ Complete:
 - the fail-closed confirmatory-B2 requirement before production launch is
   frozen;
 - confirmatory B2 is preregistered for 120 triples and 240 comparisons;
-- fail-closed B2 opening infrastructure is implemented with status `implementation_ready_execution_closed`; request, image, authorization, and results remain absent.
+- fail-closed B2 opening infrastructure is implemented with status `implementation_ready_execution_closed`; append-only request `stage3b-b2-confirmatory-120-v1` is frozen, while the image, authorization, and results remain absent.
 
 Current boundary:
 
@@ -62,7 +62,7 @@ Current boundary:
 scientific_admission=blocked_pending_eq_b2_confirmatory
 candidate_aware_runner=complete
 b2_confirmatory_opening=implementation_ready_execution_closed
-b2_confirmatory_request_frozen=false
+b2_confirmatory_request_frozen=true
 matched_profiling_request_refresh_required=true
 runtime_authorization=not_issued
 measurements_allowed=false
@@ -70,13 +70,12 @@ measurements_allowed=false
 
 Remaining Stage 16 transition:
 
-1. a separate prospective confirmatory-B2 request freeze;
-2. immutable image, preflight, authorization, and dry-run;
-3. engineering smoke in a separate non-evidence output root;
-4. execution and sealing of `EQ-B2-CONFIRMATORY`;
-5. a derived confirmatory `EQ-B2` admission;
-6. a new versioned 288-cell request/manifest freeze;
-7. separate matched-profiling runtime authorization.
+1. immutable image, preflight, authorization, and dry-run;
+2. engineering smoke in a separate non-evidence output root;
+3. execution and sealing of `EQ-B2-CONFIRMATORY`;
+4. a derived confirmatory `EQ-B2` admission;
+5. a new versioned 288-cell request/manifest freeze;
+6. separate matched-profiling runtime authorization.
 
 The previous smoke decision and matched request remain immutable but do not
 authorize production execution. After authorized execution, the stage must

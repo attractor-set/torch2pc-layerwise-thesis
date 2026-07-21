@@ -5,7 +5,7 @@
 На 20 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
 Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительная регистрация и реализация точных кандидатов B1 и B2.
 Подтверждающий B1 запечатан на 120/120 парах; B2 прошёл инженерный smoke на
-12 тройках и 24 сравнениях. Подтверждающий B2 предварительно зарегистрирован; его fail-closed opening-инфраструктура реализована, но выполнение закрыто. Ранее сформированные артефакты открытия
+12 тройках и 24 сравнениях. Подтверждающий B2 предварительно зарегистрирован; его fail-closed opening-инфраструктура реализована и append-only request заморожен, но выполнение закрыто. Ранее сформированные артефакты открытия
 [сопоставленного профилирования](docs/glossary.md#term-matched-profiling)
 сохраняются, однако production prelaunch блокирует их до confirmatory B2.
 
@@ -18,7 +18,7 @@ matched_profiling_manifest_cells=288
 scientific_admission=blocked_pending_eq_b2_confirmatory
 candidate_aware_runner=complete
 b2_confirmatory_opening=implementation_ready_execution_closed
-b2_confirmatory_request_frozen=false
+b2_confirmatory_request_frozen=true
 matched_profiling_request_refresh_required=true
 runtime_authorization=not_issued
 measurements_allowed=false
@@ -42,7 +42,7 @@ full_stage3b_campaign_complete=false
 | Теоретическое условие B1/B2 | пакет `PC-TREF`/`PC-CATM` опубликован |
 | Предварительная регистрация B1/B2 | завершена; тег `stage3b-b1-b2-prereg-v1` |
 | B1 `isolated_layer_vjp` | confirmatory `EQ-B1=pass`; 120/120 пар |
-| B2 `composite_vjp` | engineering smoke `EQ-B2=pass`; 12/12 троек и 24/24 сравнения; confirmatory opening-инфраструктура готова, request не заморожен, execution закрыт |
+| B2 `composite_vjp` | engineering smoke `EQ-B2=pass`; 12/12 троек и 24/24 сравнения; confirmatory opening-инфраструктура готова, request заморожен, execution закрыт |
 | Запрос и манифест сопоставленного профилирования | прежняя версия сохранена; production refresh требуется после confirmatory B2 |
 | Исполнитель сопоставленного профилирования | реализация с учётом кандидата завершена |
 | Выполнение сопоставленного профилирования | не разрешено |
@@ -97,9 +97,7 @@ matched profiling. Для допуска требуются `EQ-B2-CONFIRMATORY`
 Подтверждающий B2 предварительно зарегистрирован как 120 matched triples и
 240 прямых сравнений на тех же десяти validation batches, что и confirmatory
 B1. Fail-closed opening-инфраструктура реализована со статусом
-`implementation_ready_execution_closed`. Следующий незавершённый шаг —
-отдельная prospective фиксация request. Только после неё допускаются сборка
-immutable image, lane preflight, authorization и неизмеряемый dry-run.
+`implementation_ready_execution_closed`. Append-only request `stage3b-b2-confirmatory-120-v1` заморожен на 120 троек и 240 сравнениях. Следующий незавершённый шаг — сборка immutable image из publication commit, lane preflight, отдельная authorization и неизмеряемый dry-run.
 
 До положительного sealed `EQ-B2-CONFIRMATORY`, derived admission `EQ-B2` и
 новой фиксации matched-profiling request/manifest:

@@ -122,7 +122,7 @@ def test_opening_adr_and_status_preserve_execution_boundary() -> None:
             "b2_confirmatory_opening="
             "implementation_ready_execution_closed"
         ) in text
-        assert "b2_confirmatory_request_frozen=false" in text
+        assert "b2_confirmatory_request_frozen=true" in text
         assert "runtime_authorization=not_issued" in text
         assert "measurements_allowed=false" in text
 

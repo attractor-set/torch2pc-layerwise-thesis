@@ -5,6 +5,9 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- froze the append-only confirmatory `EQ-B2` request: 120 triples, 240 comparisons, exact B1-input reuse, and a closed execution boundary;
+
+
 - added fail-closed confirmatory `EQ-B2` infrastructure: deterministic 120-triple/240-comparison planning, exact B1-input reuse, separated smoke/confirmatory authorization domains, append-only recovery, and sealing; execution and measurements remain closed pending a separate request freeze;
 
 

@@ -122,6 +122,36 @@ REQUIRED_REPETITION_COLUMNS: Final[tuple[str, ...]] = (
     "batch_size",
     "model_seed",
     "repetition",
+    "primary_host_time_median_us",
+    "primary_device_time_median_us",
+    "primary_peak_allocated_max_bytes",
+    "primary_peak_reserved_max_bytes",
+    "observer_cost_median_ms",
+    "saved_tensor_bytes_median",
+    "state_vjp_calls_median",
+    "graph_span_max",
+    "dependency_radius_max",
+    "graph_lifetimes",
+    "feedback_operator",
+    "fallback_validation_cost_ms",
+    "fallback_validation_status",
+)
+REQUIRED_SUMMARY_COLUMNS: Final[tuple[str, ...]] = (
+    "candidate_id",
+    "method",
+    "depth",
+    "width",
+    "batch_size",
+    "model_seed_count",
+    "primary_host_time_median_us",
+    "primary_device_time_median_us",
+    "primary_peak_allocated_median_bytes",
+    "primary_peak_reserved_median_bytes",
+    "observer_cost_median_ms",
+    "saved_tensor_bytes_median",
+    "state_vjp_calls_median",
+    "graph_span_max",
+    "dependency_radius_max",
 )
 REQUIRED_LOCALITY_FIELDS: Final[tuple[str, ...]] = (
     "cell_id",
@@ -158,6 +188,31 @@ class SyntheticFixtureIdentity:
 
     fixture_id: str
     generated_by: str
+
+
+@dataclass(frozen=True)
+class AnalysisSourceProfile:
+    """Source-specific provenance emitted by the shared analysis engine."""
+
+    metadata_status: str
+    summary_status: str
+    execution_authorized: bool
+
+
+def _analysis_source_profile(source_kind: str) -> AnalysisSourceProfile:
+    if source_kind == "synthetic_fixture":
+        return AnalysisSourceProfile(
+            metadata_status="generated_unsealed_synthetic_implementation_output",
+            summary_status="synthetic_implementation_validation_only",
+            execution_authorized=False,
+        )
+    if source_kind == "sealed_evidence":
+        return AnalysisSourceProfile(
+            metadata_status="generated_unsealed_authorized_analysis_output",
+            summary_status="generated_unsealed_authorized_descriptive_analysis",
+            execution_authorized=True,
+        )
+    raise Stage3BMatchedAnalysisError(f"unsupported analysis source kind: {source_kind}")
 
 
 def sha256_file(path: Path) -> str:
@@ -294,9 +349,160 @@ def synthetic_input_paths(root: Path) -> AnalysisInputPaths:
     )
 
 
+def _assert_close(observed: float, expected: float, *, label: str) -> None:
+    if not math.isclose(observed, expected, rel_tol=1e-12, abs_tol=1e-9):
+        raise Stage3BMatchedAnalysisError(
+            f"compact aggregate differs for {label}: {observed!r} != {expected!r}"
+        )
+
+
+def _validate_repetition_consistency(
+    cells: Sequence[Mapping[str, str]],
+    repetitions: Sequence[Mapping[str, str]],
+) -> None:
+    cells_by_id = {row["cell_id"]: row for row in cells}
+    repetitions_by_cell: defaultdict[str, list[Mapping[str, str]]] = defaultdict(list)
+    for repetition in repetitions:
+        cell_id = repetition["cell_id"]
+        cell = cells_by_id.get(cell_id)
+        if cell is None:
+            raise Stage3BMatchedAnalysisError(f"repetition references unknown cell: {cell_id}")
+        repetitions_by_cell[cell_id].append(repetition)
+        for key in (
+            "block_id",
+            "candidate_id",
+            "method",
+            "depth",
+            "width",
+            "batch_size",
+            "model_seed",
+            "graph_lifetimes",
+            "feedback_operator",
+            "fallback_validation_cost_ms",
+            "fallback_validation_status",
+        ):
+            if repetition[key] != cell[key]:
+                raise Stage3BMatchedAnalysisError(
+                    f"repetition identity differs: {cell_id}/{key}"
+                )
+
+    aggregation_spec: tuple[tuple[str, str, str], ...] = (
+        ("primary_host_time_us", "primary_host_time_median_us", "median"),
+        ("primary_device_time_us", "primary_device_time_median_us", "median"),
+        (
+            "primary_peak_allocated_bytes",
+            "primary_peak_allocated_max_bytes",
+            "maximum",
+        ),
+        (
+            "primary_peak_reserved_bytes",
+            "primary_peak_reserved_max_bytes",
+            "maximum",
+        ),
+        ("observer_cost_ms", "observer_cost_median_ms", "median"),
+        ("saved_tensor_bytes", "saved_tensor_bytes_median", "median"),
+        ("state_vjp_calls", "state_vjp_calls_median", "median"),
+        ("graph_span", "graph_span_max", "maximum"),
+        ("dependency_radius", "dependency_radius_max", "maximum"),
+    )
+    for cell_id, cell in cells_by_id.items():
+        rows = repetitions_by_cell[cell_id]
+        if len(rows) != 5:
+            raise Stage3BMatchedAnalysisError(
+                f"repetition count differs within cell: {cell_id}/{len(rows)}"
+            )
+        indices = {_integer(row, "repetition") for row in rows}
+        if indices != set(range(5)):
+            raise Stage3BMatchedAnalysisError(
+                f"repetition indices differ within cell: {cell_id}"
+            )
+        for cell_column, repetition_column, reducer in aggregation_spec:
+            values = [_finite_number(row, repetition_column) for row in rows]
+            expected = _median(values) if reducer == "median" else _maximum(values)
+            _assert_close(
+                _finite_number(cell, cell_column),
+                expected,
+                label=f"{cell_id}/{cell_column}",
+            )
+
+
+def _validate_summary_consistency(
+    cells: Sequence[Mapping[str, str]],
+    summary: Sequence[Mapping[str, str]],
+) -> None:
+    if len(summary) != 96:
+        raise Stage3BMatchedAnalysisError(f"profiling summary row count differs: {len(summary)}")
+
+    configuration_cells: defaultdict[
+        tuple[str, str, int, int, int], list[Mapping[str, str]]
+    ] = defaultdict(list)
+    for cell in cells:
+        configuration_cells[
+            (
+                cell["candidate_id"],
+                cell["method"],
+                _integer(cell, "depth"),
+                _integer(cell, "width"),
+                _integer(cell, "batch_size"),
+            )
+        ].append(cell)
+
+    summary_by_key: dict[tuple[str, str, int, int, int], Mapping[str, str]] = {}
+    for row in summary:
+        key = (
+            row["candidate_id"],
+            row["method"],
+            _integer(row, "depth"),
+            _integer(row, "width"),
+            _integer(row, "batch_size"),
+        )
+        if key in summary_by_key:
+            raise Stage3BMatchedAnalysisError(f"duplicate profiling summary row: {key}")
+        summary_by_key[key] = row
+
+    if set(summary_by_key) != set(configuration_cells):
+        raise Stage3BMatchedAnalysisError("profiling summary configuration coverage differs")
+
+    aggregation_spec: tuple[tuple[str, str, str], ...] = (
+        ("primary_host_time_median_us", "primary_host_time_us", "median"),
+        ("primary_device_time_median_us", "primary_device_time_us", "median"),
+        (
+            "primary_peak_allocated_median_bytes",
+            "primary_peak_allocated_bytes",
+            "median",
+        ),
+        (
+            "primary_peak_reserved_median_bytes",
+            "primary_peak_reserved_bytes",
+            "median",
+        ),
+        ("observer_cost_median_ms", "observer_cost_ms", "median"),
+        ("saved_tensor_bytes_median", "saved_tensor_bytes", "median"),
+        ("state_vjp_calls_median", "state_vjp_calls", "median"),
+        ("graph_span_max", "graph_span", "maximum"),
+        ("dependency_radius_max", "dependency_radius", "maximum"),
+    )
+    for key, cell_rows in configuration_cells.items():
+        summary_row = summary_by_key[key]
+        seeds = {_integer(row, "model_seed") for row in cell_rows}
+        if seeds != set(MODEL_SEEDS) or _integer(summary_row, "model_seed_count") != 3:
+            raise Stage3BMatchedAnalysisError(
+                f"profiling summary seed coverage differs: {key}"
+            )
+        for summary_column, cell_column, reducer in aggregation_spec:
+            values = [_finite_number(row, cell_column) for row in cell_rows]
+            expected = _median(values) if reducer == "median" else _maximum(values)
+            _assert_close(
+                _finite_number(summary_row, summary_column),
+                expected,
+                label=f"summary/{key}/{summary_column}",
+            )
+
+
 def _validate_compact_matrix(
     cells: Sequence[Mapping[str, str]],
     repetitions: Sequence[Mapping[str, str]],
+    summary: Sequence[Mapping[str, str]],
 ) -> None:
     if len(cells) != 288:
         raise Stage3BMatchedAnalysisError(f"cell row count differs: {len(cells)}")
@@ -358,6 +564,9 @@ def _validate_compact_matrix(
         raise Stage3BMatchedAnalysisError("repetition coverage differs")
     if {row["cell_id"] for row in repetitions} != set(cell_ids):
         raise Stage3BMatchedAnalysisError("repetition cells differ from compact cells")
+
+    _validate_repetition_consistency(cells, repetitions)
+    _validate_summary_consistency(cells, summary)
 
 
 def _paired_rows(cells: Sequence[Mapping[str, str]]) -> list[dict[str, object]]:
@@ -1297,7 +1506,40 @@ def validate_generated_analysis_output(root: Path) -> dict[str, object]:
     if not isinstance(metadata_raw, dict):
         raise Stage3BMatchedAnalysisError("analysis metadata must be an object")
     metadata = cast(dict[str, object], metadata_raw)
+    source_kind = metadata.get("source_kind")
+    if not isinstance(source_kind, str):
+        raise Stage3BMatchedAnalysisError("analysis metadata source_kind is invalid")
+    source_profile = _analysis_source_profile(source_kind)
+    if metadata.get("status") != source_profile.metadata_status:
+        raise Stage3BMatchedAnalysisError("analysis metadata source status differs")
+    if metadata.get("analysis_execution_authorized") is not source_profile.execution_authorized:
+        raise Stage3BMatchedAnalysisError(
+            "analysis metadata execution authorization differs"
+        )
+    source_identity = metadata.get("source_identity")
+    if not isinstance(source_identity, dict) or not source_identity:
+        raise Stage3BMatchedAnalysisError("analysis metadata source identity is invalid")
+    try:
+        summary_raw = json.loads(
+            (resolved / "analysis_summary.json").read_text(encoding="utf-8")
+        )
+    except (OSError, json.JSONDecodeError) as exc:
+        raise Stage3BMatchedAnalysisError("analysis summary is unreadable") from exc
+    if not isinstance(summary_raw, dict):
+        raise Stage3BMatchedAnalysisError("analysis summary must be an object")
+    if summary_raw.get("status") != source_profile.summary_status:
+        raise Stage3BMatchedAnalysisError("analysis summary source status differs")
+    if summary_raw.get("source_kind") != source_kind:
+        raise Stage3BMatchedAnalysisError("analysis summary source kind differs")
+    if (
+        summary_raw.get("analysis_execution_authorized")
+        is not source_profile.execution_authorized
+    ):
+        raise Stage3BMatchedAnalysisError(
+            "analysis summary execution authorization differs"
+        )
     expected_boundary = {
+        "source_evidence_read_only": True,
         "analysis_output_evidence": False,
         "results_publication_permitted": False,
         "release_publication_permitted": False,
@@ -1338,8 +1580,9 @@ def _generate_engine(
     try:
         cells = _read_csv(inputs.cells, REQUIRED_CELL_COLUMNS)
         repetitions = _read_csv(inputs.repetitions, REQUIRED_REPETITION_COLUMNS)
-        _read_csv(inputs.summary, ())
-        _validate_compact_matrix(cells, repetitions)
+        summary_rows = _read_csv(inputs.summary, REQUIRED_SUMMARY_COLUMNS)
+        _validate_compact_matrix(cells, repetitions, summary_rows)
+        source_profile = _analysis_source_profile(source_kind)
         paired = _paired_rows(cells)
         groups = _configuration_seed_groups(paired)
         pareto = _pareto_membership(groups)
@@ -1359,7 +1602,7 @@ def _generate_engine(
         metadata: dict[str, object] = {
             "schema_version": ANALYSIS_SCHEMA_VERSION,
             "scope": ANALYSIS_SCOPE,
-            "status": "generated_unsealed_synthetic_implementation_output",
+            "status": source_profile.metadata_status,
             "generated_at_utc": generated_at_utc,
             "source_kind": source_kind,
             "source_identity": dict(source_identity),
@@ -1384,7 +1627,7 @@ def _generate_engine(
             ],
             "source_evidence_read_only": True,
             "analysis_output_evidence": False,
-            "analysis_execution_authorized": False,
+            "analysis_execution_authorized": source_profile.execution_authorized,
             "results_publication_permitted": False,
             "release_publication_permitted": False,
             "test_dataset_access": False,
@@ -1395,7 +1638,9 @@ def _generate_engine(
         summary: dict[str, object] = {
             "schema_version": ANALYSIS_SCHEMA_VERSION,
             "scope": ANALYSIS_SCOPE,
-            "status": "synthetic_implementation_validation_only",
+            "status": source_profile.summary_status,
+            "source_kind": source_kind,
+            "analysis_execution_authorized": source_profile.execution_authorized,
             "candidate_method_summary": [dict(row) for row in candidate_method],
             "candidate_decisions": decisions["candidate_decisions"],
             "pareto_admissible_counts": dict(

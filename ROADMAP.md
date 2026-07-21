@@ -59,24 +59,24 @@ Stage 3B B0 и статистический и инженерный анализ
 Текущая граница:
 
 ```text
-scientific_admission=open_after_eq_b2_confirmatory
+scientific_admission=open
 candidate_aware_runner=complete
 b2_confirmatory_decision=pass_sealed
 b2_confirmatory_request_frozen=true
 b2_confirmatory_admission=present
-matched_profiling_request_refresh_required=true
+matched_profiling_request_refrozen=true
+matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
 ```
 
-Оставшийся переход внутри этапа 16:
+Новый версионированный `v2` request/manifest freeze со ссылками на sealed
+admissions B1 и B2 завершён. Оставшийся переход внутри этапа 16:
 
-1. новая версионированная фиксация 288-cell request/manifest со ссылками на
-   sealed admissions B1 и B2;
-2. новый immutable image и отдельные preflight/authorization/dry-run gates;
-3. выполнение 288-cell matched profiling;
-4. сопоставленный анализ B0/B1/B2, проверка целостности и sealing.
+1. новый immutable image и отдельные preflight/authorization/dry-run gates;
+2. выполнение 288-cell matched profiling;
+3. сопоставленный анализ B0/B1/B2, проверка целостности и sealing.
 
 Прежние smoke decision и matched request сохраняются неизменными, но не
 разрешают production execution. После разрешённого выполнения этап должен

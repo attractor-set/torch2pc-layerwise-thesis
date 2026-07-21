@@ -57,7 +57,7 @@ The comparison covers:
 - compute time and memory;
 - reproducibility across independent runs.
 
-## Current state as of 18 July 2026
+## Current state as of July 20, 2026
 
 The following work is complete in the pinned Ubuntu/ROCm environment:
 
@@ -78,8 +78,10 @@ The following work is complete in the pinned Ubuntu/ROCm environment:
   has `status=pass`;
 - B2 `composite_vjp`: implementation is complete and sealed `EQ-B2`
   has `status=pass`;
-- the frozen 288-cell B0/B1/B2 [matched-profiling](docs/glossary_EN.md#term-matched-profiling) request and manifest have
-  been built and validated;
+- sealed confirmatory `EQ-B1` and `EQ-B2` are prospectively bound to a new
+  `v2` request/manifest package for the 288-cell B0/B1/B2
+  [matched-profiling](docs/glossary_EN.md#term-matched-profiling) comparison;
+- the historical `v1` request and manifest remain byte-identical;
 - the candidate-aware matched-profiling runner is implemented.
 
 Scientific admission for shared matched profiling is open, but execution is
@@ -87,12 +89,16 @@ not authorized:
 
 ```text
 scientific_admission=open
+matched_profiling_request_refrozen=true
+matched_profiling_request_refresh_required=false
+matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
 ```
 
-The next incomplete step in the already frozen procedure is the separate
-ROCm/float32 runtime freeze. This documentation update does not authorize
+The next incomplete step is a separate immutable image, ROCm/float32
+preflight, runtime authorization, and non-measuring dry-run gate sequence.
+This documentation update does not authorize
 measurements, create evidence, or open `EX-IF0`, passive diagnostics, the
 predictor, `QWake-PC`, or test-dataset access.
 

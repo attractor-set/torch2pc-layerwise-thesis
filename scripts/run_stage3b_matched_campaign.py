@@ -22,8 +22,8 @@ from torch2pc_thesis.stage3b_matched_execution import (
     verify_matched_authorized_lane,
 )
 
-DEFAULT_MATCHED_MANIFEST = Path("experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json")
-DEFAULT_OPENING_REQUEST = Path("experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json")
+DEFAULT_MATCHED_MANIFEST = Path("experiments/frozen/stage3b-matched-profiling-v2/manifest.json")
+DEFAULT_OPENING_REQUEST = Path("experiments/frozen/stage3b-matched-profiling-v2/request.json")
 
 
 def _load_json_object(path: Path) -> dict[str, object]:

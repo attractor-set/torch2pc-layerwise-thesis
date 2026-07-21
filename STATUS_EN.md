@@ -16,12 +16,13 @@ The full Stage 3B program remains incomplete.
 
 ```text
 matched_profiling_manifest_cells=288
-scientific_admission=open_after_eq_b2_confirmatory
+scientific_admission=open
 candidate_aware_runner=complete
 b2_confirmatory_decision=pass_sealed
 b2_confirmatory_request_frozen=true
 b2_confirmatory_admission=present
-matched_profiling_request_refresh_required=true
+matched_profiling_request_refrozen=true
+matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
@@ -113,8 +114,9 @@ is not admitted retrospectively.
 Until the new freeze and a separate runtime review exist:
 
 ```text
-scientific_admission=open_after_eq_b2_confirmatory
-matched_profiling_request_refresh_required=true
+scientific_admission=open
+matched_profiling_request_refrozen=true
+matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false

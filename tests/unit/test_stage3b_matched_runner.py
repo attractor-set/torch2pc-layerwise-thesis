@@ -12,6 +12,10 @@ from torch2pc_thesis.stage3b_execution import (
     Stage3BExecutionError,
 )
 from torch2pc_thesis.stage3b_matched_profiling import (
+    MATCHED_PROFILING_HISTORICAL_MANIFEST_ID,
+    MATCHED_PROFILING_HISTORICAL_MANIFEST_SHA256,
+    MATCHED_PROFILING_HISTORICAL_REQUEST_ID,
+    MATCHED_PROFILING_HISTORICAL_REQUEST_SHA256,
     MATCHED_PROFILING_MANIFEST_ID,
     MATCHED_PROFILING_REQUEST_ID,
     MATCHED_PROFILING_SCHEMA_VERSION,
@@ -107,6 +111,8 @@ def _manifest() -> dict[str, object]:
         "schema_version": MATCHED_PROFILING_SCHEMA_VERSION,
         "manifest_id": MATCHED_PROFILING_MANIFEST_ID,
         "campaign_id": STAGE3B_CAMPAIGN_ID,
+        "refreeze_version": 2,
+        "refreeze_reason": "sealed_confirmatory_eq_b1_and_eq_b2_admissions",
         "status": "scientific_admission_open_execution_not_authorized",
         "evidence": False,
         "execution_performed": False,
@@ -140,14 +146,37 @@ def _request(manifest: Mapping[str, object]) -> dict[str, object]:
         "schema_version": MATCHED_PROFILING_SCHEMA_VERSION,
         "request_id": MATCHED_PROFILING_REQUEST_ID,
         "campaign_id": STAGE3B_CAMPAIGN_ID,
+        "refreeze_version": 2,
+        "refreeze_reason": "sealed_confirmatory_eq_b1_and_eq_b2_admissions",
         "status": "scientific_admission_open_execution_not_authorized",
         "evidence": False,
         "execution_performed": False,
         "test_dataset_access": False,
         "full_stage3b_campaign_complete": False,
         "scientific_admission": "open",
+        "matched_profiling_request_refrozen": True,
+        "matched_profiling_execution_open": False,
         "runtime_authorization": "not_issued",
         "measurements_allowed": False,
+        "historical_opening": {
+            "request": {
+                "request_id": MATCHED_PROFILING_HISTORICAL_REQUEST_ID,
+                "path": (
+                    "experiments/planned/"
+                    "STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json"
+                ),
+                "sha256": MATCHED_PROFILING_HISTORICAL_REQUEST_SHA256,
+            },
+            "manifest": {
+                "manifest_id": MATCHED_PROFILING_HISTORICAL_MANIFEST_ID,
+                "path": (
+                    "experiments/planned/"
+                    "STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json"
+                ),
+                "sha256": MATCHED_PROFILING_HISTORICAL_MANIFEST_SHA256,
+            },
+            "retrospective_admission": False,
+        },
         "source_artifacts": {
             "matched_manifest": {
                 "manifest_digest": manifest["manifest_digest"],

@@ -7,10 +7,11 @@ Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительн
 Подтверждающий B1 запечатан на 120/120 парах. Подтверждающий B2 также
 завершён и запечатан: 120/120 троек, 240/240 прямых сравнений, все пять gates
 прошли, failed pairs отсутствуют; производный admission `EQ-B2` сохранён.
-Ранее сформированные артефакты открытия
+Исторические артефакты открытия
 [сопоставленного профилирования](docs/glossary.md#term-matched-profiling)
-остаются историческими: перед production prelaunch требуется новый
-версионированный request/manifest freeze.
+сохранены byte-for-byte. Новый пакет `v2` prospectively привязан к sealed
+admissions B1/B2 и прошёл научный prelaunch gate; runtime authorization и
+измерения всё ещё не разрешены.
 
 Полный Stage 3B остаётся незавершённым.
 
@@ -18,12 +19,13 @@ Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительн
 
 ```text
 matched_profiling_manifest_cells=288
-scientific_admission=open_after_eq_b2_confirmatory
+scientific_admission=open
 candidate_aware_runner=complete
 b2_confirmatory_decision=pass_sealed
 b2_confirmatory_request_frozen=true
 b2_confirmatory_admission=present
-matched_profiling_request_refresh_required=true
+matched_profiling_request_refrozen=true
+matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
@@ -48,7 +50,7 @@ full_stage3b_campaign_complete=false
 | Предварительная регистрация B1/B2 | завершена; тег `stage3b-b1-b2-prereg-v1` |
 | B1 `isolated_layer_vjp` | confirmatory `EQ-B1=pass`; 120/120 пар |
 | B2 `composite_vjp` | `EQ-B2-CONFIRMATORY=pass`; 120/120 троек, 240/240 сравнений, 0 failed pairs; derived `EQ-B2` сохранён |
-| Запрос и манифест сопоставленного профилирования | прежняя версия сохранена; production refresh требуется после confirmatory B2 |
+| Запрос и манифест сопоставленного профилирования | новый `v2` refreeze сохранён; исторический `v1` неизменен |
 | Исполнитель сопоставленного профилирования | реализация с учётом кандидата завершена |
 | Выполнение сопоставленного профилирования | не разрешено |
 | Тестовая выборка | закрыта |
@@ -106,16 +108,18 @@ derived `EQ-B2` связан с ним SHA-256. Эта научная цепоч
 историй, агрегированные метрики и 1800 структурных событий. Test split не
 использовался.
 
-Следующий незавершённый шаг — новый версионированный freeze 288-cell
-matched-profiling request/manifest, который prospectively ссылается на
-запечатанные admissions B1 и B2. Прежний request/manifest сохраняется
-byte-for-byte и не получает допуска задним числом.
+Новый версионированный `v2` freeze 288-cell matched-profiling request/manifest
+сохранён в `experiments/frozen/stage3b-matched-profiling-v2/` и prospectively
+ссылается на запечатанные admissions B1 и B2. Прежний `v1` request/manifest
+сохранён byte-for-byte и не получает допуска задним числом. Следующий шаг —
+отдельные immutable image, ROCm preflight, runtime authorization и dry-run gates.
 
-До нового freeze и отдельной проверки runtime:
+До отдельной проверки runtime:
 
 ```text
-scientific_admission=open_after_eq_b2_confirmatory
-matched_profiling_request_refresh_required=true
+scientific_admission=open
+matched_profiling_request_refrozen=true
+matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false

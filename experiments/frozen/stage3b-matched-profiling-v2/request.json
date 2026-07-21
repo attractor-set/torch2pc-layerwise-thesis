@@ -1,0 +1,117 @@
+{
+  "admitted_candidates": [
+    "stage2_baseline",
+    "isolated_layer_vjp",
+    "composite_vjp"
+  ],
+  "campaign_id": "stage3b-profiling-locality-v1",
+  "evidence": false,
+  "execution_performed": false,
+  "explicitly_closed": [
+    "EX-IF0",
+    "estimator",
+    "active ECZ",
+    "QWake-PC",
+    "controller actions",
+    "offline policy selection",
+    "test-split access"
+  ],
+  "full_stage3b_campaign_complete": false,
+  "historical_opening": {
+    "manifest": {
+      "manifest_id": "stage3b-b1-b2-matched-profiling-manifest-v1",
+      "path": "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json",
+      "sha256": "6950470b4188b8c85226649ec631c739eef9cb8a8ef0b3410a82fb0a5106b79d"
+    },
+    "request": {
+      "path": "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json",
+      "request_id": "stage3b-b1-b2-matched-profiling-request-v1",
+      "sha256": "7c23c9ced5c838e7c3a2ad539d6a5839e986b79ca84ab9c16b14fecfaf819f5e"
+    },
+    "retrospective_admission": false
+  },
+  "matched_profiling_execution_open": false,
+  "matched_profiling_request_refrozen": true,
+  "measurements_allowed": false,
+  "next_required_slice": "separate immutable image, ROCm/float32 preflight, runtime authorization, and non-measuring dry-run",
+  "opening_base_commit": "62309311cfddbb422cbb06206f4b712c49dbb277",
+  "prerequisite_decisions": [
+    {
+      "candidate_id": "isolated_layer_vjp",
+      "confirmatory_equivalence_executed": true,
+      "control_id": "stage2_baseline",
+      "decision_id": "EQ-B1",
+      "failed_pairs": [],
+      "failed_triples": [],
+      "gate_ids": [
+        "NUM-B1",
+        "OBS-B1",
+        "PROV-B1",
+        "STRUCT-B1",
+        "TRAJ-B1"
+      ],
+      "path": "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/matched-profiling-admission.json",
+      "reference_id": null,
+      "scope": "confirmatory",
+      "sealed": true,
+      "sha256": "9dbc684405c77dee5d390052bfcb41527b8a3f40b4af0fae1f469c0e50b7dd9c",
+      "source_decision_id": "EQ-B1-CONFIRMATORY",
+      "source_decision_sha256": "a20eabc1e6da8c9634792b4c3457a272419568d5f23f3e7bacc2c38da3c87afc",
+      "status": "pass"
+    },
+    {
+      "candidate_id": "composite_vjp",
+      "confirmatory_equivalence_executed": true,
+      "control_id": "isolated_layer_vjp",
+      "decision_id": "EQ-B2",
+      "failed_pairs": [],
+      "failed_triples": [],
+      "gate_ids": [
+        "NUM-B2",
+        "OBS-B2",
+        "PROV-B2",
+        "STRUCT-B2",
+        "TRAJ-B2"
+      ],
+      "path": "results/stage-3/b2/stage3b-b2-confirmatory-63885e5-v1/matched-profiling-admission.json",
+      "reference_id": "stage2_baseline",
+      "scope": "confirmatory",
+      "sealed": true,
+      "sha256": "968461d55c620c649c7677fd1babb207e702985cf1c4620ec86f23faf499323d",
+      "source_decision_id": "EQ-B2-CONFIRMATORY",
+      "source_decision_sha256": "6e4b5c54a35011dcd39ca621a020d9b75ed5bed706f10f483454641b46b75eea",
+      "status": "pass"
+    }
+  ],
+  "prerequisite_rule": "sealed positive EQ-B1 and EQ-B2 are both required",
+  "project_source_commit_policy": "record exact clean implementation commit at separate runtime freeze",
+  "refreeze_reason": "sealed_confirmatory_eq_b1_and_eq_b2_admissions",
+  "refreeze_version": 2,
+  "request_digest": "842cc1af600e2d74da06e7e29ec7f54d24049bfedca04e76b2ad2cfb70454aad",
+  "request_id": "stage3b-b1-b2-matched-profiling-request-v2",
+  "runtime_authorization": "not_issued",
+  "schema_version": 1,
+  "scientific_admission": "open",
+  "source_artifacts": {
+    "b1_contract": {
+      "path": "experiments/planned/STAGE3B-B1-CONTRACT.json",
+      "sha256": "32847ccd47244183854645cda852733dfd9bbbbb2b95722d55ee0050cb895e20"
+    },
+    "b2_contract": {
+      "path": "experiments/planned/STAGE3B-B2-CONTRACT.json",
+      "sha256": "b250b042a8fe8118b51841b27b6cf70e167ced1d44f4587fe41aa50735c78b26"
+    },
+    "execution_manifest": {
+      "manifest_digest": "3112b85da4447901e9fe98f99baff06c19981008366315ee9e8c4da9fb31f3d1",
+      "path": "experiments/planned/STAGE3B-EXECUTION-MANIFEST.json",
+      "sha256": "9fe4fbca27dc81daa4748c3944770c6b85ed412bbe5ab1cc868392355f286e03"
+    },
+    "matched_manifest": {
+      "manifest_digest": "772128de13431c6cbab0e6527745e54654dcf874a3d041651b6c5d7fe21e45ba",
+      "path": "experiments/frozen/stage3b-matched-profiling-v2/manifest.json",
+      "selected_cell_count": 288
+    }
+  },
+  "status": "scientific_admission_open_execution_not_authorized",
+  "test_dataset_access": false
+}

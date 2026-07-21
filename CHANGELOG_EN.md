@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- froze a new versioned `v2` 288-cell matched-profiling package prospectively bound to sealed `EQ-B1` and `EQ-B2`; historical `v1` remains byte-identical while runtime authorization and measurements stay closed;
+
 - preserved byte-for-byte sealed confirmatory B2 evidence: `EQ-B2-CONFIRMATORY=pass`, 120/120 triples, 240/240 comparisons, 0 failed pairs, and derived `EQ-B2`; matched profiling remains closed until a new versioned freeze;
 
 - froze the append-only confirmatory `EQ-B2` request: 120 triples, 240 comparisons, exact B1-input reuse, and a closed execution boundary;

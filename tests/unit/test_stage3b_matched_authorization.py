@@ -36,11 +36,11 @@ from torch2pc_thesis.stage3b_matched_profiling import (
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 MATCHED_MANIFEST_PATH = (
     PROJECT_ROOT
-    / "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json"
+    / "experiments/frozen/stage3b-matched-profiling-v2/manifest.json"
 )
 MATCHED_REQUEST_PATH = (
     PROJECT_ROOT
-    / "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json"
+    / "experiments/frozen/stage3b-matched-profiling-v2/request.json"
 )
 ROCM_IMAGE = "sha256:" + "2" * 64
 

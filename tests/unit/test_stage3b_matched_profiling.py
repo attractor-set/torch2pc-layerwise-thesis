@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import shutil
 from collections import Counter, defaultdict
 from itertools import permutations
 from pathlib import Path
@@ -17,6 +18,8 @@ from torch2pc_thesis.stage3b_matched_profiling import (
     validate_matched_manifest,
     validate_matched_prelaunch_scientific_gate,
 )
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _contract(candidate_id: str) -> dict[str, object]:
@@ -152,8 +155,11 @@ def test_paths_are_not_used_by_manifest_builder(tmp_path: Path) -> None:
 
 def _decision(decision_id: str) -> dict[str, object]:
     suffix = decision_id.removeprefix("EQ-")
-    return {
+    failure_field = "failed_pairs" if suffix == "B1" else "failed_triples"
+    decision: dict[str, object] = {
         "decision_id": decision_id,
+        "scope": "confirmatory",
+        "confirmatory_equivalence_executed": True,
         "status": "pass",
         "sealed": True,
         "failed_pairs": [],
@@ -166,10 +172,13 @@ def _decision(decision_id: str) -> dict[str, object]:
             "B2": "isolated_layer_vjp",
         }[suffix],
         "gates": {
-            f"NUM-{suffix}": {"passed": True, "failed_pairs": []},
-            f"OBS-{suffix}": {"passed": True, "failed_pairs": []},
+            f"NUM-{suffix}": {"passed": True, failure_field: []},
+            f"OBS-{suffix}": {"passed": True, failure_field: []},
         },
     }
+    if suffix == "B2":
+        decision["failed_triples"] = []
+    return decision
 
 
 def _confirmatory_decision(decision_id: str) -> dict[str, object]:
@@ -194,6 +203,24 @@ def _write_json(path: Path, payload: object) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def _historical_paths(tmp_path: Path) -> tuple[Path, Path]:
+    target_root = tmp_path / "experiments/planned"
+    target_root.mkdir(parents=True, exist_ok=True)
+    request = target_root / "STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json"
+    manifest = target_root / "STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json"
+    shutil.copyfile(
+        PROJECT_ROOT
+        / "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json",
+        request,
+    )
+    shutil.copyfile(
+        PROJECT_ROOT
+        / "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json",
+        manifest,
+    )
+    return request, manifest
+
+
 def test_build_matched_request_binds_positive_sealed_decisions(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -215,6 +242,7 @@ def test_build_matched_request_binds_positive_sealed_decisions(
     b1_decision_path = tmp_path / "results/b1/decision.json"
     b2_decision_path = tmp_path / "results/b2/decision.json"
     matched_path = tmp_path / "experiments/planned/matched.json"
+    historical_request_path, historical_manifest_path = _historical_paths(tmp_path)
 
     for path, payload in (
         (base_path, base_manifest),
@@ -233,6 +261,8 @@ def test_build_matched_request_binds_positive_sealed_decisions(
         b1_decision_path=b1_decision_path,
         b2_decision_path=b2_decision_path,
         matched_manifest_path=matched_path,
+        historical_request_path=historical_request_path,
+        historical_manifest_path=historical_manifest_path,
         base_manifest=base_manifest,
         b1_contract=b1_contract,
         b2_contract=b2_contract,
@@ -271,6 +301,7 @@ def test_build_matched_request_rejects_unsealed_decision(
         strict=True,
     ):
         _write_json(path, payload)
+    historical_request_path, historical_manifest_path = _historical_paths(tmp_path)
 
     with pytest.raises(MatchedProfilingError, match="must be sealed"):
         matched.build_matched_request(
@@ -281,6 +312,8 @@ def test_build_matched_request_rejects_unsealed_decision(
             b1_decision_path=paths[3],
             b2_decision_path=paths[4],
             matched_manifest_path=tmp_path / "matched.json",
+            historical_request_path=historical_request_path,
+            historical_manifest_path=historical_manifest_path,
             base_manifest=base_manifest,
             b1_contract=b1_contract,
             b2_contract=b2_contract,
@@ -301,6 +334,7 @@ def test_prelaunch_gate_requires_confirmatory_equivalence(
     b1_contract = _contract("isolated_layer_vjp")
     b2_contract = _contract("composite_vjp")
     b1_decision = _decision("EQ-B1")
+    b1_decision["scope"] = "smoke"
     b2_decision = _decision("EQ-B2")
     manifest = build_matched_manifest(base_manifest, b1_contract, b2_contract)
 
@@ -310,6 +344,7 @@ def test_prelaunch_gate_requires_confirmatory_equivalence(
     b1_decision_path = tmp_path / "b1-decision.json"
     b2_decision_path = tmp_path / "b2-decision.json"
     matched_path = tmp_path / "matched.json"
+    historical_request_path, historical_manifest_path = _historical_paths(tmp_path)
     for path, payload in (
         (base_path, base_manifest),
         (b1_contract_path, b1_contract),
@@ -319,27 +354,23 @@ def test_prelaunch_gate_requires_confirmatory_equivalence(
     ):
         _write_json(path, payload)
 
-    request = matched.build_matched_request(
-        project_root=tmp_path,
-        base_manifest_path=base_path,
-        b1_contract_path=b1_contract_path,
-        b2_contract_path=b2_contract_path,
-        b1_decision_path=b1_decision_path,
-        b2_decision_path=b2_decision_path,
-        matched_manifest_path=matched_path,
-        base_manifest=base_manifest,
-        b1_contract=b1_contract,
-        b2_contract=b2_contract,
-        b1_decision=b1_decision,
-        b2_decision=b2_decision,
-        matched_manifest=manifest,
-    )
-
     with pytest.raises(MatchedProfilingError, match="scope=confirmatory"):
-        validate_matched_prelaunch_scientific_gate(
-            manifest,
-            request,
+        matched.build_matched_request(
             project_root=tmp_path,
+            base_manifest_path=base_path,
+            b1_contract_path=b1_contract_path,
+            b2_contract_path=b2_contract_path,
+            b1_decision_path=b1_decision_path,
+            b2_decision_path=b2_decision_path,
+            matched_manifest_path=matched_path,
+            historical_request_path=historical_request_path,
+            historical_manifest_path=historical_manifest_path,
+            base_manifest=base_manifest,
+            b1_contract=b1_contract,
+            b2_contract=b2_contract,
+            b1_decision=b1_decision,
+            b2_decision=b2_decision,
+            matched_manifest=manifest,
         )
 
 
@@ -363,6 +394,7 @@ def test_prelaunch_gate_accepts_confirmatory_equivalence_and_balance(
     b1_decision_path = tmp_path / "b1-decision.json"
     b2_decision_path = tmp_path / "b2-decision.json"
     matched_path = tmp_path / "matched.json"
+    historical_request_path, historical_manifest_path = _historical_paths(tmp_path)
     for path, payload in (
         (base_path, base_manifest),
         (b1_contract_path, b1_contract),
@@ -380,6 +412,8 @@ def test_prelaunch_gate_accepts_confirmatory_equivalence_and_balance(
         b1_decision_path=b1_decision_path,
         b2_decision_path=b2_decision_path,
         matched_manifest_path=matched_path,
+        historical_request_path=historical_request_path,
+        historical_manifest_path=historical_manifest_path,
         base_manifest=base_manifest,
         b1_contract=b1_contract,
         b2_contract=b2_contract,

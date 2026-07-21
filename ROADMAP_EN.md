@@ -59,12 +59,13 @@ Complete:
 Current boundary:
 
 ```text
-scientific_admission=open_after_eq_b2_confirmatory
+scientific_admission=open
 candidate_aware_runner=complete
 b2_confirmatory_decision=pass_sealed
 b2_confirmatory_request_frozen=true
 b2_confirmatory_admission=present
-matched_profiling_request_refresh_required=true
+matched_profiling_request_refrozen=true
+matched_profiling_request_refresh_required=false
 matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false

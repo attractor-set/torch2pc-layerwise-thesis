@@ -29,11 +29,11 @@ from torch2pc_thesis.stage3b_matched_profiling import load_json_object
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MATCHED_MANIFEST = (
     PROJECT_ROOT
-    / "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json"
+    / "experiments/frozen/stage3b-matched-profiling-v2/manifest.json"
 )
 DEFAULT_MATCHED_REQUEST = (
     PROJECT_ROOT
-    / "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json"
+    / "experiments/frozen/stage3b-matched-profiling-v2/request.json"
 )
 DEFAULT_OUTPUT_ROOT = Path(
     "/tmp/torch2pc-stage3b-b1-b2-matched-rocm-authorization-v1"

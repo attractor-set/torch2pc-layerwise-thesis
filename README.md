@@ -58,7 +58,7 @@
 - вычислительное время и память;
 - воспроизводимость между независимыми запусками.
 
-## Текущее состояние на 18 июля 2026 года
+## Текущее состояние на 20 июля 2026 года
 
 В закреплённой среде Ubuntu/ROCm завершены:
 
@@ -79,7 +79,10 @@
   `EQ-B1` имеет `status=pass`;
 - B2 `composite_vjp`: реализация завершена, зафиксированное решение
   `EQ-B2` имеет `status=pass`;
-- сформированы и проверены замороженные запрос и манифест [сопоставленного профилирования](docs/glossary.md#term-matched-profiling) B0/B1/B2 на 288 ячеек;
+- sealed confirmatory `EQ-B1` и `EQ-B2` prospectively связаны с новым `v2`
+  request/manifest пакетом [сопоставленного профилирования](docs/glossary.md#term-matched-profiling)
+  B0/B1/B2 на 288 ячеек;
+- исторический `v1` request/manifest сохранён byte-for-byte;
 - реализован исполнитель сопоставленного профилирования, учитывающий выбранного
   кандидата.
 
@@ -88,12 +91,16 @@
 
 ```text
 scientific_admission=open
+matched_profiling_request_refrozen=true
+matched_profiling_request_refresh_required=false
+matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
 ```
 
-Следующий незавершённый шаг в уже зафиксированной процедуре — отдельная
-фиксация среды выполнения ROCm/float32. Документационное обновление не выдаёт
+Следующий незавершённый шаг — отдельные immutable image, ROCm/float32
+preflight, runtime authorization и non-measuring dry-run gates.
+Документационное обновление не выдаёт
 разрешения на измерения, не создаёт доказательных материалов и не открывает
 `EX-IF0`, пассивную диагностику, предиктор, `QWake-PC` или тестовую выборку.
 

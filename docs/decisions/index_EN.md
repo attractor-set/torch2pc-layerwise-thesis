@@ -36,3 +36,5 @@
 - [ADR-022](ADR-022-stage3b-b2-confirmatory-opening_EN.md): adds fail-closed request freezing, separated authorization, recovery, and confirmatory `EQ-B2` sealing infrastructure while keeping [execution](../glossary_EN.md#term-execution) closed pending a separate request freeze and runtime admission.
 - [ADR-023](ADR-023-stage3b-b2-confirmatory-request-freeze_EN.md): freezes the append-only confirmatory `EQ-B2` request for 120 triples/240 comparisons while keeping [execution](../glossary_EN.md#term-execution) closed pending separate image and [runtime](../glossary_EN.md#term-runtime) validation.
 - [ADR-024](ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md): preserves byte-for-byte sealed `EQ-B2-CONFIRMATORY=pass` and derived `EQ-B2`, completes the B1/B2 scientific-admission chain, and keeps matched profiling closed until a new versioned freeze.
+
+- [ADR-025](ADR-025-stage3b-matched-profiling-request-refreeze_EN.md): creates a new `v2` request/manifest freeze from sealed confirmatory B1/B2 admissions, preserves historical `v1`, and keeps runtime execution closed.

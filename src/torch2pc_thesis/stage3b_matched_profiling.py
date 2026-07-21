@@ -20,13 +20,25 @@ from torch2pc_thesis.stage3b_execution import (
 
 MATCHED_PROFILING_SCHEMA_VERSION: Final[int] = 1
 MATCHED_PROFILING_REQUEST_ID: Final[str] = (
-    "stage3b-b1-b2-matched-profiling-request-v1"
+    "stage3b-b1-b2-matched-profiling-request-v2"
 )
 MATCHED_PROFILING_MANIFEST_ID: Final[str] = (
-    "stage3b-b1-b2-matched-profiling-manifest-v1"
+    "stage3b-b1-b2-matched-profiling-manifest-v2"
 )
 MATCHED_PROFILING_BASE_COMMIT: Final[str] = (
-    "cc0a70f378e9d8ffe996c8f7c4bfc4d1271e5643"
+    "62309311cfddbb422cbb06206f4b712c49dbb277"
+)
+MATCHED_PROFILING_HISTORICAL_REQUEST_ID: Final[str] = (
+    "stage3b-b1-b2-matched-profiling-request-v1"
+)
+MATCHED_PROFILING_HISTORICAL_MANIFEST_ID: Final[str] = (
+    "stage3b-b1-b2-matched-profiling-manifest-v1"
+)
+MATCHED_PROFILING_HISTORICAL_REQUEST_SHA256: Final[str] = (
+    "7c23c9ced5c838e7c3a2ad539d6a5839e986b79ca84ab9c16b14fecfaf819f5e"
+)
+MATCHED_PROFILING_HISTORICAL_MANIFEST_SHA256: Final[str] = (
+    "6950470b4188b8c85226649ec631c739eef9cb8a8ef0b3410a82fb0a5106b79d"
 )
 MATCHED_PROFILING_CANDIDATES: Final[tuple[str, ...]] = (
     "stage2_baseline",
@@ -128,6 +140,14 @@ def _validate_decision(
             f"unexpected decision_id for {expected_decision_id}: "
             f"{decision.get('decision_id')!r}"
         )
+    if decision.get("scope") != "confirmatory":
+        raise MatchedProfilingError(
+            f"{expected_decision_id} must have scope=confirmatory"
+        )
+    if decision.get("confirmatory_equivalence_executed") is not True:
+        raise MatchedProfilingError(
+            f"{expected_decision_id} confirmatory equivalence was not executed"
+        )
     if decision.get("status") != "pass":
         raise MatchedProfilingError(f"{expected_decision_id} must have status=pass")
     if decision.get("sealed") is not True:
@@ -136,10 +156,15 @@ def _validate_decision(
         raise MatchedProfilingError(
             f"{expected_decision_id} must have no failed pairs"
         )
+    if expected_decision_id == "EQ-B2" and decision.get("failed_triples") != []:
+        raise MatchedProfilingError("EQ-B2 must have no failed triples")
 
     raw_gates = decision.get("gates")
     if not isinstance(raw_gates, Mapping) or not raw_gates:
         raise MatchedProfilingError(f"{expected_decision_id} gates are missing")
+    failure_field = (
+        "failed_pairs" if expected_decision_id == "EQ-B1" else "failed_triples"
+    )
     for gate_id, raw_gate in raw_gates.items():
         if not isinstance(gate_id, str) or not isinstance(raw_gate, Mapping):
             raise MatchedProfilingError(
@@ -149,9 +174,9 @@ def _validate_decision(
             raise MatchedProfilingError(
                 f"{expected_decision_id} gate did not pass: {gate_id}"
             )
-        if raw_gate.get("failed_pairs") != []:
+        if raw_gate.get(failure_field) != []:
             raise MatchedProfilingError(
-                f"{expected_decision_id} gate has failed pairs: {gate_id}"
+                f"{expected_decision_id} gate has failures: {gate_id}"
             )
 
 
@@ -168,10 +193,19 @@ def _decision_record(
         "path": _relative_path(path, project_root=project_root),
         "sha256": sha256_file(path),
         "status": "pass",
+        "scope": "confirmatory",
         "sealed": True,
+        "confirmatory_equivalence_executed": True,
         "failed_pairs": [],
+        "failed_triples": decision.get("failed_triples", []),
         "candidate_id": decision.get("candidate_id"),
-        "control_id": decision.get("control_id"),
+        "control_id": decision.get(
+            "control_id",
+            decision.get("control_candidate_id"),
+        ),
+        "reference_id": decision.get("reference_id"),
+        "source_decision_id": decision.get("source_decision_id"),
+        "source_decision_sha256": decision.get("source_decision_sha256"),
         "gate_ids": sorted(cast(Mapping[str, object], decision["gates"])),
     }
 
@@ -553,6 +587,8 @@ def build_matched_manifest(
         "schema_version": MATCHED_PROFILING_SCHEMA_VERSION,
         "manifest_id": MATCHED_PROFILING_MANIFEST_ID,
         "campaign_id": STAGE3B_CAMPAIGN_ID,
+        "refreeze_version": 2,
+        "refreeze_reason": "sealed_confirmatory_eq_b1_and_eq_b2_admissions",
         "status": "scientific_admission_open_execution_not_authorized",
         "evidence": False,
         "execution_performed": False,
@@ -599,6 +635,12 @@ def validate_matched_manifest(manifest: Mapping[str, object]) -> None:
         raise MatchedProfilingError("unexpected matched-profiling manifest_id")
     if manifest.get("campaign_id") != STAGE3B_CAMPAIGN_ID:
         raise MatchedProfilingError("unexpected matched-profiling campaign_id")
+    if manifest.get("refreeze_version") != 2:
+        raise MatchedProfilingError("matched manifest refreeze version changed")
+    if manifest.get("refreeze_reason") != (
+        "sealed_confirmatory_eq_b1_and_eq_b2_admissions"
+    ):
+        raise MatchedProfilingError("matched manifest refreeze reason changed")
     if manifest.get("evidence") is not False:
         raise MatchedProfilingError("matched opening manifest must remain non-evidence")
     if manifest.get("execution_performed") is not False:
@@ -634,6 +676,8 @@ def build_matched_request(
     b1_decision_path: Path,
     b2_decision_path: Path,
     matched_manifest_path: Path,
+    historical_request_path: Path,
+    historical_manifest_path: Path,
     base_manifest: Mapping[str, object],
     b1_contract: Mapping[str, object],
     b2_contract: Mapping[str, object],
@@ -667,6 +711,8 @@ def build_matched_request(
         "schema_version": MATCHED_PROFILING_SCHEMA_VERSION,
         "request_id": MATCHED_PROFILING_REQUEST_ID,
         "campaign_id": STAGE3B_CAMPAIGN_ID,
+        "refreeze_version": 2,
+        "refreeze_reason": "sealed_confirmatory_eq_b1_and_eq_b2_admissions",
         "status": "scientific_admission_open_execution_not_authorized",
         "evidence": False,
         "execution_performed": False,
@@ -700,10 +746,26 @@ def build_matched_request(
         },
         "admitted_candidates": list(MATCHED_PROFILING_CANDIDATES),
         "scientific_admission": "open",
+        "matched_profiling_request_refrozen": True,
+        "matched_profiling_execution_open": False,
         "runtime_authorization": "not_issued",
         "measurements_allowed": False,
+        "historical_opening": {
+            "request": {
+                "request_id": MATCHED_PROFILING_HISTORICAL_REQUEST_ID,
+                "path": _relative_path(historical_request_path, project_root=project_root),
+                "sha256": sha256_file(historical_request_path),
+            },
+            "manifest": {
+                "manifest_id": MATCHED_PROFILING_HISTORICAL_MANIFEST_ID,
+                "path": _relative_path(historical_manifest_path, project_root=project_root),
+                "sha256": sha256_file(historical_manifest_path),
+            },
+            "retrospective_admission": False,
+        },
         "next_required_slice": (
-            "candidate-aware matched runner plus separate ROCm/float32 runtime freeze"
+            "separate immutable image, ROCm/float32 preflight, runtime "
+            "authorization, and non-measuring dry-run"
         ),
         "explicitly_closed": [
             "EX-IF0",
@@ -726,8 +788,48 @@ def validate_matched_request(request: Mapping[str, object]) -> None:
         raise MatchedProfilingError("unexpected matched request_id")
     if request.get("campaign_id") != STAGE3B_CAMPAIGN_ID:
         raise MatchedProfilingError("unexpected matched request campaign")
+    if request.get("refreeze_version") != 2:
+        raise MatchedProfilingError("matched request refreeze version changed")
+    if request.get("refreeze_reason") != (
+        "sealed_confirmatory_eq_b1_and_eq_b2_admissions"
+    ):
+        raise MatchedProfilingError("matched request refreeze reason changed")
     if request.get("scientific_admission") != "open":
         raise MatchedProfilingError("matched scientific admission is not open")
+    if request.get("matched_profiling_request_refrozen") is not True:
+        raise MatchedProfilingError("matched request must record the v2 refreeze")
+    if request.get("matched_profiling_execution_open") is not False:
+        raise MatchedProfilingError("matched execution must remain closed")
+    raw_historical = request.get("historical_opening")
+    if not isinstance(raw_historical, Mapping):
+        raise MatchedProfilingError("historical matched opening record is missing")
+    raw_old_request = raw_historical.get("request")
+    raw_old_manifest = raw_historical.get("manifest")
+    if not isinstance(raw_old_request, Mapping) or not isinstance(
+        raw_old_manifest,
+        Mapping,
+    ):
+        raise MatchedProfilingError("historical matched opening records are malformed")
+    if raw_old_request.get("request_id") != MATCHED_PROFILING_HISTORICAL_REQUEST_ID:
+        raise MatchedProfilingError("historical matched request id changed")
+    if raw_old_request.get("path") != (
+        "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json"
+    ):
+        raise MatchedProfilingError("historical matched request path changed")
+    if raw_old_request.get("sha256") != MATCHED_PROFILING_HISTORICAL_REQUEST_SHA256:
+        raise MatchedProfilingError("historical matched request digest changed")
+    if raw_old_manifest.get("manifest_id") != (
+        MATCHED_PROFILING_HISTORICAL_MANIFEST_ID
+    ):
+        raise MatchedProfilingError("historical matched manifest id changed")
+    if raw_old_manifest.get("path") != (
+        "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json"
+    ):
+        raise MatchedProfilingError("historical matched manifest path changed")
+    if raw_old_manifest.get("sha256") != MATCHED_PROFILING_HISTORICAL_MANIFEST_SHA256:
+        raise MatchedProfilingError("historical matched manifest digest changed")
+    if raw_historical.get("retrospective_admission") is not False:
+        raise MatchedProfilingError("historical matched opening cannot gain admission")
     if request.get("runtime_authorization") != "not_issued":
         raise MatchedProfilingError("runtime authorization must remain unissued")
     if request.get("measurements_allowed") is not False:

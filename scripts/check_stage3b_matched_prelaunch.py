@@ -14,10 +14,10 @@ from torch2pc_thesis.stage3b_matched_profiling import (
 )
 
 DEFAULT_MANIFEST = Path(
-    "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-MANIFEST.json"
+    "experiments/frozen/stage3b-matched-profiling-v2/manifest.json"
 )
 DEFAULT_REQUEST = Path(
-    "experiments/planned/STAGE3B-B1-B2-MATCHED-PROFILING-REQUEST.json"
+    "experiments/frozen/stage3b-matched-profiling-v2/request.json"
 )
 
 

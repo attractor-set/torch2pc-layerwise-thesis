@@ -70,6 +70,8 @@ nav:
       - ADR-024 Confirmatory EQ-B2 evidence: decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md
       - ADR-025 Matched profiling refreeze: decisions/ADR-025-stage3b-matched-profiling-request-refreeze_EN.md
       - ADR-026 Matched profiling evidence: decisions/ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md
+      - ADR-027 Matched analysis protocol: decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md
+      - ADR-028 Matched analysis implementation: decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

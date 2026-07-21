@@ -42,3 +42,4 @@
 - [ADR-026](ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md): preserves the sealed 288-cell matched-profiling evidence byte-for-byte, keeps analysis closed, and introduces a draft-only release with separate run artifacts.
 
 - [ADR-027](ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md): freezes the post-collection/pre-analysis descriptive protocol, `model_seed` independent unit, aggregation order, seven-dimensional Pareto rule, and closed execution/publication boundary.
+- [ADR-028](ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md): replaces the early analyzer with the registered 18-output engine, freezes full synthetic validation, and keeps sealed-evidence execution closed pending a separate authorization.

@@ -44,7 +44,7 @@ Stage 3B B0 и статистический и инженерный анализ
 `block`/`chunk` не входят в этот контракт и требуют отдельной предварительной
 регистрации.
 
-## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — протокол анализа зафиксирован, выполнение закрыто
+## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — реализация анализа завершена, выполнение закрыто
 
 Завершено:
 
@@ -71,7 +71,8 @@ matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false

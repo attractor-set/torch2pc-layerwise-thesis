@@ -71,6 +71,7 @@ nav:
       - ADR-025 Matched profiling refreeze: decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md
       - ADR-026 Matched profiling evidence: decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md
       - ADR-027 Matched analysis protocol: decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol.md
+      - ADR-028 Matched analysis implementation: decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

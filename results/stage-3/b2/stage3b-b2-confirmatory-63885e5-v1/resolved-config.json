@@ -1,0 +1,35 @@
+{
+  "architecture": "lenet_classic",
+  "b1_resolved_config_digest": "24b7c6e706463e696f4fb9c2941ce7f8f6610e653d2d1f852687a1ed2d117359",
+  "candidate_id": "composite_vjp",
+  "control_candidate_id": "isolated_layer_vjp",
+  "dataset": "FashionMNIST",
+  "lane_controls": {
+    "cpu_float64": {
+      "device": "cpu",
+      "dtype": "float64"
+    },
+    "rocm_float32": {
+      "device": "cuda",
+      "dtype": "float32"
+    }
+  },
+  "method_controls": {
+    "FixedPred": {
+      "eta": 0.1,
+      "inference_steps": 10
+    },
+    "Strict": {
+      "eta": 0.05,
+      "inference_steps": 20
+    }
+  },
+  "optimizer": {
+    "learning_rate": 0.001,
+    "momentum": 0.0,
+    "name": "SGD"
+  },
+  "reference_id": "stage2_baseline",
+  "split": "validation",
+  "training_mode": true
+}

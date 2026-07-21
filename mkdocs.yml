@@ -66,6 +66,8 @@ nav:
       - ADR-020 Многомасштабная архитектура: decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md
       - ADR-021 Confirmatory EQ-B2: decisions/ADR-021-stage3b-b2-confirmatory-preregistration.md
       - ADR-022 Confirmatory EQ-B2 opening: decisions/ADR-022-stage3b-b2-confirmatory-opening.md
+      - ADR-023 Confirmatory EQ-B2 request freeze: decisions/ADR-023-stage3b-b2-confirmatory-request-freeze.md
+      - ADR-024 Confirmatory EQ-B2 evidence: decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

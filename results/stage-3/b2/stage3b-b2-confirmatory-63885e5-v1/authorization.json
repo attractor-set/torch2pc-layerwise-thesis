@@ -1,0 +1,34 @@
+{
+  "authorization_digest": "9d3126778455b2f63545448a8468abea09a9acd62fda7c8d3c8de87191bcb754",
+  "authorization_scope": "stage3b_b2_confirmatory_cpu_float64_rocm_float32_campaign",
+  "authorization_token": "7b3475c887388f006ad51b7126ba659c2620c0ee7d239eedfc1c748a6acc1da6",
+  "authorized_comparison_count": 240,
+  "authorized_lanes": [
+    "cpu_float64",
+    "rocm_float32"
+  ],
+  "authorized_triple_count": 120,
+  "campaign_id": "stage3b-b2-confirmatory-equivalence-v1",
+  "emergency_stop_path": "/tmp/stage3b-b2-confirmatory-63885e5-attempt-001/EMERGENCY-STOP",
+  "evidence": false,
+  "execution_mode": "confirmatory",
+  "execution_permitted": true,
+  "freeze_digest": "1032f5144f7da8c09c188026e840c7d5c0e06215f2979eeed54397b535ffbbf3",
+  "full_confirmatory_campaign_complete": false,
+  "image_digest": "sha256:4545f3ab3ed97fa045db24aea9fa820c2a2b64f352d18db5f104e7c65c8b4363",
+  "lane_preflight_digests": {
+    "cpu_float64": "b91626325f3cdb2d6eceb902cde9c8f97b781988d626d7ea288971cfa4901373",
+    "rocm_float32": "9c58fd7db62c24bdd230b07294402c1014392eb35976da53d231e23116c24ecb"
+  },
+  "measurements_allowed": true,
+  "minimum_free_bytes": 8589934592,
+  "operator_acknowledgement": "AUTHORIZE_STAGE3B_B2_CONFIRMATORY_120_MATCHED_TRIPLES_240_COMPARISONS_CPU_FLOAT64_ROCM_FLOAT32",
+  "output_root": "/tmp/stage3b-b2-confirmatory-63885e5-attempt-001",
+  "project_source_commit": "63885e530fa38540ef684a6820a966eee96a58f9",
+  "request_digest": "3a824f4a7a8517a4b97341a4598ac8433e2253b45d2bb3f667722c270b06fb78",
+  "results_publication_permitted": false,
+  "runtime_authorization": "issued",
+  "schema_version": 1,
+  "test_dataset_access": false,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+}

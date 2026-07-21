@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- preserved byte-for-byte sealed confirmatory B2 evidence: `EQ-B2-CONFIRMATORY=pass`, 120/120 triples, 240/240 comparisons, 0 failed pairs, and derived `EQ-B2`; matched profiling remains closed until a new versioned freeze;
+
 - froze the append-only confirmatory `EQ-B2` request: 120 triples, 240 comparisons, exact B1-input reuse, and a closed execution boundary;
 
 

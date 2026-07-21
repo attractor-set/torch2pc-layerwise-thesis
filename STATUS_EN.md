@@ -3,9 +3,12 @@
 [Русская версия](STATUS.md)
 
 As of 20 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
-`SI-MA0`, and `SI-MA1` results are published. B1 and B2 preregistration and implementation are complete. Confirmatory B1
-is sealed at 120/120 pairs; B2 passed an engineering smoke at 12 triples and
-24 comparisons. Confirmatory B2 is preregistered, its fail-closed opening infrastructure is implemented, and its append-only request is frozen, while execution remains closed. The previous shared [matched-profiling](docs/glossary_EN.md#term-matched-profiling) opening artifacts are retained, but production prelaunch blocks them until confirmatory B2.
+`SI-MA0`, and `SI-MA1` results are published. B1 and B2 preregistration and implementation are complete. Confirmatory B1 is sealed at 120/120 pairs. Confirmatory B2 is also complete
+and sealed: 120/120 triples, 240/240 direct comparisons, all five gates passed,
+no failed pairs, and the derived `EQ-B2` admission is preserved. The previous
+shared [matched-profiling](docs/glossary_EN.md#term-matched-profiling) opening
+artifacts remain historical; production prelaunch requires a new versioned
+request/manifest freeze.
 
 The full Stage 3B program remains incomplete.
 
@@ -13,11 +16,13 @@ The full Stage 3B program remains incomplete.
 
 ```text
 matched_profiling_manifest_cells=288
-scientific_admission=blocked_pending_eq_b2_confirmatory
+scientific_admission=open_after_eq_b2_confirmatory
 candidate_aware_runner=complete
-b2_confirmatory_opening=implementation_ready_execution_closed
+b2_confirmatory_decision=pass_sealed
 b2_confirmatory_request_frozen=true
+b2_confirmatory_admission=present
 matched_profiling_request_refresh_required=true
+matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
 test_dataset_access=false
@@ -40,7 +45,7 @@ decision.
 | B1/B2 theoretical prerequisite | the `PC-TREF`/`PC-CATM` package is published |
 | B1/B2 preregistration | complete; tag `stage3b-b1-b2-prereg-v1` |
 | B1 `isolated_layer_vjp` | confirmatory `EQ-B1=pass`; 120/120 pairs |
-| B2 `composite_vjp` | engineering-smoke `EQ-B2=pass`; 12/12 triples and 24/24 comparisons; confirmatory opening infrastructure ready, request frozen, execution closed |
+| B2 `composite_vjp` | `EQ-B2-CONFIRMATORY=pass`; 120/120 triples, 240/240 comparisons, 0 failed pairs; derived `EQ-B2` preserved |
 | Matched-profiling request and manifest | previous version retained; production refresh required after confirmatory B2 |
 | Matched-profiling runner | candidate-aware implementation complete |
 | Matched-profiling execution | not authorized |
@@ -85,33 +90,39 @@ This is descriptive engineering analysis, not a universal method ranking.
 ### B1/B2 admission
 
 Confirmatory B1 passed CPU `float64` and ROCm `float32` controls over
-120/120 pairs. B2 passed an engineering smoke over 12/12 triples and 24/24
-comparisons. Smoke `EQ-B2=pass` is not confirmatory admission and does not open
-production matched profiling. Admission requires `EQ-B2-CONFIRMATORY`, a
-derived `EQ-B2`, and a new versioned request/manifest freeze.
+120/120 pairs. B2 passed an engineering smoke and then the confirmatory campaign over
+120/120 triples and 240/240 direct comparisons. `EQ-B2-CONFIRMATORY=pass` is
+sealed, and the derived `EQ-B2` is linked to it by SHA-256. This completes the
+scientific-admission chain, while production matched profiling remains closed
+until a new versioned request/manifest freeze and separate runtime
+authorization.
 
 ## Current transition
 
-Confirmatory B2 is preregistered as 120 matched triples and 240 direct
-comparisons over the same ten validation batches used by confirmatory B1. Its
-fail-closed opening infrastructure is implemented with status
-`implementation_ready_execution_closed`. The append-only request
-`stage3b-b2-confirmatory-120-v1` is frozen for 120 triples and 240 comparisons.
-The next incomplete step is immutable-image construction from the publication
-commit, lane preflights, separate authorization, and a non-measuring dry-run.
+The sealed B2 set is published at
+`results/stage-3/b2/stage3b-b2-confirmatory-63885e5-v1/`. It contains
+`EQ-B2-CONFIRMATORY=pass`, the derived `EQ-B2`, 120 completed append-only
+histories, aggregate metrics, and 1,800 structural events. The test split was
+not accessed.
 
-Until positive sealed `EQ-B2-CONFIRMATORY`, derived `EQ-B2` admission, and a
-new matched-profiling request/manifest freeze exist:
+The next incomplete step is a new versioned 288-cell matched-profiling
+request/manifest freeze that prospectively references the sealed B1 and B2
+admissions. The previous request/manifest remains byte-for-byte historical and
+is not admitted retrospectively.
+
+Until the new freeze and a separate runtime review exist:
 
 ```text
-scientific_admission=blocked_pending_eq_b2_confirmatory
+scientific_admission=open_after_eq_b2_confirmatory
+matched_profiling_request_refresh_required=true
+matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
 ```
 
-This documentation update does not authorize B2 execution, the 288-cell
-campaign, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor, QWake-PC, or test
-split access.
+This documentation update and evidence preservation do not authorize the
+288-cell campaign, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor, QWake-PC,
+or test-split access.
 
 ## Provenance
 
@@ -127,5 +138,7 @@ split access.
 | Matched-profiling opening merge | `a249d35` |
 | Candidate-aware runner implementation | `d611cb7` |
 | Candidate-aware runner merge | `a44e7c8` |
+| B2 confirmatory source | `63885e530fa38540ef684a6820a966eee96a58f9` |
+| B2 confirmatory evidence | `stage3b-b2-confirmatory-63885e5-v1` |
 
 Documentation changes do not regenerate published results.

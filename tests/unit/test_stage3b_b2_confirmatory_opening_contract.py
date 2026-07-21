@@ -97,7 +97,7 @@ def test_sealing_contract_requires_complete_confirmatory_matrix() -> None:
     ]
 
 
-def test_opening_adr_and_status_preserve_execution_boundary() -> None:
+def test_opening_adr_is_historical_and_status_advances_after_sealing() -> None:
     ru_adr = (
         ROOT
         / "docs/decisions/ADR-022-stage3b-b2-confirmatory-opening.md"
@@ -118,11 +118,10 @@ def test_opening_adr_and_status_preserve_execution_boundary() -> None:
         assert "results/**" in text
 
     for text in (status_ru, status_en):
-        assert (
-            "b2_confirmatory_opening="
-            "implementation_ready_execution_closed"
-        ) in text
+        assert "b2_confirmatory_decision=pass_sealed" in text
         assert "b2_confirmatory_request_frozen=true" in text
+        assert "b2_confirmatory_admission=present" in text
+        assert "matched_profiling_execution_open=false" in text
         assert "runtime_authorization=not_issued" in text
         assert "measurements_allowed=false" in text
 

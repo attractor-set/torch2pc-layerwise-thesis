@@ -66,6 +66,8 @@ nav:
       - ADR-020 Multiscale architecture: decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md
       - ADR-021 Confirmatory EQ-B2: decisions/ADR-021-stage3b-b2-confirmatory-preregistration_EN.md
       - ADR-022 Confirmatory EQ-B2 opening: decisions/ADR-022-stage3b-b2-confirmatory-opening_EN.md
+      - ADR-023 Confirmatory EQ-B2 request freeze: decisions/ADR-023-stage3b-b2-confirmatory-request-freeze_EN.md
+      - ADR-024 Confirmatory EQ-B2 evidence: decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

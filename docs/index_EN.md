@@ -10,23 +10,25 @@ separate from observations, and published results carry claim boundaries and
 
 ## Current state
 
-As of 16 July 2026:
+As of 21 July 2026:
 
-- Stage 1/2, Stage 3A, and Stage 3B B0 are complete and published;
-- `SI-MA0` is complete with its negative `COST-MA0` result retained;
-- `SI-MA1` is complete across ten `model_seed` units and passed
-  `CAL-COST-MA1`;
-- the final tag is `stage3b-si-ma1-confirmatory-v1`;
-- the [`PC-TREF`/`PC-CATM` theoretical foundation](pc-tref-pc-catm-theoretical-foundation_EN.md)
-  freezes the operational semantics required before B1/B2;
-- B1/B2 preregistration is permitted after publication of this package;
-- implementation, confirmatory execution, `EX-IF0`, [passive diagnostics](glossary_EN.md#term-passive-diagnostics), the
-  predictor, `QWake-PC`, and final test remain future work;
-- `full_stage3b_campaign_complete=false`, and the test split remains closed.
+- Stage 1/2, Stage 3A, Stage 3B B0, `SI-MA0`, and `SI-MA1` are complete;
+- confirmatory B1 and B2 are sealed with positive `EQ-B1` and `EQ-B2`
+  decisions;
+- the 288-cell [matched-profiling](glossary_EN.md#term-matched-profiling)
+  campaign is complete: 288/288 cells, 96/96 blocks, and 0 failures;
+- evidence is preserved in the repository and bound to immutable tag
+  `stage3b-matched-profiling-evidence-v1`;
+- the complete ten-asset run package is uploaded to a verified draft release;
+- the post-collection/pre-analysis descriptive protocol is frozen as
+  `stage3b-matched-descriptive-analysis-protocol-v1`;
+- a separate implementation PR is permitted, while sealed-evidence execution,
+  publication, `EX-IF0`, policy activation, and test access remain closed;
+- `full_stage3b_campaign_complete=false`.
 
-`SI-MA1` does not rewrite `SI-MA0`: observer calibration removed a positive
-uncovered residual under the registered one-sided rule, but did not measure the
-future `ECZ` evaluator or [control-plane cost](glossary_EN.md#term-control-plane-cost).
+The protocol freeze occurs after data collection and is therefore not presented
+as a preregistration made before data collection. It closes analytical degrees
+of freedom before comparative results are computed.
 
 ## Reading order
 
@@ -81,6 +83,8 @@ future `ECZ` evaluator or [control-plane cost](glossary_EN.md#term-control-plane
 - [`SI-MA1` confirmatory evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/si-ma1/confirmatory)
 - [`SI-MA1` final report](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/results/stage-3/si-ma1/confirmatory/si_ma1_report_EN.md)
 - [`SI-MA1` final tag](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/stage3b-si-ma1-confirmatory-v1)
+- [Matched-profiling descriptive-analysis protocol](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md)
+- [Sealed matched-profiling evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1)
 
 ### Architecture and research decisions
 

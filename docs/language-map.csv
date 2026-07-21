@@ -110,3 +110,5 @@ docs/decisions/ADR-023-stage3b-b2-confirmatory-request-freeze.md,docs/decisions/
 docs/decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation.md,docs/decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md,required
 docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md,docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze_EN.md,required
 docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md,docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md,required
+docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol.md,docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md,required
+experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS.md,experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md,required

@@ -1,0 +1,290 @@
+{
+  "aggregation": {
+    "authoritative_compact_inputs": [
+      "profiling_repetitions.csv",
+      "profiling_cells.csv",
+      "profiling_summary.csv"
+    ],
+    "candidate_method_matrix_summary": "median_minimum_maximum_of_16_configuration_medians_descriptive_only",
+    "configurations_do_not_increase_independent_n_for_inferential_claims": true,
+    "order": [
+      "measured_steps_to_repetition",
+      "repetitions_to_cell",
+      "candidate_to_baseline_within_matched_block",
+      "model_seeds_within_configuration",
+      "configurations_within_candidate_method"
+    ],
+    "repetition_to_cell": {
+      "dependency_radius": "maximum_across_repetitions",
+      "graph_span": "maximum_across_repetitions",
+      "observer_cost": "median_of_repetition_medians",
+      "peak_memory": "maximum_across_repetitions",
+      "saved_tensor_bytes": "median_of_repetition_medians",
+      "state_vjp_calls": "median_of_repetition_medians",
+      "time": "median_of_repetition_medians"
+    },
+    "repetitions_do_not_increase_independent_n": true,
+    "step_to_repetition": {
+      "dependency_radius": "maximum",
+      "graph_span": "maximum",
+      "observer_cost": "median",
+      "peak_memory": "maximum",
+      "saved_tensor_bytes": "median",
+      "state_vjp_calls": "median",
+      "time": "median"
+    },
+    "within_block": "candidate_divided_by_stage2_baseline",
+    "within_configuration_across_seeds": [
+      "median",
+      "minimum",
+      "maximum",
+      "directional_consistency_count"
+    ]
+  },
+  "claim_boundary": {
+    "analysis_execution_permitted": false,
+    "analysis_implementation_permitted_after_protocol_merge": true,
+    "analysis_results_present": false,
+    "ex_if0_opened": false,
+    "full_stage3b_campaign_complete": false,
+    "policy_activation_permitted": false,
+    "protocol_builder_uses_observed_metric_values": false,
+    "protocol_frozen": true,
+    "release_publication_permitted": false,
+    "results_publication_permitted": false,
+    "source_evidence_read_only": true,
+    "superiority_claim_permitted": false,
+    "test_dataset_access": false
+  },
+  "design": {
+    "baseline": "stage2_baseline",
+    "batch_sizes": [
+      64,
+      256
+    ],
+    "candidate_method_rows_expected": 4,
+    "candidates": [
+      "isolated_layer_vjp",
+      "composite_vjp"
+    ],
+    "configuration_rows_expected": 64,
+    "depths": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "independent_unit": "model_seed",
+    "matched_block_count": 96,
+    "matched_cell_count": 288,
+    "methods": [
+      "fixedpred",
+      "strict"
+    ],
+    "model_seeds": [
+      70,
+      71,
+      72
+    ],
+    "paired_candidate_rows_expected": 192,
+    "pareto_membership_rows_expected": 96,
+    "repetitions_per_cell": 5,
+    "scaling_metric_count": 7,
+    "widths": [
+      64,
+      256
+    ]
+  },
+  "engineering_decision_rule": {
+    "baseline_role": "mandatory_fallback_not_classified",
+    "candidate_method_status": {
+      "conditional": "one_to_15_configurations_qualified",
+      "reject_or_revise": "zero_configurations_qualified",
+      "retain": "all_16_configurations_qualified"
+    },
+    "candidate_overall_status": {
+      "conditional": "at_least_one_method_is_retain_or_conditional",
+      "reject_or_revise": "both_methods_reject_or_revise",
+      "retain": "both_methods_retain"
+    },
+    "configuration_qualified_when": [
+      "median_device_time_reduction_meets_method_threshold",
+      "maximum_seed_device_time_ratio_is_at_most_1_plus_regression_limit",
+      "median_peak_allocated_growth_is_at_most_memory_limit",
+      "median_peak_reserved_growth_is_at_most_memory_limit",
+      "candidate_is_pareto_admissible"
+    ],
+    "decision_scope": "engineering_continuation_not_superiority",
+    "fixedpred_min_device_time_reduction": 0.15,
+    "maximum_device_time_regression_in_any_seed": 0.03,
+    "maximum_peak_allocated_growth": 0.15,
+    "maximum_peak_reserved_growth": 0.15,
+    "strict_min_device_time_reduction": 0.2
+  },
+  "estimands": {
+    "locality_event_diagnostics": [
+      "event_count_per_measured_step",
+      "median_logical_edge_count_per_event",
+      "graph_module_coverage_fraction",
+      "maximum_graph_island_count",
+      "orchestration_barriers_per_measured_step",
+      "graph_lifetime_distribution"
+    ],
+    "observer": {
+      "included_in_primary_pareto_vector": false,
+      "metric": "observer_cost_ms",
+      "reported_separately": true,
+      "subtracted_from_primary_timing": false
+    },
+    "primary": [
+      {
+        "definition": "candidate_primary_device_time_us / baseline_primary_device_time_us",
+        "direction": "minimize",
+        "id": "device_time_ratio_to_baseline"
+      },
+      {
+        "definition": "1 - device_time_ratio_to_baseline",
+        "direction": "maximize",
+        "id": "device_time_reduction"
+      },
+      {
+        "definition": "1 / device_time_ratio_to_baseline",
+        "direction": "maximize",
+        "id": "device_speedup"
+      }
+    ],
+    "secondary": [
+      "host_time_ratio_to_baseline",
+      "peak_allocated_ratio_to_baseline",
+      "peak_reserved_ratio_to_baseline"
+    ],
+    "structural": [
+      "saved_tensor_bytes_ratio_to_baseline",
+      "state_vjp_calls_ratio_to_baseline",
+      "graph_span_ratio_to_baseline",
+      "dependency_radius_ratio_to_baseline"
+    ]
+  },
+  "freeze_date": "2026-07-21",
+  "missingness_and_sensitivity": {
+    "bootstrap_confidence_intervals": false,
+    "duplicate_registered_key": "fail_closed",
+    "missing_registered_cell": "fail_closed",
+    "nonfinite_registered_metric": "fail_closed",
+    "p_values": false,
+    "post_hoc_exclusion_permitted": false,
+    "sensitivity_outputs": [
+      "seed_directional_consistency",
+      "leave_one_seed_out_descriptive_summary",
+      "host_time_secondary_comparison",
+      "allocated_and_reserved_memory_separately"
+    ],
+    "superiority_language": false,
+    "trimming_permitted": false,
+    "winsorization_permitted": false
+  },
+  "pareto_rule": {
+    "dimensions_to_minimize": [
+      "median_device_time_ratio_to_baseline",
+      "median_peak_allocated_ratio_to_baseline",
+      "median_peak_reserved_ratio_to_baseline",
+      "median_saved_tensor_bytes_ratio_to_baseline",
+      "median_state_vjp_calls_ratio_to_baseline",
+      "median_graph_span_ratio_to_baseline",
+      "median_dependency_radius_ratio_to_baseline"
+    ],
+    "dominance": "a_dominates_b_when_all_dimensions_a_le_b_plus_epsilon_and_at_least_one_dimension_a_lt_b_minus_epsilon",
+    "epsilon": 1e-12,
+    "included_alternatives": [
+      "stage2_baseline",
+      "isolated_layer_vjp",
+      "composite_vjp"
+    ],
+    "missing_or_nonpositive_baseline": "fail_closed",
+    "observer_cost_excluded_reason": "instrumentation_cost_reported_separately",
+    "single_winner_implied": false,
+    "unit": "candidate_method_depth_width_batch_size_after_seed_summary"
+  },
+  "phase": "post_collection_pre_analysis",
+  "protocol_id": "stage3b-matched-descriptive-analysis-protocol-v1",
+  "registered_outputs": {
+    "analysis_output_evidence_before_sealing": false,
+    "expected_top_level_file_count": 18,
+    "figures": [
+      "device_time_ratio_heatmap.pdf",
+      "peak_memory_ratio_heatmap.pdf",
+      "structural_cost_ratio_heatmap.pdf",
+      "scaling_effects.pdf",
+      "pareto_membership.pdf",
+      "seed_consistency.pdf"
+    ],
+    "machine_readable": [
+      "analysis_metadata.json",
+      "analysis_summary.json",
+      "engineering_decision.json",
+      "SHA256SUMS"
+    ],
+    "output_root_policy": "new_empty_directory_fail_if_exists_or_nonempty",
+    "reports": [
+      "REPORT.md",
+      "REPORT_EN.md"
+    ],
+    "results_publication_permitted_before_publication_gate": false,
+    "tables": {
+      "candidate_method_summary.csv": 4,
+      "configuration_summary.csv": 64,
+      "locality_cell_summary.csv": 288,
+      "paired_block_metrics.csv": 192,
+      "pareto_membership.csv": 96,
+      "scaling_seed_effects.csv": 84
+    }
+  },
+  "scaling": {
+    "claim": "descriptive_sensitivity_summary_not_universal_complexity_law",
+    "factors": [
+      "log2(depth)",
+      "log2(width)",
+      "log2(batch_size)"
+    ],
+    "interactions": false,
+    "metrics": [
+      "device_time_ratio_to_baseline",
+      "peak_allocated_ratio_to_baseline",
+      "peak_reserved_ratio_to_baseline",
+      "saved_tensor_bytes_ratio_to_baseline",
+      "state_vjp_calls_ratio_to_baseline",
+      "graph_span_ratio_to_baseline",
+      "dependency_radius_ratio_to_baseline"
+    ],
+    "reported": [
+      "2_power_beta_multiplier_per_factor_doubling",
+      "r_squared",
+      "maximum_absolute_log2_residual"
+    ],
+    "response": "log2(candidate_to_baseline_ratio)",
+    "unit": "candidate_method_model_seed_metric"
+  },
+  "schema_version": 1,
+  "source_evidence": {
+    "execution_source_commit": "e1dcfb26823e1191b98d2aa2a598499b13197583",
+    "expected_sha256": {
+      "SEALED-SHA256SUMS": "98ba77a375e4cfb2931b0490d642f7861834dfa30981f28e8a305a49765764c8",
+      "SHA256SUMS": "ea9b5facec9605b9af89a69a6ccc5e49a3790c25e6fd9c768bf4fe760114411d",
+      "analysis_metadata.json": "b60b3fd8b24c9c847fac3826131a0ab5b50987c04835841573d9351b8e43f605",
+      "locality_events.asset.json": "348e578d4334737d676b0da41ac42f001943653e973dff5183ceb5e7d23519c1",
+      "locality_events.jsonl.zst": "59a1479d66f170970b4d0f2b0712b8a825ccca01eab677c887a9046fc4c16f76",
+      "profiling_cells.csv": "91f5bf665778f2edefbcdcfa9572df771b1288274e902123e303b59c71733373",
+      "profiling_repetitions.csv": "788a16e66d62a8ddba52a200fc19014eab18312cc71fae652d760033161bff27",
+      "profiling_summary.csv": "92ba5ae6b3cbba256f54ffccaf44ab21fc8c294442a9a25366d0b7ae0aa1c4c7",
+      "seal.json": "83691730d46599a7a4d1ffd8ee0e2b9ee82c13771892b21c8c986d9a700e60f3"
+    },
+    "image_digest": "sha256:3c269b4278026b5b69968b3265b506ce626f2baf693859989de3371d639da4d0",
+    "locality_uncompressed_sha256": "3228baaa0f6479b1b4296f96632bd2d99c49642dc38f28f5ed7bc978d9dc538a",
+    "release_asset_count": 10,
+    "release_commit": "21ddfb8840674871f0b9d888b36397f5cf0e111b",
+    "release_status": "draft_only",
+    "release_tag": "stage3b-matched-profiling-evidence-v1",
+    "root": "results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1"
+  },
+  "status": "frozen_post_collection_pre_analysis"
+}

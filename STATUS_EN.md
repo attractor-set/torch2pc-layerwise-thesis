@@ -10,7 +10,9 @@ prospectively bound to those admissions and passed immutable-image,
 ROCm/float32 preflight, authorization, and dry-run gates. All 288 cells in 96
 matched blocks then completed, runtime validation passed, no failures or
 retries occurred, and the compact evidence package is sealed and preserved.
-Descriptive analysis and result publication are not yet authorized.
+The post-collection/pre-analysis descriptive protocol is now frozen; a
+separate implementation PR is permitted, while analysis execution and result
+publication remain unauthorized.
 
 The full Stage 3B program remains incomplete.
 
@@ -29,6 +31,10 @@ matched_profiling_execution_open=false
 matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
+matched_profiling_analysis_protocol_frozen=true
+matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_execution_open=false
+matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -121,6 +127,10 @@ After the evidence-preservation PR, the boundary remains closed:
 matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
+matched_profiling_analysis_protocol_frozen=true
+matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_execution_open=false
+matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -130,12 +140,14 @@ release_publication_permitted=false
 full_stage3b_campaign_complete=false
 ```
 
-The next admissible transition is the evidence PR merge, green CI, and creation
-of the draft `stage3b-matched-profiling-evidence-v1` release with sealed evidence
-and run artifacts. A separate analysis-opening checkpoint must then authorize
-only descriptive paired analysis. Evidence preservation and a draft release do
-not authorize superiority claims, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the
-predictor, QWake-PC, or test-split access.
+The immutable tag and complete draft `stage3b-matched-profiling-evidence-v1`
+release are verified. A separate post-collection/pre-analysis protocol now
+freezes estimands, aggregation, the Pareto rule, and `retain / conditional /
+reject_or_revise` decisions. The next permitted transition is only an
+implementation PR with synthetic tests. Running against sealed evidence
+requires a separate machine-readable authorization. The protocol and draft
+release do not authorize superiority claims, `EX-IF0`, `A11-OFF0`, `A11-OFF1`,
+the predictor, QWake-PC, or test-split access.
 
 ## Provenance
 
@@ -156,6 +168,6 @@ predictor, QWake-PC, or test-split access.
 | Matched-profiling execution source | `e1dcfb26823e1191b98d2aa2a598499b13197583` |
 | Matched-profiling immutable image | `sha256:3c269b4278026b5b69968b3265b506ce626f2baf693859989de3371d639da4d0` |
 | Matched-profiling evidence | `stage3b-matched-profiling-e1dcfb2-v1` |
-| Planned draft release | `stage3b-matched-profiling-evidence-v1` |
+| Verified draft release | `stage3b-matched-profiling-evidence-v1` |
 
 Documentation changes do not regenerate published results.

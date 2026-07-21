@@ -43,7 +43,7 @@ B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and
 `block`/`chunk` variants are outside this contract and require separate
 preregistration.
 
-## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — evidence preserved, analysis closed
+## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — analysis protocol frozen, execution closed
 
 Complete:
 
@@ -70,6 +70,10 @@ matched_profiling_execution_open=false
 matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
+matched_profiling_analysis_protocol_frozen=true
+matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_execution_open=false
+matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -81,19 +85,17 @@ full_stage3b_campaign_complete=false
 
 Remaining Stage 16 transition:
 
-1. merge the evidence-preservation PR and obtain green CI;
-2. create the draft `stage3b-matched-profiling-evidence-v1` release with sealed
-   evidence and run artifacts;
-3. pass a separate analysis-opening checkpoint;
-4. perform descriptive paired B0/B1/B2 analysis and issue the formal
-   `retain / conditional / reject` decision.
+1. implement the frozen protocol without reading results during development;
+2. pass synthetic and fail-closed tests;
+3. issue a separate machine-readable authorization for sealed-evidence access;
+4. run and seal the descriptive paired B0/B1/B2 analysis and issue a formal
+   `retain / conditional / reject_or_revise` decision;
+5. pass a separate publication gate for the draft release.
 
-The immutable image, ROCm/float32 preflight, authorization, dry run, and all
-288 cells in 96 matched blocks completed without failures or retries. Runtime
-validation passed, and the compact evidence package is sealed and copied into
-the repository. Comparative claims, publication, and `EX-IF0` remain
-prohibited before the analysis-opening checkpoint. Negative and mixed results
-must be retained.
+The immutable image, ROCm/float32 execution, sealed evidence, tag, and complete
+draft release are already verified. Comparative result computation,
+publication, and `EX-IF0` remain prohibited before analysis authorization.
+Negative and mixed results must be retained.
 
 ## Stage 17 — `EX-IF0`, passive diagnostics, and `A11-OFF0`
 

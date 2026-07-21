@@ -116,6 +116,17 @@ same restored state
 
 `Secondary` `analyses` не изменяют `primary` `decision`.
 
+## B1/B2: фиксация анализа сопоставленного профилирования после сбора
+
+После завершения 288-ячеечной кампании и до вычисления сравнительных
+результатов зафиксирован отдельный протокол
+[`STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS.md`](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS.md).
+Он связывает анализ с неизменяемым тегом доказательных материалов, сохраняет независимую единицу
+`model_seed`, фиксирует оценки, порядок агрегации, семимерное Парето-правило,
+пороги продолжения и решения `retain / conditional / reject_or_revise`. Это
+фиксация после сбора и до анализа, а не предварительная регистрация до сбора
+данных.
+
 ## Полнота и публикация
 
 Публикуются `raw` `retained` `attempts`, `compact` `derived` `tables`, `machine-readable`

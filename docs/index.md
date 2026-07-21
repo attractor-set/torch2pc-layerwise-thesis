@@ -10,23 +10,26 @@
 
 ## Текущее состояние
 
-На 16 июля 2026 года:
+На 21 июля 2026 года:
 
-- `Stage` 1/2, `Stage` 3A и `Stage` 3B B0 завершены и опубликованы;
-- `SI-MA0` завершён с сохранённым отрицательным `COST-MA0`;
-- `SI-MA1` завершён на десяти `model_seed` и прошёл `CAL-COST-MA1`;
-- итоговый тег — `stage3b-si-ma1-confirmatory-v1`;
-- [теоретическое основание `PC-TREF`/`PC-CATM`](pc-tref-pc-catm-theoretical-foundation.md)
-  фиксирует операциональную семантику до B1/B2;
-- предварительная регистрация B1/B2 разрешается после публикации этого пакета;
-- реализация, подтверждающее выполнение, `EX-IF0`, `passive` `diagnostics`,
-  `predictor`, `QWake-PC` и `final` `test` остаются будущей работой;
-- `full_stage3b_campaign_complete=false` и `test` `split` закрыт.
+- этапы 1/2, 3A, 3B B0, `SI-MA0` и `SI-MA1` завершены;
+- подтверждающие B1 и B2 запечатаны с положительными решениями `EQ-B1` и
+  `EQ-B2`;
+- 288-ячеечное [сопоставленное профилирование](glossary.md#term-matched-profiling)
+  выполнено полностью: 288/288 ячеек, 96/96 блоков, 0 сбоев;
+- [доказательные материалы](glossary.md#term-evidence) сохранены в репозитории и связаны с неизменяемым тегом
+  `stage3b-matched-profiling-evidence-v1`;
+- полный набор из десяти артефактов запуска загружен в проверенный черновой
+  релиз;
+- протокол описательного анализа после сбора и до анализа зафиксирован как
+  `stage3b-matched-descriptive-analysis-protocol-v1`;
+- реализация анализа разрешена отдельным `PR`, но выполнение на запечатанных доказательных материалах,
+  публикация, `EX-IF0`, политика и тестовая выборка остаются закрытыми;
+- `full_stage3b_campaign_complete=false`.
 
-`SI-MA1` не переписывает `SI-MA0`: первый `observer-calibrated` эксперимент
-устранил положительный непокрытый `residual` в зарегистрированном одностороннем
-правиле, но не измерял стоимость будущего `ECZ` `evaluator` или управляющего
-контура.
+Фиксация протокола выполнена после сбора данных и поэтому не называется
+предварительной регистрацией до сбора. Она закрывает аналитические степени
+свободы до вычисления сравнительных результатов.
 
 ## Как читать документацию
 
@@ -81,6 +84,8 @@
 - [`SI-MA1` confirmatory evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/si-ma1/confirmatory)
 - [`SI-MA1` итоговый отчёт](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/results/stage-3/si-ma1/confirmatory/si_ma1_report.md)
 - [`SI-MA1` итоговый тег](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/stage3b-si-ma1-confirmatory-v1)
+- [Протокол описательного анализа сопоставленного профилирования](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS.md)
+- [Запечатанные доказательные материалы сопоставленного профилирования](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1)
 
 ### Научные и архитектурные решения
 

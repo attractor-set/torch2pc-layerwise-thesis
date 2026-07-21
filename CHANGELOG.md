@@ -5,6 +5,8 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- зафиксировать post-collection/pre-analysis протокол описательного анализа matched profiling: неизменяемые оценки, порядок агрегации, семимерное правило Парето, решения `retain / conditional / reject_or_revise` и закрытая граница выполнения/публикации;
+
 - сохранён byte-for-byte sealed matched-profiling evidence package: 288/288 ячеек, 96/96 matched blocks, 0 failures, runtime validation `valid`; добавлены fail-closed evidence contract и draft-only release workflow с отдельными артефактами запуска; описательный анализ и публикация остаются закрытыми;
 
 - заморожен новый versioned `v2` пакет matched profiling на 288 ячеек, prospectively связанный с sealed `EQ-B1` и `EQ-B2`; исторический `v1` сохранён byte-for-byte, runtime authorization и измерения остаются закрытыми;

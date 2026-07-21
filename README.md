@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
 ![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-matched%20profiling%20sealed%3B%20analysis%20closed-blue)
+![Статус](https://img.shields.io/badge/этап-analysis%20protocol%20frozen%3B%20execution%20closed-blue)
 
 Репозиторий магистерской диссертации по сравнению обратного распространения
 ошибки (backpropagation, BP) и режимов предиктивного кодирования в Torch2PC.
@@ -86,7 +86,10 @@
 - 288/288 ячеек и 96/96 matched blocks выполнены в immutable ROCm/float32
   окружении без failures и retries;
 - runtime validation прошла, а compact evidence package запечатан и сохранён в
-  `results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`.
+  `results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`;
+- post-collection/pre-analysis протокол зафиксирован как
+  `stage3b-matched-descriptive-analysis-protocol-v1`, но вычисление результатов
+  остаётся закрытым.
 
 Текущая граница:
 
@@ -94,6 +97,10 @@
 matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
+matched_profiling_analysis_protocol_frozen=true
+matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_execution_open=false
+matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -102,10 +109,11 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-Следующий незавершённый шаг — evidence PR, зелёный CI, draft release с
-артефактами запуска и отдельный analysis-opening checkpoint. Сохранение evidence
-не разрешает сравнительных выводов и не открывает `EX-IF0`, пассивную
-диагностику, предиктор, `QWake-PC` или тестовую выборку.
+Следующий незавершённый шаг — отдельная реализация зафиксированного
+протокола и синтетические fail-closed тесты. Запуск на sealed evidence требует
+нового машиночитаемого допуска. Фиксация протокола не разрешает сравнительных
+выводов и не открывает `EX-IF0`, пассивную диагностику, предиктор, `QWake-PC`
+или тестовую выборку.
 
 Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1 и B2 не обращались к тестовой выборке.
 Исходные и зафиксированные результаты не переписываются документационными
@@ -250,16 +258,18 @@ fallback validation или end-to-end B1/B2 benefit. Итоговые матер
 ## Следующий этап
 
 Предварительная регистрация B1/B2, реализации B1 и B2, решения `EQ-B1` и
-`EQ-B2`, замороженный 288-ячеечный запрос и манифест сопоставленного
-профилирования, а также исполнитель, учитывающий кандидата, уже завершены.
+`EQ-B2`, выполнение 288-ячеечного сопоставленного профилирования, sealing,
+evidence PR, immutable tag и полный черновой релиз уже завершены.
 
-Следующий незавершённый шаг, прямо предусмотренный замороженным запросом
-сопоставленного профилирования, — отдельная фиксация среды выполнения
-ROCm/float32. До отдельного решения о допуске сохраняются:
+Следующий незавершённый шаг — отдельная реализация зафиксированного
+post-collection/pre-analysis протокола. До нового допуска запуска сохраняются:
 
 ```text
-runtime_authorization=not_issued
-measurements_allowed=false
+matched_profiling_analysis_protocol_frozen=true
+matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_execution_open=false
+matched_profiling_analysis_results_present=false
+results_publication_permitted=false
 ```
 
 Этот переход не открывает `EX-IF0`, `A11-OFF0`, `A11-OFF1`, предиктор,

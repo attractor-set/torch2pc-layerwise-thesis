@@ -44,7 +44,7 @@ Stage 3B B0 и статистический и инженерный анализ
 `block`/`chunk` не входят в этот контракт и требуют отдельной предварительной
 регистрации.
 
-## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — evidence сохранён, анализ закрыт
+## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — протокол анализа зафиксирован, выполнение закрыто
 
 Завершено:
 
@@ -70,6 +70,10 @@ matched_profiling_execution_open=false
 matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
+matched_profiling_analysis_protocol_frozen=true
+matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_execution_open=false
+matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -87,15 +91,16 @@ failures и retries, runtime validation прошла, а compact evidence packag
 
 Оставшийся переход внутри этапа 16:
 
-1. merge evidence-preservation PR и зелёный CI;
-2. draft release `stage3b-matched-profiling-evidence-v1` с sealed evidence и
-   артефактами запуска;
-3. отдельный analysis-opening checkpoint;
-4. описательный paired analysis B0/B1/B2 и формальное решение
-   `retain / conditional / reject`.
+1. реализация зафиксированного протокола без чтения результатов при разработке;
+2. синтетические и fail-closed тесты;
+3. отдельный машиночитаемый допуск запуска на sealed evidence;
+4. описательный paired analysis B0/B1/B2, sealing анализа и формальное решение
+   `retain / conditional / reject_or_revise`;
+5. отдельный publication gate для чернового релиза.
 
-До analysis-opening запрещены сравнительные утверждения, публикация и переход к
-`EX-IF0`. Отрицательные и смешанные результаты сохраняются.
+До analysis authorization запрещены вычисление сравнительных результатов,
+публикация и переход к `EX-IF0`. Отрицательные и смешанные результаты
+сохраняются.
 
 ## Этап 17 — `EX-IF0`, пассивная диагностика и `A11-OFF0`
 

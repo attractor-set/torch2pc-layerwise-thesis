@@ -117,6 +117,17 @@ Normative documents:
 
 Secondary analyses do not alter the primary decision.
 
+## B1/B2 matched profiling: post-collection/pre-analysis freeze
+
+After the 288-cell campaign and before comparative result computation, the
+project freezes a separate
+[`STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md`](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md)
+protocol. It binds analysis to the immutable evidence tag, retains `model_seed`
+as the independent unit, and fixes estimands, aggregation, a seven-dimensional
+Pareto rule, continuation thresholds, and `retain / conditional /
+reject_or_revise` decisions. This is a post-collection/pre-analysis freeze, not
+a preregistration made before data collection.
+
 ## Completeness and publication
 
 Publish raw retained attempts, compact derived tables, machine-readable

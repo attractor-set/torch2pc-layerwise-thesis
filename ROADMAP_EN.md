@@ -43,7 +43,7 @@ B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and
 `block`/`chunk` variants are outside this contract and require separate
 preregistration.
 
-## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — analysis implementation complete, execution closed
+## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — hardening complete, execution closed
 
 Complete:
 
@@ -72,6 +72,7 @@ matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -93,8 +94,11 @@ Remaining Stage 16 transition:
    `retain / conditional / reject_or_revise` decision;
 5. pass a separate publication gate for the draft release.
 
-The immutable image, ROCm/float32 execution, sealed evidence, tag, and complete
-draft release are already verified. Comparative result computation,
+The implementation and pre-execution hardening are complete: source provenance,
+compact-table consistency across 288 cells, 1,440 repetitions, and 96 summary
+rows, and a real `Zstandard` frame are verified. The immutable image,
+ROCm/float32 execution, sealed evidence, tag, and complete draft release are
+already verified. Comparative result computation,
 publication, and `EX-IF0` remain prohibited before analysis authorization.
 Negative and mixed results must be retained.
 

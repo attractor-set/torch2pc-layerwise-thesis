@@ -89,8 +89,9 @@
   `results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`;
 - post-collection/pre-analysis протокол зафиксирован как
   `stage3b-matched-descriptive-analysis-protocol-v1`; зарегистрированное
-  вычислительное ядро реализовано и прошло полную синтетическую проверку,
-  но выполнение на запечатанных результатах остаётся закрытым.
+  вычислительное ядро реализовано, прошло полную синтетическую проверку и
+  pre-execution hardening происхождения, compact consistency и настоящего
+  `Zstandard` кадра; выполнение на запечатанных результатах остаётся закрытым.
 
 Текущая граница:
 
@@ -100,6 +101,7 @@ matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -263,12 +265,14 @@ fallback validation или end-to-end B1/B2 benefit. Итоговые матер
 `EQ-B2`, выполнение 288-ячеечного сопоставленного профилирования, sealing,
 evidence PR, immutable tag и полный черновой релиз уже завершены.
 
-Следующий незавершённый шаг — отдельная реализация зафиксированного
-post-collection/pre-analysis протокола. До нового допуска запуска сохраняются:
+Реализация и pre-execution hardening зафиксированного
+post-collection/pre-analysis протокола завершены. До нового допуска запуска
+сохраняются:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false

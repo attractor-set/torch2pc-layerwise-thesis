@@ -10,9 +10,11 @@ prospectively bound to those admissions and passed immutable-image,
 ROCm/float32 preflight, authorization, and dry-run gates. All 288 cells in 96
 matched blocks then completed, runtime validation passed, no failures or
 retries occurred, and the compact evidence package is sealed and preserved.
-The post-collection/pre-analysis descriptive protocol is now frozen; a
-separate implementation PR is permitted, while analysis execution and result
-publication remain unauthorized.
+The post-collection/pre-analysis descriptive protocol is frozen, and the
+registered engine has passed full synthetic validation. Pre-execution
+hardening verified provenance, consistency across the 288/1,440/96 compact
+tables, and a real `Zstandard` frame; analysis execution and result publication
+remain unauthorized.
 
 The full Stage 3B program remains incomplete.
 
@@ -33,6 +35,7 @@ matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -130,6 +133,7 @@ matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -145,10 +149,11 @@ full_stage3b_campaign_complete=false
 The immutable tag and complete draft `stage3b-matched-profiling-evidence-v1`
 release are verified. A separate post-collection/pre-analysis protocol now
 freezes estimands, aggregation, the Pareto rule, and `retain / conditional /
-reject_or_revise` decisions. The next permitted transition is only an
-implementation PR with synthetic tests. Running against sealed evidence
-requires a separate machine-readable authorization. The protocol and draft
-release do not authorize superiority claims, `EX-IF0`, `A11-OFF0`, `A11-OFF1`,
+reject_or_revise` decisions. The next permitted transition is only a
+separate machine-readable execution request and authorization. Implementation,
+pre-execution hardening, and synthetic tests do not authorize sealed-evidence
+execution. The protocol and draft release do not authorize superiority claims,
+`EX-IF0`, `A11-OFF0`, `A11-OFF1`,
 the predictor, QWake-PC, or test-split access.
 
 ## Provenance

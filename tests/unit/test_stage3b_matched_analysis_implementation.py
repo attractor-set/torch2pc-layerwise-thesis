@@ -2,6 +2,10 @@ from __future__ import annotations
 
 import csv
 import json
+import shutil
+import statistics
+import subprocess
+from collections import defaultdict
 from pathlib import Path
 
 import pytest
@@ -9,6 +13,7 @@ import pytest
 from torch2pc_thesis.stage3b_matched_analysis import (
     EXPECTED_OUTPUT_NAMES,
     Stage3BMatchedAnalysisError,
+    _analysis_source_profile,
     _locality_stream,
     generate_matched_analysis,
     generate_synthetic_matched_analysis,
@@ -111,38 +116,37 @@ def _write_full_synthetic_fixture(root: Path) -> None:
                             candidate_factor = (
                                 1.0 if candidate == "stage2_baseline" else scale_factor
                             )
-                            cells.append(
-                                {
-                                    "cell_id": cell_id,
-                                    "block_id": block_id,
-                                    "candidate_id": candidate,
-                                    "method": method,
-                                    "depth": depth,
-                                    "width": width,
-                                    "batch_size": batch_size,
-                                    "model_seed": seed,
-                                    "primary_host_time_us": baseline_host
-                                    * ratios["host"]
-                                    * candidate_factor,
-                                    "primary_device_time_us": baseline_device
-                                    * ratios["device"]
-                                    * candidate_factor,
-                                    "primary_peak_allocated_bytes": 1_000_000.0
-                                    * ratios["allocated"],
-                                    "primary_peak_reserved_bytes": 1_200_000.0 * ratios["reserved"],
-                                    "observer_cost_ms": 0.05
-                                    if candidate == "stage2_baseline"
-                                    else 0.08,
-                                    "saved_tensor_bytes": 100_000.0 * ratios["saved"],
-                                    "state_vjp_calls": 100.0 * ratios["state_vjp"],
-                                    "graph_span": 100.0 * ratios["graph_span"],
-                                    "dependency_radius": 100.0 * ratios["dependency"],
-                                    "graph_lifetimes": "synthetic",
-                                    "feedback_operator": "synthetic",
-                                    "fallback_validation_cost_ms": "",
-                                    "fallback_validation_status": ("not_applicable_before_ex_if0"),
-                                }
-                            )
+                            cell = {
+                                "cell_id": cell_id,
+                                "block_id": block_id,
+                                "candidate_id": candidate,
+                                "method": method,
+                                "depth": depth,
+                                "width": width,
+                                "batch_size": batch_size,
+                                "model_seed": seed,
+                                "primary_host_time_us": baseline_host
+                                * ratios["host"]
+                                * candidate_factor,
+                                "primary_device_time_us": baseline_device
+                                * ratios["device"]
+                                * candidate_factor,
+                                "primary_peak_allocated_bytes": 1_000_000.0
+                                * ratios["allocated"],
+                                "primary_peak_reserved_bytes": 1_200_000.0 * ratios["reserved"],
+                                "observer_cost_ms": (
+                                    0.05 if candidate == "stage2_baseline" else 0.08
+                                ),
+                                "saved_tensor_bytes": 100_000.0 * ratios["saved"],
+                                "state_vjp_calls": 100.0 * ratios["state_vjp"],
+                                "graph_span": 100.0 * ratios["graph_span"],
+                                "dependency_radius": 100.0 * ratios["dependency"],
+                                "graph_lifetimes": "synthetic",
+                                "feedback_operator": "synthetic",
+                                "fallback_validation_cost_ms": "",
+                                "fallback_validation_status": "not_applicable_before_ex_if0",
+                            }
+                            cells.append(cell)
                             for repetition in range(5):
                                 repetitions.append(
                                     {
@@ -155,6 +159,31 @@ def _write_full_synthetic_fixture(root: Path) -> None:
                                         "batch_size": batch_size,
                                         "model_seed": seed,
                                         "repetition": repetition,
+                                        "primary_host_time_median_us": cell[
+                                            "primary_host_time_us"
+                                        ],
+                                        "primary_device_time_median_us": cell[
+                                            "primary_device_time_us"
+                                        ],
+                                        "primary_peak_allocated_max_bytes": cell[
+                                            "primary_peak_allocated_bytes"
+                                        ],
+                                        "primary_peak_reserved_max_bytes": cell[
+                                            "primary_peak_reserved_bytes"
+                                        ],
+                                        "observer_cost_median_ms": cell["observer_cost_ms"],
+                                        "saved_tensor_bytes_median": cell["saved_tensor_bytes"],
+                                        "state_vjp_calls_median": cell["state_vjp_calls"],
+                                        "graph_span_max": cell["graph_span"],
+                                        "dependency_radius_max": cell["dependency_radius"],
+                                        "graph_lifetimes": cell["graph_lifetimes"],
+                                        "feedback_operator": cell["feedback_operator"],
+                                        "fallback_validation_cost_ms": cell[
+                                            "fallback_validation_cost_ms"
+                                        ],
+                                        "fallback_validation_status": cell[
+                                            "fallback_validation_status"
+                                        ],
                                     }
                                 )
                                 for step in range(2):
@@ -190,10 +219,59 @@ def _write_full_synthetic_fixture(root: Path) -> None:
     assert block_order == 96
     _write_csv(root / "profiling_cells.csv", cells)
     _write_csv(root / "profiling_repetitions.csv", repetitions)
-    _write_csv(
-        root / "profiling_summary.csv",
-        [{"synthetic_fixture": True, "candidate_count": 3}],
+
+    grouped: defaultdict[tuple[str, str, int, int, int], list[dict[str, object]]] = (
+        defaultdict(list)
     )
+    for cell in cells:
+        grouped[
+            (
+                str(cell["candidate_id"]),
+                str(cell["method"]),
+                int(cell["depth"]),
+                int(cell["width"]),
+                int(cell["batch_size"]),
+            )
+        ].append(cell)
+    summary_rows: list[dict[str, object]] = []
+    for (candidate, method, depth, width, batch_size), rows in sorted(grouped.items()):
+        summary_rows.append(
+            {
+                "candidate_id": candidate,
+                "method": method,
+                "depth": depth,
+                "width": width,
+                "batch_size": batch_size,
+                "model_seed_count": 3,
+                "primary_host_time_median_us": statistics.median(
+                    float(row["primary_host_time_us"]) for row in rows
+                ),
+                "primary_device_time_median_us": statistics.median(
+                    float(row["primary_device_time_us"]) for row in rows
+                ),
+                "primary_peak_allocated_median_bytes": statistics.median(
+                    float(row["primary_peak_allocated_bytes"]) for row in rows
+                ),
+                "primary_peak_reserved_median_bytes": statistics.median(
+                    float(row["primary_peak_reserved_bytes"]) for row in rows
+                ),
+                "observer_cost_median_ms": statistics.median(
+                    float(row["observer_cost_ms"]) for row in rows
+                ),
+                "saved_tensor_bytes_median": statistics.median(
+                    float(row["saved_tensor_bytes"]) for row in rows
+                ),
+                "state_vjp_calls_median": statistics.median(
+                    float(row["state_vjp_calls"]) for row in rows
+                ),
+                "graph_span_max": max(float(row["graph_span"]) for row in rows),
+                "dependency_radius_max": max(
+                    float(row["dependency_radius"]) for row in rows
+                ),
+            }
+        )
+    assert len(summary_rows) == 96
+    _write_csv(root / "profiling_summary.csv", summary_rows)
     (root / "locality_events.jsonl").write_text(
         "".join(locality_lines),
         encoding="utf-8",
@@ -234,6 +312,8 @@ def test_registered_engine_generates_exact_synthetic_output_contract(
     assert len(_read_csv(output / "locality_cell_summary.csv")) == 288
     assert len(_read_csv(output / "scaling_seed_effects.csv")) == 84
     assert summary["status"] == "synthetic_implementation_validation_only"
+    assert summary["source_kind"] == "synthetic_fixture"
+    assert summary["analysis_execution_authorized"] is False
 
     status = {(row["candidate_id"], row["method"]): row["status"] for row in candidate_method}
     assert status[("isolated_layer_vjp", "fixedpred")] == "retain"
@@ -285,10 +365,12 @@ def test_synthetic_outputs_are_deterministic_for_fixed_provenance(
         assert (first / name).read_bytes() == (second / name).read_bytes()
 
 
-def test_compressed_locality_stream_uses_streaming_decoder(
+def test_compressed_locality_stream_reads_real_zstandard_frame(
     tmp_path: Path,
-    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    zstd = shutil.which("zstd")
+    assert zstd is not None
+    plain = tmp_path / "locality_events.jsonl"
     archive = tmp_path / "locality_events.jsonl.zst"
     record = {
         "cell_id": "cell-0",
@@ -303,14 +385,11 @@ def test_compressed_locality_stream_uses_streaming_decoder(
         "graph_lifetime": "single_vjp_call",
         "orchestration_barriers": 0,
     }
-    archive.write_text(json.dumps(record) + "\n", encoding="utf-8")
-    binary = tmp_path / "zstd"
-    binary.write_text(
-        '#!/bin/sh\nfor argument in "$@"; do last="$argument"; done\ncat "$last"\n',
-        encoding="utf-8",
+    plain.write_text(json.dumps(record) + "\n", encoding="utf-8")
+    subprocess.run(
+        [zstd, "-q", "-f", str(plain), "-o", str(archive)],
+        check=True,
     )
-    binary.chmod(0o755)
-    monkeypatch.setenv("PATH", f"{tmp_path}:{Path('/usr/bin')}")
 
     assert list(_locality_stream(archive)) == [record]
 
@@ -359,6 +438,78 @@ def test_sealed_evidence_entrypoint_remains_execution_closed(
     ):
         generate_matched_analysis(
             tmp_path / "sealed-evidence",
+            tmp_path / "analysis",
+            generated_at_utc="2026-07-21T20:00:00Z",
+        )
+
+def test_source_profiles_separate_synthetic_and_authorized_provenance() -> None:
+    synthetic = _analysis_source_profile("synthetic_fixture")
+    sealed = _analysis_source_profile("sealed_evidence")
+
+    assert synthetic.execution_authorized is False
+    assert synthetic.metadata_status == "generated_unsealed_synthetic_implementation_output"
+    assert synthetic.summary_status == "synthetic_implementation_validation_only"
+    assert sealed.execution_authorized is True
+    assert sealed.metadata_status == "generated_unsealed_authorized_analysis_output"
+    assert sealed.summary_status == "generated_unsealed_authorized_descriptive_analysis"
+
+    with pytest.raises(Stage3BMatchedAnalysisError, match="unsupported analysis source kind"):
+        _analysis_source_profile("unknown")
+
+
+def test_synthetic_engine_rejects_repetition_identity_mismatch(
+    tmp_path: Path,
+) -> None:
+    fixture = tmp_path / "fixture"
+    _write_full_synthetic_fixture(fixture)
+    rows = _read_csv(fixture / "profiling_repetitions.csv")
+    rows[0]["candidate_id"] = "composite_vjp"
+    _write_csv(fixture / "profiling_repetitions.csv", [dict(row) for row in rows])
+
+    with pytest.raises(Stage3BMatchedAnalysisError, match="repetition identity differs"):
+        generate_synthetic_matched_analysis(
+            fixture,
+            tmp_path / "analysis",
+            generated_at_utc="2026-07-21T20:00:00Z",
+        )
+
+
+def test_synthetic_engine_rejects_repetition_aggregate_mismatch(
+    tmp_path: Path,
+) -> None:
+    fixture = tmp_path / "fixture"
+    _write_full_synthetic_fixture(fixture)
+    rows = _read_csv(fixture / "profiling_repetitions.csv")
+    target_cell = rows[0]["cell_id"]
+    for row in rows:
+        if row["cell_id"] == target_cell:
+            row["primary_device_time_median_us"] = str(
+                float(row["primary_device_time_median_us"]) * 2.0
+            )
+    _write_csv(fixture / "profiling_repetitions.csv", [dict(row) for row in rows])
+
+    with pytest.raises(Stage3BMatchedAnalysisError, match="compact aggregate differs"):
+        generate_synthetic_matched_analysis(
+            fixture,
+            tmp_path / "analysis",
+            generated_at_utc="2026-07-21T20:00:00Z",
+        )
+
+
+def test_synthetic_engine_rejects_profiling_summary_mismatch(
+    tmp_path: Path,
+) -> None:
+    fixture = tmp_path / "fixture"
+    _write_full_synthetic_fixture(fixture)
+    rows = _read_csv(fixture / "profiling_summary.csv")
+    rows[0]["primary_device_time_median_us"] = str(
+        float(rows[0]["primary_device_time_median_us"]) * 2.0
+    )
+    _write_csv(fixture / "profiling_summary.csv", [dict(row) for row in rows])
+
+    with pytest.raises(Stage3BMatchedAnalysisError, match="compact aggregate differs"):
+        generate_synthetic_matched_analysis(
+            fixture,
             tmp_path / "analysis",
             generated_at_utc="2026-07-21T20:00:00Z",
         )

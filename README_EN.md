@@ -88,8 +88,9 @@ The following work is complete in the pinned Ubuntu/ROCm environment:
   `results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`;
 - the post-collection/pre-analysis protocol is frozen as
   `stage3b-matched-descriptive-analysis-protocol-v1`; the registered
-  computational engine is implemented and passed full synthetic validation,
-  while execution against sealed results remains closed.
+  computational engine is implemented, passed full synthetic validation, and
+  completed pre-execution hardening for provenance, compact consistency, and a
+  real `Zstandard` frame; execution against sealed results remains closed.
 
 The current boundary is:
 
@@ -99,6 +100,7 @@ matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -259,13 +261,14 @@ B1/B2 preregistration, the B1 and B2 implementations, sealed `EQ-B1` and
 `EQ-B2`, the 288-cell matched-profiling execution, sealing, evidence PR,
 immutable tag, and complete draft release are finished.
 
-The next incomplete step is a separate implementation of the frozen
-post-collection/pre-analysis protocol. Until a new execution authorization is
-recorded, the following boundaries remain unchanged:
+Implementation and pre-execution hardening of the frozen
+post-collection/pre-analysis protocol are complete. Until a new execution
+authorization is recorded, the following boundaries remain unchanged:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false

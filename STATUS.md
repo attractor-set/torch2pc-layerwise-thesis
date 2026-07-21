@@ -11,8 +11,9 @@ ROCm/float32 preflight, authorization и dry-run gates, после чего за
 288/288 ячеек в 96 matched blocks. Runtime validation прошла, failures и
 повторы отсутствуют, а компактный evidence package запечатан и сохранён.
 Post-collection/pre-analysis протокол описательного анализа уже
-зафиксирован; реализация разрешена отдельным PR, но выполнение анализа и
-публикация результатов ещё не разрешены.
+зафиксирован. Зарегистрированное ядро реализовано и проверено на полной
+синтетической матрице; выполнение на запечатанном источнике и публикация
+результатов ещё не разрешены.
 
 Полный Stage 3B остаётся незавершённым.
 
@@ -32,7 +33,8 @@ matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
@@ -128,7 +130,8 @@ matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
@@ -143,9 +146,9 @@ full_stage3b_campaign_complete=false
 Immutable tag и полный черновой релиз `stage3b-matched-profiling-evidence-v1`
 уже проверены. Отдельный post-collection/pre-analysis протокол фиксирует оценки,
 агрегирование, Парето-правило и решения `retain / conditional /
-reject_or_revise`. Следующий допустимый переход — только implementation PR с
-синтетическими тестами. Запуск на sealed evidence требует отдельного
-машиночитаемого допуска. Протокол и draft release не разрешают утверждения о
+reject_or_revise`. Следующий допустимый переход — только отдельная фиксация запроса выполнения
+и машиночитаемый допуск к запечатанному источнику. Реализация и
+синтетические тесты не являются таким допуском. Протокол и draft release не разрешают утверждения о
 превосходстве, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor, QWake-PC или test
 split.
 

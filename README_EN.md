@@ -87,8 +87,9 @@ The following work is complete in the pinned Ubuntu/ROCm environment:
 - runtime validation passed, and the compact evidence package is sealed at
   `results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`;
 - the post-collection/pre-analysis protocol is frozen as
-  `stage3b-matched-descriptive-analysis-protocol-v1`, while result computation
-  remains closed.
+  `stage3b-matched-descriptive-analysis-protocol-v1`; the registered
+  computational engine is implemented and passed full synthetic validation,
+  while execution against sealed results remains closed.
 
 The current boundary is:
 
@@ -97,7 +98,8 @@ matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
@@ -108,9 +110,9 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-The next incomplete step is a separate implementation of the frozen protocol
-and synthetic fail-closed tests. Running against sealed evidence requires a new
-machine-readable authorization. The protocol freeze does not authorize
+The next incomplete step is a separate machine-readable execution-request
+freeze and authorization for sealed evidence. Implementation and synthetic
+validation do not open analysis by themselves. The protocol freeze does not authorize
 comparative conclusions or open `EX-IF0`, passive diagnostics, the predictor,
 `QWake-PC`, or the test split.
 
@@ -263,7 +265,8 @@ recorded, the following boundaries remain unchanged:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
 results_publication_permitted=false

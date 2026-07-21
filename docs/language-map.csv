@@ -112,3 +112,4 @@ docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md,docs/decisi
 docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md,docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md,required
 docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol.md,docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md,required
 experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS.md,experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md,required
+docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation.md,docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md,required

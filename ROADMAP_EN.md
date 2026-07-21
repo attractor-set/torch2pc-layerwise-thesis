@@ -43,7 +43,7 @@ B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and
 `block`/`chunk` variants are outside this contract and require separate
 preregistration.
 
-## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — analysis protocol frozen, execution closed
+## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — analysis implementation complete, execution closed
 
 Complete:
 
@@ -71,7 +71,8 @@ matched_profiling_execution_complete=true
 matched_profiling_runtime_validation=valid
 matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_open=true
+matched_profiling_analysis_implementation_complete=true
+matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
 matched_profiling_analysis_open=false
@@ -85,8 +86,8 @@ full_stage3b_campaign_complete=false
 
 Remaining Stage 16 transition:
 
-1. implement the frozen protocol without reading results during development;
-2. pass synthetic and fail-closed tests;
+1. freeze a separate machine-readable execution request;
+2. verify the immutable source and a new output directory;
 3. issue a separate machine-readable authorization for sealed-evidence access;
 4. run and seal the descriptive paired B0/B1/B2 analysis and issue a formal
    `retain / conditional / reject_or_revise` decision;

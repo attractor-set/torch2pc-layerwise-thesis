@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- implement the registered matched-profiling descriptive-analysis engine: the complete 288/1,440 synthetic matrix, exact 18-file output set, seven-dimensional Pareto rule, streaming locality diagnostics, deterministic PDFs, and fail-closed sealed-evidence execution pending separate authorization;
+
 - freeze the post-collection/pre-analysis matched-profiling descriptive-analysis protocol: immutable estimands, aggregation order, seven-dimensional Pareto rule, `retain / conditional / reject_or_revise` decisions, and a closed execution/publication boundary;
 
 - preserve the byte-identical sealed matched-profiling evidence package: 288/288 cells, 96/96 matched blocks, 0 failures, and `valid` runtime validation; add the fail-closed evidence contract and draft-only release workflow with separate run artifacts; descriptive analysis and publication remain closed;

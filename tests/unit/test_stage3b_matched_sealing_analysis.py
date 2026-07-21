@@ -6,7 +6,10 @@ from pathlib import Path
 
 import pytest
 
-from torch2pc_thesis.stage3b_matched_analysis import generate_matched_analysis
+from torch2pc_thesis.stage3b_matched_analysis import (
+    Stage3BMatchedAnalysisError,
+    generate_matched_analysis,
+)
 from torch2pc_thesis.stage3b_matched_sealing import (
     Stage3BMatchedSealingError,
     seal_matched_runtime,
@@ -116,11 +119,7 @@ def _write_attempt(
         correctness_path.parent.mkdir(parents=True)
         correctness_path.write_text(json.dumps(correctness), encoding="utf-8")
     attempt = (
-        root
-        / "matched/lanes/rocm-float32/cells"
-        / str(cell["cell_id"])
-        / "attempts"
-        / attempt_name
+        root / "matched/lanes/rocm-float32/cells" / str(cell["cell_id"]) / "attempts" / attempt_name
     )
     attempt.mkdir(parents=True)
     shared = {
@@ -137,9 +136,7 @@ def _write_attempt(
         "dtype": "float32",
         "image_digest": IMAGE,
     }
-    (attempt / "request.json").write_text(
-        json.dumps(shared), encoding="utf-8"
-    )
+    (attempt / "request.json").write_text(json.dumps(shared), encoding="utf-8")
     (attempt / "started.json").write_text(
         json.dumps(shared | {"status": "matched_cell_running"}),
         encoding="utf-8",
@@ -153,9 +150,7 @@ def _write_attempt(
         "architecture": "mlp_d4_w64",
         "inference_steps": 2,
     }
-    (attempt / "resolved-config.json").write_text(
-        json.dumps(config), encoding="utf-8"
-    )
+    (attempt / "resolved-config.json").write_text(json.dumps(config), encoding="utf-8")
     environment = {
         "project_source_commit": SOURCE,
         "container_image_digest": IMAGE,
@@ -163,9 +158,7 @@ def _write_attempt(
         "block_correctness_path": str(correctness_path),
         "block_correctness_sha256": _sha(correctness_path),
     }
-    (attempt / "environment.json").write_text(
-        json.dumps(environment), encoding="utf-8"
-    )
+    (attempt / "environment.json").write_text(json.dumps(environment), encoding="utf-8")
     primary = []
     structural_timing = []
     observer = []
@@ -310,9 +303,7 @@ def _write_attempt(
             "cross_candidate_correctness_gate_passed": True,
         },
     }
-    (attempt / "measurements.json").write_text(
-        json.dumps(measurements), encoding="utf-8"
-    )
+    (attempt / "measurements.json").write_text(json.dumps(measurements), encoding="utf-8")
 
 
 def _write_failed_attempt(
@@ -324,11 +315,7 @@ def _write_failed_attempt(
     retry_eligible: bool,
 ) -> None:
     attempt = (
-        root
-        / "matched/lanes/rocm-float32/cells"
-        / str(cell["cell_id"])
-        / "attempts"
-        / attempt_name
+        root / "matched/lanes/rocm-float32/cells" / str(cell["cell_id"]) / "attempts" / attempt_name
     )
     attempt.mkdir(parents=True)
     shared = {
@@ -402,19 +389,15 @@ def test_sealing_and_paired_analysis_are_fail_closed(
     assert seal["matched_cell_count"] == 3
     assert validate_sealed_matched_evidence(evidence)["status"] == "sealed"
 
-    analysis = tmp_path / "analysis"
-    summary = generate_matched_analysis(
-        evidence,
-        analysis,
-        generated_at_utc="2026-07-19T00:01:00Z",
-    )
-
-    assert summary["matched_block_count"] == 1
-    assert summary["paired_row_count"] == 2
-    assert summary["ex_if0_opened"] is False
-    assert summary["policy_activation_permitted"] is False
-    assert (analysis / "paired_candidate_metrics.csv").is_file()
-    assert (analysis / "SHA256SUMS").is_file()
+    with pytest.raises(
+        Stage3BMatchedAnalysisError,
+        match="execution is closed",
+    ):
+        generate_matched_analysis(
+            evidence,
+            tmp_path / "analysis",
+            generated_at_utc="2026-07-19T00:01:00Z",
+        )
 
 
 def test_sealing_accepts_retryable_failure_followed_by_success(
@@ -456,9 +439,7 @@ def test_sealing_accepts_retryable_failure_followed_by_success(
     assert seal["attempt_history_count"] == 4
     history = [
         json.loads(line)
-        for line in (evidence / "attempt-history.jsonl")
-        .read_text(encoding="utf-8")
-        .splitlines()
+        for line in (evidence / "attempt-history.jsonl").read_text(encoding="utf-8").splitlines()
     ]
     assert any(record["failure_class"] == "infrastructure" for record in history)
 

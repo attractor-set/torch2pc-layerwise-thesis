@@ -1,0 +1,50 @@
+{
+  "authorization_token": "7b3475c887388f006ad51b7126ba659c2620c0ee7d239eedfc1c748a6acc1da6",
+  "candidate_id": "composite_vjp",
+  "confirmatory_equivalence_executed": true,
+  "control_candidate_id": "isolated_layer_vjp",
+  "decision_id": "EQ-B2",
+  "failed_pairs": [],
+  "failed_triples": [],
+  "gates": {
+    "NUM-B2": {
+      "failed_triples": [],
+      "passed": true
+    },
+    "OBS-B2": {
+      "failed_triples": [],
+      "passed": true
+    },
+    "PROV-B2": {
+      "failed_triples": [],
+      "passed": true
+    },
+    "STRUCT-B2": {
+      "failed_triples": [],
+      "passed": true
+    },
+    "TRAJ-B2": {
+      "failed_triples": [],
+      "passed": true
+    }
+  },
+  "image_digest": "sha256:4545f3ab3ed97fa045db24aea9fa820c2a2b64f352d18db5f104e7c65c8b4363",
+  "matched_triples_expected": 120,
+  "matched_triples_observed": 120,
+  "pairwise_comparisons_expected": 240,
+  "pairwise_comparisons_observed": 240,
+  "production_admission_effect": "permits a new versioned matched-profiling scientific-admission freeze only; does not authorize 288-cell execution",
+  "project_source_commit": "63885e530fa38540ef684a6820a966eee96a58f9",
+  "reference_id": "stage2_baseline",
+  "request_digest": "3a824f4a7a8517a4b97341a4598ac8433e2253b45d2bb3f667722c270b06fb78",
+  "results_publication_permitted": false,
+  "schema_version": 1,
+  "scope": "confirmatory",
+  "sealed": true,
+  "source_decision_id": "EQ-B2-CONFIRMATORY",
+  "source_decision_path": "decision.json",
+  "source_decision_sha256": "6e4b5c54a35011dcd39ca621a020d9b75ed5bed706f10f483454641b46b75eea",
+  "status": "pass",
+  "test_dataset_access": false,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+}

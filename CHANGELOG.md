@@ -5,6 +5,8 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- сохранён byte-for-byte sealed confirmatory B2 evidence: `EQ-B2-CONFIRMATORY=pass`, 120/120 троек, 240/240 сравнений, 0 failed pairs и derived `EQ-B2`; matched profiling остаётся закрытым до нового versioned freeze;
+
 - заморожен append-only request подтверждающего `EQ-B2`: 120 троек, 240 сравнений, точное повторное использование B1-входов и закрытая execution boundary;
 
 

@@ -153,10 +153,12 @@ def test_existing_matched_request_is_retained_but_not_production_admissible() ->
     ]
 
 
-def test_status_and_roadmap_report_confirmatory_b2_blocker() -> None:
+def test_status_and_roadmap_report_post_confirmatory_b2_boundary() -> None:
     for name in ("STATUS.md", "STATUS_EN.md", "ROADMAP.md", "ROADMAP_EN.md"):
         text = (ROOT / name).read_text(encoding="utf-8")
-        assert "scientific_admission=blocked_pending_eq_b2_confirmatory" in text
+        assert "scientific_admission=open_after_eq_b2_confirmatory" in text
+        assert "b2_confirmatory_admission=present" in text
         assert "matched_profiling_request_refresh_required=true" in text
+        assert "matched_profiling_execution_open=false" in text
         assert "runtime_authorization=not_issued" in text
         assert "measurements_allowed=false" in text

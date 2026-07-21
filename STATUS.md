@@ -4,10 +4,13 @@
 
 На 20 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
 Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительная регистрация и реализация точных кандидатов B1 и B2.
-Подтверждающий B1 запечатан на 120/120 парах; B2 прошёл инженерный smoke на
-12 тройках и 24 сравнениях. Подтверждающий B2 предварительно зарегистрирован; его fail-closed opening-инфраструктура реализована и append-only request заморожен, но выполнение закрыто. Ранее сформированные артефакты открытия
+Подтверждающий B1 запечатан на 120/120 парах. Подтверждающий B2 также
+завершён и запечатан: 120/120 троек, 240/240 прямых сравнений, все пять gates
+прошли, failed pairs отсутствуют; производный admission `EQ-B2` сохранён.
+Ранее сформированные артефакты открытия
 [сопоставленного профилирования](docs/glossary.md#term-matched-profiling)
-сохраняются, однако production prelaunch блокирует их до confirmatory B2.
+остаются историческими: перед production prelaunch требуется новый
+версионированный request/manifest freeze.
 
 Полный Stage 3B остаётся незавершённым.
 
@@ -15,11 +18,13 @@ Stage 3B B0, `SI-MA0` и `SI-MA1`. Завершены предварительн
 
 ```text
 matched_profiling_manifest_cells=288
-scientific_admission=blocked_pending_eq_b2_confirmatory
+scientific_admission=open_after_eq_b2_confirmatory
 candidate_aware_runner=complete
-b2_confirmatory_opening=implementation_ready_execution_closed
+b2_confirmatory_decision=pass_sealed
 b2_confirmatory_request_frozen=true
+b2_confirmatory_admission=present
 matched_profiling_request_refresh_required=true
+matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
 test_dataset_access=false
@@ -42,7 +47,7 @@ full_stage3b_campaign_complete=false
 | Теоретическое условие B1/B2 | пакет `PC-TREF`/`PC-CATM` опубликован |
 | Предварительная регистрация B1/B2 | завершена; тег `stage3b-b1-b2-prereg-v1` |
 | B1 `isolated_layer_vjp` | confirmatory `EQ-B1=pass`; 120/120 пар |
-| B2 `composite_vjp` | engineering smoke `EQ-B2=pass`; 12/12 троек и 24/24 сравнения; confirmatory opening-инфраструктура готова, request заморожен, execution закрыт |
+| B2 `composite_vjp` | `EQ-B2-CONFIRMATORY=pass`; 120/120 троек, 240/240 сравнений, 0 failed pairs; derived `EQ-B2` сохранён |
 | Запрос и манифест сопоставленного профилирования | прежняя версия сохранена; production refresh требуется после confirmatory B2 |
 | Исполнитель сопоставленного профилирования | реализация с учётом кандидата завершена |
 | Выполнение сопоставленного профилирования | не разрешено |
@@ -87,29 +92,37 @@ B0 закрепил `stage2_baseline` для `FixedPred` и `Strict` в синт
 ### Допуск B1/B2
 
 Confirmatory B1 прошёл CPU `float64` и ROCm `float32` на 120/120 парах.
-B2 прошёл инженерный smoke на 12/12 тройках и 24/24 сравнениях. Smoke
-`EQ-B2=pass` не является confirmatory admission и не открывает production
-matched profiling. Для допуска требуются `EQ-B2-CONFIRMATORY`, derived
-`EQ-B2` и новая версионированная фиксация request/manifest.
+B2 прошёл инженерный smoke, а затем подтверждающую кампанию на 120/120
+тройках и 240/240 прямых сравнениях. `EQ-B2-CONFIRMATORY=pass` запечатан;
+derived `EQ-B2` связан с ним SHA-256. Эта научная цепочка допуска завершена,
+но production matched profiling остаётся закрытым до новой версионированной
+фиксации request/manifest и отдельной runtime authorization.
 
 ## Текущий переход
 
-Подтверждающий B2 предварительно зарегистрирован как 120 matched triples и
-240 прямых сравнений на тех же десяти validation batches, что и confirmatory
-B1. Fail-closed opening-инфраструктура реализована со статусом
-`implementation_ready_execution_closed`. Append-only request `stage3b-b2-confirmatory-120-v1` заморожен на 120 троек и 240 сравнениях. Следующий незавершённый шаг — сборка immutable image из publication commit, lane preflight, отдельная authorization и неизмеряемый dry-run.
+Запечатанный набор B2 опубликован в
+`results/stage-3/b2/stage3b-b2-confirmatory-63885e5-v1/`. Он содержит
+`EQ-B2-CONFIRMATORY=pass`, derived `EQ-B2`, 120 завершённых append-only
+историй, агрегированные метрики и 1800 структурных событий. Test split не
+использовался.
 
-До положительного sealed `EQ-B2-CONFIRMATORY`, derived admission `EQ-B2` и
-новой фиксации matched-profiling request/manifest:
+Следующий незавершённый шаг — новый версионированный freeze 288-cell
+matched-profiling request/manifest, который prospectively ссылается на
+запечатанные admissions B1 и B2. Прежний request/manifest сохраняется
+byte-for-byte и не получает допуска задним числом.
+
+До нового freeze и отдельной проверки runtime:
 
 ```text
-scientific_admission=blocked_pending_eq_b2_confirmatory
+scientific_admission=open_after_eq_b2_confirmatory
+matched_profiling_request_refresh_required=true
+matched_profiling_execution_open=false
 runtime_authorization=not_issued
 measurements_allowed=false
 ```
 
-Документационное обновление не разрешает B2 execution, 288-cell campaign,
-`EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor, QWake-PC или test split.
+Документационное обновление и сохранение evidence не разрешают 288-cell
+campaign, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor, QWake-PC или test split.
 
 ## Происхождение
 
@@ -125,5 +138,7 @@ measurements_allowed=false
 | Matched-profiling opening merge | `a249d35` |
 | Candidate-aware runner implementation | `d611cb7` |
 | Candidate-aware runner merge | `a44e7c8` |
+| B2 confirmatory source | `63885e530fa38540ef684a6820a966eee96a58f9` |
+| B2 confirmatory evidence | `stage3b-b2-confirmatory-63885e5-v1` |
 
 Документационные изменения не пересоздают опубликованные результаты.

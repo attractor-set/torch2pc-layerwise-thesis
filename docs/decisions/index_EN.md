@@ -46,3 +46,5 @@
 - [ADR-029](ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening_EN.md): freezes authorized-output provenance, mutual consistency across the 288/1,440/96 compact rows, and a real `Zstandard` canary without opening execution.
 
 - [ADR-030](ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md): freezes the one-run read-only request, immutable identities, and exact 18-file output contract while keeping authorization and execution closed.
+
+- [ADR-031](ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md): implements fail-closed runtime preflight, future-authorization verification, and a canonical-package executor without opening execution.

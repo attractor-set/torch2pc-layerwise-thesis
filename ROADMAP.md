@@ -74,6 +74,8 @@ matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_runtime_preflight_implementation=complete
+matched_profiling_analysis_runtime_preflight_frozen=false
 matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
@@ -99,7 +101,7 @@ frozen protocol, hardening commit, одним новым output root и точн
 
 Оставшийся переход внутри этапа 16:
 
-1. отдельный runtime preflight и машиночитаемая authorization;
+1. отдельная фиксация фактического runtime preflight и машиночитаемой authorization;
 2. однократный read-only paired analysis B0/B1/B2, sealing анализа и
    формальное решение `retain / conditional / reject_or_revise`;
 3. отдельный publication gate для чернового релиза.

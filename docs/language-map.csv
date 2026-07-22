@@ -116,3 +116,5 @@ docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation.md,do
 docs/decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening.md,docs/decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening_EN.md,required
 experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST.md,experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md,required
 docs/decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze.md,docs/decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md,required
+experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT.md,experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT_EN.md,required
+docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation.md,docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md,required

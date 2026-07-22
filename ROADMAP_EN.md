@@ -74,6 +74,8 @@ matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_runtime_preflight_implementation=complete
+matched_profiling_analysis_runtime_preflight_frozen=false
 matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
@@ -93,7 +95,7 @@ evidence, frozen protocol, hardening commit, one new output root, and exact
 
 Remaining Stage 16 transition:
 
-1. complete a separate runtime preflight and machine-readable authorization;
+1. separately freeze the actual runtime preflight and machine-readable authorization;
 2. run the read-only paired B0/B1/B2 analysis exactly once, seal it, and issue
    a formal `retain / conditional / reject_or_revise` decision;
 3. pass a separate publication gate for the draft release.

@@ -130,7 +130,7 @@ same restored state
 который связывает один `read-only` [запуск](glossary.md#term-run),
 неизменяемые входы, `analysis core`, единственный новый `output root` и
 точный набор из 18 файлов. `Request` не является `authorization` и не
-открывает вычисление результатов.
+открывает вычисление результатов. Реализованный [`runtime-preflight` контур](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT.md) проверяет только идентичности и структурную целостность; фактическая предварительная проверка и `authorization` остаются отдельной будущей фиксацией.
 
 ## Полнота и публикация
 

@@ -85,6 +85,7 @@ of freedom before comparative results are computed.
 - [`SI-MA1` final tag](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/stage3b-si-ma1-confirmatory-v1)
 - [Matched-profiling descriptive-analysis protocol](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md)
 - [Matched descriptive-analysis execution request](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md)
+- [Runtime](glossary_EN.md#term-runtime): [matched descriptive-analysis preflight](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT_EN.md)
 - [Sealed matched-profiling evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1)
 
 ### Architecture and research decisions

@@ -104,4 +104,10 @@ def test_status_documents_match_publication_receipt_boundary() -> None:
         text = (ROOT / name).read_text(encoding="utf-8")
         for line in expected:
             assert line in text, f"{name} is missing {line}"
-        assert "ex_if0_opened=false" in text
+        assert "ex_if0_protocol_frozen=true" in text
+        assert "ex_if0_opened=true" in text
+        assert "ex_if0_complete=true" in text
+        assert "exact_implementation_candidate=stage2_baseline" in text
+        assert "minimum_sufficient_sweep_rule_frozen=true" in text
+        assert "ex_if0_execution_permitted=false" in text
+        assert "oracle_label_generation_open=false" in text

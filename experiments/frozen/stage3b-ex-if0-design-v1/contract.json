@@ -1,0 +1,173 @@
+{
+  "aggregate_hierarchy_contract": {
+    "concrete_spatial_membership_frozen": false,
+    "concrete_spatial_membership_must_be_frozen_before_label_generation": true,
+    "global_policy_action": false,
+    "minimum_registered_scales": [
+      "layers_within_registered_block",
+      "blocks_within_network"
+    ],
+    "nested_family_rule": "B_0=empty subset B_1 subset ... subset B_K=parent_region",
+    "root_full_sweep_semantics": "maximum_root_aggregate",
+    "spatial_enumeration_policy": "registered_nested_prefixes_only_no_power_set_search",
+    "temporal_family": {
+      "candidate_ids": "prefix_0_through_prefix_K_ref",
+      "prefix_0": "stop_before_any_additional_sweep",
+      "prefix_K_ref": "configured_full_reference_trajectory"
+    }
+  },
+  "claim_boundary": {
+    "a11_off0_execution_open": false,
+    "active_controller_permitted": false,
+    "ex_if0_complete": true,
+    "ex_if0_execution_permitted": false,
+    "ex_if0_opened": true,
+    "exact_implementation_frozen": true,
+    "feature_collection_permitted": false,
+    "full_stage3b_campaign_complete": false,
+    "minimum_sufficient_sweep_labels_present": false,
+    "oracle_label_generation_open": false,
+    "policy_activation_permitted": false,
+    "recursive_aggregate_execution_open": false,
+    "superiority_claim_permitted": false,
+    "test_dataset_access": false
+  },
+  "contract_id": "stage3b-ex-if0-design-v1",
+  "counterfactual_branch_contract": {
+    "branch_labels": [
+      "stop",
+      "native_one",
+      "exact_one"
+    ],
+    "branch_labels_are_controller_actions": false,
+    "branch_results_are_post_action_oracle_data": true,
+    "exact_one_implementation": "stage2_baseline",
+    "native_one_exact_one_identity_expected": true,
+    "native_one_implementation": "stage2_baseline",
+    "physical_execution_deduplication_permitted": true,
+    "required_identity_control": "aliased branches must have identical endpoint fingerprints and provenance must record the alias",
+    "snapshot_restoration": "parameters_optimizer_beliefs_batch_rng_and_method_configuration"
+  },
+  "decision_epoch_contract": {
+    "candidate_sweep_indices": "t in [0,K_ref]",
+    "decision_point": "after snapshot S_t is complete and before sweep t+1",
+    "pre_action_history_inclusive_through": "S_t",
+    "reference_future_visible_to_features": false,
+    "sweep_zero_semantics": "initialized_state_before_first_inference_sweep"
+  },
+  "exact_implementation_selection": {
+    "candidate_status_source": "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1/engineering_decision.json",
+    "fallback_selection_rule": "select mandatory baseline when no admissible replacement is retained",
+    "rejected_or_revise_candidates": [
+      {
+        "candidate_id": "isolated_layer_vjp",
+        "fixedpred_status": "reject_or_revise",
+        "strict_status": "reject_or_revise"
+      },
+      {
+        "candidate_id": "composite_vjp",
+        "fixedpred_status": "reject_or_revise",
+        "strict_status": "reject_or_revise"
+      }
+    ],
+    "selected_candidate_id": "stage2_baseline",
+    "selected_methods": [
+      "fixedpred",
+      "strict"
+    ],
+    "selected_role": "canonical_exact_reference_and_fail_closed_fallback",
+    "selection_is_superiority_claim": false
+  },
+  "failure_policy": {
+    "changed_source_digest": "fail_closed",
+    "feature_or_label_leakage": "fail_closed",
+    "missing_reference_endpoint": "fail_closed",
+    "nonfinite_component": "insufficient",
+    "post_hoc_threshold_retuning": "forbidden",
+    "reference_identity_failure": "fail_closed",
+    "shape_or_component_mismatch": "insufficient",
+    "unexpected_branch_divergence_for_alias": "fail_closed"
+  },
+  "feature_label_separation": {
+    "post_action_oracle_fields": [
+      "exact_reference_regret",
+      "oracle_sufficiency_margin_M_star",
+      "sufficient_at_t",
+      "minimum_stably_sufficient_sweep_t_star",
+      "remaining_unnecessary_sweeps",
+      "counterfactual_branch_endpoints"
+    ],
+    "pre_action_feature_cutoff": "information materialized no later than S_t",
+    "pre_action_features_may_include_oracle_margin": false,
+    "pre_action_features_may_include_reference_future": false,
+    "pre_action_features_may_include_t_star": false
+  },
+  "freeze_date": "2026-07-22",
+  "independent_unit": "model_seed",
+  "minimum_stably_sufficient_sweep_contract": {
+    "all_components_required": true,
+    "endpoint_response_components": [
+      "named_parameter_gradients",
+      "endpoint_beliefs",
+      "endpoint_loss"
+    ],
+    "exact_reference_endpoint": "Y_ref=readout(S_K_ref) from the configured full stage2_baseline trajectory",
+    "k_ref_rule": "use the frozen inference_steps of the registered method and configuration; no adaptive early stop",
+    "minimum_rule": "t_star=min{t: sufficient(j)=true for every j in [t,K_ref]}",
+    "reference_self_check": "S_K_ref must be sufficient by identity",
+    "regret_aggregation": "maximum normalized violation across all registered components; no averaging",
+    "regret_definition": "r_Gamma(t)=max(max_abs/max_abs_limit,relative_l2/max_relative_l2_limit,(1-cosine)/(1-min_cosine)) with structural_or_finite_failure=infinity",
+    "stable_rule": "full_suffix_stability",
+    "sufficiency_margin": "M_star(t)=1-r_Gamma(t)",
+    "sufficiency_rule": "M_star(t)>=0",
+    "threshold_profile": {
+      "lane": "rocm_float32",
+      "max_abs": 1e-05,
+      "max_relative_l2": 0.001,
+      "min_cosine": 0.999,
+      "source": "registered B1/B2 ROCm float32 equivalence profile",
+      "zero_atol": 1e-07
+    },
+    "zero_policy": "pass when both vectors are below zero_atol; fail when exactly one is active"
+  },
+  "oracle_safety_contract": {
+    "abstention_semantics": "future estimator only; oracle labels do not abstain",
+    "dangerous_miss": "a future stop proposal at t when M_star(t)<0",
+    "dangerous_miss_limit_for_future_confirmatory_admission": 0,
+    "false_continue_semantics": "safe but computationally inefficient",
+    "k_ref_fallback": "full configured stage2_baseline trajectory"
+  },
+  "required_sources": {
+    "analysis_summary": {
+      "path": "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1/analysis_summary.json",
+      "sha256": "4f02d8f0297e3ced79110487d6837308f2da2de704083ce2be73f01c43a28f3a"
+    },
+    "b1_contract": {
+      "path": "experiments/planned/STAGE3B-B1-CONTRACT.json",
+      "sha256": "32847ccd47244183854645cda852733dfd9bbbbb2b95722d55ee0050cb895e20"
+    },
+    "b2_contract": {
+      "path": "experiments/planned/STAGE3B-B2-CONTRACT.json",
+      "sha256": "b250b042a8fe8118b51841b27b6cf70e167ced1d44f4587fe41aa50735c78b26"
+    },
+    "engineering_decision": {
+      "path": "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1/engineering_decision.json",
+      "sha256": "3ccd65cf86dbb26a306bcd97bba60bf9851fd7d4f20af3340d6795fb19ea3199"
+    },
+    "publication_receipt": {
+      "path": "experiments/frozen/stage3b-matched-descriptive-analysis-publication-receipt-v1/receipt.json",
+      "sha256": "82467dcbf25776fff249500f229146ae3352fc9b61a17dbac86d96f588071336"
+    },
+    "recursive_direction_en": {
+      "path": "docs/stage3b-recursive-sufficiency-aggregate-direction_EN.md",
+      "sha256": "7632f8d7ea2a752467292504b3ce55ef68375a870b3b60a16216a7eba694da17"
+    },
+    "recursive_direction_ru": {
+      "path": "docs/stage3b-recursive-sufficiency-aggregate-direction.md",
+      "sha256": "d7c32a83dda0727947ef5c51b5e7d36b83087e89d1fa20f3ad5d718e4552f2e8"
+    }
+  },
+  "schema_version": 1,
+  "scope": "stage3b_exact_implementation_and_oracle_sweep_boundary_design",
+  "status": "design_frozen_execution_closed"
+}

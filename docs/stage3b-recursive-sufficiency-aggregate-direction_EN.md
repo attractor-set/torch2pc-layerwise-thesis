@@ -9,6 +9,11 @@ publication gate for the sealed B1/B2 analysis. It is a design-only decision:
 it does not authorize [execution](glossary_EN.md#term-execution), open `EX-IF0`, create labels, train a
 predictor, activate `QWake-PC`, or modify sealed B1/B2 [evidence](glossary_EN.md#term-evidence).
 
+> **Historical boundary:** Section 12 preserves the state at ADR-035, when
+> `EX-IF0` was still pending. Current post-freeze state is defined by
+> `STATUS_EN.md` and `experiments/frozen/stage3b-ex-if0-design-v1/contract.json`;
+> the historical markers below are not the current admission state.
+
 Until a separate preregistration, the following remain in force:
 
 ```text

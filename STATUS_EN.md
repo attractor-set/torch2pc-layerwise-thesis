@@ -16,9 +16,10 @@ hardening verified provenance, consistency across the 288/1,440/96 compact
 tables, and a real `Zstandard` frame. The machine-readable execution request, actual runtime preflight, and separate
 authorization are frozen. The single read-only attempt completed on the verified
 `main`; the exact 18-file output passed independent audit and is bound by an
-external seal to the receipt and audit package. The output is now frozen as
-repository evidence, while result publication, superiority claims, and `EX-IF0`
-remain unauthorized.
+external seal to the receipt and audit package. The output is published within
+its bounded claim scope. `EX-IF0` now separately freezes `stage2_baseline` as the
+canonical exact reference and freezes the minimum stably sufficient sweep rule;
+execution, oracle-label generation, features, and control remain closed.
 
 The full Stage 3B program remains incomplete.
 
@@ -61,8 +62,18 @@ results_publication_permitted=true
 release_draft_required=false
 release_publication_permitted=true
 release_publication_complete=true
-ex_if0_opened=false
+ex_if0_protocol_frozen=true
+ex_if0_opened=true
+ex_if0_complete=true
+exact_implementation_frozen=true
+exact_implementation_candidate=stage2_baseline
+minimum_sufficient_sweep_rule_frozen=true
+ex_if0_execution_permitted=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+a11_off0_execution_open=false
 recursive_aggregate_execution_open=false
+policy_activation_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false
 ```
@@ -88,6 +99,7 @@ decision.
 | Matched-profiling runner | candidate-aware implementation complete |
 | Matched-profiling execution | 288/288 cells, 96/96 blocks, 0 failures; sealed evidence preserved |
 | Matched-profiling descriptive analysis | single attempt completed; 18 files audited, published through the bounded tagged action, and bound to the frozen publication receipt |
+| `EX-IF0` | `stage2_baseline` frozen as canonical exact reference; suffix-stable sweep rule frozen; execution and labels closed |
 | Test dataset | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -174,7 +186,16 @@ results_publication_permitted=true
 release_draft_required=false
 release_publication_permitted=true
 release_publication_complete=true
-ex_if0_opened=false
+ex_if0_protocol_frozen=true
+ex_if0_opened=true
+ex_if0_complete=true
+exact_implementation_frozen=true
+exact_implementation_candidate=stage2_baseline
+minimum_sufficient_sweep_rule_frozen=true
+ex_if0_execution_permitted=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+a11_off0_execution_open=false
 recursive_aggregate_execution_open=false
 full_stage3b_campaign_complete=false
 ```
@@ -185,18 +206,23 @@ post-collection/pre-analysis protocol freezes estimands, aggregation, the
 Pareto rule, and `retain / conditional / reject_or_revise` decisions. The
 bounded tagged publication action completed successfully, and the frozen
 publication receipt binds the publication commit, successful workflow run,
-release identifier, publication time, and asset digests. Publication does not
-authorize superiority claims, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor,
-QWake-PC, or test-split access. The next permitted transition is a separate
-freeze of the `EX-IF0` protocol; recursive-aggregate execution remains closed.
+release identifier, publication time, and asset digests. Publication does not authorize superiority claims or test-split access.
+`EX-IF0 v1` separately selects `stage2_baseline` as canonical exact reference
+and freezes the decision epoch, task-relative endpoint, oracle margin, and full
+suffix stability for the minimum sufficient sweep. This design freeze does not
+authorize `A11-OFF0`, oracle-label generation, feature collection, the
+predictor, QWake-PC, or recursive-aggregate execution.
 
-ADR-035 additionally freezes only the post-publication research direction:
-oracle search for a minimum sufficient compute aggregate at two scales. This
-freeze does not open `EX-IF0` or execution; spike-like dynamics is off the
-critical path.
+ADR-035 retains the post-publication research direction: oracle search for a
+minimum sufficient compute aggregate at two scales. Concrete spatial membership
+and snapshot branching must be frozen by the next contract; spike-like dynamics
+is off the critical path.
 
 ```text
 recursive_sufficiency_direction_frozen=true
+ex_if0_protocol_frozen=true
+exact_implementation_candidate=stage2_baseline
+minimum_sufficient_sweep_rule_frozen=true
 recursive_aggregate_execution_open=false
 global_policy_action=false
 spike_like_on_critical_path=false

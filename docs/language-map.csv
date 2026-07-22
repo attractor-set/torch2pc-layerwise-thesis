@@ -128,3 +128,5 @@ docs/decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction.md,docs
 experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE.md,experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE_EN.md,required
 docs/decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate.md,docs/decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md,required
 docs/decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt.md,docs/decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md,required
+docs/decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary.md,docs/decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary_EN.md,required
+experiments/planned/STAGE3B-EX-IF0.md,experiments/planned/STAGE3B-EX-IF0_EN.md,required

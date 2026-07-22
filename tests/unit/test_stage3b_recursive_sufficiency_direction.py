@@ -74,21 +74,34 @@ def test_spike_like_mechanism_is_conditional() -> None:
         assert "CONTROLLER_IMPLEMENTATION_AUTHORIZED=false" in text
 
 
-def test_publication_receipt_precedes_closed_ex_if0_transition() -> None:
+def test_publication_receipt_precedes_frozen_ex_if0_boundary() -> None:
     receipt_marker = (
         "matched_profiling_analysis_publication_receipt_frozen=true"
     )
     for name in ("ROADMAP.md", "ROADMAP_EN.md"):
         text = _text(ROOT / name)
         receipt = text.index(receipt_marker)
-        assert receipt < text.index("EX-IF0", receipt)
-        assert "ex_if0_opened=false" in text
+        ex_if0 = text.index("ex_if0_protocol_frozen=true", receipt)
+        assert receipt < ex_if0
+        assert "ex_if0_opened=true" in text
+        assert "ex_if0_complete=true" in text
+        assert "exact_implementation_candidate=stage2_baseline" in text
+        assert "minimum_sufficient_sweep_rule_frozen=true" in text
+        assert "ex_if0_execution_permitted=false" in text
         assert "recursive_aggregate_execution_open=false" in text
 
     for path in DIRECTION_DOCS:
         text = _text(path)
         assert "NEXT_FORMAL_TRANSITION=publication_gate_then_EX_IF0" in text
         assert "POLICY_ACTIVATION_PERMITTED=false" in text
+
+    for path in ADR_DOCS:
+        text = _text(path)
+        assert (
+            "не открывает `EX-IF0`" in text
+            or "does not open `EX-IF0`" in text
+            or "does not authorize" in text
+        )
 
 
 def test_direction_is_registered_as_a_language_pair_and_adr() -> None:

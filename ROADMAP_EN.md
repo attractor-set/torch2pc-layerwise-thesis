@@ -94,8 +94,19 @@ results_publication_permitted=true
 release_draft_required=false
 release_publication_permitted=true
 release_publication_complete=true
-ex_if0_opened=false
+ex_if0_protocol_frozen=true
+ex_if0_opened=true
+ex_if0_complete=true
+exact_implementation_frozen=true
+exact_implementation_candidate=stage2_baseline
+minimum_sufficient_sweep_rule_frozen=true
+ex_if0_execution_permitted=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+a11_off0_execution_open=false
 recursive_aggregate_execution_open=false
+policy_activation_permitted=false
+test_dataset_access=false
 full_stage3b_campaign_complete=false
 ```
 
@@ -107,21 +118,26 @@ repository evidence without rewriting generated metadata.
 
 Stage 16 is complete: the fail-closed publication action succeeded, and the
 exact remote receipt/status is frozen without rerunning the analysis.
-Superiority claims, `EX-IF0` execution, policy activation, and test access remain
-closed. Negative and mixed results are retained.
+Superiority claims, policy activation, and test access remain closed. Negative
+and mixed results are retained.
 
 ## Stage 17 — `EX-IF0` and the recursive-aggregate oracle boundary
 
-After the frozen publication receipt, use a separate PR to select and freeze B0
-as the admissible exact implementation through `EX-IF0`. Before label creation,
-freeze the decision epoch, aggregate hierarchy, counterfactual contract, and
-minimum stably sufficient sweep rule. This entry does not open execution.
+The `EX-IF0 v1` design freeze is complete: `stage2_baseline` is selected as the
+canonical exact reference and fail-closed fallback for `FixedPred` and `Strict`.
+The decision epoch, full configuration-specific reference horizon,
+task-relative endpoint, `rocm_float32` threshold profile, and full-suffix rule
+for the minimum stably sufficient sweep are frozen. Execution and label
+generation remain closed.
 
-The initial temporal baseline `A11-OFF0` retains policy-neutral `stop`, `native_one`, and
-`exact_one` branches. Identical snapshots then test preregistered nested
-aggregates at a minimum of two scales: layers within a block and blocks within
-the network. Every candidate records exact-reference regret, oracle margin
-`M^*`, the complete cost vector, and provenance.
+The next separate contract must freeze concrete spatial hierarchy membership
+and `A11-OFF0` snapshot branching before labels are generated. The temporal
+baseline retains policy-neutral `stop`, `native_one`, and `exact_one` branches;
+under `v1`, the two one-step branches are an identity control for the selected
+`stage2_baseline`. Identical snapshots then test preregistered nested aggregates
+at a minimum of two scales: layers within a block and blocks within the network.
+Every candidate records exact-reference regret, oracle margin `M^*`, the
+complete cost vector, and provenance.
 
 Stage decisions are:
 

@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- implemented the fail-closed descriptive-analysis runtime preflight: Git/Python/Zstandard and runtime-file identity, read-only verification of nine SHA-256 values, a future-authorization verifier, and an executor without an external authorization path; authorization, execution, and publication remain closed;
+
 - froze the machine-readable Stage 3B descriptive-analysis execution request: immutable evidence/protocol/core identities, one new output root, exact 18-file inventory, and at most one read-only run; authorization, execution, and publication remain closed;
 
 - hardened the registered descriptive-analysis engine before execution: separated synthetic and future authorized-output provenance, verified mutual consistency across 288 cells, 1,440 repetitions, and 96 summary rows, and added a real `Zstandard` canary; execution and publication remain closed;

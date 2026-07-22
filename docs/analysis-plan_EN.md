@@ -130,7 +130,7 @@ a preregistration made before data collection. After implementation and hardenin
 [execution request](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md)
 binds one read-only run, immutable inputs, the analysis core, one new output
 root, and the exact 18-file inventory. The request is not authorization and
-does not open result computation.
+does not open result computation. The implemented [runtime](glossary_EN.md#term-runtime) [preflight layer](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT_EN.md) checks only identities and structural integrity; the actual preflight and authorization remain a separate future freeze.
 
 ## Completeness and publication
 

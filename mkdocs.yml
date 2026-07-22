@@ -76,6 +76,7 @@ nav:
       - ADR-030 Matched analysis execution request: decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze.md
       - ADR-031 Matched analysis runtime preflight: decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation.md
       - ADR-032 Matched analysis runtime preflight freeze: decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze.md
+      - ADR-033 Matched analysis execution authorization: decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

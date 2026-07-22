@@ -49,3 +49,4 @@
 
 - [ADR-031](ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md): implements fail-closed runtime preflight, future-authorization verification, and a canonical-package executor without opening execution.
 - [ADR-032](ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md): freezes the actual runtime preflight for merge commit `272a9258…` while keeping authorization, execution, and publication closed.
+- [ADR-033](ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md): freezes one prospective read-only authorization, binds request/preflight/runtime identities, and keeps execution pending a merged-main opening gate and publication pending a separate decision.

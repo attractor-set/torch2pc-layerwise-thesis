@@ -27,21 +27,27 @@ the update rule affect:
    `exact sweep`, and `fallback` under bounded
    [decision regret](glossary_EN.md#term-decision-regret)?
 
-## Stage 3B question after `SI-MA1`
+## Completed B1/B2 question and next direction
 
-Can B1 `isolated_layer_vjp` and B2 `composite_vjp` replace part of the heavy
-exact path while preserving registered numerical equivalence and safety, and
-improve the [cost vector](glossary_EN.md#term-cost-vector) without moving hidden
-cost into diagnostics, the observer, or the control plane?
+B1 `isolated_layer_vjp` and B2 `composite_vjp` tested exact alternatives to the
+heavy path. Both candidates passed registered numerical equivalence, while
+matched analysis preserved different cost vectors and `reject_or_revise`
+decisions. The bounded supported conclusion is that numerical equivalence does
+not guarantee resource equivalence. This conclusion does not prove that
+adaptive control is necessary.
 
-The test separates three claims:
+The next central question is:
 
-- **mechanism:** the [candidate](glossary_EN.md#term-candidate) reproduces the registered reference outcome;
-- **decision:** candidate-selection errors remain within
-  [required equivalence](glossary_EN.md#term-required-equivalence) and regret
-  bounds;
-- **cost:** savings persist after separate diagnostic-mechanism, observer,
-  control-plane, and [fallback](glossary_EN.md#term-fallback) accounting.
+> Can one recursive mechanism use an estimate of the margin to a task-relative
+> sufficiency boundary to select
+> [minimum sufficient compute aggregates](glossary_EN.md#term-minimum-sufficient-compute-aggregate)
+> across multiple scales of predictive-coding inference under bounded
+> exact-reference regret?
+
+The work first tests existence of a cheaper sufficient aggregate, state
+dependence of the oracle decision, and reuse of one normative semantics at two
+scales. A predictor, temperature, and `QWake-PC` are admitted only after those
+gates.
 
 ## Theoretical framework
 

@@ -44,3 +44,5 @@
 - [ADR-027](ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md): freezes the post-collection/pre-analysis descriptive protocol, `model_seed` independent unit, aggregation order, seven-dimensional Pareto rule, and closed execution/publication boundary.
 - [ADR-028](ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md): replaces the early analyzer with the registered 18-output engine, freezes full synthetic validation, and keeps sealed-evidence execution closed pending a separate authorization.
 - [ADR-029](ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening_EN.md): freezes authorized-output provenance, mutual consistency across the 288/1,440/96 compact rows, and a real `Zstandard` canary without opening execution.
+
+- [ADR-030](ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md): freezes the one-run read-only request, immutable identities, and exact 18-file output contract while keeping authorization and execution closed.

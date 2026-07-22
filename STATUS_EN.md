@@ -13,8 +13,9 @@ retries occurred, and the compact evidence package is sealed and preserved.
 The post-collection/pre-analysis descriptive protocol is frozen, and the
 registered engine has passed full synthetic validation. Pre-execution
 hardening verified provenance, consistency across the 288/1,440/96 compact
-tables, and a real `Zstandard` frame; analysis execution and result publication
-remain unauthorized.
+tables, and a real `Zstandard` frame. The machine-readable execution request
+is now frozen, but separate authorization is absent; sealed-evidence
+execution and result publication remain unauthorized.
 
 The full Stage 3B program remains incomplete.
 
@@ -36,6 +37,8 @@ matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -69,6 +72,7 @@ decision.
 | Matched-profiling request and manifest | previous version retained; production refresh required after confirmatory B2 |
 | Matched-profiling runner | candidate-aware implementation complete |
 | Matched-profiling execution | 288/288 cells, 96/96 blocks, 0 failures; sealed evidence preserved |
+| Descriptive-analysis execution request | `v1` frozen; authorization absent and execution closed |
 | Test dataset | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -134,6 +138,8 @@ matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false

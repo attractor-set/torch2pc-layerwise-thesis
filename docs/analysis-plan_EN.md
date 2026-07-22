@@ -126,7 +126,11 @@ protocol. It binds analysis to the immutable evidence tag, retains `model_seed`
 as the independent unit, and fixes estimands, aggregation, a seven-dimensional
 Pareto rule, continuation thresholds, and `retain / conditional /
 reject_or_revise` decisions. This is a post-collection/pre-analysis freeze, not
-a preregistration made before data collection.
+a preregistration made before data collection. After implementation and hardening, a separate
+[execution request](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md)
+binds one read-only run, immutable inputs, the analysis core, one new output
+root, and the exact 18-file inventory. The request is not authorization and
+does not open result computation.
 
 ## Completeness and publication
 

@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- completed the single authorized read-only Stage 3B descriptive-analysis attempt; independently audited the exact 18-file output, preserved receipt/audit provenance, and froze an external seal as repository evidence without changing generated metadata; publication, superiority claims, `EX-IF0`, and the test split remain closed;
+
 - froze a separate machine-readable Stage 3B descriptive-analysis authorization package: one future read-only attempt, exact request/preflight/runtime bindings, and closed publication; execution is not claimed and remains closed pending merge and independent `main` verification;
 
 - froze the actual Stage 3B descriptive-analysis runtime preflight for merge commit `272a9258f70320416ff97c3da076435fd5334bc4`: canonical JSON and `SHA256SUMS` bind runtime/evidence/request identities while authorization, execution, and publication remain closed;

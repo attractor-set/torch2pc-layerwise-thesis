@@ -14,9 +14,11 @@ The post-collection/pre-analysis descriptive protocol is frozen, and the
 registered engine has passed full synthetic validation. Pre-execution
 hardening verified provenance, consistency across the 288/1,440/96 compact
 tables, and a real `Zstandard` frame. The machine-readable execution request, actual runtime preflight, and separate
-authorization are now frozen. Authorization permits one future read-only attempt,
-but sealed-evidence execution remains closed pending merge and independent `main`
-verification; result publication remains unauthorized.
+authorization are frozen. The single read-only attempt completed on the verified
+`main`; the exact 18-file output passed independent audit and is bound by an
+external seal to the receipt and audit package. The output is now frozen as
+repository evidence, while result publication, superiority claims, and `EX-IF0`
+remain unauthorized.
 
 The full Stage 3B program remains incomplete.
 
@@ -44,7 +46,11 @@ matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_results_present=false
+matched_profiling_analysis_execution_complete=true
+matched_profiling_analysis_results_present=true
+matched_profiling_analysis_output_audited=true
+matched_profiling_analysis_output_seal_frozen=true
+matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -75,7 +81,7 @@ decision.
 | Matched-profiling request and manifest | previous version retained; production refresh required after confirmatory B2 |
 | Matched-profiling runner | candidate-aware implementation complete |
 | Matched-profiling execution | 288/288 cells, 96/96 blocks, 0 failures; sealed evidence preserved |
-| Descriptive-analysis request, runtime preflight, and authorization | `v1` frozen; one read-only attempt is machine-authorized, execution closed pending independent `main` verification |
+| Matched-profiling descriptive analysis | single attempt completed; 18 files audited and externally sealed; publication remains closed |
 | Test dataset | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -132,7 +138,7 @@ summaries, 288 append-only histories, 96 untimed correctness records, the
 locality-event stream, the environment lock, and the runtime inventory. The
 test split was not accessed.
 
-After the evidence-preservation PR, the boundary remains closed:
+After the single analysis attempt, independent audit, and output-sealing PR, the publication boundary remains closed:
 
 ```text
 matched_profiling_execution_complete=true
@@ -147,7 +153,11 @@ matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_results_present=false
+matched_profiling_analysis_execution_complete=true
+matched_profiling_analysis_results_present=true
+matched_profiling_analysis_output_audited=true
+matched_profiling_analysis_output_seal_frozen=true
+matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -160,10 +170,9 @@ full_stage3b_campaign_complete=false
 The immutable tag and complete draft `stage3b-matched-profiling-evidence-v1`
 release are verified. A separate post-collection/pre-analysis protocol now
 freezes estimands, aggregation, the Pareto rule, and `retain / conditional /
-reject_or_revise` decisions. The next permitted transition is only a
-separate machine-readable execution request and authorization. Implementation,
-pre-execution hardening, and synthetic tests do not authorize sealed-evidence
-execution. The protocol and draft release do not authorize superiority claims,
+reject_or_revise` decisions. The next permitted transition is a separate publication gate for the already
+sealed 18-file output. Sealing establishes integrity and provenance but does not
+authorize publication or comparative claims. The protocol and draft release do not authorize superiority claims,
 `EX-IF0`, `A11-OFF0`, `A11-OFF1`,
 the predictor, QWake-PC, or test-split access.
 

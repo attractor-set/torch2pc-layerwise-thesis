@@ -1,0 +1,71 @@
+{
+  "analysis_output_evidence": false,
+  "analysis_output_sealed": false,
+  "audited_at_utc": "2026-07-22T15:06:23Z",
+  "authorization_digest": "5e4f570d81d373637244563afed9d1765fe0d17b3d726db9282b4104c37d83c0",
+  "authorization_id": "stage3b-matched-descriptive-analysis-execution-authorization-v1",
+  "candidate_decisions": [
+    {
+      "candidate_id": "isolated_layer_vjp",
+      "method_statuses": {
+        "fixedpred": "reject_or_revise",
+        "strict": "reject_or_revise"
+      },
+      "status": "reject_or_revise"
+    },
+    {
+      "candidate_id": "composite_vjp",
+      "method_statuses": {
+        "fixedpred": "reject_or_revise",
+        "strict": "reject_or_revise"
+      },
+      "status": "reject_or_revise"
+    }
+  ],
+  "execution_receipt_sha256": "997569220aa89261e0d375a70597bb8325186f1739a7977e3a211fce1ffcf8b2",
+  "output_file_count": 18,
+  "output_root": "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1",
+  "output_sha256": {
+    "REPORT.md": "f609c78e234d4d405376f8e96e387e23010983c707b5c8c3ef31d3f84cff8b45",
+    "REPORT_EN.md": "e7df3f270efc7ae415a0f1c37b3006bd1bdd4b492f39e23ddf97a078044d8167",
+    "SHA256SUMS": "8baa1b55c21ed2b00bd849bbbe4f415d8b5f86d70bd9989d4ec4917765ead1da",
+    "analysis_metadata.json": "e2e81f00c1e6d21e9740ecf5c9d2389bdd31e1fd7929f5b6bda4b49ccada3a8b",
+    "analysis_summary.json": "4f02d8f0297e3ced79110487d6837308f2da2de704083ce2be73f01c43a28f3a",
+    "candidate_method_summary.csv": "023fdde739acb1c5e89809b608d38b23238a903f675fbb705f791b007ca8f17c",
+    "configuration_summary.csv": "bfa6ff59c316bed297431cd7eb5099fe221a858e7254c9028d198bde6c7fe283",
+    "device_time_ratio_heatmap.pdf": "ca502c279717b6ddfd0769994427f1cbc9e8cc10cf655dfa850c8b4c1f674dc6",
+    "engineering_decision.json": "3ccd65cf86dbb26a306bcd97bba60bf9851fd7d4f20af3340d6795fb19ea3199",
+    "locality_cell_summary.csv": "2f4a896598f3931af8f4befea3cf234d05eb032d93f5ca5bf8ee102ea6a36a7b",
+    "paired_block_metrics.csv": "b236ed1a52b6bc7de9a2b5d1a6bad14ff0d957075b90de9da7d7200db0028959",
+    "pareto_membership.csv": "e79d85cb943a85398ed9015fc648c37a839c8510fed9835cfec6f401c3a6c63b",
+    "pareto_membership.pdf": "b1353e9123d38bdd34f9975d2eb23481cb90a4b39f1d354d65ca1fc56eb277a7",
+    "peak_memory_ratio_heatmap.pdf": "c99d6b188bdfd9efb6d7e52891c1f2f5719dc35a0cdafc0999e963e39adea4a4",
+    "scaling_effects.pdf": "f2db25e88c8105b93d32ecf1fd9cfd091279d83ef954df088a57ee97f39017e8",
+    "scaling_seed_effects.csv": "d51db4c643462fc231cd2943bb8aa1ea59f345c7e1dcf15fb24a3923ec47f755",
+    "seed_consistency.pdf": "ec4ce4ce0542f8c1f2431ebedb177d336166f2bdb2cb9a3c5b19a7da6500b7e2",
+    "structural_cost_ratio_heatmap.pdf": "2edc13d97187048b9cbd53e2c9440a51941fb24451580fb21e0b516f53a8e5c2"
+  },
+  "project_commit": "72b95a284e8747a33b8c34d5929d4110aa4bfea1",
+  "release_publication_permitted": false,
+  "request_digest": "5c813e101c17210443b63b6499c7c6fed88fe34029f438942b71ad9faf127a2e",
+  "request_id": "stage3b-matched-descriptive-analysis-execution-request-v1",
+  "results_publication_permitted": false,
+  "runtime_identity_digest": "e71f0f8539231e466291843e919b412d44ec6022e4dce863785142b67abe007d",
+  "runtime_preflight_digest": "428c9a7fdc1baf2b86a033a12189b9b98cce4e41dbb6e87cb73d42f4e9e901cc",
+  "runtime_preflight_id": "stage3b-matched-descriptive-analysis-runtime-preflight-v1",
+  "schema_version": 1,
+  "source_sha256_after_execution": {
+    "SEALED-SHA256SUMS": "98ba77a375e4cfb2931b0490d642f7861834dfa30981f28e8a305a49765764c8",
+    "SHA256SUMS": "ea9b5facec9605b9af89a69a6ccc5e49a3790c25e6fd9c768bf4fe760114411d",
+    "analysis_metadata.json": "b60b3fd8b24c9c847fac3826131a0ab5b50987c04835841573d9351b8e43f605",
+    "locality_events.asset.json": "348e578d4334737d676b0da41ac42f001943653e973dff5183ceb5e7d23519c1",
+    "locality_events.jsonl.zst": "59a1479d66f170970b4d0f2b0712b8a825ccca01eab677c887a9046fc4c16f76",
+    "profiling_cells.csv": "91f5bf665778f2edefbcdcfa9572df771b1288274e902123e303b59c71733373",
+    "profiling_repetitions.csv": "788a16e66d62a8ddba52a200fc19014eab18312cc71fae652d760033161bff27",
+    "profiling_summary.csv": "92ba5ae6b3cbba256f54ffccaf44ab21fc8c294442a9a25366d0b7ae0aa1c4c7",
+    "seal.json": "83691730d46599a7a4d1ffd8ee0e2b9ee82c13771892b21c8c986d9a700e60f3"
+  },
+  "status": "independent_audit_passed_output_unsealed",
+  "superiority_claim_permitted": false,
+  "test_dataset_access": false
+}

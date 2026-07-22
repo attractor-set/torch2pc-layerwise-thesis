@@ -1,0 +1,12 @@
+{
+  "attempt_claimed_before_computation": true,
+  "authorization_digest": "5e4f570d81d373637244563afed9d1765fe0d17b3d726db9282b4104c37d83c0",
+  "authorization_id": "stage3b-matched-descriptive-analysis-execution-authorization-v1",
+  "generated_at_utc": "2026-07-22T12:38:33Z",
+  "output_root": "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1",
+  "request_digest": "5c813e101c17210443b63b6499c7c6fed88fe34029f438942b71ad9faf127a2e",
+  "request_id": "stage3b-matched-descriptive-analysis-execution-request-v1",
+  "results_publication_permitted": false,
+  "schema_version": 1,
+  "status": "single_execution_attempt_claimed"
+}

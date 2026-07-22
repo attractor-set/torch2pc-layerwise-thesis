@@ -1,0 +1,62 @@
+{
+  "aggregation_order": [
+    "measured_steps_to_repetition",
+    "repetitions_to_cell",
+    "candidate_to_baseline_within_matched_block",
+    "model_seeds_within_configuration",
+    "configurations_within_candidate_method"
+  ],
+  "analysis_execution_authorized": true,
+  "analysis_output_evidence": false,
+  "candidate_method_row_count": 4,
+  "configuration_row_count": 64,
+  "ex_if0_opened": false,
+  "generated_at_utc": "2026-07-22T12:38:33Z",
+  "independent_unit": "model_seed",
+  "input_sha256": {
+    "locality_events.jsonl.zst": "59a1479d66f170970b4d0f2b0712b8a825ccca01eab677c887a9046fc4c16f76",
+    "profiling_cells.csv": "91f5bf665778f2edefbcdcfa9572df771b1288274e902123e303b59c71733373",
+    "profiling_repetitions.csv": "788a16e66d62a8ddba52a200fc19014eab18312cc71fae652d760033161bff27",
+    "profiling_summary.csv": "92ba5ae6b3cbba256f54ffccaf44ab21fc8c294442a9a25366d0b7ae0aa1c4c7"
+  },
+  "locality_row_count": 288,
+  "matched_block_count": 96,
+  "matched_cell_count": 288,
+  "model_seed_count": 3,
+  "paired_row_count": 192,
+  "pareto_row_count": 96,
+  "policy_activation_permitted": false,
+  "release_publication_permitted": false,
+  "repetition_count": 1440,
+  "results_publication_permitted": false,
+  "scaling_row_count": 84,
+  "schema_version": 2,
+  "scope": "stage3b_matched_descriptive_analysis_v1",
+  "source_evidence_read_only": true,
+  "source_identity": {
+    "authorization_digest": "5e4f570d81d373637244563afed9d1765fe0d17b3d726db9282b4104c37d83c0",
+    "authorization_id": "stage3b-matched-descriptive-analysis-execution-authorization-v1",
+    "release_commit": "21ddfb8840674871f0b9d888b36397f5cf0e111b",
+    "release_tag": "stage3b-matched-profiling-evidence-v1",
+    "request_digest": "5c813e101c17210443b63b6499c7c6fed88fe34029f438942b71ad9faf127a2e",
+    "request_id": "stage3b-matched-descriptive-analysis-execution-request-v1",
+    "runtime_identity_digest": "e71f0f8539231e466291843e919b412d44ec6022e4dce863785142b67abe007d",
+    "runtime_preflight_digest": "428c9a7fdc1baf2b86a033a12189b9b98cce4e41dbb6e87cb73d42f4e9e901cc",
+    "runtime_preflight_id": "stage3b-matched-descriptive-analysis-runtime-preflight-v1",
+    "verified_source_sha256": {
+      "SEALED-SHA256SUMS": "98ba77a375e4cfb2931b0490d642f7861834dfa30981f28e8a305a49765764c8",
+      "SHA256SUMS": "ea9b5facec9605b9af89a69a6ccc5e49a3790c25e6fd9c768bf4fe760114411d",
+      "analysis_metadata.json": "b60b3fd8b24c9c847fac3826131a0ab5b50987c04835841573d9351b8e43f605",
+      "locality_events.asset.json": "348e578d4334737d676b0da41ac42f001943653e973dff5183ceb5e7d23519c1",
+      "locality_events.jsonl.zst": "59a1479d66f170970b4d0f2b0712b8a825ccca01eab677c887a9046fc4c16f76",
+      "profiling_cells.csv": "91f5bf665778f2edefbcdcfa9572df771b1288274e902123e303b59c71733373",
+      "profiling_repetitions.csv": "788a16e66d62a8ddba52a200fc19014eab18312cc71fae652d760033161bff27",
+      "profiling_summary.csv": "92ba5ae6b3cbba256f54ffccaf44ab21fc8c294442a9a25366d0b7ae0aa1c4c7",
+      "seal.json": "83691730d46599a7a4d1ffd8ee0e2b9ee82c13771892b21c8c986d9a700e60f3"
+    }
+  },
+  "source_kind": "sealed_evidence",
+  "status": "generated_unsealed_authorized_analysis_output",
+  "superiority_claim_permitted": false,
+  "test_dataset_access": false
+}

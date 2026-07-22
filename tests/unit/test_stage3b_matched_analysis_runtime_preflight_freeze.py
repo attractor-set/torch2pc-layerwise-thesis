@@ -88,7 +88,10 @@ def test_frozen_runtime_preflight_binds_sealed_source_and_output_contract() -> N
     assert len(names) == 18
     assert len(set(names)) == 18
     assert output["root_absent"] is True
-    assert not (ROOT / output["root"]).exists()
+    assert output["root"] == (
+        "results/stage-3/analysis/matched/"
+        "stage3b-matched-descriptive-analysis-70d6c3c-v1"
+    )
 
 
 def test_frozen_runtime_preflight_keeps_execution_closed() -> None:

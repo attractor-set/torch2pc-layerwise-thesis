@@ -90,6 +90,10 @@
 - [Зафиксированный runtime preflight](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-runtime-preflight-v1)
 - [Execution authorization описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION.md)
 - [Зафиксированный execution authorization package](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-execution-authorization-v1)
+- [Фиксация выхода описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL.md)
+- [Audit package выхода описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-output-audit-v1)
+- [Seal package выхода описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-output-seal-v1)
+- [Запечатанный 18-файловый выход описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1)
 - [Запечатанные доказательные материалы сопоставленного профилирования](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1)
 
 ### Научные и архитектурные решения

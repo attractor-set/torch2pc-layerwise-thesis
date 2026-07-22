@@ -48,28 +48,33 @@ The order is not changed post hoc:
 Later benefit cannot compensate for an earlier failure. A result of `0`
 admissible finalists is a valid scientific result.
 
-## Future controller hierarchy
+## Recursive future-controller hierarchy
+
+The future controller operates over a nested aggregate family:
 
 ```text
-stop
-→ local_sweep(block_id)  # ECZ-targeted local sweep
-→ full_exact             # full exact sweep
-→ fallback_exact
+stop                      = empty aggregate
+local_sweep(block_id)     = partial aggregate
+full_exact                = maximum parent aggregate
+fallback_exact            = exact uncertified parent
 ```
 
-Before the shadow gate, this hierarchy is only a set of proposals and
-counterfactual actions; `controls_execution=false`.
+No separate `GLOBAL` policy action is introduced. Until shadow admission, the
+aggregates remain proposals and counterfactual actions only;
+`controls_execution=false`.
 
 ## Multiscale and PhD boundary
 
 The [multiscale mechanism–decision architecture](glossary_EN.md#term-multiscale-mechanism-decision-architecture)
-is not retrofitted into B1/B2 and does not change the current post-`EX-IF0`
-sequence. A possible block/layer pilot requires a separate exploratory contract.
+is not retrofitted into B1/B2. After the publication gate and `EX-IF0`, the
+central oracle object becomes the
+[minimum sufficient compute aggregate](glossary_EN.md#term-minimum-sufficient-compute-aggregate),
+tested at a minimum on the layer-within-block and block-within-network scales.
 
-The [spike-like control dynamics](glossary_EN.md#term-spike-like-control-dynamics)
-of [QWake-PC](glossary_EN.md#term-qwake-pc) preserve non-spiking states and errors. `QWake-SPC`, spike-native
-communication, and learning remain outside the current study and are not
-conditions of `A-Core` or `A-Max`.
+[Spike-like control dynamics](glossary_EN.md#term-spike-like-control-dynamics)
+is off the critical path. The work first measures chattering and tests basic
+hysteresis. `QWake-SPC`, spike-native communication, and learning remain
+outside the current work.
 
 ## Test split and A-Max
 

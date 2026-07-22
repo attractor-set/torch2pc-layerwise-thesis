@@ -106,19 +106,34 @@ Remaining Stage 16 transition:
 Publication, superiority claims, and `EX-IF0` remain prohibited before that
 gate. Negative and mixed results must be retained.
 
-## Stage 17 — `EX-IF0`, passive diagnostics, and `A11-OFF0`
+## Stage 17 — `EX-IF0` and the recursive-aggregate oracle boundary
 
-Only after matched profiling is complete and sealed, select and freeze the
-admissible exact implementation before label creation. Then collect passive
-PC-CATM representations and branch an identical `snapshot` into policy-neutral
-`stop`, `native_one`, and `exact_one` outcomes. Exact reference creates oracle
-skip regret, oracle margin $M^*$, and the one-step sufficiency boundary;
-pre-action features remain separate and receive no permission to control
-execution. Utility, decision regret, temporal history, feature cost,
-transitions, and provenance are also retained. The independent unit remains
-`model_seed`; the test dataset remains closed.
+Only after the publication gate, select and freeze B0 as the admissible exact
+implementation through `EX-IF0`. Freeze the aggregate hierarchy and
+counterfactual contract before label creation.
 
-## Stage 18 — `A11-OFF1`, predictor, exact verification, and shadow `QWake-PC`
+The initial temporal baseline `A11-OFF0` retains policy-neutral `stop`, `native_one`, and
+`exact_one` branches. Identical snapshots then test preregistered nested
+aggregates at a minimum of two scales: layers within a block and blocks within
+the network. Every candidate records exact-reference regret, oracle margin
+`M^*`, the complete cost vector, and provenance.
+
+Stage decisions are:
+
+- `E2`: existence of a cheaper sufficient partial aggregate;
+- `E3`: state dependence of the oracle-optimal aggregate;
+- `E5`: reuse of one normative semantics at two scales;
+- `H0`: occupancy near the sufficiency boundary;
+- `P0`: diagnostic opportunity without pre-action leakage.
+
+A learned estimator, temperature, hysteresis, and `QWake-PC` do not control execution at
+this stage. The independent unit is `model_seed`; the test split remains
+closed.
+
+## Stage 18 — `A11-OFF1`, margin estimator, predictor, and shadow recursive `QWake-PC`
+
+This stage opens only after informative `E2/E3/P0` decisions. If `E3` fails, a
+static aggregate replaces adaptive control.
 
 - run offline screening of nested representations, boundary estimators,
   first-order horizons, features, and thresholds by regret, dangerous misses,

@@ -178,6 +178,18 @@ release не разрешают утверждения о
 превосходстве, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, predictor, QWake-PC или test
 split.
 
+ADR-035 дополнительно фиксирует только post-publication исследовательское
+направление: oracle-поиск минимального достаточного вычислительного агрегата на
+двух масштабах. Эта фиксация не открывает `EX-IF0` или выполнение; spike-like
+динамика не входит в критический путь.
+
+```text
+recursive_sufficiency_direction_frozen=true
+recursive_aggregate_execution_open=false
+global_policy_action=false
+spike_like_on_critical_path=false
+```
+
 ## Происхождение
 
 | Артефакт | Идентификатор |

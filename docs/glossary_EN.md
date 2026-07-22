@@ -731,6 +731,14 @@ concepts are split or merged, and record the change in the changelog.
 - **Project meaning:** A compositional architecture in which PC-CATM describes a mechanism at a selected scale, PC-TREF tests decision sufficiency, and QWake-PC selects scale, action, and budget.
 - **Usage rule:** The term does not imply exact self-similarity or scale invariance; norms, aggregation, actions, regret, and cost are defined separately for every scale.
 
+
+<a id="term-minimum-sufficient-compute-aggregate"></a>
+### TERM-MINIMUM-SUFFICIENT-COMPUTE-AGGREGATE — minimum sufficient compute aggregate
+
+- **Russian equivalent:** минимальный достаточный вычислительный агрегат.
+- **Project meaning:** The minimum-cost member of a preregistered compute-aggregate family whose task-relative exact-reference regret remains within the sufficiency tolerance.
+- **Usage rule:** The term does not claim a global minimum over every subset; the aggregate family, exact reference, tolerance, Pareto rule, and tie-break are frozen before confirmatory results.
+
 <a id="term-correction-composition-defect"></a>
 ### TERM-CORRECTION-COMPOSITION-DEFECT — correction-composition defect
 

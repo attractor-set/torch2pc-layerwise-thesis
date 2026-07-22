@@ -51,3 +51,5 @@
 - [ADR-032](ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md): freezes the actual runtime preflight for merge commit `272a9258…` while keeping authorization, execution, and publication closed.
 - [ADR-033](ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md): freezes one prospective read-only authorization, binds request/preflight/runtime identities, and keeps execution pending a merged-main opening gate and publication pending a separate decision.
 - [ADR-034](ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md): preserves the exact 18-file output, receipt, and independent audit; binds them through an external seal without changing generated metadata; and keeps publication, superiority, and test boundaries closed.
+
+- [ADR-035](ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md): freezes the [minimum sufficient compute aggregate](../glossary_EN.md#term-minimum-sufficient-compute-aggregate) as the central post-B1/B2 object, recursive two-scale semantics, and the conditional role of spike-like stabilization without execution permission.

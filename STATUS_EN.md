@@ -176,6 +176,18 @@ authorize publication or comparative claims. The protocol and draft release do n
 `EX-IF0`, `A11-OFF0`, `A11-OFF1`,
 the predictor, QWake-PC, or test-split access.
 
+ADR-035 additionally freezes only the post-publication research direction:
+oracle search for a minimum sufficient compute aggregate at two scales. This
+freeze does not open `EX-IF0` or execution; spike-like dynamics is off the
+critical path.
+
+```text
+recursive_sufficiency_direction_frozen=true
+recursive_aggregate_execution_open=false
+global_policy_action=false
+spike_like_on_critical_path=false
+```
+
 ## Provenance
 
 | Artifact | Identifier |

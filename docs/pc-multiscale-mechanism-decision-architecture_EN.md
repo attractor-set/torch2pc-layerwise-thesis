@@ -5,11 +5,12 @@
 ## 1. Status and boundary
 
 The [multiscale mechanism–decision architecture](glossary_EN.md#term-multiscale-mechanism-decision-architecture)
-connects `PC-CATM`, `PC-TREF`, and `QWake-PC` in one compositional schema. This
-is a theoretical and design-level extension. It does not permit
-[execution](glossary_EN.md#term-execution), modify frozen B1/B2 contracts, open
-the test split, or make a multiscale controller a mandatory condition of
-`A-Core`.
+connects `PC-CATM`, `PC-TREF`, and `QWake-PC` in one compositional schema. It is
+the theoretical and design basis for the central post-B1/B2 direction frozen
+by ADR-035. It does not permit [execution](glossary_EN.md#term-execution),
+modify frozen B1/B2 contracts, or open the test split. Testing existence of
+minimum sufficient aggregates at a minimum of two scales becomes the required
+research object; an active multiscale controller remains conditional.
 
 The current study preserves continuous states and errors in the base PC
 network. Spike-like properties apply only to the organization of thresholded,
@@ -147,38 +148,34 @@ ECZ_s \Rightarrow ECZ_t,
 
 nor may a local permission to stop be transferred to the complete network.
 
-## 6. QWake-PC policy over scale, action, and budget
+## 6. Recursive compute-aggregate selection
 
-The controller selection object is `scale, action, budget`.
+The previous `scale, action, budget` tuple remains only as a compatibility interface; the normative object is now an aggregate.
 
-`QWake-PC` consumes the available representations
-
-```math
-\Phi_t=\{\phi_s(x_{s,t},h_{s,t}):s\in S_t\}
-```
-
-and proposes
+Every parent `R` receives a preregistered nested family:
 
 ```math
-\pi_Q:(\Phi_t,H_t)\rightarrow(s_t,a_t,k_t),
+B_0=\varnothing\subset B_1\subset\cdots\subset B_K=R.
 ```
 
-where $s_t$ is the action scale, $a_t\in\mathcal A_{s_t}$ is the action, and
-$k_t$ is the computational budget.
+[QWake-PC](glossary_EN.md#term-qwake-pc) searches for the minimum sufficient
+aggregate:
 
-Design-level action examples are:
-
-```text
-stop
-local_sweep(block_id)
-layer_sweep(layer_id)
-full_exact
-fallback_exact
+```math
+B_R^*(x)=
+\arg\min_{B\in\mathcal B_R:\,M_R^*(B;x)\geq0}\mathbf C_R(B).
 ```
 
-Membership in the design action space does not constitute admission. An
-action–budget pair is admissible only after positive coverage, sufficiency,
-exact counterfactual verification, regret, safety, and complete-cost gates.
+The empty aggregate skips computation, an intermediate aggregate is a partial
+sweep, and the maximum aggregate is the parent's full exact computation.
+`GLOBAL` is therefore not a separate policy action. The design labels `stop`,
+`local_sweep(block_id)`, `layer_sweep(layer_id)`, `full_exact`, and
+`fallback_exact` remain compatibility names for aggregate elements and the
+emergency transition.
+
+The same normative contract is applied at a minimum of two scales, while
+numerical norms, thresholds, and costs remain scale-specific. Child estimates
+propose an aggregate; the parent separately validates joint sufficiency.
 
 ## 7. Conservative escalation
 
@@ -202,22 +199,18 @@ Formally, escalation is required when
 Insufficient local information must lead to more complete computation rather
 than more aggressive reduction.
 
-## 8. Spike-like boundary of the current study
+## 8. Temperature, hysteresis, and conditional spike-like boundary
 
+Temperature is admitted as a transform of a conservative estimate of the
+margin to a task-relative sufficiency boundary. It remains a continuous
+diagnostic variable and is not an independent training label.
+
+Hysteresis may stabilize switching between neighboring aggregates.
 [Spike-like control dynamics](glossary_EN.md#term-spike-like-control-dynamics)
-may include diagnostic accumulation, a wake threshold, hysteresis, persistence,
-a discrete budget, and a post-event quiet interval. It makes computation
-event-driven and sparse but does not change the type of the base state and error
-dynamics.
-
-The canonical boundary of the current study is:
-
-> The multiscale [QWake-PC](glossary_EN.md#term-qwake-pc) architecture moves predictive-coding inference toward
-> spike-like event-driven computation by introducing thresholded, temporally
-> sparse, and scale-selective correction events, while leaving the underlying
-> state and error dynamics non-spiking.
-
-The current system is therefore not classified as a spiking neural network.
+with accumulation, reset, a refractory period, or burst analysis is off the
+critical path and is admitted only after measured chattering that basic
+hysteresis does not remove. The base PC network retains non-spiking states and
+errors.
 
 ## 9. Prospective QWake-SPC boundary
 
@@ -238,15 +231,21 @@ where $\tau_t$ is a temporal window and $Z_t$ contains native spike events.
 denote an implemented controller, permit an experiment, or become a completion
 condition for `A-Min`, `A-Core`, or `A-Max`.
 
-## 10. Effect on the current plan
+## 10. Impact on the current plan
 
-The critical path remains unchanged:
+The critical path is refined as follows:
 
 ```text
 B1/B2
 → matched profiling
+→ publication gate
 → EX-IF0
 → passive PC-CATM
+→ freeze aggregate hierarchy and oracle contract
+→ E2 existence
+→ E3 state dependence
+→ E5 two-scale semantics
+→ P0 diagnostic opportunity
 → offline screening
 → predictor
 → exact verification
@@ -254,12 +253,9 @@ B1/B2
 → conditional active control
 ```
 
-Within the master's thesis, the multiscale architecture serves as:
-
-1. a theoretical organization of the existing mechanism and decision levels;
-2. a language for a possible block, layer, and network comparison;
-3. a limited exploratory pilot only when already permitted data suffice;
-4. a foundation for a future PhD program rather than a new mandatory experiment.
+The mandatory master's-thesis core tests the oracle object at a minimum of two
+scales. Active control, temperature, and spike-like stabilization remain
+conditional and do not compensate for a negative existence result.
 
 ## 11. Architectural invariants
 

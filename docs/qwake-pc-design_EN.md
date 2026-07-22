@@ -66,44 +66,38 @@ decision. A negative result for one concrete controller does not invalidate
 PC-CATM or PC-TREF.
 
 
-## Multiscale extension and spike-like boundary
+## Recursive multiscale semantics
 
-In the prospective
-[multiscale mechanism–decision architecture](glossary_EN.md#term-multiscale-mechanism-decision-architecture),
-a QWake policy may select the triple
+The frozen direction uses one operator over a parent region `R` and a nested
+aggregate family
 
 ```math
-(scale, action, budget).
+B_0=\varnothing\subset B_1\subset\cdots\subset B_K=R.
 ```
 
-Norms, aggregation, admissible actions, regret, and cost remain separate at
-every scale. Insufficient local diagnostics trigger
-[adaptive escalation](glossary_EN.md#term-adaptive-escalation) toward a more
-complete exact path.
-
-The current [QWake-PC](glossary_EN.md#term-qwake-pc) may exhibit
-[spike-like control dynamics](glossary_EN.md#term-spike-like-control-dynamics):
-thresholded and sparse correction events, hysteresis, persistence, and a
-discrete budget. The base states and errors remain non-spiking.
-
-[`QWake-SPC`](glossary_EN.md#term-qwake-spc) is reserved for a possible PhD line
-in which events become native spikes. It is not part of the current execution
-plan and does not change the `A-Core` completion boundary.
-
-## Action hierarchy
-
-The future controller considers an ordered ladder:
+`QWake-PC` searches for the
+[minimum sufficient compute aggregate](glossary_EN.md#term-minimum-sufficient-compute-aggregate)
+rather than selecting an independent `GLOBAL` category. The previous design
+labels retain the following compatibility interpretation:
 
 ```text
-stop
-→ local_sweep(block_id)  # ECZ-targeted local sweep
-→ full_exact             # full exact sweep
-→ fallback_exact
+stop                      = B_0
+local_sweep(block_id)     = 0 < B_k < R
+full_exact                = B_K = R
+fallback_exact            = exact current uncertified parent
 ```
 
-`fallback_exact` is an emergency safety action rather than a savings
-[candidate](glossary_EN.md#term-candidate). The controller is not required to select a local sweep: under
-insufficient evidence it escalates to a full exact sweep.
+Norms, thresholds, and cost remain scale-specific, while the exact-reference
+relation, sufficiency margin, aggregate order, and fail-closed escalation use
+one normative semantics. Local proposals do not compose automatically: the
+parent validates joint sufficiency.
+
+Temperature may only be an interpretable transform of a conservative
+sufficiency-margin estimate.
+[Spike-like control dynamics](glossary_EN.md#term-spike-like-control-dynamics)
+is off the critical path and is admitted for measured chattering only when
+basic hysteresis is insufficient. Base states and errors remain non-spiking;
+[`QWake-SPC`](glossary_EN.md#term-qwake-spc) remains a future PhD line.
 
 ## Inputs and state boundaries
 
@@ -124,7 +118,7 @@ across counterfactual branches.
 ## Admission sequence
 
 1. positive `EQ-B1` and `EQ-B2`;
-2. matched exact-candidate [profiling](glossary_EN.md#term-profiling);
+2. matched exact-[candidate](glossary_EN.md#term-candidate) [profiling](glossary_EN.md#term-profiling);
 3. `EX-IF0`;
 4. policy-neutral trace and oracle-label collection;
 5. passive boundary-estimator evaluation without pre-action leakage;
@@ -141,7 +135,7 @@ No later gate compensates for failure of an earlier safety gate.
 
 ## Shadow contract
 
-Shadow output records the proposal, uncertainty, candidate block, expected
+Shadow output records the proposal, uncertainty, [candidate](glossary_EN.md#term-candidate) block, expected
 utility/regret, complete cost, and `fallback_exact` reason.
 `controls_execution=false`; the actual trajectory remains canonical.
 

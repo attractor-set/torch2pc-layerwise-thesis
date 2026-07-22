@@ -130,7 +130,7 @@ same restored state
 который связывает один `read-only` [запуск](glossary.md#term-run),
 неизменяемые входы, `analysis core`, единственный новый `output root` и
 точный набор из 18 файлов. `Request` не является `authorization` и не
-открывает вычисление результатов. Реализованный [`runtime-preflight` контур](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT.md) проверяет только идентичности и структурную целостность; фактическая `runtime-preflight` проверка зафиксирована отдельно, а `authorization` остаётся будущим отдельным решением.
+открывает вычисление результатов. Реализованный [`runtime-preflight` контур](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT.md) проверяет только идентичности и структурную целостность; фактическая `runtime-preflight` проверка и отдельная [`authorization`](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION.md) зафиксированы. `Authorization` разрешает одну будущую `read-only` попытку, но не утверждает [выполнение](glossary.md#term-execution) и не открывает публикацию.
 
 ## Полнота и публикация
 

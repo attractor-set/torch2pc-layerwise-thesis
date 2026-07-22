@@ -92,8 +92,9 @@
   вычислительное ядро реализовано, прошло полную синтетическую проверку и
   pre-execution hardening происхождения, compact consistency и настоящего
   `Zstandard` кадра. Execution request `v1` зафиксирован и связан с точными
-идентичностями входов, protocol/core, одним output root и 18 файлами;
-authorization отсутствует, поэтому выполнение остаётся закрытым.
+идентичностями входов, protocol/core, одним output root и 18 файлами.
+Отдельная authorization зафиксирована для одной будущей read-only попытки, но
+execution остаётся закрытым до слияния и независимой проверки `main`.
 
 Текущая граница:
 
@@ -107,7 +108,7 @@ matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
 matched_profiling_analysis_runtime_preflight_implementation=complete
 matched_profiling_analysis_runtime_preflight_frozen=true
-matched_profiling_analysis_execution_authorization_present=false
+matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -119,7 +120,7 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-Фактический runtime preflight зафиксирован отдельно и связан с merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. Следующий незавершённый шаг — отдельная машиночитаемая authorization для уже зафиксированных execution request и runtime preflight. Реализация и синтетические проверки сами по себе не открывают анализ. Фиксация протокола не разрешает сравнительных
+Фактический runtime preflight зафиксирован отдельно и связан с merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. Машиночитаемая authorization теперь зафиксирована и связывает execution request, runtime preflight и runtime identity; она разрешает ровно одну будущую read-only попытку, но не утверждает её выполнение. До слияния и независимой проверки `main` execution остаётся закрытым. Фиксация протокола не разрешает сравнительных
 выводов и не открывает `EX-IF0`, пассивную диагностику, предиктор, `QWake-PC`
 или тестовую выборку.
 
@@ -280,7 +281,7 @@ matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
 matched_profiling_analysis_runtime_preflight_implementation=complete
 matched_profiling_analysis_runtime_preflight_frozen=true
-matched_profiling_analysis_execution_authorization_present=false
+matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false

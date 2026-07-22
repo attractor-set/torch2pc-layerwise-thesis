@@ -91,8 +91,9 @@ The following work is complete in the pinned Ubuntu/ROCm environment:
   computational engine is implemented, passed full synthetic validation, and
   completed pre-execution hardening for provenance, compact consistency, and a
   real `Zstandard` frame. Execution request `v1` is frozen and binds exact
-input, protocol/core, one output-root, and 18-file identities; authorization
-is absent, so sealed execution remains closed.
+input, protocol/core, one output-root, and 18-file identities. A separate
+authorization is frozen for one future read-only attempt, while execution remains
+closed pending merge and independent `main` verification.
 
 The current boundary is:
 
@@ -106,7 +107,7 @@ matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
 matched_profiling_analysis_runtime_preflight_implementation=complete
 matched_profiling_analysis_runtime_preflight_frozen=true
-matched_profiling_analysis_execution_authorization_present=false
+matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -118,7 +119,7 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-The actual runtime preflight is frozen separately and bound to merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. The next incomplete step is a separate machine-readable authorization for the already frozen execution request and runtime preflight. Implementation and synthetic validation do not open analysis by themselves. The protocol freeze does not authorize
+The actual runtime preflight is frozen separately and bound to merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. A machine-readable authorization is now frozen and binds the execution request, runtime preflight, and runtime identity; it permits exactly one future read-only attempt without claiming that execution occurred. Execution remains closed pending merge and independent `main` verification. The protocol freeze does not authorize
 comparative conclusions or open `EX-IF0`, passive diagnostics, the predictor,
 `QWake-PC`, or the test split.
 
@@ -276,7 +277,7 @@ matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
 matched_profiling_analysis_runtime_preflight_implementation=complete
 matched_profiling_analysis_runtime_preflight_frozen=true
-matched_profiling_analysis_execution_authorization_present=false
+matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false

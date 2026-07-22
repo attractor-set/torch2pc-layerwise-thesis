@@ -44,7 +44,7 @@ Stage 3B B0 и статистический и инженерный анализ
 `block`/`chunk` не входят в этот контракт и требуют отдельной предварительной
 регистрации.
 
-## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — execution request зафиксирован, authorization закрыта
+## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — анализ выполнен и запечатан, публикация закрыта
 
 Завершено:
 
@@ -79,7 +79,11 @@ matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_results_present=false
+matched_profiling_analysis_execution_complete=true
+matched_profiling_analysis_results_present=true
+matched_profiling_analysis_output_audited=true
+matched_profiling_analysis_output_seal_frozen=true
+matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -95,20 +99,18 @@ authorization и dry-run прошли. Все 288 ячеек и 96 matched block
 failures и retries, runtime validation прошла, а compact evidence package
 запечатан и перенесён в репозиторий.
 
-Execution request `v1` зафиксирован под ADR-030 и связан с immutable evidence,
-frozen protocol, hardening commit, одним новым output root и точным inventory
-из 18 файлов. Он не является допуском.
+Execution request `v1`, runtime preflight и authorization были зафиксированы до
+вычисления. Единственная read-only попытка завершена на проверенном `main`;
+18-файловый output, receipt и независимый audit сохранены без повторного запуска.
+Внешний seal связывает эти артефакты и переводит output в repository evidence,
+не изменяя generated metadata.
 
 Оставшийся переход внутри этапа 16:
 
-1. отдельная машиночитаемая authorization, связанная с уже зафиксированными execution request и runtime preflight;
-2. однократный read-only paired analysis B0/B1/B2, sealing анализа и
-   формальное решение `retain / conditional / reject_or_revise`;
-3. отдельный publication gate для чернового релиза.
+1. отдельный publication gate для запечатанного output и чернового релиза.
 
-До analysis authorization запрещены вычисление сравнительных результатов,
-публикация и переход к `EX-IF0`. Отрицательные и смешанные результаты
-сохраняются.
+До publication gate запрещены публикация, утверждения о превосходстве и переход
+к `EX-IF0`. Отрицательные и смешанные результаты сохраняются.
 
 ## Этап 17 — `EX-IF0`, пассивная диагностика и `A11-OFF0`
 

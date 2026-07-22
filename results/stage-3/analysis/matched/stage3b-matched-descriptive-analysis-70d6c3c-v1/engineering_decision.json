@@ -1,0 +1,30 @@
+{
+  "baseline_role": "mandatory_fallback_not_classified",
+  "candidate_decisions": [
+    {
+      "candidate_id": "isolated_layer_vjp",
+      "method_statuses": {
+        "fixedpred": "reject_or_revise",
+        "strict": "reject_or_revise"
+      },
+      "status": "reject_or_revise"
+    },
+    {
+      "candidate_id": "composite_vjp",
+      "method_statuses": {
+        "fixedpred": "reject_or_revise",
+        "strict": "reject_or_revise"
+      },
+      "status": "reject_or_revise"
+    }
+  ],
+  "decision_scope": "engineering_continuation_not_superiority",
+  "ex_if0_opened": false,
+  "policy_activation_permitted": false,
+  "release_publication_permitted": false,
+  "results_publication_permitted": false,
+  "schema_version": 2,
+  "scope": "stage3b_matched_engineering_continuation_v1",
+  "superiority_claim_permitted": false,
+  "test_dataset_access": false
+}

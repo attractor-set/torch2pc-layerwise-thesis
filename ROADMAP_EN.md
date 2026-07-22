@@ -43,7 +43,7 @@ B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and
 `block`/`chunk` variants are outside this contract and require separate
 preregistration.
 
-## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — execution request frozen, authorization closed
+## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — analysis executed and sealed, publication closed
 
 Complete:
 
@@ -79,7 +79,11 @@ matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_results_present=false
+matched_profiling_analysis_execution_complete=true
+matched_profiling_analysis_results_present=true
+matched_profiling_analysis_output_audited=true
+matched_profiling_analysis_output_seal_frozen=true
+matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -89,24 +93,18 @@ release_publication_permitted=false
 full_stage3b_campaign_complete=false
 ```
 
-Execution request `v1` is frozen under ADR-030 and binds the immutable
-evidence, frozen protocol, hardening commit, one new output root, and exact
-18-file inventory. It is not an admission.
+Execution request `v1`, runtime preflight, and authorization were frozen before
+computation. The single read-only attempt completed on verified `main`; the
+18-file output, receipt, and independent audit are preserved without rerunning.
+An external seal binds those artifacts and moves the unchanged output into
+repository evidence without rewriting generated metadata.
 
 Remaining Stage 16 transition:
 
-1. issue a separate machine-readable authorization bound to the already frozen execution request and runtime preflight;
-2. run the read-only paired B0/B1/B2 analysis exactly once, seal it, and issue
-   a formal `retain / conditional / reject_or_revise` decision;
-3. pass a separate publication gate for the draft release.
+1. pass a separate publication gate for the sealed output and draft release.
 
-The implementation and pre-execution hardening are complete: source provenance,
-compact-table consistency across 288 cells, 1,440 repetitions, and 96 summary
-rows, and a real `Zstandard` frame are verified. The immutable image,
-ROCm/float32 execution, sealed evidence, tag, and complete draft release are
-already verified. Comparative result computation,
-publication, and `EX-IF0` remain prohibited before analysis authorization.
-Negative and mixed results must be retained.
+Publication, superiority claims, and `EX-IF0` remain prohibited before that
+gate. Negative and mixed results must be retained.
 
 ## Stage 17 — `EX-IF0`, passive diagnostics, and `A11-OFF0`
 

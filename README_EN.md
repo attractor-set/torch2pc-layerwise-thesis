@@ -92,8 +92,9 @@ The following work is complete in the pinned Ubuntu/ROCm environment:
   completed pre-execution hardening for provenance, compact consistency, and a
   real `Zstandard` frame. Execution request `v1` is frozen and binds exact
 input, protocol/core, one output-root, and 18-file identities. A separate
-authorization is frozen for one future read-only attempt, while execution remains
-closed pending merge and independent `main` verification.
+authorization was frozen for one read-only attempt. It completed on verified
+`main`; the exact 18-file output passed independent audit and is bound by an
+external seal without changing generated metadata.
 
 The current boundary is:
 
@@ -110,7 +111,11 @@ matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_results_present=false
+matched_profiling_analysis_execution_complete=true
+matched_profiling_analysis_results_present=true
+matched_profiling_analysis_output_audited=true
+matched_profiling_analysis_output_seal_frozen=true
+matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -119,8 +124,7 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-The actual runtime preflight is frozen separately and bound to merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. A machine-readable authorization is now frozen and binds the execution request, runtime preflight, and runtime identity; it permits exactly one future read-only attempt without claiming that execution occurred. Execution remains closed pending merge and independent `main` verification. The protocol freeze does not authorize
-comparative conclusions or open `EX-IF0`, passive diagnostics, the predictor,
+The actual runtime preflight is frozen separately and bound to merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. The machine-readable authorization bound the execution request, runtime preflight, and runtime identity. The single attempt completed on `main@72b95a284e8747a33b8c34d5929d4110aa4bfea1`; the receipt, audit, and external seal bind the unchanged 18-file output. Sealing does not authorize comparative conclusions or open `EX-IF0`, passive diagnostics, the predictor,
 `QWake-PC`, or the test split.
 
 Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1, and B2 did not access the test dataset.
@@ -266,9 +270,8 @@ B1/B2 preregistration, the B1 and B2 implementations, sealed `EQ-B1` and
 `EQ-B2`, the 288-cell matched-profiling execution, sealing, evidence PR,
 immutable tag, and complete draft release are finished.
 
-Implementation, pre-execution hardening, and execution-request freezing of
-the post-collection/pre-analysis protocol are complete. Until a separate execution
-authorization is recorded, the following boundaries remain unchanged:
+The single execution, independent audit, and external output seal are complete.
+Until a separate publication gate, the following boundaries remain unchanged:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
@@ -280,7 +283,11 @@ matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_results_present=false
+matched_profiling_analysis_execution_complete=true
+matched_profiling_analysis_results_present=true
+matched_profiling_analysis_output_audited=true
+matched_profiling_analysis_output_seal_frozen=true
+matched_profiling_analysis_output_evidence=true
 results_publication_permitted=false
 ```
 

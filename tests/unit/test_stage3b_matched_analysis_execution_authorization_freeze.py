@@ -119,5 +119,11 @@ def test_authorization_scope_and_closed_claims() -> None:
     assert boundary["test_dataset_access"] is False
 
 
-def test_authorization_freeze_does_not_contain_results() -> None:
-    assert not OUTPUT_ROOT.exists()
+def test_authorization_freeze_remains_a_preexecution_record_after_sealing() -> None:
+    authorization = _load(AUTH_ROOT / "authorization.json")
+    boundary = authorization["claim_boundary"]
+
+    assert OUTPUT_ROOT.is_dir()
+    assert boundary["analysis_execution_performed"] is False
+    assert boundary["analysis_results_present"] is False
+    assert boundary["results_publication_permitted"] is False

@@ -121,3 +121,5 @@ docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-im
 docs/decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze.md,docs/decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md,required
 experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION.md,experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION_EN.md,required
 docs/decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze.md,docs/decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md,required
+experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL.md,experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL_EN.md,required
+docs/decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze.md,docs/decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md,required

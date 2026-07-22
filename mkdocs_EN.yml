@@ -77,6 +77,7 @@ nav:
       - ADR-031 Matched analysis runtime preflight: decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md
       - ADR-032 Matched analysis runtime preflight freeze: decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md
       - ADR-033 Matched analysis execution authorization: decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md
+      - ADR-034 Matched analysis output seal: decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

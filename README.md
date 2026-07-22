@@ -93,8 +93,9 @@
   pre-execution hardening происхождения, compact consistency и настоящего
   `Zstandard` кадра. Execution request `v1` зафиксирован и связан с точными
 идентичностями входов, protocol/core, одним output root и 18 файлами.
-Отдельная authorization зафиксирована для одной будущей read-only попытки, но
-execution остаётся закрытым до слияния и независимой проверки `main`.
+Отдельная authorization была зафиксирована для одной read-only попытки. Она
+выполнена на проверенном `main`; точный 18-файловый output прошёл независимый
+audit и связан внешним seal без изменения generated metadata.
 
 Текущая граница:
 
@@ -111,7 +112,11 @@ matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_results_present=false
+matched_profiling_analysis_execution_complete=true
+matched_profiling_analysis_results_present=true
+matched_profiling_analysis_output_audited=true
+matched_profiling_analysis_output_seal_frozen=true
+matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -120,7 +125,7 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-Фактический runtime preflight зафиксирован отдельно и связан с merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. Машиночитаемая authorization теперь зафиксирована и связывает execution request, runtime preflight и runtime identity; она разрешает ровно одну будущую read-only попытку, но не утверждает её выполнение. До слияния и независимой проверки `main` execution остаётся закрытым. Фиксация протокола не разрешает сравнительных
+Фактический runtime preflight зафиксирован отдельно и связан с merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. Машиночитаемая authorization связала execution request, runtime preflight и runtime identity. Единственная попытка завершена на `main@72b95a284e8747a33b8c34d5929d4110aa4bfea1`; receipt, audit и внешний seal связывают неизменённый 18-файловый output. Sealing не разрешает публикацию сравнительных
 выводов и не открывает `EX-IF0`, пассивную диагностику, предиктор, `QWake-PC`
 или тестовую выборку.
 
@@ -270,9 +275,8 @@ fallback validation или end-to-end B1/B2 benefit. Итоговые матер
 `EQ-B2`, выполнение 288-ячеечного сопоставленного профилирования, sealing,
 evidence PR, immutable tag и полный черновой релиз уже завершены.
 
-Реализация, pre-execution hardening и execution-request freeze
-post-collection/pre-analysis протокола завершены. До отдельного допуска запуска
-сохраняются:
+Однократное выполнение, независимая проверка и внешняя печать результатов завершены.
+До отдельного допуска публикации границы остаются неизменными:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
@@ -284,7 +288,11 @@ matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=true
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_results_present=false
+matched_profiling_analysis_execution_complete=true
+matched_profiling_analysis_results_present=true
+matched_profiling_analysis_output_audited=true
+matched_profiling_analysis_output_seal_frozen=true
+matched_profiling_analysis_output_evidence=true
 results_publication_permitted=false
 ```
 

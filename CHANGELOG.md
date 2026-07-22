@@ -5,6 +5,8 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- выполнена единственная авторизованная read-only попытка описательного анализа Stage 3B; точный 18-файловый output независимо проверен, receipt/audit сохранены и внешний seal зафиксировал repository evidence без изменения generated metadata; публикация, superiority claims, `EX-IF0` и test split остаются закрытыми;
+
 - зафиксирован отдельный машиночитаемый authorization package описательного анализа Stage 3B: одна будущая read-only попытка, точные request/preflight/runtime bindings и закрытая публикация; выполнение не заявлено и остаётся закрытым до слияния и независимой проверки `main`;
 
 - зафиксирован фактический runtime preflight описательного анализа Stage 3B для merge commit `272a9258f70320416ff97c3da076435fd5334bc4`: канонический JSON и `SHA256SUMS` связывают runtime/evidence/request identities; authorization, выполнение и публикация остаются закрытыми;

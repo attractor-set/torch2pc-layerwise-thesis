@@ -52,6 +52,8 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -159,6 +161,8 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -171,7 +175,7 @@ full_stage3b_campaign_complete=false
 Immutable tag и полный черновой релиз `stage3b-matched-profiling-evidence-v1`
 уже проверены. Отдельный post-collection/pre-analysis протокол фиксирует оценки,
 агрегирование, Парето-правило и решения `retain / conditional /
-reject_or_revise`. Следующий допустимый переход — отдельный publication gate для уже запечатанного
+reject_or_revise`. Publication gate уже зафиксирован, но remote action ещё не выполнен. Следующий допустимый переход — вернуть evidence release в draft, проверить это состояние и выполнить отдельный tagged publication action для уже запечатанного
 18-файлового output. Sealing подтверждает целостность и происхождение, но не
 разрешает публикацию или сравнительные утверждения. Протокол и draft
 release не разрешают утверждения о

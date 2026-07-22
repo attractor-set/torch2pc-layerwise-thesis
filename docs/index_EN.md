@@ -92,6 +92,7 @@ of freedom before comparative results are computed.
 - [Descriptive-analysis output seal specification](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL_EN.md)
 - [Descriptive-analysis output audit package](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-output-audit-v1)
 - [Descriptive-analysis output seal package](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-output-seal-v1)
+- [Descriptive-analysis publication gate](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE_EN.md)
 - [Sealed 18-file descriptive-analysis output](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1)
 - [Sealed matched-profiling evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1)
 

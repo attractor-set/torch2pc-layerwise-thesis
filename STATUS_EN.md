@@ -51,6 +51,8 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -158,6 +160,8 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -167,14 +171,17 @@ release_publication_permitted=false
 full_stage3b_campaign_complete=false
 ```
 
-The immutable tag and complete draft `stage3b-matched-profiling-evidence-v1`
-release are verified. A separate post-collection/pre-analysis protocol now
-freezes estimands, aggregation, the Pareto rule, and `retain / conditional /
-reject_or_revise` decisions. The next permitted transition is a separate publication gate for the already
-sealed 18-file output. Sealing establishes integrity and provenance but does not
-authorize publication or comparative claims. The protocol and draft release do not authorize superiority claims,
-`EX-IF0`, `A11-OFF0`, `A11-OFF1`,
-the predictor, QWake-PC, or test-split access.
+The immutable tag and release package
+`stage3b-matched-profiling-evidence-v1` are verified. A separate
+post-collection/pre-analysis protocol freezes estimands, aggregation, the
+Pareto rule, and `retain / conditional / reject_or_revise` decisions. The
+publication gate is now frozen, but the remote action is incomplete. The next
+permitted transition is to restore the evidence release to draft, verify that
+it is non-immutable, and execute the separate tagged publication action for the
+sealed 18-file output. Until that action succeeds, publication and comparative
+claims remain closed. The gate does not authorize superiority claims,
+`EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor, QWake-PC, or test-split
+access.
 
 ADR-035 additionally freezes only the post-publication research direction:
 oracle search for a minimum sufficient compute aggregate at two scales. This

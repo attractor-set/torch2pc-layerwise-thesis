@@ -116,6 +116,8 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -271,7 +273,7 @@ B1/B2 preregistration, the B1 and B2 implementations, sealed `EQ-B1` and
 immutable tag, and complete draft release are finished.
 
 The single execution, independent audit, and external output seal are complete.
-Until a separate publication gate, the following boundaries remain unchanged:
+The publication gate is frozen, but until its remote action succeeds the following boundaries remain unchanged:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
@@ -288,8 +290,12 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 results_publication_permitted=false
 ```
+
+The publication gate is frozen, but the remote action is not complete; the evidence release must be verified as draft and non-immutable before publication assets are uploaded.
 
 This transition does not open `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor,
 hysteresis, active control, or test-dataset access. B1 and B2 remain exact

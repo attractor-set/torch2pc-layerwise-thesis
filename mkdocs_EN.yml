@@ -78,6 +78,8 @@ nav:
       - ADR-032 Matched analysis runtime preflight freeze: decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md
       - ADR-033 Matched analysis execution authorization: decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md
       - ADR-034 Matched analysis output seal: decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md
+      - ADR-035 Recursive sufficiency: decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md
+      - ADR-036 Matched analysis publication gate: decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

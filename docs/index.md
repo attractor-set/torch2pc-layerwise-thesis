@@ -93,6 +93,7 @@
 - [Фиксация выхода описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL.md)
 - [Audit package выхода описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-output-audit-v1)
 - [Seal package выхода описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-output-seal-v1)
+- [Publication gate описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE.md)
 - [Запечатанный 18-файловый выход описательного анализа](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1)
 - [Запечатанные доказательные материалы сопоставленного профилирования](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1)
 

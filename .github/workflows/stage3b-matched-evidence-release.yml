@@ -58,11 +58,13 @@ jobs:
         run: |
           ASSET_DIR="artifacts/stage3b-matched-profiling-evidence-v1"
           if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release edit "$GITHUB_REF_NAME" --draft --latest=false
             gh release upload "$GITHUB_REF_NAME" "$ASSET_DIR"/* --clobber
           else
             gh release create "$GITHUB_REF_NAME" \
               "$ASSET_DIR"/* \
               --draft \
+              --latest=false \
               --verify-tag \
               --title "Stage 3B matched-profiling evidence v1" \
               --notes-file "$ASSET_DIR/RELEASE-NOTES.md"

@@ -53,3 +53,4 @@
 - [ADR-034](ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md): preserves the exact 18-file output, receipt, and independent audit; binds them through an external seal without changing generated metadata; and keeps publication, superiority, and test boundaries closed.
 
 - [ADR-035](ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md): freezes the [minimum sufficient compute aggregate](../glossary_EN.md#term-minimum-sufficient-compute-aggregate) as the central post-B1/B2 object, recursive two-scale semantics, and the conditional role of spike-like stabilization without execution permission.
+- [ADR-036](ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md): freezes the fail-closed publication gate for the sealed descriptive analysis, remote draft-state validation, and the unchanged prohibitions on `EX-IF0`, superiority claims, policy activation, and test access.

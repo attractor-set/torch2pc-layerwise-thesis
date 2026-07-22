@@ -1,0 +1,136 @@
+name: Stage 3B matched analysis publication
+
+on:
+  push:
+    tags:
+      - "stage3b-matched-descriptive-analysis-publication-v1"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Validate gate and publish bounded results
+    runs-on: ubuntu-24.04
+    env:
+      EVIDENCE_RELEASE_TAG: stage3b-matched-profiling-evidence-v1
+      PUBLICATION_ASSET_DIR: artifacts/stage3b-matched-descriptive-analysis-publication-v1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            requirements/dev.txt
+            requirements/lock-dev.txt
+            requirements/torch-cpu.txt
+      - name: Install pinned validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements/torch-cpu.txt
+          python -m pip install -r requirements/dev.txt
+          python -m pip check
+      - name: Validate publication contract
+        run: |
+          python -m pytest -q \
+            tests/unit/test_stage3b_matched_publication_gate.py \
+            tests/unit/test_stage3b_matched_release_packaging.py
+      - name: Require draft non-immutable release before publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            "repos/$GITHUB_REPOSITORY/releases?per_page=100" \
+            > /tmp/stage3b-releases.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          releases = json.loads(
+              Path("/tmp/stage3b-releases.json").read_text(encoding="utf-8")
+          )
+          matches = [
+              release
+              for release in releases
+              if release.get("tag_name")
+              == "stage3b-matched-profiling-evidence-v1"
+          ]
+          assert len(matches) == 1, (
+              "expected exactly one evidence release, "
+              f"observed {len(matches)}"
+          )
+          state = matches[0]
+          assert state["draft"] is True
+          assert state.get("immutable") is False
+          Path("/tmp/stage3b-release-state.json").write_text(
+              json.dumps(state, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          cat /tmp/stage3b-release-state.json
+      - name: Build publication assets
+        env:
+          PYTHONPATH: src
+        run: |
+          python scripts/package_stage3b_matched_publication.py \
+            --project-root . \
+            --output-root "$PUBLICATION_ASSET_DIR" \
+            --publication-tag "$GITHUB_REF_NAME" \
+            --publication-commit "$GITHUB_SHA"
+          cd "$PUBLICATION_ASSET_DIR"
+          sha256sum -c PUBLICATION-SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stage3b-matched-descriptive-analysis-publication-v1
+          path: artifacts/stage3b-matched-descriptive-analysis-publication-v1/
+      - name: Upload analysis assets while release is draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "$EVIDENCE_RELEASE_TAG" \
+            "$PUBLICATION_ASSET_DIR/stage3b-matched-descriptive-analysis-sealed-output-v1.tar.gz" \
+            "$PUBLICATION_ASSET_DIR/stage3b-matched-descriptive-analysis-audit-seal-v1.tar.gz" \
+            "$PUBLICATION_ASSET_DIR/PUBLICATION-MANIFEST.json" \
+            "$PUBLICATION_ASSET_DIR/PUBLICATION-SHA256SUMS" \
+            --clobber
+      - name: Publish bounded release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release edit "$EVIDENCE_RELEASE_TAG" \
+            --notes-file "$PUBLICATION_ASSET_DIR/PUBLICATION-NOTES.md" \
+            --draft=false \
+            --latest=false
+      - name: Verify published release state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$EVIDENCE_RELEASE_TAG" \
+            --json tagName,isDraft,isPrerelease,assets \
+            > /tmp/stage3b-published-release-state.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          state = json.loads(
+              Path("/tmp/stage3b-published-release-state.json").read_text(
+                  encoding="utf-8"
+              )
+          )
+          expected_assets = {
+              "stage3b-matched-descriptive-analysis-sealed-output-v1.tar.gz",
+              "stage3b-matched-descriptive-analysis-audit-seal-v1.tar.gz",
+              "PUBLICATION-MANIFEST.json",
+              "PUBLICATION-SHA256SUMS",
+          }
+          observed_assets = {asset["name"] for asset in state["assets"]}
+          assert state["tagName"] == "stage3b-matched-profiling-evidence-v1"
+          assert state["isDraft"] is False
+          assert state["isPrerelease"] is False
+          assert expected_assets <= observed_assets
+          PY

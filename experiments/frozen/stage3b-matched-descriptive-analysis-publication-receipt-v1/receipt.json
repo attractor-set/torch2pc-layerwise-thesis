@@ -1,0 +1,172 @@
+{
+  "claim_boundary": {
+    "ex_if0_opened": false,
+    "full_stage3b_campaign_complete": false,
+    "policy_activation_permitted": false,
+    "release_publication_complete": true,
+    "release_publication_permitted": true,
+    "results_publication_permitted": true,
+    "superiority_claim_permitted": false,
+    "test_dataset_access": false
+  },
+  "publication_action": {
+    "commit": "d1e7574280bf0122cbecbb5b64ff2c66c0851907",
+    "commit_is_ancestor_of_main": true,
+    "main_commit_at_receipt": "15cf36b3a38c3f68cc055bf0992f19aca0d9cb48",
+    "tag": "stage3b-matched-descriptive-analysis-publication-v1"
+  },
+  "receipt_id": "stage3b-matched-descriptive-analysis-publication-receipt-v1",
+  "release": {
+    "assets": [
+      {
+        "created_at": "2026-07-22T21:02:16Z",
+        "digest": "sha256:ab1c6dca2666ddb3eb647ab6e0f586b902de04cb667a0781e33bb092bae6c857",
+        "id": 486417464,
+        "name": "PUBLICATION-MANIFEST.json",
+        "size_bytes": 2016,
+        "updated_at": "2026-07-22T21:02:16Z"
+      },
+      {
+        "created_at": "2026-07-22T21:02:16Z",
+        "digest": "sha256:47a4c88e3511c6f4a9b60740f541bd6c62e27cb8a45ea957914352e5e3f9fa1e",
+        "id": 486417463,
+        "name": "PUBLICATION-SHA256SUMS",
+        "size_bytes": 430,
+        "updated_at": "2026-07-22T21:02:16Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:17Z",
+        "digest": "sha256:9d39d33bd9c37ec41de044b4782585e52c8dc80f439a6abcbc4e407f34691b58",
+        "id": 484996528,
+        "name": "RELEASE-MANIFEST.json",
+        "size_bytes": 2387,
+        "updated_at": "2026-07-21T18:15:18Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:17Z",
+        "digest": "sha256:ced10850a146eab96e1b2a83f186238277ab3e6739457511a0571f98ef2e4852",
+        "id": 484996530,
+        "name": "RELEASE-NOTES.md",
+        "size_bytes": 657,
+        "updated_at": "2026-07-21T18:15:18Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:17Z",
+        "digest": "sha256:1ea2a12bb98186405566c3ed51446748a42d0c0831c7aed6ce5f5e96b4d07d85",
+        "id": 484996531,
+        "name": "SHA256SUMS",
+        "size_bytes": 1000,
+        "updated_at": "2026-07-21T18:15:18Z"
+      },
+      {
+        "created_at": "2026-07-22T21:02:16Z",
+        "digest": "sha256:a9e41c58996e784a75c9aca4074e4ac074f9b8cf4e0bede35d9dd7e1e213ae86",
+        "id": 486417467,
+        "name": "stage3b-matched-descriptive-analysis-audit-seal-v1.tar.gz",
+        "size_bytes": 3125,
+        "updated_at": "2026-07-22T21:02:16Z"
+      },
+      {
+        "created_at": "2026-07-22T21:02:16Z",
+        "digest": "sha256:b2dbee450678feca050b3eda26891e8449dac97e954d3198cb6d8844ac63c5a8",
+        "id": 486417462,
+        "name": "stage3b-matched-descriptive-analysis-sealed-output-v1.tar.gz",
+        "size_bytes": 86856,
+        "updated_at": "2026-07-22T21:02:16Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:17Z",
+        "digest": "sha256:be45da48abbbec251f15521adfe60218492660cff6960290b1bf35f937a39204",
+        "id": 484996521,
+        "name": "stage3b-matched-profiling-control-plane-v1.tar.gz",
+        "size_bytes": 502956,
+        "updated_at": "2026-07-21T18:15:17Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:17Z",
+        "digest": "sha256:727a3390e2e324844295f72760b576a691ee7f72c8549ae3f8015eb2ccb729bc",
+        "id": 484996522,
+        "name": "stage3b-matched-profiling-image-checkpoint-v1.tar.gz",
+        "size_bytes": 13160,
+        "updated_at": "2026-07-21T18:15:17Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:18Z",
+        "digest": "sha256:59a1479d66f170970b4d0f2b0712b8a825ccca01eab677c887a9046fc4c16f76",
+        "id": 484996538,
+        "name": "stage3b-matched-profiling-locality-events-v1.jsonl.zst",
+        "size_bytes": 25110445,
+        "updated_at": "2026-07-21T18:15:22Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:18Z",
+        "digest": "sha256:5c5ac617ea5fe32db9c3a3ca7bc04799be0380fc1e751ae0bf1cc20e5f330346",
+        "id": 484996533,
+        "name": "stage3b-matched-profiling-release-source-record-v1.json",
+        "size_bytes": 2623,
+        "updated_at": "2026-07-21T18:15:18Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:18Z",
+        "digest": "sha256:aab02024bb7da0ed06ea8cd9e233fe35c97b3e7419a5ce58023aa9ee909a5751",
+        "id": 484996536,
+        "name": "stage3b-matched-profiling-runtime-records-v1.tar.gz",
+        "size_bytes": 28773976,
+        "updated_at": "2026-07-21T18:15:23Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:19Z",
+        "digest": "sha256:ba338c4a983c91ae51b410d0b51d753ad2fdd254dca8483e753a1cc705cadf53",
+        "id": 484996556,
+        "name": "stage3b-matched-profiling-sealed-evidence-v1.tar.gz",
+        "size_bytes": 495023,
+        "updated_at": "2026-07-21T18:15:19Z"
+      },
+      {
+        "created_at": "2026-07-21T18:15:18Z",
+        "digest": "sha256:91e9d5656194eb3d4579f2727fd16810b50c4c52dedd087751ab8a2574b1f548",
+        "id": 484996540,
+        "name": "stage3b-matched-profiling-sealing-logs-v1.tar.gz",
+        "size_bytes": 1218,
+        "updated_at": "2026-07-21T18:15:18Z"
+      }
+    ],
+    "created_at": "2026-07-21T18:12:40Z",
+    "draft": false,
+    "id": 357542590,
+    "immutable": false,
+    "prerelease": false,
+    "published_at": "2026-07-22T21:02:17Z",
+    "tag": "stage3b-matched-profiling-evidence-v1",
+    "target_commitish": "main",
+    "updated_at": "2026-07-22T21:02:17Z",
+    "url": "https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-matched-profiling-evidence-v1"
+  },
+  "repository": "attractor-set/torch2pc-layerwise-thesis",
+  "schema_version": 1,
+  "status": "publication_action_complete",
+  "workflow_run": {
+    "artifacts": [
+      {
+        "created_at": "2026-07-22T21:02:15Z",
+        "digest": "sha256:303060b7dad1affe72c409366656ab7d9bc865c581e14443d7383120bf3a319f",
+        "expired": false,
+        "expires_at": "2026-10-20T21:00:22Z",
+        "id": 8544651819,
+        "name": "stage3b-matched-descriptive-analysis-publication-v1",
+        "size_bytes": 92526,
+        "updated_at": "2026-07-22T21:02:15Z"
+      }
+    ],
+    "conclusion": "success",
+    "created_at": "2026-07-22T20:38:10Z",
+    "database_id": 29955946081,
+    "event": "push",
+    "head_branch": "stage3b-matched-descriptive-analysis-publication-v1",
+    "head_sha": "d1e7574280bf0122cbecbb5b64ff2c66c0851907",
+    "name": "Stage 3B matched analysis publication",
+    "status": "completed",
+    "updated_at": "2026-07-22T21:02:20Z",
+    "url": "https://github.com/attractor-set/torch2pc-layerwise-thesis/actions/runs/29955946081"
+  }
+}

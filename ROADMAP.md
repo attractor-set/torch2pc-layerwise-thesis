@@ -44,7 +44,7 @@ Stage 3B B0 и статистический и инженерный анализ
 `block`/`chunk` не входят в этот контракт и требуют отдельной предварительной
 регистрации.
 
-## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — анализ выполнен и запечатан, публикация закрыта
+## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — анализ опубликован, receipt зафиксирован
 
 Завершено:
 
@@ -85,13 +85,17 @@ matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_publication_gate_frozen=true
-matched_profiling_analysis_publication_action_complete=false
+matched_profiling_analysis_publication_action_complete=true
+matched_profiling_analysis_publication_receipt_frozen=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
-results_publication_permitted=false
-release_draft_required=true
-release_publication_permitted=false
+results_publication_permitted=true
+release_draft_required=false
+release_publication_permitted=true
+release_publication_complete=true
+ex_if0_opened=false
+recursive_aggregate_execution_open=false
 full_stage3b_campaign_complete=false
 ```
 
@@ -107,19 +111,17 @@ Execution request `v1`, runtime preflight и authorization были зафикс
 Внешний seal связывает эти артефакты и переводит output в repository evidence,
 не изменяя generated metadata.
 
-Оставшийся переход внутри этапа 16; publication gate уже зафиксирован:
-
-1. выполнить зафиксированный fail-closed publication action: remote release должен быть draft и non-immutable, analysis assets загружаются до публикации; после успешного action отдельно зафиксировать receipt/status.
-
-До успешного publication action запрещены публикация, утверждения о
-превосходстве и переход к `EX-IF0`. Отрицательные и смешанные результаты
-сохраняются.
+Этап 16 завершён: fail-closed publication action успешно выполнен, а точный
+remote receipt/status зафиксирован без повторного анализа. Утверждения о
+превосходстве, выполнение `EX-IF0`, политика и test split остаются закрытыми.
+Отрицательные и смешанные результаты сохранены.
 
 ## Этап 17 — `EX-IF0` и oracle-граница рекурсивных агрегатов
 
-Только после успешного publication action выбрать и зафиксировать B0 как допустимую точную
-реализацию через `EX-IF0`. До создания меток заморозить иерархию агрегатов и
-контрфактический контракт.
+После frozen publication receipt отдельным PR выбрать и зафиксировать B0 как
+допустимую точную реализацию через `EX-IF0`. До создания меток заморозить
+decision epoch, иерархию агрегатов, контрфактический контракт и правило
+минимального устойчиво достаточного свипа. Эта запись не открывает выполнение.
 
 Первый temporal baseline `A11-OFF0` сохраняет нейтральные ветви `stop`, `native_one` и
 `exact_one`. Затем из идентичного `snapshot` проверяются заранее заданные

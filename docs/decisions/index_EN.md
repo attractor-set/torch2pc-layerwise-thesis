@@ -54,3 +54,5 @@
 
 - [ADR-035](ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md): freezes the [minimum sufficient compute aggregate](../glossary_EN.md#term-minimum-sufficient-compute-aggregate) as the central post-B1/B2 object, recursive two-scale semantics, and the conditional role of spike-like stabilization without execution permission.
 - [ADR-036](ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md): freezes the fail-closed publication gate for the sealed descriptive analysis, remote draft-state validation, and the unchanged prohibitions on `EX-IF0`, superiority claims, policy activation, and test access.
+
+- [ADR-037](ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md): freezes the successful tagged publication action, exact remote receipt, and the still-closed `EX-IF0`, superiority, policy, and test boundaries.

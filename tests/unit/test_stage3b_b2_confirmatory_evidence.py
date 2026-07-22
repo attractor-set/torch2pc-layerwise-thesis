@@ -216,7 +216,7 @@ def test_historical_matched_profiling_freeze_remains_byte_identical() -> None:
     assert sha256_file(manifest) == MATCHED_MANIFEST_SHA256
 
 
-def test_documentation_keeps_matched_profiling_execution_closed() -> None:
+def test_documentation_keeps_execution_closed_after_publication() -> None:
     for name in ("STATUS.md", "STATUS_EN.md", "ROADMAP.md", "ROADMAP_EN.md"):
         text = (ROOT / name).read_text(encoding="utf-8")
         assert "scientific_admission=open" in text
@@ -228,4 +228,13 @@ def test_documentation_keeps_matched_profiling_execution_closed() -> None:
         assert "matched_profiling_analysis_open=false" in text
         assert "runtime_authorization=issued_consumed" in text
         assert "measurements_allowed=false" in text
-        assert "results_publication_permitted=false" in text
+        assert "results_publication_permitted=true" in text
+        assert "release_draft_required=false" in text
+        assert "release_publication_permitted=true" in text
+        assert "release_publication_complete=true" in text
+        assert (
+            "matched_profiling_analysis_publication_receipt_frozen=true"
+            in text
+        )
+        assert "ex_if0_opened=false" in text
+        assert "recursive_aggregate_execution_open=false" in text

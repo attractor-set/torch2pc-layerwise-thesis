@@ -126,7 +126,16 @@ def test_opening_adr_is_historical_and_status_advances_after_sealing() -> None:
         assert "matched_profiling_analysis_open=false" in text
         assert "runtime_authorization=issued_consumed" in text
         assert "measurements_allowed=false" in text
-        assert "results_publication_permitted=false" in text
+        assert "results_publication_permitted=true" in text
+        assert "release_draft_required=false" in text
+        assert "release_publication_permitted=true" in text
+        assert "release_publication_complete=true" in text
+        assert (
+            "matched_profiling_analysis_publication_receipt_frozen=true"
+            in text
+        )
+        assert "ex_if0_opened=false" in text
+        assert "recursive_aggregate_execution_open=false" in text
 
 
 def test_opening_navigation_and_language_pair_are_registered() -> None:

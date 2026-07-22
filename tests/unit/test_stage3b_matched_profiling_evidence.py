@@ -257,9 +257,13 @@ def test_current_documentation_records_sealed_evidence_and_closed_analysis() -> 
         "matched_profiling_analysis_open=false",
         "runtime_authorization=issued_consumed",
         "measurements_allowed=false",
-        "results_publication_permitted=false",
-        "release_draft_required=true",
-        "release_publication_permitted=false",
+        "results_publication_permitted=true",
+        "release_draft_required=false",
+        "release_publication_permitted=true",
+        "release_publication_complete=true",
+        "matched_profiling_analysis_publication_receipt_frozen=true",
+        "ex_if0_opened=false",
+        "recursive_aggregate_execution_open=false",
         "full_stage3b_campaign_complete=false",
     )
     for name in ("STATUS.md", "STATUS_EN.md", "ROADMAP.md", "ROADMAP_EN.md"):

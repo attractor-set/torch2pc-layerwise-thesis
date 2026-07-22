@@ -5,6 +5,8 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- зафиксирован `EX-IF0 v1`: `stage2_baseline` выбран как канонический точный reference/fallback для `FixedPred` и `Strict`; заморожены decision epoch, task-relative endpoint, `rocm_float32` thresholds, oracle margin и правило полного suffix для минимального устойчиво достаточного свипа, при этом execution, oracle labels, признаки, политика и test split остаются закрытыми;
+
 - зафиксирована post-action квитанция успешной публикации описательного анализа Stage 3B: publication tag/commit, GitHub Actions run `29955946081`, release `357542590`, время публикации, inventory/digest assets и закрытая граница `EX-IF0`/политики/test split;
 
 

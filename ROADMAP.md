@@ -94,8 +94,19 @@ results_publication_permitted=true
 release_draft_required=false
 release_publication_permitted=true
 release_publication_complete=true
-ex_if0_opened=false
+ex_if0_protocol_frozen=true
+ex_if0_opened=true
+ex_if0_complete=true
+exact_implementation_frozen=true
+exact_implementation_candidate=stage2_baseline
+minimum_sufficient_sweep_rule_frozen=true
+ex_if0_execution_permitted=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+a11_off0_execution_open=false
 recursive_aggregate_execution_open=false
+policy_activation_permitted=false
+test_dataset_access=false
 full_stage3b_campaign_complete=false
 ```
 
@@ -113,21 +124,26 @@ Execution request `v1`, runtime preflight и authorization были зафикс
 
 Этап 16 завершён: fail-closed publication action успешно выполнен, а точный
 remote receipt/status зафиксирован без повторного анализа. Утверждения о
-превосходстве, выполнение `EX-IF0`, политика и test split остаются закрытыми.
-Отрицательные и смешанные результаты сохранены.
+превосходстве, политика и test split остаются закрытыми. Отрицательные и
+смешанные результаты сохранены.
 
 ## Этап 17 — `EX-IF0` и oracle-граница рекурсивных агрегатов
 
-После frozen publication receipt отдельным PR выбрать и зафиксировать B0 как
-допустимую точную реализацию через `EX-IF0`. До создания меток заморозить
-decision epoch, иерархию агрегатов, контрфактический контракт и правило
-минимального устойчиво достаточного свипа. Эта запись не открывает выполнение.
+Design freeze `EX-IF0 v1` завершён: `stage2_baseline` выбран как канонический
+точный reference и fail-closed fallback для `FixedPred` и `Strict`. Decision
+epoch, полный конфигурационный reference horizon, task-relative endpoint,
+`rocm_float32` threshold profile и правило полного suffix для минимального
+устойчиво достаточного свипа зафиксированы. Выполнение и создание меток не
+открыты.
 
-Первый temporal baseline `A11-OFF0` сохраняет нейтральные ветви `stop`, `native_one` и
-`exact_one`. Затем из идентичного `snapshot` проверяются заранее заданные
-вложенные агрегаты минимум на двух масштабах: слои внутри блока и блоки внутри
-сети. Для каждого кандидата сохраняются `exact-reference regret`, oracle-запас
-`M^*`, полный вектор стоимости и происхождение.
+Следующий отдельный контракт должен до создания меток зафиксировать конкретную
+пространственную иерархию и snapshot-ветвление `A11-OFF0`. Temporal baseline
+сохраняет нейтральные ветви `stop`, `native_one` и `exact_one`; в `v1` две
+one-step ветви являются identity-control выбранного `stage2_baseline`. Затем из
+идентичного `snapshot` проверяются заранее заданные вложенные агрегаты минимум
+на двух масштабах: слои внутри блока и блоки внутри сети. Для каждого кандидата
+сохраняются `exact-reference regret`, oracle-запас `M^*`, полный вектор
+стоимости и происхождение.
 
 Решения этапа:
 

@@ -189,5 +189,11 @@ def test_status_and_roadmap_record_refreeze_but_keep_execution_closed() -> None:
             "matched_profiling_analysis_publication_receipt_frozen=true"
             in text
         )
-        assert "ex_if0_opened=false" in text
+        assert "ex_if0_protocol_frozen=true" in text
+        assert "ex_if0_opened=true" in text
+        assert "ex_if0_complete=true" in text
+        assert "exact_implementation_candidate=stage2_baseline" in text
+        assert "minimum_sufficient_sweep_rule_frozen=true" in text
+        assert "ex_if0_execution_permitted=false" in text
+        assert "oracle_label_generation_open=false" in text
         assert "recursive_aggregate_execution_open=false" in text

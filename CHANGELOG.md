@@ -5,6 +5,8 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- зафиксирован фактический runtime preflight описательного анализа Stage 3B для merge commit `272a9258f70320416ff97c3da076435fd5334bc4`: канонический JSON и `SHA256SUMS` связывают runtime/evidence/request identities; authorization, выполнение и публикация остаются закрытыми;
+
 - реализован fail-closed runtime preflight описательного анализа: идентичность Git/Python/Zstandard и runtime-файлов, read-only проверка девяти SHA-256, verifier будущего authorization и executor без внешнего пути допуска; authorization, выполнение и публикация остаются закрытыми;
 
 - зафиксирован машиночитаемый execution request описательного анализа Stage 3B: immutable evidence/protocol/core identities, один новый output root, точный inventory из 18 файлов и максимум один read-only запуск; authorization, выполнение и публикация остаются закрытыми;

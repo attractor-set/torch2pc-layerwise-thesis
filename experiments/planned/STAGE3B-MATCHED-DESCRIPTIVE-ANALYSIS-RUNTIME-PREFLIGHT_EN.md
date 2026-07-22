@@ -46,9 +46,21 @@ and publishes the output root only after the post-execution input SHA-256 check.
 
 ```text
 runtime_preflight_implemented=true
-runtime_preflight_frozen=false
+runtime_preflight_frozen=true
 execution_authorization_present=false
 sealed_evidence_execution=false
 analysis_results_present=false
 results_publication_permitted=false
 ```
+## Frozen artifact
+
+The actual preflight captured without reading observed metric values is frozen
+at `experiments/frozen/stage3b-matched-descriptive-analysis-runtime-preflight-v1/`.
+It binds merge commit `272a9258f70320416ff97c3da076435fd5334bc4`,
+request digest `5c813e10…127a2e`, runtime identity `e71f0f85…007d`, and
+preflight digest `428c9a7f…901cc`. The file SHA-256 of
+`runtime-preflight.json` is
+`1722cce133e047512c2b587c9d8fba15e95457653afd2fa496f295d3b1bbced0`.
+
+The freeze does not create authorization, claim an execution attempt, or open
+analysis or publication.

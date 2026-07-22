@@ -84,6 +84,8 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -105,16 +107,17 @@ Execution request `v1`, runtime preflight и authorization были зафикс
 Внешний seal связывает эти артефакты и переводит output в repository evidence,
 не изменяя generated metadata.
 
-Оставшийся переход внутри этапа 16:
+Оставшийся переход внутри этапа 16; publication gate уже зафиксирован:
 
-1. отдельный publication gate для запечатанного output и чернового релиза.
+1. выполнить зафиксированный fail-closed publication action: remote release должен быть draft и non-immutable, analysis assets загружаются до публикации; после успешного action отдельно зафиксировать receipt/status.
 
-До publication gate запрещены публикация, утверждения о превосходстве и переход
-к `EX-IF0`. Отрицательные и смешанные результаты сохраняются.
+До успешного publication action запрещены публикация, утверждения о
+превосходстве и переход к `EX-IF0`. Отрицательные и смешанные результаты
+сохраняются.
 
 ## Этап 17 — `EX-IF0` и oracle-граница рекурсивных агрегатов
 
-Только после publication gate выбрать и зафиксировать B0 как допустимую точную
+Только после успешного publication action выбрать и зафиксировать B0 как допустимую точную
 реализацию через `EX-IF0`. До создания меток заморозить иерархию агрегатов и
 контрфактический контракт.
 

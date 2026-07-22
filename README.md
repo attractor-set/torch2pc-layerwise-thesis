@@ -117,6 +117,8 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -276,7 +278,7 @@ fallback validation или end-to-end B1/B2 benefit. Итоговые матер
 evidence PR, immutable tag и полный черновой релиз уже завершены.
 
 Однократное выполнение, независимая проверка и внешняя печать результатов завершены.
-До отдельного допуска публикации границы остаются неизменными:
+Publication gate зафиксирован, но до успешного remote action границы остаются неизменными:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
@@ -293,8 +295,12 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 results_publication_permitted=false
 ```
+
+Publication gate зафиксирован, но remote action ещё не завершён; evidence release должен быть подтверждён как draft и non-immutable до загрузки publication assets.
 
 Этот переход не открывает `EX-IF0`, `A11-OFF0`, `A11-OFF1`, предиктор,
 гистерезис, активное управление или доступ к тестовой выборке. B1/B2 остаются

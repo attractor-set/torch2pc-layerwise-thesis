@@ -1,0 +1,49 @@
+{
+  "analysis_output_registry_sha256": "8baa1b55c21ed2b00bd849bbbe4f415d8b5f86d70bd9989d4ec4917765ead1da",
+  "analysis_output_root": "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1",
+  "analysis_output_seal_digest": "dbb8983bd77490ca4feedc035ae31ca4cdd0764ecd89dab1b0c3d91aed0ad3cd",
+  "analysis_output_seal_id": "stage3b-matched-descriptive-analysis-output-seal-v1",
+  "candidate_decisions": [
+    {
+      "candidate_id": "isolated_layer_vjp",
+      "method_statuses": {
+        "fixedpred": "reject_or_revise",
+        "strict": "reject_or_revise"
+      },
+      "status": "reject_or_revise"
+    },
+    {
+      "candidate_id": "composite_vjp",
+      "method_statuses": {
+        "fixedpred": "reject_or_revise",
+        "strict": "reject_or_revise"
+      },
+      "status": "reject_or_revise"
+    }
+  ],
+  "claim_boundary_after_successful_action": {
+    "ex_if0_opened": false,
+    "full_stage3b_campaign_complete": false,
+    "policy_activation_permitted": false,
+    "release_publication_permitted": true,
+    "results_publication_permitted": true,
+    "superiority_claim_permitted": false,
+    "test_dataset_access": false
+  },
+  "claim_boundary_before_successful_action": {
+    "ex_if0_opened": false,
+    "full_stage3b_campaign_complete": false,
+    "policy_activation_permitted": false,
+    "release_publication_permitted": false,
+    "results_publication_permitted": false,
+    "superiority_claim_permitted": false,
+    "test_dataset_access": false
+  },
+  "evidence_release_tag": "stage3b-matched-profiling-evidence-v1",
+  "gate_id": "stage3b-matched-descriptive-analysis-publication-gate-v1",
+  "next_formal_transition_after_success": "EX-IF0",
+  "publication_action_tag": "stage3b-matched-descriptive-analysis-publication-v1",
+  "required_remote_release_state_before_action": "draft",
+  "schema_version": 1,
+  "status": "publication_gate_frozen_pending_remote_action"
+}

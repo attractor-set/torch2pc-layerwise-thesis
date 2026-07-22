@@ -84,6 +84,8 @@ matched_profiling_analysis_results_present=true
 matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
+matched_profiling_analysis_publication_gate_frozen=true
+matched_profiling_analysis_publication_action_complete=false
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
@@ -99,16 +101,18 @@ computation. The single read-only attempt completed on verified `main`; the
 An external seal binds those artifacts and moves the unchanged output into
 repository evidence without rewriting generated metadata.
 
-Remaining Stage 16 transition:
+Remaining Stage 16 transition; the publication gate is frozen:
 
-1. pass a separate publication gate for the sealed output and draft release.
+1. execute the frozen fail-closed publication action: the remote release must
+   be draft and non-immutable, analysis assets are uploaded before publication,
+   and the successful action receives a separate receipt/status freeze.
 
-Publication, superiority claims, and `EX-IF0` remain prohibited before that
-gate. Negative and mixed results must be retained.
+Publication, superiority claims, and `EX-IF0` remain prohibited until that
+action succeeds. Negative and mixed results must be retained.
 
 ## Stage 17 — `EX-IF0` and the recursive-aggregate oracle boundary
 
-Only after the publication gate, select and freeze B0 as the admissible exact
+Only after the successful publication action, select and freeze B0 as the admissible exact
 implementation through `EX-IF0`. Freeze the aggregate hierarchy and
 counterfactual contract before label creation.
 

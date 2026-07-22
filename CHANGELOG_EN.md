@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- froze a fail-closed Stage 3B descriptive-analysis publication gate: exact output/seal identities, bounded `reject_or_revise` publication, a corrected draft-only workflow, and a separate tagged action; publication, `EX-IF0`, superiority claims, policy activation, and test access remain closed until the remote action succeeds;
+
 - completed the single authorized read-only Stage 3B descriptive-analysis attempt; independently audited the exact 18-file output, preserved receipt/audit provenance, and froze an external seal as repository evidence without changing generated metadata; publication, superiority claims, `EX-IF0`, and the test split remain closed;
 
 - froze a separate machine-readable Stage 3B descriptive-analysis authorization package: one future read-only attempt, exact request/preflight/runtime bindings, and closed publication; execution is not claimed and remains closed pending merge and independent `main` verification;

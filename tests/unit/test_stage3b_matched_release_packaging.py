@@ -95,9 +95,9 @@ def test_release_workflow_creates_only_a_draft_release() -> None:
     assert "--draft" in text
     assert "gh release upload" in text
     assert "--clobber" in text
-    assert "gh release edit" not in text
+    assert 'gh release edit "$GITHUB_REF_NAME" --draft --latest=false' in text
     assert "--draft=false" not in text
-    assert "--latest" not in text
+    assert "--latest=false" in text
 
 
 def test_full_release_package_includes_verified_run_artifacts(tmp_path: Path) -> None:

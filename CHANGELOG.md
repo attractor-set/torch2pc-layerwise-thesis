@@ -5,6 +5,8 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- зафиксирован fail-closed publication gate описательного анализа Stage 3B: точные output/seal identities, bounded `reject_or_revise` publication, исправление draft-only workflow и отдельный tag action; до успешного remote action публикация, `EX-IF0`, superiority claims, политика и test split остаются закрытыми;
+
 - выполнена единственная авторизованная read-only попытка описательного анализа Stage 3B; точный 18-файловый output независимо проверен, receipt/audit сохранены и внешний seal зафиксировал repository evidence без изменения generated metadata; публикация, superiority claims, `EX-IF0` и test split остаются закрытыми;
 
 - зафиксирован отдельный машиночитаемый authorization package описательного анализа Stage 3B: одна будущая read-only попытка, точные request/preflight/runtime bindings и закрытая публикация; выполнение не заявлено и остаётся закрытым до слияния и независимой проверки `main`;

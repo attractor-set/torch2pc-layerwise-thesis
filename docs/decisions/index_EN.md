@@ -48,3 +48,4 @@
 - [ADR-030](ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md): freezes the one-run read-only request, immutable identities, and exact 18-file output contract while keeping authorization and execution closed.
 
 - [ADR-031](ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md): implements fail-closed runtime preflight, future-authorization verification, and a canonical-package executor without opening execution.
+- [ADR-032](ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md): freezes the actual runtime preflight for merge commit `272a9258…` while keeping authorization, execution, and publication closed.

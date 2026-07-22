@@ -101,7 +101,7 @@ frozen protocol, hardening commit, одним новым output root и точн
 
 Оставшийся переход внутри этапа 16:
 
-1. отдельная фиксация фактического runtime preflight и машиночитаемой authorization;
+1. отдельная машиночитаемая authorization, связанная с уже зафиксированными execution request и runtime preflight;
 2. однократный read-only paired analysis B0/B1/B2, sealing анализа и
    формальное решение `retain / conditional / reject_or_revise`;
 3. отдельный publication gate для чернового релиза.

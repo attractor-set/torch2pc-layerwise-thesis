@@ -2,7 +2,7 @@
 
 [Русская версия](STATUS.md)
 
-As of 21 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
+As of 22 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
 `SI-MA0`, and `SI-MA1` results are published. Confirmatory B1 and B2 are sealed
 with positive decisions. The new `v2`
 [matched-profiling](docs/glossary_EN.md#term-matched-profiling) package was
@@ -13,8 +13,8 @@ retries occurred, and the compact evidence package is sealed and preserved.
 The post-collection/pre-analysis descriptive protocol is frozen, and the
 registered engine has passed full synthetic validation. Pre-execution
 hardening verified provenance, consistency across the 288/1,440/96 compact
-tables, and a real `Zstandard` frame. The machine-readable execution request
-is now frozen, but separate authorization is absent; sealed-evidence
+tables, and a real `Zstandard` frame. The machine-readable execution request and actual runtime preflight are now
+frozen, but separate authorization is absent; sealed-evidence
 execution and result publication remain unauthorized.
 
 The full Stage 3B program remains incomplete.
@@ -39,7 +39,7 @@ matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
 matched_profiling_analysis_runtime_preflight_implementation=complete
-matched_profiling_analysis_runtime_preflight_frozen=false
+matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
@@ -74,7 +74,7 @@ decision.
 | Matched-profiling request and manifest | previous version retained; production refresh required after confirmatory B2 |
 | Matched-profiling runner | candidate-aware implementation complete |
 | Matched-profiling execution | 288/288 cells, 96/96 blocks, 0 failures; sealed evidence preserved |
-| Descriptive-analysis execution request | `v1` frozen; authorization absent and execution closed |
+| Descriptive-analysis request and runtime preflight | `v1` frozen; authorization absent and execution closed |
 | Test dataset | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -142,7 +142,7 @@ matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
 matched_profiling_analysis_runtime_preflight_implementation=complete
-matched_profiling_analysis_runtime_preflight_frozen=false
+matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false

@@ -86,6 +86,7 @@ of freedom before comparative results are computed.
 - [Matched-profiling descriptive-analysis protocol](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md)
 - [Matched descriptive-analysis execution request](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md)
 - [Runtime](glossary_EN.md#term-runtime): [matched descriptive-analysis preflight](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT_EN.md)
+- [Frozen matched-analysis runtime preflight](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-runtime-preflight-v1)
 - [Sealed matched-profiling evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1)
 
 ### Architecture and research decisions

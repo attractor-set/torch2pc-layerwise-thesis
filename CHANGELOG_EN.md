@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- froze the actual Stage 3B descriptive-analysis runtime preflight for merge commit `272a9258f70320416ff97c3da076435fd5334bc4`: canonical JSON and `SHA256SUMS` bind runtime/evidence/request identities while authorization, execution, and publication remain closed;
+
 - implemented the fail-closed descriptive-analysis runtime preflight: Git/Python/Zstandard and runtime-file identity, read-only verification of nine SHA-256 values, a future-authorization verifier, and an executor without an external authorization path; authorization, execution, and publication remain closed;
 
 - froze the machine-readable Stage 3B descriptive-analysis execution request: immutable evidence/protocol/core identities, one new output root, exact 18-file inventory, and at most one read-only run; authorization, execution, and publication remain closed;

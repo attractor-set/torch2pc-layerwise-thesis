@@ -105,7 +105,7 @@ matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
 matched_profiling_analysis_runtime_preflight_implementation=complete
-matched_profiling_analysis_runtime_preflight_frozen=false
+matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
@@ -118,7 +118,7 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-Runtime-preflight implementation is complete, but the actual preflight is not frozen. The next incomplete step is a separate frozen runtime preflight and machine-readable authorization for the already frozen execution request. Implementation and synthetic validation do not open analysis by themselves. The protocol freeze does not authorize
+The actual runtime preflight is frozen separately and bound to merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. The next incomplete step is a separate machine-readable authorization for the already frozen execution request and runtime preflight. Implementation and synthetic validation do not open analysis by themselves. The protocol freeze does not authorize
 comparative conclusions or open `EX-IF0`, passive diagnostics, the predictor,
 `QWake-PC`, or the test split.
 
@@ -275,7 +275,7 @@ matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
 matched_profiling_analysis_execution_request_frozen=true
 matched_profiling_analysis_runtime_preflight_implementation=complete
-matched_profiling_analysis_runtime_preflight_frozen=false
+matched_profiling_analysis_runtime_preflight_frozen=true
 matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false

@@ -95,7 +95,7 @@ evidence, frozen protocol, hardening commit, one new output root, and exact
 
 Remaining Stage 16 transition:
 
-1. separately freeze the actual runtime preflight and machine-readable authorization;
+1. issue a separate machine-readable authorization bound to the already frozen execution request and runtime preflight;
 2. run the read-only paired B0/B1/B2 analysis exactly once, seal it, and issue
    a formal `retain / conditional / reject_or_revise` decision;
 3. pass a separate publication gate for the draft release.

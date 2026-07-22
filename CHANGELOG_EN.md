@@ -5,6 +5,9 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- froze the post-action receipt for the successful Stage 3B descriptive-analysis publication: publication tag/commit, GitHub Actions run `29955946081`, release `357542590`, publication time, asset inventory/digests, and the still-closed `EX-IF0`/policy/test boundary;
+
+
 - froze a fail-closed Stage 3B descriptive-analysis publication gate: exact output/seal identities, bounded `reject_or_revise` publication, a corrected draft-only workflow, and a separate tagged action; publication, `EX-IF0`, superiority claims, policy activation, and test access remain closed until the remote action succeeds;
 
 - completed the single authorized read-only Stage 3B descriptive-analysis attempt; independently audited the exact 18-file output, preserved receipt/audit provenance, and froze an external seal as repository evidence without changing generated metadata; publication, superiority claims, `EX-IF0`, and the test split remain closed;

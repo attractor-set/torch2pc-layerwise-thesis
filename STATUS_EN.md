@@ -52,13 +52,17 @@ matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_publication_gate_frozen=true
-matched_profiling_analysis_publication_action_complete=false
+matched_profiling_analysis_publication_action_complete=true
+matched_profiling_analysis_publication_receipt_frozen=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
-results_publication_permitted=false
-release_draft_required=true
-release_publication_permitted=false
+results_publication_permitted=true
+release_draft_required=false
+release_publication_permitted=true
+release_publication_complete=true
+ex_if0_opened=false
+recursive_aggregate_execution_open=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false
 ```
@@ -83,7 +87,7 @@ decision.
 | Matched-profiling request and manifest | previous version retained; production refresh required after confirmatory B2 |
 | Matched-profiling runner | candidate-aware implementation complete |
 | Matched-profiling execution | 288/288 cells, 96/96 blocks, 0 failures; sealed evidence preserved |
-| Matched-profiling descriptive analysis | single attempt completed; 18 files audited and externally sealed; publication remains closed |
+| Matched-profiling descriptive analysis | single attempt completed; 18 files audited, published through the bounded tagged action, and bound to the frozen publication receipt |
 | Test dataset | closed |
 | Full Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -140,7 +144,7 @@ summaries, 288 append-only histories, 96 untimed correctness records, the
 locality-event stream, the environment lock, and the runtime inventory. The
 test split was not accessed.
 
-After the single analysis attempt, independent audit, and output-sealing PR, the publication boundary remains closed:
+After the single analysis attempt, independent audit, output sealing, and successful tagged publication action, the state is frozen as follows:
 
 ```text
 matched_profiling_execution_complete=true
@@ -161,13 +165,17 @@ matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_publication_gate_frozen=true
-matched_profiling_analysis_publication_action_complete=false
+matched_profiling_analysis_publication_action_complete=true
+matched_profiling_analysis_publication_receipt_frozen=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
-results_publication_permitted=false
-release_draft_required=true
-release_publication_permitted=false
+results_publication_permitted=true
+release_draft_required=false
+release_publication_permitted=true
+release_publication_complete=true
+ex_if0_opened=false
+recursive_aggregate_execution_open=false
 full_stage3b_campaign_complete=false
 ```
 
@@ -175,13 +183,12 @@ The immutable tag and release package
 `stage3b-matched-profiling-evidence-v1` are verified. A separate
 post-collection/pre-analysis protocol freezes estimands, aggregation, the
 Pareto rule, and `retain / conditional / reject_or_revise` decisions. The
-publication gate is now frozen, but the remote action is incomplete. The next
-permitted transition is to restore the evidence release to draft, verify that
-it is non-immutable, and execute the separate tagged publication action for the
-sealed 18-file output. Until that action succeeds, publication and comparative
-claims remain closed. The gate does not authorize superiority claims,
-`EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor, QWake-PC, or test-split
-access.
+bounded tagged publication action completed successfully, and the frozen
+publication receipt binds the publication commit, successful workflow run,
+release identifier, publication time, and asset digests. Publication does not
+authorize superiority claims, `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor,
+QWake-PC, or test-split access. The next permitted transition is a separate
+freeze of the `EX-IF0` protocol; recursive-aggregate execution remains closed.
 
 ADR-035 additionally freezes only the post-publication research direction:
 oracle search for a minimum sufficient compute aggregate at two scales. This
@@ -214,6 +221,8 @@ spike_like_on_critical_path=false
 | Matched-profiling execution source | `e1dcfb26823e1191b98d2aa2a598499b13197583` |
 | Matched-profiling immutable image | `sha256:3c269b4278026b5b69968b3265b506ce626f2baf693859989de3371d639da4d0` |
 | Matched-profiling evidence | `stage3b-matched-profiling-e1dcfb2-v1` |
-| Verified draft release | `stage3b-matched-profiling-evidence-v1` |
+| Published bounded release | `stage3b-matched-profiling-evidence-v1` |
+| Publication action | `stage3b-matched-descriptive-analysis-publication-v1` |
+| Publication receipt | `stage3b-matched-descriptive-analysis-publication-receipt-v1` |
 
 Documentation changes do not regenerate published results.

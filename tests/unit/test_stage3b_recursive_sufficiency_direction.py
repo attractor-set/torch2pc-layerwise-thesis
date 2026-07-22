@@ -74,11 +74,16 @@ def test_spike_like_mechanism_is_conditional() -> None:
         assert "CONTROLLER_IMPLEMENTATION_AUTHORIZED=false" in text
 
 
-def test_publication_gate_remains_first_formal_transition() -> None:
+def test_publication_receipt_precedes_closed_ex_if0_transition() -> None:
+    receipt_marker = (
+        "matched_profiling_analysis_publication_receipt_frozen=true"
+    )
     for name in ("ROADMAP.md", "ROADMAP_EN.md"):
         text = _text(ROOT / name)
-        publication = text.index("publication gate")
-        assert publication < text.index("EX-IF0", publication)
+        receipt = text.index(receipt_marker)
+        assert receipt < text.index("EX-IF0", receipt)
+        assert "ex_if0_opened=false" in text
+        assert "recursive_aggregate_execution_open=false" in text
 
     for path in DIRECTION_DOCS:
         text = _text(path)

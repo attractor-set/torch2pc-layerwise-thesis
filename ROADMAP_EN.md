@@ -43,7 +43,7 @@ B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and
 `block`/`chunk` variants are outside this contract and require separate
 preregistration.
 
-## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — analysis executed and sealed, publication closed
+## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — analysis published and receipt frozen
 
 Complete:
 
@@ -85,13 +85,17 @@ matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_publication_gate_frozen=true
-matched_profiling_analysis_publication_action_complete=false
+matched_profiling_analysis_publication_action_complete=true
+matched_profiling_analysis_publication_receipt_frozen=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
-results_publication_permitted=false
-release_draft_required=true
-release_publication_permitted=false
+results_publication_permitted=true
+release_draft_required=false
+release_publication_permitted=true
+release_publication_complete=true
+ex_if0_opened=false
+recursive_aggregate_execution_open=false
 full_stage3b_campaign_complete=false
 ```
 
@@ -101,20 +105,17 @@ computation. The single read-only attempt completed on verified `main`; the
 An external seal binds those artifacts and moves the unchanged output into
 repository evidence without rewriting generated metadata.
 
-Remaining Stage 16 transition; the publication gate is frozen:
-
-1. execute the frozen fail-closed publication action: the remote release must
-   be draft and non-immutable, analysis assets are uploaded before publication,
-   and the successful action receives a separate receipt/status freeze.
-
-Publication, superiority claims, and `EX-IF0` remain prohibited until that
-action succeeds. Negative and mixed results must be retained.
+Stage 16 is complete: the fail-closed publication action succeeded, and the
+exact remote receipt/status is frozen without rerunning the analysis.
+Superiority claims, `EX-IF0` execution, policy activation, and test access remain
+closed. Negative and mixed results are retained.
 
 ## Stage 17 — `EX-IF0` and the recursive-aggregate oracle boundary
 
-Only after the successful publication action, select and freeze B0 as the admissible exact
-implementation through `EX-IF0`. Freeze the aggregate hierarchy and
-counterfactual contract before label creation.
+After the frozen publication receipt, use a separate PR to select and freeze B0
+as the admissible exact implementation through `EX-IF0`. Before label creation,
+freeze the decision epoch, aggregate hierarchy, counterfactual contract, and
+minimum stably sufficient sweep rule. This entry does not open execution.
 
 The initial temporal baseline `A11-OFF0` retains policy-neutral `stop`, `native_one`, and
 `exact_one` branches. Identical snapshots then test preregistered nested

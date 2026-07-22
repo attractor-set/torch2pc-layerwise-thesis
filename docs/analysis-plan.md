@@ -125,7 +125,12 @@ same restored state
 `model_seed`, фиксирует оценки, порядок агрегации, семимерное Парето-правило,
 пороги продолжения и решения `retain / conditional / reject_or_revise`. Это
 фиксация после сбора и до анализа, а не предварительная регистрация до сбора
-данных.
+данных. После `implementation` и `hardening` отдельно зафиксирован
+[`execution request`](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST.md),
+который связывает один `read-only` [запуск](glossary.md#term-run),
+неизменяемые входы, `analysis core`, единственный новый `output root` и
+точный набор из 18 файлов. `Request` не является `authorization` и не
+открывает вычисление результатов.
 
 ## Полнота и публикация
 

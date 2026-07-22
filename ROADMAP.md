@@ -44,7 +44,7 @@ Stage 3B B0 и статистический и инженерный анализ
 `block`/`chunk` не входят в этот контракт и требуют отдельной предварительной
 регистрации.
 
-## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — hardening завершён, выполнение закрыто
+## Этап 16 — точные кандидаты и [сопоставленное профилирование](docs/glossary.md#term-matched-profiling) — execution request зафиксирован, authorization закрыта
 
 Завершено:
 
@@ -73,6 +73,8 @@ matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -91,11 +93,15 @@ authorization и dry-run прошли. Все 288 ячеек и 96 matched block
 failures и retries, runtime validation прошла, а compact evidence package
 запечатан и перенесён в репозиторий.
 
+Execution request `v1` зафиксирован под ADR-030 и связан с immutable evidence,
+frozen protocol, hardening commit, одним новым output root и точным inventory
+из 18 файлов. Он не является допуском.
+
 Оставшийся переход внутри этапа 16:
 
-1. отдельная машиночитаемая фиксация запроса и допуска запуска на sealed evidence;
-2. описательный paired analysis B0/B1/B2, sealing анализа и формальное решение
-   `retain / conditional / reject_or_revise`;
+1. отдельный runtime preflight и машиночитаемая authorization;
+2. однократный read-only paired analysis B0/B1/B2, sealing анализа и
+   формальное решение `retain / conditional / reject_or_revise`;
 3. отдельный publication gate для чернового релиза.
 
 До analysis authorization запрещены вычисление сравнительных результатов,

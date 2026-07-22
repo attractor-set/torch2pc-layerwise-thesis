@@ -13,8 +13,10 @@ ROCm/float32 preflight, authorization и dry-run gates, после чего за
 Post-collection/pre-analysis протокол описательного анализа уже
 зафиксирован. Зарегистрированное ядро реализовано и проверено на полной
 синтетической матрице. Pre-execution hardening подтвердил происхождение,
-согласованность 288/1440/96 compact-таблиц и настоящий `Zstandard` кадр;
-выполнение на запечатанном источнике и публикация результатов ещё не разрешены.
+согласованность 288/1440/96 compact-таблиц и настоящий `Zstandard` кадр.
+Машиночитаемый execution request теперь зафиксирован, но отдельная
+authorization отсутствует; выполнение на запечатанном источнике и
+публикация результатов ещё не разрешены.
 
 Полный Stage 3B остаётся незавершённым.
 
@@ -36,6 +38,8 @@ matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -69,6 +73,7 @@ full_stage3b_campaign_complete=false
 | Запрос и манифест сопоставленного профилирования | новый `v2` refreeze сохранён; исторический `v1` неизменен |
 | Исполнитель сопоставленного профилирования | реализация с учётом кандидата завершена |
 | Выполнение сопоставленного профилирования | 288/288 ячеек, 96/96 блоков, 0 failures; sealed evidence сохранён |
+| Запрос выполнения описательного анализа | `v1` frozen; authorization отсутствует, execution закрыт |
 | Тестовая выборка | закрыта |
 | Полный Stage 3B | `full_stage3b_campaign_complete=false` |
 
@@ -134,6 +139,8 @@ matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false

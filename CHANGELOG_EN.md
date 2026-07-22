@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- froze the machine-readable Stage 3B descriptive-analysis execution request: immutable evidence/protocol/core identities, one new output root, exact 18-file inventory, and at most one read-only run; authorization, execution, and publication remain closed;
+
 - hardened the registered descriptive-analysis engine before execution: separated synthetic and future authorized-output provenance, verified mutual consistency across 288 cells, 1,440 repetitions, and 96 summary rows, and added a real `Zstandard` canary; execution and publication remain closed;
 
 - implement the registered matched-profiling descriptive-analysis engine: the complete 288/1,440 synthetic matrix, exact 18-file output set, seven-dimensional Pareto rule, streaming locality diagnostics, deterministic PDFs, and fail-closed sealed-evidence execution pending separate authorization;

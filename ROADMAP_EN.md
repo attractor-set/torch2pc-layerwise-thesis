@@ -43,7 +43,7 @@ B1 `isolated_layer_vjp`, B2 `composite_vjp`, the shared overview, and
 `block`/`chunk` variants are outside this contract and require separate
 preregistration.
 
-## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — hardening complete, execution closed
+## Stage 16 — exact candidates and [matched profiling](docs/glossary_EN.md#term-matched-profiling) — execution request frozen, authorization closed
 
 Complete:
 
@@ -73,6 +73,8 @@ matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -85,14 +87,16 @@ release_publication_permitted=false
 full_stage3b_campaign_complete=false
 ```
 
+Execution request `v1` is frozen under ADR-030 and binds the immutable
+evidence, frozen protocol, hardening commit, one new output root, and exact
+18-file inventory. It is not an admission.
+
 Remaining Stage 16 transition:
 
-1. freeze a separate machine-readable execution request;
-2. verify the immutable source and a new output directory;
-3. issue a separate machine-readable authorization for sealed-evidence access;
-4. run and seal the descriptive paired B0/B1/B2 analysis and issue a formal
-   `retain / conditional / reject_or_revise` decision;
-5. pass a separate publication gate for the draft release.
+1. complete a separate runtime preflight and machine-readable authorization;
+2. run the read-only paired B0/B1/B2 analysis exactly once, seal it, and issue
+   a formal `retain / conditional / reject_or_revise` decision;
+3. pass a separate publication gate for the draft release.
 
 The implementation and pre-execution hardening are complete: source provenance,
 compact-table consistency across 288 cells, 1,440 repetitions, and 96 summary

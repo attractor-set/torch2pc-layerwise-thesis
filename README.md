@@ -91,7 +91,9 @@
   `stage3b-matched-descriptive-analysis-protocol-v1`; зарегистрированное
   вычислительное ядро реализовано, прошло полную синтетическую проверку и
   pre-execution hardening происхождения, compact consistency и настоящего
-  `Zstandard` кадра; выполнение на запечатанных результатах остаётся закрытым.
+  `Zstandard` кадра. Execution request `v1` зафиксирован и связан с точными
+идентичностями входов, protocol/core, одним output root и 18 файлами;
+authorization отсутствует, поэтому выполнение остаётся закрытым.
 
 Текущая граница:
 
@@ -102,6 +104,8 @@ matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -113,8 +117,8 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-Следующий незавершённый шаг — отдельная машиночитаемая фиксация запроса и
-допуск выполнения на запечатанных доказательных материалах. Реализация и
+Следующий незавершённый шаг — отдельный runtime preflight и
+машиночитаемая authorization для уже зафиксированного execution request. Реализация и
 синтетические проверки сами по себе не открывают анализ. Фиксация протокола не разрешает сравнительных
 выводов и не открывает `EX-IF0`, пассивную диагностику, предиктор, `QWake-PC`
 или тестовую выборку.
@@ -265,14 +269,16 @@ fallback validation или end-to-end B1/B2 benefit. Итоговые матер
 `EQ-B2`, выполнение 288-ячеечного сопоставленного профилирования, sealing,
 evidence PR, immutable tag и полный черновой релиз уже завершены.
 
-Реализация и pre-execution hardening зафиксированного
-post-collection/pre-analysis протокола завершены. До нового допуска запуска
+Реализация, pre-execution hardening и execution-request freeze
+post-collection/pre-analysis протокола завершены. До отдельного допуска запуска
 сохраняются:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false

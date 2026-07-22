@@ -1,0 +1,124 @@
+{
+  "claim_boundary": {
+    "analysis_execution_performed": false,
+    "analysis_execution_permitted": false,
+    "analysis_output_evidence": false,
+    "analysis_results_present": false,
+    "ex_if0_opened": false,
+    "execution_authorization_present": false,
+    "execution_request_frozen": true,
+    "full_stage3b_campaign_complete": false,
+    "policy_activation_permitted": false,
+    "release_publication_permitted": false,
+    "request_builder_uses_observed_metric_values": false,
+    "results_publication_permitted": false,
+    "source_evidence_read_only": true,
+    "superiority_claim_permitted": false,
+    "test_dataset_access": false
+  },
+  "failure_policy": {
+    "implementation_identity_mismatch": "fail_closed",
+    "missing_or_changed_source": "fail_closed",
+    "partial_output": "remove_temporary_output_and_fail_closed",
+    "post_hoc_exclusion": "forbidden",
+    "preexisting_output_root": "fail_closed",
+    "protocol_identity_mismatch": "fail_closed",
+    "second_execution_attempt": "fail_closed",
+    "unexpected_output_inventory": "fail_closed"
+  },
+  "freeze_date": "2026-07-21",
+  "implementation": {
+    "analysis_core_mutation_after_request_permitted": false,
+    "analysis_module": {
+      "path": "src/torch2pc_thesis/stage3b_matched_analysis.py",
+      "sha256": "0e9f55fc337b7870923a087308f370afc54bdce97501ce462c1033062a322462"
+    },
+    "authorization_wrapper_may_be_added_separately": true,
+    "implementation_base_commit": "70d6c3ca971415f57805dbf9b2ed4bbb80b2d873",
+    "synthetic_cli": {
+      "path": "scripts/analyze_stage3b_matched.py",
+      "sealed_evidence_input_exposed": false,
+      "sha256": "5a402f1588eea1e751fcf448257d549c85f2de89171e6ca2f6e87404b6c976a4"
+    }
+  },
+  "next_required_slice": "separate runtime preflight and machine-readable execution authorization; no sealed-evidence analysis before merge",
+  "output_contract": {
+    "atomic_directory_publication": true,
+    "checksum_registry": "SHA256SUMS",
+    "expected_top_level_file_count": 18,
+    "expected_top_level_files": [
+      "paired_block_metrics.csv",
+      "configuration_summary.csv",
+      "candidate_method_summary.csv",
+      "pareto_membership.csv",
+      "locality_cell_summary.csv",
+      "scaling_seed_effects.csv",
+      "analysis_metadata.json",
+      "analysis_summary.json",
+      "engineering_decision.json",
+      "REPORT.md",
+      "REPORT_EN.md",
+      "device_time_ratio_heatmap.pdf",
+      "peak_memory_ratio_heatmap.pdf",
+      "structural_cost_ratio_heatmap.pdf",
+      "scaling_effects.pdf",
+      "pareto_membership.pdf",
+      "seed_consistency.pdf",
+      "SHA256SUMS"
+    ],
+    "publication_gate_required_after_sealing": true,
+    "results_publication_permitted": false,
+    "root": "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1",
+    "root_policy": "must_not_exist_before_authorized_execution",
+    "seal_required_after_execution": true
+  },
+  "phase": "post_implementation_pre_authorization",
+  "protocol": {
+    "frozen": true,
+    "path": "experiments/frozen/stage3b-matched-descriptive-analysis-v1/protocol.json",
+    "protocol_id": "stage3b-matched-descriptive-analysis-protocol-v1",
+    "registry_path": "experiments/frozen/stage3b-matched-descriptive-analysis-v1/SHA256SUMS",
+    "registry_sha256": "a49f49f423948900221007d715e5dc174cd3b14af288ddc56f87ec5366307b63",
+    "sha256": "074510f1212f1eceb41da8b42ab52f1fd9d816c3901f2a3b8e4e7afec59a3209"
+  },
+  "request_base_commit": "70d6c3ca971415f57805dbf9b2ed4bbb80b2d873",
+  "request_digest": "5c813e101c17210443b63b6499c7c6fed88fe34029f438942b71ad9faf127a2e",
+  "request_id": "stage3b-matched-descriptive-analysis-execution-request-v1",
+  "requested_execution": {
+    "authorization_must_be_machine_readable": true,
+    "authorization_must_bind_request_digest": true,
+    "authorization_must_bind_runtime_identity": true,
+    "authorization_must_freeze_generated_at_utc": true,
+    "authorization_must_verify_output_root_absent": true,
+    "authorization_must_verify_source_hashes_before_and_after": true,
+    "authorization_required": true,
+    "authorization_status": "not_issued",
+    "dry_run_must_not_compute_metric_values": true,
+    "maximum_execution_count": 1,
+    "mode": "single_authorized_read_only_run",
+    "network_access_required": false
+  },
+  "schema_version": 1,
+  "source_evidence": {
+    "access_mode": "read_only",
+    "expected_sha256": {
+      "SEALED-SHA256SUMS": "98ba77a375e4cfb2931b0490d642f7861834dfa30981f28e8a305a49765764c8",
+      "SHA256SUMS": "ea9b5facec9605b9af89a69a6ccc5e49a3790c25e6fd9c768bf4fe760114411d",
+      "analysis_metadata.json": "b60b3fd8b24c9c847fac3826131a0ab5b50987c04835841573d9351b8e43f605",
+      "locality_events.asset.json": "348e578d4334737d676b0da41ac42f001943653e973dff5183ceb5e7d23519c1",
+      "locality_events.jsonl.zst": "59a1479d66f170970b4d0f2b0712b8a825ccca01eab677c887a9046fc4c16f76",
+      "profiling_cells.csv": "91f5bf665778f2edefbcdcfa9572df771b1288274e902123e303b59c71733373",
+      "profiling_repetitions.csv": "788a16e66d62a8ddba52a200fc19014eab18312cc71fae652d760033161bff27",
+      "profiling_summary.csv": "92ba5ae6b3cbba256f54ffccaf44ab21fc8c294442a9a25366d0b7ae0aa1c4c7",
+      "seal.json": "83691730d46599a7a4d1ffd8ee0e2b9ee82c13771892b21c8c986d9a700e60f3"
+    },
+    "locality_uncompressed_sha256": "3228baaa0f6479b1b4296f96632bd2d99c49642dc38f28f5ed7bc978d9dc538a",
+    "profiling_execution_source_commit": "e1dcfb26823e1191b98d2aa2a598499b13197583",
+    "profiling_image_digest": "sha256:3c269b4278026b5b69968b3265b506ce626f2baf693859989de3371d639da4d0",
+    "release_commit": "21ddfb8840674871f0b9d888b36397f5cf0e111b",
+    "release_tag": "stage3b-matched-profiling-evidence-v1",
+    "root": "results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1",
+    "test_dataset_access": false
+  },
+  "status": "frozen_execution_request_authorization_not_issued"
+}

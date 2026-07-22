@@ -90,7 +90,9 @@ The following work is complete in the pinned Ubuntu/ROCm environment:
   `stage3b-matched-descriptive-analysis-protocol-v1`; the registered
   computational engine is implemented, passed full synthetic validation, and
   completed pre-execution hardening for provenance, compact consistency, and a
-  real `Zstandard` frame; execution against sealed results remains closed.
+  real `Zstandard` frame. Execution request `v1` is frozen and binds exact
+input, protocol/core, one output-root, and 18-file identities; authorization
+is absent, so sealed execution remains closed.
 
 The current boundary is:
 
@@ -101,6 +103,8 @@ matched_profiling_evidence=sealed
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false
@@ -112,8 +116,8 @@ release_draft_required=true
 release_publication_permitted=false
 ```
 
-The next incomplete step is a separate machine-readable execution-request
-freeze and authorization for sealed evidence. Implementation and synthetic
+The next incomplete step is a separate runtime preflight and machine-readable
+authorization for the already frozen execution request. Implementation and synthetic
 validation do not open analysis by themselves. The protocol freeze does not authorize
 comparative conclusions or open `EX-IF0`, passive diagnostics, the predictor,
 `QWake-PC`, or the test split.
@@ -261,14 +265,16 @@ B1/B2 preregistration, the B1 and B2 implementations, sealed `EQ-B1` and
 `EQ-B2`, the 288-cell matched-profiling execution, sealing, evidence PR,
 immutable tag, and complete draft release are finished.
 
-Implementation and pre-execution hardening of the frozen
-post-collection/pre-analysis protocol are complete. Until a new execution
+Implementation, pre-execution hardening, and execution-request freezing of
+the post-collection/pre-analysis protocol are complete. Until a separate execution
 authorization is recorded, the following boundaries remain unchanged:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
 matched_profiling_analysis_implementation_complete=true
 matched_profiling_analysis_preexecution_hardening=complete
+matched_profiling_analysis_execution_request_frozen=true
+matched_profiling_analysis_execution_authorization_present=false
 matched_profiling_analysis_synthetic_validation=pass
 matched_profiling_analysis_execution_open=false
 matched_profiling_analysis_results_present=false

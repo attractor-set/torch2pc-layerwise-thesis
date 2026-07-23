@@ -134,6 +134,12 @@ further bounds mandatory validation to one
 Rosenbaum FixedPred at `eta=1` and introduces one immutable permission-gated
 image.
 
+The historical policy queue after `EX-IF0` remains as provenance rather than
+as the current mandatory critical path: `A11-OFF0` denotes offline opportunity
+and recognizability analysis, `A11-OFF1` freezes the selected `predictor`, and
+only then may `shadow` evaluation proceed. ADR-042 maps this work onto the
+`C1/C2/C3` roles without opening execution gates.
+
 ## Stage 18 — `QW-0`: scope freeze — current docs-only stage
 
 Freeze:

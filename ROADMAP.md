@@ -139,6 +139,12 @@ ADR-039–ADR-041 задают D/U/S и интегрированный temporal 
 [QWake-FP](docs/glossary.md#term-qwake-fp) на исправленном Rosenbaum FixedPred
 при `eta=1` и вводит один immutable permission-gated image.
 
+Историческая policy-очередь после `EX-IF0` сохраняется как provenance, но не
+как текущий mandatory critical path: `A11-OFF0` обозначает offline opportunity
+и recognizability analysis, `A11-OFF1` — заморозку выбранного `predictor`, после
+чего допускается только `shadow`-оценка. ADR-042 переносит эти работы в роли
+`C1/C2/C3`, не открывая execution gates.
+
 ## Этап 18 — `QW-0`: scope freeze — текущий docs-only этап
 
 Зафиксировать:

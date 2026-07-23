@@ -66,7 +66,7 @@ In the current mandatory design space:
   experimental validation.
 
 QWake-PC generality is specified through interfaces and invariants. Only
-QWake-FP is experimentally validated; its negative result does not falsify
+QWake-FP is experimentally validated; its negative result does not invalidate
 PC-CATM or PC-TREF, and its positive result does not establish transfer to
 other algorithms or regimes.
 

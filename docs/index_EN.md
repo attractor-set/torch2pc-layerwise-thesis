@@ -113,3 +113,9 @@ of freedom before comparative results are computed.
 - [Design model](stage3b-integrated-frontier-model_EN.md)
 - [ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model_EN.md)
 - [ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md)
+
+## Bounded `QWake-FP` validation
+
+- [Canonical plan](qwake-fp-experimental-plan_EN.md)
+- [ADR-042](decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
+- [QWake-PC](glossary_EN.md#term-qwake-pc): [general design](qwake-pc-design_EN.md)

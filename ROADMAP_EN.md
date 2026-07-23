@@ -121,127 +121,153 @@ exact remote receipt/status is frozen without rerunning the analysis.
 Superiority claims, policy activation, and test access remain closed. Negative
 and mixed results are retained.
 
-## Stage 17
+## Stage 17 — `EX-IF0` and current design boundary — complete
 
-<!-- BEGIN STAGE3B-DUS-FUTURE-POLICY-COMPATIBILITY -->
-### Compatible future-policy boundary
+`stage2_baseline` is frozen as the canonical exact reference and fail-closed
+fallback. The decision epoch, task-relative endpoint, oracle margin, and
+full-suffix rule for the minimum stably sufficient sweep are frozen. Execution
+and oracle-label generation remain closed.
 
-`EX-IF0` retains the canonical exact reference and fail-closed fallback.
-`A11-OFF0` remains the policy-neutral snapshot and oracle-collection stage.
-`A11-OFF1` may open only after informative gates; its predictor is evaluated
-only in shadow mode and does not control execution.
-<!-- END STAGE3B-DUS-FUTURE-POLICY-COMPATIBILITY -->
- — `EX-IF0` and the recursive-aggregate oracle boundary
+ADR-039–ADR-041 define D/U/S and the integrated temporal frontier. ADR-042
+further bounds mandatory validation to one
+[QWake-FP](docs/glossary_EN.md#term-qwake-fp) implementation for corrected
+Rosenbaum FixedPred at `eta=1` and introduces one immutable permission-gated
+image.
 
-The `EX-IF0 v1` design freeze is complete: `stage2_baseline` is selected as the
-canonical exact reference and fail-closed fallback for `FixedPred` and `Strict`.
-The decision epoch, full configuration-specific reference horizon,
-task-relative endpoint, `rocm_float32` threshold profile, and full-suffix rule
-for the minimum stably sufficient sweep are frozen. Execution and label
-generation remain closed.
+The historical policy queue after `EX-IF0` remains as provenance rather than
+as the current mandatory critical path: `A11-OFF0` denotes offline opportunity
+and recognizability analysis, `A11-OFF1` freezes the selected `predictor`, and
+only then may `shadow` evaluation proceed. ADR-042 maps this work onto the
+`C1/C2/C3` roles without opening execution gates.
 
-The next separate contract must freeze concrete spatial hierarchy membership
-and `A11-OFF0` snapshot branching before labels are generated. The temporal
-baseline retains policy-neutral `stop`, `native_one`, and `exact_one` branches;
-under `v1`, the two one-step branches are an identity control for the selected
-`stage2_baseline`. Identical snapshots then test preregistered nested aggregates
-at a minimum of two scales: layers within a block and blocks within the network.
-Every candidate records exact-reference regret, oracle margin `M^*`, the
-complete cost vector, and provenance.
+## Stage 18 — `QW-0`: scope freeze — current docs-only stage
 
-Stage decisions are:
+Freeze:
 
-- `E2`: existence of a cheaper sufficient partial aggregate;
-- `E3`: state dependence of the oracle-optimal aggregate;
-- `E5`: reuse of one normative semantics at two scales;
-- `H0`: occupancy near the sufficiency boundary;
-- `P0`: diagnostic opportunity without pre-action leakage.
+- general `QWake-PC` versus concrete `QWake-FP`;
+- the corrected Rosenbaum FixedPred special case;
+- `C1_COLLECTION / C2_CALIBRATION / C3_CONFIRMATORY / R_REPLICATION` roles;
+- one finite superset image;
+- permission checks at effect boundaries;
+- frozen policy as a data manifest;
+- publication-strength baselines, untouched seeds, ablations, replication, and
+  a trajectory benchmark.
 
-A learned estimator, temperature, hysteresis, and `QWake-PC` do not control execution at
-this stage. The independent unit is `model_seed`; the test split remains
+Scientific execution, labels, features, calibration, and test access remain
 closed.
 
+## Stage 19 — `QW-1`: pure QWake contract
 
-## Stage 18 — `DUS-0` and `DUS-1`: freeze and refactoring
+Without Torch2PC or GPU, implement pure types for frontier state, observations,
+analytics, actions, admission, costs, oracle labels, and provenance, plus
+`Capability`, [campaign role](docs/glossary_EN.md#term-campaign-role),
+`PermissionSet`, and `ExecutionContext`.
 
-ADR-041 supplies current corrective semantics above unchanged ADR-039 and
-ADR-040. The deployable observation axis is `A0 -> A1 -> A2`, while `O` is a
-separate post-action oracle. ADVANCE_FRONTIER has OBSERVATION, ANALYTIC, and
-COMPUTE kinds; `controls_execution=false`.
+Gate: fail-closed defaults, deterministic replay, property tests, and rejection
+of every incompatible permission combination.
 
-The mandatory thesis path is bounded to temporal FixedPred, a finite analytic
-registry, deterministic shadow replay, and the canonical suffix. Recursive
-spatial aggregates and active control are conditional.
+## Stage 20 — `QW-2`: QWake-FP special-case contract
 
-ADR-039 freezes FixedPred, `stage2_baseline`, the EX-IF0 oracle,
-the [Rosenbaum wavefront
-control](docs/glossary_EN.md#term-rosenbaum-wavefront-control), and
-[D/U/S decision semantics](docs/glossary_EN.md#term-dus-decision-semantics).
+Freeze FixedPred, eta=1, stage2_baseline, architecture, horizon, snapshot
+boundaries, task-relative response, primary defect, A0/A1/A2, analytic
+registry, cost schema, baselines, role matrix, and receipt requirements.
 
-The first slice is limited to the new `stage3b_sufficiency` namespace,
-separation of oracle, pre-action features, policy, and cost accounting,
-schemas, pure types, synthetic tests, a finite deterministic analytic registry
-with exact, conservative, and heuristic result classes, explicit mapping from
-edge measurements to decision cost without double counting, non-interference,
-local-monotonicity, and provenance checks.
+## Stage 21 — `QW-3`: superset pipeline implementation
 
-Scientific execution remains closed.
-
-## Stage 19 — `DUS-2` and `DUS-3`: positive control and contract
-
-Test the Rosenbaum special case as an analytic component-completion positive
-control. Then freeze A11-OFF0, the snapshot schema, temporal prefixes, optional
-spatial aggregates, endpoint, cost fields, seeds, and the no-test boundary.
-
-## Stage 20 — `DUS-4`–`DUS-7`: collector and oracle
-
-Implement the policy-neutral collector, then separately freeze runtime
-preflight and authorization. After authorized collection:
-
-- retain pre-action representations;
-- execute the full canonical suffix;
-- compute `M^*(t)` and `t^*`;
-- measure the complete cost vector;
-- retain provenance;
-- freeze estimands, thresholds, the risk-control procedure, and
-  negative-result rules before comparative analysis.
-
-No policy controls execution.
-
-## Stage 21 — `DUS-8` and `DUS-9`: opportunity and representations
-
-First determine whether an early sufficient prefix exists, is state-dependent,
-is cheaply observable, and is economically feasible.
-
-Then compare nested representations in the order dangerous DONE, safe
-coverage, UNKNOWN burden, diagnostic cost, and context stability.
-
-Use a static alternative if state dependence is absent.
-
-## Stage 22 — `DUS-10`: deterministic shadow replay
-
-Compare a fixed cascade, cheapest-first, greedy quality, greedy quality per
-cost, all metrics, and an offline oracle sequence.
+Before the first scientific freeze, implement the complete mandatory code:
 
 ```text
-controls_execution=false
+collector
+A0/A1/A2
+analytic registry
+canonical suffix and post-action O
+cost instrumentation
+opportunity and recognizability analysis
+policy interpreter
+baseline and ablation replay
+shadow confirmatory evaluation
+replication evaluation
+sealing and publication export
 ```
 
-The greedy policy is not treated as globally optimal.
+A manifest cannot load arbitrary code and may activate only embedded
+capabilities.
 
-## Stage 23 — conditional final freeze
+## Stage 22 — `QW-4`: pre-freeze validation
 
-Confirmatory evaluation opens only after nonzero safe coverage, admissible
-dangerous-DONE risk, observer non-interference, cost feasibility, and
-`model_seed` stability.
+Run static/unit/integration checks, CPU/ROCm smoke, permission matrix, negative
+permission tests, observer-on/off non-interference, deterministic replay,
+schema tests, corrupt/missing-manifest tests, receipt-chain tests, and baseline
+replay tests.
 
-One final test evaluation requires a separate final freeze.
+A disabled capability must not be called, read tensors, allocate memory,
+synchronize the device, or create output.
 
-## Stage 24 — thesis and article
+## Stage 23 — `QW-5`: single scientific-image freeze
 
-Integrate Stage 1/2, Stage 3A, B0, SI-MA0, SI-MA1, B1/B2, EX-IF0, and D/U/S
-results. Mark unexecuted spatial, learned, and active extensions as future
-work.
+Freeze source commit/tree, Torch2PC commit, image digest, code manifest, and
+output/capability/policy schema versions. Executable code and dependencies do
+not change across C1/C2/C3/R.
+
+A material post-freeze defect requires a new digest and protocol version; old
+evidence remains preserved and is not rewritten.
+
+## Stage 24 — `QW-6`: `C1_COLLECTION` and opportunity
+
+With the same image, collect complete temporal trajectories, A0/A1/A2,
+analytic outputs, edge costs, canonical suffix, and post-action oracle labels.
+
+Opportunity gate:
+
+```text
+exists_preterminal_sufficient_state=true
+potential_avoided_cost_exceeds_control_overhead_lower_bound=true
+```
+
+If the gate fails, policy selection is not mandatory; the result is preserved
+as a bounded negative finding.
+
+## Stage 25 — `QW-7`: `C2_CALIBRATION` and policy freeze
+
+On the calibration partition, compare A0, A0+A1, A0+A1+A2, and
+A0+A1+A2+analytics, run baselines and nested ablations, and select the simplest
+safe nearly non-dominated policy.
+
+SELECT_POLICY and FREEZE_POLICY are permitted only here. Confirmatory access is
+closed. The output is a frozen policy manifest and sealed C2 receipt.
+
+## Stage 26 — `QW-8`: `C3_CONFIRMATORY`
+
+On untouched model seeds, load the frozen policy and run shadow evaluation,
+always completing the canonical suffix for post-action audit.
+
+Decision order is immutable:
+
+```text
+safety
+coverage
+net cost
+```
+
+After partition opening, features, thresholds, analytic order, primary defect,
+baselines, and cost mapping do not change.
+
+## Stage 27 — `QW-9`: replication without retuning
+
+With the same image digest and policy manifest, run one preregistered
+replication, preferably MNIST with the same architecture. Policy or threshold
+changes are forbidden. Transfer failure is an admissible result.
+
+## Stage 28 — `QW-10`: synthesis, thesis, and publication gate
+
+Integrate Stage 1/2, Stage 3A, B0, SI-MA0/1, B1/B2, EX-IF0, opportunity,
+recognizability, confirmatory safety/coverage/cost, ablations, and replication.
+
+Publication opens through a separate bounded decision only after sealed C1,
+C2, C3, and replication receipts, or a preregistered decision not to run
+replication.
+
+Full plan: [bounded QWake-FP validation](docs/qwake-fp-experimental-plan_EN.md).
 
 ## Post-master's boundary — prospective PhD line
 

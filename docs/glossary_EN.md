@@ -654,6 +654,27 @@ checks and decision gates.
 - **Architectural role:** PC-TREF is the theoretical decision-sufficiency framework, PC-CATM is the mechanism model of correction formation and cancellation, and QWake-PC is their control-layer embodiment. `QW-PC0` and `QW-AB0` denote separate versioned concrete-controller designs and are not synonyms for QWake-PC.
 - **Usage rule:** `Qualified` governs action admissibility, `Quotient` links the controller to task-relative PC-TREF representation, `Quality` constrains result quality and decision regret, `Quiet` denotes diagnostic context without automatic permission to stop, and `Quick` is only a separately demonstrated engineering outcome. QWake-PC does not denote one fixed algorithm. A controller is evaluated in shadow mode first; active control requires registered safety and complete-cost gates.
 
+<a id="term-qwake-fp"></a>
+### TERM-QWAKE-FP — QWake-FP
+
+- **Russian equivalent:** QWake-FP.
+- **Project meaning:** The only mandatory concrete shadow implementation of the general QWake-PC specification for the corrected Rosenbaum FixedPred special case at `eta=1` with canonical `stage2_baseline`.
+- **Usage rule:** QWake-FP experimental findings do not automatically generalize to QWake-PC, `Strict`, arbitrary `eta`, other graphs, or active control.
+
+<a id="term-capability-gate"></a>
+### TERM-CAPABILITY-GATE — capability gate
+
+- **Russian equivalent:** барьер capability.
+- **Project meaning:** An internal fail-closed permission check at an effect boundary that permits only a preregistered capability embedded for the current campaign role.
+- **Usage rule:** A disabled capability does not execute and creates no hidden tensor read, allocation, synchronization, trace, or output; a manifest cannot carry arbitrary code.
+
+<a id="term-campaign-role"></a>
+### TERM-CAMPAIGN-ROLE — campaign role
+
+- **Russian equivalent:** роль кампании.
+- **Project meaning:** A machine-checked `C1_COLLECTION`, `C2_CALIBRATION`, `C3_CONFIRMATORY`, or `R_REPLICATION` stage that determines the allowed capabilities and required sealed-receipt chain.
+- **Usage rule:** A campaign role is not an observation level; C1/C2/C3/R are used specifically to avoid conflating stages with A0/A1/A2.
+
 <a id="term-precision-masked-zero"></a>
 ### TERM-PRECISION-MASKED-ZERO — precision-masked zero
 

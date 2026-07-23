@@ -114,3 +114,9 @@
 - [Проектная модель](stage3b-integrated-frontier-model.md)
 - [ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model.md)
 - [ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md)
+
+## Ограниченная проверка `QWake-FP`
+
+- [Канонический план](qwake-fp-experimental-plan.md)
+- [ADR-042](decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md)
+- [QWake-PC](glossary.md#term-qwake-pc): [общий дизайн](qwake-pc-design.md)

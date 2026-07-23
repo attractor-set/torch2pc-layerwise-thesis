@@ -65,3 +65,4 @@
 
 - [ADR-040](ADR-040-stage3b-integrated-frontier-model_EN.md): keeps ADR-039 unchanged and freezes the integrated frontier, `A0 / A1 / A2 / O`, `ACCEPT_FRONTIER / ADVANCE_FRONTIER / COMPLETE_SUFFIX`, transition cost, and the closed execution boundary.
 - [ADR-041](ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md): retains ADR-039/040 as historical decisions and freezes current `A0 -> A1 -> A2`, separate O, `OBSERVATION / ANALYTIC / COMPUTE`, local monotonicity, cost mapping, admission, and bounded temporal-scope semantics.
+- [ADR-042](ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md): bounds mandatory validation to one [QWake-FP](../glossary_EN.md#term-qwake-fp), freezes the corrected Rosenbaum FixedPred special case, one immutable superset image, C1/C2/C3/R roles, internal permission gates, and a sealed-receipt chain.

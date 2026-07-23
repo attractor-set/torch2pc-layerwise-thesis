@@ -5,6 +5,8 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- зафиксирован `ADR-040` и интегрированная модель фронтира: уровни наблюдения `A0 / A1 / A2`, отдельный post-action `O`, действия `ACCEPT_FRONTIER / ADVANCE_FRONTIER / COMPLETE_SUFFIX`, стоимость каждого перехода и разделение `PC-TREF`/`PC-CATM`/`QWake-PC`; `ADR-039` не переписан, выполнение и сбор остаются закрытыми;
+
 - зафиксирован ADR-039 и двуязычный пакет FixedPred sufficiency: исправлена роль joint-VJP, добавлены Rosenbaum positive control, `DONE / UNKNOWN / SWEEP`, реестр selective/acquisition/cost-метрик, план рефакторинга и fail-closed roadmap без открытия выполнения;
 
 - зафиксирован `EX-IF0 v1`: `stage2_baseline` выбран как канонический точный reference/fallback для `FixedPred` и `Strict`; заморожены decision epoch, task-relative endpoint, `rocm_float32` thresholds, oracle margin и правило полного suffix для минимального устойчиво достаточного свипа, при этом execution, oracle labels, признаки, политика и test split остаются закрытыми;

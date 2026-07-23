@@ -411,3 +411,13 @@ D/U/S](docs/glossary.md#term-dus-decision-semantics) остаётся тенев
 
 Документационная фиксация не открывает выполнение, создание oracle-меток,
 сбор признаков, policy activation или test split.
+
+## Интегрированная модель фронтира
+
+[ADR-040](docs/decisions/ADR-040-stage3b-integrated-frontier-model.md) уточняет
+следующий проектный слой после ADR-039. `DONE / UNKNOWN / SWEEP` сохраняются как
+предшествующая семантика, а действия разделены на `ACCEPT_FRONTIER`,
+`ADVANCE_FRONTIER` и `COMPLETE_SUFFIX`. Уровни `A0 / A1 / A2` учитывают
+стоимость наблюдения; `O` остаётся только post-action oracle. Документационная
+фиксация не открывает выполнение, сбор признаков, создание меток, политику или
+test split.

@@ -169,6 +169,11 @@ one-step ветви являются identity-control выбранного `stag
 
 ## Этап 18 — `DUS-0` и `DUS-1`: фиксация и рефакторинг
 
+ADR-040 добавляет интегрированную модель фронтира поверх неизменного ADR-039.
+Обязательная ось наблюдения — `A0 -> A1 -> A2`, а `O` остаётся post-action
+oracle. Теневой алфавит действий — `ACCEPT_FRONTIER`, `ADVANCE_FRONTIER`,
+`COMPLETE_SUFFIX`; `controls_execution=false`.
+
 ADR-039 фиксирует `FixedPred`, `stage2_baseline`, oracle `EX-IF0`,
 [wavefront-контроль Rosenbaum](docs/glossary.md#term-rosenbaum-wavefront-control)
 и [семантику решений

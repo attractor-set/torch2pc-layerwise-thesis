@@ -20,6 +20,7 @@ nav:
           - Design: fixedpred-sufficiency-dus-design_EN.md
           - D/U/S metrics: fixedpred-sufficiency-dus-metrics_EN.md
           - Refactoring plan: fixedpred-sufficiency-dus-refactoring-plan_EN.md
+          - Integrated frontier: stage3b-integrated-frontier-model_EN.md
       - Experiment protocol: experiment-protocol_EN.md
       - Threats to validity: threats-to-validity_EN.md
       - Reproducibility: reproducibility_EN.md

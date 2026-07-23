@@ -135,3 +135,5 @@ docs/fixedpred-sufficiency-dus-metrics.md,docs/fixedpred-sufficiency-dus-metrics
 docs/fixedpred-sufficiency-dus-refactoring-plan.md,docs/fixedpred-sufficiency-dus-refactoring-plan_EN.md,required
 docs/decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md,docs/decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md,required
 experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS.md,experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md,required
+docs/stage3b-integrated-frontier-model.md,docs/stage3b-integrated-frontier-model_EN.md,required
+docs/decisions/ADR-040-stage3b-integrated-frontier-model.md,docs/decisions/ADR-040-stage3b-integrated-frontier-model_EN.md,required

@@ -107,3 +107,8 @@ of freedom before comparative results are computed.
 - [Refactoring plan](fixedpred-sufficiency-dus-refactoring-plan_EN.md)
 - [ADR-039](decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md)
 - Planned experiment: `experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md`
+
+## Integrated frontier model
+
+- [Design model](stage3b-integrated-frontier-model_EN.md)
+- [ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model_EN.md)

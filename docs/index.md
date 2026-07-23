@@ -108,3 +108,8 @@
 - [План рефакторинга](fixedpred-sufficiency-dus-refactoring-plan.md)
 - [ADR-039](decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md)
 - План эксперимента: `experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS.md`
+
+## Интегрированная модель фронтира
+
+- [Проектная модель](stage3b-integrated-frontier-model.md)
+- [ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model.md)

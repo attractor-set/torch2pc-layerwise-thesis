@@ -312,3 +312,10 @@ of threshold proximity, exact additive cost decomposition, B1/B2 speedup,
 active `QWake-PC` safety, or transfer to other architectures, datasets, dtypes,
 or devices. It freezes testable semantics required for the next
 preregistrations.
+
+## 12. Integrated-frontier relation
+
+In the [integrated frontier model](stage3b-integrated-frontier-model_EN.md),
+PC-TREF supplies ACCEPT_FRONTIER admission, PC-CATM supplies mechanism evidence
+only, and QWake-PC orchestrates registered ADVANCE_FRONTIER and COMPLETE_SUFFIX
+transitions. No mechanism feature authorizes an action by itself.

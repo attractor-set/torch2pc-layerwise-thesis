@@ -62,3 +62,5 @@
   FixedPred, `stage2_baseline`, the Rosenbaum positive control, the corrected
   joint-VJP role, separate compute/diagnostic budgets, and fail-closed
   `DONE / UNKNOWN / SWEEP` without execution permission.
+
+- [ADR-040](ADR-040-stage3b-integrated-frontier-model_EN.md): keeps ADR-039 unchanged and freezes the integrated frontier, `A0 / A1 / A2 / O`, `ACCEPT_FRONTIER / ADVANCE_FRONTIER / COMPLETE_SUFFIX`, transition cost, and the closed execution boundary.

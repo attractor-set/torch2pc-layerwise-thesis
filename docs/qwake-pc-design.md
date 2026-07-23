@@ -152,3 +152,11 @@ fallback_exact            = exact current uncertified parent
 
 `A-Max` является условным расширением. Отсутствие допустимой активной политики
 не отменяет `A-Core` и является допустимым отрицательным результатом.
+
+## Интегрированная оркестрация фронтира
+
+[ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model.md) ограничивает
+будущую оркестрацию действиями `ACCEPT_FRONTIER`, `ADVANCE_FRONTIER` и
+`COMPLETE_SUFFIX`. `QWake-PC` не определяет достаточность и не создаёт
+механизмные признаки: допуск принадлежит `PC-TREF`, а свидетельства —
+`PC-CATM`. До отдельного решения сохраняется `controls_execution=false`.

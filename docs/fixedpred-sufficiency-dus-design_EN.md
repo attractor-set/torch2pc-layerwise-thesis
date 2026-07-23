@@ -129,3 +129,11 @@ sufficiency, or certificate transfer across graphs.
 Valid negative outcomes include no early sufficient prefix, no cheap
 observability, cost-infeasible diagnostics, no state dependence, no
 incremental PC-CATM value, and no greedy-routing advantage.
+
+## 9. Frontier-action clarification
+
+[ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model_EN.md) does not
+change ADR-039. It maps DONE to an ACCEPT_FRONTIER `candidate`, keeps UNKNOWN as
+an epistemic state, maps one next SWEEP to ADVANCE_FRONTIER(compute), and adds a
+separate fail-closed COMPLETE_SUFFIX. A0 / A1 / A2 are the cumulative pre-action
+observation axis; O remains post-action oracle only.

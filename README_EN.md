@@ -404,3 +404,13 @@ and unresolved cases become `SWEEP`.
 
 This documentation freeze does not open execution, oracle-label generation,
 feature collection, policy activation, or test access.
+
+## Integrated frontier model
+
+[ADR-040](docs/decisions/ADR-040-stage3b-integrated-frontier-model_EN.md)
+clarifies the design layer after ADR-039. DONE / UNKNOWN / SWEEP remain the
+preceding semantics, while actions are separated into ACCEPT_FRONTIER,
+ADVANCE_FRONTIER, and COMPLETE_SUFFIX. A0 / A1 / A2 account for observation
+cost and O remains post-action oracle only. This documentation freeze does not
+open execution, feature collection, label generation, policy activation, or
+test access.

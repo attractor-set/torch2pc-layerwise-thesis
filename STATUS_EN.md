@@ -275,3 +275,25 @@ full_stage3b_campaign_complete=false
 The next admissible slice is limited to refactoring and synthetic validation.
 Frozen evidence, EX-IF0, historical identifiers, and published decisions remain
 unchanged.
+
+## Integrated frontier model
+
+ADR-040 keeps ADR-039 unchanged and freezes the new action alphabet and
+multilevel observation without authorizing execution.
+
+```text
+integrated_frontier_model_frozen=true
+frontier_action_alphabet=ACCEPT_FRONTIER,ADVANCE_FRONTIER,COMPLETE_SUFFIX
+observation_level_order=A0,A1,A2,O
+pc_tref_role=admission_semantics
+pc_catm_role=mechanism_evidence
+qwake_pc_role=frontier_orchestration
+integrated_frontier_controls_execution=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+a11_off0_execution_open=false
+recursive_aggregate_execution_open=false
+policy_activation_permitted=false
+test_dataset_access=false
+full_stage3b_campaign_complete=false
+```

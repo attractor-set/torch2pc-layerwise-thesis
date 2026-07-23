@@ -151,3 +151,11 @@ the controller remains shadow-only.
 
 `A-Max` is a conditional extension. The absence of an admissible active policy
 does not invalidate `A-Core` and is an admissible negative result.
+
+## Integrated frontier orchestration
+
+[ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model_EN.md) limits
+future orchestration to ACCEPT_FRONTIER, ADVANCE_FRONTIER, and COMPLETE_SUFFIX.
+`QWake-PC` does not define sufficiency or create mechanism features: admission
+belongs to PC-TREF and evidence to PC-CATM. `controls_execution=false` remains
+in force pending a separate decision.

@@ -164,6 +164,11 @@ closed.
 
 ## Stage 18 — `DUS-0` and `DUS-1`: freeze and refactoring
 
+ADR-040 adds the integrated frontier model above unchanged ADR-039. The
+mandatory observation axis is `A0 -> A1 -> A2`, while `O` remains post-action
+oracle. The shadow action alphabet is `ACCEPT_FRONTIER`, `ADVANCE_FRONTIER`,
+`COMPLETE_SUFFIX`; `controls_execution=false`.
+
 ADR-039 freezes FixedPred, `stage2_baseline`, the EX-IF0 oracle,
 the [Rosenbaum wavefront
 control](docs/glossary_EN.md#term-rosenbaum-wavefront-control), and

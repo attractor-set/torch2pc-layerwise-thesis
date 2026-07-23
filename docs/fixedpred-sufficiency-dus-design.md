@@ -168,3 +168,12 @@ $B^{\mathrm{diag}}$
 - `state` `dependence` отсутствует;
 - `PC-CATM` не даёт дополнительной ценности;
 - `greedy` `routing` не превосходит фиксированный порядок.
+
+## 9. Уточнение действиями фронтира
+
+[ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model.md) не изменяет
+ADR-039. Он отображает `DONE` в кандидата `ACCEPT_FRONTIER`, оставляет `UNKNOWN`
+эпистемическим состоянием, отображает один следующий `SWEEP` в
+`ADVANCE_FRONTIER(compute)` и вводит отдельный `fail-closed`
+`COMPLETE_SUFFIX`. Уровни наблюдения `A0 / A1 / A2` являются накопительной
+осью `pre-action` информации; `O` остаётся только `post-action oracle`.

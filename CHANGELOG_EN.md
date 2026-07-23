@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- froze `ADR-040` and the integrated frontier model: `A0 / A1 / A2` observation levels, separate post-action `O`, the `ACCEPT_FRONTIER / ADVANCE_FRONTIER / COMPLETE_SUFFIX` actions, per-transition cost, and PC-TREF/PC-CATM/QWake-PC separation; ADR-039 is not rewritten and execution and collection remain closed;
+
 - froze ADR-039 and the bilingual FixedPred-sufficiency package: corrected the joint-VJP role and added the Rosenbaum positive control, `DONE / UNKNOWN / SWEEP`, selective/acquisition/cost metrics, a refactoring plan, and a fail-closed roadmap without opening execution;
 
 - froze `EX-IF0 v1`: selected `stage2_baseline` as the canonical exact reference/fallback for `FixedPred` and `Strict`; froze the decision epoch, task-relative endpoint, `rocm_float32` thresholds, oracle margin, and full-suffix minimum-stably-sufficient-sweep rule while execution, oracle labels, features, policy activation, and test access remain closed;

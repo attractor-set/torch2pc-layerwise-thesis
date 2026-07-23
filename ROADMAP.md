@@ -156,35 +156,87 @@ one-step ветви являются identity-control выбранного `stag
 Предиктор, температура, гистерезис и `QWake-PC` на этом этапе не управляют
 выполнением. Независимая единица — `model_seed`; test split закрыт.
 
-## Этап 18 — `A11-OFF1`, оцениватель запаса, предиктор (`predictor`) и теневой режим (`shadow`) рекурсивного `QWake-PC`
 
-Этап открывается только при информативных решениях `E2/E3/P0`. При провале `E3`
-рассматривается статический агрегат вместо адаптивного контроллера.
+## Этап 18 — `DUS-0` и `DUS-1`: фиксация и рефакторинг
 
-- провести офлайн-отсев вложенных представлений, оценивателей границы,
-  `first-order` горизонтов, признаков и порогов по regret, опасным пропускам и
-  полному вектору стоимости;
-- до подтверждающего доступа зафиксировать представление, метки, разбиение,
-  правило Парето и резервный переход;
-- отдельно предварительно зарегистрировать предиктор с группировкой по
-  `model_seed`;
-- выполнить контрфактическую точную проверку из идентичного состояния;
-- начать с теневого режима;
-- регистрировать гистерезис как пороги остановки и пробуждения, требуемую
-  устойчивость подтверждения и аварийный `fallback_exact`;
-- разрешать активное распределение только после проверок безопасности и
-  сквозной стоимости.
+ADR-039 фиксирует `FixedPred`, `stage2_baseline`, oracle `EX-IF0`,
+[wavefront-контроль Rosenbaum](docs/glossary.md#term-rosenbaum-wavefront-control)
+и [семантику решений
+D/U/S](docs/glossary.md#term-dus-decision-semantics).
 
-## Этап 19 — итоговая фиксация и тестовая оценка
+Сначала выполняются только:
 
-Зафиксировать реализацию, признаки, пороги, предиктор, резервный переход и
-статистический план. Только затем разрешить однократную итоговую оценку на
-тестовой выборке.
+- выделение нового namespace `stage3b_sufficiency`;
+- разделение oracle, `pre-action` features, policy и cost accounting;
+- схемы, pure types и synthetic tests;
+- deterministic analytic registry;
+- проверка невмешательства и provenance.
 
-## Этап 20 — диссертация и статья
+Научное выполнение на этом этапе закрыто.
 
-Объединить Stage 1/2, Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1/B2 и доступные
-результаты Scenario A. Невыполненные расширения обозначить как будущую работу.
+## Этап 19 — `DUS-2` и `DUS-3`: положительный контроль и контракт
+
+Проверить Rosenbaum special case как аналитический component-completion
+positive control. Затем отдельным контрактом зафиксировать `A11-OFF0`,
+snapshot schema, temporal prefixes, optional spatial aggregates, endpoint,
+cost fields, seeds и no-test boundary.
+
+## Этап 20 — `DUS-4`–`DUS-7`: collector и oracle
+
+Реализовать policy-neutral collector, затем отдельно зафиксировать runtime
+preflight и authorization. После разрешённого сбора:
+
+- сохранить `pre-action` representations;
+- выполнить полный canonical suffix;
+- вычислить `M^*(t)` и `t^*`;
+- измерить полный cost vector;
+- сохранить provenance;
+- до сравнительного анализа зафиксировать estimands, thresholds, risk-control
+  procedure и negative-result rules.
+
+Policy не управляет execution.
+
+## Этап 21 — `DUS-8` и `DUS-9`: opportunity и представления
+
+Сначала определить, существует ли ранний достаточный префикс, зависит ли он от
+состояния, наблюдаем ли он дёшево и экономически допустима ли диагностика.
+
+Затем сравнить вложенные представления в порядке:
+
+```text
+dangerous DONE
+safe coverage
+UNKNOWN burden
+diagnostic cost
+context stability
+```
+
+При отсутствии state dependence использовать статический вариант.
+
+## Этап 22 — `DUS-10`: deterministic shadow replay
+
+Сравнить fixed cascade, cheapest-first, greedy quality,
+greedy quality/cost, all metrics и offline oracle sequence.
+
+```text
+controls_execution=false
+```
+
+Greedy policy не считается глобально оптимальной.
+
+## Этап 23 — условная итоговая фиксация
+
+Confirmatory evaluation открывается только при ненулевой safe coverage,
+допустимом dangerous-DONE risk, observer non-interference, cost feasibility и
+устойчивости по `model_seed`.
+
+Только после отдельной final freeze разрешается однократная тестовая оценка.
+
+## Этап 24 — диссертация и статья
+
+Объединить Stage 1/2, Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1/B2, `EX-IF0` и
+результаты D/U/S. Невыполненные spatial, learned и active extensions обозначить
+как будущую работу.
 
 ## Граница после магистерской работы — перспективная PhD-линия
 

@@ -379,3 +379,28 @@ Canonical terminology is defined in
   [LICENSE-DOCS_EN](LICENSE-DOCS_EN);
 - third-party materials retain their original licenses and attribution terms —
   [NOTICE](NOTICE) and [NOTICE_EN](NOTICE_EN).
+
+## FixedPred sufficiency and D/U/S
+
+After EX-IF0, the mandatory scoped continuation fixes FixedPred and
+`stage2_baseline` and studies the
+[minimum stably sufficient FixedPred
+prefix](docs/glossary_EN.md#term-minimum-stably-sufficient-fixedpred-prefix).
+
+Joint-VJP remains an exact graph-organization control and is not called a
+shortcut. The [Rosenbaum wavefront
+control](docs/glossary_EN.md#term-rosenbaum-wavefront-control) is only an
+analytic positive control.
+
+The new [D/U/S decision
+semantics](docs/glossary_EN.md#term-dus-decision-semantics) remains shadow-only:
+`DONE` requires positive admission, `UNKNOWN` permits analytic acquisition,
+and unresolved cases become `SWEEP`.
+
+- [Consolidated design](docs/fixedpred-sufficiency-dus-design_EN.md)
+- [Metric registry](docs/fixedpred-sufficiency-dus-metrics_EN.md)
+- [Refactoring plan](docs/fixedpred-sufficiency-dus-refactoring-plan_EN.md)
+- [Stage plan](experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md)
+
+This documentation freeze does not open execution, oracle-label generation,
+feature collection, policy activation, or test access.

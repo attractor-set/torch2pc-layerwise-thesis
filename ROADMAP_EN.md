@@ -151,32 +151,76 @@ A learned estimator, temperature, hysteresis, and `QWake-PC` do not control exec
 this stage. The independent unit is `model_seed`; the test split remains
 closed.
 
-## Stage 18 — `A11-OFF1`, margin estimator, predictor, and shadow recursive `QWake-PC`
 
-This stage opens only after informative `E2/E3/P0` decisions. If `E3` fails, a
-static aggregate replaces adaptive control.
+## Stage 18 — `DUS-0` and `DUS-1`: freeze and refactoring
 
-- run offline screening of nested representations, boundary estimators,
-  first-order horizons, features, and thresholds by regret, dangerous misses,
-  and the complete cost vector;
-- freeze the representation, labels, split, Pareto rule, and [fallback](docs/glossary_EN.md#term-fallback) before
-  confirmatory access;
-- preregister the predictor separately with `model_seed` grouping;
-- run counterfactual exact verification from an identical state;
-- start in shadow mode;
-- preregister hysteresis as stop and wake thresholds, confirmation persistence,
-  and emergency `fallback_exact`;
-- permit active allocation only after safety and end-to-end cost gates.
+ADR-039 freezes FixedPred, `stage2_baseline`, the EX-IF0 oracle,
+the [Rosenbaum wavefront
+control](docs/glossary_EN.md#term-rosenbaum-wavefront-control), and
+[D/U/S decision semantics](docs/glossary_EN.md#term-dus-decision-semantics).
 
-## Stage 19 — final freeze and test evaluation
+The first slice is limited to the new `stage3b_sufficiency` namespace,
+separation of oracle, pre-action features, policy, and cost accounting,
+schemas, pure types, synthetic tests, a deterministic analytic registry,
+non-interference, and provenance checks.
 
-Freeze the implementation, features, thresholds, predictor, fallback, and
-statistical plan. Only then permit one final test-dataset evaluation.
+Scientific execution remains closed.
 
-## Stage 20 — thesis and article
+## Stage 19 — `DUS-2` and `DUS-3`: positive control and contract
 
-Integrate Stage 1/2, Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1/B2, and the
-available Scenario A results. Mark unexecuted extensions as future work.
+Test the Rosenbaum special case as an analytic component-completion positive
+control. Then freeze A11-OFF0, the snapshot schema, temporal prefixes, optional
+spatial aggregates, endpoint, cost fields, seeds, and the no-test boundary.
+
+## Stage 20 — `DUS-4`–`DUS-7`: collector and oracle
+
+Implement the policy-neutral collector, then separately freeze runtime
+preflight and authorization. After authorized collection:
+
+- retain pre-action representations;
+- execute the full canonical suffix;
+- compute `M^*(t)` and `t^*`;
+- measure the complete cost vector;
+- retain provenance;
+- freeze estimands, thresholds, the risk-control procedure, and
+  negative-result rules before comparative analysis.
+
+No policy controls execution.
+
+## Stage 21 — `DUS-8` and `DUS-9`: opportunity and representations
+
+First determine whether an early sufficient prefix exists, is state-dependent,
+is cheaply observable, and is economically feasible.
+
+Then compare nested representations in the order dangerous DONE, safe
+coverage, UNKNOWN burden, diagnostic cost, and context stability.
+
+Use a static alternative if state dependence is absent.
+
+## Stage 22 — `DUS-10`: deterministic shadow replay
+
+Compare a fixed cascade, cheapest-first, greedy quality, greedy quality per
+cost, all metrics, and an offline oracle sequence.
+
+```text
+controls_execution=false
+```
+
+The greedy policy is not treated as globally optimal.
+
+## Stage 23 — conditional final freeze
+
+Confirmatory evaluation opens only after nonzero safe coverage, admissible
+dangerous-DONE risk, observer non-interference, cost feasibility, and
+`model_seed` stability.
+
+One final test evaluation requires a separate final freeze.
+
+## Stage 24 — thesis and article
+
+Integrate Stage 1/2, Stage 3A, B0, SI-MA0, SI-MA1, B1/B2, EX-IF0, and D/U/S
+results. Mark unexecuted spatial, learned, and active extensions as future
+work.
 
 ## Post-master's boundary — prospective PhD line
 

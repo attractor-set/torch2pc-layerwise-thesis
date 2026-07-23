@@ -766,3 +766,38 @@ concepts are split or merged, and record the change in the changelog.
 - **Russian equivalent:** QWake-SPC.
 - **Project meaning:** A prospective PhD line in which qualified QWake correction events become native spikes and predictive-coding state, error transport, communication, and learning receive spike-native implementations.
 - **Usage rule:** It is not an implemented controller or an execution permission; QWake-SPC remains outside the mandatory boundary of the current master's thesis.
+
+<a id="term-rosenbaum-wavefront-control"></a>
+### TERM-ROSENBAUM-WAVEFRONT-CONTROL — Rosenbaum wavefront control
+
+- **Russian equivalent:** wavefront-контроль Rosenbaum.
+- **Project meaning:** An analytic positive control for the \(\eta=1\) FixedPred special case, used to test the analytically known completion order of layerwise error and gradient components.
+- **Usage rule:** The control is not a new method, joint-VJP, a new exact reference, a policy action, or permission to terminate the full endpoint early; equations are checked against the 2022 article and the 2025 correction.
+
+<a id="term-minimum-stably-sufficient-fixedpred-prefix"></a>
+### TERM-MINIMUM-STABLY-SUFFICIENT-FIXEDPRED-PREFIX — minimum stably sufficient FixedPred prefix
+
+- **Russian equivalent:** минимальный устойчиво достаточный префикс FixedPred.
+- **Project meaning:** The smallest registered sweep index \(t^*\) from which every endpoint in the remaining full suffix stays within the task-relative tolerance of the canonical full reference.
+- **Usage rule:** One isolated threshold crossing does not establish stable sufficiency; the object is defined by a post-action oracle and is not directly available as a pre-action feature.
+
+<a id="term-dus-decision-semantics"></a>
+### TERM-DUS-DECISION-SEMANTICS — D/U/S decision semantics
+
+- **Russian equivalent:** семантика решений D/U/S.
+- **Project meaning:** Fail-closed shadow-proposal semantics over `DONE`, `UNKNOWN`, and `SWEEP` for fixed FixedPred and `stage2_baseline`.
+- **Usage rule:** `DONE` requires separate positive sufficiency admission; `UNKNOWN` is epistemic; unresolved `UNKNOWN` becomes `SWEEP`; the semantics does not control execution before separate authorization.
+
+<a id="term-dangerous-done"></a>
+### TERM-DANGEROUS-DONE — dangerous DONE
+
+- **Russian equivalent:** опасное DONE.
+- **Project meaning:** A shadow `DONE` proposal for a state classified as insufficient by the post-action oracle relative to the full registered suffix.
+- **Usage rule:** Dangerous-DONE count and risk are primary safety metrics and cannot be offset by coverage or cost savings.
+
+<a id="term-diagnostic-observability-gap"></a>
+### TERM-DIAGNOSTIC-OBSERVABILITY-GAP — diagnostic observability gap
+
+- **Russian equivalent:** диагностический разрыв наблюдаемости.
+- **Project meaning:** The share or set of states that are already sufficient under the post-action oracle but remain `UNKNOWN` under the registered low-cost pre-action representation.
+- **Usage rule:** The gap separates computational sufficiency from cheap diagnostic recognizability and is not treated as a failure of baseline FixedPred.

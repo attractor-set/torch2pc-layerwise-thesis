@@ -252,3 +252,26 @@ spike_like_on_critical_path=false
 | Publication receipt | `stage3b-matched-descriptive-analysis-publication-receipt-v1` |
 
 Documentation changes do not regenerate published results.
+
+## FixedPred sufficiency and D/U/S
+
+ADR-039 freezes the next scoped continuation without execution permission:
+
+```text
+fixedpred_sufficiency_dus_design_frozen=true
+fixedpred_sufficiency_method=fixedpred
+fixedpred_sufficiency_exact_graph=stage2_baseline
+rosenbaum_wavefront_role=analytic_positive_control
+joint_vjp_role=exact_graph_organization_control
+dus_controls_execution=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+a11_off0_execution_open=false
+policy_activation_permitted=false
+test_dataset_access=false
+full_stage3b_campaign_complete=false
+```
+
+The next admissible slice is limited to refactoring and synthetic validation.
+Frozen evidence, EX-IF0, historical identifiers, and published decisions remain
+unchanged.

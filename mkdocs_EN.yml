@@ -85,6 +85,11 @@ nav:
       - ADR-034 Matched analysis output seal: decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md
       - ADR-035 Recursive sufficiency: decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md
       - ADR-036 Matched analysis publication gate: decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md
+      - ADR-037 Matched analysis publication receipt: decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md
+      - ADR-038 EX-IF0 exact reference: decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary_EN.md
+      - ADR-039 FixedPred sufficiency D/U/S: decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md
+      - ADR-040 Integrated frontier: decisions/ADR-040-stage3b-integrated-frontier-model_EN.md
+      - ADR-041 Corrective frontier semantics: decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

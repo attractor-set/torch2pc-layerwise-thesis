@@ -5,6 +5,7 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- добавлен `ADR-041`: отделены `A0 / A1 / A2` от post-action `O`, введены переходы `OBSERVATION / ANALYTIC / COMPUTE`, локальная монотонность снимка, явное отображение измерительной стоимости в решенческую, однозначная семантика `DONE`, temporal обязательный scope и граница предшествующих работ; статусы README синхронизированы с publication receipt;
 - зафиксирован `ADR-040` и интегрированная модель фронтира: уровни наблюдения `A0 / A1 / A2`, отдельный post-action `O`, действия `ACCEPT_FRONTIER / ADVANCE_FRONTIER / COMPLETE_SUFFIX`, стоимость каждого перехода и разделение `PC-TREF`/`PC-CATM`/`QWake-PC`; `ADR-039` не переписан, выполнение и сбор остаются закрытыми;
 
 - зафиксирован ADR-039 и двуязычный пакет FixedPred sufficiency: исправлена роль joint-VJP, добавлены Rosenbaum positive control, `DONE / UNKNOWN / SWEEP`, реестр selective/acquisition/cost-метрик, план рефакторинга и fail-closed roadmap без открытия выполнения;

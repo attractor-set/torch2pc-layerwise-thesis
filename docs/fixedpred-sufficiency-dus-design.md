@@ -113,9 +113,14 @@ insufficient
 [Семантика решений D/U/S](glossary.md#term-dus-decision-semantics)
 использует:
 
-- `DONE`: доступное представление прошло положительный `sufficiency` `admission`;
-- `UNKNOWN`: информации недостаточно, но допустима ещё одна аналитика;
+- `DONE`: положительный `sufficiency admission` уже пройден;
+- `UNKNOWN`: информации недостаточно; это эпистемическое состояние, а не
+  действие приобретения;
 - `SWEEP`: выполняется ровно один следующий `canonical` `FixedPred`-свип.
+
+Недопущенная запись называется `accept_candidate`. Она не является действием и
+не является `DONE`. Положительный `PC-TREF`-допуск переводит её в `DONE`, после
+чего текущая `action`-интерпретация равна `ACCEPT_FRONTIER`.
 
 Неразрешённая неопределённость закрывается консервативно:
 
@@ -171,9 +176,13 @@ $B^{\mathrm{diag}}$
 
 ## 9. Уточнение действиями фронтира
 
-[ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model.md) не изменяет
-ADR-039. Он отображает `DONE` в кандидата `ACCEPT_FRONTIER`, оставляет `UNKNOWN`
-эпистемическим состоянием, отображает один следующий `SWEEP` в
-`ADVANCE_FRONTIER(compute)` и вводит отдельный `fail-closed`
-`COMPLETE_SUFFIX`. Уровни наблюдения `A0 / A1 / A2` являются накопительной
-осью `pre-action` информации; `O` остаётся только `post-action oracle`.
+[ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md)
+сохраняет ADR-039 и ADR-040 как исторические решения и задаёт текущую
+интерпретацию. `DONE` является уже допущенным теневым исходом и отображается в
+`ACCEPT_FRONTIER`; `UNKNOWN` остаётся эпистемическим состоянием; один следующий
+`SWEEP` отображается в `ADVANCE_FRONTIER(kind=COMPUTE)`.
+
+`ADVANCE_FRONTIER` также допускает ровно один зарегистрированный переход
+`OBSERVATION` или `ANALYTIC`. Развёртываемая ось наблюдения равна
+`A0 -> A1 -> A2`; `O` учитывается отдельно как `post-action oracle` и не
+является ни уровнем фронтира, ни аналитическим шагом.

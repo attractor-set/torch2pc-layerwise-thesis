@@ -94,9 +94,13 @@ insufficient
 The [D/U/S decision
 semantics](glossary_EN.md#term-dus-decision-semantics) uses:
 
-- `DONE`: the available representation passed positive sufficiency admission;
-- `UNKNOWN`: [evidence](glossary_EN.md#term-evidence) is insufficient but another analytic is feasible;
+- `DONE`: positive sufficiency admission has already passed;
+- `UNKNOWN`: [evidence](glossary_EN.md#term-evidence) is insufficient; this is an epistemic state rather than an acquisition action;
 - `SWEEP`: execute exactly one next canonical FixedPred sweep.
+
+A non-admitted record is called `accept_candidate`. It is neither an action nor
+DONE. Positive PC-TREF admission converts it to DONE, whose current action
+interpretation is ACCEPT_FRONTIER.
 
 Unresolved uncertainty fails closed:
 
@@ -132,8 +136,13 @@ incremental PC-CATM value, and no greedy-routing advantage.
 
 ## 9. Frontier-action clarification
 
-[ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model_EN.md) does not
-change ADR-039. It maps DONE to an ACCEPT_FRONTIER `candidate`, keeps UNKNOWN as
-an epistemic state, maps one next SWEEP to ADVANCE_FRONTIER(compute), and adds a
-separate fail-closed COMPLETE_SUFFIX. A0 / A1 / A2 are the cumulative pre-action
-observation axis; O remains post-action oracle only.
+[ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md)
+keeps ADR-039 and ADR-040 as historical decisions and supplies the current
+interpretation. DONE is an already admitted shadow outcome and maps to
+ACCEPT_FRONTIER; UNKNOWN remains epistemic; one next SWEEP maps to
+`ADVANCE_FRONTIER(kind=COMPUTE)`.
+
+ADVANCE_FRONTIER may also perform exactly one registered OBSERVATION or
+ANALYTIC transition. The deployable observation axis is A0 -> A1 -> A2; O is a
+separate post-action oracle and is neither a frontier level nor an analytic
+step.

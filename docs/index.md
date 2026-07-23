@@ -113,3 +113,4 @@
 
 - [Проектная модель](stage3b-integrated-frontier-model.md)
 - [ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model.md)
+- [ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md)

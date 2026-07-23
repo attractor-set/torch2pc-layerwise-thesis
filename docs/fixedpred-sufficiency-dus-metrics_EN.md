@@ -110,7 +110,7 @@ The independent unit is `model_seed`, not a layer, sweep, or analytic event.
 B-DUS-00 always_sweep_full_reference
 B-DUS-01 oracle_done_upper_bound
 B-DUS-02 rosenbaum_structural_wavefront
-B-DUS-03 residual_threshold
+B-DUS-03 registered_prediction_error_or_residual_threshold
 B-DUS-04 residual_threshold_with_persistence
 B-DUS-05 fixed_metric_cascade
 B-DUS-06 cheapest_first
@@ -118,13 +118,17 @@ B-DUS-07 greedy_quality_only
 B-DUS-08 greedy_quality_per_cost
 B-DUS-09 all_metrics
 B-DUS-10 offline_oracle_acquisition_order
+B-DUS-11 deterministic_analytic_registry
 ```
 
 The greedy policy remains a shadow demonstrator.
 
 ## 9. Methodological sources
 
+- [Hybrid [predictive coding](glossary_EN.md#term-predictive-coding)](https://doi.org/10.1371/journal.pcbi.1011280);
 - [SelectiveNet](https://proceedings.mlr.press/v97/geifman19a.html);
 - [Learn then Test](https://arxiv.org/abs/2110.01052);
 - [Distribution Guided Active Feature Acquisition](https://arxiv.org/abs/2410.03915);
-- [Adaptive Computation Time](https://arxiv.org/abs/1603.08983).
+- [Adaptive Computation Time](https://arxiv.org/abs/1603.08983);
+- [Joint Active Feature Acquisition](https://proceedings.neurips.cc/paper_files/paper/2018/hash/e5841df2166dd424a57127423d276bbe-Abstract.html);
+- [Learning to select computations](https://arxiv.org/abs/1711.06892).

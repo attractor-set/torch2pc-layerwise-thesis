@@ -15,6 +15,7 @@ EX-IF0.
 ADR-039 = DONE / UNKNOWN / SWEEP outcomes
 ADR-040 = historical first integrated-frontier freeze
 ADR-041 = current transition, admission, cost, and scope semantics
+ADR-042 = QWake-FP validation scope and single permission-gated image protocol
 ```
 
 ADR-039 and ADR-040 are not rewritten. ADR-041 governs the fields it explicitly
@@ -231,15 +232,36 @@ training trajectories relative to an exact canonical suffix.
 
 ## 12. Mandatory scope
 
-The mandatory thesis core is temporal FixedPred prefixes of one
-`stage2_baseline`, A0 / A1 / A2, a finite frozen analytic registry,
-deterministic shadow replay, safety-first admission, measured cost mapping, and
-COMPLETE_SUFFIX as canonical fallback.
+The mandatory thesis core consists of:
 
-Recursive multiscale aggregates, learned routing, spike-like dynamics, and
-active control are outside the mandatory core.
+1. a general QWake-PC specification without a general empirical-validation claim;
+2. one concrete [QWake-FP](glossary_EN.md#term-qwake-fp) for corrected Rosenbaum
+   FixedPred at `eta=1` with `stage2_baseline`;
+3. temporal prefixes, A0 / A1 / A2, and a finite analytic registry;
+4. one immutable superset image for C1/C2/C3/R;
+5. internal fail-closed permission gates at effect boundaries;
+6. frozen policy as a data manifest for the embedded interpreter;
+7. deterministic shadow replay, safety-first admission, and complete cost;
+8. COMPLETE_SUFFIX as canonical fallback;
+9. untouched confirmatory seeds, simple baselines, nested ablations, and one
+   replication without retuning.
 
-## 13. Machine boundary
+Recursive multiscale aggregates, `Strict`, arbitrary `eta`, learned routing,
+spike-like dynamics, and active control are outside the mandatory core.
+
+## 13. Single image and evidence stages
+
+ADR-042 separates code presence from execution permission. One image embeds the
+complete mandatory pipeline, while `C1_COLLECTION / C2_CALIBRATION /
+C3_CONFIRMATORY / R_REPLICATION` activate only registered capabilities through
+a permission manifest.
+
+A disabled capability does not execute and creates no tensor read, allocation,
+synchronization, trace, or output. SELECT_POLICY is permitted only in C2, and
+selection combined with confirmatory access is forbidden. Stages are linked by
+sealed receipts and one image digest.
+
+## 14. Machine boundary
 
 ```text
 integrated_frontier_corrective_semantics_frozen=true
@@ -281,4 +303,20 @@ recursive_aggregate_execution_open=false
 policy_activation_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false
+qwake_fp_only_mandatory_implementation=true
+qwake_fp_validation_case=corrected_rosenbaum_fixedpred_eta1
+execution_image_strategy=single_immutable_superset_image
+same_image_digest_required_across_c1_c2_c3_r=true
+stage_activation=fail_closed_permission_manifest
+permission_checks_at_effect_boundaries=true
+disabled_capability_executes=false
+policy_representation=frozen_data_manifest
+policy_selection_with_confirmatory_access_forbidden=true
+sealed_receipt_chain_required=true
+replication_without_retuning_required=true
+qwake_fp_execution_permitted=false
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
 ```

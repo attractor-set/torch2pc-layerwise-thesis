@@ -213,19 +213,25 @@ suffix stability for the minimum sufficient sweep. This design freeze does not
 authorize `A11-OFF0`, oracle-label generation, feature collection, the
 predictor, QWake-PC, or recursive-aggregate execution.
 
-ADR-035 retains the post-publication research direction: oracle search for a
-minimum sufficient compute aggregate at two scales. Concrete spatial membership
-and snapshot branching must be frozen by the next contract; spike-like dynamics
-is off the critical path.
+ADR-042 replaces the broad post-publication critical path with bounded
+validation of one [QWake-FP](docs/glossary_EN.md#term-qwake-fp). General
+QWake-PC remains a specification, while the mandatory experiment applies only
+to corrected Rosenbaum FixedPred at `eta=1`. The next admissible stage is the
+docs-only `QW-0`, followed by one permission-gated superset pipeline before a
+single scientific-image freeze.
 
 ```text
-recursive_sufficiency_direction_frozen=true
-ex_if0_protocol_frozen=true
-exact_implementation_candidate=stage2_baseline
-minimum_sufficient_sweep_rule_frozen=true
-recursive_aggregate_execution_open=false
-global_policy_action=false
-spike_like_on_critical_path=false
+qwake_general_specification_frozen=true
+qwake_fp_only_mandatory_implementation=true
+qwake_fp_validation_case=corrected_rosenbaum_fixedpred_eta1
+execution_image_strategy=single_immutable_superset_image
+same_image_digest_required_across_c1_c2_c3_r=true
+stage_activation=fail_closed_permission_manifest
+qwake_fp_execution_permitted=false
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
 ```
 
 ## Provenance
@@ -307,6 +313,45 @@ oracle_label_generation_open=false
 feature_collection_permitted=false
 a11_off0_execution_open=false
 recursive_aggregate_execution_open=false
+policy_activation_permitted=false
+test_dataset_access=false
+full_stage3b_campaign_complete=false
+```
+
+## Bounded `QWake-FP` validation
+
+[ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
+freezes general QWake-PC as a specification and QWake-FP as the only mandatory
+implementation. `C1_COLLECTION`, `C2_CALIBRATION`, `C3_CONFIRMATORY`, and
+`R_REPLICATION` must use one image digest and differ only through hashed
+request/policy manifests and permissions.
+
+Permission is checked inside effectful functions. A disabled capability does
+not execute. Policy selection is permitted only in C2; selection combined with
+confirmatory access is forbidden. C3 uses untouched model seeds, and R uses the
+same policy without retuning. Safety is evaluated before coverage, and coverage
+before cost.
+
+```text
+qwake_fp_scope_freeze_complete=true
+qwake_fp_execution_permitted=false
+single_immutable_superset_image_frozen=false
+permission_checks_at_effect_boundaries=true
+disabled_capability_executes=false
+policy_representation=frozen_data_manifest
+policy_selection_with_confirmatory_access_forbidden=true
+sealed_receipt_chain_required=true
+untouched_confirmatory_seeds_required=true
+replication_without_retuning_required=true
+publication_baselines_required=true
+nested_ablation_required=true
+trajectory_benchmark_planned=true
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
 policy_activation_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false

@@ -213,20 +213,25 @@ suffix-stability для минимального достаточного сви
 разрешает `A11-OFF0`, oracle-label generation, feature collection, predictor,
 QWake-PC или выполнение рекурсивных агрегатов.
 
-ADR-035 сохраняет post-publication исследовательское направление: oracle-поиск
-минимального достаточного вычислительного агрегата на двух масштабах.
-Конкретные пространственные membership и snapshot-ветвление должны быть
-зафиксированы следующим контрактом; spike-like динамика не входит в критический
-путь.
+ADR-042 заменяет широкий post-publication critical path ограниченной проверкой
+одной [QWake-FP](docs/glossary.md#term-qwake-fp). Общий QWake-PC остаётся
+спецификацией, а обязательный эксперимент относится только к corrected
+Rosenbaum FixedPred при `eta=1`. Следующий допустимый этап — docs-only `QW-0`,
+после которого реализуется один permission-gated superset pipeline до единой
+заморозки scientific image.
 
 ```text
-recursive_sufficiency_direction_frozen=true
-ex_if0_protocol_frozen=true
-exact_implementation_candidate=stage2_baseline
-minimum_sufficient_sweep_rule_frozen=true
-recursive_aggregate_execution_open=false
-global_policy_action=false
-spike_like_on_critical_path=false
+qwake_general_specification_frozen=true
+qwake_fp_only_mandatory_implementation=true
+qwake_fp_validation_case=corrected_rosenbaum_fixedpred_eta1
+execution_image_strategy=single_immutable_superset_image
+same_image_digest_required_across_c1_c2_c3_r=true
+stage_activation=fail_closed_permission_manifest
+qwake_fp_execution_permitted=false
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
 ```
 
 ## Происхождение
@@ -308,6 +313,57 @@ oracle_label_generation_open=false
 feature_collection_permitted=false
 a11_off0_execution_open=false
 recursive_aggregate_execution_open=false
+policy_activation_permitted=false
+test_dataset_access=false
+full_stage3b_campaign_complete=false
+```
+
+## Ограниченная проверка `QWake-FP`
+
+[ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md)
+фиксирует общий QWake-PC как спецификацию и QWake-FP как единственную
+обязательную реализацию. Кампании `C1_COLLECTION`, `C2_CALIBRATION`,
+`C3_CONFIRMATORY` и `R_REPLICATION` должны использовать один image digest и
+различаться только хешированными request/policy manifests и разрешениями.
+
+Permission проверяется внутри effectful функций. Выключенная capability не
+исполняется. Policy selection разрешён только в `C2`; сочетание selection и
+confirmatory access запрещено. C3 использует untouched model seeds, а R — ту же
+policy без retuning. Safety проверяется раньше coverage, coverage — раньше cost.
+
+
+Практический смысл этой фиксации состоит в том, что все программные ветви,
+необходимые для будущих доказательных стадий, должны быть подготовлены и
+проверены до единственной заморозки образа. После неё меняются только
+разрешения, наборы начальных значений, раздел данных и хешированные запросы.
+Такое разделение исключает скрытую замену реализации между калибровкой и
+подтверждающей проверкой и одновременно сохраняет независимость данных.
+
+Отключённая возможность считается действительно отсутствующей в исполняемом
+пути: она не должна читать тензоры, выделять память, создавать синхронизацию или
+записывать результат. Поэтому сравнимость стадий опирается не только на один
+образ, но и на проверяемое отсутствие побочных действий закрытых возможностей.
+
+```text
+qwake_fp_scope_freeze_complete=true
+qwake_fp_execution_permitted=false
+single_immutable_superset_image_frozen=false
+permission_checks_at_effect_boundaries=true
+disabled_capability_executes=false
+policy_representation=frozen_data_manifest
+policy_selection_with_confirmatory_access_forbidden=true
+sealed_receipt_chain_required=true
+untouched_confirmatory_seeds_required=true
+replication_without_retuning_required=true
+publication_baselines_required=true
+nested_ablation_required=true
+trajectory_benchmark_planned=true
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
 policy_activation_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false

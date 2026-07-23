@@ -40,6 +40,7 @@ nav:
       - PC-CATM: pc-catm-operator-model.md
       - Основной сценарий A: stage3b-primary-scenario-a.md
       - QWake-PC: qwake-pc-design.md
+      - QWake-FP plan: qwake-fp-experimental-plan.md
       - Многомасштабная механизмно-решающая архитектура: pc-multiscale-mechanism-decision-architecture.md
       - ECZ-targeted local sweep: ecz-targeted-local-sweep.md
       - Граница будущей политики: stage3b-future-policy-boundary.md
@@ -90,6 +91,7 @@ nav:
       - ADR-039 FixedPred sufficiency D/U/S: decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md
       - ADR-040 Integrated frontier: decisions/ADR-040-stage3b-integrated-frontier-model.md
       - ADR-041 Corrective frontier semantics: decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md
+      - ADR-042 QWake-FP scope: decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

@@ -17,10 +17,12 @@
 ADR-039 = исходы DONE / UNKNOWN / SWEEP
 ADR-040 = историческая первая фиксация интегрированного фронтира
 ADR-041 = текущая семантика переходов, допуска, стоимости и scope
+ADR-042 = QWake-FP validation scope и единый permission-gated image protocol
 ```
 
-`ADR-039` и `ADR-040` не переписываются. При расхождении в перечисленных полях
-применяется `ADR-041`.
+`ADR-039` и `ADR-040` не переписываются. При расхождении в переходах,
+допуске и стоимости применяется `ADR-041`; для объекта экспериментальной
+проверки, `campaign` `roles` и `image`/`permission` `protocol` применяется `ADR-042`.
 
 ## 2. Разделение архитектурных уровней
 
@@ -250,17 +252,34 @@ B7 offline_oracle_upper_bound
 
 Обязательное магистерское ядро:
 
-1. `temporal FixedPred prefixes` одного `stage2_baseline`;
-2. `A0 / A1 / A2`;
-3. конечный замороженный аналитический реестр;
-4. `deterministic shadow replay`;
-5. `safety-first admission`;
-6. измеренное отображение стоимости;
-7. `COMPLETE_SUFFIX` как `canonical fallback`.
+1. общая спецификация `QWake-PC` без утверждения общей эмпирической проверки;
+2. одна конкретная [QWake-FP](glossary.md#term-qwake-fp) для исправленного
+   `Rosenbaum FixedPred`, `eta=1` и `stage2_baseline`;
+3. `temporal` `prefixes`, `A0 / A1 / A2` и конечный аналитический реестр;
+4. один `immutable` `superset` `image` для `C1/C2/C3/R`;
+5. внутренние `fail-closed` `permission` `gates` на границах эффектов;
+6. `frozen` `policy` как `data` `manifest` для встроенного интерпретатора;
+7. `deterministic shadow replay`, `safety-first` `admission` и полная стоимость;
+8. `COMPLETE_SUFFIX` как `canonical` `fallback`;
+9. `untouched` `confirmatory` `seeds`, простые `baselines`, `nested` `ablations` и одна
+   `replication` без `retuning`.
 
-`Recursive multiscale aggregates`, `learned routing`, `spike-like dynamics` и `active control` находятся вне обязательного ядра.
+`Recursive multiscale aggregates`, `Strict`, `arbitrary` `eta`, `learned` `routing`,
+`spike-like dynamics` и `active control` находятся вне обязательного ядра.
 
-## 13. Машинная граница
+## 13. Единый образ и доказательные стадии
+
+`ADR-042` разделяет присутствующий код и разрешённое исполнение. Один образ
+заранее содержит полный обязательный `pipeline`, а роли
+`C1_COLLECTION / C2_CALIBRATION / C3_CONFIRMATORY / R_REPLICATION` активируют
+только зарегистрированные `capabilities` через `permission` `manifest`.
+
+Выключенная `capability` не исполняется и не создаёт `tensor` `read`, `allocation`,
+`synchronization`, `trace` или `output`. `SELECT_POLICY` разрешён только в `C2`, а
+сочетание `selection` и `confirmatory` `access` запрещено. Стадии связываются `sealed`
+`receipts` и одним `image` `digest`.
+
+## 14. Машинная граница
 
 ```text
 integrated_frontier_corrective_semantics_frozen=true
@@ -302,4 +321,20 @@ recursive_aggregate_execution_open=false
 policy_activation_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false
+qwake_fp_only_mandatory_implementation=true
+qwake_fp_validation_case=corrected_rosenbaum_fixedpred_eta1
+execution_image_strategy=single_immutable_superset_image
+same_image_digest_required_across_c1_c2_c3_r=true
+stage_activation=fail_closed_permission_manifest
+permission_checks_at_effect_boundaries=true
+disabled_capability_executes=false
+policy_representation=frozen_data_manifest
+policy_selection_with_confirmatory_access_forbidden=true
+sealed_receipt_chain_required=true
+replication_without_retuning_required=true
+qwake_fp_execution_permitted=false
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
 ```

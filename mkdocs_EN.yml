@@ -40,6 +40,7 @@ nav:
       - PC-CATM: pc-catm-operator-model_EN.md
       - Primary Scenario A: stage3b-primary-scenario-a_EN.md
       - QWake-PC: qwake-pc-design_EN.md
+      - QWake-FP plan: qwake-fp-experimental-plan_EN.md
       - Multiscale mechanism–decision architecture: pc-multiscale-mechanism-decision-architecture_EN.md
       - ECZ-targeted local sweep: ecz-targeted-local-sweep_EN.md
       - Future-policy boundary: stage3b-future-policy-boundary_EN.md
@@ -90,6 +91,7 @@ nav:
       - ADR-039 FixedPred sufficiency D/U/S: decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md
       - ADR-040 Integrated frontier: decisions/ADR-040-stage3b-integrated-frontier-model_EN.md
       - ADR-041 Corrective frontier semantics: decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md
+      - ADR-042 QWake-FP scope: decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

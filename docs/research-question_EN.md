@@ -27,7 +27,7 @@ the update rule affect:
    `exact sweep`, and `fallback` under bounded
    [decision regret](glossary_EN.md#term-decision-regret)?
 
-## Completed B1/B2 question and next direction
+## Completed B1/B2 question and next bounded object
 
 B1 `isolated_layer_vjp` and B2 `composite_vjp` tested exact alternatives to the
 heavy path. Both candidates passed registered numerical equivalence, while
@@ -38,18 +38,36 @@ adaptive control is necessary.
 
 The next central question for the mandatory thesis path is:
 
-> Can a nested measurably cheap pre-action representation and a finite analytic
-> registry safely recognize a sufficient temporal FixedPred prefix relative to
-> the full `stage2_baseline` suffix under bounded exact-reference regret and
-> positive end-to-end savings?
+> Can a frozen [QWake-FP](glossary_EN.md#term-qwake-fp) use a nested measurably
+> cheap pre-action representation and a finite analytic registry to safely
+> recognize a task-relative sufficient temporal FixedPred prefix before the
+> full `stage2_baseline` suffix and retain positive end-to-end savings after
+> complete observer, analytic, control, and [fallback](glossary_EN.md#term-fallback) cost?
 
-The system compares three ways to advance: acquire the next observation level,
-run a registered analytic step, or execute one canonical sweep. The oracle is
-created only after action by the full suffix and is never a decision input.
+Validation is bounded to the corrected Rosenbaum special case: `FixedPred`,
+`eta=1`, a registered sequential architecture, and a finite canonical suffix.
+It validates or falsifies only one concrete shadow implementation, not general
+`QWake-PC` applicability.
 
-Recursive spatial aggregates, learned routing, and active [QWake-PC](glossary_EN.md#term-qwake-pc) control are
-conditional continuations after the temporal core, not mandatory thesis
-results.
+The experimental logic is ordered:
+
+1. do pre-terminal sufficient states exist;
+2. are they recognizable from admissible pre-action data;
+3. does frozen admission pass the safety gate;
+4. do positive net savings remain?
+
+The system compares acquiring the next observation level, running a registered
+analytic step, executing the next canonical sweep, and `COMPLETE_SUFFIX`. `O`
+is created only after action and is never a decision input.
+
+All mandatory capabilities are implemented in one immutable superset image.
+[Campaign roles](glossary_EN.md#term-campaign-role)
+`C1_COLLECTION / C2_CALIBRATION / C3_CONFIRMATORY / R_REPLICATION` activate
+them through internal [capability gates](glossary_EN.md#term-capability-gate)
+without changing executable code between [evidence](glossary_EN.md#term-evidence) stages.
+
+Recursive spatial aggregates, `Strict`, arbitrary `eta`, learned routing, and
+active control remain future work rather than mandatory results.
 
 ## Theoretical framework
 

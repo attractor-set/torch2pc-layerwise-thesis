@@ -4,13 +4,16 @@
 
 ## Status and scope
 
-This document describes future policy [architecture](glossary_EN.md#term-architecture) after `EX-IF0`. It is not a
-controller preregistration, does not permit [execution](glossary_EN.md#term-execution), and does not modify B1
-`isolated_layer_vjp`, B2 `composite_vjp`, or
-`stage3b-b1-b2-prereg-v1`.
+This document specifies the general [QWake-PC](glossary_EN.md#term-qwake-pc)
+[architecture](glossary_EN.md#term-architecture) and its only mandatory master's implementation,
+[QWake-FP](glossary_EN.md#term-qwake-fp), after `EX-IF0`. It is not a
+controller preregistration, does not permit
+[execution](glossary_EN.md#term-execution), and does not modify B1
+`isolated_layer_vjp`, B2 `composite_vjp`, or `stage3b-b1-b2-prereg-v1`.
 
-Until separate preregistration and positive shadow [evidence](glossary_EN.md#term-evidence),
-`controls_execution=false`.
+`ADR-042` bounds QWake-FP experimental validation to the corrected Rosenbaum
+FixedPred special case at `eta=1`. Until separate request freeze, [runtime](glossary_EN.md#term-runtime)
+preflight, and authorization, `controls_execution=false`.
 
 ## Semantic boundary of the name
 
@@ -54,19 +57,22 @@ explains the mechanisms that produce observed corrections and zero regimes.
 `QWake-PC` operationalizes those foundations as control proposals or decisions,
 but it is not one fixed algorithm.
 
-In the current design space:
+In the current mandatory design space:
 
-- `QW-PC0` denotes a conservative binary design: skip or run one full exact
-  correction sweep;
-- `QW-AB0` denotes the subsequent adaptive full-exact-sweep budget design.
+- `QWake-FP` denotes one deterministic shadow implementation for a temporal
+  FixedPred prefix, nested A0/A1/A2, a finite analytic registry, and a canonical
+  suffix;
+- `QW-PC0` and `QW-AB0` remain historical or future designs outside mandatory
+  experimental validation.
 
-These identifiers are design-level labels only. Every executable controller
-requires its own contract, preregistration, shadow evaluation, and admission
-decision. A negative result for one concrete controller does not invalidate
-PC-CATM or PC-TREF.
-
+QWake-PC generality is specified through interfaces and invariants. Only
+QWake-FP is experimentally validated; its negative result does not falsify
+PC-CATM or PC-TREF, and its positive result does not establish transfer to
+other algorithms or regimes.
 
 ## Recursive multiscale semantics
+
+This semantics remains a future-work extension under `ADR-042` and is outside the mandatory QWake-FP image and confirmatory claim.
 
 The frozen direction uses one operator over a parent region `R` and a nested
 aggregate family
@@ -145,7 +151,7 @@ estimate.
 
 ## Active-mode condition
 
-Active mode is permitted only after positive shadow evidence,
+Active mode is permitted only after positive shadow [evidence](glossary_EN.md#term-evidence),
 `zero_dangerous_misses`, and end-to-end cost benefit. If any condition fails,
 the controller remains shadow-only.
 
@@ -161,3 +167,29 @@ ANALYTIC, or COMPUTE transition. [QWake-PC](glossary_EN.md#term-qwake-pc) does n
 mechanism features: admission belongs to PC-TREF and evidence to PC-CATM. The
 mandatory core is temporal FixedPred, and `controls_execution=false` remains in
 force pending a separate decision.
+
+
+## Bounded `QWake-FP` implementation and single image
+
+[ADR-042](decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
+defines one immutable superset image and the campaign roles
+`C1_COLLECTION / C2_CALIBRATION / C3_CONFIRMATORY / R_REPLICATION`.
+Executable code is embedded in advance, but sensitive operations are activated
+only through an internal [capability gate](glossary_EN.md#term-capability-gate)
+at the effect boundary.
+
+Policy is a frozen data manifest for the embedded interpreter. `SELECT_POLICY`
+is permitted only in `C2_CALIBRATION`; confirmatory-partition access combined
+with policy selection is forbidden. A next stage opens only through the sealed
+receipt of its predecessor and matching image, source, and policy identities.
+
+```text
+qwake_fp_only_mandatory_implementation=true
+execution_image_strategy=single_immutable_superset_image
+stage_activation=fail_closed_permission_manifest
+permission_checks_at_effect_boundaries=true
+disabled_capability_executes=false
+policy_representation=frozen_data_manifest
+same_image_digest_required_across_c1_c2_c3_r=true
+controls_execution=false
+```

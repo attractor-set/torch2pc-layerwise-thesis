@@ -57,7 +57,7 @@ The comparison covers:
 - compute time and memory;
 - reproducibility across independent runs.
 
-## Current state as of July 20, 2026
+## Current state as of July 23, 2026
 
 The following work is complete in the pinned Ubuntu/ROCm environment:
 
@@ -306,6 +306,12 @@ This transition does not open `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor,
 hysteresis, active control, or test-dataset access. B1 and B2 remain exact
 implementation candidates, not `QWake-PC` policies.
 
+The next docs-only stage is `QW-0`: bound empirical validation to one
+[QWake-FP](docs/glossary_EN.md#term-qwake-fp) for corrected Rosenbaum FixedPred,
+implement the full mandatory pipeline before one immutable-image freeze, and
+separate C1/C2/C3/R through internal fail-closed permission gates. This scope
+freeze does not itself open execution.
+
 ## Numerical controls
 
 C0 and C1 are used instead of H0/H1 to avoid confusion with null statistical
@@ -419,3 +425,35 @@ ADVANCE_FRONTIER is split into OBSERVATION, ANALYTIC, and COMPUTE. DONE denotes
 an already admitted shadow outcome. The mandatory core is temporal FixedPred;
 recursive scales and active control are conditional. This freeze opens no
 execution, collection, labels, or test access.
+
+## Bounded `QWake-FP` validation
+
+[ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
+freezes QWake-PC as a general specification and QWake-FP as the only mandatory
+implementation. The validation case is bounded to FixedPred, eta=1,
+stage2_baseline, and a finite canonical suffix.
+
+One superset image embeds collectors, analytics, oracle logic, replay,
+baselines, and evaluators. `C1_COLLECTION`, `C2_CALIBRATION`,
+`C3_CONFIRMATORY`, and `R_REPLICATION` activate only registered capabilities.
+Policy is frozen as a data manifest, while executable code remains unchanged
+between stages.
+
+The publication package requires untouched confirmatory seeds, simple
+baselines, nested ablations, complete cost, one replication without retuning,
+and a trajectory benchmark. Decision order is safety -> coverage -> net cost.
+
+- [Full plan](docs/qwake-fp-experimental-plan_EN.md)
+- [ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
+
+```text
+qwake_fp_scope_freeze_complete=true
+execution_image_strategy=single_immutable_superset_image
+stage_activation=fail_closed_permission_manifest
+qwake_fp_execution_permitted=false
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+test_dataset_access=false
+```

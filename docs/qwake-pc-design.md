@@ -4,13 +4,16 @@
 
 ## Статус и область
 
-Документ описывает будущую архитектуру [QWake-PC](glossary.md#term-qwake-pc)
-после `EX-IF0`. Он не является предварительной регистрацией контроллера, не
-разрешает [выполнение](glossary.md#term-execution) и не меняет B1
-`isolated_layer_vjp`, B2 `composite_vjp` или `stage3b-b1-b2-prereg-v1`.
+Документ описывает общую архитектуру [QWake-PC](glossary.md#term-qwake-pc)
+и её единственную обязательную магистерскую реализацию
+[QWake-FP](glossary.md#term-qwake-fp) после `EX-IF0`. Он не является
+предварительной регистрацией контроллера, не разрешает
+[выполнение](glossary.md#term-execution) и не меняет B1 `isolated_layer_vjp`,
+B2 `composite_vjp` или `stage3b-b1-b2-prereg-v1`.
 
-До отдельной предварительной регистрации и положительных доказательных
-материалов теневого режима действует `controls_execution=false`.
+`ADR-042` ограничивает экспериментальную проверку `QWake-FP` исправленным
+особым случаем `Rosenbaum` FixedPred при `eta=1`. До отдельных `request` `freeze`,
+`runtime` `preflight` и `authorization` действует `controls_execution=false`.
 
 ## Семантическая граница имени
 
@@ -53,20 +56,22 @@ QW-PC0 / QW-AB0 — версионируемые проекты конкретн
 `QWake-PC` операционализирует эти основания в предложениях или решениях
 управления, но не является единственным фиксированным алгоритмом.
 
-В текущем пространстве проектов:
+В текущем обязательном пространстве проектов:
 
-- `QW-PC0` обозначает консервативный бинарный проект: пропуск либо один полный
-  точный корректирующий проход;
-- `QW-AB0` обозначает последующий проект адаптивного бюджета полных точных
-  проходов.
+- `QWake-FP` обозначает одну детерминированную `shadow`-реализацию для `temporal`
+  FixedPred `prefix`, вложенных `A0/A1/A2`, конечного `analytic` `registry` и
+  `canonical` `suffix`;
+- `QW-PC0` и `QW-AB0` сохраняются как исторические или будущие проекты и не
+  входят в обязательную экспериментальную проверку.
 
-Эти идентификаторы являются только обозначениями уровня проектирования. Каждый
-исполняемый контроллер требует отдельного контракта, предварительной регистрации,
-теневой проверки и решения о допуске. Отрицательный результат конкретного
-контроллера не опровергает `PC-CATM` или `PC-TREF`.
-
+Общность `QWake-PC` задаётся интерфейсами и инвариантами. Экспериментально
+проверяется только `QWake-FP`; её отрицательный результат не опровергает
+`PC-CATM` или `PC-TREF`, а положительный не доказывает переносимость на другие
+алгоритмы или режимы.
 
 ## Рекурсивная многомасштабная семантика
+
+Эта семантика сохраняется только как `future-work` `extension` по `ADR-042` и не входит в обязательный `QWake-FP` `image` или `confirmatory` `claim`.
 
 Зафиксированное направление использует один оператор над родительской областью
 `R` и вложенным семейством агрегатов
@@ -163,3 +168,30 @@ fallback_exact            = exact current uncertified parent
 допуск принадлежит `PC-TREF`, а свидетельства — `PC-CATM`. Обязательное ядро
 ограничено `temporal FixedPred`; до отдельного решения сохраняется
 `controls_execution=false`.
+
+
+## Ограниченная реализация `QWake-FP` и единый образ
+
+[ADR-042](decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md)
+задаёт один `immutable` `superset` `image` и роли кампании
+`C1_COLLECTION / C2_CALIBRATION / C3_CONFIRMATORY / R_REPLICATION`.
+`Executable` `code` присутствует в образе заранее, но чувствительные операции
+активируются только через внутренний [барьер capability](glossary.md#term-capability-gate)
+на границе эффекта.
+
+`Policy` хранится как `frozen` `data` `manifest` для встроенного интерпретатора.
+`SELECT_POLICY` допустим только в `C2_CALIBRATION`; доступ к `confirmatory`
+`partition` одновременно с выбором `policy` запрещён. Следующая стадия открывается
+только по `sealed` `receipt` предыдущей и при совпадении `image`, `source` и `policy`
+`identities`.
+
+```text
+qwake_fp_only_mandatory_implementation=true
+execution_image_strategy=single_immutable_superset_image
+stage_activation=fail_closed_permission_manifest
+permission_checks_at_effect_boundaries=true
+disabled_capability_executes=false
+policy_representation=frozen_data_manifest
+same_image_digest_required_across_c1_c2_c3_r=true
+controls_execution=false
+```

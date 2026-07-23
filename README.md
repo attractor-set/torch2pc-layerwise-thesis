@@ -58,7 +58,7 @@
 - вычислительное время и память;
 - воспроизводимость между независимыми запусками.
 
-## Текущее состояние на 20 июля 2026 года
+## Текущее состояние на 23 июля 2026 года
 
 В закреплённой среде Ubuntu/ROCm завершены:
 
@@ -310,6 +310,12 @@ Evidence release опубликован bounded tagged action, а frozen receipt
 гистерезис, активное управление или доступ к тестовой выборке. B1/B2 остаются
 точными кандидатами реализации, а не политиками `QWake-PC`.
 
+Следующий docs-only этап — `QW-0`: ограничить эмпирическую проверку одной
+[QWake-FP](docs/glossary.md#term-qwake-fp) для corrected Rosenbaum FixedPred,
+реализовать весь обязательный pipeline до одной заморозки immutable image и
+разделять `C1/C2/C3/R` внутренними fail-closed permission gates. Этот scope
+freeze сам по себе не открывает выполнение.
+
 ## Контрольные проверки
 
 Обозначения C0 и C1 используются вместо H0/H1, чтобы не смешивать технические
@@ -425,3 +431,35 @@ oracle, а `ADVANCE_FRONTIER` разделён на `OBSERVATION`, `ANALYTIC` и
 `DONE` означает уже допущенный теневой исход. Обязательное ядро ограничено
 temporal `FixedPred`; рекурсивные масштабы и active control условны.
 Документационная фиксация не открывает выполнение, сбор, метки или test split.
+
+## Ограниченная проверка `QWake-FP`
+
+[ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md)
+фиксирует `QWake-PC` как общую спецификацию, а QWake-FP — как единственную
+обязательную реализацию. Проверочный случай ограничен `FixedPred`, `eta=1`,
+`stage2_baseline` и конечным canonical suffix.
+
+Один superset image заранее содержит collectors, analytics, oracle, replay,
+baselines и evaluators. Роли кампании `C1_COLLECTION`, `C2_CALIBRATION`,
+`C3_CONFIRMATORY` и `R_REPLICATION` активируют только зарегистрированные
+capabilities. Policy замораживается как data manifest, а executable code между
+стадиями не меняется.
+
+Публикационный пакет требует untouched confirmatory seeds, простых baselines,
+nested ablations, полной стоимости, одной replication без retuning и
+trajectory benchmark. Порядок решения: `safety -> coverage -> net cost`.
+
+- [Полный план](docs/qwake-fp-experimental-plan.md)
+- [ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md)
+
+```text
+qwake_fp_scope_freeze_complete=true
+execution_image_strategy=single_immutable_superset_image
+stage_activation=fail_closed_permission_manifest
+qwake_fp_execution_permitted=false
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+test_dataset_access=false
+```

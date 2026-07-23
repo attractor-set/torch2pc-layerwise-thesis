@@ -2,7 +2,7 @@
 
 [Русская версия](STATUS.md)
 
-As of 22 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
+As of 23 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
 `SI-MA0`, and `SI-MA1` results are published. Confirmatory B1 and B2 are sealed
 with positive decisions. The new `v2`
 [matched-profiling](docs/glossary_EN.md#term-matched-profiling) package was
@@ -278,16 +278,30 @@ unchanged.
 
 ## Integrated frontier model
 
-ADR-040 keeps ADR-039 unchanged and freezes the new action alphabet and
-multilevel observation without authorizing execution.
+ADR-041 retains ADR-039 and ADR-040 as historical decisions and supplies the
+current transition, admission, cost, and mandatory-scope semantics. O is
+separate from deployable A0 -> A1 -> A2; analytics are independent measured
+transitions, and DONE is an already admitted shadow outcome. The mandatory path
+is temporal FixedPred, while recursive scales and active control remain
+conditional. Scientific collection and closed data remain unavailable.
+
+This corrective freeze removes documentation ambiguities but does not declare a positive scientific result or modify sealed evidence. Any subsequent experiment requires a separate admission decision.
 
 ```text
-integrated_frontier_model_frozen=true
+integrated_frontier_corrective_semantics_frozen=true
 frontier_action_alphabet=ACCEPT_FRONTIER,ADVANCE_FRONTIER,COMPLETE_SUFFIX
-observation_level_order=A0,A1,A2,O
-pc_tref_role=admission_semantics
-pc_catm_role=mechanism_evidence
-qwake_pc_role=frontier_orchestration
+frontier_advance_kinds=OBSERVATION,ANALYTIC,COMPUTE
+deployable_observation_level_order=A0,A1,A2
+oracle_level=O
+oracle_availability=post_action_only
+oracle_is_frontier_action=false
+within_snapshot_observation_monotone=true
+compute_transition_resets_current_observation=A0
+analytic_registry_finite_and_frozen=true
+measurement_to_decision_cost_mapping_required=true
+done_semantics=admitted_shadow_outcome
+mandatory_thesis_scope=temporal_fixedpred_prefix
+recursive_multiscale_scope=conditional_extension
 integrated_frontier_controls_execution=false
 oracle_label_generation_open=false
 feature_collection_permitted=false

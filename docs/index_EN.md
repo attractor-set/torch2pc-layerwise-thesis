@@ -112,3 +112,4 @@ of freedom before comparative results are computed.
 
 - [Design model](stage3b-integrated-frontier-model_EN.md)
 - [ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model_EN.md)
+- [ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md)

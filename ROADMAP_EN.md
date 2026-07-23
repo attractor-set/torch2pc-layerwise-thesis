@@ -164,10 +164,14 @@ closed.
 
 ## Stage 18 — `DUS-0` and `DUS-1`: freeze and refactoring
 
-ADR-040 adds the integrated frontier model above unchanged ADR-039. The
-mandatory observation axis is `A0 -> A1 -> A2`, while `O` remains post-action
-oracle. The shadow action alphabet is `ACCEPT_FRONTIER`, `ADVANCE_FRONTIER`,
-`COMPLETE_SUFFIX`; `controls_execution=false`.
+ADR-041 supplies current corrective semantics above unchanged ADR-039 and
+ADR-040. The deployable observation axis is `A0 -> A1 -> A2`, while `O` is a
+separate post-action oracle. ADVANCE_FRONTIER has OBSERVATION, ANALYTIC, and
+COMPUTE kinds; `controls_execution=false`.
+
+The mandatory thesis path is bounded to temporal FixedPred, a finite analytic
+registry, deterministic shadow replay, and the canonical suffix. Recursive
+spatial aggregates and active control are conditional.
 
 ADR-039 freezes FixedPred, `stage2_baseline`, the EX-IF0 oracle,
 the [Rosenbaum wavefront
@@ -176,8 +180,10 @@ control](docs/glossary_EN.md#term-rosenbaum-wavefront-control), and
 
 The first slice is limited to the new `stage3b_sufficiency` namespace,
 separation of oracle, pre-action features, policy, and cost accounting,
-schemas, pure types, synthetic tests, a deterministic analytic registry,
-non-interference, and provenance checks.
+schemas, pure types, synthetic tests, a finite deterministic analytic registry
+with exact, conservative, and heuristic result classes, explicit mapping from
+edge measurements to decision cost without double counting, non-interference,
+local-monotonicity, and provenance checks.
 
 Scientific execution remains closed.
 

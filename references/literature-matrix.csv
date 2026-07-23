@@ -8,3 +8,8 @@ raghu2017svcca,methodological,SVCCA background,related methods,supporting
 morcos2018insights,methodological,PWCCA/representation comparison,related methods,supporting
 xiao2017fashion,dataset,Fashion-MNIST source,datasets,mandatory
 clanuwat2018deep,dataset,KMNIST source,publication extension,conditional
+tschantz2023hybrid,direct,Adaptive predictive-coding inference and stopping,"related work,DUS baseline B-DUS-03,novelty boundary",mandatory
+graves2016adaptive,methodological,Adaptive computation depth,"related work,adaptive-computation baseline",supporting
+shim2018joint,methodological,Cost-sensitive sequential feature acquisition,"related work,A0/A1/A2 acquisition",supporting
+geifman2019selectivenet,methodological,Selective prediction and risk-coverage,"D/U/S metrics,risk admission",supporting
+callaway2017learning,methodological,Value-aware selection of internal computations,"QWake-PC relation,analytic frontier",supporting

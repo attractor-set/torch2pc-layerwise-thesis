@@ -118,18 +118,20 @@ matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_publication_gate_frozen=true
-matched_profiling_analysis_publication_action_complete=false
+matched_profiling_analysis_publication_action_complete=true
+matched_profiling_analysis_publication_receipt_frozen=true
 matched_profiling_analysis_open=false
 runtime_authorization=issued_consumed
 measurements_allowed=false
-results_publication_permitted=false
-release_draft_required=true
-release_publication_permitted=false
+results_publication_permitted=true
+release_draft_required=false
+release_publication_permitted=true
+release_publication_complete=true
 ```
 
-Фактический runtime preflight зафиксирован отдельно и связан с merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. Машиночитаемая authorization связала execution request, runtime preflight и runtime identity. Единственная попытка завершена на `main@72b95a284e8747a33b8c34d5929d4110aa4bfea1`; receipt, audit и внешний seal связывают неизменённый 18-файловый output. Sealing не разрешает публикацию сравнительных
-выводов и не открывает `EX-IF0`, пассивную диагностику, предиктор, `QWake-PC`
-или тестовую выборку.
+Фактический runtime preflight зафиксирован отдельно и связан с merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. Машиночитаемая authorization связала execution request, runtime preflight и runtime identity. Единственная попытка завершена на `main@72b95a284e8747a33b8c34d5929d4110aa4bfea1`; receipt, audit и внешний seal связывают неизменённый 18-файловый output. Tagged publication action и frozen receipt разрешают только публикацию
+запечатанного описательного анализа. Они не открывают `EX-IF0`, пассивную
+диагностику, предиктор, `QWake-PC` или тестовую выборку.
 
 Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1 и B2 не обращались к тестовой выборке.
 Исходные и зафиксированные результаты не переписываются документационными
@@ -278,7 +280,7 @@ fallback validation или end-to-end B1/B2 benefit. Итоговые матер
 evidence PR, immutable tag и полный черновой релиз уже завершены.
 
 Однократное выполнение, независимая проверка и внешняя печать результатов завершены.
-Publication gate зафиксирован, но до успешного remote action границы остаются неизменными:
+Publication action успешно завершён и связан frozen receipt; границы остаются ограниченными опубликованным запечатанным анализом:
 
 ```text
 matched_profiling_analysis_protocol_frozen=true
@@ -296,11 +298,13 @@ matched_profiling_analysis_output_audited=true
 matched_profiling_analysis_output_seal_frozen=true
 matched_profiling_analysis_output_evidence=true
 matched_profiling_analysis_publication_gate_frozen=true
-matched_profiling_analysis_publication_action_complete=false
-results_publication_permitted=false
+matched_profiling_analysis_publication_action_complete=true
+matched_profiling_analysis_publication_receipt_frozen=true
+results_publication_permitted=true
+release_publication_complete=true
 ```
 
-Publication gate зафиксирован, но remote action ещё не завершён; evidence release должен быть подтверждён как draft и non-immutable до загрузки publication assets.
+Evidence release опубликован bounded tagged action, а frozen receipt связывает publication commit, workflow run и digests assets.
 
 Этот переход не открывает `EX-IF0`, `A11-OFF0`, `A11-OFF1`, предиктор,
 гистерезис, активное управление или доступ к тестовой выборке. B1/B2 остаются
@@ -414,10 +418,10 @@ D/U/S](docs/glossary.md#term-dus-decision-semantics) остаётся тенев
 
 ## Интегрированная модель фронтира
 
-[ADR-040](docs/decisions/ADR-040-stage3b-integrated-frontier-model.md) уточняет
-следующий проектный слой после ADR-039. `DONE / UNKNOWN / SWEEP` сохраняются как
-предшествующая семантика, а действия разделены на `ACCEPT_FRONTIER`,
-`ADVANCE_FRONTIER` и `COMPLETE_SUFFIX`. Уровни `A0 / A1 / A2` учитывают
-стоимость наблюдения; `O` остаётся только post-action oracle. Документационная
-фиксация не открывает выполнение, сбор признаков, создание меток, политику или
-test split.
+[ADR-041](docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md)
+задаёт текущую корректирующую семантику поверх неизменных ADR-039 и ADR-040.
+Развёртываемая ось равна `A0 -> A1 -> A2`, `O` остаётся отдельным post-action
+oracle, а `ADVANCE_FRONTIER` разделён на `OBSERVATION`, `ANALYTIC` и `COMPUTE`.
+`DONE` означает уже допущенный теневой исход. Обязательное ядро ограничено
+temporal `FixedPred`; рекурсивные масштабы и active control условны.
+Документационная фиксация не открывает выполнение, сбор, метки или test split.

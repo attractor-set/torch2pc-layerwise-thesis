@@ -154,8 +154,10 @@ does not invalidate `A-Core` and is an admissible negative result.
 
 ## Integrated frontier orchestration
 
-[ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model_EN.md) limits
-future orchestration to ACCEPT_FRONTIER, ADVANCE_FRONTIER, and COMPLETE_SUFFIX.
-`QWake-PC` does not define sufficiency or create mechanism features: admission
-belongs to PC-TREF and evidence to PC-CATM. `controls_execution=false` remains
-in force pending a separate decision.
+[ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md)
+limits future orchestration to ACCEPT_FRONTIER, ADVANCE_FRONTIER, and
+COMPLETE_SUFFIX. ADVANCE_FRONTIER selects exactly one registered OBSERVATION,
+ANALYTIC, or COMPUTE transition. [QWake-PC](glossary_EN.md#term-qwake-pc) does not define sufficiency or create
+mechanism features: admission belongs to PC-TREF and evidence to PC-CATM. The
+mandatory core is temporal FixedPred, and `controls_execution=false` remains in
+force pending a separate decision.

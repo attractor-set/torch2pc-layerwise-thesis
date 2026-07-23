@@ -36,18 +36,20 @@ decisions. The bounded supported conclusion is that numerical equivalence does
 not guarantee resource equivalence. This conclusion does not prove that
 adaptive control is necessary.
 
-The next central question is:
+The next central question for the mandatory thesis path is:
 
-> Can one recursive mechanism use an estimate of the margin to a task-relative
-> sufficiency boundary to select
-> [minimum sufficient compute aggregates](glossary_EN.md#term-minimum-sufficient-compute-aggregate)
-> across multiple scales of predictive-coding inference under bounded
-> exact-reference regret?
+> Can a nested measurably cheap pre-action representation and a finite analytic
+> registry safely recognize a sufficient temporal FixedPred prefix relative to
+> the full `stage2_baseline` suffix under bounded exact-reference regret and
+> positive end-to-end savings?
 
-The work first tests existence of a cheaper sufficient aggregate, state
-dependence of the oracle decision, and reuse of one normative semantics at two
-scales. A predictor, temperature, and `QWake-PC` are admitted only after those
-gates.
+The system compares three ways to advance: acquire the next observation level,
+run a registered analytic step, or execute one canonical sweep. The oracle is
+created only after action by the full suffix and is never a decision input.
+
+Recursive spatial aggregates, learned routing, and active [QWake-PC](glossary_EN.md#term-qwake-pc) control are
+conditional continuations after the temporal core, not mandatory thesis
+results.
 
 ## Theoretical framework
 

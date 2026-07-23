@@ -169,10 +169,14 @@ one-step ветви являются identity-control выбранного `stag
 
 ## Этап 18 — `DUS-0` и `DUS-1`: фиксация и рефакторинг
 
-ADR-040 добавляет интегрированную модель фронтира поверх неизменного ADR-039.
-Обязательная ось наблюдения — `A0 -> A1 -> A2`, а `O` остаётся post-action
-oracle. Теневой алфавит действий — `ACCEPT_FRONTIER`, `ADVANCE_FRONTIER`,
-`COMPLETE_SUFFIX`; `controls_execution=false`.
+ADR-041 задаёт текущую корректирующую семантику поверх неизменных ADR-039 и
+ADR-040. Развёртываемая ось наблюдения — `A0 -> A1 -> A2`, а `O` является
+отдельным post-action oracle. `ADVANCE_FRONTIER` имеет виды `OBSERVATION`,
+`ANALYTIC` и `COMPUTE`; `controls_execution=false`.
+
+Обязательный магистерский путь ограничен temporal `FixedPred`, конечным
+аналитическим реестром, deterministic shadow replay и canonical suffix.
+Рекурсивные пространственные агрегаты и active control условны.
 
 ADR-039 фиксирует `FixedPred`, `stage2_baseline`, oracle `EX-IF0`,
 [wavefront-контроль Rosenbaum](docs/glossary.md#term-rosenbaum-wavefront-control)
@@ -184,8 +188,10 @@ D/U/S](docs/glossary.md#term-dus-decision-semantics).
 - выделение нового namespace `stage3b_sufficiency`;
 - разделение oracle, `pre-action` features, policy и cost accounting;
 - схемы, pure types и synthetic tests;
-- deterministic analytic registry;
-- проверка невмешательства и provenance.
+- конечный deterministic analytic registry с exact, conservative и heuristic
+  классами результатов;
+- явное отображение edge measurements в decision cost без двойного учёта;
+- проверка невмешательства, локальной монотонности и provenance.
 
 Научное выполнение на этом этапе закрыто.
 

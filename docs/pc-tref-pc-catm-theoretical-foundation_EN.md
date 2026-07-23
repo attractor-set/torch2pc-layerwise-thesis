@@ -317,5 +317,9 @@ preregistrations.
 
 In the [integrated frontier model](stage3b-integrated-frontier-model_EN.md),
 PC-TREF supplies ACCEPT_FRONTIER admission, PC-CATM supplies mechanism evidence
-only, and QWake-PC orchestrates registered ADVANCE_FRONTIER and COMPLETE_SUFFIX
-transitions. No mechanism feature authorizes an action by itself.
+and registered analytic certificates, and QWake-PC orchestrates OBSERVATION,
+ANALYTIC, COMPUTE, and COMPLETE_SUFFIX transitions. No mechanism or heuristic
+feature authorizes an action by itself. O remains post-action oracle only.
+
+Raw edge measurements and the decision cost vector are distinct objects; a
+frozen mapping without implicit scalarization or double counting is required.

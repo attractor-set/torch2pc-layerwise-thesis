@@ -155,8 +155,11 @@ fallback_exact            = exact current uncertified parent
 
 ## Интегрированная оркестрация фронтира
 
-[ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model.md) ограничивает
-будущую оркестрацию действиями `ACCEPT_FRONTIER`, `ADVANCE_FRONTIER` и
-`COMPLETE_SUFFIX`. `QWake-PC` не определяет достаточность и не создаёт
-механизмные признаки: допуск принадлежит `PC-TREF`, а свидетельства —
-`PC-CATM`. До отдельного решения сохраняется `controls_execution=false`.
+[ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md)
+ограничивает будущую оркестрацию действиями `ACCEPT_FRONTIER`,
+`ADVANCE_FRONTIER` и `COMPLETE_SUFFIX`. `ADVANCE_FRONTIER` выбирает только один
+зарегистрированный переход `OBSERVATION`, `ANALYTIC` или `COMPUTE`.
+`QWake-PC` не определяет достаточность и не создаёт механизмные признаки:
+допуск принадлежит `PC-TREF`, а свидетельства — `PC-CATM`. Обязательное ядро
+ограничено `temporal FixedPred`; до отдельного решения сохраняется
+`controls_execution=false`.

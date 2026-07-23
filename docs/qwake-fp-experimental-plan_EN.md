@@ -135,11 +135,22 @@ Outputs:
 
 ### `C2_CALIBRATION`
 
-Permits access only to the calibration partition, recognizability analysis,
-[baseline](glossary_EN.md#term-baseline) replay, selection of one policy, and policy freeze.
+C2 is a strictly offline stage. It reads only sealed C1 trajectory artifacts;
+model execution and collection of new observations are not permitted.
 
-Forbids confirmatory access, confirmatory execution, changes to the collector,
-oracle, or cost mapping, and publication.
+It permits `ACCESS_SEALED_C1_ARTIFACTS`, `RUN_OFFLINE_REPLAY`,
+`RUN_RECOGNIZABILITY_ANALYSIS`, [baseline](glossary_EN.md#term-baseline) evaluation through
+`EVALUATE_BASELINES`, `SELECT_POLICY`,
+`FREEZE_POLICY`, and `SEAL_EVIDENCE`.
+
+It forbids `EXECUTE_FIXEDPRED`, `COLLECT_A0`, `COLLECT_A1`, `COLLECT_A2`,
+`RUN_LIVE_ANALYTICS`, `COMPUTE_CANONICAL_SUFFIX`, `COMPUTE_NEW_ORACLE_LABELS`,
+`ACCESS_CONFIRMATORY_DATA`, changes to the collector/oracle/cost mapping, and
+publication.
+
+Offline replay opens only the already stored field for the next observation
+level or analytic step, reproduces the policy transition, and adds the marginal
+cost measured in C1. It creates no new tensor value and recomputes no oracle.
 
 Outputs:
 
@@ -227,9 +238,22 @@ freeze. Policy remains configuration for the embedded interpreter.
 ### `QW-4` — pre-freeze validation
 
 Run static/unit/integration checks, CPU/ROCm smoke, permission matrix, negative
-permission tests, observer-on/off non-interference, deterministic replay,
-schema checks, corrupt/missing-manifest tests, receipt-chain tests, and
-baseline replay tests.
+permission tests, deterministic replay, schema checks, corrupt/missing-manifest
+tests, receipt-chain tests, and baseline replay tests.
+
+Validate observation through three matched pairs over one logical B0 definition
+and a separate matched reference execution inside each pair:
+
+```text
+P0: B0 <-> B0+A0
+P1: B0 <-> B0+A0+A1
+P2: B0 <-> B0+A0+A1+A2
+```
+
+Each pair checks canonical-result/RNG/transition equivalence, observation
+correctness, and accumulated cost. Also verify A0/A1 nesting, non-execution of
+disabled capabilities, post-action oracle isolation, and registered-analytic
+non-interference.
 
 ### `QW-5` — single image freeze
 
@@ -238,7 +262,9 @@ a new digest and protocol version; old [evidence](glossary_EN.md#term-evidence) 
 
 ### `QW-6` — C1 collection and opportunity
 
-Collect complete trajectories and test:
+Collect complete design/calibration trajectories sufficient for later offline
+C2: every snapshot, A0/A1/A2, registered analytics, marginal edge costs, the
+canonical suffix, and post-action oracle labels. Test:
 
 ```text
 exists_preterminal_sufficient_state
@@ -248,9 +274,9 @@ potential_avoided_cost_exceeds_lower_bound_of_control_overhead
 If this gate fails, policy selection is not mandatory; the outcome is reported
 as a bounded negative finding.
 
-### `QW-7` — C2 recognizability and policy freeze
+### `QW-7` — C2 offline recognizability, deterministic replay, and policy freeze
 
-Compare:
+Without any new FixedPred execution, replay from sealed C1 artifacts:
 
 ```text
 A0
@@ -349,6 +375,12 @@ single mandatory image.
 qwake_fp_scope_freeze_complete=true
 qwake_fp_execution_permitted=false
 single_immutable_superset_image_frozen=false
+c2_execution_mode=offline_only
+c2_input_artifacts=sealed_c1_trajectory_dataset
+c2_live_fixedpred_execution_permitted=false
+c2_new_observation_collection_permitted=false
+c2_new_oracle_generation_permitted=false
+c2_policy_selection_from_frozen_artifacts_only=true
 c1_collection_open=false
 c2_calibration_open=false
 c3_confirmatory_open=false

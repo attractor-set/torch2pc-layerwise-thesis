@@ -200,9 +200,19 @@ capabilities.
 ## Этап 22 — `QW-4`: pre-freeze validation
 
 Выполнить static/unit/integration checks, CPU/ROCm smoke, permission matrix,
-negative permission tests, observer-on/off non-interference, deterministic
-replay, schema tests, corrupt/missing manifest tests, receipt-chain tests и
-baseline replay tests.
+negative permission tests, deterministic replay, schema tests, corrupt/missing
+manifest tests, receipt-chain tests и baseline replay tests.
+
+Наблюдение валидируется тремя matched-парами:
+
+```text
+P0: B0 <-> B0+A0
+P1: B0 <-> B0+A0+A1
+P2: B0 <-> B0+A0+A1+A2
+```
+
+Пары подтверждают non-interference, корректность и накопленную стоимость уровней;
+отдельно проверяются nesting, закрытые capabilities, oracle isolation и analytics.
 
 Выключенная capability не должна вызываться, читать tensors, выделять память,
 синхронизировать устройство или создавать output.
@@ -218,8 +228,9 @@ baseline replay tests.
 
 ## Этап 24 — `QW-6`: `C1_COLLECTION` и opportunity
 
-Тем же образом собрать полные temporal trajectories, `A0/A1/A2`, analytic
-outputs, edge costs, canonical suffix и post-action oracle labels.
+Тем же образом собрать полные design/calibration temporal trajectories,
+`A0/A1/A2`, analytic outputs, edge costs, canonical suffix и post-action oracle
+labels. Sealed C1 dataset должен быть самодостаточным входом для offline C2.
 
 Opportunity gate:
 
@@ -231,14 +242,16 @@ potential_avoided_cost_exceeds_control_overhead_lower_bound=true
 При отрицательном gate policy selection не обязательна; результат фиксируется
 как bounded negative finding.
 
-## Этап 25 — `QW-7`: `C2_CALIBRATION` и policy freeze
+## Этап 25 — `QW-7`: `C2_CALIBRATION` offline replay и policy freeze
 
-На calibration partition сравнить `A0`, `A0+A1`, `A0+A1+A2` и
-`A0+A1+A2+analytics`, выполнить baselines и nested ablations, затем выбрать
-простейшую безопасную почти недоминируемую policy.
+Только над sealed C1 artifacts, без новых запусков FixedPred, сравнить `A0`,
+`A0+A1`, `A0+A1+A2` и `A0+A1+A2+analytics`, выполнить baselines и nested
+ablations, затем выбрать простейшую безопасную почти недоминируемую policy.
 
-`SELECT_POLICY` и `FREEZE_POLICY` разрешены только здесь. Confirmatory access
-закрыт. Выход — frozen policy manifest и sealed C2 receipt.
+`ACCESS_SEALED_C1_ARTIFACTS`, `RUN_OFFLINE_REPLAY`, `SELECT_POLICY` и
+`FREEZE_POLICY` разрешены только здесь. `EXECUTE_FIXEDPRED`, новый сбор
+наблюдений, новый oracle и confirmatory access запрещены. Выход — frozen policy
+manifest и sealed C2 receipt.
 
 ## Этап 26 — `QW-8`: `C3_CONFIRMATORY`
 

@@ -170,3 +170,34 @@ def test_scope_freeze_does_not_add_pdca_or_deming_layer() -> None:
         text = _text(path)
         for token in forbidden:
             assert token not in text, (path, token)
+
+
+def test_c2_is_strictly_offline_over_sealed_c1_artifacts() -> None:
+    required = (
+        "c2_execution_mode=offline_only",
+        "c2_input_artifacts=sealed_c1_trajectory_dataset",
+        "c2_live_fixedpred_execution_permitted=false",
+        "c2_new_observation_collection_permitted=false",
+        "c2_new_oracle_generation_permitted=false",
+        "c2_policy_selection_from_frozen_artifacts_only=true",
+        "ACCESS_SEALED_C1_ARTIFACTS",
+        "RUN_OFFLINE_REPLAY",
+        "EXECUTE_FIXEDPRED",
+        "COMPUTE_NEW_ORACLE_LABELS",
+    )
+    for path in NORMATIVE_DOCS:
+        text = _text(path)
+        for token in required:
+            assert token in text, (path, token)
+
+
+def test_pre_freeze_validation_uses_three_matched_observer_pairs() -> None:
+    required = (
+        "P0: B0 <-> B0+A0",
+        "P1: B0 <-> B0+A0+A1",
+        "P2: B0 <-> B0+A0+A1+A2",
+    )
+    for path in PLAN_DOCS + (ROOT / "ROADMAP.md", ROOT / "ROADMAP_EN.md"):
+        text = _text(path)
+        for token in required:
+            assert token in text, (path, token)

@@ -327,15 +327,22 @@ implementation. `C1_COLLECTION`, `C2_CALIBRATION`, `C3_CONFIRMATORY`, and
 request/policy manifests and permissions.
 
 Permission is checked inside effectful functions. A disabled capability does
-not execute. Policy selection is permitted only in C2; selection combined with
-confirmatory access is forbidden. C3 uses untouched model seeds, and R uses the
-same policy without retuning. Safety is evaluated before coverage, and coverage
-before cost.
+not execute. C2 is a strictly offline stage over sealed C1 artifacts: FixedPred,
+new A0/A1/A2 collection, live analytics, new suffix/oracle computation, and
+confirmatory access are forbidden there. Policy selection is permitted only in
+C2. C3 uses untouched model seeds, and R uses the same policy without retuning.
+Safety is evaluated before coverage, and coverage before cost.
 
 ```text
 qwake_fp_scope_freeze_complete=true
 qwake_fp_execution_permitted=false
 single_immutable_superset_image_frozen=false
+c2_execution_mode=offline_only
+c2_input_artifacts=sealed_c1_trajectory_dataset
+c2_live_fixedpred_execution_permitted=false
+c2_new_observation_collection_permitted=false
+c2_new_oracle_generation_permitted=false
+c2_policy_selection_from_frozen_artifacts_only=true
 permission_checks_at_effect_boundaries=true
 disabled_capability_executes=false
 policy_representation=frozen_data_manifest

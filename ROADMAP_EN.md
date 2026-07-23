@@ -196,9 +196,20 @@ capabilities.
 ## Stage 22 — `QW-4`: pre-freeze validation
 
 Run static/unit/integration checks, CPU/ROCm smoke, permission matrix, negative
-permission tests, observer-on/off non-interference, deterministic replay,
-schema tests, corrupt/missing-manifest tests, receipt-chain tests, and baseline
-replay tests.
+permission tests, deterministic replay, schema tests, corrupt/missing-manifest
+tests, receipt-chain tests, and baseline replay tests.
+
+Validate observation through three matched pairs:
+
+```text
+P0: B0 <-> B0+A0
+P1: B0 <-> B0+A0+A1
+P2: B0 <-> B0+A0+A1+A2
+```
+
+The pairs establish non-interference, correctness, and accumulated observation
+cost; nesting, disabled capabilities, oracle isolation, and analytics are
+checked separately.
 
 A disabled capability must not be called, read tensors, allocate memory,
 synchronize the device, or create output.
@@ -214,8 +225,9 @@ evidence remains preserved and is not rewritten.
 
 ## Stage 24 — `QW-6`: `C1_COLLECTION` and opportunity
 
-With the same image, collect complete temporal trajectories, A0/A1/A2,
-analytic outputs, edge costs, canonical suffix, and post-action oracle labels.
+With the same image, collect complete design/calibration temporal trajectories,
+A0/A1/A2, analytic outputs, edge costs, canonical suffix, and post-action oracle
+labels. The sealed C1 dataset must be a self-contained input to offline C2.
 
 Opportunity gate:
 
@@ -227,14 +239,16 @@ potential_avoided_cost_exceeds_control_overhead_lower_bound=true
 If the gate fails, policy selection is not mandatory; the result is preserved
 as a bounded negative finding.
 
-## Stage 25 — `QW-7`: `C2_CALIBRATION` and policy freeze
+## Stage 25 — `QW-7`: `C2_CALIBRATION` offline replay and policy freeze
 
-On the calibration partition, compare A0, A0+A1, A0+A1+A2, and
-A0+A1+A2+analytics, run baselines and nested ablations, and select the simplest
-safe nearly non-dominated policy.
+Using only sealed C1 artifacts and no new FixedPred execution, compare A0,
+A0+A1, A0+A1+A2, and A0+A1+A2+analytics, run baselines and nested ablations,
+and select the simplest safe nearly non-dominated policy.
 
-SELECT_POLICY and FREEZE_POLICY are permitted only here. Confirmatory access is
-closed. The output is a frozen policy manifest and sealed C2 receipt.
+`ACCESS_SEALED_C1_ARTIFACTS`, `RUN_OFFLINE_REPLAY`, `SELECT_POLICY`, and
+`FREEZE_POLICY` are permitted only here. `EXECUTE_FIXEDPRED`, new observation
+collection, new oracle generation, and confirmatory access are forbidden. The
+output is a frozen policy manifest and sealed C2 receipt.
 
 ## Stage 26 — `QW-8`: `C3_CONFIRMATORY`
 

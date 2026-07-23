@@ -50,8 +50,12 @@ transfer claim about `QWake-PC`.
    tensor, allocates no memory, synchronizes no device, and creates no output.
 10. Separate code identity, campaign request, and policy manifest. A frozen
     policy is data for the embedded interpreter, not new executable code.
-11. Permit policy selection and freeze only in `C2_CALIBRATION`; policy
-    selection combined with confirmatory-partition access is always forbidden.
+11. Define `C2_CALIBRATION` as a strictly offline stage over sealed C1
+    artifacts. Only deterministic replay, recognizability analysis,
+    [baseline](../glossary_EN.md#term-baseline) comparison, and selection/freeze of one policy are permitted there. C2
+    forbids FixedPred execution, new A0/A1/A2 collection, live analytics,
+    canonical-suffix computation, generation of new oracle labels, and access
+    to the confirmatory partition.
 12. Open each next stage only through a valid chain of sealed receipts from the
     preceding stages and matching image/code identities.
 13. Execute `C3_CONFIRMATORY` on untouched model seeds with an already frozen
@@ -76,7 +80,8 @@ C1_COLLECTION
      post-action labels, and opportunity evidence
 
 C2_CALIBRATION
-  -> recognizability analysis, baseline comparison, one frozen QWake-FP policy
+  -> strictly offline deterministic replay over sealed C1 artifacts,
+     recognizability analysis, baseline comparison, and one frozen QWake-FP policy
 
 C3_CONFIRMATORY
   -> untouched shadow evaluation: safety -> coverage -> net cost
@@ -86,8 +91,10 @@ R_REPLICATION
 ```
 
 All policy candidates and ablations compatible with the full trajectory schema
-are evaluated through offline replay. A separate GPU campaign for every
-[baseline](../glossary_EN.md#term-baseline) is not required.
+are evaluated through offline replay. Replay computes no new tensors: it opens
+only stored fields from the sealed C1 [dataset](../glossary_EN.md#term-dataset), reproduces permitted transitions,
+and adds marginal costs measured in C1. No separate GPU campaign is required
+for C2 or for each [baseline](../glossary_EN.md#term-baseline).
 
 ## Capability boundary
 
@@ -102,6 +109,14 @@ The following combinations are always invalid:
 SELECT_POLICY + ACCESS_CONFIRMATORY_DATA
 C3_CONFIRMATORY + FREEZE_POLICY
 C1_COLLECTION + EXECUTE_SHADOW_POLICY
+C2_CALIBRATION + EXECUTE_FIXEDPRED
+C2_CALIBRATION + COLLECT_A0
+C2_CALIBRATION + COLLECT_A1
+C2_CALIBRATION + COLLECT_A2
+C2_CALIBRATION + RUN_LIVE_ANALYTICS
+C2_CALIBRATION + COMPUTE_CANONICAL_SUFFIX
+C2_CALIBRATION + COMPUTE_NEW_ORACLE_LABELS
+C2_CALIBRATION + ACCESS_CONFIRMATORY_DATA
 C2_CALIBRATION + PUBLISH_RESULTS
 R_REPLICATION + RETUNE_POLICY
 ```
@@ -144,6 +159,14 @@ manifest_shell_command_loading=false
 policy_representation=frozen_data_manifest
 policy_interpreter_embedded_in_image=true
 policy_selection_permitted_role=C2_CALIBRATION
+c2_execution_mode=offline_only
+c2_input_artifacts=sealed_c1_trajectory_dataset
+c2_allowed_capabilities=ACCESS_SEALED_C1_ARTIFACTS,RUN_OFFLINE_REPLAY,RUN_RECOGNIZABILITY_ANALYSIS,EVALUATE_BASELINES,SELECT_POLICY,FREEZE_POLICY,SEAL_EVIDENCE
+c2_forbidden_capabilities=EXECUTE_FIXEDPRED,COLLECT_A0,COLLECT_A1,COLLECT_A2,RUN_LIVE_ANALYTICS,COMPUTE_CANONICAL_SUFFIX,COMPUTE_NEW_ORACLE_LABELS,ACCESS_CONFIRMATORY_DATA
+c2_live_fixedpred_execution_permitted=false
+c2_new_observation_collection_permitted=false
+c2_new_oracle_generation_permitted=false
+c2_policy_selection_from_frozen_artifacts_only=true
 confirmatory_access_permitted_role=C3_CONFIRMATORY
 policy_selection_with_confirmatory_access_forbidden=true
 sealed_receipt_chain_required=true

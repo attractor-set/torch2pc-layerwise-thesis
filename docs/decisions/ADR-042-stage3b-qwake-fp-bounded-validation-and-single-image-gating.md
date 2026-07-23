@@ -53,8 +53,12 @@
    `tensor`, не выделяет память, не синхронизирует устройство и не создаёт `output`.
 10. Разделить `code` `identity`, `campaign` `request` и `policy` `manifest`. Замороженная
     `policy` является данными для встроенного интерпретатора, а не новым кодом.
-11. Разрешить `selection`/`freeze` `policy` только в `C2_CALIBRATION`; сочетание
-    выбора `policy` и доступа к `confirmatory` `partition` всегда запрещено.
+11. Определить `C2_CALIBRATION` как строго `offline` стадию над `sealed`
+    артефактами `C1`. Только здесь разрешены детерминированный `replay`,
+    `recognizability` `analysis`, сравнение `baselines`, `selection` и `freeze`
+    одной `policy`. В `C2` запрещены исполнение `FixedPred`, новый сбор
+    `A0/A1/A2`, `live` аналитика, вычисление канонического суффикса, создание
+    новых `oracle` `labels` и доступ к `confirmatory` `partition`.
 12. Открывать каждую следующую стадию только по валидной цепочке `sealed`
     `receipts` предыдущих стадий и при совпадении `image`/`code` `identities`.
 13. Выполнять `C3_CONFIRMATORY` на `untouched` `model` `seeds` с уже замороженной
@@ -79,7 +83,8 @@ C1_COLLECTION
      post-action labels и opportunity evidence
 
 C2_CALIBRATION
-  -> recognizability analysis, baseline comparison, одна frozen QWake-FP policy
+  -> строго offline deterministic replay над sealed C1 artifacts,
+     recognizability analysis, baseline comparison и одна frozen QWake-FP policy
 
 C3_CONFIRMATORY
   -> untouched shadow evaluation: safety -> coverage -> net cost
@@ -89,8 +94,10 @@ R_REPLICATION
 ```
 
 Все `policy` `candidates` и `ablations`, совместимые с полной `trajectory` `schema`,
-оцениваются `offline` `replay`. Отдельная GPU-кампания на каждый `baseline` не
-требуется.
+оцениваются `offline` `replay`. `Replay` не вычисляет новые тензоры: он открывает
+только сохранённые поля `sealed` набора `C1`, воспроизводит допустимые переходы и
+добавляет измеренные в `C1` маргинальные стоимости. Отдельная GPU-кампания для
+`C2` или для каждого `baseline` не требуется.
 
 ## `Capability` `boundary`
 
@@ -105,6 +112,14 @@ R_REPLICATION
 SELECT_POLICY + ACCESS_CONFIRMATORY_DATA
 C3_CONFIRMATORY + FREEZE_POLICY
 C1_COLLECTION + EXECUTE_SHADOW_POLICY
+C2_CALIBRATION + EXECUTE_FIXEDPRED
+C2_CALIBRATION + COLLECT_A0
+C2_CALIBRATION + COLLECT_A1
+C2_CALIBRATION + COLLECT_A2
+C2_CALIBRATION + RUN_LIVE_ANALYTICS
+C2_CALIBRATION + COMPUTE_CANONICAL_SUFFIX
+C2_CALIBRATION + COMPUTE_NEW_ORACLE_LABELS
+C2_CALIBRATION + ACCESS_CONFIRMATORY_DATA
 C2_CALIBRATION + PUBLISH_RESULTS
 R_REPLICATION + RETUNE_POLICY
 ```
@@ -147,6 +162,14 @@ manifest_shell_command_loading=false
 policy_representation=frozen_data_manifest
 policy_interpreter_embedded_in_image=true
 policy_selection_permitted_role=C2_CALIBRATION
+c2_execution_mode=offline_only
+c2_input_artifacts=sealed_c1_trajectory_dataset
+c2_allowed_capabilities=ACCESS_SEALED_C1_ARTIFACTS,RUN_OFFLINE_REPLAY,RUN_RECOGNIZABILITY_ANALYSIS,EVALUATE_BASELINES,SELECT_POLICY,FREEZE_POLICY,SEAL_EVIDENCE
+c2_forbidden_capabilities=EXECUTE_FIXEDPRED,COLLECT_A0,COLLECT_A1,COLLECT_A2,RUN_LIVE_ANALYTICS,COMPUTE_CANONICAL_SUFFIX,COMPUTE_NEW_ORACLE_LABELS,ACCESS_CONFIRMATORY_DATA
+c2_live_fixedpred_execution_permitted=false
+c2_new_observation_collection_permitted=false
+c2_new_oracle_generation_permitted=false
+c2_policy_selection_from_frozen_artifacts_only=true
 confirmatory_access_permitted_role=C3_CONFIRMATORY
 policy_selection_with_confirmatory_access_forbidden=true
 sealed_receipt_chain_required=true

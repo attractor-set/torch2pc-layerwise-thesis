@@ -327,9 +327,11 @@ full_stage3b_campaign_complete=false
 различаться только хешированными request/policy manifests и разрешениями.
 
 Permission проверяется внутри effectful функций. Выключенная capability не
-исполняется. Policy selection разрешён только в `C2`; сочетание selection и
-confirmatory access запрещено. C3 использует untouched model seeds, а R — ту же
-policy без retuning. Safety проверяется раньше coverage, coverage — раньше cost.
+исполняется. `C2` является строго offline стадией над sealed C1 artifacts:
+FixedPred, новый сбор A0/A1/A2, live analytics, новый suffix/oracle и confirmatory
+access в ней запрещены. Policy selection разрешён только в `C2`. C3 использует
+untouched model seeds, а R — ту же policy без retuning. Safety проверяется раньше
+coverage, coverage — раньше cost.
 
 
 Практический смысл этой фиксации состоит в том, что все программные ветви,
@@ -348,6 +350,12 @@ policy без retuning. Safety проверяется раньше coverage, cov
 qwake_fp_scope_freeze_complete=true
 qwake_fp_execution_permitted=false
 single_immutable_superset_image_frozen=false
+c2_execution_mode=offline_only
+c2_input_artifacts=sealed_c1_trajectory_dataset
+c2_live_fixedpred_execution_permitted=false
+c2_new_observation_collection_permitted=false
+c2_new_oracle_generation_permitted=false
+c2_policy_selection_from_frozen_artifacts_only=true
 permission_checks_at_effect_boundaries=true
 disabled_capability_executes=false
 policy_representation=frozen_data_manifest

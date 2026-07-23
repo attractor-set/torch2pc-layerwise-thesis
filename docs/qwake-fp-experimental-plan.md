@@ -138,11 +138,23 @@ PUBLISH_RESULTS
 
 ### `C2_CALIBRATION`
 
-Разрешены доступ только к `calibration` `partition`, `recognizability` `analysis`,
-`baseline` `replay`, выбор одной `policy` и её `freeze`.
+`C2` является строго `offline` стадией. Она читает только `sealed` `C1`
+`trajectory` `artifacts`; исполнение модели или получение новых наблюдений в ней
+не допускается.
 
-Запрещены `confirmatory` `access`, исполнение на `confirmatory`, изменение `collector`,
-`oracle` или `cost` `mapping` и `publication`.
+Разрешены `ACCESS_SEALED_C1_ARTIFACTS`, `RUN_OFFLINE_REPLAY`,
+`RUN_RECOGNIZABILITY_ANALYSIS`, `EVALUATE_BASELINES`, `SELECT_POLICY`,
+`FREEZE_POLICY` и `SEAL_EVIDENCE`.
+
+Запрещены `EXECUTE_FIXEDPRED`, `COLLECT_A0`, `COLLECT_A1`, `COLLECT_A2`,
+`RUN_LIVE_ANALYTICS`, `COMPUTE_CANONICAL_SUFFIX`, `COMPUTE_NEW_ORACLE_LABELS`,
+`ACCESS_CONFIRMATORY_DATA`, изменение `collector`/`oracle`/`cost` `mapping` и
+`publication`.
+
+`Offline replay` открывает только уже сохранённое поле очередного уровня или
+аналитики, воспроизводит переход `policy` и прибавляет измеренную в `C1`
+маргинальную стоимость. Он не создаёт новые `tensor` значения и не пересчитывает
+`oracle`.
 
 Выходы:
 
@@ -230,9 +242,23 @@ ExecutionContext
 ### `QW-4` — `pre-freeze` `validation`
 
 Выполнить `static`/`unit`/`integration` `checks`, CPU/ROCm `smoke`, `permission` `matrix`,
-`negative` `permission` `tests`, `observer-on`/`off` `non-interference`, `deterministic`
-`replay`, `schema` `checks`, `corrupt`/`missing` `manifest` `tests`, `receipt-chain` `tests` и
-`baseline` `replay` `tests`.
+`negative` `permission` `tests`, `deterministic` `replay`, `schema` `checks`,
+`corrupt`/`missing` `manifest` `tests`, `receipt-chain` `tests` и `baseline` `replay`
+`tests`.
+
+Проверку наблюдения выполнить тремя `matched` парами над одним логическим `B0`
+и отдельным `matched`-исполнением `reference` внутри каждой пары:
+
+```text
+P0: B0 <-> B0+A0
+P1: B0 <-> B0+A0+A1
+P2: B0 <-> B0+A0+A1+A2
+```
+
+Каждая пара проверяет `canonical-result`/`RNG`/переходную эквивалентность,
+корректность наблюдения и измеряет накопленную стоимость. Дополнительно
+проверяются вложенность `A0` и `A1`, невыполнение закрытых `capabilities`,
+изоляция `post-action` `oracle` и `non-interference` зарегистрированной аналитики.
 
 ### `QW-5` — `single` `image` `freeze`
 
@@ -242,7 +268,10 @@ ExecutionContext
 
 ### `QW-6` — `C1` `collection` `and` `opportunity`
 
-Собрать полные `trajectories` и проверить:
+Собрать полные `design`/`calibration` `trajectories`, достаточные для последующего
+`offline C2`: все `snapshot`, `A0/A1/A2`, зарегистрированную аналитику,
+маргинальные `edge` `costs`, канонический суффикс и `post-action` `oracle` `labels`.
+Проверить:
 
 ```text
 exists_preterminal_sufficient_state
@@ -252,9 +281,9 @@ potential_avoided_cost_exceeds_lower_bound_of_control_overhead
 При отрицательном `gate` дальнейшая `policy` `selection` не обязательна; результат
 оформляется как `bounded` `negative` `finding`.
 
-### `QW-7` — `C2` `recognizability` `and` `policy` `freeze`
+### `QW-7` — `C2` `offline recognizability`, `deterministic replay` и `policy` `freeze`
 
-Сравнить:
+Не выполняя новых запусков `FixedPred`, воспроизвести на `sealed C1 artifacts`:
 
 ```text
 A0
@@ -355,6 +384,12 @@ QWake-SPC
 qwake_fp_scope_freeze_complete=true
 qwake_fp_execution_permitted=false
 single_immutable_superset_image_frozen=false
+c2_execution_mode=offline_only
+c2_input_artifacts=sealed_c1_trajectory_dataset
+c2_live_fixedpred_execution_permitted=false
+c2_new_observation_collection_permitted=false
+c2_new_oracle_generation_permitted=false
+c2_policy_selection_from_frozen_artifacts_only=true
 c1_collection_open=false
 c2_calibration_open=false
 c3_confirmatory_open=false

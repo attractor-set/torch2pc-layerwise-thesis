@@ -121,7 +121,17 @@ exact remote receipt/status is frozen without rerunning the analysis.
 Superiority claims, policy activation, and test access remain closed. Negative
 and mixed results are retained.
 
-## Stage 17 — `EX-IF0` and the recursive-aggregate oracle boundary
+## Stage 17
+
+<!-- BEGIN STAGE3B-DUS-FUTURE-POLICY-COMPATIBILITY -->
+### Compatible future-policy boundary
+
+`EX-IF0` retains the canonical exact reference and fail-closed fallback.
+`A11-OFF0` remains the policy-neutral snapshot and oracle-collection stage.
+`A11-OFF1` may open only after informative gates; its predictor is evaluated
+only in shadow mode and does not control execution.
+<!-- END STAGE3B-DUS-FUTURE-POLICY-COMPATIBILITY -->
+ — `EX-IF0` and the recursive-aggregate oracle boundary
 
 The `EX-IF0 v1` design freeze is complete: `stage2_baseline` is selected as the
 canonical exact reference and fail-closed fallback for `FixedPred` and `Strict`.

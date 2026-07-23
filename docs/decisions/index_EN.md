@@ -57,3 +57,8 @@
 
 - [ADR-037](ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md): freezes the successful tagged publication action, exact remote receipt, and the still-closed `EX-IF0`, superiority, policy, and test boundaries.
 - [ADR-038](ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary_EN.md): selects `stage2_baseline` as canonical exact reference/[fallback](../glossary_EN.md#term-fallback) and freezes the decision epoch, task-relative [endpoint](../glossary_EN.md#term-endpoint), oracle margin, and full-suffix minimum-stably-sufficient-sweep rule without opening execution or label generation.
+
+- [ADR-039](ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md): freezes
+  FixedPred, `stage2_baseline`, the Rosenbaum positive control, the corrected
+  joint-VJP role, separate compute/diagnostic budgets, and fail-closed
+  `DONE / UNKNOWN / SWEEP` without execution permission.

@@ -138,3 +138,34 @@ same restored state
 `summary`/`decision`, `bilingual` `report`, `environment` `record` и `SHA256SUMS`.
 `Aggregation` не изменяет `raw` `evidence`. `Test` `split` не используется до отдельного
 `final-evaluation` `contract`.
+
+## `FixedPred` `sufficiency` и `D`/`U`/`S`
+
+Независимая единица — `model_seed`. `Layer`, `sweep` и `analytic-event` `rows`
+являются вложенными наблюдениями.
+
+Порядок допуска:
+
+```text
+safety
+coverage
+cost
+```
+
+`Primary` `metrics`:
+
+- число и `selective` `risk` [опасных `DONE`](glossary.md#term-dangerous-done);
+- `safe-DONE` `coverage`;
+- [диагностический разрыв наблюдаемости](glossary.md#term-diagnostic-observability-gap);
+- `UNKNOWN` `resolution` `yield`;
+- `avoidable-SWEEP` `rate`;
+- `over-computation`;
+- `observer` и `diagnostic` `cost`;
+- `net` `avoided` `cost`;
+- `oracle-policy` и `acquisition-sequence` `regret`.
+
+До сравнительного анализа фиксируются конечное семейство `representations` и
+`thresholds`, `calibration` `split`, `risk-control` `procedure`, `aggregation` `order`,
+`missing-data` `rules` и `negative-result` `decisions`.
+
+Экономия стоимости рассматривается только после `safety` `admission`.

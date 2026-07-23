@@ -138,3 +138,23 @@ Publish raw retained attempts, compact derived tables, machine-readable
 summary/decision, bilingual report, environment record, and `SHA256SUMS`.
 Aggregation does not modify raw [evidence](glossary_EN.md#term-evidence). The test split is not used before a
 separate final-evaluation contract.
+
+## FixedPred sufficiency and D/U/S
+
+The independent unit is `model_seed`. Layer, sweep, and analytic-event rows are
+nested observations.
+
+Admission order is safety, coverage, then cost.
+
+Primary metrics include [dangerous
+DONE](glossary_EN.md#term-dangerous-done) count and selective risk, safe-DONE
+coverage, the [diagnostic observability
+gap](glossary_EN.md#term-diagnostic-observability-gap), UNKNOWN resolution
+yield, avoidable-SWEEP rate, over-computation, observer and diagnostic costs,
+net avoided cost, and oracle/sequence regret.
+
+The finite representation and threshold family, calibration split,
+risk-control procedure, aggregation order, missing-data rules, and
+negative-result decisions must be frozen before comparative analysis.
+
+Cost savings are considered only after safety admission.

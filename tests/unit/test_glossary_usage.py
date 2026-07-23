@@ -12,7 +12,7 @@ from scripts.check_glossary_usage import (
 
 def test_real_glossary_has_paired_terms_and_anchors() -> None:
     terms = parse_terms()
-    assert len(terms) == 102
+    assert len(terms) == 107
     term_ids = {term.term_id for term in terms}
     assert len(term_ids) == len(terms)
     assert {

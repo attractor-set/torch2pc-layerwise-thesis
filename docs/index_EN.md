@@ -99,3 +99,11 @@ of freedom before comparative results are computed.
 ### Architecture and research decisions
 
 - [ADR index](decisions/index_EN.md)
+
+## FixedPred sufficiency and D/U/S
+
+- [Consolidated design](fixedpred-sufficiency-dus-design_EN.md)
+- [Metric registry](fixedpred-sufficiency-dus-metrics_EN.md)
+- [Refactoring plan](fixedpred-sufficiency-dus-refactoring-plan_EN.md)
+- [ADR-039](decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md)
+- Planned experiment: `experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md`

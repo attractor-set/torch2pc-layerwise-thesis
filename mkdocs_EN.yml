@@ -16,6 +16,10 @@ nav:
       - Research question: research-question_EN.md
       - Methodology: methodology_EN.md
       - Analysis plan: analysis-plan_EN.md
+      - FixedPred sufficiency:
+          - Design: fixedpred-sufficiency-dus-design_EN.md
+          - D/U/S metrics: fixedpred-sufficiency-dus-metrics_EN.md
+          - Refactoring plan: fixedpred-sufficiency-dus-refactoring-plan_EN.md
       - Experiment protocol: experiment-protocol_EN.md
       - Threats to validity: threats-to-validity_EN.md
       - Reproducibility: reproducibility_EN.md

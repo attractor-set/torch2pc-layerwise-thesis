@@ -16,6 +16,10 @@ nav:
       - Исследовательский вопрос: research-question.md
       - Методология: methodology.md
       - План анализа: analysis-plan.md
+      - FixedPred sufficiency:
+          - Концепция: fixedpred-sufficiency-dus-design.md
+          - Метрики D/U/S: fixedpred-sufficiency-dus-metrics.md
+          - План рефакторинга: fixedpred-sufficiency-dus-refactoring-plan.md
       - Экспериментальный протокол: experiment-protocol.md
       - Угрозы валидности: threats-to-validity.md
       - Воспроизводимость: reproducibility.md

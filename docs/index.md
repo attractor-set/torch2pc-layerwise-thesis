@@ -100,3 +100,11 @@
 ### Научные и архитектурные решения
 
 - [Индекс ADR](decisions/index.md)
+
+## `FixedPred` `sufficiency` и `D`/`U`/`S`
+
+- [Консолидированная концепция](fixedpred-sufficiency-dus-design.md)
+- [Реестр метрик](fixedpred-sufficiency-dus-metrics.md)
+- [План рефакторинга](fixedpred-sufficiency-dus-refactoring-plan.md)
+- [ADR-039](decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md)
+- План эксперимента: `experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS.md`

@@ -431,3 +431,37 @@ policy_activation_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false
 ```
+
+## Реализация superset pipeline `QW-3`
+
+`QW-3` реализует backend-neutral обязательный контур поверх `QW-1/QW-2`:
+закрытый реестр встроенных компонентов, effect-local planning, неизменяемую
+trajectory schema, точные накопительные `A0/A1/A2`, конечный policy interpreter,
+B0–B7 и nested ablations, недублирующее cost mapping, opportunity и
+recognizability, shadow/replication evaluation, чистое sealing и формирование
+`rendered_not_published` publication bundle.
+
+Модуль не импортирует Torch/Torch2PC, не выполняет FixedPred, не читает GPU и не
+пишет артефакты. Live adapters ещё не связаны; все кампании и scientific image
+freeze остаются закрытыми. Следующий этап — `QW-4` pre-freeze validation и
+привязка канонических CPU/ROCm adapter/smoke contracts.
+
+Реализация на этом шаге ограничена проверяемой логикой координации и обработки неизменяемых записей. Она не считается доказательством корректности наблюдателя на реальном устройстве и не заменяет последующие парные проверки, проверку невмешательства, измерение накладных расходов и канонический прогон в контейнере.
+
+```text
+qwake_fp_superset_pipeline_implemented=true
+qwake_fp_superset_pipeline_execution_open=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_component_registry_closed=true
+qwake_fp_offline_replay_implemented=true
+qwake_fp_publication_export_mode=rendered_not_published
+qwake_fp_next_stage=QW-4
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+```

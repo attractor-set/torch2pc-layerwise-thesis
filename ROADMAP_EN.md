@@ -185,24 +185,25 @@ closed. The next mandatory stage is `QW-3`.
 
 ## Stage 21 — `QW-3`: superset pipeline implementation
 
-Before the first scientific freeze, implement the complete mandatory code:
+Status: the backend-neutral mandatory contour is implemented in
+`stage3b_qwake_fp_pipeline.py`. It provides a closed component registry,
+effect-local planning, the exact `A0/A1/A2` trajectory schema, a finite policy
+interpreter, B0-B7 and nested-ablation replay, cost mapping, opportunity and
+recognizability, shadow/replication evaluation, pure sealing, and
+`rendered_not_published` export. A manifest cannot load arbitrary code and may
+activate only embedded capabilities.
+
+Live Torch2PC/ROCm adapters are not bound, so execution remains closed. The
+next mandatory stage is `QW-4`.
 
 ```text
-collector
-A0/A1/A2
-analytic registry
-canonical suffix and post-action O
-cost instrumentation
-opportunity and recognizability analysis
-policy interpreter
-baseline and ablation replay
-shadow confirmatory evaluation
-replication evaluation
-sealing and publication export
+qwake_fp_superset_pipeline_implemented=true
+qwake_fp_superset_pipeline_execution_open=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_component_registry_closed=true
+qwake_fp_offline_replay_implemented=true
+qwake_fp_next_stage=QW-4
 ```
-
-A manifest cannot load arbitrary code and may activate only embedded
-capabilities.
 
 ## Stage 22 — `QW-4`: pre-freeze validation
 

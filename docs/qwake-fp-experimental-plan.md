@@ -241,8 +241,23 @@ ExecutionContext
 
 ### `QW-3` — `superset` `pipeline` `implementation`
 
-Реализовать весь обязательный `pipeline` до первого научного `image` `freeze`.
-Политика остаётся конфигурацией встроенного интерпретатора.
+Состояние: обязательный `backend-neutral pipeline` реализован. Он включает
+закрытый `component registry`, `effect-local planning`, неизменяемую
+`trajectory schema`, точные `A0/A1/A2`, конечный `policy interpreter`, B0–B7 и
+`nested ablations`, `cost mapping`, `opportunity/recognizability`,
+`shadow/replication evaluation`, чистое `sealing` и
+`rendered_not_published export`. Политика остаётся данными встроенного
+интерпретатора; `arbitrary code/plugins` отсутствуют. Адаптеры
+`Torch2PC/ROCm` не связаны, выполнение закрыто, следующий этап — `QW-4`.
+
+```text
+qwake_fp_superset_pipeline_implemented=true
+qwake_fp_superset_pipeline_execution_open=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_component_registry_closed=true
+qwake_fp_offline_replay_implemented=true
+qwake_fp_next_stage=QW-4
+```
 
 ### `QW-4` — `pre-freeze` `validation`
 

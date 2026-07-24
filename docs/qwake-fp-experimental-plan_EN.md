@@ -237,8 +237,23 @@ execution remains closed and the next stage is `QW-3`.
 
 ### `QW-3` — superset pipeline implementation
 
-Implement the entire mandatory pipeline before the first scientific image
-freeze. Policy remains configuration for the embedded interpreter.
+Status: the backend-neutral mandatory pipeline is implemented. It includes a
+closed component registry, effect-local planning, an immutable trajectory
+schema, exact `A0/A1/A2`, a finite policy interpreter, B0-B7 and nested
+ablations, cost mapping, opportunity/recognizability, shadow/replication
+evaluation, pure sealing, and `rendered_not_published` export. Policy remains
+data for the embedded interpreter; arbitrary code/plugins are absent. Live
+Torch2PC/ROCm adapters are not bound, execution remains closed, and the next
+stage is `QW-4`.
+
+```text
+qwake_fp_superset_pipeline_implemented=true
+qwake_fp_superset_pipeline_execution_open=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_component_registry_closed=true
+qwake_fp_offline_replay_implemented=true
+qwake_fp_next_stage=QW-4
+```
 
 ### `QW-4` — pre-freeze validation
 

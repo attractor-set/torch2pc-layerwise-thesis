@@ -418,3 +418,35 @@ policy_activation_permitted=false
 test_dataset_access=false
 full_stage3b_campaign_complete=false
 ```
+
+## `QW-3` superset-pipeline implementation
+
+`QW-3` implements the backend-neutral mandatory contour on top of `QW-1/QW-2`:
+a closed embedded-component registry, effect-local planning, an immutable
+trajectory schema, exact cumulative `A0/A1/A2`, a finite policy interpreter,
+B0-B7 and nested ablations, non-duplicating cost mapping, opportunity and
+recognizability, shadow/replication evaluation, pure sealing, and a
+`rendered_not_published` publication bundle.
+
+The module imports no Torch/Torch2PC, executes no FixedPred, reads no GPU, and
+writes no artifacts. Live adapters are not yet bound; every campaign and the
+scientific-image freeze remain closed. The next stage is `QW-4` pre-freeze
+validation and canonical CPU/ROCm adapter/smoke binding.
+
+```text
+qwake_fp_superset_pipeline_implemented=true
+qwake_fp_superset_pipeline_execution_open=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_component_registry_closed=true
+qwake_fp_offline_replay_implemented=true
+qwake_fp_publication_export_mode=rendered_not_published
+qwake_fp_next_stage=QW-4
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+```

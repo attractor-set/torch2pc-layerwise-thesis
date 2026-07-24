@@ -234,6 +234,11 @@ ExecutionContext
 `response`, `primary` `defect`, `observation` `levels`, `analytic` `registry`, `cost` `schema`,
 `baselines`, `roles` и `receipt` `requirements`.
 
+Состояние: завершено в [ADR-043](decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md)
+и запечатанном `stage3b-qwake-fp-special-case-v1`. Контракт фиксирует точные
+`A0/A1/A2`, три аналитики, `B0-B7`, `P0-P2` и недублирующее отображение стоимости;
+выполнение остаётся закрытым, следующий этап — `QW-3`.
+
 ### `QW-3` — `superset` `pipeline` `implementation`
 
 Реализовать весь обязательный `pipeline` до первого научного `image` `freeze`.

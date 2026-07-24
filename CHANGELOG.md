@@ -5,6 +5,7 @@
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
 
+- заморожен машиночитаемый контракт `QW-2` для единственного обязательного `QWake-FP` special case: `FixedPred`, `eta=1`, `stage2_baseline`, `lenet_classic`, EX-IF0 endpoint defect, точные накопительные `A0/A1/A2`, конечный analytic registry, B0–B7, P0–P2, недублирующее cost mapping и унаследованные из QW-1 role/receipt guards; scientific execution остаётся закрытым;
 - реализован чистый контракт `QW-1` без Torch2PC/GPU: конечные типы состояния, наблюдений, аналитики, действий, admission, стоимости, post-action oracle и provenance; закрытый реестр `Capability`, роли `C1/C2/C3/R`, deny-all `PermissionSet`, receipt-bound `ExecutionContext` и детерминированный pure replay; scientific execution остаётся закрытым;
 - добавлен `ADR-042` и двуязычный план `QWake-FP`: общий QWake-PC отделён от единственной обязательной реализации, проверка ограничена corrected Rosenbaum FixedPred при `eta=1`, а C1/C2/C3/R выполняются одним immutable superset image через внутренние fail-closed permission gates, frozen policy manifest и sealed receipt chain;
 - добавлен `ADR-041`: отделены `A0 / A1 / A2` от post-action `O`, введены переходы `OBSERVATION / ANALYTIC / COMPUTE`, локальная монотонность снимка, явное отображение измерительной стоимости в решенческую, однозначная семантика `DONE`, temporal обязательный scope и граница предшествующих работ; статусы README синхронизированы с publication receipt;

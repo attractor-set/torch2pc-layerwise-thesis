@@ -92,6 +92,7 @@ nav:
       - ADR-040 Integrated frontier: decisions/ADR-040-stage3b-integrated-frontier-model.md
       - ADR-041 Corrective frontier semantics: decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md
       - ADR-042 QWake-FP scope: decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md
+      - ADR-043 QWake-FP special-case contract: decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

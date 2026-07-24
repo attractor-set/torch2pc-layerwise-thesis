@@ -1,0 +1,358 @@
+{
+  "analytics": [
+    {
+      "analytic_class": "exact",
+      "analytic_id": "rosenbaum_wavefront_status_v1",
+      "may_directly_accept": false,
+      "minimum_observation": "A0",
+      "output_fields": [
+        "completed_component_prefix",
+        "next_structurally_unfinished_component"
+      ],
+      "role": "analytic positive control for corrected Rosenbaum completion order"
+    },
+    {
+      "analytic_class": "heuristic",
+      "analytic_id": "residual_persistence_v1",
+      "may_directly_accept": false,
+      "minimum_observation": "A1",
+      "output_fields": [
+        "prediction_error_nonincreasing",
+        "state_delta_nonincreasing",
+        "persistence_window_complete"
+      ],
+      "role": "registered residual baseline and diagnostic only"
+    },
+    {
+      "analytic_class": "conservative",
+      "analytic_id": "cost_dominance_v1",
+      "may_directly_accept": false,
+      "minimum_observation": "A0",
+      "output_fields": [
+        "candidate_acquisition_dominated",
+        "lower_bound_remaining_suffix_ns",
+        "upper_bound_acquisition_ns"
+      ],
+      "role": "cost-only pruning; never a sufficiency certificate"
+    }
+  ],
+  "architecture": "lenet_classic",
+  "baselines": [
+    "B0_full_canonical_suffix",
+    "B1_fixed_prefix",
+    "B2_registered_prediction_error_or_residual_threshold",
+    "B3_A0_only",
+    "B4_fixed_A0_A1_A2_cascade",
+    "B5_fixed_analytic_registry",
+    "B6_frozen_QWake_FP",
+    "B7_post_action_oracle_frontier"
+  ],
+  "contract_id": "stage3b-qwake-fp-special-case-v1",
+  "cost_mapping": {
+    "d2h_and_trace_semantics": "reported as raw vector components, not hidden in time",
+    "device_time_semantics": "auxiliary measurement; never added a second time",
+    "exclusive_time_categories": [
+      "compute_ns",
+      "observer_ns",
+      "diagnostic_ns",
+      "control_ns",
+      "fallback_ns"
+    ],
+    "memory_semantics": "maximum temporary_memory_bytes on the replayed path",
+    "primary_time_basis": "calibrated host critical-path allocation with each edge assigned to exactly one time category",
+    "raw_fields": [
+      "host_time_ns",
+      "device_time_ns",
+      "synchronization_count",
+      "d2h_bytes",
+      "temporary_memory_bytes",
+      "trace_bytes"
+    ],
+    "selection_order": [
+      "safety",
+      "coverage",
+      "cost"
+    ]
+  },
+  "decision_epoch": "after S_t and before sweep t+1 for t in [0,K_ref]",
+  "eta": 1.0,
+  "executor": "stage2_baseline",
+  "feature_collection_permitted": false,
+  "generalization_claim": false,
+  "horizon_rule": "registered_inference_steps",
+  "method": "fixedpred",
+  "observations": [
+    {
+      "cumulative_fields": [
+        "snapshot_id",
+        "compute_step",
+        "reference_horizon_k_ref",
+        "remaining_sweeps",
+        "registered_layer_order",
+        "registered_block_order",
+        "acquired_analytic_ids",
+        "diagnostic_budget_remaining_ns"
+      ],
+      "deterministic_sample_prefix_sizes": [],
+      "device_side_only": false,
+      "level": "A0",
+      "sample_index_rule": null,
+      "tensor_value_reads": false
+    },
+    {
+      "cumulative_fields": [
+        "snapshot_id",
+        "compute_step",
+        "reference_horizon_k_ref",
+        "remaining_sweeps",
+        "registered_layer_order",
+        "registered_block_order",
+        "acquired_analytic_ids",
+        "diagnostic_budget_remaining_ns",
+        "global_prediction_error_l2_sq",
+        "global_state_delta_l2_sq",
+        "per_layer_prediction_error_l2_sq",
+        "per_layer_state_delta_l2_sq",
+        "per_layer_prediction_error_max_abs",
+        "per_layer_state_delta_max_abs"
+      ],
+      "deterministic_sample_prefix_sizes": [],
+      "device_side_only": true,
+      "level": "A1",
+      "sample_index_rule": null,
+      "tensor_value_reads": true
+    },
+    {
+      "cumulative_fields": [
+        "snapshot_id",
+        "compute_step",
+        "reference_horizon_k_ref",
+        "remaining_sweeps",
+        "registered_layer_order",
+        "registered_block_order",
+        "acquired_analytic_ids",
+        "diagnostic_budget_remaining_ns",
+        "global_prediction_error_l2_sq",
+        "global_state_delta_l2_sq",
+        "per_layer_prediction_error_l2_sq",
+        "per_layer_state_delta_l2_sq",
+        "per_layer_prediction_error_max_abs",
+        "per_layer_state_delta_max_abs",
+        "sample_prefix_prediction_error_l2_sq",
+        "sample_prefix_state_delta_l2_sq",
+        "sample_prefix_belief_l2_sq",
+        "sample_prefix_prediction_error_max_abs",
+        "sample_prefix_state_delta_max_abs",
+        "sample_prefix_belief_max_abs"
+      ],
+      "deterministic_sample_prefix_sizes": [
+        32,
+        128,
+        256
+      ],
+      "device_side_only": true,
+      "level": "A2",
+      "sample_index_rule": "per-layer hash ranking without replacement over contract_id,model_seed,batch_id,layer_id,tensor_role",
+      "tensor_value_reads": true
+    }
+  ],
+  "oracle_label_generation_open": false,
+  "paired_validation": [
+    {
+      "cumulative_level": "A0",
+      "instrumented": "B0+A0",
+      "measured_outputs": [
+        "observer_host_time_ns",
+        "observer_device_time_ns",
+        "observer_synchronization_count",
+        "observer_d2h_bytes",
+        "observer_temporary_memory_bytes",
+        "observer_trace_bytes"
+      ],
+      "pair_id": "P0",
+      "reference": "B0",
+      "required_equalities": [
+        "canonical_endpoint_response",
+        "named_parameter_gradients",
+        "endpoint_beliefs",
+        "endpoint_loss",
+        "transition_sequence",
+        "rng_state_after",
+        "snapshot_identity"
+      ]
+    },
+    {
+      "cumulative_level": "A1",
+      "instrumented": "B0+A0+A1",
+      "measured_outputs": [
+        "observer_host_time_ns",
+        "observer_device_time_ns",
+        "observer_synchronization_count",
+        "observer_d2h_bytes",
+        "observer_temporary_memory_bytes",
+        "observer_trace_bytes"
+      ],
+      "pair_id": "P1",
+      "reference": "B0",
+      "required_equalities": [
+        "canonical_endpoint_response",
+        "named_parameter_gradients",
+        "endpoint_beliefs",
+        "endpoint_loss",
+        "transition_sequence",
+        "rng_state_after",
+        "snapshot_identity"
+      ]
+    },
+    {
+      "cumulative_level": "A2",
+      "instrumented": "B0+A0+A1+A2",
+      "measured_outputs": [
+        "observer_host_time_ns",
+        "observer_device_time_ns",
+        "observer_synchronization_count",
+        "observer_d2h_bytes",
+        "observer_temporary_memory_bytes",
+        "observer_trace_bytes"
+      ],
+      "pair_id": "P2",
+      "reference": "B0",
+      "required_equalities": [
+        "canonical_endpoint_response",
+        "named_parameter_gradients",
+        "endpoint_beliefs",
+        "endpoint_loss",
+        "transition_sequence",
+        "rng_state_after",
+        "snapshot_identity"
+      ]
+    }
+  ],
+  "policy_activation_permitted": false,
+  "primary_defect": "r_Gamma(t)=max(max_abs/max_abs_limit,relative_l2/max_relative_l2_limit,(1-cosine)/(1-min_cosine)); structural_or_finite_failure=infinity",
+  "response_components": [
+    "named_parameter_gradients",
+    "endpoint_beliefs",
+    "endpoint_loss"
+  ],
+  "role_capabilities": [
+    [
+      "C1_COLLECTION",
+      [
+        "ACCESS_CALIBRATION_DATA",
+        "ACCESS_DESIGN_DATA",
+        "COLLECT_A0",
+        "COLLECT_A1",
+        "COLLECT_A2",
+        "COMPUTE_CANONICAL_SUFFIX",
+        "COMPUTE_NEW_ORACLE_LABELS",
+        "COMPUTE_POST_ACTION_ORACLE",
+        "EXECUTE_FIXEDPRED",
+        "RUN_ANALYTIC_CONSERVATIVE",
+        "RUN_ANALYTIC_EXACT",
+        "RUN_ANALYTIC_HEURISTIC",
+        "RUN_COST_DOMINANCE_CHECK",
+        "RUN_LIVE_ANALYTICS",
+        "RUN_OPPORTUNITY_ANALYSIS",
+        "SEAL_EVIDENCE"
+      ]
+    ],
+    [
+      "C2_CALIBRATION",
+      [
+        "ACCESS_SEALED_C1_ARTIFACTS",
+        "EVALUATE_BASELINES",
+        "FREEZE_POLICY",
+        "RUN_OFFLINE_REPLAY",
+        "RUN_RECOGNIZABILITY_ANALYSIS",
+        "SEAL_EVIDENCE",
+        "SELECT_POLICY"
+      ]
+    ],
+    [
+      "C3_CONFIRMATORY",
+      [
+        "ACCESS_CONFIRMATORY_DATA",
+        "COLLECT_A0",
+        "COLLECT_A1",
+        "COLLECT_A2",
+        "COMPUTE_CANONICAL_SUFFIX",
+        "COMPUTE_NEW_ORACLE_LABELS",
+        "COMPUTE_POST_ACTION_ORACLE",
+        "EVALUATE_CONFIRMATORY",
+        "EXECUTE_FIXEDPRED",
+        "EXECUTE_SHADOW_POLICY",
+        "LOAD_FROZEN_POLICY",
+        "RUN_ANALYTIC_CONSERVATIVE",
+        "RUN_ANALYTIC_EXACT",
+        "RUN_ANALYTIC_HEURISTIC",
+        "RUN_COST_DOMINANCE_CHECK",
+        "RUN_LIVE_ANALYTICS",
+        "SEAL_EVIDENCE"
+      ]
+    ],
+    [
+      "R_REPLICATION",
+      [
+        "ACCESS_REPLICATION_DATA",
+        "COLLECT_A0",
+        "COLLECT_A1",
+        "COLLECT_A2",
+        "COMPUTE_CANONICAL_SUFFIX",
+        "COMPUTE_NEW_ORACLE_LABELS",
+        "COMPUTE_POST_ACTION_ORACLE",
+        "EVALUATE_REPLICATION",
+        "EXECUTE_FIXEDPRED",
+        "EXECUTE_SHADOW_POLICY",
+        "LOAD_FROZEN_POLICY",
+        "RUN_ANALYTIC_CONSERVATIVE",
+        "RUN_ANALYTIC_EXACT",
+        "RUN_ANALYTIC_HEURISTIC",
+        "RUN_COST_DOMINANCE_CHECK",
+        "RUN_LIVE_ANALYTICS",
+        "SEAL_EVIDENCE"
+      ]
+    ]
+  ],
+  "role_receipts": [
+    [
+      "C1_COLLECTION",
+      []
+    ],
+    [
+      "C2_CALIBRATION",
+      [
+        "C1_COLLECTION"
+      ]
+    ],
+    [
+      "C3_CONFIRMATORY",
+      [
+        "C1_COLLECTION",
+        "C2_POLICY_FREEZE"
+      ]
+    ],
+    [
+      "R_REPLICATION",
+      [
+        "C1_COLLECTION",
+        "C2_POLICY_FREEZE",
+        "C3_CONFIRMATORY"
+      ]
+    ]
+  ],
+  "schema_version": 1,
+  "scientific_execution_open": false,
+  "snapshot_zero_semantics": "initialized state before the first inference sweep",
+  "stable_sufficiency_rule": "t_star=min{t: sufficient(j)=true for every j in [t,K_ref]}",
+  "status": "spec_frozen_execution_closed",
+  "sufficiency_rule": "M_star(t)=1-r_Gamma(t)>=0",
+  "test_dataset_access": false,
+  "threshold_profile": {
+    "lane": "rocm_float32",
+    "max_abs": 1e-05,
+    "max_relative_l2": 0.001,
+    "min_cosine": 0.999,
+    "zero_atol": 1e-07
+  }
+}

@@ -177,6 +177,12 @@ Freeze FixedPred, eta=1, stage2_baseline, architecture, horizon, snapshot
 boundaries, task-relative response, primary defect, A0/A1/A2, analytic
 registry, cost schema, baselines, role matrix, and receipt requirements.
 
+Status: `QW-2` is complete. `ADR-043`, the pure Python specification, and the
+sealed `stage3b-qwake-fp-special-case-v1/contract.json` freeze `lenet_classic`,
+the EX-IF0 defect, exact A0/A1/A2, analytic, B0-B7, and P0-P2 registries,
+while permission/receipt mapping is inherited from `QW-1`. Execution remains
+closed. The next mandatory stage is `QW-3`.
+
 ## Stage 21 — `QW-3`: superset pipeline implementation
 
 Before the first scientific freeze, implement the complete mandatory code:

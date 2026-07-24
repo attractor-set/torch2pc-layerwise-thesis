@@ -5,6 +5,7 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- implemented the pure `QW-1` contract without Torch2PC/GPU: finite state, observation, analytic, action, admission, cost, post-action oracle, and provenance types; a closed `Capability` registry, `C1/C2/C3/R` roles, deny-all `PermissionSet`, receipt-bound `ExecutionContext`, and deterministic pure replay; scientific execution remains closed;
 - added `ADR-042` and the bilingual `QWake-FP` plan: separated general QWake-PC from the only mandatory implementation, bounded validation to corrected Rosenbaum FixedPred at `eta=1`, and defined C1/C2/C3/R over one immutable superset image with internal fail-closed permission gates, a frozen policy manifest, and a sealed-receipt chain;
 - added `ADR-041`: separated A0 / A1 / A2 from post-action O, introduced OBSERVATION / ANALYTIC / COMPUTE transitions, snapshot-local monotonicity, explicit measurement-to-decision cost mapping, unambiguous DONE semantics, bounded temporal mandatory scope, and a prior-art boundary; synchronized README publication status with the frozen receipt;
 - froze `ADR-040` and the integrated frontier model: `A0 / A1 / A2` observation levels, separate post-action `O`, the `ACCEPT_FRONTIER / ADVANCE_FRONTIER / COMPLETE_SUFFIX` actions, per-transition cost, and PC-TREF/PC-CATM/QWake-PC separation; ADR-039 is not rewritten and execution and collection remain closed;

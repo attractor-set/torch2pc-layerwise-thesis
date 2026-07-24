@@ -170,6 +170,11 @@ analytics, actions, admission, costs, oracle labels и provenance, а также
 Gate: fail-closed defaults, deterministic replay, property tests и rejection
 всех несовместимых permission combinations.
 
+Состояние: `QW-1` реализован как pure Python contract без Torch2PC/GPU;
+по умолчанию все permissions запрещены, роль/receipt/digest bindings и
+детерминированные переходы покрыты exhaustive unit/property guards.
+Научное выполнение не открыто. Следующий обязательный этап — `QW-2`.
+
 ## Этап 20 — `QW-2`: контракт особого случая `QWake-FP`
 
 Заморозить `FixedPred`, `eta=1`, `stage2_baseline`, architecture, horizon,

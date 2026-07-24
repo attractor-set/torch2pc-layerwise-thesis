@@ -1,0 +1,142 @@
+{
+  "adapters": [
+    {
+      "adapter_id": "canonical_executor",
+      "binding_status": "existing_loader_runtime_unauthorized",
+      "lanes": [
+        "cpu_float64_engineering",
+        "rocm_float32_canonical"
+      ],
+      "module_name": "torch2pc_thesis.pc_methods",
+      "required_capability": "EXECUTE_FIXEDPRED",
+      "symbol_name": "load_pc_infer"
+    },
+    {
+      "adapter_id": "collect_A0",
+      "binding_status": "unbound_runtime_adapter",
+      "lanes": [
+        "cpu_float64_engineering",
+        "rocm_float32_canonical"
+      ],
+      "module_name": "torch2pc_thesis.stage3b_qwake_fp_runtime_adapter",
+      "required_capability": "COLLECT_A0",
+      "symbol_name": "collect_A0"
+    },
+    {
+      "adapter_id": "collect_A1",
+      "binding_status": "unbound_runtime_adapter",
+      "lanes": [
+        "cpu_float64_engineering",
+        "rocm_float32_canonical"
+      ],
+      "module_name": "torch2pc_thesis.stage3b_qwake_fp_runtime_adapter",
+      "required_capability": "COLLECT_A1",
+      "symbol_name": "collect_A1"
+    },
+    {
+      "adapter_id": "collect_A2",
+      "binding_status": "unbound_runtime_adapter",
+      "lanes": [
+        "cpu_float64_engineering",
+        "rocm_float32_canonical"
+      ],
+      "module_name": "torch2pc_thesis.stage3b_qwake_fp_runtime_adapter",
+      "required_capability": "COLLECT_A2",
+      "symbol_name": "collect_A2"
+    },
+    {
+      "adapter_id": "run_registered_analytics",
+      "binding_status": "unbound_runtime_adapter",
+      "lanes": [
+        "cpu_float64_engineering",
+        "rocm_float32_canonical"
+      ],
+      "module_name": "torch2pc_thesis.stage3b_qwake_fp_runtime_adapter",
+      "required_capability": "RUN_ANALYTIC_EXACT",
+      "symbol_name": "run_registered_analytics"
+    },
+    {
+      "adapter_id": "compute_post_action_oracle",
+      "binding_status": "unbound_runtime_adapter",
+      "lanes": [
+        "cpu_float64_engineering",
+        "rocm_float32_canonical"
+      ],
+      "module_name": "torch2pc_thesis.stage3b_qwake_fp_runtime_adapter",
+      "required_capability": "COMPUTE_POST_ACTION_ORACLE",
+      "symbol_name": "compute_post_action_oracle"
+    },
+    {
+      "adapter_id": "record_edge_costs",
+      "binding_status": "unbound_runtime_adapter",
+      "lanes": [
+        "cpu_float64_engineering",
+        "rocm_float32_canonical"
+      ],
+      "module_name": "torch2pc_thesis.stage3b_qwake_fp_runtime_adapter",
+      "required_capability": "RUN_COST_DOMINANCE_CHECK",
+      "symbol_name": "record_edge_costs"
+    }
+  ],
+  "disabled_capability_audit_fields": [
+    "invocation_count",
+    "tensor_read_count",
+    "temporary_allocation_count",
+    "synchronization_count",
+    "d2h_bytes",
+    "trace_bytes",
+    "output_count"
+  ],
+  "equality_fields": [
+    "canonical_endpoint_response",
+    "named_parameter_gradients",
+    "endpoint_beliefs",
+    "endpoint_loss",
+    "transition_sequence",
+    "rng_state_after",
+    "snapshot_identity"
+  ],
+  "evidence_generated": false,
+  "feature_collection_permitted": false,
+  "image_freeze_permitted": false,
+  "measurement_fields": [
+    "observer_host_time_ns",
+    "observer_device_time_ns",
+    "observer_synchronization_count",
+    "observer_d2h_bytes",
+    "observer_temporary_memory_bytes",
+    "observer_trace_bytes"
+  ],
+  "oracle_label_generation_open": false,
+  "pair_ids": [
+    "P0",
+    "P1",
+    "P2"
+  ],
+  "request_id": "stage3b-qwake-fp-pre-freeze-validation-v1",
+  "required_gates": [
+    "static_and_unit",
+    "manifest_integrity",
+    "receipt_chain",
+    "permission_negative",
+    "P0_matched",
+    "P1_matched",
+    "P2_matched",
+    "nested_observations",
+    "oracle_isolation",
+    "cost_accounting",
+    "cpu_smoke",
+    "rocm_smoke"
+  ],
+  "required_lanes": [
+    "cpu_float64_engineering",
+    "rocm_float32_canonical"
+  ],
+  "runtime_authorization_issued": false,
+  "schema_version": 1,
+  "scientific_execution_open": false,
+  "special_case_contract_id": "stage3b-qwake-fp-special-case-v1",
+  "special_case_contract_sha256": "sha256:968457365ddc1c94a814e0f7712d30d0154afd0c96d8464bff46a31e61ad3698",
+  "status": "request_frozen_execution_closed",
+  "test_dataset_access": false
+}

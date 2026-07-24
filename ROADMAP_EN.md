@@ -207,11 +207,14 @@ qwake_fp_next_stage=QW-4
 
 ## Stage 22 — `QW-4`: pre-freeze validation
 
-Run static/unit/integration checks, CPU/ROCm smoke, permission matrix, negative
-permission tests, deterministic replay, schema tests, corrupt/missing-manifest
-tests, receipt-chain tests, and baseline replay tests.
+Status: `QW-4A` is complete as an implementation/freeze slice. It adds the pure
+validation harness, closed runtime-adapter registry, and frozen
+`stage3b-qwake-fp-pre-freeze-validation-v1` request. The request binds the QW-2
+contract, CPU/ROCm lanes, exact P0/P1/P2 equalities, observer measurements,
+negative effect audits, nesting, oracle isolation, cost accounting, manifest,
+and receipt gates. It is neither authorization nor evidence.
 
-Validate observation through three matched pairs:
+Observation is validated through three matched pairs:
 
 ```text
 P0: B0 <-> B0+A0
@@ -220,11 +223,23 @@ P2: B0 <-> B0+A0+A1+A2
 ```
 
 The pairs establish non-interference, correctness, and accumulated observation
-cost; nesting, disabled capabilities, oracle isolation, and analytics are
-checked separately.
+cost; `A0/A1` nesting, disabled capabilities, post-action oracle isolation, and
+no double-counting of device time are checked separately.
 
-A disabled capability must not be called, read tensors, allocate memory,
-synchronize the device, or create output.
+The next internal step is `QW-4B` runtime validation: separate authorization,
+canonical-adapter binding, CPU engineering smoke, ROCm/float32 canonical smoke,
+and a sealed engineering report. `QW-5` is forbidden until it passes.
+
+```text
+qwake_fp_pre_freeze_validation_request_frozen=true
+qwake_fp_pre_freeze_validation_harness_implemented=true
+qwake_fp_pre_freeze_validation_complete=false
+qwake_fp_runtime_authorization_issued=false
+qwake_fp_pre_freeze_evidence_generated=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_scientific_image_freeze_permitted=false
+qwake_fp_next_stage=QW-4-runtime-validation
+```
 
 ## Stage 23 — `QW-5`: single scientific-image freeze
 

@@ -5,6 +5,7 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- implemented the `QW-4A` pre-freeze validation harness and froze the execution-closed `stage3b-qwake-fp-pre-freeze-validation-v1` request: exact P0/P1/P2 comparators, nesting, disabled-capability effect audit, post-action oracle isolation, non-duplicating cost mapping, and mandatory CPU/ROCm gates; live adapters, runtime authorization, evidence, and image freeze remain closed;
 - implemented the backend-neutral `QW-3` superset pipeline without Torch2PC/GPU effects: a closed component registry, effect-local planning, the exact `A0/A1/A2` trajectory schema, a finite policy interpreter, deterministic B0-B7 and nested-ablation replay, cost mapping, opportunity/recognizability, shadow/replication evaluation, pure sealing, and rendered-not-published export; live adapters and scientific execution remain closed;
 - froze the machine-readable `QW-2` contract for the only mandatory `QWake-FP` special case: `FixedPred`, `eta=1`, `stage2_baseline`, `lenet_classic`, the EX-IF0 endpoint defect, exact cumulative `A0/A1/A2`, a finite analytic registry, B0–B7, P0–P2, non-duplicating cost mapping, and QW-1-inherited role/receipt guards; scientific execution remains closed;
 - implemented the pure `QW-1` contract without Torch2PC/GPU: finite state, observation, analytic, action, admission, cost, post-action oracle, and provenance types; a closed `Capability` registry, `C1/C2/C3/R` roles, deny-all `PermissionSet`, receipt-bound `ExecutionContext`, and deterministic pure replay; scientific execution remains closed;

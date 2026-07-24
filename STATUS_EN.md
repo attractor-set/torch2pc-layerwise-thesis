@@ -450,3 +450,38 @@ feature_collection_permitted=false
 policy_activation_permitted=false
 test_dataset_access=false
 ```
+
+## `QW-4A` pre-freeze validation harness and request freeze
+
+`QW-4A` adds the pure validation harness and freezes the
+`stage3b-qwake-fp-pre-freeze-validation-v1` request. It binds the QW-2 contract,
+CPU/ROCm lanes, exact P0/P1/P2 equalities, observer measurements, negative
+effect audits, A0/A1 nesting, post-action oracle isolation, cost mapping,
+manifest integrity, and receipt-chain gates. The request is neither
+authorization nor evidence.
+
+The canonical FixedPred loader is registered as existing but unauthorized. New
+observation/oracle/cost adapters remain unbound. Runtime smoke, the sealed
+engineering report, and scientific-image freeze are not complete. The next step
+is `QW-4B` runtime validation, not `QW-5`.
+
+```text
+qwake_fp_pre_freeze_validation_request_frozen=true
+qwake_fp_pre_freeze_validation_request_id=stage3b-qwake-fp-pre-freeze-validation-v1
+qwake_fp_pre_freeze_validation_harness_implemented=true
+qwake_fp_pre_freeze_validation_complete=false
+qwake_fp_runtime_authorization_issued=false
+qwake_fp_pre_freeze_evidence_generated=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_scientific_image_freeze_permitted=false
+qwake_next_stage=QW-4-runtime-validation
+qwake_fp_next_stage=QW-4-runtime-validation
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+```

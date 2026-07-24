@@ -465,3 +465,46 @@ feature_collection_permitted=false
 policy_activation_permitted=false
 test_dataset_access=false
 ```
+
+## `QW-4A`: контур предварительной проверки и фиксация запроса
+
+`QW-4A` добавляет чистый контур предварительной проверки и замораживает запрос
+`stage3b-qwake-fp-pre-freeze-validation-v1`. Запрос связывает контракт `QW-2`,
+две вычислительные линии `CPU/ROCm`, точные равенства для `P0/P1/P2`, измерения
+наблюдателя, отрицательные проверки эффектов, вложенность `A0/A1`, изоляцию
+оракула после действия, отображение стоимости, целостность манифеста и цепочку
+квитанций. Запрос не является разрешением на выполнение и не является
+доказательным материалом.
+
+Канонический загрузчик `FixedPred` зарегистрирован как существующий, но не имеет
+разрешения на запуск. Новые адаптеры наблюдения, оракула и измерения стоимости
+остаются несвязанными. Проверочные запуски, запечатанный инженерный отчёт и
+заморозка научного образа ещё не выполнены. Следующим шагом остаётся `QW-4B`, а
+не `QW-5`.
+
+Это разделение сохраняет закрытую при ошибке границу: наличие проверяющего кода
+не означает разрешения использовать модель, читать тензоры или создавать
+оракульные метки. Переход к заморозке образа допускается только после успешных
+сопоставленных проверок на обеих вычислительных линиях и независимой проверки
+полученного отчёта.
+
+```text
+qwake_fp_pre_freeze_validation_request_frozen=true
+qwake_fp_pre_freeze_validation_request_id=stage3b-qwake-fp-pre-freeze-validation-v1
+qwake_fp_pre_freeze_validation_harness_implemented=true
+qwake_fp_pre_freeze_validation_complete=false
+qwake_fp_runtime_authorization_issued=false
+qwake_fp_pre_freeze_evidence_generated=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_scientific_image_freeze_permitted=false
+qwake_next_stage=QW-4-runtime-validation
+qwake_fp_next_stage=QW-4-runtime-validation
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+```

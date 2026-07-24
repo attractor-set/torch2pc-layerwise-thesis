@@ -230,6 +230,11 @@ Freeze executor, eta=1, architecture, horizon, snapshot boundaries, response,
 primary defect, observation levels, analytic registry, cost schema, baselines,
 roles, and receipt requirements.
 
+Status: completed by [ADR-043](decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md)
+and the sealed `stage3b-qwake-fp-special-case-v1`. The contract freezes exact
+A0/A1/A2, three analytics, B0-B7, P0-P2, and non-duplicating cost mapping;
+execution remains closed and the next stage is `QW-3`.
+
 ### `QW-3` — superset pipeline implementation
 
 Implement the entire mandatory pipeline before the first scientific image

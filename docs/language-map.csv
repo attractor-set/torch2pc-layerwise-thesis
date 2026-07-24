@@ -140,3 +140,4 @@ docs/decisions/ADR-040-stage3b-integrated-frontier-model.md,docs/decisions/ADR-0
 docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md,docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md,required
 docs/qwake-fp-experimental-plan.md,docs/qwake-fp-experimental-plan_EN.md,required
 docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md,docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md,required
+docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md,docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md,required

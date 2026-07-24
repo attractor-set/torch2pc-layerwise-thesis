@@ -181,6 +181,12 @@ Gate: fail-closed defaults, deterministic replay, property tests и rejection
 snapshot boundaries, task-relative response, primary defect, `A0/A1/A2`,
 analytic registry, cost schema, baselines, role matrix и receipt requirements.
 
+Состояние: `QW-2` завершён. `ADR-043`, pure Python spec и sealed
+`stage3b-qwake-fp-special-case-v1/contract.json` фиксируют `lenet_classic`,
+EX-IF0 defect, точные registries `A0/A1/A2`, analytics, B0–B7 и P0–P2, а
+permission/receipt mapping наследуется из `QW-1`. Выполнение закрыто.
+Следующий обязательный этап — `QW-3`.
+
 ## Этап 21 — `QW-3`: реализация superset pipeline
 
 До первого научного freeze реализовать весь обязательный код:

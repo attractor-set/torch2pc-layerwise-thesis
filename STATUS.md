@@ -108,6 +108,37 @@ qwake_scientific_execution_open=false
 qwake_next_stage=QW-2
 ```
 
+## `QW-2`: контракт особого случая `QWake-FP`
+
+`QW-2` завершён как чистая и машиночитаемая заморозка единственного
+обязательного частного случая. Python-spec, `ADR-043`, canonical JSON и
+`SHA256SUMS` фиксируют `FixedPred`, `eta=1`, `stage2_baseline`, `lenet_classic`,
+EX-IF0 endpoint defect, точные накопительные `A0/A1/A2`, конечный analytic
+registry, B0-B7, P0-P2, cost mapping и наследуемые QW-1 role/receipt rules.
+Ни одна вычислительная возможность не открыта. Эта фиксация только устраняет неоднозначность будущей реализации и сохраняет прежние запреты на выполнение, сбор данных и доступ к проверочной выборке.
+
+```text
+qwake_fp_special_case_contract_frozen=true
+qwake_fp_special_case_contract_id=stage3b-qwake-fp-special-case-v1
+qwake_fp_special_case_contract_sha256=968457365ddc1c94a814e0f7712d30d0154afd0c96d8464bff46a31e61ad3698
+qwake_fp_method=fixedpred
+qwake_fp_eta=1
+qwake_fp_canonical_executor=stage2_baseline
+qwake_fp_architecture=lenet_classic
+qwake_fp_horizon_rule=registered_inference_steps
+qwake_fp_observation_registry=A0,A1,A2
+qwake_fp_analytic_registry=rosenbaum_wavefront_status_v1,residual_persistence_v1,cost_dominance_v1
+qwake_fp_baseline_registry=B0,B1,B2,B3,B4,B5,B6,B7
+qwake_fp_paired_validation=P0,P1,P2
+qwake_fp_role_matrix_inherited_from_qw1=true
+qwake_fp_scientific_execution_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+qwake_next_stage=QW-3
+```
+
 ## Сводка состояния
 
 | Компонент | Подтверждённое состояние |

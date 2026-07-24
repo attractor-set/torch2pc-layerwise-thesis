@@ -257,9 +257,11 @@ qwake_fp_next_stage=QW-4
 
 ### `QW-4` — pre-freeze validation
 
-Run static/unit/integration checks, CPU/ROCm smoke, permission matrix, negative
-permission tests, deterministic replay, schema checks, corrupt/missing-manifest
-tests, receipt-chain tests, and baseline replay tests.
+`QW-4A` implements the pure validation harness and freezes the [execution](glossary_EN.md#term-execution)-closed
+`stage3b-qwake-fp-pre-freeze-validation-v1/request.json`. It checks exact
+P0/P1/P2 schema, corrupt/missing manifest fields, deterministic comparators,
+negative capability effects, nested observations, post-action oracle isolation,
+and non-duplicating cost mapping. [Runtime](glossary_EN.md#term-runtime) adapters remain unbound.
 
 Validate observation through three matched pairs over one logical B0 definition
 and a separate matched reference execution inside each pair:
@@ -270,10 +272,21 @@ P1: B0 <-> B0+A0+A1
 P2: B0 <-> B0+A0+A1+A2
 ```
 
-Each pair checks canonical-result/RNG/transition equivalence, observation
-correctness, and accumulated cost. Also verify A0/A1 nesting, non-execution of
-disabled capabilities, post-action oracle isolation, and registered-analytic
-non-interference.
+Each pair checks SHA-256 identities of the canonical [endpoint](glossary_EN.md#term-endpoint), gradients,
+beliefs, loss, transition sequence, RNG after, and snapshot identity. It also
+checks:
+
+```text
+A0(P0) = A0(P1) = A0(P2)
+A1(P1) = A1(P2)
+disabled_capability_effect_counters = 0
+oracle_created_ordinal > action_completed_ordinal
+observer_total_time_ns = observer_host_time_ns
+```
+
+A separate `QW-4B` authorization/[evidence](glossary_EN.md#term-evidence) slice binds adapters and performs CPU
+engineering smoke and ROCm/float32 canonical smoke. Execution, image freeze,
+and C1/C2/C3/R remain closed until a sealed report exists.
 
 ### `QW-5` — single image freeze
 

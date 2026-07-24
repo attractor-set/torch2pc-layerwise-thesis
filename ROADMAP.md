@@ -211,9 +211,12 @@ qwake_fp_next_stage=QW-4
 
 ## Этап 22 — `QW-4`: pre-freeze validation
 
-Выполнить static/unit/integration checks, CPU/ROCm smoke, permission matrix,
-negative permission tests, deterministic replay, schema tests, corrupt/missing
-manifest tests, receipt-chain tests и baseline replay tests.
+Состояние: `QW-4A` завершён как implementation/freeze slice. Добавлены чистый
+validation harness, закрытый runtime-adapter registry и frozen request
+`stage3b-qwake-fp-pre-freeze-validation-v1`. Запрос связывает QW-2 contract,
+CPU/ROCm lanes, exact P0/P1/P2 equalities, observer measurements, negative
+effect audits, nesting, oracle isolation, cost accounting, manifest и receipt
+gates. Он не является authorization или evidence.
 
 Наблюдение валидируется тремя matched-парами:
 
@@ -224,10 +227,23 @@ P2: B0 <-> B0+A0+A1+A2
 ```
 
 Пары подтверждают non-interference, корректность и накопленную стоимость уровней;
-отдельно проверяются nesting, закрытые capabilities, oracle isolation и analytics.
+отдельно проверяются `A0/A1` nesting, закрытые capabilities, post-action oracle
+isolation и отсутствие двойного учёта device time.
 
-Выключенная capability не должна вызываться, читать tensors, выделять память,
-синхронизировать устройство или создавать output.
+Следующий внутренний шаг — `QW-4B` runtime validation: отдельное authorization,
+привязка canonical adapters, CPU engineering smoke, ROCm/float32 canonical smoke
+и sealed engineering report. До его успешного завершения `QW-5` запрещён.
+
+```text
+qwake_fp_pre_freeze_validation_request_frozen=true
+qwake_fp_pre_freeze_validation_harness_implemented=true
+qwake_fp_pre_freeze_validation_complete=false
+qwake_fp_runtime_authorization_issued=false
+qwake_fp_pre_freeze_evidence_generated=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_scientific_image_freeze_permitted=false
+qwake_fp_next_stage=QW-4-runtime-validation
+```
 
 ## Этап 23 — `QW-5`: единая заморозка scientific image
 

@@ -142,3 +142,4 @@ docs/qwake-fp-experimental-plan.md,docs/qwake-fp-experimental-plan_EN.md,require
 docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md,docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md,required
 docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md,docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md,required
 docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation.md,docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation_EN.md,required
+docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation.md,docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md,required

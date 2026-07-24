@@ -230,19 +230,40 @@ P2: B0 <-> B0+A0+A1+A2
 отдельно проверяются `A0/A1` nesting, закрытые capabilities, post-action oracle
 isolation и отсутствие двойного учёта device time.
 
-Следующий внутренний шаг — `QW-4B` runtime validation: отдельное authorization,
-привязка canonical adapters, CPU engineering smoke, ROCm/float32 canonical smoke
-и sealed engineering report. До его успешного завершения `QW-5` запрещён.
+`QW-4B-I` завершает implementation boundary: добавлены deny-all runtime
+preflight, проверка source/image/Torch2PC identity, строгая схема будущего
+single-run authorization, effect-local adapter symbols, concrete `stage2_baseline`
+Torch/Torch2PC backend с all-snapshot observer, последовательный matched runner
+с восстановлением state/RNG, цепочка static-validation receipt и pure two-lane
+report sealer. Authorization-only execution CLI присутствует заранее, но без
+замороженного authorization она закрывается с ошибкой.
+
+Следующий внутренний шаг — `QW-4B-F`: заморозить фактический preflight, точные
+CPU/ROCm cells, image/source/Torch2PC identities, output root и single-run
+authorization. После его merge отдельный `QW-4B-E` выполнит engineering smoke и
+запечатает отчёт. До успешного evidence report `QW-5` запрещён.
 
 ```text
 qwake_fp_pre_freeze_validation_request_frozen=true
 qwake_fp_pre_freeze_validation_harness_implemented=true
+qwake_fp_runtime_validation_implementation_complete=true
+qwake_fp_runtime_preflight_implemented=true
+qwake_fp_runtime_authorization_validator_implemented=true
+qwake_fp_runtime_adapter_symbols_bound=true
+qwake_fp_matched_runtime_runner_implemented=true
+qwake_fp_runtime_report_sealer_implemented=true
+qwake_fp_canonical_torch_backend_implemented=true
+qwake_fp_all_snapshot_observer_implemented=true
+qwake_fp_authorized_execution_cli_implemented=true
+qwake_fp_static_validation_receipt_chain_implemented=true
 qwake_fp_pre_freeze_validation_complete=false
 qwake_fp_runtime_authorization_issued=false
+qwake_fp_runtime_validation_performed=false
 qwake_fp_pre_freeze_evidence_generated=false
 qwake_fp_live_adapters_bound=false
 qwake_fp_scientific_image_freeze_permitted=false
 qwake_fp_next_stage=QW-4-runtime-validation
+qwake_fp_next_slice=QW-4-runtime-freeze
 ```
 
 ## Этап 23 — `QW-5`: единая заморозка scientific image

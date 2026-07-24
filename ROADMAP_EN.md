@@ -226,19 +226,41 @@ The pairs establish non-interference, correctness, and accumulated observation
 cost; `A0/A1` nesting, disabled capabilities, post-action oracle isolation, and
 no double-counting of device time are checked separately.
 
-The next internal step is `QW-4B` runtime validation: separate authorization,
-canonical-adapter binding, CPU engineering smoke, ROCm/float32 canonical smoke,
-and a sealed engineering report. `QW-5` is forbidden until it passes.
+`QW-4B-I` completes the implementation boundary: deny-all runtime preflight,
+source/image/Torch2PC identity verification, a strict future single-run
+authorization schema, effect-local adapter symbols, a concrete
+`stage2_baseline` Torch/Torch2PC backend with an all-snapshot observer, a
+sequential matched runner with state/RNG restoration, a static-validation
+receipt chain, and a pure two-lane report sealer. The authorization-only
+execution CLI is already present but fails closed without a frozen
+authorization.
+
+The next internal step is `QW-4B-F`: freeze the actual preflight, exact CPU/ROCm
+cells, image/source/Torch2PC identities, output root, and single-run
+authorization. After that merge, a separate `QW-4B-E` will execute engineering
+smoke and seal the report. `QW-5` remains forbidden until successful evidence.
 
 ```text
 qwake_fp_pre_freeze_validation_request_frozen=true
 qwake_fp_pre_freeze_validation_harness_implemented=true
+qwake_fp_runtime_validation_implementation_complete=true
+qwake_fp_runtime_preflight_implemented=true
+qwake_fp_runtime_authorization_validator_implemented=true
+qwake_fp_runtime_adapter_symbols_bound=true
+qwake_fp_matched_runtime_runner_implemented=true
+qwake_fp_runtime_report_sealer_implemented=true
+qwake_fp_canonical_torch_backend_implemented=true
+qwake_fp_all_snapshot_observer_implemented=true
+qwake_fp_authorized_execution_cli_implemented=true
+qwake_fp_static_validation_receipt_chain_implemented=true
 qwake_fp_pre_freeze_validation_complete=false
 qwake_fp_runtime_authorization_issued=false
+qwake_fp_runtime_validation_performed=false
 qwake_fp_pre_freeze_evidence_generated=false
 qwake_fp_live_adapters_bound=false
 qwake_fp_scientific_image_freeze_permitted=false
 qwake_fp_next_stage=QW-4-runtime-validation
+qwake_fp_next_slice=QW-4-runtime-freeze
 ```
 
 ## Stage 23 — `QW-5`: single scientific-image freeze

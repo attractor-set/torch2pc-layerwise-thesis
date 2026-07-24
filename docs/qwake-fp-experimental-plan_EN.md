@@ -284,9 +284,20 @@ oracle_created_ordinal > action_completed_ordinal
 observer_total_time_ns = observer_host_time_ns
 ```
 
-A separate `QW-4B` authorization/[evidence](glossary_EN.md#term-evidence) slice binds adapters and performs CPU
-engineering smoke and ROCm/float32 canonical smoke. Execution, image freeze,
-and C1/C2/C3/R remain closed until a sealed report exists.
+`QW-4B-I` implements deny-all preflight, source/image/Torch2PC binding, a
+future single-run authorization validator, effect-local adapter symbols, a
+concrete `stage2_baseline` Torch backend, an all-snapshot observer, a sequential
+matched runner with state/RNG restoration, a static-validation receipt chain,
+and a pure report sealer. The authorization-only execution CLI is present in
+the image in advance but fails closed without an externally frozen
+authorization.
+
+`QW-4B-F` separately freezes the actual preflight, exact CPU/ROCm cells,
+image/source/Torch2PC identities, output root, and `one-attempt` authorization.
+Only after that merge may `QW-4B-E` perform CPU engineering validation and the
+canonical ROCm/float32 validation, then seal the two-lane report. Campaign
+execution, scientific-image freeze, and C1/C2/C3/R remain closed until the
+report succeeds.
 
 ### `QW-5` — single image freeze
 

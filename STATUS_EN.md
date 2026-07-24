@@ -81,6 +81,30 @@ full_stage3b_campaign_complete=false
 These lines restate the existing contract; they do not create a new admission
 decision.
 
+## `QW-1`: pure QWake contract
+
+The pure `QW-1` core is implemented without dependencies on Torch2PC, PyTorch,
+GPU, filesystem, or subprocess execution. It freezes finite state,
+observation, analytic, action, admission, cost, post-action oracle, and
+provenance types; a deny-all permission model; role-bound allowlists; sealed
+receipt requirements; and deterministic replay. The implementation does not
+execute FixedPred and opens no scientific campaign.
+
+```text
+qwake_core_contract_implemented=true
+qwake_core_contract_pure_python=true
+qwake_core_contract_torch2pc_dependency=false
+qwake_core_contract_gpu_dependency=false
+qwake_permission_default=deny_all
+qwake_capability_registry_closed=true
+qwake_role_allowlists_fail_closed=true
+qwake_receipt_chain_contract_implemented=true
+qwake_deterministic_replay_contract_implemented=true
+qwake_oracle_pre_action_access_permitted=false
+qwake_scientific_execution_open=false
+qwake_next_stage=QW-2
+```
+
 ## Status summary
 
 | Component | Verified state |

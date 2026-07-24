@@ -84,6 +84,30 @@ full_stage3b_campaign_complete=false
 Эти строки описывают уже существующий контракт и не являются новым решением
 о допуске.
 
+## `QW-1`: чистый контракт QWake
+
+Чистое ядро `QW-1` реализовано без зависимостей от Torch2PC, PyTorch, GPU,
+файловой системы или subprocess. Оно фиксирует конечные типы состояния,
+наблюдений, аналитики, действий, admission, стоимости, post-action oracle и
+provenance; deny-all permission model; role-bound allowlists; sealed receipt
+requirements; и детерминированный replay. Реализация не исполняет FixedPred и
+не открывает ни одну научную кампанию.
+
+```text
+qwake_core_contract_implemented=true
+qwake_core_contract_pure_python=true
+qwake_core_contract_torch2pc_dependency=false
+qwake_core_contract_gpu_dependency=false
+qwake_permission_default=deny_all
+qwake_capability_registry_closed=true
+qwake_role_allowlists_fail_closed=true
+qwake_receipt_chain_contract_implemented=true
+qwake_deterministic_replay_contract_implemented=true
+qwake_oracle_pre_action_access_permitted=false
+qwake_scientific_execution_open=false
+qwake_next_stage=QW-2
+```
+
 ## Сводка состояния
 
 | Компонент | Подтверждённое состояние |

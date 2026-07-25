@@ -207,30 +207,26 @@ qwake_fp_next_stage=QW-4
 
 ## Stage 22 — `QW-4B-DOC-R1`: active-documentation refactor
 
-Status: in progress. The old authorization candidate was retired before
-execution and retained in an external audit record. Active documents move to
-one `R/M/Γ/C` model, the `LOCAL_COMPUTE` family, and one stage sequence.
-
-```text
-old_authorization_reuse_permitted=false
-runtime_execution_performed=false
-engineering_evidence_present=false
-new_image_required=true
-```
-
-After documentation validation and merge, build a new immutable baseline image.
+Status: complete. The old authorization candidate was retired before execution, and active documents were moved to one `R/M/Γ/C` model, the `LOCAL_COMPUTE` family, and one stage sequence. The refactor was merged into `main` commit `e413bb1e13cee42f702512e499f994e90df21e45`.
 
 ## Stage 23 — `QW-4B-F-v2`: baseline-validation refreeze
 
-Refreeze the commit, new image digest, `Torch2PC`, preflight,
-static-validation receipt, six `CPU/ROCm × P0/P1/P2` cells, absent output root,
-and one permitted attempt.
+Status: complete without model execution. The new immutable image, Torch2PC, preflight, receipt for 17 static checks, six `CPU/ROCm × P0/P1/P2` cells, absent output root, and one permitted attempt are frozen in the new package.
 
 ```text
+source_commit=e413bb1e13cee42f702512e499f994e90df21e45
+image_digest=sha256:bd91fab26df5f91a3aba90b8cad38badccab3a1a7bfb20efe4126a88a13236c4
+preflight_sha256=sha256:79ead4a0e757272c788acd90700d61c0e5a0509fe64168f83f47dc0963ce4d00
+authorization_sha256=sha256:d22063efa0c458c2498577139fa322b952081d8356cd1a6511f25188b12206b6
 P0: B0 <-> B0+A0
 P1: B0 <-> B0+A0+A1
 P2: B0 <-> B0+A0+A1+A2
+runtime_execution_performed=false
+engineering_evidence_present=false
+next_slice=QW-4B-E-v2
 ```
+
+The single attempt has not been consumed. The next separate stage is `QW-4B-E-v2`.
 
 ## Stage 24 — `QW-4B-E-v2`: sealed baseline report
 

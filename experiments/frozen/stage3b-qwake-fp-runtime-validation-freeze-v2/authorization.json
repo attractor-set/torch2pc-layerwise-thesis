@@ -1,0 +1,87 @@
+{
+  "authorization_id": "stage3b-qwake-fp-runtime-authorization-v1",
+  "authorization_sha256": "sha256:d22063efa0c458c2498577139fa322b952081d8356cd1a6511f25188b12206b6",
+  "cells": [
+    {
+      "arm_order": "reference_then_instrumented",
+      "batch_id": "synthetic-engineering-batch-v1",
+      "lane": "cpu_float64_engineering",
+      "model_seed": 0,
+      "pair_id": "P0"
+    },
+    {
+      "arm_order": "instrumented_then_reference",
+      "batch_id": "synthetic-engineering-batch-v1",
+      "lane": "cpu_float64_engineering",
+      "model_seed": 0,
+      "pair_id": "P1"
+    },
+    {
+      "arm_order": "reference_then_instrumented",
+      "batch_id": "synthetic-engineering-batch-v1",
+      "lane": "cpu_float64_engineering",
+      "model_seed": 0,
+      "pair_id": "P2"
+    },
+    {
+      "arm_order": "reference_then_instrumented",
+      "batch_id": "synthetic-engineering-batch-v1",
+      "lane": "rocm_float32_canonical",
+      "model_seed": 0,
+      "pair_id": "P0"
+    },
+    {
+      "arm_order": "instrumented_then_reference",
+      "batch_id": "synthetic-engineering-batch-v1",
+      "lane": "rocm_float32_canonical",
+      "model_seed": 0,
+      "pair_id": "P1"
+    },
+    {
+      "arm_order": "reference_then_instrumented",
+      "batch_id": "synthetic-engineering-batch-v1",
+      "lane": "rocm_float32_canonical",
+      "model_seed": 0,
+      "pair_id": "P2"
+    }
+  ],
+  "execution_count": 1,
+  "image_freeze_permitted": false,
+  "issued_at_utc": "2026-07-25T02:06:35Z",
+  "operator_acknowledgement": "AUTHORIZE_QWAKE_FP_QW4B_SINGLE_ENGINEERING_VALIDATION_RUN",
+  "output_root": "results/stage-3/qwake-fp-runtime-validation-v2-attempt-001",
+  "output_root_absent_at_issue": true,
+  "permissions": {
+    "capabilities": [
+      "COLLECT_A0",
+      "COLLECT_A1",
+      "COLLECT_A2",
+      "COMPUTE_CANONICAL_SUFFIX",
+      "COMPUTE_POST_ACTION_ORACLE",
+      "EXECUTE_FIXEDPRED",
+      "RUN_ANALYTIC_CONSERVATIVE",
+      "RUN_ANALYTIC_EXACT",
+      "RUN_ANALYTIC_HEURISTIC",
+      "RUN_COST_DOMINANCE_CHECK",
+      "RUN_LIVE_ANALYTICS"
+    ]
+  },
+  "preflight_sha256": "sha256:79ead4a0e757272c788acd90700d61c0e5a0509fe64168f83f47dc0963ce4d00",
+  "publication_permitted": false,
+  "receipt_chain_sha256": "sha256:9eda60c6806581fea28021546b881d939e062c017b702a175105c56a25dea05d",
+  "schema_version": 1,
+  "scientific_execution_open": false,
+  "source_identity": {
+    "adapter_registry_sha256": "sha256:8b3f82c1266574c6406525ffcf5689611b83453a10876c922e42d9382a5b6bbb",
+    "image_digest": "sha256:bd91fab26df5f91a3aba90b8cad38badccab3a1a7bfb20efe4126a88a13236c4",
+    "request_sha256": "sha256:342ee6cff2558269ccd708001e75c92624e7e7cad29b26ef0898b7e47ecf76ec",
+    "source_commit": "e413bb1e13cee42f702512e499f994e90df21e45",
+    "source_index_sha256": "sha256:bbbda8093c4c32c0849398c872cb49713f778c8de2a74e450c837b27884b8652",
+    "special_case_contract_sha256": "sha256:968457365ddc1c94a814e0f7712d30d0154afd0c96d8464bff46a31e61ad3698",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "static_validation_receipt_sha256": "sha256:d092fa993e0bb30be4749785b185ab170c9435f8be820d0d1ad67d5f3e4b445f",
+  "status": "issued_single_runtime_validation_attempt",
+  "test_dataset_access": false
+}
+

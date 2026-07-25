@@ -128,7 +128,7 @@ def test_active_documents_use_one_sequence_and_no_active_qw6_qw10() -> None:
         assert "### `QW-10`" not in text
 
 
-def test_status_requires_new_image_without_execution() -> None:
+def test_status_preserves_historical_new_image_requirement() -> None:
     markers = (
         "qwake_documentation_refactor_complete=true",
         "qwake_old_runtime_authorization_retired=true",
@@ -146,9 +146,37 @@ def test_status_requires_new_image_without_execution() -> None:
     )
     for name in ("STATUS.md", "STATUS_EN.md"):
         text = (ROOT / name).read_text(encoding="utf-8")
-        current = text[text.index("## `QW-4B-DOC-R1`") :]
+        historical = text[text.index("## `QW-4B-DOC-R1`"):text.index("## `QW-4B-F-v2`")]
+        for marker in markers:
+            assert marker in historical
+
+
+def test_current_status_records_freeze_without_execution() -> None:
+    markers = (
+        "qwake_new_image_required=false",
+        "qwake_new_image_built=true",
+        "qwake_new_runtime_preflight_captured=true",
+        "qwake_new_runtime_authorization_issued=true",
+        "qwake_runtime_authorization_verified=true",
+        "qwake_runtime_validation_permitted=true",
+        "qwake_runtime_execution_performed=false",
+        "qwake_runtime_validation_performed=false",
+        "qwake_engineering_evidence_present=false",
+        "qwake_frozen_authorized_cell_count=6",
+        "qwake_frozen_execution_count=1",
+        "qwake_authorized_output_root_absent=true",
+        "qwake_scientific_image_freeze_permitted=false",
+        "qwake_local_compute_implementation_open=false",
+        "qwake_local_compute_execution_open=false",
+        "qwake_next_slice=QW-4B-E-v2",
+        "qwake_post_baseline_next_slice=QW-LC0",
+    )
+    for name in ("STATUS.md", "STATUS_EN.md"):
+        text = (ROOT / name).read_text(encoding="utf-8")
+        current = text[text.index("## `QW-4B-F-v2`"):]
         for marker in markers:
             assert marker in current
+
 
 def test_refactored_plans_preserve_baseline_and_offline_guards() -> None:
     required = (

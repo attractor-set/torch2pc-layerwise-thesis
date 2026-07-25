@@ -1,0 +1,94 @@
+{
+  "all_checks_passed": true,
+  "captured_at_utc": "2026-07-25T02:00:17Z",
+  "checks": [
+    {
+      "check_id": "source_commit",
+      "passed": true
+    },
+    {
+      "check_id": "source_cleanliness",
+      "passed": true
+    },
+    {
+      "check_id": "torch2pc_identity",
+      "passed": true
+    },
+    {
+      "check_id": "image_source_identity",
+      "passed": true
+    },
+    {
+      "check_id": "frozen_request_registry",
+      "passed": true
+    },
+    {
+      "check_id": "pip_check",
+      "passed": true
+    },
+    {
+      "check_id": "git_diff_check",
+      "passed": true
+    },
+    {
+      "check_id": "ruff_source_scripts_tests",
+      "passed": true
+    },
+    {
+      "check_id": "mypy_source",
+      "passed": true
+    },
+    {
+      "check_id": "language_structure",
+      "passed": true
+    },
+    {
+      "check_id": "glossary_usage",
+      "passed": true
+    },
+    {
+      "check_id": "local_links",
+      "passed": true
+    },
+    {
+      "check_id": "epistemic_language",
+      "passed": true
+    },
+    {
+      "check_id": "mkdocs_ru_strict",
+      "passed": true
+    },
+    {
+      "check_id": "mkdocs_en_strict",
+      "passed": true
+    },
+    {
+      "check_id": "targeted_qwake_runtime_tests",
+      "passed": true
+    },
+    {
+      "check_id": "full_unit_suite",
+      "passed": true
+    }
+  ],
+  "engineering_evidence_present": false,
+  "image_digest": "sha256:bd91fab26df5f91a3aba90b8cad38badccab3a1a7bfb20efe4126a88a13236c4",
+  "image_freeze_permitted": false,
+  "image_repo_digest": "torch2pc-layerwise-thesis@sha256:bd91fab26df5f91a3aba90b8cad38badccab3a1a7bfb20efe4126a88a13236c4",
+  "model_execution_performed": false,
+  "output_root_absent_at_receipt": true,
+  "planned_output_root": "results/stage-3/qwake-fp-runtime-validation-v2-attempt-001",
+  "preflight_sha256": "sha256:79ead4a0e757272c788acd90700d61c0e5a0509fe64168f83f47dc0963ce4d00",
+  "publication_permitted": false,
+  "receipt_id": "stage3b-qwake-fp-static-validation-receipt-v2",
+  "runtime_execution_performed": false,
+  "schema_version": 2,
+  "scientific_execution_open": false,
+  "source_commit": "e413bb1e13cee42f702512e499f994e90df21e45",
+  "source_index_sha256": "sha256:bbbda8093c4c32c0849398c872cb49713f778c8de2a74e450c837b27884b8652",
+  "status": "static_and_unit_validation_passed",
+  "test_dataset_access": false,
+  "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4",
+  "validation_log_sha256": "sha256:a656773474abb4d7d1a4b6102e09b06c961c45646f615416ded37fbc0d9aa926",
+  "validation_log_size_bytes": 47746
+}

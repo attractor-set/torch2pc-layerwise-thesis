@@ -592,3 +592,52 @@ test_dataset_access=false
 publication_permitted=false
 full_stage3b_campaign_complete=false
 ```
+
+## `QW-4B-F-v2`: новый образ и одноразовый допуск заморожены
+
+После слияния `QW-4B-DOC-R1` собран новый неизменяемый образ из merge commit `e413bb1e13cee42f702512e499f994e90df21e45`. В нём повторно прошли статические, модульные и документальные проверки, затем была получена новая предварительная проверка CPU/ROCm и выпущено разрешение на одну инженерную попытку.
+
+Разрешение повторно проверено официальной программой проверки и перенесено в `experiments/frozen/stage3b-qwake-fp-runtime-validation-freeze-v2` без изменения исходных байтов. Исполняющая команда не вызывалась, каталог результата не создавался, инженерные [доказательные материалы](docs/glossary.md#term-evidence) отсутствуют.
+
+Текущее состояние означает только готовность строго ограниченного допуска. Оно не подтверждает невмешательство наблюдателей, корректность измерительной стоимости или пригодность механизма для будущей политики. Эти свойства должны быть получены и независимо проверены в следующем отдельном срезе.
+
+Научная последовательность остаётся закрытой: данные тестовой выборки недоступны, создание научных меток запрещено, публикация не разрешена, а расширение локальных вычислений не может быть реализовано или выполнено до запечатанного базового отчёта.
+
+```text
+qwake_documentation_refactor_complete=true
+qwake_old_runtime_authorization_retired=true
+qwake_old_runtime_authorization_reuse_permitted=false
+qwake_new_image_required=false
+qwake_new_image_built=true
+qwake_new_image_source_commit=e413bb1e13cee42f702512e499f994e90df21e45
+qwake_new_image_digest=sha256:bd91fab26df5f91a3aba90b8cad38badccab3a1a7bfb20efe4126a88a13236c4
+qwake_new_runtime_preflight_captured=true
+qwake_new_runtime_authorization_issued=true
+qwake_runtime_authorization_verified=true
+qwake_runtime_validation_permitted=true
+qwake_runtime_execution_performed=false
+qwake_runtime_validation_performed=false
+qwake_engineering_evidence_present=false
+qwake_fp_execution_permitted=false
+qwake_frozen_preflight_sha256=sha256:79ead4a0e757272c788acd90700d61c0e5a0509fe64168f83f47dc0963ce4d00
+qwake_frozen_authorization_sha256=sha256:d22063efa0c458c2498577139fa322b952081d8356cd1a6511f25188b12206b6
+qwake_frozen_receipt_chain_sha256=sha256:9eda60c6806581fea28021546b881d939e062c017b702a175105c56a25dea05d
+qwake_frozen_authorized_cell_count=6
+qwake_frozen_execution_count=1
+qwake_authorized_output_root_absent=true
+qwake_scientific_image_freeze_permitted=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_next_slice=QW-4B-E-v2
+qwake_post_baseline_next_slice=QW-LC0
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+publication_permitted=false
+full_stage3b_campaign_complete=false
+```

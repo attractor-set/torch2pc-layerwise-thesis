@@ -4,6 +4,8 @@
 
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
+- зафиксирован `QW-4B-F-v2`: новый immutable image из merge commit `e413bb1e13cee42f702512e499f994e90df21e45`, live CPU/ROCm preflight, квитанция 17 статических проверок, побайтно сохранённое и повторно проверенное разрешение на шесть инженерных ячеек и одну попытку; выполнение, evidence, `LOCAL_COMPUTE` и научная кампания остаются закрытыми;
+
 - выполнен полный `QW-4B-DOC-R1` рефакторинг активной документации: старое разрешение выведено из обращения до выполнения, зафиксированы `R/M/Γ/C`, `LOCAL_COMPUTE`, ограниченный аналитический кандидат и новая последовательность до `C1/C2/C3/R`; после слияния обязателен новый образ и повторная заморозка `QW-4B-F-v2`;
 
 - реализован `QW-4B-I` fail-closed runtime-validation слой: deny-all preflight, source/image/Torch2PC binding, отдельный валидатор single-run authorization, effect-local adapter symbols, последовательный matched runner с восстановлением state/RNG, двухлинейный CPU/ROCm engineering report и pure sealer, concrete `stage2_baseline` Torch backend с all-snapshot observer, цепочка static-validation receipt и отдельная authorization-only execution CLI; authorization, фактическое выполнение, evidence и image freeze остаются закрытыми;

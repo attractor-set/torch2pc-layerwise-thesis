@@ -655,3 +655,39 @@ qwake_qw_lc0_open=false
 qwake_next_slice=QW-4B-E-v2-repository-seal
 qwake_post_merge_next_slice=QW-LC0
 ```
+
+
+## `QW-LC0`: post-merge transition opened
+
+The `QW-4B-E-v2` repository seal was merged into `main` commit
+`4f23b752a40ae05de9fc7ee49c9962c44083b71d`. All three evidence layers were reverified; their bytes
+and digest identities remain unchanged.
+
+Only the `QW-LC0` semantics-and-scope documentation freeze is opened.
+`LOCAL_COMPUTE` implementation and execution, the scientific image, C1/C2/C3/R,
+the test split, and publication remain closed.
+
+```text
+qwake_qw4b_e_v2_repository_evidence_sealed=true
+qwake_qw4b_e_v2_repository_seal_commit=26bc0ef635e13dba719d3356fe17382f0037d1df
+qwake_qw4b_e_v2_repository_merge_commit=4f23b752a40ae05de9fc7ee49c9962c44083b71d
+qwake_qw4b_e_v2_post_merge_verification_passed=true
+qwake_qw_lc0_transition_permitted=true
+qwake_qw_lc0_open=true
+qwake_qw_lc0_semantics_scope_frozen=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_scientific_image_freeze_permitted=false
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+publication_permitted=false
+full_stage3b_campaign_complete=false
+qwake_next_slice=QW-LC0
+qwake_post_lc0_next_slice=QW-LC1
+```

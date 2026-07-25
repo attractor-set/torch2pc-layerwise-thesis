@@ -4,6 +4,7 @@
 
 ## [Unreleased] — B1/B2 preregistration
 ### Added
+- recorded the PR #110 post-merge transition for `QW-4B-E-v2`: repository evidence was reverified on `main` `4f23b752a40ae05de9fc7ee49c9962c44083b71d`, `QW-LC0` is open only for the semantics-and-scope freeze, while implementation, execution, the scientific image, test split, and publication remain closed;
 - executed and materialized `QW-4B-E-v2`: the single authorized attempt completed six CPU/ROCm × P0/P1/P2 cells, and the exact output is bound to report `sha256:54dba01d47814dc00fa53bd69c00865bd1c47754c017c7482c895162d3a86b82`; the original wrapper failure, two failed recovery audits, and successful recovery-v3 are preserved, the authorization is consumed, retry is prohibited, and scientific evidence and publication remain closed;
 - froze `QW-4B-F-v2`: a new immutable image from merge commit `e413bb1e13cee42f702512e499f994e90df21e45`, live CPU/ROCm preflight, receipt for 17 static checks, and a byte-preserved and reverified authorization for six engineering cells and one attempt; execution, evidence, `LOCAL_COMPUTE`, and the scientific campaign remain closed;
 

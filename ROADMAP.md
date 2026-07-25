@@ -234,8 +234,9 @@ next_slice=QW-4B-E-v2
 
 ## Этап 24 — `QW-4B-E-v2`: запечатанный базовый отчёт
 
-Состояние: вычисление завершено, независимый recovery-v3 прошёл, repository
-seal материализован и ожидает слияния. Единственная попытка окончательно
+Состояние: завершено. Repository seal commit
+`26bc0ef635e13dba719d3356fe17382f0037d1df` слит в `main`
+`4f23b752a40ae05de9fc7ee49c9962c44083b71d` и повторно проверен. Единственная попытка окончательно
 использована; повтор запрещён.
 
 ```text
@@ -248,9 +249,13 @@ engineering_evidence_present=true
 image_freeze_eligible=true
 scientific_evidence=false
 publication_permitted=false
-qw_lc0_open=false
-next_slice=QW-4B-E-v2-repository-seal
-post_merge_next_slice=QW-LC0
+repository_evidence_sealed=true
+post_merge_verification_passed=true
+qw_lc0_transition_permitted=true
+qw_lc0_open=true
+qw_lc0_semantics_scope_frozen=false
+next_slice=QW-LC0
+post_lc0_next_slice=QW-LC1
 ```
 
 Исходная ошибка wrapper, два неудачных recovery-аудита и успешный recovery-v3

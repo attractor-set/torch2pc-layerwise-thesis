@@ -243,3 +243,32 @@ def test_current_status_records_qw4b_e_v2_engineering_evidence() -> None:
         current = text[text.index("## `QW-4B-E-v2`"):]
         for marker in markers:
             assert marker in current
+
+
+
+def test_qw_lc0_post_merge_transition_is_documentation_only() -> None:
+    markers = (
+        "qwake_qw4b_e_v2_repository_evidence_sealed=true",
+        "qwake_qw4b_e_v2_repository_seal_commit=26bc0ef635e13dba719d3356fe17382f0037d1df",
+        "qwake_qw4b_e_v2_repository_merge_commit=4f23b752a40ae05de9fc7ee49c9962c44083b71d",
+        "qwake_qw4b_e_v2_post_merge_verification_passed=true",
+        "qwake_qw_lc0_transition_permitted=true",
+        "qwake_qw_lc0_open=true",
+        "qwake_qw_lc0_semantics_scope_frozen=false",
+        "qwake_local_compute_implementation_open=false",
+        "qwake_local_compute_execution_open=false",
+        "qwake_scientific_image_freeze_permitted=false",
+        "test_dataset_access=false",
+        "publication_permitted=false",
+        "qwake_next_slice=QW-LC0",
+        "qwake_post_lc0_next_slice=QW-LC1",
+    )
+    sections = (
+        ("STATUS.md", "## `QW-LC0`: post-merge переход открыт"),
+        ("STATUS_EN.md", "## `QW-LC0`: post-merge transition opened"),
+    )
+    for name, heading in sections:
+        text = (ROOT / name).read_text(encoding="utf-8")
+        current = text[text.index(heading):]
+        for marker in markers:
+            assert marker in current, (name, marker)

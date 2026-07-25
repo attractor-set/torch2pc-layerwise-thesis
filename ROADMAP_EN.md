@@ -230,8 +230,9 @@ The single attempt has not been consumed. The next separate stage is `QW-4B-E-v2
 
 ## Stage 24 — `QW-4B-E-v2`: sealed baseline report
 
-Status: execution is complete, independent recovery-v3 passed, and the
-repository seal is materialized pending merge. The single attempt is permanently
+Status: complete. Repository seal commit
+`26bc0ef635e13dba719d3356fe17382f0037d1df` was merged into `main`
+`4f23b752a40ae05de9fc7ee49c9962c44083b71d` and reverified. The single attempt is permanently
 consumed; retry is prohibited.
 
 ```text
@@ -244,9 +245,13 @@ engineering_evidence_present=true
 image_freeze_eligible=true
 scientific_evidence=false
 publication_permitted=false
-qw_lc0_open=false
-next_slice=QW-4B-E-v2-repository-seal
-post_merge_next_slice=QW-LC0
+repository_evidence_sealed=true
+post_merge_verification_passed=true
+qw_lc0_transition_permitted=true
+qw_lc0_open=true
+qw_lc0_semantics_scope_frozen=false
+next_slice=QW-LC0
+post_lc0_next_slice=QW-LC1
 ```
 
 The original wrapper failure, two failed recovery audits, successful recovery-v3,

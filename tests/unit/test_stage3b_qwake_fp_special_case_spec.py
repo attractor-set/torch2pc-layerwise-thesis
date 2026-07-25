@@ -236,17 +236,34 @@ def test_qw2_documents_freeze_the_same_contract_and_keep_execution_closed() -> N
             assert token in text, (path, token)
 
 
-def test_qw2_roadmap_and_plan_point_to_qw3_without_opening_campaigns() -> None:
-    for path in (
+def test_qw2_history_is_preserved_inside_refactored_active_plan() -> None:
+    historical_documents = (
         ROOT / "ROADMAP.md",
         ROOT / "ROADMAP_EN.md",
-        ROOT / "docs/qwake-fp-experimental-plan.md",
-        ROOT / "docs/qwake-fp-experimental-plan_EN.md",
-    ):
+        ROOT / "STATUS.md",
+        ROOT / "STATUS_EN.md",
+    )
+    for path in historical_documents:
         text = path.read_text(encoding="utf-8")
         assert "QW-2" in text
         assert "QW-3" in text
         assert "stage3b-qwake-fp-special-case-v1" in text
+
+    active_plans = (
+        ROOT / "docs/qwake-fp-experimental-plan.md",
+        ROOT / "docs/qwake-fp-experimental-plan_EN.md",
+    )
+    for path in active_plans:
+        text = path.read_text(encoding="utf-8")
+        assert "historical_sequence=QW-2->QW-3->QW-4A->QW-4B-I" in text
+        assert (
+            "qwake_fp_special_case_contract_id="
+            "stage3b-qwake-fp-special-case-v1"
+        ) in text
+        assert "QW-4B-DOC-R1" in text
+        assert "QW-4B-F-v2" in text
+        assert "qwake_fp_execution_permitted=false" in text
+
     for path in (ROOT / "STATUS.md", ROOT / "STATUS_EN.md"):
         text = path.read_text(encoding="utf-8")
         assert "c1_collection_open=false" in text

@@ -496,16 +496,14 @@ def test_sealing_and_publication_render_are_pure_and_deterministic() -> None:
     assert first.payload_sha256 in rendered
 
 
-def test_qw3_documents_keep_execution_closed_and_point_to_qw4() -> None:
-    documents = (
+def test_qw3_history_and_refactored_active_boundary_are_both_preserved() -> None:
+    historical_documents = (
         ROOT / "STATUS.md",
         ROOT / "STATUS_EN.md",
         ROOT / "ROADMAP.md",
         ROOT / "ROADMAP_EN.md",
-        ROOT / "docs/qwake-fp-experimental-plan.md",
-        ROOT / "docs/qwake-fp-experimental-plan_EN.md",
     )
-    required = (
+    historical_required = (
         "qwake_fp_superset_pipeline_implemented=true",
         "qwake_fp_superset_pipeline_execution_open=false",
         "qwake_fp_live_adapters_bound=false",
@@ -513,10 +511,31 @@ def test_qw3_documents_keep_execution_closed_and_point_to_qw4() -> None:
         "qwake_fp_offline_replay_implemented=true",
         "QW-4",
     )
-    for path in documents:
+    for path in historical_documents:
         text = path.read_text(encoding="utf-8")
-        for marker in required:
+        for marker in historical_required:
             assert marker in text
+
+    active_plans = (
+        ROOT / "docs/qwake-fp-experimental-plan.md",
+        ROOT / "docs/qwake-fp-experimental-plan_EN.md",
+    )
+    active_required = (
+        "historical_sequence=QW-2->QW-3->QW-4A->QW-4B-I",
+        "qwake_fp_special_case_contract_id=stage3b-qwake-fp-special-case-v1",
+        "qwake_fp_superset_pipeline_implemented=true",
+        "QW-4B-DOC-R1",
+        "QW-4B-F-v2",
+        "QW-4B-E-v2",
+        "QW-LC0",
+        "qwake_old_runtime_authorization_reuse_permitted=false",
+        "qwake_fp_execution_permitted=false",
+    )
+    for path in active_plans:
+        text = path.read_text(encoding="utf-8")
+        for marker in active_required:
+            assert marker in text
+
     for path in (ROOT / "STATUS.md", ROOT / "STATUS_EN.md"):
         text = path.read_text(encoding="utf-8")
         assert "c1_collection_open=false" in text

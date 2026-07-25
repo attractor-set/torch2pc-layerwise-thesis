@@ -526,3 +526,46 @@ feature_collection_permitted=false
 policy_activation_permitted=false
 test_dataset_access=false
 ```
+
+## `QW-4B-DOC-R1`: full active-plan refactor
+
+The old `QW-4B-F-v1` candidate was retired before execution. Its bytes, logs,
+and authorization remain in an external audit directory, but reuse is
+forbidden. No engineering or scientific result was created.
+
+The active plan now separates `R`, `M`, `Γ`, and `C`, introduces the
+`LOCAL_COMPUTE` family, bounds the first analytic candidate, and establishes the
+single sequence `QW-4B-F-v2 → QW-4B-E-v2 → QW-LC0…QW-LC4-E → QW-5 → C1 → C2
+→ C3 → R`.
+
+A new immutable image is required after this branch is merged. Only then may a
+new preflight, receipt, and single-attempt authorization be issued.
+
+```text
+qwake_documentation_refactor_complete=true
+qwake_old_runtime_authorization_retired=true
+qwake_old_runtime_authorization_reuse_permitted=false
+qwake_new_image_required=true
+qwake_new_runtime_preflight_captured=false
+qwake_new_runtime_authorization_issued=false
+qwake_runtime_execution_performed=false
+qwake_runtime_validation_performed=false
+qwake_engineering_evidence_present=false
+qwake_fp_execution_permitted=false
+qwake_local_compute_contract_frozen=true
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_scientific_image_freeze_permitted=false
+qwake_next_slice=QW-4B-new-image
+qwake_post_baseline_next_slice=QW-LC0
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+publication_permitted=false
+full_stage3b_campaign_complete=false
+```

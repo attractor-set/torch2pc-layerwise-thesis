@@ -118,5 +118,6 @@
 ## Ограниченная проверка `QWake-FP`
 
 - [Канонический план](qwake-fp-experimental-plan.md)
+- [Расширение выбора механизма](qwake-local-compute-extension.md)
 - [ADR-042](decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md)
 - [QWake-PC](glossary.md#term-qwake-pc): [общий дизайн](qwake-pc-design.md)

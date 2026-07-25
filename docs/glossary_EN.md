@@ -822,3 +822,53 @@ concepts are split or merged, and record the change in the changelog.
 - **Russian equivalent:** диагностический разрыв наблюдаемости.
 - **Project meaning:** The share or set of states that are already sufficient under the post-action oracle but remain `UNKNOWN` under the registered low-cost pre-action representation.
 - **Usage rule:** The gap separates computational sufficiency from cheap diagnostic recognizability and is not treated as a failure of baseline FixedPred.
+
+
+<a id="term-required-result"></a>
+### TERM-REQUIRED-RESULT — required result
+
+- **Russian equivalent:** требуемый результат.
+- **Project meaning:** The registered response that an action must reproduce in a given state independently of the admissible way it is obtained.
+- **Usage rule:** Freeze the response separately from mechanism and cost; equal responses do not establish equal computational paths.
+
+<a id="term-computational-mechanism"></a>
+### TERM-COMPUTATIONAL-MECHANISM — computational mechanism
+
+- **Russian equivalent:** вычислительный механизм.
+- **Project meaning:** A registered way to transform a state into the required result, such as an explicit local sweep or bounded analytic completion.
+- **Usage rule:** Do not identify mechanism with response or with the measured resource trajectory.
+
+<a id="term-resource-trajectory"></a>
+### TERM-RESOURCE-TRAJECTORY — resource trajectory
+
+- **Russian equivalent:** ресурсная траектория.
+- **Project meaning:** An ordered record of computation, memory, synchronization, observation, control, and fallback resources actually used by one action.
+- **Usage rule:** Measure the trajectory separately from the response and map it into cost without double counting.
+
+<a id="term-response-equivalence"></a>
+### TERM-RESPONSE-EQUIVALENCE — response equivalence
+
+- **Russian equivalent:** эквивалентность по результату.
+- **Project meaning:** A relation between actions that produce the same or admissibly close registered required result.
+- **Usage rule:** Bind the relation to a specific response, norm, and tolerance; do not transfer it automatically to cost.
+
+<a id="term-cost-equivalence"></a>
+### TERM-COST-EQUIVALENCE — cost equivalence
+
+- **Russian equivalent:** эквивалентность по стоимости.
+- **Project meaning:** A relation between actions with equal or admissibly close registered cost vectors.
+- **Usage rule:** Evaluate it separately from response equivalence.
+
+<a id="term-local-compute"></a>
+### TERM-LOCAL-COMPUTE — local compute
+
+- **Russian equivalent:** локальное вычисление.
+- **Project meaning:** An action family that obtains the required result through an explicit local sweep or bounded analytic completion.
+- **Usage rule:** The family is not one algorithm; each mechanism has a separate scope, validation, and cost.
+
+<a id="term-analytic-completion"></a>
+### TERM-ANALYTIC-COMPLETION — analytic completion
+
+- **Russian equivalent:** аналитическое завершение.
+- **Project meaning:** A bounded mechanism that obtains the registered result without explicitly replaying the whole computational sequence.
+- **Usage rule:** Admit it only for a preregistered bounded case after matched shadow validation and with an available exact fallback.

@@ -614,3 +614,44 @@ test_dataset_access=false
 publication_permitted=false
 full_stage3b_campaign_complete=false
 ```
+
+## `QW-4B-E-v2`: baseline engineering report executed and independently recovered
+
+The single authorized attempt ran from isolated source commit
+`e413bb1e13cee42f702512e499f994e90df21e45`. The executor completed all six
+`CPU/ROCm × P0/P1/P2` cells, and the immutable output is bound to report
+`sha256:54dba01d47814dc00fa53bd69c00865bd1c47754c017c7482c895162d3a86b82`.
+
+The post-execution wrapper failure and two later recovery-audit defects are
+retained as provenance. Independent recovery-v3 verified authorization JSON and
+model equality, both lanes, observation non-interference, oracle isolation, and
+zero effects from disabled capabilities. Runtime execution was not repeated.
+
+This slice materializes the exact output, complete audit package, and external
+seal. The local-compute extension remains closed until the repository seal is
+merged and `QW-LC0` semantics are opened separately. The report is engineering
+only; scientific data, publication, and the test split remain closed.
+
+```text
+qwake_qw4b_e_v2_materialized=true
+qwake_qw4b_e_v2_repository_evidence_sealed=false
+qwake_qw4b_e_v2_runner_status=0
+qwake_qw4b_e_v2_authorization_consumed=true
+qwake_qw4b_e_v2_retry_permitted=false
+qwake_qw4b_e_v2_runtime_rerun_performed=false
+qwake_qw4b_e_v2_runtime_execution_performed=true
+qwake_qw4b_e_v2_runtime_execution_completed=true
+qwake_qw4b_e_v2_authorized_cell_count=6
+qwake_qw4b_e_v2_cpu_lane_passed=true
+qwake_qw4b_e_v2_rocm_lane_passed=true
+qwake_qw4b_e_v2_engineering_evidence_present=true
+qwake_qw4b_e_v2_image_freeze_eligible=true
+qwake_qw4b_e_v2_report_sha256=sha256:54dba01d47814dc00fa53bd69c00865bd1c47754c017c7482c895162d3a86b82
+qwake_qw4b_e_v2_scientific_evidence=false
+qwake_qw4b_e_v2_scientific_execution_open=false
+qwake_qw4b_e_v2_test_dataset_access=false
+qwake_qw4b_e_v2_publication_permitted=false
+qwake_qw_lc0_open=false
+qwake_next_slice=QW-4B-E-v2-repository-seal
+qwake_post_merge_next_slice=QW-LC0
+```

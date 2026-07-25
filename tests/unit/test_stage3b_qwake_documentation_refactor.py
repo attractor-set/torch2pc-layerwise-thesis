@@ -173,7 +173,10 @@ def test_current_status_records_freeze_without_execution() -> None:
     )
     for name in ("STATUS.md", "STATUS_EN.md"):
         text = (ROOT / name).read_text(encoding="utf-8")
-        current = text[text.index("## `QW-4B-F-v2`"):]
+        current = text[
+            text.index("## `QW-4B-F-v2`"):
+            text.index("## `QW-4B-E-v2`")
+        ]
         for marker in markers:
             assert marker in current
 
@@ -210,3 +213,33 @@ def test_refactored_plans_preserve_baseline_and_offline_guards() -> None:
         text = (ROOT / name).read_text(encoding="utf-8")
         for marker in required[:3]:
             assert marker in text, (name, marker)
+
+
+def test_current_status_records_qw4b_e_v2_engineering_evidence() -> None:
+    markers = (
+        "qwake_qw4b_e_v2_materialized=true",
+        "qwake_qw4b_e_v2_repository_evidence_sealed=false",
+        "qwake_qw4b_e_v2_runner_status=0",
+        "qwake_qw4b_e_v2_authorization_consumed=true",
+        "qwake_qw4b_e_v2_retry_permitted=false",
+        "qwake_qw4b_e_v2_runtime_rerun_performed=false",
+        "qwake_qw4b_e_v2_runtime_execution_performed=true",
+        "qwake_qw4b_e_v2_runtime_execution_completed=true",
+        "qwake_qw4b_e_v2_authorized_cell_count=6",
+        "qwake_qw4b_e_v2_cpu_lane_passed=true",
+        "qwake_qw4b_e_v2_rocm_lane_passed=true",
+        "qwake_qw4b_e_v2_engineering_evidence_present=true",
+        "qwake_qw4b_e_v2_image_freeze_eligible=true",
+        "qwake_qw4b_e_v2_scientific_evidence=false",
+        "qwake_qw4b_e_v2_scientific_execution_open=false",
+        "qwake_qw4b_e_v2_test_dataset_access=false",
+        "qwake_qw4b_e_v2_publication_permitted=false",
+        "qwake_qw_lc0_open=false",
+        "qwake_next_slice=QW-4B-E-v2-repository-seal",
+        "qwake_post_merge_next_slice=QW-LC0",
+    )
+    for name in ("STATUS.md", "STATUS_EN.md"):
+        text = (ROOT / name).read_text(encoding="utf-8")
+        current = text[text.index("## `QW-4B-E-v2`"):]
+        for marker in markers:
+            assert marker in current

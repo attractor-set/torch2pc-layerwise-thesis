@@ -4,6 +4,7 @@
 
 ## [Unreleased] — B1/B2 preregistration
 ### Added
+- executed and materialized `QW-4B-E-v2`: the single authorized attempt completed six CPU/ROCm × P0/P1/P2 cells, and the exact output is bound to report `sha256:54dba01d47814dc00fa53bd69c00865bd1c47754c017c7482c895162d3a86b82`; the original wrapper failure, two failed recovery audits, and successful recovery-v3 are preserved, the authorization is consumed, retry is prohibited, and scientific evidence and publication remain closed;
 - froze `QW-4B-F-v2`: a new immutable image from merge commit `e413bb1e13cee42f702512e499f994e90df21e45`, live CPU/ROCm preflight, receipt for 17 static checks, and a byte-preserved and reverified authorization for six engineering cells and one attempt; execution, evidence, `LOCAL_COMPUTE`, and the scientific campaign remain closed;
 
 - completed the full `QW-4B-DOC-R1` active-documentation refactor: retired the old authorization before execution, froze `R/M/Γ/C`, `LOCAL_COMPUTE`, the bounded analytic candidate, and the new sequence through `C1/C2/C3/R`; a new image and `QW-4B-F-v2` refreeze are mandatory after merge;

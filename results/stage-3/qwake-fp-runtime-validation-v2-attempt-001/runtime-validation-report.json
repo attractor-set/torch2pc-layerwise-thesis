@@ -1,0 +1,1976 @@
+{
+  "authorization_sha256": "sha256:d22063efa0c458c2498577139fa322b952081d8356cd1a6511f25188b12206b6",
+  "engineering_evidence_only": true,
+  "image_freeze_eligible": true,
+  "lanes": [
+    {
+      "cells": [
+        {
+          "cell": {
+            "arm_order": "reference_then_instrumented",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "pair_id": "P0"
+          },
+          "disabled_capability_audits": [
+            {
+              "capability": "COLLECT_A0",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A1",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_COST_DOMINANCE_CHECK",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A1",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            }
+          ],
+          "instrumented": {
+            "arm_id": "instrumented",
+            "arm_label": "B0+A0",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:b337feb577bea52f66e9dd7d248b85ffd111db173e67872a2c66afa5c7b3efbf"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:6ca686fa76fd3d6cfa22502f6dcbaf9ca84aeb5df386552d40cd98472b6bb3d6"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:8a19b9aaeac6710265d2268afe167117a7505d5fac97e0161954b649b31ef6b7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:fa4eb5b04bbf11d0697af9024f404f8b03630b48b210d46710e318f11cfa8c7a"
+              ],
+              [
+                "transition_sequence",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ],
+              [
+                "rng_state_after",
+                "sha256:a4bc102522eed295323dafc1b5c0c06dcadd2c51807d8b66f51d75e4144a3e37"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ]
+            ],
+            "initial_state_sha256": "sha256:a86b6f0a9b33875b56f3e22c1cfdd3108c64998e12d60ad8988bdc896ac3f072",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "observation_payload_sha256s": [
+              [
+                "A0",
+                "sha256:903cfee1e18cf0f6b68d942103938d86c2991af4d0a23b317b4cac0db6fad6b4"
+              ]
+            ],
+            "observer_effects": {
+              "d2h_bytes": 0,
+              "invocation_count": 7,
+              "output_count": 56,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 0,
+              "tensor_read_count": 0,
+              "trace_bytes": 2072
+            },
+            "observer_measurement": {
+              "d2h_bytes": 0,
+              "device_time_ns": 0,
+              "host_time_ns": 35174,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 0,
+              "trace_bytes": 2072
+            },
+            "pair_id": "P0",
+            "rng_state_before_sha256": "sha256:48b970d6b3c81ebbfc7ba887f23dd001eb4cbd3437a594d9687cd9540f00c614"
+          },
+          "oracle_isolation_passed": true,
+          "pair_validation": {
+            "equality_mismatches": [],
+            "initial_state_equal": true,
+            "lane": "cpu_float64_engineering",
+            "observer_cost": {
+              "compute_ns": 0,
+              "control_ns": 0,
+              "diagnostic_ns": 0,
+              "fallback_ns": 0,
+              "latency_ns": 0,
+              "memory_bytes": 0,
+              "observer_ns": 35174
+            },
+            "pair_id": "P0",
+            "passed": true,
+            "rng_state_before_equal": true
+          },
+          "reference": {
+            "arm_id": "reference",
+            "arm_label": "B0",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:b337feb577bea52f66e9dd7d248b85ffd111db173e67872a2c66afa5c7b3efbf"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:6ca686fa76fd3d6cfa22502f6dcbaf9ca84aeb5df386552d40cd98472b6bb3d6"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:8a19b9aaeac6710265d2268afe167117a7505d5fac97e0161954b649b31ef6b7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:fa4eb5b04bbf11d0697af9024f404f8b03630b48b210d46710e318f11cfa8c7a"
+              ],
+              [
+                "transition_sequence",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ],
+              [
+                "rng_state_after",
+                "sha256:a4bc102522eed295323dafc1b5c0c06dcadd2c51807d8b66f51d75e4144a3e37"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ]
+            ],
+            "initial_state_sha256": "sha256:a86b6f0a9b33875b56f3e22c1cfdd3108c64998e12d60ad8988bdc896ac3f072",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "observation_payload_sha256s": [],
+            "observer_effects": {
+              "d2h_bytes": 0,
+              "invocation_count": 0,
+              "output_count": 0,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 0,
+              "tensor_read_count": 0,
+              "trace_bytes": 0
+            },
+            "observer_measurement": {
+              "d2h_bytes": 0,
+              "device_time_ns": 0,
+              "host_time_ns": 0,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 0,
+              "trace_bytes": 0
+            },
+            "pair_id": "P0",
+            "rng_state_before_sha256": "sha256:48b970d6b3c81ebbfc7ba887f23dd001eb4cbd3437a594d9687cd9540f00c614"
+          }
+        },
+        {
+          "cell": {
+            "arm_order": "instrumented_then_reference",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "pair_id": "P1"
+          },
+          "disabled_capability_audits": [
+            {
+              "capability": "COLLECT_A0",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A1",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_COST_DOMINANCE_CHECK",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            }
+          ],
+          "instrumented": {
+            "arm_id": "instrumented",
+            "arm_label": "B0+A0+A1",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:b337feb577bea52f66e9dd7d248b85ffd111db173e67872a2c66afa5c7b3efbf"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:6ca686fa76fd3d6cfa22502f6dcbaf9ca84aeb5df386552d40cd98472b6bb3d6"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:8a19b9aaeac6710265d2268afe167117a7505d5fac97e0161954b649b31ef6b7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:fa4eb5b04bbf11d0697af9024f404f8b03630b48b210d46710e318f11cfa8c7a"
+              ],
+              [
+                "transition_sequence",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ],
+              [
+                "rng_state_after",
+                "sha256:a4bc102522eed295323dafc1b5c0c06dcadd2c51807d8b66f51d75e4144a3e37"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ]
+            ],
+            "initial_state_sha256": "sha256:a86b6f0a9b33875b56f3e22c1cfdd3108c64998e12d60ad8988bdc896ac3f072",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "observation_payload_sha256s": [
+              [
+                "A0",
+                "sha256:903cfee1e18cf0f6b68d942103938d86c2991af4d0a23b317b4cac0db6fad6b4"
+              ],
+              [
+                "A1",
+                "sha256:88869b0c0540e4f63199b1ecb0ba23073a4dac142d0d66c89e0e4d6280ff9e56"
+              ]
+            ],
+            "observer_effects": {
+              "d2h_bytes": 1568,
+              "invocation_count": 14,
+              "output_count": 154,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 203,
+              "tensor_read_count": 98,
+              "trace_bytes": 7992
+            },
+            "observer_measurement": {
+              "d2h_bytes": 1568,
+              "device_time_ns": 0,
+              "host_time_ns": 2889282,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 1568,
+              "trace_bytes": 7992
+            },
+            "pair_id": "P1",
+            "rng_state_before_sha256": "sha256:77392b7512e489de3885746a49b8faa12a7845d2427a1ea57df57ebe8dbf0b74"
+          },
+          "oracle_isolation_passed": true,
+          "pair_validation": {
+            "equality_mismatches": [],
+            "initial_state_equal": true,
+            "lane": "cpu_float64_engineering",
+            "observer_cost": {
+              "compute_ns": 0,
+              "control_ns": 0,
+              "diagnostic_ns": 0,
+              "fallback_ns": 0,
+              "latency_ns": 0,
+              "memory_bytes": 1568,
+              "observer_ns": 2889282
+            },
+            "pair_id": "P1",
+            "passed": true,
+            "rng_state_before_equal": true
+          },
+          "reference": {
+            "arm_id": "reference",
+            "arm_label": "B0",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:b337feb577bea52f66e9dd7d248b85ffd111db173e67872a2c66afa5c7b3efbf"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:6ca686fa76fd3d6cfa22502f6dcbaf9ca84aeb5df386552d40cd98472b6bb3d6"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:8a19b9aaeac6710265d2268afe167117a7505d5fac97e0161954b649b31ef6b7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:fa4eb5b04bbf11d0697af9024f404f8b03630b48b210d46710e318f11cfa8c7a"
+              ],
+              [
+                "transition_sequence",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ],
+              [
+                "rng_state_after",
+                "sha256:a4bc102522eed295323dafc1b5c0c06dcadd2c51807d8b66f51d75e4144a3e37"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ]
+            ],
+            "initial_state_sha256": "sha256:a86b6f0a9b33875b56f3e22c1cfdd3108c64998e12d60ad8988bdc896ac3f072",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "observation_payload_sha256s": [],
+            "observer_effects": {
+              "d2h_bytes": 0,
+              "invocation_count": 0,
+              "output_count": 0,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 0,
+              "tensor_read_count": 0,
+              "trace_bytes": 0
+            },
+            "observer_measurement": {
+              "d2h_bytes": 0,
+              "device_time_ns": 0,
+              "host_time_ns": 0,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 0,
+              "trace_bytes": 0
+            },
+            "pair_id": "P1",
+            "rng_state_before_sha256": "sha256:77392b7512e489de3885746a49b8faa12a7845d2427a1ea57df57ebe8dbf0b74"
+          }
+        },
+        {
+          "cell": {
+            "arm_order": "reference_then_instrumented",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "pair_id": "P2"
+          },
+          "disabled_capability_audits": [
+            {
+              "capability": "COLLECT_A0",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A1",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_COST_DOMINANCE_CHECK",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            }
+          ],
+          "instrumented": {
+            "arm_id": "instrumented",
+            "arm_label": "B0+A0+A1+A2",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:b337feb577bea52f66e9dd7d248b85ffd111db173e67872a2c66afa5c7b3efbf"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:6ca686fa76fd3d6cfa22502f6dcbaf9ca84aeb5df386552d40cd98472b6bb3d6"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:8a19b9aaeac6710265d2268afe167117a7505d5fac97e0161954b649b31ef6b7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:fa4eb5b04bbf11d0697af9024f404f8b03630b48b210d46710e318f11cfa8c7a"
+              ],
+              [
+                "transition_sequence",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ],
+              [
+                "rng_state_after",
+                "sha256:a4bc102522eed295323dafc1b5c0c06dcadd2c51807d8b66f51d75e4144a3e37"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ]
+            ],
+            "initial_state_sha256": "sha256:a86b6f0a9b33875b56f3e22c1cfdd3108c64998e12d60ad8988bdc896ac3f072",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "observation_payload_sha256s": [
+              [
+                "A0",
+                "sha256:903cfee1e18cf0f6b68d942103938d86c2991af4d0a23b317b4cac0db6fad6b4"
+              ],
+              [
+                "A1",
+                "sha256:88869b0c0540e4f63199b1ecb0ba23073a4dac142d0d66c89e0e4d6280ff9e56"
+              ],
+              [
+                "A2",
+                "sha256:a9dfcb1d4a63d8d3694a8971d089fabdf61bec83a523f1f8fcaa6f35c30f99f9"
+              ]
+            ],
+            "observer_effects": {
+              "d2h_bytes": 8624,
+              "invocation_count": 21,
+              "output_count": 294,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 1092,
+              "tensor_read_count": 539,
+              "trace_bytes": 28671
+            },
+            "observer_measurement": {
+              "d2h_bytes": 8624,
+              "device_time_ns": 0,
+              "host_time_ns": 90142698,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 8624,
+              "trace_bytes": 28671
+            },
+            "pair_id": "P2",
+            "rng_state_before_sha256": "sha256:f59fad8faa2205d16a33e5a4429aaaed8c335099bceedf3f2af9776c7e0a6fe7"
+          },
+          "oracle_isolation_passed": true,
+          "pair_validation": {
+            "equality_mismatches": [],
+            "initial_state_equal": true,
+            "lane": "cpu_float64_engineering",
+            "observer_cost": {
+              "compute_ns": 0,
+              "control_ns": 0,
+              "diagnostic_ns": 0,
+              "fallback_ns": 0,
+              "latency_ns": 0,
+              "memory_bytes": 8624,
+              "observer_ns": 90142698
+            },
+            "pair_id": "P2",
+            "passed": true,
+            "rng_state_before_equal": true
+          },
+          "reference": {
+            "arm_id": "reference",
+            "arm_label": "B0",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:b337feb577bea52f66e9dd7d248b85ffd111db173e67872a2c66afa5c7b3efbf"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:6ca686fa76fd3d6cfa22502f6dcbaf9ca84aeb5df386552d40cd98472b6bb3d6"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:8a19b9aaeac6710265d2268afe167117a7505d5fac97e0161954b649b31ef6b7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:fa4eb5b04bbf11d0697af9024f404f8b03630b48b210d46710e318f11cfa8c7a"
+              ],
+              [
+                "transition_sequence",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ],
+              [
+                "rng_state_after",
+                "sha256:a4bc102522eed295323dafc1b5c0c06dcadd2c51807d8b66f51d75e4144a3e37"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:4c89053c4d59ee049cd2a1ccc0392600afd2045412d3ff9710c3634edbb695f6"
+              ]
+            ],
+            "initial_state_sha256": "sha256:a86b6f0a9b33875b56f3e22c1cfdd3108c64998e12d60ad8988bdc896ac3f072",
+            "lane": "cpu_float64_engineering",
+            "model_seed": 0,
+            "observation_payload_sha256s": [],
+            "observer_effects": {
+              "d2h_bytes": 0,
+              "invocation_count": 0,
+              "output_count": 0,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 0,
+              "tensor_read_count": 0,
+              "trace_bytes": 0
+            },
+            "observer_measurement": {
+              "d2h_bytes": 0,
+              "device_time_ns": 0,
+              "host_time_ns": 0,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 0,
+              "trace_bytes": 0
+            },
+            "pair_id": "P2",
+            "rng_state_before_sha256": "sha256:f59fad8faa2205d16a33e5a4429aaaed8c335099bceedf3f2af9776c7e0a6fe7"
+          }
+        }
+      ],
+      "lane": "cpu_float64_engineering",
+      "nested_observations_passed": true
+    },
+    {
+      "cells": [
+        {
+          "cell": {
+            "arm_order": "reference_then_instrumented",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "pair_id": "P0"
+          },
+          "disabled_capability_audits": [
+            {
+              "capability": "COLLECT_A0",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A1",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_COST_DOMINANCE_CHECK",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A1",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            }
+          ],
+          "instrumented": {
+            "arm_id": "instrumented",
+            "arm_label": "B0+A0",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:8b98b4bda5b20a36e48eabe485e97b8458aababebb20dc5f299bc430b737373e"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:fdaa10332447b1f49dbb7ed0ef02d2d4ea7ac8b4ab17e0a5943fc0801d8b0188"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:4c75ddc5c32fb958e0fa181a5effcdfcbb86d11afb25b0066af8fc0fb06e71c7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:8db76a69e424f66552055a8dc58c50521dd570a2a2a3bbaa77e4b2c75c4595bb"
+              ],
+              [
+                "transition_sequence",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ],
+              [
+                "rng_state_after",
+                "sha256:35a6d10ea28a2f2d94b2328f7ea389d33d4083530503dfdaad9df99685266765"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ]
+            ],
+            "initial_state_sha256": "sha256:d032c5b69d6aee30ee5730683bfd6629965a270ca7aec9a353c7d0460719a065",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "observation_payload_sha256s": [
+              [
+                "A0",
+                "sha256:7bce8b51ae3c57f221ab0b1adbae5ced645ea0bce3dc2b922d69bff1b5258407"
+              ]
+            ],
+            "observer_effects": {
+              "d2h_bytes": 0,
+              "invocation_count": 7,
+              "output_count": 56,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 0,
+              "tensor_read_count": 0,
+              "trace_bytes": 2065
+            },
+            "observer_measurement": {
+              "d2h_bytes": 0,
+              "device_time_ns": 0,
+              "host_time_ns": 31997,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 0,
+              "trace_bytes": 2065
+            },
+            "pair_id": "P0",
+            "rng_state_before_sha256": "sha256:353774ff2947de179dd2e179aac5b6db51e31dac677c2dec2b2f17b97bbb5b51"
+          },
+          "oracle_isolation_passed": true,
+          "pair_validation": {
+            "equality_mismatches": [],
+            "initial_state_equal": true,
+            "lane": "rocm_float32_canonical",
+            "observer_cost": {
+              "compute_ns": 0,
+              "control_ns": 0,
+              "diagnostic_ns": 0,
+              "fallback_ns": 0,
+              "latency_ns": 0,
+              "memory_bytes": 0,
+              "observer_ns": 31997
+            },
+            "pair_id": "P0",
+            "passed": true,
+            "rng_state_before_equal": true
+          },
+          "reference": {
+            "arm_id": "reference",
+            "arm_label": "B0",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:8b98b4bda5b20a36e48eabe485e97b8458aababebb20dc5f299bc430b737373e"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:fdaa10332447b1f49dbb7ed0ef02d2d4ea7ac8b4ab17e0a5943fc0801d8b0188"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:4c75ddc5c32fb958e0fa181a5effcdfcbb86d11afb25b0066af8fc0fb06e71c7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:8db76a69e424f66552055a8dc58c50521dd570a2a2a3bbaa77e4b2c75c4595bb"
+              ],
+              [
+                "transition_sequence",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ],
+              [
+                "rng_state_after",
+                "sha256:35a6d10ea28a2f2d94b2328f7ea389d33d4083530503dfdaad9df99685266765"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ]
+            ],
+            "initial_state_sha256": "sha256:d032c5b69d6aee30ee5730683bfd6629965a270ca7aec9a353c7d0460719a065",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "observation_payload_sha256s": [],
+            "observer_effects": {
+              "d2h_bytes": 0,
+              "invocation_count": 0,
+              "output_count": 0,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 0,
+              "tensor_read_count": 0,
+              "trace_bytes": 0
+            },
+            "observer_measurement": {
+              "d2h_bytes": 0,
+              "device_time_ns": 0,
+              "host_time_ns": 0,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 0,
+              "trace_bytes": 0
+            },
+            "pair_id": "P0",
+            "rng_state_before_sha256": "sha256:353774ff2947de179dd2e179aac5b6db51e31dac677c2dec2b2f17b97bbb5b51"
+          }
+        },
+        {
+          "cell": {
+            "arm_order": "instrumented_then_reference",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "pair_id": "P1"
+          },
+          "disabled_capability_audits": [
+            {
+              "capability": "COLLECT_A0",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A1",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_COST_DOMINANCE_CHECK",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            }
+          ],
+          "instrumented": {
+            "arm_id": "instrumented",
+            "arm_label": "B0+A0+A1",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:8b98b4bda5b20a36e48eabe485e97b8458aababebb20dc5f299bc430b737373e"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:fdaa10332447b1f49dbb7ed0ef02d2d4ea7ac8b4ab17e0a5943fc0801d8b0188"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:4c75ddc5c32fb958e0fa181a5effcdfcbb86d11afb25b0066af8fc0fb06e71c7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:8db76a69e424f66552055a8dc58c50521dd570a2a2a3bbaa77e4b2c75c4595bb"
+              ],
+              [
+                "transition_sequence",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ],
+              [
+                "rng_state_after",
+                "sha256:35a6d10ea28a2f2d94b2328f7ea389d33d4083530503dfdaad9df99685266765"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ]
+            ],
+            "initial_state_sha256": "sha256:d032c5b69d6aee30ee5730683bfd6629965a270ca7aec9a353c7d0460719a065",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "observation_payload_sha256s": [
+              [
+                "A0",
+                "sha256:7bce8b51ae3c57f221ab0b1adbae5ced645ea0bce3dc2b922d69bff1b5258407"
+              ],
+              [
+                "A1",
+                "sha256:3b943261302b22242cc7828452d7b0565aa4cd1dcfb769f459fbb77bc5ae2732"
+              ]
+            ],
+            "observer_effects": {
+              "d2h_bytes": 784,
+              "invocation_count": 14,
+              "output_count": 154,
+              "synchronization_count": 14,
+              "temporary_allocation_count": 203,
+              "tensor_read_count": 98,
+              "trace_bytes": 8002
+            },
+            "observer_measurement": {
+              "d2h_bytes": 784,
+              "device_time_ns": 42694436,
+              "host_time_ns": 42999970,
+              "synchronization_count": 14,
+              "temporary_memory_bytes": 784,
+              "trace_bytes": 8002
+            },
+            "pair_id": "P1",
+            "rng_state_before_sha256": "sha256:b9989f41c0fce893574cd59b4de4f49be259226a4b8e511e7335c50f55b9b0cd"
+          },
+          "oracle_isolation_passed": true,
+          "pair_validation": {
+            "equality_mismatches": [],
+            "initial_state_equal": true,
+            "lane": "rocm_float32_canonical",
+            "observer_cost": {
+              "compute_ns": 0,
+              "control_ns": 0,
+              "diagnostic_ns": 0,
+              "fallback_ns": 0,
+              "latency_ns": 0,
+              "memory_bytes": 784,
+              "observer_ns": 42999970
+            },
+            "pair_id": "P1",
+            "passed": true,
+            "rng_state_before_equal": true
+          },
+          "reference": {
+            "arm_id": "reference",
+            "arm_label": "B0",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:8b98b4bda5b20a36e48eabe485e97b8458aababebb20dc5f299bc430b737373e"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:fdaa10332447b1f49dbb7ed0ef02d2d4ea7ac8b4ab17e0a5943fc0801d8b0188"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:4c75ddc5c32fb958e0fa181a5effcdfcbb86d11afb25b0066af8fc0fb06e71c7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:8db76a69e424f66552055a8dc58c50521dd570a2a2a3bbaa77e4b2c75c4595bb"
+              ],
+              [
+                "transition_sequence",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ],
+              [
+                "rng_state_after",
+                "sha256:35a6d10ea28a2f2d94b2328f7ea389d33d4083530503dfdaad9df99685266765"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ]
+            ],
+            "initial_state_sha256": "sha256:d032c5b69d6aee30ee5730683bfd6629965a270ca7aec9a353c7d0460719a065",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "observation_payload_sha256s": [],
+            "observer_effects": {
+              "d2h_bytes": 0,
+              "invocation_count": 0,
+              "output_count": 0,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 0,
+              "tensor_read_count": 0,
+              "trace_bytes": 0
+            },
+            "observer_measurement": {
+              "d2h_bytes": 0,
+              "device_time_ns": 0,
+              "host_time_ns": 0,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 0,
+              "trace_bytes": 0
+            },
+            "pair_id": "P1",
+            "rng_state_before_sha256": "sha256:b9989f41c0fce893574cd59b4de4f49be259226a4b8e511e7335c50f55b9b0cd"
+          }
+        },
+        {
+          "cell": {
+            "arm_order": "reference_then_instrumented",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "pair_id": "P2"
+          },
+          "disabled_capability_audits": [
+            {
+              "capability": "COLLECT_A0",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A1",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "COLLECT_A2",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_COST_DOMINANCE_CHECK",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_LIVE_ANALYTICS",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_EXACT",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_CONSERVATIVE",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            },
+            {
+              "capability": "RUN_ANALYTIC_HEURISTIC",
+              "effects": {
+                "d2h_bytes": 0,
+                "invocation_count": 0,
+                "output_count": 0,
+                "synchronization_count": 0,
+                "temporary_allocation_count": 0,
+                "tensor_read_count": 0,
+                "trace_bytes": 0
+              },
+              "enabled": false
+            }
+          ],
+          "instrumented": {
+            "arm_id": "instrumented",
+            "arm_label": "B0+A0+A1+A2",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:8b98b4bda5b20a36e48eabe485e97b8458aababebb20dc5f299bc430b737373e"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:fdaa10332447b1f49dbb7ed0ef02d2d4ea7ac8b4ab17e0a5943fc0801d8b0188"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:4c75ddc5c32fb958e0fa181a5effcdfcbb86d11afb25b0066af8fc0fb06e71c7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:8db76a69e424f66552055a8dc58c50521dd570a2a2a3bbaa77e4b2c75c4595bb"
+              ],
+              [
+                "transition_sequence",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ],
+              [
+                "rng_state_after",
+                "sha256:35a6d10ea28a2f2d94b2328f7ea389d33d4083530503dfdaad9df99685266765"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ]
+            ],
+            "initial_state_sha256": "sha256:d032c5b69d6aee30ee5730683bfd6629965a270ca7aec9a353c7d0460719a065",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "observation_payload_sha256s": [
+              [
+                "A0",
+                "sha256:7bce8b51ae3c57f221ab0b1adbae5ced645ea0bce3dc2b922d69bff1b5258407"
+              ],
+              [
+                "A1",
+                "sha256:3b943261302b22242cc7828452d7b0565aa4cd1dcfb769f459fbb77bc5ae2732"
+              ],
+              [
+                "A2",
+                "sha256:0f4bf823ae75a8a0a1387abdd152c48e8012594d76503818df63c6e12e857c64"
+              ]
+            ],
+            "observer_effects": {
+              "d2h_bytes": 4312,
+              "invocation_count": 21,
+              "output_count": 294,
+              "synchronization_count": 28,
+              "temporary_allocation_count": 1092,
+              "tensor_read_count": 539,
+              "trace_bytes": 28712
+            },
+            "observer_measurement": {
+              "d2h_bytes": 4312,
+              "device_time_ns": 154212804,
+              "host_time_ns": 154816183,
+              "synchronization_count": 28,
+              "temporary_memory_bytes": 4312,
+              "trace_bytes": 28712
+            },
+            "pair_id": "P2",
+            "rng_state_before_sha256": "sha256:2572f38beb3b14c81065c74b0d1afb50e648ce958446b9e890368af1a8b61d4e"
+          },
+          "oracle_isolation_passed": true,
+          "pair_validation": {
+            "equality_mismatches": [],
+            "initial_state_equal": true,
+            "lane": "rocm_float32_canonical",
+            "observer_cost": {
+              "compute_ns": 0,
+              "control_ns": 0,
+              "diagnostic_ns": 0,
+              "fallback_ns": 0,
+              "latency_ns": 0,
+              "memory_bytes": 4312,
+              "observer_ns": 154816183
+            },
+            "pair_id": "P2",
+            "passed": true,
+            "rng_state_before_equal": true
+          },
+          "reference": {
+            "arm_id": "reference",
+            "arm_label": "B0",
+            "batch_id": "synthetic-engineering-batch-v1",
+            "equality_hashes": [
+              [
+                "canonical_endpoint_response",
+                "sha256:8b98b4bda5b20a36e48eabe485e97b8458aababebb20dc5f299bc430b737373e"
+              ],
+              [
+                "named_parameter_gradients",
+                "sha256:fdaa10332447b1f49dbb7ed0ef02d2d4ea7ac8b4ab17e0a5943fc0801d8b0188"
+              ],
+              [
+                "endpoint_beliefs",
+                "sha256:4c75ddc5c32fb958e0fa181a5effcdfcbb86d11afb25b0066af8fc0fb06e71c7"
+              ],
+              [
+                "endpoint_loss",
+                "sha256:8db76a69e424f66552055a8dc58c50521dd570a2a2a3bbaa77e4b2c75c4595bb"
+              ],
+              [
+                "transition_sequence",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ],
+              [
+                "rng_state_after",
+                "sha256:35a6d10ea28a2f2d94b2328f7ea389d33d4083530503dfdaad9df99685266765"
+              ],
+              [
+                "snapshot_identity",
+                "sha256:5021ddc4b55dd7fe6e55d040648d80271a7784b2d3f463cb05c60ee92b690356"
+              ]
+            ],
+            "initial_state_sha256": "sha256:d032c5b69d6aee30ee5730683bfd6629965a270ca7aec9a353c7d0460719a065",
+            "lane": "rocm_float32_canonical",
+            "model_seed": 0,
+            "observation_payload_sha256s": [],
+            "observer_effects": {
+              "d2h_bytes": 0,
+              "invocation_count": 0,
+              "output_count": 0,
+              "synchronization_count": 0,
+              "temporary_allocation_count": 0,
+              "tensor_read_count": 0,
+              "trace_bytes": 0
+            },
+            "observer_measurement": {
+              "d2h_bytes": 0,
+              "device_time_ns": 0,
+              "host_time_ns": 0,
+              "synchronization_count": 0,
+              "temporary_memory_bytes": 0,
+              "trace_bytes": 0
+            },
+            "pair_id": "P2",
+            "rng_state_before_sha256": "sha256:2572f38beb3b14c81065c74b0d1afb50e648ce958446b9e890368af1a8b61d4e"
+          }
+        }
+      ],
+      "lane": "rocm_float32_canonical",
+      "nested_observations_passed": true
+    }
+  ],
+  "manifest_integrity_passed": true,
+  "preflight_sha256": "sha256:79ead4a0e757272c788acd90700d61c0e5a0509fe64168f83f47dc0963ce4d00",
+  "publication_permitted": false,
+  "receipt_chain_passed": true,
+  "report_id": "stage3b-qwake-fp-runtime-validation-report-v1",
+  "request_sha256": "sha256:342ee6cff2558269ccd708001e75c92624e7e7cad29b26ef0898b7e47ecf76ec",
+  "schema_version": 1,
+  "scientific_evidence": false,
+  "source_identity": {
+    "adapter_registry_sha256": "sha256:8b3f82c1266574c6406525ffcf5689611b83453a10876c922e42d9382a5b6bbb",
+    "image_digest": "sha256:bd91fab26df5f91a3aba90b8cad38badccab3a1a7bfb20efe4126a88a13236c4",
+    "request_sha256": "sha256:342ee6cff2558269ccd708001e75c92624e7e7cad29b26ef0898b7e47ecf76ec",
+    "source_commit": "e413bb1e13cee42f702512e499f994e90df21e45",
+    "source_index_sha256": "sha256:bbbda8093c4c32c0849398c872cb49713f778c8de2a74e450c837b27884b8652",
+    "special_case_contract_sha256": "sha256:968457365ddc1c94a814e0f7712d30d0154afd0c96d8464bff46a31e61ad3698",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "static_and_unit_passed": true,
+  "status": "engineering_validation_sealed"
+}

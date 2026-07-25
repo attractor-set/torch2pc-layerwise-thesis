@@ -1,0 +1,5 @@
+schema_version=1
+image_freeze_eligible=true
+cpu_smoke_passed=true
+rocm_smoke_passed=true
+scientific_evidence=false

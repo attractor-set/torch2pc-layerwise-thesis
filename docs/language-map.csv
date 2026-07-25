@@ -146,3 +146,4 @@ docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation.md,doc
 docs/qwake-local-compute-extension.md,docs/qwake-local-compute-extension_EN.md,required
 docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset.md,docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md,required
 docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2.md,docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2_EN.md,required
+docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2.md,docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md,required

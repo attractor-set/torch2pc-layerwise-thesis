@@ -230,9 +230,28 @@ The single attempt has not been consumed. The next separate stage is `QW-4B-E-v2
 
 ## Stage 24 — `QW-4B-E-v2`: sealed baseline report
 
-Execute the six baseline cells once. On success, seal the non-interference,
-observation-correctness, and cost report. On failure, the `QW-LC` extension
-remains closed.
+Status: execution is complete, independent recovery-v3 passed, and the
+repository seal is materialized pending merge. The single attempt is permanently
+consumed; retry is prohibited.
+
+```text
+runner_status=0
+authorized_cell_count=6
+cpu_lane_passed=true
+rocm_lane_passed=true
+runtime_execution_performed=true
+engineering_evidence_present=true
+image_freeze_eligible=true
+scientific_evidence=false
+publication_permitted=false
+qw_lc0_open=false
+next_slice=QW-4B-E-v2-repository-seal
+post_merge_next_slice=QW-LC0
+```
+
+The original wrapper failure, two failed recovery audits, successful recovery-v3,
+and exact six-file output are preserved together. `QW-LC0` does not execute the
+model; it must separately freeze only the extension semantics and scope.
 
 ## Stages 25–31 — the `QW-LC` extension
 

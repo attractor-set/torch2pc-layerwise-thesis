@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/recovery/recovery-output-audit.py", line 113, in <module>
+    raise RuntimeError("authorization bytes differ")
+RuntimeError: authorization bytes differ

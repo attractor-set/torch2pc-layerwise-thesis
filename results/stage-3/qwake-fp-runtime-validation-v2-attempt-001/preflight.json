@@ -1,0 +1,65 @@
+{
+  "bound_adapter_ids": [
+    "canonical_executor",
+    "collect_A0",
+    "collect_A1",
+    "collect_A2",
+    "run_registered_analytics",
+    "compute_post_action_oracle",
+    "record_edge_costs"
+  ],
+  "captured_at_utc": "2026-07-25T02:00:09Z",
+  "engineering_evidence_present": false,
+  "execution_authorization_present": false,
+  "image_freeze_permitted": false,
+  "permissions": {
+    "capabilities": []
+  },
+  "preflight_id": "stage3b-qwake-fp-runtime-preflight-v1",
+  "preflight_sha256": "sha256:79ead4a0e757272c788acd90700d61c0e5a0509fe64168f83f47dc0963ce4d00",
+  "runtime_probes": [
+    {
+      "accelerator_available": true,
+      "accelerator_count": 1,
+      "accelerator_name": "AMD Radeon RX 7700 XT",
+      "dtype": "float64",
+      "hip_version": "7.2.53211-e1a6bc5663",
+      "lane": "cpu_float64_engineering",
+      "machine": "x86_64",
+      "platform": "Linux-7.0.0-28-generic-x86_64-with-glibc2.39",
+      "python_executable": "/usr/bin/python3.12",
+      "python_implementation": "CPython",
+      "python_version": "3.12.3",
+      "torch_version": "2.9.1+rocm7.2.1.lw.gitff65f5bc"
+    },
+    {
+      "accelerator_available": true,
+      "accelerator_count": 1,
+      "accelerator_name": "AMD Radeon RX 7700 XT",
+      "dtype": "float32",
+      "hip_version": "7.2.53211-e1a6bc5663",
+      "lane": "rocm_float32_canonical",
+      "machine": "x86_64",
+      "platform": "Linux-7.0.0-28-generic-x86_64-with-glibc2.39",
+      "python_executable": "/usr/bin/python3.12",
+      "python_implementation": "CPython",
+      "python_version": "3.12.3",
+      "torch_version": "2.9.1+rocm7.2.1.lw.gitff65f5bc"
+    }
+  ],
+  "runtime_validation_performed": false,
+  "runtime_validation_permitted": false,
+  "schema_version": 1,
+  "scientific_execution_open": false,
+  "source_identity": {
+    "adapter_registry_sha256": "sha256:8b3f82c1266574c6406525ffcf5689611b83453a10876c922e42d9382a5b6bbb",
+    "image_digest": "sha256:bd91fab26df5f91a3aba90b8cad38badccab3a1a7bfb20efe4126a88a13236c4",
+    "request_sha256": "sha256:342ee6cff2558269ccd708001e75c92624e7e7cad29b26ef0898b7e47ecf76ec",
+    "source_commit": "e413bb1e13cee42f702512e499f994e90df21e45",
+    "source_index_sha256": "sha256:bbbda8093c4c32c0849398c872cb49713f778c8de2a74e450c837b27884b8652",
+    "special_case_contract_sha256": "sha256:968457365ddc1c94a814e0f7712d30d0154afd0c96d8464bff46a31e61ad3698",
+    "torch2pc_commit": "b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4"
+  },
+  "status": "runtime_preflight_passed_authorization_not_issued",
+  "test_dataset_access": false
+}

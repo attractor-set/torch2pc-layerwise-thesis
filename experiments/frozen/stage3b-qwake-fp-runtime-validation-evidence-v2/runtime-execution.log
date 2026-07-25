@@ -1,0 +1,7 @@
+Running TorchSeq2PC.py
+OK: QW-4B engineering runtime validation sealed
+OUTPUT_ROOT=/workspace/results/stage-3/qwake-fp-runtime-validation-v2-attempt-001
+REPORT_SHA256=sha256:54dba01d47814dc00fa53bd69c00865bd1c47754c017c7482c895162d3a86b82
+IMAGE_FREEZE_ELIGIBLE=true
+SCIENTIFIC_EVIDENCE=false
+PUBLICATION_PERMITTED=false

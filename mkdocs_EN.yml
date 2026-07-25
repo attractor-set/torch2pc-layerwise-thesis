@@ -98,6 +98,7 @@ nav:
       - ADR-045 QWake-FP runtime validation implementation: decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md
       - ADR-046 QWake documentation refactor: decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md
       - ADR-047 QWake runtime validation freeze v2: decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2_EN.md
+      - ADR-048 QWake runtime validation evidence v2: decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

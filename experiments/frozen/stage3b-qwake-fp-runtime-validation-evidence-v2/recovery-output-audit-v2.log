@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/recovery/recovery-output-audit-v2.py", line 171, in <module>
+    raise RuntimeError("disabled-capability audit failed")
+RuntimeError: disabled-capability audit failed

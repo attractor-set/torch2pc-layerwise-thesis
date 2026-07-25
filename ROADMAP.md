@@ -234,9 +234,28 @@ next_slice=QW-4B-E-v2
 
 ## Этап 24 — `QW-4B-E-v2`: запечатанный базовый отчёт
 
-Один раз выполнить шесть базовых ячеек. При успехе запечатать отчёт о
-невмешательстве, корректности наблюдений и стоимости. При неуспехе расширение
-`QW-LC` остаётся закрытым.
+Состояние: вычисление завершено, независимый recovery-v3 прошёл, repository
+seal материализован и ожидает слияния. Единственная попытка окончательно
+использована; повтор запрещён.
+
+```text
+runner_status=0
+authorized_cell_count=6
+cpu_lane_passed=true
+rocm_lane_passed=true
+runtime_execution_performed=true
+engineering_evidence_present=true
+image_freeze_eligible=true
+scientific_evidence=false
+publication_permitted=false
+qw_lc0_open=false
+next_slice=QW-4B-E-v2-repository-seal
+post_merge_next_slice=QW-LC0
+```
+
+Исходная ошибка wrapper, два неудачных recovery-аудита и успешный recovery-v3
+сохраняются вместе с точным шестифайловым output. `QW-LC0` не исполняет модель:
+он должен отдельно зафиксировать только семантику и область расширения.
 
 ## Этапы 25–31 — расширение `QW-LC`
 

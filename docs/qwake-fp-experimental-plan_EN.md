@@ -2,269 +2,47 @@
 
 [Русская версия](qwake-fp-experimental-plan.md)
 
-**Status:** docs-only plan freeze under `ADR-042`; [execution](glossary_EN.md#term-execution), feature
-collection, oracle labels, calibration, confirmatory access, and the test split
-remain closed.
+**Status:** active plan after `QW-4B-DOC-R1`; [execution](glossary_EN.md#term-execution),
+new oracle-label creation, confirmatory/test access, and policy activation are
+closed.
 
 ## 1. Central object
 
-General `QWake-PC` defines state, action, admission, cost, provenance, and
-[fallback](glossary_EN.md#term-fallback) classes. The master's thesis implements and validates only
-[QWake-FP](glossary_EN.md#term-qwake-fp), one deterministic shadow instantiation for the corrected Rosenbaum
-special case:
+`QWake-FP` is a bounded shadow instantiation of `QWake-PC` for the registered
+case:
 
 ```text
 algorithm=FixedPred
 eta=1
 canonical_executor=stage2_baseline
+architecture=lenet_classic
 validation_mode=shadow_only
-full_reference=depth_bounded_canonical_suffix
 independent_unit=model_seed
 ```
 
-Experimental conclusions apply only to this registered instantiation. General
-transfer of `QWake-PC` is not treated as validated.
+General `QWake-PC` transferability is not established.
 
-## 2. Central question
+## 2. Research model
 
-> Can a frozen `QWake-FP` use cheap pre-action information to safely recognize
-> a task-relative sufficient partial `FixedPred` prefix before the full
-> canonical suffix and retain positive end-to-end savings after observation,
-> analytic, synchronization, control, trace, and fallback cost?
+For action `a` in state `s`, consider `R(a,s)`, `M(a)`, `Γ(a,s)`, and `C(a,s)`
+separately. The required response determines neither one mechanism nor one cost.
+Method comparison therefore separates equivalence in `R` from equivalence in
+`C`.
 
-The question is decomposed into four ordered gates:
+Only actions whose registered [decision regret](glossary_EN.md#term-decision-regret)
+does not exceed `ε` are admissible. Among them, select the action with minimum
+registered cost or apply a preregistered Pareto rule.
 
-1. do pre-terminal sufficient states exist;
-2. are they recognizable from admissible pre-action data;
-3. does frozen admission pass the safety limit;
-4. do positive net savings remain?
+## 3. Two development boundaries
 
-A later interpretation is forbidden unless the preceding gate passes.
+### `QW-4B` [baseline](glossary_EN.md#term-baseline) validation
 
-## 3. Single superset image
+It establishes that observation levels `A0/A1/A2` do not interfere with
+[baseline](glossary_EN.md#term-baseline) `FixedPred`, are measured correctly on CPU and ROCm, and can be sealed
+in one engineering report. Baseline validation does not contain
+`LOCAL_COMPUTE`.
 
-Before scientific execution, one finite pipeline is implemented with:
-
-- canonical `FixedPred` executor;
-- QWake state machine;
-- A0 / A1 / A2 collectors;
-- finite analytic registry;
-- canonical suffix and post-action O;
-- edge measurement and decision-cost mapping;
-- opportunity and recognizability analysis;
-- policy-manifest interpreter;
-- baselines and nested ablations;
-- shadow confirmatory and replication evaluators;
-- sealing and publication export.
-
-Pre-freeze validation binds:
-
-```text
-SOURCE_COMMIT
-SOURCE_TREE_HASH
-IMAGE_DIGEST
-TORCH2PC_COMMIT
-CODE_MANIFEST_SHA256
-OUTPUT_SCHEMA_VERSION
-CAPABILITY_SCHEMA_VERSION
-POLICY_SCHEMA_VERSION
-```
-
-Executable code and dependencies do not change between C1, C2, C3, and R.
-
-## 4. Permission model
-
-A capability may be present in the image without being executable:
-
-```text
-capability_present != capability_permitted
-```
-
-The mandatory registry covers:
-
-```text
-COLLECT_A0
-COLLECT_A1
-COLLECT_A2
-RUN_ANALYTIC_EXACT
-RUN_ANALYTIC_CONSERVATIVE
-RUN_ANALYTIC_HEURISTIC
-RUN_COST_DOMINANCE_CHECK
-COMPUTE_CANONICAL_SUFFIX
-COMPUTE_POST_ACTION_ORACLE
-ACCESS_DESIGN_DATA
-ACCESS_CALIBRATION_DATA
-ACCESS_CONFIRMATORY_DATA
-ACCESS_REPLICATION_DATA
-RUN_OPPORTUNITY_ANALYSIS
-RUN_RECOGNIZABILITY_ANALYSIS
-SELECT_POLICY
-FREEZE_POLICY
-LOAD_FROZEN_POLICY
-EXECUTE_SHADOW_POLICY
-EVALUATE_CONFIRMATORY
-EVALUATE_REPLICATION
-SEAL_EVIDENCE
-PUBLISH_RESULTS
-```
-
-Every effectful function performs its own permission check. A disabled
-capability registers no hook, reads no tensor, allocates no memory,
-synchronizes no device, and creates no output.
-
-A manifest does not carry code. It may select only registered roles,
-capabilities, and entrypoints.
-
-## 5. Campaign roles
-
-### `C1_COLLECTION`
-
-Permits trajectory collection, A0/A1/A2, registered analytics, full suffix,
-post-action oracle, edge costs, opportunity analysis, and sealing.
-
-Forbids policy selection, confirmatory access, shadow policy execution, and
-publication.
-
-Outputs:
-
-- complete trajectory benchmark;
-- oracle sufficiency labels;
-- remaining-suffix cost;
-- opportunity map;
-- sealed C1 receipt.
-
-### `C2_CALIBRATION`
-
-C2 is a strictly offline stage. It reads only sealed C1 trajectory artifacts;
-model execution and collection of new observations are not permitted.
-
-It permits `ACCESS_SEALED_C1_ARTIFACTS`, `RUN_OFFLINE_REPLAY`,
-`RUN_RECOGNIZABILITY_ANALYSIS`, [baseline](glossary_EN.md#term-baseline) evaluation through
-`EVALUATE_BASELINES`, `SELECT_POLICY`,
-`FREEZE_POLICY`, and `SEAL_EVIDENCE`.
-
-It forbids `EXECUTE_FIXEDPRED`, `COLLECT_A0`, `COLLECT_A1`, `COLLECT_A2`,
-`RUN_LIVE_ANALYTICS`, `COMPUTE_CANONICAL_SUFFIX`, `COMPUTE_NEW_ORACLE_LABELS`,
-`ACCESS_CONFIRMATORY_DATA`, changes to the collector/oracle/cost mapping, and
-publication.
-
-Offline replay opens only the already stored field for the next observation
-level or analytic step, reproduces the policy transition, and adds the marginal
-cost measured in C1. It creates no new tensor value and recomputes no oracle.
-
-Outputs:
-
-- risk/coverage/cost frontier;
-- nested representation ablations;
-- one frozen QWake-FP policy;
-- `POLICY_MANIFEST_SHA256`;
-- sealed C2 receipt.
-
-### `C3_CONFIRMATORY`
-
-Permits the untouched confirmatory partition, loading the frozen policy, shadow
-execution, full suffix, post-action audit, confirmatory evaluation, and
-sealing.
-
-Forbids policy selection/freeze and changes to thresholds, features, analytic
-order, primary defect, baselines, or cost mapping.
-
-Result order:
-
-```text
-SAFETY -> COVERAGE -> NET_COST
-```
-
-### `R_REPLICATION`
-
-Uses the same image digest, policy manifest, thresholds, analytic order, and
-cost mapping. Only a preregistered replication [configuration](glossary_EN.md#term-configuration) changes. The
-preferred setting is MNIST with the same [architecture](glossary_EN.md#term-architecture). Retuning is forbidden.
-
-## 6. Sealed receipt chain
-
-```text
-C1 receipt -> authorizes C2
-C2 policy-freeze receipt -> authorizes C3
-C3 evidence receipt -> authorizes R and result synthesis
-C3/R sealed evidence -> separate publication gate
-```
-
-Every request binds image digest, source identity, code manifest, role,
-partition, seed set, policy hash, and prior-stage receipts.
-
-## 7. Implementation stages
-
-### `QW-0` — scope freeze
-
-Freeze the [QWake-PC](glossary_EN.md#term-qwake-pc) / [QWake-FP](glossary_EN.md#term-qwake-fp) distinction, special case, C1/C2/C3/R roles,
-single image, and publication-strength package. Documentation only.
-
-### `QW-1` — pure QWake contract
-
-Implement without Torch2PC/GPU:
-
-```text
-FrontierState
-ObservationSnapshot
-AnalyticResult
-FrontierAction
-AdmissionProposal
-AdmissionDecision
-EdgeMeasurement
-DecisionCost
-OracleLabel
-Provenance
-Capability
-CampaignRole
-PermissionSet
-ExecutionContext
-```
-
-Gate: deterministic replay, fail-closed defaults, invalid-combination
-rejection, and property tests.
-
-### `QW-2` — QWake-FP special-case contract
-
-Freeze executor, eta=1, architecture, horizon, snapshot boundaries, response,
-primary defect, observation levels, analytic registry, cost schema, baselines,
-roles, and receipt requirements.
-
-Status: completed by [ADR-043](decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md)
-and the sealed `stage3b-qwake-fp-special-case-v1`. The contract freezes exact
-A0/A1/A2, three analytics, B0-B7, P0-P2, and non-duplicating cost mapping;
-execution remains closed and the next stage is `QW-3`.
-
-### `QW-3` — superset pipeline implementation
-
-Status: the backend-neutral mandatory pipeline is implemented. It includes a
-closed component registry, effect-local planning, an immutable trajectory
-schema, exact `A0/A1/A2`, a finite policy interpreter, B0-B7 and nested
-ablations, cost mapping, opportunity/recognizability, shadow/replication
-evaluation, pure sealing, and `rendered_not_published` export. Policy remains
-data for the embedded interpreter; arbitrary code/plugins are absent. Live
-Torch2PC/ROCm adapters are not bound, execution remains closed, and the next
-stage is `QW-4`.
-
-```text
-qwake_fp_superset_pipeline_implemented=true
-qwake_fp_superset_pipeline_execution_open=false
-qwake_fp_live_adapters_bound=false
-qwake_fp_component_registry_closed=true
-qwake_fp_offline_replay_implemented=true
-qwake_fp_next_stage=QW-4
-```
-
-### `QW-4` — pre-freeze validation
-
-`QW-4A` implements the pure validation harness and freezes the [execution](glossary_EN.md#term-execution)-closed
-`stage3b-qwake-fp-pre-freeze-validation-v1/request.json`. It checks exact
-P0/P1/P2 schema, corrupt/missing manifest fields, deterministic comparators,
-negative capability effects, nested observations, post-action oracle isolation,
-and non-duplicating cost mapping. [Runtime](glossary_EN.md#term-runtime) adapters remain unbound.
-
-Validate observation through three matched pairs over one logical B0 definition
-and a separate matched reference execution inside each pair:
+The three matched pairs remain unchanged:
 
 ```text
 P0: B0 <-> B0+A0
@@ -272,159 +50,225 @@ P1: B0 <-> B0+A0+A1
 P2: B0 <-> B0+A0+A1+A2
 ```
 
-Each pair checks SHA-256 identities of the canonical [endpoint](glossary_EN.md#term-endpoint), gradients,
-beliefs, loss, transition sequence, RNG after, and snapshot identity. It also
-checks:
+### The `QW-LC` extension
+
+Only after a sealed baseline report, it adds:
 
 ```text
-A0(P0) = A0(P1) = A0(P2)
-A1(P1) = A1(P2)
-disabled_capability_effect_counters = 0
-oracle_created_ordinal > action_completed_ordinal
-observer_total_time_ns = observer_host_time_ns
+LOCAL_COMPUTE
+├── LOCAL_SWEEP
+└── ANALYTIC_COMPLETION
 ```
 
-`QW-4B-I` implements deny-all preflight, source/image/Torch2PC binding, a
-future single-run authorization validator, effect-local adapter symbols, a
-concrete `stage2_baseline` Torch backend, an all-snapshot observer, a sequential
-matched runner with state/RNG restoration, a static-validation receipt chain,
-and a pure report sealer. The authorization-only execution CLI is present in
-the image in advance but fails closed without an externally frozen
-authorization.
+The first analytic [candidate](glossary_EN.md#term-candidate) is restricted to
+`fixedpred_eta1_wavefront_completion_v1` and does not generalize to `Strict`,
+arbitrary `eta`, or arbitrary computational graphs.
 
-`QW-4B-F` separately freezes the actual preflight, exact CPU/ROCm cells,
-image/source/Torch2PC identities, output root, and `one-attempt` authorization.
-Only after that merge may `QW-4B-E` perform CPU engineering validation and the
-canonical ROCm/float32 validation, then seal the two-lane report. Campaign
-execution, scientific-image freeze, and C1/C2/C3/R remain closed until the
-report succeeds.
+## 4. Permission model
 
-### `QW-5` — single image freeze
-
-Freeze one code/environment identity. Any material error after freeze requires
-a new digest and protocol version; old [evidence](glossary_EN.md#term-evidence) is not rewritten.
-
-### `QW-6` — C1 collection and opportunity
-
-Collect complete design/calibration trajectories sufficient for later offline
-C2: every snapshot, A0/A1/A2, registered analytics, marginal edge costs, the
-canonical suffix, and post-action oracle labels. Test:
+Capability presence in an image does not authorize its use:
 
 ```text
-exists_preterminal_sufficient_state
-potential_avoided_cost_exceeds_lower_bound_of_control_overhead
+capability_present != capability_permitted
 ```
 
-If this gate fails, policy selection is not mandatory; the outcome is reported
-as a bounded negative finding.
+Every effectful function must check its own permission. A disabled capability
+does not register a hook, read a tensor, allocate device memory, synchronize the
+device, or create output.
 
-### `QW-7` — C2 offline recognizability, deterministic replay, and policy freeze
-
-Without any new FixedPred execution, replay from sealed C1 artifacts:
+Required permission classes:
 
 ```text
-A0
-A0+A1
-A0+A1+A2
-A0+A1+A2+analytics
+COLLECT_A0
+COLLECT_A1
+COLLECT_A2
+COMPUTE_CANONICAL_SUFFIX
+COMPUTE_POST_ACTION_ORACLE
+EXECUTE_LOCAL_SWEEP
+EXECUTE_ANALYTIC_COMPLETION
+RUN_COST_DOMINANCE_CHECK
+ACCESS_DESIGN_DATA
+ACCESS_CALIBRATION_DATA
+ACCESS_CONFIRMATORY_DATA
+ACCESS_REPLICATION_DATA
+SELECT_POLICY
+FREEZE_POLICY
+EXECUTE_SHADOW_POLICY
+SEAL_EVIDENCE
+PUBLISH_RESULTS
 ```
 
-Select the simplest safe nearly non-dominated policy. Safety has lexicographic
-priority over coverage and cost.
+## 5. Campaign roles
 
-### `QW-8` — C3 untouched confirmatory shadow evaluation
+### `C1`
 
-The primary unit is [model seed](glossary_EN.md#term-model-seed). Snapshot-level rows are nested diagnostics only.
-After partition opening, policy and analysis contracts do not change.
+Collects complete trajectories, `A0/A1/A2`, registered analytics, transition
+cost, canonical suffix, and post-action labels. Policy selection and
+confirmatory access are forbidden.
 
-Allowed outcome classes:
+### `C2`
 
-```text
-SAFE_AND_BENEFICIAL
-SAFE_BUT_NOT_BENEFICIAL
-UNSAFE
-NO_NONTRIVIAL_COVERAGE
-INSUFFICIENT_EVIDENCE
-```
-
-### `QW-9` — replication without retuning
-
-Apply the same frozen policy to a preregistered additional setting. Success
-strengthens external validity; failure identifies a transfer boundary.
-
-### `QW-10` — synthesis and publication gate
-
-Combine existence, recognizability, safety, coverage, cost, ablations, and
-replication. Publication requires a separate bounded decision after sealing.
-
-## 8. Baselines and ablations
-
-Mandatory baselines are embedded before image freeze:
+Operates only offline on sealed `C1` artifacts. New model execution, tensors,
+and labels are forbidden. Its output is one frozen shadow policy or a bounded
+negative result.
 
 ```text
-B0 full canonical suffix
-B1 fixed prefix
-B2 residual/prediction-error threshold
-B3 A0-only
-B4 fixed A0->A1->A2 cascade
-B5 fixed analytic registry
-B6 frozen QWake-FP
-B7 post-action oracle frontier
-```
-
-B7 is an offline upper bound only. No baseline is added after confirmatory
-access.
-
-Mandatory ablations independently remove:
-
-- A1;
-- A2;
-- analytic steps;
-- adaptive ordering;
-- cost-dominance checks.
-
-## 9. Publication strength
-
-The minimum publication-strength package includes:
-
-- strong simple baselines;
-- untouched confirmatory seeds;
-- exact one-sided seed-level safety bounds;
-- one replication without retuning;
-- complete observer/control overhead accounting;
-- a releasable trajectory benchmark with provenance;
-- a positive or preregistered negative result.
-
-## 10. Outside mandatory scope
-
-```text
-Strict
-arbitrary eta
-recursive multiscale control
-spatial active sweeps
-learned policy
-contextual bandit
-online exploration
-cross-algorithm transfer
-plugin or arbitrary policy DSL
-QWake-SPC
-```
-
-These directions do not block master's completion and are not included in the
-single mandatory image.
-
-## 11. Current closed boundary
-
-```text
-qwake_fp_scope_freeze_complete=true
-qwake_fp_execution_permitted=false
-single_immutable_superset_image_frozen=false
 c2_execution_mode=offline_only
 c2_input_artifacts=sealed_c1_trajectory_dataset
 c2_live_fixedpred_execution_permitted=false
 c2_new_observation_collection_permitted=false
 c2_new_oracle_generation_permitted=false
 c2_policy_selection_from_frozen_artifacts_only=true
+C2_ALLOWED=ACCESS_SEALED_C1_ARTIFACTS,RUN_OFFLINE_REPLAY
+C2_FORBIDDEN=EXECUTE_FIXEDPRED,COMPUTE_NEW_ORACLE_LABELS
+```
+
+### `C3`
+
+Uses untouched model seeds, loads the frozen policy, and always completes the
+canonical suffix for post-action audit. Evaluation order is safety, coverage,
+and net cost.
+
+### `R`
+
+Repeats `C3` without retuning. Only the preregistered replication [configuration](glossary_EN.md#term-configuration)
+changes.
+
+## 6. Receipt chain
+
+```text
+QW-4B-F-v2 receipt -> QW-4B-E-v2
+QW-4B-E-v2 report -> QW-LC0
+QW-LC4-E report -> QW-5
+QW-5 image receipt -> C1
+C1 receipt -> C2
+C2 policy receipt -> C3
+C3 evidence receipt -> R
+C3/R evidence -> publication gate
+```
+
+Each next request binds the source commit, image digest, role, data partition,
+model-seed set, and preceding receipts.
+
+## 7. Implementation sequence
+
+### `QW-0`–`QW-4B-I`
+
+Historically completed: scope freeze, pure contract, special case,
+backend-neutral pipeline, `QW-4A` request, and `QW-4B-I` baseline-validation
+implementation.
+
+```text
+historical_sequence=QW-2->QW-3->QW-4A->QW-4B-I
+qwake_fp_special_case_contract_id=stage3b-qwake-fp-special-case-v1
+qwake_fp_superset_pipeline_implemented=true
+qwake_fp_superset_pipeline_execution_open=false
+qwake_fp_live_adapters_bound=false
+qwake_fp_component_registry_closed=true
+qwake_fp_offline_replay_implemented=true
+```
+
+### `QW-4B-DOC-R1`
+
+Fully synchronize active documentation, research logs, the machine-readable
+contract, and boundary tests. Retire the old authorization. A new image is
+mandatory after merge.
+
+### New baseline image
+
+Build an immutable image from the commit after `QW-4B-DOC-R1` merge. The image
+still contains no `LOCAL_COMPUTE` implementation; it supports a clean repeat of
+baseline validation.
+
+### `QW-4B-F-v2`
+
+Refreeze the preflight, static-validation receipt, exact CPU/ROCm cells, new
+image digest, new source commit, output root, and single-[attempt](glossary_EN.md#term-attempt) authorization.
+
+### `QW-4B-E-v2`
+
+Execute the six baseline cells once and seal the two-lane engineering report.
+`QW-LC0` remains closed if this step fails.
+
+### `QW-LC0`
+
+Freeze `R/M/Γ/C` semantics, candidate scope, claim boundaries, and the ban on
+universal generalization.
+
+### `QW-LC1`
+
+Freeze the final response and mandatory observables reproduced by every
+mechanism.
+
+### `QW-LC2`
+
+Freeze measured `Γ` and its non-duplicating map into `C`.
+
+### `QW-LC3`
+
+Define matched shadow validation of `LOCAL_SWEEP` and
+[analytic completion](glossary_EN.md#term-analytic-completion) with shared state,
+RNG restoration, and a complete exact-reserve suffix.
+
+### `QW-LC4-I`
+
+Implement the bounded candidate without opening execution.
+
+### `QW-LC4-F`
+
+Build a new extension image and issue a separate single-attempt authorization.
+
+### `QW-LC4-E`
+
+Execute extension engineering validation and seal its report. Only a successful
+report opens `QW-5`.
+
+### `QW-5`
+
+Freeze the single scientific image for `C1/C2/C3/R`. Code and dependencies do
+not change after this point.
+
+### `C1` → `C2` → `C3` → `R`
+
+Run collection, offline selection, confirmatory shadow evaluation, and
+replication without retuning in sequence.
+
+## 8. Baselines and ablations
+
+The minimum set includes the complete canonical suffix, `LOCAL_SWEEP`,
+`ANALYTIC_COMPLETION`, and a safe exact reserve, nested `A0`, `A0+A1`, `A0+A1+A2`
+representations, and registered analytics. Observation, control, and exact-reserve
+costs are accounted for separately.
+
+## 9. Publication strength
+
+A positive result requires bounded decision regret, zero dangerous misses,
+nonzero coverage, and positive net saving together. A later gain cannot offset
+an earlier failure. Negative findings are preserved without changing criteria.
+
+## 10. Outside mandatory scope
+
+A universal symbolic solver, arbitrary architectures, arbitrary `eta`, active
+control before shadow validation, confirmatory retuning, and test-data use for
+mechanism or policy selection remain outside scope.
+
+## 11. Current closed boundary
+
+```text
+qwake_documentation_refactor_complete=true
+qwake_old_runtime_authorization_retired=true
+qwake_old_runtime_authorization_reuse_permitted=false
+qwake_new_image_required=true
+qwake_new_runtime_preflight_captured=false
+qwake_new_runtime_authorization_issued=false
+qwake_runtime_execution_performed=false
+qwake_runtime_validation_performed=false
+qwake_engineering_evidence_present=false
+qwake_fp_execution_permitted=false
+qwake_local_compute_contract_frozen=true
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_scientific_image_freeze_permitted=false
 c1_collection_open=false
 c2_calibration_open=false
 c3_confirmatory_open=false
@@ -433,5 +277,6 @@ oracle_label_generation_open=false
 feature_collection_permitted=false
 policy_activation_permitted=false
 test_dataset_access=false
+publication_permitted=false
 full_stage3b_campaign_complete=false
 ```

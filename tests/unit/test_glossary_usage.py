@@ -12,7 +12,7 @@ from scripts.check_glossary_usage import (
 
 def test_real_glossary_has_paired_terms_and_anchors() -> None:
     terms = parse_terms()
-    assert len(terms) == 110
+    assert len(terms) == 117
     term_ids = {term.term_id for term in terms}
     assert len(term_ids) == len(terms)
     assert {
@@ -30,6 +30,13 @@ def test_real_glossary_has_paired_terms_and_anchors() -> None:
         "TERM-QWAKE-FP",
         "TERM-CAPABILITY-GATE",
         "TERM-CAMPAIGN-ROLE",
+        "TERM-REQUIRED-RESULT",
+        "TERM-COMPUTATIONAL-MECHANISM",
+        "TERM-RESOURCE-TRAJECTORY",
+        "TERM-RESPONSE-EQUIVALENCE",
+        "TERM-COST-EQUIVALENCE",
+        "TERM-LOCAL-COMPUTE",
+        "TERM-ANALYTIC-COMPLETION",
     } <= term_ids
 
 

@@ -205,16 +205,26 @@ qwake_fp_offline_replay_implemented=true
 qwake_fp_next_stage=QW-4
 ```
 
-## Stage 22 — `QW-4`: pre-freeze validation
+## Stage 22 — `QW-4B-DOC-R1`: active-documentation refactor
 
-Status: `QW-4A` is complete as an implementation/freeze slice. It adds the pure
-validation harness, closed runtime-adapter registry, and frozen
-`stage3b-qwake-fp-pre-freeze-validation-v1` request. The request binds the QW-2
-contract, CPU/ROCm lanes, exact P0/P1/P2 equalities, observer measurements,
-negative effect audits, nesting, oracle isolation, cost accounting, manifest,
-and receipt gates. It is neither authorization nor evidence.
+Status: in progress. The old authorization candidate was retired before
+execution and retained in an external audit record. Active documents move to
+one `R/M/Γ/C` model, the `LOCAL_COMPUTE` family, and one stage sequence.
 
-Observation is validated through three matched pairs:
+```text
+old_authorization_reuse_permitted=false
+runtime_execution_performed=false
+engineering_evidence_present=false
+new_image_required=true
+```
+
+After documentation validation and merge, build a new immutable baseline image.
+
+## Stage 23 — `QW-4B-F-v2`: baseline-validation refreeze
+
+Refreeze the commit, new image digest, `Torch2PC`, preflight,
+static-validation receipt, six `CPU/ROCm × P0/P1/P2` cells, absent output root,
+and one permitted attempt.
 
 ```text
 P0: B0 <-> B0+A0
@@ -222,115 +232,60 @@ P1: B0 <-> B0+A0+A1
 P2: B0 <-> B0+A0+A1+A2
 ```
 
-The pairs establish non-interference, correctness, and accumulated observation
-cost; `A0/A1` nesting, disabled capabilities, post-action oracle isolation, and
-no double-counting of device time are checked separately.
+## Stage 24 — `QW-4B-E-v2`: sealed baseline report
 
-`QW-4B-I` completes the implementation boundary: deny-all runtime preflight,
-source/image/Torch2PC identity verification, a strict future single-run
-authorization schema, effect-local adapter symbols, a concrete
-`stage2_baseline` Torch/Torch2PC backend with an all-snapshot observer, a
-sequential matched runner with state/RNG restoration, a static-validation
-receipt chain, and a pure two-lane report sealer. The authorization-only
-execution CLI is already present but fails closed without a frozen
-authorization.
+Execute the six baseline cells once. On success, seal the non-interference,
+observation-correctness, and cost report. On failure, the `QW-LC` extension
+remains closed.
 
-The next internal step is `QW-4B-F`: freeze the actual preflight, exact CPU/ROCm
-cells, image/source/Torch2PC identities, output root, and single-run
-authorization. After that merge, a separate `QW-4B-E` will execute engineering
-smoke and seal the report. `QW-5` remains forbidden until successful evidence.
+## Stages 25–31 — the `QW-LC` extension
 
 ```text
-qwake_fp_pre_freeze_validation_request_frozen=true
-qwake_fp_pre_freeze_validation_harness_implemented=true
-qwake_fp_runtime_validation_implementation_complete=true
-qwake_fp_runtime_preflight_implemented=true
-qwake_fp_runtime_authorization_validator_implemented=true
-qwake_fp_runtime_adapter_symbols_bound=true
-qwake_fp_matched_runtime_runner_implemented=true
-qwake_fp_runtime_report_sealer_implemented=true
-qwake_fp_canonical_torch_backend_implemented=true
-qwake_fp_all_snapshot_observer_implemented=true
-qwake_fp_authorized_execution_cli_implemented=true
-qwake_fp_static_validation_receipt_chain_implemented=true
-qwake_fp_pre_freeze_validation_complete=false
-qwake_fp_runtime_authorization_issued=false
-qwake_fp_runtime_validation_performed=false
-qwake_fp_pre_freeze_evidence_generated=false
-qwake_fp_live_adapters_bound=false
-qwake_fp_scientific_image_freeze_permitted=false
-qwake_fp_next_stage=QW-4-runtime-validation
-qwake_fp_next_slice=QW-4-runtime-freeze
+QW-LC0  semantics and scope freeze
+QW-LC1  required-response freeze
+QW-LC2  resource-trajectory and cost freeze
+QW-LC3  matched-validation freeze
+QW-LC4-I bounded implementation
+QW-LC4-F extension image and authorization freeze
+QW-LC4-E sealed engineering execution
 ```
 
-## Stage 23 — `QW-5`: single scientific-image freeze
+The extension compares `LOCAL_SWEEP` and `ANALYTIC_COMPLETION` only within the
+registered scope. It does not open a scientific campaign or modify old evidence.
 
-Freeze source commit/tree, Torch2PC commit, image digest, code manifest, and
-output/capability/policy schema versions. Executable code and dependencies do
-not change across C1/C2/C3/R.
+## Stage 32 — `QW-5`: single scientific-image freeze
 
-A material post-freeze defect requires a new digest and protocol version; old
-evidence remains preserved and is not rewritten.
+After successful baseline and extension engineering reports, freeze one commit,
+one image digest, `Torch2PC`, the code manifest, and schema versions. Code and
+dependencies do not change across `C1/C2/C3/R`.
 
-## Stage 24 — `QW-6`: `C1_COLLECTION` and opportunity
+## Stage 33 — `C1`: collection and opportunity
 
-With the same image, collect complete design/calibration temporal trajectories,
-A0/A1/A2, analytic outputs, edge costs, canonical suffix, and post-action oracle
-labels. The sealed C1 dataset must be a self-contained input to offline C2.
+Collect complete trajectories, `A0/A1/A2`, registered analytics, transition
+cost, canonical suffix, and post-action labels. Test for sufficient intermediate
+states and potential saving above control overhead.
 
-Opportunity gate:
+## Stage 34 — `C2`: offline selection and policy freeze
 
-```text
-exists_preterminal_sufficient_state=true
-potential_avoided_cost_exceeds_control_overhead_lower_bound=true
-```
+Use only sealed `C1` artifacts. New model execution and labels are forbidden.
+Select the simplest safe nearly non-dominated policy or record a negative
+result.
 
-If the gate fails, policy selection is not mandatory; the result is preserved
-as a bounded negative finding.
+## Stage 35 — `C3`: confirmatory shadow evaluation
 
-## Stage 25 — `QW-7`: `C2_CALIBRATION` offline replay and policy freeze
+On untouched model seeds, load the frozen policy, evaluate shadow proposals,
+and always complete the canonical suffix for post-action audit.
 
-Using only sealed C1 artifacts and no new FixedPred execution, compare A0,
-A0+A1, A0+A1+A2, and A0+A1+A2+analytics, run baselines and nested ablations,
-and select the simplest safe nearly non-dominated policy.
+## Stage 36 — `R`: replication without retuning
 
-`ACCESS_SEALED_C1_ARTIFACTS`, `RUN_OFFLINE_REPLAY`, `SELECT_POLICY`, and
-`FREEZE_POLICY` are permitted only here. `EXECUTE_FIXEDPRED`, new observation
-collection, new oracle generation, and confirmatory access are forbidden. The
-output is a frozen policy manifest and sealed C2 receipt.
+Repeat confirmatory evaluation with the preregistered configuration while
+preserving image, policy, thresholds, and cost mapping.
 
-## Stage 26 — `QW-8`: `C3_CONFIRMATORY`
+## Stage 37 — synthesis and publication gate
 
-On untouched model seeds, load the frozen policy and run shadow evaluation,
-always completing the canonical suffix for post-action audit.
-
-Decision order is immutable:
-
-```text
-safety
-coverage
-net cost
-```
-
-After partition opening, features, thresholds, analytic order, primary defect,
-baselines, and cost mapping do not change.
-
-## Stage 27 — `QW-9`: replication without retuning
-
-With the same image digest and policy manifest, run one preregistered
-replication, preferably MNIST with the same architecture. Policy or threshold
-changes are forbidden. Transfer failure is an admissible result.
-
-## Stage 28 — `QW-10`: synthesis, thesis, and publication gate
-
-Integrate Stage 1/2, Stage 3A, B0, SI-MA0/1, B1/B2, EX-IF0, opportunity,
-recognizability, confirmatory safety/coverage/cost, ablations, and replication.
-
-Publication opens through a separate bounded decision only after sealed C1,
-C2, C3, and replication receipts, or a preregistered decision not to run
-replication.
-
-Full plan: [bounded QWake-FP validation](docs/qwake-fp-experimental-plan_EN.md).
+Synthesize safety, coverage, complete cost, transferability limits, and negative
+findings. Publication requires a separate receipt and does not open new
+execution.
 
 ## Post-master's boundary — prospective PhD line
 

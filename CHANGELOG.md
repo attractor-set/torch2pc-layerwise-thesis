@@ -4,6 +4,7 @@
 
 ## [Не опубликовано] — предварительная регистрация B1/B2
 ### Добавлено
+- выполнен полный `QW-4B-DOC-R1` рефакторинг активной документации: старое разрешение выведено из обращения до выполнения, зафиксированы `R/M/Γ/C`, `LOCAL_COMPUTE`, ограниченный аналитический кандидат и новая последовательность до `C1/C2/C3/R`; после слияния обязателен новый образ и повторная заморозка `QW-4B-F-v2`;
 
 - реализован `QW-4B-I` fail-closed runtime-validation слой: deny-all preflight, source/image/Torch2PC binding, отдельный валидатор single-run authorization, effect-local adapter symbols, последовательный matched runner с восстановлением state/RNG, двухлинейный CPU/ROCm engineering report и pure sealer, concrete `stage2_baseline` Torch backend с all-snapshot observer, цепочка static-validation receipt и отдельная authorization-only execution CLI; authorization, фактическое выполнение, evidence и image freeze остаются закрытыми;
 - реализован `QW-4A` pre-freeze validation harness и заморожен execution-closed запрос `stage3b-qwake-fp-pre-freeze-validation-v1`: точные P0/P1/P2 comparators, nesting, disabled-capability effect audit, post-action oracle isolation, недублирующее cost mapping и обязательные CPU/ROCm gates; live adapters, runtime authorization, evidence и image freeze остаются закрытыми;

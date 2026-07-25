@@ -117,5 +117,6 @@ of freedom before comparative results are computed.
 ## Bounded `QWake-FP` validation
 
 - [Canonical plan](qwake-fp-experimental-plan_EN.md)
+- [Mechanism-selection extension](qwake-local-compute-extension_EN.md)
 - [ADR-042](decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
 - [QWake-PC](glossary_EN.md#term-qwake-pc): [general design](qwake-pc-design_EN.md)

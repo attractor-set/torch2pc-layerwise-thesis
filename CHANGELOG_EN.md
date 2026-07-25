@@ -4,6 +4,7 @@
 
 ## [Unreleased] — B1/B2 preregistration
 ### Added
+- completed the full `QW-4B-DOC-R1` active-documentation refactor: retired the old authorization before execution, froze `R/M/Γ/C`, `LOCAL_COMPUTE`, the bounded analytic candidate, and the new sequence through `C1/C2/C3/R`; a new image and `QW-4B-F-v2` refreeze are mandatory after merge;
 
 - implemented the `QW-4B-I` fail-closed runtime-validation layer: deny-all preflight, source/image/Torch2PC binding, a separate single-run authorization validator, effect-local adapter symbols, sequential matched runner with state/RNG restoration, a two-lane CPU/ROCm engineering report, and a pure sealer, a concrete `stage2_baseline` Torch backend with an all-snapshot observer, a static-validation receipt chain, and a separate authorization-only execution CLI; authorization, actual execution, evidence, and image freeze remain closed;
 - implemented the `QW-4A` pre-freeze validation harness and froze the execution-closed `stage3b-qwake-fp-pre-freeze-validation-v1` request: exact P0/P1/P2 comparators, nesting, disabled-capability effect audit, post-action oracle isolation, non-duplicating cost mapping, and mandatory CPU/ROCm gates; live adapters, runtime authorization, evidence, and image freeze remain closed;

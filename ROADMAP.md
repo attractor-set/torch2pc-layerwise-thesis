@@ -209,16 +209,28 @@ qwake_fp_offline_replay_implemented=true
 qwake_fp_next_stage=QW-4
 ```
 
-## Этап 22 — `QW-4`: pre-freeze validation
+## Этап 22 — `QW-4B-DOC-R1`: рефакторинг активной документации
 
-Состояние: `QW-4A` завершён как implementation/freeze slice. Добавлены чистый
-validation harness, закрытый runtime-adapter registry и frozen request
-`stage3b-qwake-fp-pre-freeze-validation-v1`. Запрос связывает QW-2 contract,
-CPU/ROCm lanes, exact P0/P1/P2 equalities, observer measurements, negative
-effect audits, nesting, oracle isolation, cost accounting, manifest и receipt
-gates. Он не является authorization или evidence.
+Состояние: выполняется. Старый кандидат разрешения выведен из обращения до
+выполнения и сохранён во внешнем журнале аудита. Активные документы переходят к
+единой модели `R/M/Γ/C`, семейству `LOCAL_COMPUTE` и одной последовательности
+этапов.
 
-Наблюдение валидируется тремя matched-парами:
+```text
+old_authorization_reuse_permitted=false
+runtime_execution_performed=false
+engineering_evidence_present=false
+new_image_required=true
+```
+
+После проверки и слияния документации собирается новый неизменяемый базовый
+образ.
+
+## Этап 23 — `QW-4B-F-v2`: повторная заморозка базовой проверки
+
+Заново зафиксировать commit, digest нового образа, `Torch2PC`, предварительную
+проверку, квитанцию статических проверок, шесть ячеек `CPU/ROCm × P0/P1/P2`,
+отсутствующий каталог результата и одну разрешённую попытку.
 
 ```text
 P0: B0 <-> B0+A0
@@ -226,114 +238,63 @@ P1: B0 <-> B0+A0+A1
 P2: B0 <-> B0+A0+A1+A2
 ```
 
-Пары подтверждают non-interference, корректность и накопленную стоимость уровней;
-отдельно проверяются `A0/A1` nesting, закрытые capabilities, post-action oracle
-isolation и отсутствие двойного учёта device time.
+## Этап 24 — `QW-4B-E-v2`: запечатанный базовый отчёт
 
-`QW-4B-I` завершает implementation boundary: добавлены deny-all runtime
-preflight, проверка source/image/Torch2PC identity, строгая схема будущего
-single-run authorization, effect-local adapter symbols, concrete `stage2_baseline`
-Torch/Torch2PC backend с all-snapshot observer, последовательный matched runner
-с восстановлением state/RNG, цепочка static-validation receipt и pure two-lane
-report sealer. Authorization-only execution CLI присутствует заранее, но без
-замороженного authorization она закрывается с ошибкой.
+Один раз выполнить шесть базовых ячеек. При успехе запечатать отчёт о
+невмешательстве, корректности наблюдений и стоимости. При неуспехе расширение
+`QW-LC` остаётся закрытым.
 
-Следующий внутренний шаг — `QW-4B-F`: заморозить фактический preflight, точные
-CPU/ROCm cells, image/source/Torch2PC identities, output root и single-run
-authorization. После его merge отдельный `QW-4B-E` выполнит engineering smoke и
-запечатает отчёт. До успешного evidence report `QW-5` запрещён.
+## Этапы 25–31 — расширение `QW-LC`
 
 ```text
-qwake_fp_pre_freeze_validation_request_frozen=true
-qwake_fp_pre_freeze_validation_harness_implemented=true
-qwake_fp_runtime_validation_implementation_complete=true
-qwake_fp_runtime_preflight_implemented=true
-qwake_fp_runtime_authorization_validator_implemented=true
-qwake_fp_runtime_adapter_symbols_bound=true
-qwake_fp_matched_runtime_runner_implemented=true
-qwake_fp_runtime_report_sealer_implemented=true
-qwake_fp_canonical_torch_backend_implemented=true
-qwake_fp_all_snapshot_observer_implemented=true
-qwake_fp_authorized_execution_cli_implemented=true
-qwake_fp_static_validation_receipt_chain_implemented=true
-qwake_fp_pre_freeze_validation_complete=false
-qwake_fp_runtime_authorization_issued=false
-qwake_fp_runtime_validation_performed=false
-qwake_fp_pre_freeze_evidence_generated=false
-qwake_fp_live_adapters_bound=false
-qwake_fp_scientific_image_freeze_permitted=false
-qwake_fp_next_stage=QW-4-runtime-validation
-qwake_fp_next_slice=QW-4-runtime-freeze
+QW-LC0  semantics and scope freeze
+QW-LC1  required-response freeze
+QW-LC2  resource-trajectory and cost freeze
+QW-LC3  matched-validation freeze
+QW-LC4-I bounded implementation
+QW-LC4-F extension image and authorization freeze
+QW-LC4-E sealed engineering execution
 ```
 
-## Этап 23 — `QW-5`: единая заморозка scientific image
+Расширение сравнивает `LOCAL_SWEEP` и `ANALYTIC_COMPLETION` только внутри
+зарегистрированной области. Оно не открывает научную кампанию и не изменяет
+старые доказательные материалы.
 
-Зафиксировать source commit/tree, Torch2PC commit, image digest, code manifest и
-версии output/capability/policy schemas. Между C1/C2/C3/R executable code и
-зависимости не меняются.
+## Этап 32 — `QW-5`: единая заморозка научного образа
 
-Существенная ошибка после freeze требует нового digest и protocol version;
-старые evidence сохраняются и не переписываются.
+После успешных базового и расширенного инженерных отчётов зафиксировать один
+commit, один digest образа, `Torch2PC`, манифест кода и версии схем. Между
+`C1/C2/C3/R` код и зависимости не меняются.
 
-## Этап 24 — `QW-6`: `C1_COLLECTION` и opportunity
+## Этап 33 — `C1`: сбор и проверка возможности
 
-Тем же образом собрать полные design/calibration temporal trajectories,
-`A0/A1/A2`, analytic outputs, edge costs, canonical suffix и post-action oracle
-labels. Sealed C1 dataset должен быть самодостаточным входом для offline C2.
+Собрать полные траектории, `A0/A1/A2`, зарегистрированную аналитику, стоимость
+переходов, канонический суффикс и метки после действия. Проверить существование
+достаточных промежуточных состояний и потенциальную экономию сверх накладных
+расходов управления.
 
-Opportunity gate:
+## Этап 34 — `C2`: офлайн-отбор и фиксация политики
 
-```text
-exists_preterminal_sufficient_state=true
-potential_avoided_cost_exceeds_control_overhead_lower_bound=true
-```
+Использовать только запечатанные материалы `C1`. Новое выполнение модели и новые
+метки запрещены. Выбрать простейшую безопасную почти недоминируемую политику или
+зафиксировать отрицательный результат.
 
-При отрицательном gate policy selection не обязательна; результат фиксируется
-как bounded negative finding.
+## Этап 35 — `C3`: подтверждающая теневая оценка
 
-## Этап 25 — `QW-7`: `C2_CALIBRATION` offline replay и policy freeze
+На нетронутых случайных начальных значениях загрузить зафиксированную политику,
+выполнить теневые предложения и всегда завершить канонический суффикс для
+проверки после действия.
 
-Только над sealed C1 artifacts, без новых запусков FixedPred, сравнить `A0`,
-`A0+A1`, `A0+A1+A2` и `A0+A1+A2+analytics`, выполнить baselines и nested
-ablations, затем выбрать простейшую безопасную почти недоминируемую policy.
+## Этап 36 — `R`: воспроизведение без перенастройки
 
-`ACCESS_SEALED_C1_ARTIFACTS`, `RUN_OFFLINE_REPLAY`, `SELECT_POLICY` и
-`FREEZE_POLICY` разрешены только здесь. `EXECUTE_FIXEDPRED`, новый сбор
-наблюдений, новый oracle и confirmatory access запрещены. Выход — frozen policy
-manifest и sealed C2 receipt.
+Повторить подтверждающую оценку с заранее зарегистрированной конфигурацией,
+сохраняя образ, политику, пороги и отображение стоимости.
 
-## Этап 26 — `QW-8`: `C3_CONFIRMATORY`
+## Этап 37 — синтез и публикационный барьер
 
-На untouched model seeds загрузить frozen policy и выполнить shadow evaluation,
-всегда завершая canonical suffix для post-action audit.
-
-Порядок решений неизменен:
-
-```text
-safety
-coverage
-net cost
-```
-
-После открытия partition запрещены изменения features, thresholds, analytic
-order, primary defect, baselines и cost mapping.
-
-## Этап 27 — `QW-9`: replication без retuning
-
-Тем же image digest и policy manifest выполнить одну заранее выбранную
-репликацию, предпочтительно `MNIST` с той же архитектурой. Изменение policy или
-thresholds запрещено. Failure переноса является допустимым результатом.
-
-## Этап 28 — `QW-10`: synthesis, диссертация и publication gate
-
-Объединить Stage 1/2, Stage 3A, B0, SI-MA0/1, B1/B2, EX-IF0, opportunity,
-recognizability, confirmatory safety/coverage/cost, ablations и replication.
-
-Publication открывается отдельным bounded решением только после sealed C1, C2,
-C3 и replication receipt либо заранее зарегистрированного отказа от
-replication.
-
-Полный план: [ограниченная проверка QWake-FP](docs/qwake-fp-experimental-plan.md).
+Свести безопасность, покрытие, полную стоимость, ограничения переносимости и
+отрицательные результаты. Публикация требует отдельной квитанции и не открывает
+новое выполнение.
 
 ## Граница после магистерской работы — перспективная PhD-линия
 

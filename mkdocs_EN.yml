@@ -52,6 +52,7 @@ nav:
       - Controlled compute: research-design/controlled-compute_EN.md
       - Run checklist: research-design/run-checklist_EN.md
       - Article plan: research-design/article-plan_EN.md
+  - QWake extension: qwake-local-compute-extension_EN.md
   - Decisions:
       - ADR index: decisions/index_EN.md
       - ADR-001 Torch2PC: decisions/ADR-001-use-torch2pc_EN.md
@@ -95,6 +96,7 @@ nav:
       - ADR-043 QWake-FP special-case contract: decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md
       - ADR-044 QWake-FP pre-freeze validation: decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation_EN.md
       - ADR-045 QWake-FP runtime validation implementation: decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md
+      - ADR-046 QWake documentation refactor: decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

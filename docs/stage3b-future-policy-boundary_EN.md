@@ -1,86 +1,105 @@
-# Stage 3B future-policy boundary
+# Stage 3B future policy and mechanism-selection boundary
 
 [Русская версия](stage3b-future-policy-boundary.md)
 
 ## Purpose
 
-This document separates sealed exact-[candidate](glossary_EN.md#term-candidate) experiments from future policy
-research. It is a design-only boundary and does not permit [execution](glossary_EN.md#term-execution).
+This document separates sealed exact-method experiments from future policy
+and computational-mechanism selection. It does not authorize
+[execution](glossary_EN.md#term-execution).
 
 ## Immutable scope
 
-The following remain unchanged:
+B1/B2 contracts, their preregistration, the `isolated_layer_vjp` and
+`composite_vjp` definitions, and sealed [evidence](glossary_EN.md#term-evidence)
+remain unchanged. `ECZ`, `LOCAL_COMPUTE`, the predictor, and hysteresis are not
+retrofitted into those candidates.
 
-- `STAGE3B-B1-CONTRACT.json`;
-- `STAGE3B-B2-CONTRACT.json`;
-- `stage3b-b1-b2-prereg-v1`;
-- B1 `isolated_layer_vjp` and B2 `composite_vjp` definitions;
-- B1/B2 [evidence](glossary_EN.md#term-evidence) and decisions.
-
-`ECZ`, `local_sweep(block_id)`, predictor, hysteresis, and `QWake-PC` are not
-retrofitted into B1/B2.
-
-## Phase sequence
-
-| Phase | Permitted | Forbidden |
-|---|---|---|
-| B1/B2 gates | exact-candidate equivalence and [profiling](glossary_EN.md#term-profiling) | ECZ control, policy selection |
-| after `EX-IF0` | [passive diagnostics](glossary_EN.md#term-passive-diagnostics), neutral offline labels | active control |
-| `PC-TREF-SB` | oracle margin, pre-action estimate, uncertainty, and first-order horizon | geometric proof or permission to skip |
-| ECZ verification | counterfactual `local_sweep(block_id)` | confirmatory policy without preregistration |
-| offline screening | cost, safety, net efficiency, Pareto | test split, post-hoc thresholds |
-| shadow | proposals, uncertainty, [fallback](glossary_EN.md#term-fallback) reasons | `controls_execution=true` |
-| active | only after all gates | bypassing `fallback_exact` |
-
-## Normative policy gates
-
-The order is not changed post hoc:
-
-1. oracle-label integrity and absence of pre-action leakage;
-2. `cost_feasibility`;
-3. `zero_dangerous_misses` with a preregistered upper confidence bound;
-4. `net_efficiency`;
-5. Pareto selection `0–3`;
-6. predictor/controller preregistration;
-7. shadow evidence;
-8. conditional active mode.
-
-Later benefit cannot compensate for an earlier failure. A result of `0`
-admissible finalists is a valid scientific result.
-
-## Recursive future-controller hierarchy
-
-The future controller operates over a nested aggregate family:
+## Active sequence
 
 ```text
-stop                      = empty aggregate
-local_sweep(block_id)     = partial aggregate
-full_exact                = maximum parent aggregate
-fallback_exact            = exact uncertified parent
+EX-IF0
+→ QW-4B-DOC-R1
+→ QW-4B-F-v2
+→ QW-4B-E-v2
+→ QW-LC0 → QW-LC1 → QW-LC2 → QW-LC3
+→ QW-LC4-I → QW-LC4-F → QW-LC4-E
+→ QW-5
+→ C1 → C2 → C3 → R
 ```
 
-No separate `GLOBAL` policy action is introduced. Until shadow admission, the
-aggregates remain proposals and counterfactual actions only;
-`controls_execution=false`.
+The old active `QW-6`–`QW-10` labels are replaced by campaign roles. They may
+remain only in historical records.
 
-## Multiscale and PhD boundary
+## Normative admission order
 
-The [multiscale mechanism–decision architecture](glossary_EN.md#term-multiscale-mechanism-decision-architecture)
-is not retrofitted into B1/B2. After the publication gate and `EX-IF0`, the
-central oracle object becomes the
-[minimum sufficient compute aggregate](glossary_EN.md#term-minimum-sufficient-compute-aggregate),
-tested at a minimum on the layer-within-block and block-within-network scales.
+1. post-action label integrity and no pre-action leakage;
+2. reproducibility of the registered response;
+3. bounded [decision regret](glossary_EN.md#term-decision-regret);
+4. full-cost feasibility;
+5. zero dangerous misses;
+6. positive net efficiency;
+7. Pareto screening;
+8. policy preregistration;
+9. shadow-mode evidence;
+10. conditional active mode.
 
-[Spike-like control dynamics](glossary_EN.md#term-spike-like-control-dynamics)
-is off the critical path. The work first measures chattering and tests basic
-hysteresis. `QWake-SPC`, spike-native communication, and learning remain
-outside the current work.
+A later gain cannot offset an earlier failure. Zero admissible candidates is a
+valid scientific result.
 
-## Test split and A-Max
+## Action hierarchy
 
-The test split remains closed for feature, threshold, finalist, and policy
-selection. One final evaluation requires a separate freeze.
+```text
+STOP
+LOCAL_COMPUTE
+├── LOCAL_SWEEP(block_id)
+└── ANALYTIC_COMPLETION(candidate_id)
+FULL_EXACT
+FALLBACK_EXACT
+```
 
-`A-Max` opens only after successful shadow evidence and end-to-end cost
-benefit. If the conditions are not met, the study stops at `A-Core` without
-rewriting the negative result.
+Until a separate admission decision, every action is a shadow proposal:
+
+```text
+controls_execution=false
+```
+
+## Analytic-completion boundary
+
+Admission of an analytic [candidate](glossary_EN.md#term-candidate) requires a separate scope, mandatory
+responses, resource model, matched validation, and an exact reserve path. Response
+equivalence does not automatically transfer to mechanism or cost.
+
+The first [candidate](glossary_EN.md#term-candidate) is restricted to
+`fixedpred_eta1_wavefront_completion_v1`. Generalization to `Strict`, arbitrary
+`eta`, arbitrary graphs, or full trajectories is forbidden without a new
+decision.
+
+## Compatibility with the previously frozen boundary
+
+The following machine-readable markers remain for compatibility with previously
+frozen design checks:
+
+```text
+local_sweep(block_id)
+full_exact
+fallback_exact
+cost_feasibility
+zero_dangerous_misses
+net_efficiency
+0–3
+shadow
+A-Max
+```
+
+`QWake-SPC` remains outside the current master's-thesis boundary. Its mention
+does not permit an experiment, open execution, or change the admission order.
+
+
+## Test split and `A-Max`
+
+[Test-dataset access](glossary_EN.md#term-test-dataset-access) is closed for
+mechanism, feature, threshold, candidate, and policy selection. `A-Max` opens
+only after successful shadow validation, end-to-end saving, and a separate
+decision. Otherwise the work ends at the bounded variant without rewriting a
+negative result.

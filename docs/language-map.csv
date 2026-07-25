@@ -143,3 +143,5 @@ docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gati
 docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md,docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md,required
 docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation.md,docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation_EN.md,required
 docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation.md,docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md,required
+docs/qwake-local-compute-extension.md,docs/qwake-local-compute-extension_EN.md,required
+docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset.md,docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md,required

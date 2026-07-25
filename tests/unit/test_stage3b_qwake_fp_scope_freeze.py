@@ -151,17 +151,39 @@ def test_all_scientific_execution_gates_remain_closed() -> None:
             assert token in text, (path, token)
 
 
-def test_roadmap_uses_one_pre_freeze_implementation_path() -> None:
+def test_roadmap_uses_one_refactored_pre_scientific_image_path() -> None:
+    required = (
+        "QW-0",
+        "QW-1",
+        "QW-2",
+        "QW-3",
+        "QW-4B-DOC-R1",
+        "QW-4B-F-v2",
+        "QW-4B-E-v2",
+        "QW-LC0",
+        "QW-LC1",
+        "QW-LC2",
+        "QW-LC3",
+        "QW-LC4-I",
+        "QW-LC4-F",
+        "QW-LC4-E",
+        "QW-5",
+        "C1",
+        "C2",
+        "C3",
+        "R",
+    )
     for name in ("ROADMAP.md", "ROADMAP_EN.md"):
         text = _text(ROOT / name)
-        for stage in range(0, 11):
-            assert f"QW-{stage}" in text, (name, stage)
+        for stage in required:
+            assert stage in text, (name, stage)
         assert "C1_COLLECTION" in text
         assert "C2_CALIBRATION" in text
         assert "C3_CONFIRMATORY" in text
         assert "R_REPLICATION" in text
         assert "superset" in text.lower()
         assert "image" in text.lower()
+        assert "QW-LC4-E" in text[text.index("QW-4B-DOC-R1") :]
 
 
 def test_scope_freeze_does_not_add_pdca_or_deming_layer() -> None:

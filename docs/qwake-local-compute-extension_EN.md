@@ -168,3 +168,24 @@ replication_open=false
 test_dataset_access=false
 publication_permitted=false
 ```
+
+
+## 9. Post-merge opening of `QW-LC0`
+
+The [baseline](glossary_EN.md#term-baseline) report repository evidence is sealed on `main`
+`4f23b752a40ae05de9fc7ee49c9962c44083b71d`. Therefore only the next documentation operation is
+permitted: the final freeze of `R/M/Γ/C` semantics, the `LOCAL_COMPUTE` scope,
+the first analytic candidate, and the non-generalization boundaries.
+
+```text
+qwake_qw4b_e_v2_repository_evidence_sealed=true
+qwake_qw_lc0_open=true
+qwake_qw_lc0_semantics_scope_frozen=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_next_slice=QW-LC0
+qwake_post_lc0_next_slice=QW-LC1
+```
+
+Opening `QW-LC0` does not authorize model invocation, feature collection,
+post-action oracle generation, local-sweep execution, or analytic completion.

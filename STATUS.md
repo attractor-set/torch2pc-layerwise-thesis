@@ -683,3 +683,39 @@ qwake_qw_lc0_open=false
 qwake_next_slice=QW-4B-E-v2-repository-seal
 qwake_post_merge_next_slice=QW-LC0
 ```
+
+
+## `QW-LC0`: post-merge переход открыт
+
+Repository seal `QW-4B-E-v2` слит в `main` commit
+`4f23b752a40ae05de9fc7ee49c9962c44083b71d`. Три evidence-слоя повторно проверены; их байты и
+digest-идентичности не изменены.
+
+Открывается только документационная фиксация семантики и области `QW-LC0`.
+Реализация и выполнение `LOCAL_COMPUTE`, научный образ, C1/C2/C3/R, test split
+и публикация остаются закрытыми.
+
+```text
+qwake_qw4b_e_v2_repository_evidence_sealed=true
+qwake_qw4b_e_v2_repository_seal_commit=26bc0ef635e13dba719d3356fe17382f0037d1df
+qwake_qw4b_e_v2_repository_merge_commit=4f23b752a40ae05de9fc7ee49c9962c44083b71d
+qwake_qw4b_e_v2_post_merge_verification_passed=true
+qwake_qw_lc0_transition_permitted=true
+qwake_qw_lc0_open=true
+qwake_qw_lc0_semantics_scope_frozen=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_scientific_image_freeze_permitted=false
+c1_collection_open=false
+c2_calibration_open=false
+c3_confirmatory_open=false
+replication_open=false
+oracle_label_generation_open=false
+feature_collection_permitted=false
+policy_activation_permitted=false
+test_dataset_access=false
+publication_permitted=false
+full_stage3b_campaign_complete=false
+qwake_next_slice=QW-LC0
+qwake_post_lc0_next_slice=QW-LC1
+```

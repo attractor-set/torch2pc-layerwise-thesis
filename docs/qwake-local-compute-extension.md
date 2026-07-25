@@ -169,3 +169,25 @@ replication_open=false
 test_dataset_access=false
 publication_permitted=false
 ```
+
+
+## 9. Открытие `QW-LC0` после слияния
+
+[Доказательные материалы](glossary.md#term-evidence) базового отчёта зафиксированы на `main`
+`4f23b752a40ae05de9fc7ee49c9962c44083b71d`. Поэтому разрешена только следующая документационная
+операция: окончательная фиксация семантики `R/M/Γ/C`, области
+`LOCAL_COMPUTE`, первого аналитического кандидата и запретов обобщения.
+
+```text
+qwake_qw4b_e_v2_repository_evidence_sealed=true
+qwake_qw_lc0_open=true
+qwake_qw_lc0_semantics_scope_frozen=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_next_slice=QW-LC0
+qwake_post_lc0_next_slice=QW-LC1
+```
+
+Открытие `QW-LC0` не является разрешением на вызов модели, сбор признаков,
+создание эталонной метки после действия, выполнение локального прохода или аналитического
+завершения.

@@ -718,3 +718,33 @@ publication_permitted=false
 qwake_next_slice=QW-LC0-repository-freeze
 qwake_post_merge_next_slice=QW-LC1
 ```
+
+## `QW-LC0`: repository freeze materialized
+
+Contract `stage3b-qwake-lc0-semantics-scope-v1` was merged into `main` by
+`8429f54257685a879b0a44499d5fa81eab7310ea` and reverified with the 22-file tree unchanged. A separate
+repository-state receipt is now materialized. Transition to `QW-LC1` remains
+prohibited until that receipt is merged; implementation and execution stay
+closed.
+
+```text
+qwake_qw_lc0_semantics_scope_frozen=true
+qwake_qw_lc0_contract_id=stage3b-qwake-lc0-semantics-scope-v1
+qwake_qw_lc0_contract_sha256=sha256:e68e953aa3d5c425678d54b8dd3b756e706e5cc1a1c4862d4c0ba0bda19bf3c3
+qwake_qw_lc0_repository_main_commit=8429f54257685a879b0a44499d5fa81eab7310ea
+qwake_qw_lc0_repository_freeze_materialized=true
+qwake_qw_lc0_repository_freeze_complete=false
+qwake_qw_lc1_transition_permitted=false
+qwake_qw_lc1_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+qwake_next_slice=QW-LC0-repository-freeze-merge
+qwake_post_merge_next_slice=QW-LC1-transition
+```

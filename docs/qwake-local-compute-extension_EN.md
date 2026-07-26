@@ -211,3 +211,18 @@ qwake_local_compute_execution_open=false
 qwake_next_slice=QW-LC0-repository-freeze
 qwake_post_merge_next_slice=QW-LC1
 ```
+
+## 11. `QW-LC0` repository freeze
+
+After the contract merge into `main` `8429f54257685a879b0a44499d5fa81eab7310ea`, a separate
+receipt records the exact commits and checksums. Materializing it does not
+permit transition to `QW-LC1` before its own merge and revalidation.
+
+```text
+repository_freeze_materialized=true
+repository_freeze_complete=false
+qw_lc1_transition_permitted=false
+qw_lc1_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

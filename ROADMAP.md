@@ -340,3 +340,19 @@ qwake_local_compute_execution_open=false
 next_slice=QW-LC0-repository-freeze
 post_merge_next_slice=QW-LC1
 ```
+
+## Этап 25 — `QW-LC0`: фиксация состояния репозитория
+
+Состояние: материализовано в ветке. Контракт слит в `main`
+`8429f54257685a879b0a44499d5fa81eab7310ea` и повторно проверен; отдельная квитанция связывает
+коммит слияния, контракт и его реестр. До слияния квитанции переход к `QW-LC1`
+не разрешён.
+
+```text
+qwake_qw_lc0_repository_freeze_materialized=true
+qwake_qw_lc0_repository_freeze_complete=false
+qwake_qw_lc1_transition_permitted=false
+qwake_qw_lc1_open=false
+next_slice=QW-LC0-repository-freeze-merge
+post_merge_next_slice=QW-LC1-transition
+```

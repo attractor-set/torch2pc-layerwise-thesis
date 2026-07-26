@@ -333,3 +333,19 @@ qwake_local_compute_execution_open=false
 next_slice=QW-LC0-repository-freeze
 post_merge_next_slice=QW-LC1
 ```
+
+## Stage 25 — `QW-LC0`: repository freeze
+
+Status: materialized on the branch. The contract is merged into `main`
+`8429f54257685a879b0a44499d5fa81eab7310ea` and reverified; a separate receipt binds the merge
+commit, contract, and registry. Transition to `QW-LC1` is not permitted before
+the receipt is merged.
+
+```text
+qwake_qw_lc0_repository_freeze_materialized=true
+qwake_qw_lc0_repository_freeze_complete=false
+qwake_qw_lc1_transition_permitted=false
+qwake_qw_lc1_open=false
+next_slice=QW-LC0-repository-freeze-merge
+post_merge_next_slice=QW-LC1-transition
+```

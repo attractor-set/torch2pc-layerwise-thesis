@@ -287,3 +287,24 @@ cost_equivalence_operator_definition_open=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 15. Transition to `QW-LC2`
+
+After `QW-LC1` completion, the transition bounds the next contract to three
+parts: the `Γ(a,s)` measurement schema, `Φ: Γ -> C`, and `~C`. The transition
+defines no measured fields, units, windows, aggregation, thresholds,
+scalarization, or empirical values. Matched validation, state, RNG,
+[fallback](glossary_EN.md#term-fallback), code, and execution remain later
+slices.
+
+```text
+lc1_complete=true
+lc2_transition_materialized=true
+lc2_transition_complete=false
+lc2_open=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

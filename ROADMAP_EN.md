@@ -408,3 +408,19 @@ qwake_local_compute_execution_open=false
 next_slice=QW-LC1-repository-freeze-merge
 post_merge_next_slice=QW-LC2-transition
 ```
+
+## Stage 27 — `QW-LC2`: transition to resource and cost modeling
+
+Status: transition materialized on the branch. After merge and independent
+verification, a separate contract may freeze `Γ(a,s)`, `Φ: Γ -> C`, and `~C`.
+Fields, units, aggregation, the Pareto rule, and no-double-counting semantics
+belong only to that future contract. Implementation and execution are outside
+the transition.
+
+```text
+qwake_qw_lc2_transition_materialized=true
+qwake_qw_lc2_transition_complete=false
+qwake_qw_lc2_open=false
+next_slice=QW-LC2-transition-merge
+post_merge_next_slice=QW-LC2-resource-cost-contract
+```

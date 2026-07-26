@@ -852,3 +852,37 @@ publication_permitted=false
 qwake_next_slice=QW-LC1-repository-freeze-merge
 qwake_post_merge_next_slice=QW-LC2-transition
 ```
+
+## `QW-LC2`: transition materialized
+
+The `QW-LC1` repository freeze is complete after merge and independent
+verification of `main` `9d073bc3c90eeda53ca03d0f7762b65da8749269`. A separate transition receipt is
+materialized. It limits future `QW-LC2` to the `Γ(a,s)` measurement schema,
+`Φ: Γ -> C`, and `~C`, without defining fields, units, tolerances, or values.
+Until the transition is merged, `QW-LC2`, implementation, and execution remain
+closed.
+
+```text
+qwake_qw_lc1_repository_freeze_complete=true
+qwake_qw_lc1_complete=true
+qwake_qw_lc2_transition_permitted=true
+qwake_qw_lc2_transition_materialized=true
+qwake_qw_lc2_transition_complete=false
+qwake_qw_lc2_transition_id=stage3b-qwake-lc2-transition-v1
+qwake_qw_lc2_transition_sha256=sha256:9a7e21fa573aa497e5c85ab92aade9e84e15dc0bd05e18e948ad8fac0194df23
+qwake_qw_lc2_open=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+qwake_next_slice=QW-LC2-transition-merge
+qwake_post_merge_next_slice=QW-LC2-resource-cost-contract
+```

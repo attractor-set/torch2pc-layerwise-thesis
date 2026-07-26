@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- materialized the `QW-LC2` transition: completed `QW-LC1` is bound to a two-file receipt, the future contract is limited to the `Γ(a,s)` schema, `Φ` mapping, and `~C`, while fields, units, cost, implementation, and execution remain closed pending merge;
+
 - materialized the `QW-LC1` repository freeze: schema commit `de2b5a37583b22946073390caa244bee35dd793b` was verified on `main` `59e3143ba105a5b298e2cd551b221b8f6dae96f7`, a separate two-file receipt was created, and `QW-LC1` completion, transition to `QW-LC2`, resource trajectory, cost, implementation, and execution remain closed pending merge and revalidation;
 - froze the `QW-LC1` required-response schema: contract `stage3b-qwake-lc1-required-response-schema-v1` defines ordered `R(a,s)` from named gradients, endpoint beliefs, and scalar loss, canonical manifest/payload serialization, mandatory observables, a zero-safe `~R` operator, and CPU/ROCm profiles; `Γ`, cost, implementation, execution, and scientific claims remain closed;
 - materialized the `QW-LC1` transition: the completed `QW-LC0` repository freeze is bound to a two-file receipt, the future slice is limited to the `R(a,s)` schema, mandatory observables, and `~R`, while `QW-LC1`, code, and execution remain closed pending merge;

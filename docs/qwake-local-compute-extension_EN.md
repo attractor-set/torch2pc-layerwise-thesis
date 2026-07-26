@@ -269,3 +269,21 @@ local_compute_implementation_open=false
 local_compute_execution_open=false
 next_slice=QW-LC1-repository-freeze
 ```
+## 14. `QW-LC1` repository freeze
+
+After the schema merge into `main` `59e3143ba105a5b298e2cd551b221b8f6dae96f7`, a separate receipt records
+the exact commits and contract checksums. Materializing the receipt neither
+completes `QW-LC1` nor permits transition to `QW-LC2` before its own merge and
+revalidation.
+
+```text
+repository_freeze_materialized=true
+repository_freeze_complete=false
+qw_lc1_complete=false
+qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

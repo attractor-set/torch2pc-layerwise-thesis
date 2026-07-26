@@ -395,3 +395,23 @@ qwake_local_compute_execution_open=false
 next_slice=QW-LC1-repository-freeze
 post_merge_next_slice=QW-LC1-repository-freeze
 ```
+## Этап 27 — `QW-LC1`: фиксация состояния репозитория
+
+Состояние: материализовано в ветке. Схема слита в `main` `59e3143ba105a5b298e2cd551b221b8f6dae96f7`
+и повторно проверена; отдельная квитанция связывает коммит слияния, коммит
+схемы, контракт и его реестр. До слияния квитанции `QW-LC1` не завершён и
+переход к `QW-LC2` не разрешён.
+
+```text
+qwake_qw_lc1_repository_freeze_materialized=true
+qwake_qw_lc1_repository_freeze_complete=false
+qwake_qw_lc1_complete=false
+qwake_qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+next_slice=QW-LC1-repository-freeze-merge
+post_merge_next_slice=QW-LC2-transition
+```

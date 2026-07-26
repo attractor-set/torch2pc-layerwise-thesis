@@ -817,3 +817,38 @@ publication_permitted=false
 qwake_next_slice=QW-LC1-repository-freeze
 qwake_post_merge_next_slice=QW-LC1-repository-freeze
 ```
+## `QW-LC1`: repository freeze materialized
+
+The required-response schema was merged into `main` `59e3143ba105a5b298e2cd551b221b8f6dae96f7` and
+independently reverified. Schema commit `de2b5a37583b22946073390caa244bee35dd793b` is preserved
+as the second parent, the exact 22-file scope and schema tree are unchanged,
+and the contract and registry have the expected checksums.
+
+Two-file receipt `stage3b-qwake-lc1-repository-freeze-v1` binds that `main` state to
+contract `stage3b-qwake-lc1-required-response-schema-v1`. Until the receipt is merged and separately
+reverified, `QW-LC1` remains incomplete, transition to `QW-LC2` is prohibited,
+and resource trajectory, cost, implementation, and execution remain closed.
+
+```text
+qwake_qw_lc1_required_response_schema_merged=true
+qwake_qw_lc1_schema_main_commit=59e3143ba105a5b298e2cd551b221b8f6dae96f7
+qwake_qw_lc1_schema_commit=de2b5a37583b22946073390caa244bee35dd793b
+qwake_qw_lc1_repository_freeze_materialized=true
+qwake_qw_lc1_repository_freeze_complete=false
+qwake_qw_lc1_complete=false
+qwake_qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+qwake_next_slice=QW-LC1-repository-freeze-merge
+qwake_post_merge_next_slice=QW-LC2-transition
+```

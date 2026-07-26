@@ -264,3 +264,21 @@ local_compute_implementation_open=false
 local_compute_execution_open=false
 next_slice=QW-LC1-repository-freeze
 ```
+## 14. Фиксация состояния репозитория `QW-LC1`
+
+После слияния схемы в `main` `59e3143ba105a5b298e2cd551b221b8f6dae96f7` отдельная квитанция фиксирует
+точные коммиты и контрольные суммы контракта. Материализация квитанции не
+завершает `QW-LC1` и не разрешает переход к `QW-LC2` до собственного слияния и
+повторной проверки.
+
+```text
+repository_freeze_materialized=true
+repository_freeze_complete=false
+qw_lc1_complete=false
+qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

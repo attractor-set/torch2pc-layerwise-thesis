@@ -857,3 +857,38 @@ publication_permitted=false
 qwake_next_slice=QW-LC1-repository-freeze
 qwake_post_merge_next_slice=QW-LC1-repository-freeze
 ```
+## `QW-LC1`: фиксация состояния репозитория материализована
+
+Схема требуемого результата слита в `main` `59e3143ba105a5b298e2cd551b221b8f6dae96f7` и повторно
+проверена. Коммит схемы `de2b5a37583b22946073390caa244bee35dd793b` сохранён вторым
+родителем, точный 22-файловый состав и дерево схемы не изменились, а контракт и
+реестр имеют ожидаемые контрольные суммы.
+
+Двухфайловая квитанция `stage3b-qwake-lc1-repository-freeze-v1` связывает это состояние
+`main` с контрактом `stage3b-qwake-lc1-required-response-schema-v1`. До слияния и отдельной
+проверки квитанции `QW-LC1` остаётся незавершённым, переход к `QW-LC2`
+запрещён, а ресурсная траектория, стоимость, реализация и выполнение закрыты.
+
+```text
+qwake_qw_lc1_required_response_schema_merged=true
+qwake_qw_lc1_schema_main_commit=59e3143ba105a5b298e2cd551b221b8f6dae96f7
+qwake_qw_lc1_schema_commit=de2b5a37583b22946073390caa244bee35dd793b
+qwake_qw_lc1_repository_freeze_materialized=true
+qwake_qw_lc1_repository_freeze_complete=false
+qwake_qw_lc1_complete=false
+qwake_qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+qwake_next_slice=QW-LC1-repository-freeze-merge
+qwake_post_merge_next_slice=QW-LC2-transition
+```

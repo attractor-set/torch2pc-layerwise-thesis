@@ -102,6 +102,7 @@ nav:
       - ADR-049 QWake LC0 post-merge transition: decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition.md
       - ADR-050 QWake LC0 semantics and scope: decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze.md
       - ADR-051 QWake LC0 repository freeze: decisions/ADR-051-stage3b-qwake-lc0-repository-freeze.md
+      - ADR-052 QWake LC1 transition: decisions/ADR-052-stage3b-qwake-lc1-transition.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

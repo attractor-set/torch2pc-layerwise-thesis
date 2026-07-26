@@ -228,3 +228,20 @@ qw_lc1_open=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 12. Переход к `QW-LC1`
+
+Переход фиксирует только область следующего определения: каноническую схему
+`R(a,s)`, обязательные наблюдаемые поля и оператор `~R`. Он не задаёт поля,
+допуски или алгоритм сравнения и не открывает `Γ`, `Φ`, стоимость, код или
+выполнение.
+
+```text
+lc1_transition_materialized=true
+lc1_transition_complete=false
+lc1_open=false
+required_response_schema_open=false
+resource_trajectory_schema_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

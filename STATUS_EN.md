@@ -748,3 +748,37 @@ publication_permitted=false
 qwake_next_slice=QW-LC0-repository-freeze-merge
 qwake_post_merge_next_slice=QW-LC1-transition
 ```
+
+## `QW-LC1`: transition materialized
+
+The `QW-LC0` repository freeze is complete after merge and independent
+verification of `main` `0fbd54be337665e06ad63b6d9c7f8ca978ab75ee`. A separate transition
+receipt is materialized. It limits the future `QW-LC1` slice to the required
+result schema `R(a,s)`, mandatory observables, and `~R`, without defining their
+content. Until the transition is merged, `QW-LC1`, trajectory `Γ`, cost,
+implementation, and execution remain closed.
+
+```text
+qwake_qw_lc0_repository_freeze_complete=true
+qwake_qw_lc1_transition_permitted=true
+qwake_qw_lc1_transition_materialized=true
+qwake_qw_lc1_transition_complete=false
+qwake_qw_lc1_transition_id=stage3b-qwake-lc1-transition-v1
+qwake_qw_lc1_transition_sha256=sha256:9cafcad4d6ee3245c48ca2ff531dc5985ea4e670cb465fdcfaf2b99d376d5db4
+qwake_qw_lc1_open=false
+qwake_qw_lc1_required_response_schema_open=false
+mandatory_observables_definition_open=false
+response_equivalence_operator_definition_open=false
+resource_trajectory_schema_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+qwake_next_slice=QW-LC1-transition-merge
+qwake_post_merge_next_slice=QW-LC1-required-response-schema
+```

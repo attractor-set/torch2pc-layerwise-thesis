@@ -349,3 +349,18 @@ qwake_qw_lc1_open=false
 next_slice=QW-LC0-repository-freeze-merge
 post_merge_next_slice=QW-LC1-transition
 ```
+
+## Stage 26 — `QW-LC1`: transition to the required-result schema
+
+Status: transition materialized on the branch. After merge and independent
+verification, a separate slice may define the canonical `R(a,s)` schema,
+mandatory observables, and `~R`. The `Γ` schema, cost mapping,
+implementation, and execution are outside this stage.
+
+```text
+qwake_qw_lc1_transition_materialized=true
+qwake_qw_lc1_transition_complete=false
+qwake_qw_lc1_open=false
+next_slice=QW-LC1-transition-merge
+post_merge_next_slice=QW-LC1-required-response-schema
+```

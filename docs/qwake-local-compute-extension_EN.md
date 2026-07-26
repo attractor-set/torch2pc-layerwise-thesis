@@ -226,3 +226,20 @@ qw_lc1_open=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 12. Transition to `QW-LC1`
+
+The transition fixes only the scope of the next definition: the canonical
+`R(a,s)` schema, mandatory observables, and `~R`. It defines no fields,
+tolerances, or comparison algorithm and opens neither `Γ`, `Φ`, cost, code,
+nor execution.
+
+```text
+lc1_transition_materialized=true
+lc1_transition_complete=false
+lc1_open=false
+required_response_schema_open=false
+resource_trajectory_schema_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

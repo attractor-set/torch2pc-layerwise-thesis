@@ -284,3 +284,20 @@ test_dataset_access=false
 publication_permitted=false
 full_stage3b_campaign_complete=false
 ```
+
+
+## 12. Текущее состояние `QW-LC0`
+
+Семантика и область материализованы как `stage3b-qwake-lc0-semantics-scope-v1`. Точный ответ и оператор
+`~R` остаются задачей `QW-LC1`; измеряемая `Γ`, отображение `Φ` и `~C` — задачей
+`QW-LC2`. До слияния текущей фиксации следующий срез не открывается.
+
+```text
+qwake_qw_lc0_semantics_scope_frozen=true
+qwake_qw_lc1_transition_permitted=false
+qwake_qw_lc1_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+scientific_execution_open=false
+publication_permitted=false
+```

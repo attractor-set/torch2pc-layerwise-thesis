@@ -100,6 +100,7 @@ nav:
       - ADR-047 QWake runtime validation freeze v2: decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2_EN.md
       - ADR-048 QWake runtime validation evidence v2: decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md
       - ADR-049 QWake LC0 post-merge transition: decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition_EN.md
+      - ADR-050 QWake LC0 semantics and scope: decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

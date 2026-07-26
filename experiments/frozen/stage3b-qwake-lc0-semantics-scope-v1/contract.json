@@ -1,0 +1,204 @@
+{
+  "action_family": {
+    "capability_presence_implies_permission": false,
+    "members": {
+      "ANALYTIC_COMPLETION": {
+        "direct_accept_frontier_permitted": false,
+        "explicit_full_sequence_replay": false,
+        "full_trajectory_reconstruction": false,
+        "kind": "registered_analytic_response_completion"
+      },
+      "LOCAL_SWEEP": {
+        "bounded_aggregate_required": true,
+        "full_canonical_suffix": false,
+        "kind": "explicit_registered_local_update"
+      }
+    },
+    "name": "LOCAL_COMPUTE"
+  },
+  "admission_and_selection": {
+    "admissible_set": "Regret_R(a,s)<=epsilon",
+    "deployable_acceptance_open": false,
+    "heuristic_direct_accept": false,
+    "minimum_cost_only_within_admissible_set": true,
+    "pareto_rule_required_when_not_scalar_comparable": true,
+    "risk_admission_not_frozen_in_qw_lc0": true,
+    "selection_order": [
+      "safety",
+      "coverage",
+      "cost"
+    ]
+  },
+  "claim_boundary": {
+    "forbidden_claims": [
+      "response_equivalence_established",
+      "cost_equivalence_established",
+      "cost_superiority_established",
+      "implementation_correctness_established",
+      "candidate_safety_established",
+      "candidate_coverage_established",
+      "policy_admissibility_established",
+      "generalization_beyond_registered_special_case",
+      "scientific_evidence",
+      "deployment_readiness"
+    ],
+    "negative_result_preservation_required": true,
+    "permitted_claims": [
+      "semantic_separation_of_R_M_Gamma_C",
+      "finite_LOCAL_COMPUTE_action_family",
+      "bounded_candidate_scope",
+      "explicit_deferred_freeze_sequence"
+    ]
+  },
+  "contract_id": "stage3b-qwake-lc0-semantics-scope-v1",
+  "deferred_freezes": {
+    "QW-LC1": [
+      "canonical_required_response_schema",
+      "mandatory_observables",
+      "response_equivalence_operator"
+    ],
+    "QW-LC2": [
+      "resource_trajectory_measurement_schema",
+      "measurement_to_cost_mapping",
+      "cost_equivalence_operator"
+    ],
+    "QW-LC3": [
+      "matched_shadow_validation",
+      "state_identity",
+      "rng_restoration",
+      "fallback_suffix_validation"
+    ],
+    "QW-LC4-E": [
+      "sealed_engineering_execution"
+    ],
+    "QW-LC4-F": [
+      "extension_image",
+      "single_attempt_authorization"
+    ],
+    "QW-LC4-I": [
+      "bounded_candidate_implementation"
+    ]
+  },
+  "equivalence_relations": {
+    "cost_equivalence": "a_i ~_C a_j",
+    "response_equivalence": "a_i ~_R a_j",
+    "response_equivalence_implies_cost_equivalence": false,
+    "response_equivalence_implies_mechanism_equivalence": false,
+    "response_equivalence_implies_resource_equivalence": false
+  },
+  "first_analytic_candidate": {
+    "algorithm": "FixedPred",
+    "architecture": "lenet_classic",
+    "candidate_id": "fixedpred_eta1_wavefront_completion_v1",
+    "correctness_status": "unvalidated_candidate",
+    "eta": 1,
+    "excluded": [
+      "Strict",
+      "arbitrary_eta",
+      "arbitrary_architectures",
+      "arbitrary_graphs",
+      "skip_connections",
+      "universal_symbolic_solver",
+      "full_trajectory_reconstruction",
+      "online_control"
+    ],
+    "executor": "stage2_baseline",
+    "generalization_claim": false,
+    "mode": "shadow_post_action_validation",
+    "response_scope": "special_case_required_result_and_registered_observables"
+  },
+  "gates": {
+    "c1_collection_open": false,
+    "c2_calibration_open": false,
+    "c3_confirmatory_open": false,
+    "feature_collection_permitted": false,
+    "local_compute_execution_open": false,
+    "local_compute_implementation_open": false,
+    "oracle_label_generation_open": false,
+    "policy_activation_permitted": false,
+    "publication_permitted": false,
+    "qw_lc0_semantics_scope_frozen": true,
+    "qw_lc1_open": false,
+    "qw_lc1_transition_permitted": false,
+    "replication_open": false,
+    "scientific_execution_open": false,
+    "scientific_image_freeze_permitted": false,
+    "test_dataset_access": false
+  },
+  "next_slice": "QW-LC1-post-merge-transition",
+  "objects": {
+    "computational_mechanism": {
+      "identity_fields": [
+        "action_kind",
+        "candidate_id",
+        "algorithm",
+        "eta",
+        "architecture",
+        "executor"
+      ],
+      "meaning": "registered_algorithmic_path_selected_by_action",
+      "members": [
+        "LOCAL_SWEEP",
+        "ANALYTIC_COMPLETION"
+      ],
+      "symbol": "M(a)"
+    },
+    "cost_vector": {
+      "concrete_mapping_deferred_to": "QW-LC2",
+      "mapping_requirements": [
+        "explicit",
+        "frozen_before_execution",
+        "nonduplicating",
+        "implicit_scalarization_forbidden",
+        "double_counting_forbidden"
+      ],
+      "meaning": "decision_facing_cost_vector",
+      "symbol": "C(a,s)=Phi(Gamma(a,s))"
+    },
+    "required_result": {
+      "canonical_serialization_deferred_to": "QW-LC1",
+      "components_source": "stage3b-qwake-fp-special-case-v1",
+      "does_not_uniquely_identify_mechanism": true,
+      "equivalence_operator_deferred_to": "QW-LC1",
+      "meaning": "registered_task_relative_endpoint_response",
+      "symbol": "R(a,s)"
+    },
+    "resource_trajectory": {
+      "cannot_be_inferred_from_response_equivalence": true,
+      "meaning": "ordered_measured_resource_events_from_action_start_through_result_or_fallback",
+      "measurement_schema_deferred_to": "QW-LC2",
+      "symbol": "Gamma(a,s)"
+    }
+  },
+  "provenance": {
+    "base_main_commit": "c429aab3995908df6054e42e2ab5ed314cb3c16d",
+    "main_first_parent": "4f23b752a40ae05de9fc7ee49c9962c44083b71d",
+    "normative_decisions": [
+      "ADR-041",
+      "ADR-042",
+      "ADR-043",
+      "ADR-049",
+      "ADR-050"
+    ],
+    "planned_contract_path": "experiments/planned/STAGE3B-QWAKE-LOCAL-COMPUTE-CONTRACT.json",
+    "planned_contract_sha256": "sha256:d8104efa805b9ceb0732957a090653fb1564cbaa1ec7bd924bab9af2686b25d4",
+    "special_case_contract_id": "stage3b-qwake-fp-special-case-v1",
+    "special_case_contract_sha256": "sha256:968457365ddc1c94a814e0f7712d30d0154afd0c96d8464bff46a31e61ad3698",
+    "transition_commit": "7c8c522d2d7849ecc9983923c6f6479a67e94bda",
+    "transition_receipt_sha256": "sha256:2f0833b3395c4499aece489ba7aadb3003e27f6c2b86fb00d08179d54d2721e9",
+    "transition_registry_sha256": "sha256:0cb64d9c3b557442d2512d8b3c3347078b2fd11ee1625bd6d645bf5ab33f66ad"
+  },
+  "schema_version": 1,
+  "slice": "QW-LC0",
+  "state_and_fallback": {
+    "candidate_indices": "t_in_[0,K_ref]",
+    "canonical_executor": "stage2_baseline",
+    "canonical_suffix": "remaining_stage2_baseline_sweeps",
+    "decision_epoch": "after_S_t_before_sweep_t_plus_1",
+    "exact_reserve_action": "COMPLETE_SUFFIX",
+    "exact_reserve_required": true,
+    "matched_state_and_rng_requirements_deferred_to": "QW-LC3",
+    "snapshot_zero": "initialized_state_before_first_sweep"
+  },
+  "status": "semantics_scope_frozen_execution_closed"
+}

@@ -322,3 +322,21 @@ commit, один digest образа, `Torch2PC`, манифест кода и �
 QWake-PC к нативным spikes, spike-native переносу ошибок, локальному обучению и
 нейроморфной проверке. Эта программа не является этапом 21, не открывает
 выполнение и не изменяет критерии завершения магистерской работы.
+
+
+## Этап 25 — `QW-LC0`: фиксация семантики и области
+
+Состояние: материализовано в ветке. Контракт `stage3b-qwake-lc0-semantics-scope-v1` фиксирует
+разделение `R/M/Γ/C`, семейство `LOCAL_COMPUTE`, область первого кандидата и
+границу утверждений. До слияния переход к `QW-LC1` не разрешён. Реализация,
+выполнение и научная кампания закрыты.
+
+```text
+qwake_qw_lc0_semantics_scope_frozen=true
+qwake_qw_lc1_transition_permitted=false
+qwake_qw_lc1_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+next_slice=QW-LC0-repository-freeze
+post_merge_next_slice=QW-LC1
+```

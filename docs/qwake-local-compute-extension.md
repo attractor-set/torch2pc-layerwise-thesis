@@ -191,3 +191,25 @@ qwake_post_lc0_next_slice=QW-LC1
 Открытие `QW-LC0` не является разрешением на вызов модели, сбор признаков,
 создание эталонной метки после действия, выполнение локального прохода или аналитического
 завершения.
+
+
+## 10. Нормативная фиксация `QW-LC0`
+
+Контракт `stage3b-qwake-lc0-semantics-scope-v1` делает разделение `R/M/Γ/C` нормативным для
+`LOCAL_COMPUTE`. `LOCAL_SWEEP` и `ANALYTIC_COMPLETION` являются разными
+механизмами; равенство их требуемого результата не означает равенство ресурсной
+траектории или стоимости.
+
+Текущий срез не задаёт окончательную сериализацию ответа, измерительную схему
+ресурсов или отображение стоимости. Эти поля принадлежат соответственно
+`QW-LC1` и `QW-LC2`. Первый кандидат остаётся непроверенной гипотезой в строго
+ограниченной области.
+
+```text
+qwake_qw_lc0_semantics_scope_frozen=true
+qwake_qw_lc1_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_next_slice=QW-LC0-repository-freeze
+qwake_post_merge_next_slice=QW-LC1
+```

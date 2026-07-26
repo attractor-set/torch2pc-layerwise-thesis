@@ -189,3 +189,25 @@ qwake_post_lc0_next_slice=QW-LC1
 
 Opening `QW-LC0` does not authorize model invocation, feature collection,
 post-action oracle generation, local-sweep execution, or analytic completion.
+
+
+## 10. Normative `QW-LC0` freeze
+
+Contract `stage3b-qwake-lc0-semantics-scope-v1` makes the `R/M/Γ/C` separation normative for
+`LOCAL_COMPUTE`. `LOCAL_SWEEP` and `ANALYTIC_COMPLETION` are distinct
+mechanisms; equality of their required result does not imply equality of their
+resource trajectory or cost.
+
+This slice does not define the final response serialization, resource
+measurement schema, or cost map. Those fields belong to `QW-LC1` and `QW-LC2`.
+The first candidate remains an unvalidated hypothesis within a strictly bounded
+scope.
+
+```text
+qwake_qw_lc0_semantics_scope_frozen=true
+qwake_qw_lc1_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_next_slice=QW-LC0-repository-freeze
+qwake_post_merge_next_slice=QW-LC1
+```

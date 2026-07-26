@@ -303,3 +303,47 @@ cost_equivalence_operator_definition_open=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 16. Контракт ресурсов и стоимости `QW-LC2`
+
+Контракт `stage3b-qwake-lc2-resource-cost-contract-v1` фиксирует ресурсную траекторию
+`Γ(a,s;r,p)` как упорядоченную запись идентификаторов, корневого интервала,
+принадлежности интервалов, пиков памяти, уникальных объёмов артефактов,
+калибровки наблюдателя и резервного пути. `Φ` формирует следующий порядок `C`:
+
+```text
+compute_primary_time_ns
+latency_wall_time_ns
+peak_allocated_bytes
+peak_reserved_bytes
+diagnostic_primary_time_ns
+diagnostic_materialized_bytes
+observer_overhead_time_ns
+observer_evidence_bytes
+control_wall_time_ns
+fallback_wall_time_ns
+fallback_invoked
+```
+
+Задержка остаётся отдельной включающей компонентой и не складывается с
+декомпозированными временами. Интервалы объединяются, память задаётся максимумом,
+а объём артефактов учитывается один раз по владельцу и `SHA-256`; накладное
+время наблюдателя не вычитается из задержки или времени вычисления.
+
+`shadow_mechanism_v1` не является решенческим. Будущий `end_to_end_v1` требует
+завершённого `QW-LC3`. `~C` применяется только при одинаковой непрозрачной
+привязке состояния, вычислительной линии и профиле стоимости; транзитивность не
+предполагается. После допуска по `~R` используется правило Парето с допусками и
+зарегистрированное детерминированное разрешение неоднозначности. Отсутствующий
+или неполный вектор стоимости приводит к `LOCAL_SWEEP`.
+
+```text
+resource_trajectory_schema_frozen=true
+measurement_to_cost_mapping_frozen=true
+cost_equivalence_operator_definition_frozen=true
+pareto_and_tie_break_rule_frozen=true
+qwake_qw_lc2_complete=false
+qwake_qw_lc3_transition_permitted=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

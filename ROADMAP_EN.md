@@ -424,3 +424,17 @@ qwake_qw_lc2_open=false
 next_slice=QW-LC2-transition-merge
 post_merge_next_slice=QW-LC2-resource-cost-contract
 ```
+
+## Stage 28 — `QW-LC2`: resource and cost contract
+
+Status: contract materialized on the branch. `Γ`, `Φ`, `C`, `~C`, profiles,
+tolerances, the Pareto rule, and tie-break are frozen. A separate repository
+freeze is required before `QW-LC2` completion. `QW-LC3`, implementation,
+execution, and the scientific campaign remain closed.
+
+```text
+qwake_qw_lc2_resource_cost_contract_frozen=true
+qwake_qw_lc2_complete=false
+qwake_qw_lc3_transition_permitted=false
+next_slice=QW-LC2-repository-freeze
+```

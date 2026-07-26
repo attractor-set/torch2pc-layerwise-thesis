@@ -371,3 +371,27 @@ qwake_qw_lc1_open=false
 next_slice=QW-LC1-transition-merge
 post_merge_next_slice=QW-LC1-required-response-schema
 ```
+## Этап 26 — `QW-LC1`: схема требуемого результата зафиксирована
+
+Состояние: контракт `stage3b-qwake-lc1-required-response-schema-v1` материализован в ветке. `R(a,s)` состоит
+из именованных градиентов параметров, конечных beliefs и scalar loss.
+Структурные поля сравниваются точно; численные записи проверяются отдельно
+zero-safe оператором `~R` с профилями CPU/float64 и ROCm/float32. State/RNG и
+fallback остаются задачей `QW-LC3`; `Γ`, `Φ`, `C` и `~C` — задачей `QW-LC2`.
+
+```text
+qwake_qw_lc1_transition_complete=true
+qwake_qw_lc1_open=true
+qwake_qw_lc1_required_response_schema_frozen=true
+qwake_qw_lc1_contract_id=stage3b-qwake-lc1-required-response-schema-v1
+qwake_qw_lc1_contract_sha256=sha256:c7923249c538b29a34f8ffcfcac987b9925a911eb107a085a166ab1d7ca22992
+mandatory_observables_definition_frozen=true
+response_equivalence_operator_definition_frozen=true
+qwake_qw_lc1_complete=false
+qwake_qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+next_slice=QW-LC1-repository-freeze
+post_merge_next_slice=QW-LC1-repository-freeze
+```

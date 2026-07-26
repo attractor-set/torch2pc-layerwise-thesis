@@ -76,3 +76,4 @@
 - [ADR-050](ADR-050-stage3b-qwake-lc0-semantics-scope-freeze_EN.md): freezes the `R/M/Γ/C` separation, finite `LOCAL_COMPUTE` family, bounded first-candidate scope, and claim restrictions pending later validation.
 - [ADR-051](ADR-051-stage3b-qwake-lc0-repository-freeze_EN.md): records the `QW-LC0` contract state on `main`, materializes a separate receipt, and keeps transition to `QW-LC1`, implementation, execution, and publication closed pending merge and revalidation.
 - [ADR-052](ADR-052-stage3b-qwake-lc1-transition_EN.md): materializes the transition from completed `QW-LC0` to design of the `R(a,s)` schema, mandatory observables, and `~R`, while keeping `QW-LC1`, cost, code, and execution closed pending merge.
+- [ADR-053](ADR-053-stage3b-qwake-lc1-required-response-schema_EN.md): freezes canonical `R(a,s)`, mandatory observables, the zero-safe `~R` operator, and CPU/ROCm profiles while keeping `Γ`, cost, implementation, and execution closed.

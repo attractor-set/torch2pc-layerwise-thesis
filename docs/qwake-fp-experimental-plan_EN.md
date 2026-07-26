@@ -297,3 +297,21 @@ qwake_local_compute_execution_open=false
 scientific_execution_open=false
 publication_permitted=false
 ```
+## 13. Normative `QW-LC1` schema
+
+`stage3b-qwake-lc1-required-response-schema-v1` turns the short `QW-LC1` description into an exact contract.
+Response components are compared by separate registered entries, so an error in
+a small parameter or layer cannot be hidden by a global norm. Structural
+mismatch, a missing entry, a non-finite value, or a one-zero case fails
+immediately.
+
+Threshold profiles:
+
+| Profile | `max_abs` | `max_relative_l2` | `min_cosine` | `zero_atol` |
+|---|---:|---:|---:|---:|
+| `cpu_float64_engineering` | `1e-9` | `1e-7` | `0.99999` | `1e-12` |
+| `rocm_float32_canonical` | `1e-5` | `1e-3` | `0.999` | `1e-7` |
+
+ROCm/float32 remains decision-facing. CPU/float64 is an engineering control.
+Neither profile establishes actual equivalence before future matched
+validation.

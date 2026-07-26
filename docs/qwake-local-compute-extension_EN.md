@@ -243,3 +243,29 @@ resource_trajectory_schema_open=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+## 13. `QW-LC1` required-response schema
+
+Contract `stage3b-qwake-lc1-required-response-schema-v1` freezes `R(a,s)` as the ordered collection of named
+parameter gradients, [endpoint](glossary_EN.md#term-endpoint) beliefs, and scalar loss. The response is
+serialized as a canonical JSON manifest plus separate little-endian
+C-contiguous payload files that preserve the source dtype.
+
+Before numerical comparison, schema/state/profile, component order, keys,
+positions, shapes, dtypes, and `numel` must match exactly. Each entry is then
+compared in `float64` by `relative_l2`, `max_abs`, and cosine only when both
+entries are active. Two inactive entries pass the cosine gate; one active and
+one inactive entry always fail.
+
+```text
+required_result_components=
+  named_parameter_gradients,
+  endpoint_beliefs,
+  endpoint_loss
+canonical_profile=rocm_float32_canonical
+engineering_profile=cpu_float64_engineering
+response_equivalence_transitivity_assumed=false
+resource_trajectory_schema_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+next_slice=QW-LC1-repository-freeze
+```

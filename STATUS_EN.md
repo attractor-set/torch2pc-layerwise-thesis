@@ -782,3 +782,38 @@ publication_permitted=false
 qwake_next_slice=QW-LC1-transition-merge
 qwake_post_merge_next_slice=QW-LC1-required-response-schema
 ```
+## `QW-LC1`: required-response schema frozen
+
+The `QW-LC1` transition was merged into `main` `c3533fcb63ffc869faddbaa99645c9099d16d1cc` and
+independently reverified. Contract `stage3b-qwake-lc1-required-response-schema-v1` freezes canonical `R(a,s)`,
+mandatory response observables, and the zero-safe `~R` operator. Exact digest
+equality is sufficient but not required; the tolerance predicate is not assumed
+transitive. The schema contains no implementation and establishes no candidate.
+
+```text
+qwake_qw_lc1_transition_complete=true
+qwake_qw_lc1_required_response_schema_permitted=true
+qwake_qw_lc1_open=true
+qwake_qw_lc1_required_response_schema_frozen=true
+qwake_qw_lc1_contract_id=stage3b-qwake-lc1-required-response-schema-v1
+qwake_qw_lc1_contract_sha256=sha256:c7923249c538b29a34f8ffcfcac987b9925a911eb107a085a166ab1d7ca22992
+qwake_qw_lc1_contract_registry_sha256=sha256:4a5dca3848bd8ffb0f70013fb5c42a6f6427dd0e1752eb950f5332207b8e269f
+mandatory_observables_definition_frozen=true
+response_equivalence_operator_definition_frozen=true
+qwake_qw_lc1_complete=false
+qwake_qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+qwake_next_slice=QW-LC1-repository-freeze
+qwake_post_merge_next_slice=QW-LC1-repository-freeze
+```

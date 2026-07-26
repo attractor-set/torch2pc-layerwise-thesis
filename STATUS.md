@@ -810,3 +810,50 @@ publication_permitted=false
 qwake_next_slice=QW-LC1-transition-merge
 qwake_post_merge_next_slice=QW-LC1-required-response-schema
 ```
+## `QW-LC1`: схема требуемого результата зафиксирована
+
+Переход `QW-LC1` слит в `main` `c3533fcb63ffc869faddbaa99645c9099d16d1cc` и повторно проверен. Контракт
+`stage3b-qwake-lc1-required-response-schema-v1` фиксирует канонический `R(a,s)`, обязательные наблюдаемые поля
+ответа и правило `~R`, безопасное для нулевых норм. Точное равенство контрольных
+сумм является достаточным, но не обязательным условием. Отношение с численным
+допуском не считается транзитивным. Схема не содержит реализации и не
+подтверждает аналитический кандидат.
+
+Каждый ответ включает именованные градиенты параметров, конечные представления
+слоёв и скалярную функцию потерь. До численной проверки должны точно совпасть
+схема, ссылка на состояние, профиль сравнения, порядок компонентов, имена,
+позиции, формы, типы данных и число элементов. Это не позволяет скрыть
+структурное расхождение малой глобальной нормой.
+
+Проверка чисел выполняется отдельно для каждой зарегистрированной записи.
+Две записи с нормами ниже порога проходят условие направления, но всё равно
+обязаны пройти ограничения относительной и максимальной абсолютной ошибки.
+Если активна только одна запись, сравнение завершается отказом.
+
+```text
+qwake_qw_lc1_transition_complete=true
+qwake_qw_lc1_required_response_schema_permitted=true
+qwake_qw_lc1_open=true
+qwake_qw_lc1_required_response_schema_frozen=true
+qwake_qw_lc1_contract_id=stage3b-qwake-lc1-required-response-schema-v1
+qwake_qw_lc1_contract_sha256=sha256:c7923249c538b29a34f8ffcfcac987b9925a911eb107a085a166ab1d7ca22992
+qwake_qw_lc1_contract_registry_sha256=sha256:4a5dca3848bd8ffb0f70013fb5c42a6f6427dd0e1752eb950f5332207b8e269f
+mandatory_observables_definition_frozen=true
+response_equivalence_operator_definition_frozen=true
+qwake_qw_lc1_complete=false
+qwake_qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+qwake_next_slice=QW-LC1-repository-freeze
+qwake_post_merge_next_slice=QW-LC1-repository-freeze
+```

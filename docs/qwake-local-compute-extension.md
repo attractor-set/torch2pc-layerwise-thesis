@@ -213,3 +213,18 @@ qwake_local_compute_execution_open=false
 qwake_next_slice=QW-LC0-repository-freeze
 qwake_post_merge_next_slice=QW-LC1
 ```
+
+## 11. Фиксация состояния репозитория `QW-LC0`
+
+После слияния контракта в `main` `8429f54257685a879b0a44499d5fa81eab7310ea` отдельная
+квитанция фиксирует точные коммиты и контрольные суммы. Её материализация не
+разрешает переход к `QW-LC1` до собственного слияния и повторной проверки.
+
+```text
+repository_freeze_materialized=true
+repository_freeze_complete=false
+qw_lc1_transition_permitted=false
+qw_lc1_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

@@ -149,3 +149,4 @@ docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2.md,docs/dec
 docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2.md,docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md,required
 docs/decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition.md,docs/decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition_EN.md,required
 docs/decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze.md,docs/decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze_EN.md,required
+docs/decisions/ADR-051-stage3b-qwake-lc0-repository-freeze.md,docs/decisions/ADR-051-stage3b-qwake-lc0-repository-freeze_EN.md,required

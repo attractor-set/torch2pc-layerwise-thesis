@@ -356,3 +356,18 @@ qwake_qw_lc1_open=false
 next_slice=QW-LC0-repository-freeze-merge
 post_merge_next_slice=QW-LC1-transition
 ```
+
+## Этап 26 — `QW-LC1`: переход к схеме требуемого результата
+
+Состояние: переход материализован в ветке. После слияния и повторной проверки
+может быть открыт самостоятельный срез определения канонической схемы
+`R(a,s)`, обязательных наблюдаемых полей и оператора `~R`. Схема `Γ`,
+отображение стоимости, реализация и выполнение в этот этап не входят.
+
+```text
+qwake_qw_lc1_transition_materialized=true
+qwake_qw_lc1_transition_complete=false
+qwake_qw_lc1_open=false
+next_slice=QW-LC1-transition-merge
+post_merge_next_slice=QW-LC1-required-response-schema
+```

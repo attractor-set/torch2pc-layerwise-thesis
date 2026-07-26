@@ -4,6 +4,8 @@
 
 ## [Unreleased] — B1/B2 preregistration
 ### Added
+
+- materialized the `QW-LC1` transition: the completed `QW-LC0` repository freeze is bound to a two-file receipt, the future slice is limited to the `R(a,s)` schema, mandatory observables, and `~R`, while `QW-LC1`, code, and execution remain closed pending merge;
 - materialized the `QW-LC0` repository freeze: the contract from `715308451ac3e696d4c2209276d36853f6799d6f` is verified on `main` `8429f54257685a879b0a44499d5fa81eab7310ea`, a separate two-file receipt is recorded, and transition to `QW-LC1`, implementation, execution, and the scientific campaign remain closed pending merge and revalidation;
 - materialized the normative `QW-LC0` freeze: sealed contract `stage3b-qwake-lc0-semantics-scope-v1` separates `R/M/Γ/C`, bounds the first analytic candidate, and keeps implementation, execution, and the scientific campaign closed;
 - recorded the PR #110 post-merge transition for `QW-4B-E-v2`: repository evidence was reverified on `main` `4f23b752a40ae05de9fc7ee49c9962c44083b71d`, `QW-LC0` is open only for the semantics-and-scope freeze, while implementation, execution, the scientific image, test split, and publication remain closed;

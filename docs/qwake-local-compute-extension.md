@@ -282,3 +282,24 @@ cost_equivalence_operator_definition_open=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 15. Переход к `QW-LC2`
+
+После завершения `QW-LC1` переход ограничивает следующий контракт тремя
+частями: измерительной схемой `Γ(a,s)`, отображением `Φ: Γ -> C` и оператором
+`~C`. Переход не задаёт измеряемые поля, единицы, окна, агрегацию, пороги,
+скаляризацию или эмпирические значения. Сопоставленная теневая проверка,
+идентичность состояния, состояние генераторов случайных чисел, резервный путь,
+код и выполнение остаются последующими срезами.
+
+```text
+lc1_complete=true
+lc2_transition_materialized=true
+lc2_transition_complete=false
+lc2_open=false
+resource_trajectory_schema_open=false
+measurement_to_cost_mapping_open=false
+cost_equivalence_operator_definition_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

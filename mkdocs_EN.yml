@@ -105,6 +105,7 @@ nav:
       - ADR-052 QWake LC1 transition: decisions/ADR-052-stage3b-qwake-lc1-transition_EN.md
       - ADR-053 QWake LC1 required-response schema: decisions/ADR-053-stage3b-qwake-lc1-required-response-schema_EN.md
       - ADR-054 QWake LC1 repository freeze: decisions/ADR-054-stage3b-qwake-lc1-repository-freeze_EN.md
+      - ADR-055 QWake LC2 transition: decisions/ADR-055-stage3b-qwake-lc2-transition_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

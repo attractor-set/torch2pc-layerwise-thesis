@@ -415,3 +415,19 @@ qwake_local_compute_execution_open=false
 next_slice=QW-LC1-repository-freeze-merge
 post_merge_next_slice=QW-LC2-transition
 ```
+
+## Этап 27 — `QW-LC2`: переход к модели ресурсов и стоимости
+
+Состояние: переход материализован в ветке. После слияния и повторной проверки
+может быть открыт самостоятельный контракт, фиксирующий `Γ(a,s)`, отображение
+`Φ: Γ -> C` и `~C`. Поля, единицы, агрегация, Pareto-правило и запрет двойного
+учёта будут определены только в этом будущем контракте. Реализация и выполнение
+в переход не входят.
+
+```text
+qwake_qw_lc2_transition_materialized=true
+qwake_qw_lc2_transition_complete=false
+qwake_qw_lc2_open=false
+next_slice=QW-LC2-transition-merge
+post_merge_next_slice=QW-LC2-resource-cost-contract
+```

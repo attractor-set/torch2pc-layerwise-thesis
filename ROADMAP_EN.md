@@ -364,3 +364,27 @@ qwake_qw_lc1_open=false
 next_slice=QW-LC1-transition-merge
 post_merge_next_slice=QW-LC1-required-response-schema
 ```
+## Stage 26 — `QW-LC1`: required-response schema frozen
+
+State: contract `stage3b-qwake-lc1-required-response-schema-v1` is materialized on the branch. `R(a,s)` consists
+of named parameter gradients, endpoint beliefs, and scalar loss. Structural
+fields are compared exactly; numerical entries are checked independently by the
+zero-safe `~R` operator with CPU/float64 and ROCm/float32 profiles. State/RNG
+and fallback remain in `QW-LC3`; `Γ`, `Φ`, `C`, and `~C` remain in `QW-LC2`.
+
+```text
+qwake_qw_lc1_transition_complete=true
+qwake_qw_lc1_open=true
+qwake_qw_lc1_required_response_schema_frozen=true
+qwake_qw_lc1_contract_id=stage3b-qwake-lc1-required-response-schema-v1
+qwake_qw_lc1_contract_sha256=sha256:c7923249c538b29a34f8ffcfcac987b9925a911eb107a085a166ab1d7ca22992
+mandatory_observables_definition_frozen=true
+response_equivalence_operator_definition_frozen=true
+qwake_qw_lc1_complete=false
+qwake_qw_lc2_transition_permitted=false
+resource_trajectory_schema_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+next_slice=QW-LC1-repository-freeze
+post_merge_next_slice=QW-LC1-repository-freeze
+```

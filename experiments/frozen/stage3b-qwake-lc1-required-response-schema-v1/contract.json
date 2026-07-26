@@ -1,0 +1,255 @@
+{
+  "canonical_serialization": {
+    "layout": "manifest_json_plus_payload_files",
+    "manifest_encoding": {
+      "character_encoding": "utf-8",
+      "key_order": "lexicographic",
+      "media_type": "application/json",
+      "non_finite_json_numbers_permitted": false,
+      "separators": [
+        ",",
+        ":"
+      ],
+      "trailing_newline": true
+    },
+    "response_digest": {
+      "algorithm": "sha256",
+      "exact_digest_equality_is_required_for_response_equivalence": false,
+      "exact_digest_equality_is_sufficient_for_response_equivalence": true,
+      "field": "canonical_response_sha256",
+      "input": "canonical_manifest_bytes_with_ordered_payload_sha256_values"
+    },
+    "tensor_payload_encoding": {
+      "byte_order": "little_endian",
+      "memory_order": "C_contiguous",
+      "metadata_fields": [
+        "component_id",
+        "entry_key",
+        "entry_position",
+        "shape",
+        "source_dtype",
+        "numel",
+        "finite",
+        "payload_sha256"
+      ],
+      "payload_digest": "sha256",
+      "payload_values": "source_dtype_values_without_numeric_cast",
+      "storage": "one_payload_per_response_entry"
+    }
+  },
+  "claim_boundary": {
+    "forbidden_claims": [
+      "response_equivalence_established_for_analytic_candidate",
+      "implementation_correctness_established",
+      "state_identity_or_rng_restoration_established",
+      "resource_trajectory_schema_established",
+      "cost_mapping_or_cost_equivalence_established",
+      "candidate_safety_or_coverage_established",
+      "scientific_evidence",
+      "generalization_beyond_registered_domain",
+      "deployment_readiness"
+    ],
+    "permitted_claims": [
+      "canonical_required_response_schema_frozen",
+      "mandatory_response_observables_frozen",
+      "registered_response_equivalence_predicate_frozen",
+      "cpu_and_rocm_threshold_profiles_frozen"
+    ]
+  },
+  "contract_id": "stage3b-qwake-lc1-required-response-schema-v1",
+  "deferred_to_qw_lc2": [
+    "resource_trajectory_measurement_schema",
+    "measurement_to_cost_mapping",
+    "cost_equivalence_operator"
+  ],
+  "deferred_to_qw_lc3": [
+    "matched_shadow_validation",
+    "state_identity",
+    "rng_restoration",
+    "fallback_suffix_validation"
+  ],
+  "gates": {
+    "feature_collection_permitted": false,
+    "local_compute_execution_open": false,
+    "local_compute_implementation_open": false,
+    "oracle_label_generation_open": false,
+    "policy_activation_permitted": false,
+    "publication_permitted": false,
+    "qw_lc1_complete": false,
+    "qw_lc1_required_response_schema_frozen": true,
+    "qw_lc2_transition_permitted": false,
+    "resource_trajectory_schema_open": false,
+    "scientific_execution_open": false,
+    "scientific_image_freeze_permitted": false,
+    "test_dataset_access": false
+  },
+  "mandatory_observables": {
+    "entry_level": [
+      "component_id",
+      "entry_key",
+      "entry_position",
+      "shape",
+      "source_dtype",
+      "numel",
+      "finite",
+      "payload_sha256"
+    ],
+    "exact_structural_equalities": [
+      "response_schema_id",
+      "state_id",
+      "comparison_profile_id",
+      "component_order",
+      "entry_keys",
+      "entry_positions",
+      "entry_shapes",
+      "entry_source_dtypes",
+      "entry_numel"
+    ],
+    "response_level": [
+      "response_schema_id",
+      "state_id",
+      "comparison_profile_id",
+      "component_order",
+      "component_manifest_sha256",
+      "canonical_response_sha256",
+      "all_entries_finite"
+    ],
+    "validation_control_observables_deferred_to_qw_lc3": [
+      "transition_sequence",
+      "rng_state_before",
+      "rng_state_after",
+      "snapshot_identity",
+      "fallback_suffix_identity"
+    ]
+  },
+  "next_slice": "QW-LC1-repository-freeze",
+  "provenance": {
+    "main_commit": "c3533fcb63ffc869faddbaa99645c9099d16d1cc",
+    "main_first_parent": "0fbd54be337665e06ad63b6d9c7f8ca978ab75ee",
+    "semantics_scope_contract_id": "stage3b-qwake-lc0-semantics-scope-v1",
+    "semantics_scope_contract_sha256": "sha256:e68e953aa3d5c425678d54b8dd3b756e706e5cc1a1c4862d4c0ba0bda19bf3c3",
+    "semantics_scope_registry_sha256": "sha256:dc84bed1e99526b4267ab982e3ac32fc704b628a3fb6194f6b6662649e0e4119",
+    "special_case_contract_id": "stage3b-qwake-fp-special-case-v1",
+    "special_case_contract_sha256": "sha256:968457365ddc1c94a814e0f7712d30d0154afd0c96d8464bff46a31e61ad3698",
+    "transition_commit": "9fcdb993c262fe34fb28af996f2373b67486effb",
+    "transition_id": "stage3b-qwake-lc1-transition-v1",
+    "transition_receipt_sha256": "sha256:9cafcad4d6ee3245c48ca2ff531dc5985ea4e670cb465fdcfaf2b99d376d5db4",
+    "transition_registry_sha256": "sha256:16ba50cdf788938fa0ba739a4a21723ee2454e45b7e796adad8c46617d22fec7"
+  },
+  "registered_domain": {
+    "action_family": [
+      "LOCAL_SWEEP",
+      "ANALYTIC_COMPLETION"
+    ],
+    "architecture": "lenet_classic",
+    "candidate_indices": "t_in_[0,K_ref]",
+    "canonical_reference_action": "COMPLETE_SUFFIX",
+    "decision_epoch": "after_S_t_before_sweep_t_plus_1",
+    "eta": 1.0,
+    "executor": "stage2_baseline",
+    "generalization_claim": false,
+    "method": "fixedpred"
+  },
+  "required_result": {
+    "component_order": [
+      "named_parameter_gradients",
+      "endpoint_beliefs",
+      "endpoint_loss"
+    ],
+    "components": {
+      "endpoint_beliefs": {
+        "entry_key": "registered_layer_index",
+        "extra_entries_permitted": false,
+        "kind": "indexed_tensor_sequence",
+        "missing_entries_permitted": false,
+        "order": "registered_layer_order"
+      },
+      "endpoint_loss": {
+        "entry_key": "loss",
+        "kind": "scalar_tensor",
+        "missing_entries_permitted": false,
+        "shape": []
+      },
+      "named_parameter_gradients": {
+        "entry_key": "registered_parameter_name",
+        "extra_entries_permitted": false,
+        "kind": "named_tensor_map",
+        "missing_entries_permitted": false,
+        "order": "registered_parameter_order"
+      }
+    },
+    "meaning": "registered_task_relative_endpoint_response",
+    "response_schema_id": "stage3b-qwake-lc1-required-response-schema-v1",
+    "state_reference": {
+      "exact_match_required_before_numeric_comparison": true,
+      "field": "state_id",
+      "identity_semantics_deferred_to": "QW-LC3",
+      "opaque_in_qw_lc1": true
+    },
+    "symbol": "R(a,s)"
+  },
+  "response_equivalence": {
+    "comparison_value_dtype": "float64",
+    "component_pass_rule": "every_registered_entry_passes",
+    "entry_metrics": [
+      "reference_l2",
+      "candidate_l2",
+      "difference_l2",
+      "relative_l2",
+      "max_abs",
+      "cosine",
+      "zero_case",
+      "finite",
+      "passed"
+    ],
+    "entry_pass_rule": "finite_and_shape_equal_and_presence_equal_and_relative_l2<=max_relative_l2_and_max_abs<=max_abs_and_(both_zero_or(both_active_and_cosine>=min_cosine))",
+    "metric_definitions": {
+      "both_active": "reference_active_and_candidate_active",
+      "both_zero": "not_reference_active_and_not_candidate_active",
+      "candidate_active": "candidate_l2>zero_atol",
+      "cosine": "dot(reference,candidate)/(reference_l2*candidate_l2)_only_when_both_active",
+      "difference_l2": "l2(candidate-reference)",
+      "max_abs": "max(abs(candidate-reference))",
+      "one_zero": "reference_active_xor_candidate_active",
+      "reference_active": "reference_l2>zero_atol",
+      "relative_l2": "difference_l2/scale",
+      "scale": "max(reference_l2,candidate_l2,zero_atol)"
+    },
+    "normalized_entry_defect": "d=max(max_abs/max_abs_limit,relative_l2/max_relative_l2_limit,(1-cosine)/(1-min_cosine))_for_both_active;d=max(max_abs/max_abs_limit,relative_l2/max_relative_l2_limit)_for_both_zero;d=infinity_for_structural_nonfinite_or_one_zero_failure",
+    "pass_threshold": "d_R<=1",
+    "predicate_name": "registered_response_equivalence_v1",
+    "reference_symmetry": "symmetric_scale_uses_max_reference_candidate_and_zero_atol",
+    "response_defect": "d_R=max(entry_defect_over_all_registered_entries)",
+    "response_pass_rule": "all_exact_structural_equalities_and_every_component_passes",
+    "symbol": "a_i ~_R a_j",
+    "transitivity_assumed": false,
+    "zero_safe_rule": {
+      "both_active": "require_cosine_relative_l2_and_max_abs_limits",
+      "both_zero": "pass_cosine_gate_and_require_relative_l2_and_max_abs_limits",
+      "one_zero": "fail"
+    }
+  },
+  "schema_version": 1,
+  "slice": "QW-LC1",
+  "status": "required_response_schema_frozen_execution_closed",
+  "threshold_profiles": {
+    "cpu_float64_engineering": {
+      "decision_facing": false,
+      "lane": "cpu_float64",
+      "max_abs": 1e-09,
+      "max_relative_l2": 1e-07,
+      "min_cosine": 0.99999,
+      "source_dtype": "float64",
+      "zero_atol": 1e-12
+    },
+    "rocm_float32_canonical": {
+      "decision_facing": true,
+      "lane": "rocm_float32",
+      "max_abs": 1e-05,
+      "max_relative_l2": 0.001,
+      "min_cosine": 0.999,
+      "source_dtype": "float32",
+      "zero_atol": 1e-07
+    }
+  }
+}

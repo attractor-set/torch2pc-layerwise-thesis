@@ -245,3 +245,22 @@ resource_trajectory_schema_open=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+## 13. Схема требуемого результата `QW-LC1`
+
+Контракт `stage3b-qwake-lc1-required-response-schema-v1` фиксирует `R(a,s)` как упорядоченную совокупность именованных градиентов параметров, конечных представлений слоёв и скалярной функции потерь. Ответ сериализуется как канонический манифест `JSON` и отдельные файлы полезных данных с порядком байтов от младшего к старшему, непрерывным порядком `C` и сохранением исходного типа данных.
+
+До численного сравнения точно совпадают схема, состояние, профиль, порядок компонентов, ключи, позиции, формы, типы данных и число элементов. Каждая запись затем сравнивается в `float64` по `relative_l2`, `max_abs` и, только для двух активных записей, по косинусному сходству. Две неактивные записи проходят условие косинусного сходства; одна активная и одна неактивная всегда дают отказ.
+
+```text
+required_result_components=
+  named_parameter_gradients,
+  endpoint_beliefs,
+  endpoint_loss
+canonical_profile=rocm_float32_canonical
+engineering_profile=cpu_float64_engineering
+response_equivalence_transitivity_assumed=false
+resource_trajectory_schema_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+next_slice=QW-LC1-repository-freeze
+```

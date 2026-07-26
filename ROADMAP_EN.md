@@ -315,3 +315,21 @@ move from QWake-PC
 to native spikes, spike-native error transport, local learning, and
 neuromorphic validation. This program is not Stage 21, does not open execution,
 and does not change the master's-thesis completion criteria.
+
+
+## Stage 25 — `QW-LC0`: semantics-and-scope freeze
+
+Status: materialized on the branch. Contract `stage3b-qwake-lc0-semantics-scope-v1` freezes the
+`R/M/Γ/C` separation, the `LOCAL_COMPUTE` family, the first-candidate scope, and
+the claim boundary. Transition to `QW-LC1` is not permitted before merge.
+Implementation, execution, and the scientific campaign remain closed.
+
+```text
+qwake_qw_lc0_semantics_scope_frozen=true
+qwake_qw_lc1_transition_permitted=false
+qwake_qw_lc1_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+next_slice=QW-LC0-repository-freeze
+post_merge_next_slice=QW-LC1
+```

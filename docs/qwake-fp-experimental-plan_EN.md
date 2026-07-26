@@ -280,3 +280,20 @@ test_dataset_access=false
 publication_permitted=false
 full_stage3b_campaign_complete=false
 ```
+
+
+## 12. Current `QW-LC0` state
+
+Semantics and scope are materialized as `stage3b-qwake-lc0-semantics-scope-v1`. The exact response and
+`~R` operator remain for `QW-LC1`; measured `Γ`, the `Φ` map, and `~C` remain for
+`QW-LC2`. The next slice does not open before this freeze is merged.
+
+```text
+qwake_qw_lc0_semantics_scope_frozen=true
+qwake_qw_lc1_transition_permitted=false
+qwake_qw_lc1_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+scientific_execution_open=false
+publication_permitted=false
+```

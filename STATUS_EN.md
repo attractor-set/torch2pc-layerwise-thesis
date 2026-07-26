@@ -691,3 +691,30 @@ full_stage3b_campaign_complete=false
 qwake_next_slice=QW-LC0
 qwake_post_lc0_next_slice=QW-LC1
 ```
+
+
+## `QW-LC0`: semantics and scope frozen
+
+Contract `stage3b-qwake-lc0-semantics-scope-v1` normatively separates `R/M/Γ/C`, freezes the two
+`LOCAL_COMPUTE` members, and bounds the first candidate to `FixedPred`, `eta=1`,
+`lenet_classic`, and `stage2_baseline`. It contains neither implementation nor
+empirical validation of the candidate.
+
+```text
+qwake_qw_lc0_semantics_scope_frozen=true
+qwake_qw_lc0_contract_id=stage3b-qwake-lc0-semantics-scope-v1
+qwake_qw_lc0_contract_sha256=sha256:e68e953aa3d5c425678d54b8dd3b756e706e5cc1a1c4862d4c0ba0bda19bf3c3
+qwake_qw_lc1_transition_permitted=false
+qwake_qw_lc1_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+qwake_next_slice=QW-LC0-repository-freeze
+qwake_post_merge_next_slice=QW-LC1
+```

@@ -394,3 +394,36 @@ local_compute_execution_open=false
 next_slice=QW-LC3-transition-merge
 post_merge_next_slice=QW-LC3-matched-shadow-validation-contract
 ```
+
+## 19. `QW-LC3` matched shadow-validation contract
+
+Contract `stage3b-qwake-lc3-matched-shadow-validation-contract-v1` connects
+`R`, `Γ`, and `C` in one execution-closed validation construction. The shared
+snapshot receives a canonical `opaque_state_ref`; every arm and reserve probe
+receives a fresh disposable fork. Every registered RNG is restored before each
+arm, and the two arms' post-RNG states must match exactly within each pair.
+
+Each validation cell has twelve pairs with alternating arm order. Every pair
+must pass `~R`; a missing or excluded repeat fails the cell closed. Two forced
+probes verify, before the first and after the final repeat, that the complete
+reserve `LOCAL_SWEEP` executes the full suffix without skips, duplicates, or
+candidate intermediate state.
+
+Cost is aggregated separately for each field as the paired difference
+`ANALYTIC_COMPLETION - LOCAL_SWEEP`; median, lower and upper hinges, minimum,
+and maximum are retained. A scalar total and statistical-significance claim are
+forbidden. The contract implements no mechanism and authorizes no execution.
+
+```text
+qwake_qw_lc3_matched_shadow_validation_contract_frozen=true
+matched_shadow_validation_protocol_frozen=true
+opaque_state_ref_definition_frozen=true
+rng_restoration_protocol_frozen=true
+exact_reserve_suffix_validation_frozen=true
+repeat_aggregation_protocol_frozen=true
+qwake_qw_lc3_complete=false
+qwake_qw_lc4_implementation_permitted=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+next_slice=QW-LC3-repository-freeze
+```

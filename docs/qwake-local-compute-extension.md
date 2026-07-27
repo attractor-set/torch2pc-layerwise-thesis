@@ -391,3 +391,37 @@ local_compute_execution_open=false
 next_slice=QW-LC3-transition-merge
 post_merge_next_slice=QW-LC3-matched-shadow-validation-contract
 ```
+
+## 19. Контракт сопоставленной теневой проверки `QW-LC3`
+
+Контракт `stage3b-qwake-lc3-matched-shadow-validation-contract-v1` связывает
+`R`, `Γ` и `C` в одной закрытой проверочной конструкции. Общий снимок состояния
+получает канонический `opaque_state_ref`; каждая рука и резервный зонд получают
+новое одноразовое ответвление этого снимка. Все зарегистрированные ГПСЧ
+восстанавливаются перед каждой рукой, а их состояния после двух рук пары должны
+совпасть точно.
+
+Для каждой проверочной ячейки зафиксированы двенадцать пар с чередующимся
+порядком рук. Все пары обязаны пройти `~R`; пропуск или исключение повтора
+закрывает ячейку. Два принудительных зонда проверяют, что до первого и после
+последнего повтора полный резервный `LOCAL_SWEEP` выполняет весь суффикс без
+пропусков, повторов и использования промежуточного состояния кандидата.
+
+Стоимость агрегируется отдельно по каждому полю как парная разность
+`ANALYTIC_COMPLETION - LOCAL_SWEEP`; сохраняются медиана, нижний и верхний
+шарниры, минимум и максимум. Скалярный итог и заявление статистической
+значимости запрещены. Контракт не реализует механизм и не разрешает выполнение.
+
+```text
+qwake_qw_lc3_matched_shadow_validation_contract_frozen=true
+matched_shadow_validation_protocol_frozen=true
+opaque_state_ref_definition_frozen=true
+rng_restoration_protocol_frozen=true
+exact_reserve_suffix_validation_frozen=true
+repeat_aggregation_protocol_frozen=true
+qwake_qw_lc3_complete=false
+qwake_qw_lc4_implementation_permitted=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+next_slice=QW-LC3-repository-freeze
+```

@@ -513,3 +513,9 @@ receipt, and one-attempt authorization. The freeze covers 14 runtime cells,
 `runtime_execution_permitted=true` inside authorization does not open
 execution on the freeze branch. `QW-LC4-E` is permitted only after merge and
 independent verification of `QW-LC4-F`.
+## `QW-LC4-E`: separate admission before execution
+
+[ADR-064](decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring_EN.md)
+separates frozen authorization, verified control-plane admission, and actual
+execution start. This slice materializes only the schema and validator; no
+execution lease or executor exists.

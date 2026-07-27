@@ -445,3 +445,29 @@ qwake_local_compute_execution_open=false
 qwake_next_slice=QW-LC3-repository-freeze-merge
 qwake_post_merge_next_slice=QW-LC4-I
 ```
+
+## 21. `QW-LC4-I` bounded implementation
+
+After the `QW-LC3` repository freeze merged into `main`
+`7c6cbb6ba4941cf78b2bfec3e6e8955c2830a58b`, the bounded implementation
+materializes the first code for the registered `ANALYTIC_COMPLETION` candidate.
+At candidate index `t`, the completed wavefront supplies the boundary residual;
+only the unfinished lower VJP chain is propagated. The exact reference executes
+all remaining FixedPred sweeps from another disposable fork.
+
+The same module materializes `opaque_state_ref`, complete RNG restoration, the
+`QW-LC1` response predicate, the `QW-LC2` non-scalar cost mapping, two forced
+exact-reserve probes, the balanced twelve-repeat schedule, and componentwise
+paired aggregation. A synthetic-only authorization is deliberately separate
+from every future [runtime](glossary_EN.md#term-runtime) authorization.
+
+```text
+qw_lc3_complete=true
+qw_lc4_i_implementation_materialized=true
+synthetic_unit_test_only=true
+local_compute_implementation_open=false
+local_compute_execution_open=false
+scientific_execution_open=false
+next_slice=QW-LC4-I-merge
+post_merge_next_slice=QW-LC4-F
+```

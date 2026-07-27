@@ -444,3 +444,29 @@ qwake_local_compute_execution_open=false
 qwake_next_slice=QW-LC3-repository-freeze-merge
 qwake_post_merge_next_slice=QW-LC4-I
 ```
+
+## 21. Ограниченная реализация `QW-LC4-I`
+
+После слияния фиксации состояния `QW-LC3` в `main`
+`7c6cbb6ba4941cf78b2bfec3e6e8955c2830a58b` материализован первый код
+зарегистрированного кандидата `ANALYTIC_COMPLETION`. В индексе кандидата `t`
+завершённая граница волны задаёт остаток, после чего распространяется только
+незавершённая нижняя цепочка VJP. Точная эталонная ветвь выполняет все
+оставшиеся свипы FixedPred из другого одноразового ответвления.
+
+Тот же модуль материализует `opaque_state_ref`, полное восстановление ГПСЧ,
+оператор ответа `QW-LC1`, нескалярное отображение стоимости `QW-LC2`, два
+принудительных точных резервных зонда, сбалансированное расписание двенадцати
+повторов и покомпонентную парную агрегацию. Разрешение только для синтетических
+тестов намеренно отделено от любого будущего разрешения рабочей среды.
+
+```text
+qw_lc3_complete=true
+qw_lc4_i_implementation_materialized=true
+synthetic_unit_test_only=true
+local_compute_implementation_open=false
+local_compute_execution_open=false
+scientific_execution_open=false
+next_slice=QW-LC4-I-merge
+post_merge_next_slice=QW-LC4-F
+```

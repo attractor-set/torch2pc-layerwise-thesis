@@ -1,0 +1,163 @@
+{
+  "claim_boundary": {
+    "forbidden_claims": [
+      "analytic_candidate_response_equivalence_established_on_registered_runtime",
+      "analytic_candidate_cost_superiority_established",
+      "bounded_implementation_runtime_ready",
+      "engineering_evidence_exists",
+      "scientific_evidence",
+      "policy_activation_is_safe",
+      "generalization_beyond_registered_domain",
+      "deployment_readiness"
+    ],
+    "permitted_claims": [
+      "bounded_candidate_code_materialized",
+      "bounded_exact_suffix_code_materialized",
+      "opaque_state_and_rng_controls_materialized",
+      "response_and_cost_contract_mappers_materialized",
+      "synthetic_unit_test_behavior_verified"
+    ]
+  },
+  "deferred_to_qw_lc4_e": [
+    "registered_runtime_execution",
+    "twelve_pair_engineering_evidence",
+    "forced_reserve_probe_evidence",
+    "response_equivalence_adjudication",
+    "componentwise_cost_aggregation_result",
+    "order_effect_result",
+    "publication_or_policy_decision"
+  ],
+  "deferred_to_qw_lc4_f": [
+    "immutable_source_commit_and_image_binding",
+    "actual_lenet_classic_runtime_adapter_binding",
+    "cpu_and_rocm_runtime_probe_freeze",
+    "runtime_authorization_schema",
+    "output_root_and_attempt_count_binding",
+    "runtime_memory_and_clock_source_binding",
+    "static_validation_receipt_chain"
+  ],
+  "gates": {
+    "feature_collection_permitted": false,
+    "local_compute_execution_open": false,
+    "local_compute_implementation_open": false,
+    "oracle_label_generation_open": false,
+    "policy_activation_permitted": false,
+    "publication_permitted": false,
+    "qw_lc3_complete": true,
+    "qw_lc4_f_branch_permitted": false,
+    "qw_lc4_i_authoring_open": true,
+    "qw_lc4_i_complete": false,
+    "qw_lc4_i_implementation_materialized": true,
+    "runtime_rerun_performed": false,
+    "scientific_execution_open": false,
+    "scientific_image_freeze_permitted": false,
+    "synthetic_unit_test_only": true,
+    "test_dataset_access": false
+  },
+  "implementation_id": "stage3b-qwake-lc4-i-bounded-implementation-v1",
+  "implemented_surfaces": {
+    "analytic_candidate": {
+      "action_id": "fixedpred_eta1_wavefront_completion_v1",
+      "rule": "derive the boundary residual from the completed wavefront and propagate only the unfinished lower VJP chain",
+      "vjp_count": "K_ref-candidate_index"
+    },
+    "exact_reference": {
+      "action_id": "complete_suffix_stage2_baseline_v1",
+      "rule": "execute every remaining registered FixedPred sweep from a fresh disposable fork",
+      "vjp_count": "K_ref*(K_ref-candidate_index)"
+    },
+    "opaque_state": {
+      "fresh_disposable_fork_required": true,
+      "payload_groups_bound": [
+        "registered_input_batch",
+        "registered_target_batch",
+        "model_parameters",
+        "model_buffers",
+        "fixed_prediction_state",
+        "decision_epoch_belief_and_error_state",
+        "endpoint_loss",
+        "optional_optimizer_or_update_state",
+        "deterministic_runtime_controls"
+      ],
+      "schema_id": "stage3b-qwake-opaque-state-v1"
+    },
+    "paired_protocol": {
+      "aggregate_id": "stage3b-qwake-paired-aggregation-v1",
+      "balanced_arm_orders": true,
+      "missing_repeat_imputation_permitted": false,
+      "pair_count": 12,
+      "scalarization_permitted": false
+    },
+    "reserve_suffix": {
+      "fallback_action": "LOCAL_SWEEP",
+      "fallback_and_direct_response_digest_match_required": true,
+      "forced_failure_before_candidate_mutation": true,
+      "full_ordered_suffix_required": true
+    },
+    "resource_cost": {
+      "artifact_digest_deduplication_required": true,
+      "cost_schema_id": "stage3b-qwake-cost-vector-v1",
+      "interval_union_required": true,
+      "measurement_to_cost_mapping_id": "stage3b-qwake-measurement-to-cost-v1",
+      "memory_peak_summation_forbidden": true,
+      "scalar_total_exposed": false
+    },
+    "response": {
+      "predicate_id": "registered_response_equivalence_v1",
+      "schema_id": "stage3b-qwake-lc1-required-response-schema-v1",
+      "structural_gates_exact": true,
+      "zero_safe_numeric_comparison": true
+    },
+    "rng": {
+      "custom_generator_registration_required": true,
+      "default_inventory": [
+        "python_random_global",
+        "numpy_legacy_global",
+        "torch_cpu_default_generator",
+        "torch_rocm_all_visible_device_generators"
+      ],
+      "outer_process_non_interference": true,
+      "snapshot_id": "stage3b-qwake-rng-snapshot-v1"
+    }
+  },
+  "module": {
+    "cli_entrypoint_present": false,
+    "dataset_loader_present": false,
+    "output_writer_present": false,
+    "path": "src/torch2pc_thesis/stage3b_qwake_lc4_bounded.py",
+    "runtime_authorization_reader_present": false,
+    "scientific_executor_present": false,
+    "sha256": "sha256:9ed9761e963a691a7d4010e27ac6ec71c388fbe5690dcd69ad3d2db4c6d62f91"
+  },
+  "next_slice": "QW-LC4-I-merge",
+  "post_merge_next_slice": "QW-LC4-F",
+  "registered_domain": {
+    "action_family": [
+      "LOCAL_SWEEP",
+      "ANALYTIC_COMPLETION"
+    ],
+    "analytic_candidate_action_id": "fixedpred_eta1_wavefront_completion_v1",
+    "architecture": "lenet_classic",
+    "candidate_indices": "t_in_[0,K_ref]",
+    "decision_epoch": "after_S_t_before_sweep_t_plus_1",
+    "eta": 1.0,
+    "executor": "stage2_baseline",
+    "generalization_claim": false,
+    "method": "fixedpred"
+  },
+  "schema_version": 1,
+  "slice": "QW-LC4-I-bounded-implementation",
+  "source": {
+    "lc3_contract_id": "stage3b-qwake-lc3-matched-shadow-validation-contract-v1",
+    "lc3_contract_registry_sha256": "sha256:2b001f3002add8d55ce75b02b1caba6bd3c655d177aeb02fe09026e2054dcef1",
+    "lc3_contract_sha256": "sha256:e1512f29b3e3e3882001172df360e895e6e628b8ea8e4103b9574990775dd5d8",
+    "lc3_repository_freeze_commit": "88f66e0ded0bfe9a6d3f7a73d60846aefbd92a51",
+    "lc3_repository_freeze_receipt_sha256": "sha256:6b27ab3ace9ef061c76e3c4bda87943de9f1d31a5dc65f90be00863438da21cd",
+    "lc3_repository_freeze_registry_sha256": "sha256:47f0c6aef0f559897ca5907b1001155dccbbe253aa7b86f0e7fc0c8fd826addb",
+    "main_commit": "7c6cbb6ba4941cf78b2bfec3e6e8955c2830a58b",
+    "main_first_parent": "71e73f56408c720334b8fa03e7133762c8bbcc43",
+    "merge_method": "merge-commit",
+    "pr_number": 122
+  },
+  "status": "bounded_implementation_materialized_execution_closed"
+}

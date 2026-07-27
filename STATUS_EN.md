@@ -960,3 +960,45 @@ runtime_rerun_performed=false
 qwake_next_slice=QW-LC2-repository-freeze-merge
 qwake_post_merge_next_slice=QW-LC3-transition
 ```
+
+## `QW-LC3`: transition materialized
+
+The `QW-LC2` repository freeze completed after merge and independent
+verification of `main` `4f7c533047214398e7ec4dde9d58b5fc06964b90`. Freeze commit
+`3f4310a05de5b7cd3db0cdb5c8f7cf4bbcb09150` remains in the graph, the tree is
+preserved, and the repository receipt and resource contract have their expected
+checksums.
+
+A separate transition receipt, `stage3b-qwake-lc3-transition-v1`, was
+materialized. It limits future `QW-LC3` work to matched shadow validation,
+opaque shared-state identity, RNG restoration, a complete exact-reserve suffix,
+and matched repeat aggregation. Until transition merge, `QW-LC3`, its
+definitions, implementation, and execution remain closed.
+
+```text
+qwake_qw_lc2_repository_freeze_complete=true
+qwake_qw_lc2_complete=true
+qwake_qw_lc3_transition_permitted=true
+qwake_qw_lc3_transition_materialized=true
+qwake_qw_lc3_transition_complete=false
+qwake_qw_lc3_transition_id=stage3b-qwake-lc3-transition-v1
+qwake_qw_lc3_transition_sha256=sha256:c541703f8bc1d449aed88f175b83b9fc03e2574acb5c2be715b157be68733602
+qwake_qw_lc3_open=false
+matched_shadow_validation_protocol_open=false
+opaque_state_ref_definition_open=false
+rng_restoration_protocol_open=false
+exact_reserve_suffix_validation_open=false
+repeat_aggregation_protocol_open=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+runtime_rerun_performed=false
+qwake_next_slice=QW-LC3-transition-merge
+qwake_post_merge_next_slice=QW-LC3-matched-shadow-validation-contract
+```

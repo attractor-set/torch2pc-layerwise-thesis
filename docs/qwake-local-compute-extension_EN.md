@@ -366,3 +366,31 @@ qwake_qw_lc3_transition_permitted=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 18. Transition to `QW-LC3`
+
+After the `QW-LC2` repository freeze was merged into `main`
+`4f7c533047214398e7ec4dde9d58b5fc06964b90` and separately verified, `QW-LC2`
+is complete. The transition receipt limits the next contract to matched shadow
+validation, construction of an opaque shared-state reference, RNG restoration,
+complete exact-reserve suffix validation, and matched repeat aggregation.
+
+The transition does not define snapshot serialization, the RNG inventory, arm
+order, repeat count, tolerances, or pass criteria. It does not open
+implementation, authorization, or execution.
+
+```text
+qwake_qw_lc2_complete=true
+qwake_qw_lc3_transition_materialized=true
+qwake_qw_lc3_transition_complete=false
+qwake_qw_lc3_open=false
+matched_shadow_validation_protocol_open=false
+opaque_state_ref_definition_open=false
+rng_restoration_protocol_open=false
+exact_reserve_suffix_validation_open=false
+repeat_aggregation_protocol_open=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+next_slice=QW-LC3-transition-merge
+post_merge_next_slice=QW-LC3-matched-shadow-validation-contract
+```

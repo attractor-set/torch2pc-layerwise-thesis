@@ -502,3 +502,13 @@ scientific_execution_open=false
 next_slice=QW-LC4-F-authoring-commit
 post_commit_next_slice=QW-LC4-F-runtime-materialization
 ```
+## `QW-LC4-F`: разрешение зафиксировано без исполнения
+
+[ADR-063](decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze.md) связывает
+ограниченную реализацию с точным образом, проверками CPU/ROCm, статической
+квитанцией и одноразовым разрешением. Зафиксированы 14 ячеек рабочей среды,
+168 сопоставленных ячеек и 28 резервных зондов.
+
+Флаг `runtime_execution_permitted=true` внутри разрешения не открывает
+исполнение на ветке фиксации. `QW-LC4-E` разрешается только после слияния и
+независимой проверки `QW-LC4-F`.

@@ -503,3 +503,13 @@ scientific_execution_open=false
 next_slice=QW-LC4-F-authoring-commit
 post_commit_next_slice=QW-LC4-F-runtime-materialization
 ```
+## `QW-LC4-F`: authorization frozen without execution
+
+[ADR-063](decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze_EN.md) binds
+the bounded implementation to the exact image, CPU/ROCm checks, static
+receipt, and one-attempt authorization. The freeze covers 14 runtime cells,
+168 matched cells, and 28 reserve probes.
+
+`runtime_execution_permitted=true` inside authorization does not open
+execution on the freeze branch. `QW-LC4-E` is permitted only after merge and
+independent verification of `QW-LC4-F`.

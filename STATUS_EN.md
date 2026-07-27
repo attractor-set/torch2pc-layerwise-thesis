@@ -1185,3 +1185,31 @@ runtime_rerun_performed=false
 qwake_next_slice=QW-LC4-F-authoring-commit
 qwake_post_commit_next_slice=QW-LC4-F-runtime-materialization
 ```
+## `QW-LC4-F`: runtime freeze materialized
+
+See [ADR-063](docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze_EN.md).
+
+The exact authoring commit is bound to the image, CPU/ROCm checks, the
+22-check static chain, one-attempt authorization, and the ten-file
+`stage3b-qwake-lc4-f-runtime-freeze-v1` package.
+
+Authorization is not execution. Until merge and independent post-merge
+verification, `QW-LC4-F` remains incomplete, `QW-LC4-E` is prohibited, and
+scientific and publication capabilities remain closed.
+
+```text
+qwake_adr=ADR-063-stage3b-qwake-lc4-f-runtime-freeze
+qwake_source_commit=51fc7537fdcb395145fc4c5a38b8918b018fe892
+qwake_image_digest=sha256:a31cf96e20ab45ce29fe18b68eb805bd048a02f1f8107cf680d1c174ea363929
+qwake_preflight_sha256=sha256:3a8d7817338f3b93396270ea8e1b1b2fbda768dbd5461a18f97520948a53a9e6
+qwake_authorization_sha256=sha256:d11b662a5c5eeada5333e69c6fddf2e50726c01b4d8c78a556a68167dbdd301e
+qwake_next_slice=QW-LC4-F-merge
+qwake_post_merge_next_slice=QW-LC4-E
+QW_LC4_F_MATERIALIZED=true
+QW_LC4_F_COMPLETE=false
+QW_LC4_E_BRANCH_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+```

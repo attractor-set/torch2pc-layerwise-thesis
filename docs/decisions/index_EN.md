@@ -87,3 +87,7 @@
 - [ADR-060](ADR-060-stage3b-qwake-lc3-repository-freeze_EN.md): freezes the state after matched shadow-validation contract merge while keeping `QW-LC4-I`, implementation, and execution closed until receipt merge and reverification.
 - [ADR-061](ADR-061-stage3b-qwake-lc4-i-bounded-implementation_EN.md): materializes the bounded FixedPred `eta=1` analytic-completion implementation, exact reserve suffix, opaque-state/RNG controls, response and cost mappers, and synthetic-only matched tests while keeping runtime and scientific execution closed.
 - [ADR-062](ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring_EN.md): materializes the two-phase `QW-LC4-F` authoring slice, frozen runtime request, adapter/preflight/authorization schemas, and sealing boundary while keeping execution and `QW-LC4-E` closed until the actual image and receipts are frozen.
+- [ADR-063](ADR-063-stage3b-qwake-lc4-f-runtime-freeze_EN.md): freezes the
+  exact image, CPU/ROCm checks, static chain, one-attempt authorization, and
+  the ten-file `QW-LC4-F` package while keeping execution and `QW-LC4-E`
+  closed pending merge and revalidation.

@@ -1084,3 +1084,51 @@ runtime_rerun_performed=false
 qwake_next_slice=QW-LC3-repository-freeze-merge
 qwake_post_merge_next_slice=QW-LC4-I
 ```
+
+## `QW-LC4-I`: bounded implementation materialized
+
+The `QW-LC3` repository freeze was merged through PR #122 into `main`
+`7c6cbb6ba4941cf78b2bfec3e6e8955c2830a58b` and independently verified.
+`QW-LC3` is complete. Implementation package
+`stage3b-qwake-lc4-i-bounded-implementation-v1` now binds the bounded
+`FixedPred`, `eta=1` analytic candidate, the complete exact suffix, canonical
+state and RNG controls, the `QW-LC1` response predicate, the `QW-LC2` cost
+mapper, and the balanced twelve-repeat aggregation.
+
+The only executable permit in this slice is synthetic-unit-test-only. The
+module has no CLI, dataset loader, output writer, runtime authorization reader,
+or scientific executor. Its synthetic tests are not engineering or scientific
+evidence and do not establish runtime response equivalence or cost superiority.
+
+```text
+qwake_qw_lc3_repository_freeze_merged=true
+qwake_qw_lc3_repository_freeze_complete=true
+qwake_qw_lc3_complete=true
+qwake_qw_lc4_i_authoring_open=true
+qwake_qw_lc4_i_implementation_materialized=true
+qwake_qw_lc4_i_implementation_id=stage3b-qwake-lc4-i-bounded-implementation-v1
+qwake_qw_lc4_i_implementation_sha256=sha256:4dc7b123e2af3a09d675550e52aff361146a744bcf5b4717b426137d44b88dfa
+qwake_qw_lc4_i_implementation_registry_sha256=sha256:f1ca469d3aeb3fe5c4a90f6bdb068a61444bf9b8eb0efe25b29121821c990894
+qwake_qw_lc4_i_complete=false
+qwake_qw_lc4_f_branch_permitted=false
+qwake_bounded_analytic_candidate_materialized=true
+qwake_complete_exact_suffix_materialized=true
+qwake_opaque_state_ref_implementation_materialized=true
+qwake_rng_restoration_implementation_materialized=true
+qwake_required_response_mapper_materialized=true
+qwake_resource_cost_mapper_materialized=true
+qwake_paired_aggregation_materialized=true
+qwake_synthetic_unit_test_only=true
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+runtime_rerun_performed=false
+qwake_next_slice=QW-LC4-I-merge
+qwake_post_merge_next_slice=QW-LC4-F
+```

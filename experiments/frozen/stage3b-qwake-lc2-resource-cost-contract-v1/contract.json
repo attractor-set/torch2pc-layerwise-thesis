@@ -1,0 +1,391 @@
+{
+  "contract_id": "stage3b-qwake-lc2-resource-cost-contract-v1",
+  "cost_equivalence": {
+    "equivalence_classes_permitted": false,
+    "exact_digest_equality_sufficient_not_required": true,
+    "field_tolerance_classes": {
+      "compute_primary_time_ns": "time_ns",
+      "control_wall_time_ns": "time_ns",
+      "diagnostic_materialized_bytes": "artifact_bytes",
+      "diagnostic_primary_time_ns": "time_ns",
+      "fallback_invoked": "boolean",
+      "fallback_wall_time_ns": "time_ns",
+      "latency_wall_time_ns": "time_ns",
+      "observer_evidence_bytes": "artifact_bytes",
+      "observer_overhead_time_ns": "time_ns",
+      "peak_allocated_bytes": "peak_bytes",
+      "peak_reserved_bytes": "peak_bytes"
+    },
+    "normalized_defect": "d_C=max_k(abs(x_k-y_k)/(atol_k+rtol_k*max(abs(x_k),abs(y_k)))); zero denominator uses exact equality; pass iff d_C<=1",
+    "numeric_rule": "abs(x-y) <= atol_k + rtol_k*max(abs(x),abs(y)) for every active numeric field",
+    "operator_id": "stage3b-qwake-cost-equivalence-v1",
+    "structural_gates": [
+      "same opaque_state_ref",
+      "same lane_profile_id",
+      "same cost_profile_id",
+      "same cost_schema_id",
+      "same field_order",
+      "same active mask and statuses",
+      "complete finite nonnegative numeric fields",
+      "exact required boolean fields"
+    ],
+    "symbol": "a_i ~_C a_j",
+    "tolerance_profiles": {
+      "cpu_float64_engineering": {
+        "artifact_bytes": {
+          "atol": 0,
+          "rtol": 0.0
+        },
+        "boolean": "exact",
+        "peak_bytes": {
+          "atol": 4096,
+          "rtol": 0.02
+        },
+        "time_ns": {
+          "atol": 50000,
+          "rtol": 0.1
+        }
+      },
+      "rocm_float32_canonical": {
+        "artifact_bytes": {
+          "atol": 0,
+          "rtol": 0.0
+        },
+        "boolean": "exact",
+        "peak_bytes": {
+          "atol": 4096,
+          "rtol": 0.01
+        },
+        "time_ns": {
+          "atol": 10000,
+          "rtol": 0.05
+        }
+      }
+    },
+    "transitivity_assumed": false,
+    "zero_safe_rule": "both zero pass; one zero passes only when the nonzero value is within atol_k"
+  },
+  "cost_vector": {
+    "direction": "minimize every active numeric field; false is preferred for fallback_invoked",
+    "field_order": [
+      "compute_primary_time_ns",
+      "latency_wall_time_ns",
+      "peak_allocated_bytes",
+      "peak_reserved_bytes",
+      "diagnostic_primary_time_ns",
+      "diagnostic_materialized_bytes",
+      "observer_overhead_time_ns",
+      "observer_evidence_bytes",
+      "control_wall_time_ns",
+      "fallback_wall_time_ns",
+      "fallback_invoked"
+    ],
+    "implicit_scalarization_forbidden": true,
+    "post_hoc_weights_forbidden": true,
+    "profiles": {
+      "end_to_end_v1": {
+        "active_numeric_fields": [
+          "compute_primary_time_ns",
+          "latency_wall_time_ns",
+          "peak_allocated_bytes",
+          "peak_reserved_bytes",
+          "diagnostic_primary_time_ns",
+          "diagnostic_materialized_bytes",
+          "observer_overhead_time_ns",
+          "observer_evidence_bytes",
+          "control_wall_time_ns",
+          "fallback_wall_time_ns"
+        ],
+        "claim_boundary": "end-to-end decision-facing comparison within one lane profile",
+        "decision_facing": true,
+        "required_exact_fields": [
+          "fallback_invoked"
+        ],
+        "requires_qw_lc3_state_rng_and_fallback_validation": true
+      },
+      "shadow_mechanism_v1": {
+        "active_numeric_fields": [
+          "compute_primary_time_ns",
+          "latency_wall_time_ns",
+          "peak_allocated_bytes",
+          "peak_reserved_bytes",
+          "diagnostic_primary_time_ns",
+          "diagnostic_materialized_bytes",
+          "observer_overhead_time_ns",
+          "observer_evidence_bytes"
+        ],
+        "claim_boundary": "mechanism-level engineering comparison only",
+        "control_status": "not_executed",
+        "decision_facing": false,
+        "fallback_invoked_required_value": false,
+        "required_exact_fields": [
+          "fallback_invoked"
+        ]
+      }
+    },
+    "schema_id": "stage3b-qwake-cost-vector-v1",
+    "symbol": "C(a,s;r,p)"
+  },
+  "deferred_to_qw_lc3": [
+    "matched_shadow_validation",
+    "opaque_state_ref_construction_and_validation",
+    "rng_snapshot_and_restoration",
+    "fallback_suffix_validation",
+    "repeat_order_and_aggregation_protocol"
+  ],
+  "gates": {
+    "cost_equivalence_operator_definition_frozen": true,
+    "feature_collection_permitted": false,
+    "local_compute_execution_open": false,
+    "local_compute_implementation_open": false,
+    "measurement_to_cost_mapping_frozen": true,
+    "oracle_label_generation_open": false,
+    "pareto_and_tie_break_rule_frozen": true,
+    "policy_activation_permitted": false,
+    "publication_permitted": false,
+    "qw_lc2_complete": false,
+    "qw_lc2_open": true,
+    "qw_lc2_resource_cost_contract_frozen": true,
+    "qw_lc2_transition_complete": true,
+    "qw_lc3_transition_permitted": false,
+    "resource_trajectory_schema_frozen": true,
+    "runtime_rerun_performed": false,
+    "scientific_execution_open": false,
+    "scientific_image_freeze_permitted": false,
+    "test_dataset_access": false
+  },
+  "lane_profiles": {
+    "cpu_float64_engineering": {
+      "cross_lane_comparison_permitted": false,
+      "decision_facing": false,
+      "diagnostic_clock": "host_process_time_ns",
+      "latency_clock": "host_monotonic_ns",
+      "memory_sources": [
+        "process_peak_rss_bytes",
+        "process_peak_virtual_bytes"
+      ],
+      "primary_compute_clock": "host_process_time_ns"
+    },
+    "rocm_float32_canonical": {
+      "cross_lane_comparison_permitted": false,
+      "decision_facing": true,
+      "diagnostic_clock": "rocm_event_time_ns",
+      "latency_clock": "host_monotonic_ns",
+      "memory_sources": [
+        "torch_peak_allocated_bytes",
+        "torch_peak_reserved_bytes"
+      ],
+      "primary_compute_clock": "rocm_event_time_ns"
+    }
+  },
+  "measurement_to_cost_mapping": {
+    "field_order": [
+      "compute_primary_time_ns",
+      "latency_wall_time_ns",
+      "peak_allocated_bytes",
+      "peak_reserved_bytes",
+      "diagnostic_primary_time_ns",
+      "diagnostic_materialized_bytes",
+      "observer_overhead_time_ns",
+      "observer_evidence_bytes",
+      "control_wall_time_ns",
+      "fallback_wall_time_ns",
+      "fallback_invoked"
+    ],
+    "field_rules": {
+      "compute_primary_time_ns": "union duration of core_compute intervals on lane profile primary_compute_clock",
+      "control_wall_time_ns": "union duration of control_plane host_monotonic_ns intervals",
+      "diagnostic_materialized_bytes": "sum unique diagnostic artifact sizes by sha256",
+      "diagnostic_primary_time_ns": "union duration of diagnostic_mechanism intervals on lane profile diagnostic_clock",
+      "fallback_invoked": "exact boolean copied from fallback record",
+      "fallback_wall_time_ns": "union duration of fallback host_monotonic_ns intervals",
+      "latency_wall_time_ns": "root_end_ns-root_start_ns; inclusive end-to-end component and never decomposed by summation",
+      "observer_evidence_bytes": "sum unique observer evidence artifact sizes by sha256",
+      "observer_overhead_time_ns": "max(0,instrumented_latency_ns-control_latency_ns) from complete matched calibration",
+      "peak_allocated_bytes": "maximum registered allocated/live-memory source within root interval",
+      "peak_reserved_bytes": "maximum registered reserved/committed-memory source within root interval"
+    },
+    "invalid_mapping_rule": "missing, nonfinite, negative, clock-incompatible, duplicate-owned, or profile-incompatible input yields incomplete cost vector and fail-closed selection",
+    "mapping_id": "stage3b-qwake-measurement-to-cost-v1",
+    "no_double_counting_rules": [
+      "interval union replaces naive duration summation",
+      "each interval has exactly one semantic owner",
+      "latency is an inclusive independent component and is never added to decomposed times",
+      "memory components are maxima and are never summed",
+      "artifact bytes are counted once per owner and sha256",
+      "observer overhead is not subtracted from latency or compute",
+      "no scalar total cost is produced"
+    ],
+    "symbol": "Phi: Gamma -> C"
+  },
+  "next_slice": "QW-LC2-repository-freeze",
+  "resource_trajectory_schema": {
+    "artifact_records": {
+      "aggregation": "sum size_bytes once per distinct sha256 within owner",
+      "allowed_owners": [
+        "diagnostic_mechanism",
+        "observer"
+      ],
+      "duplicate_digest_double_counting_forbidden": true,
+      "required_fields": [
+        "position",
+        "owner",
+        "sha256",
+        "size_bytes",
+        "source"
+      ]
+    },
+    "completeness": {
+      "allowed_statuses": [
+        "measured",
+        "not_executed",
+        "not_applicable",
+        "missing"
+      ],
+      "missing_fails_closed": true,
+      "nonfinite_or_negative_numeric_value_fails_closed": true,
+      "profile_controls_allowed_not_executed_or_not_applicable": true,
+      "trajectory_digest_covers_identity_intervals_memory_artifacts_calibration_and_fallback": true
+    },
+    "fallback_record": {
+      "exact_reserve_path": "LOCAL_SWEEP",
+      "fallback_available_required": true,
+      "invoked_rule": "fallback_completed=true and a complete fallback interval are required",
+      "not_invoked_rule": "fallback_time_ns must equal zero",
+      "required_fields": [
+        "fallback_available",
+        "fallback_invoked",
+        "fallback_completed"
+      ]
+    },
+    "identity_fields": [
+      "trajectory_schema_id",
+      "action_id",
+      "mechanism_id",
+      "opaque_state_ref",
+      "repeat_index",
+      "lane_profile_id",
+      "cost_profile_id",
+      "root_clock_domain",
+      "root_start_ns",
+      "root_end_ns"
+    ],
+    "interval_records": {
+      "attribution_rule": "each interval has exactly one owner; nested or duplicated ownership fails closed",
+      "bounds_rule": "every host interval lies within the root interval; device intervals require registered event-clock provenance",
+      "duration_rule": "union interval length by owner and selected clock domain; overlapping intervals are never summed twice",
+      "lane_order": [
+        "host",
+        "device"
+      ],
+      "ordering": "position is contiguous from zero; records are serialized in position order",
+      "owner_order": [
+        "core_compute",
+        "diagnostic_mechanism",
+        "observer",
+        "control_plane",
+        "fallback"
+      ],
+      "required_fields": [
+        "position",
+        "owner",
+        "lane",
+        "clock_domain",
+        "start_ns",
+        "end_ns",
+        "source",
+        "complete"
+      ]
+    },
+    "memory_records": {
+      "aggregation": "maximum within root interval; peaks are not summed across owners",
+      "metrics": [
+        "peak_allocated_bytes",
+        "peak_reserved_bytes"
+      ],
+      "negative_values_forbidden": true,
+      "required_fields": [
+        "metric",
+        "value_bytes",
+        "source",
+        "complete"
+      ]
+    },
+    "observer_calibration": {
+      "latency_subtraction_forbidden": true,
+      "mapped_overhead_rule": "max(0,raw_residual_ns)",
+      "negative_residual_rule": "retain raw negative residual, set overclosure=true, never treat as negative physical cost",
+      "raw_residual_rule": "instrumented_latency_ns-control_latency_ns",
+      "required_fields": [
+        "pair_id",
+        "instrumented_latency_ns",
+        "control_latency_ns",
+        "raw_residual_ns",
+        "overclosure",
+        "complete"
+      ]
+    },
+    "opaque_state_ref_rule": "required exact-match binding; construction and validation deferred to QW-LC3",
+    "root_interval": {
+      "clock_domain": "host_monotonic_ns",
+      "elapsed_rule": "root_end_ns-root_start_ns",
+      "negative_or_zero_elapsed_fails_closed": true,
+      "start_inclusive_end_exclusive": true
+    },
+    "schema_id": "stage3b-qwake-resource-trajectory-v1",
+    "serialization": {
+      "encoding": "utf-8",
+      "final_newline_required": true,
+      "format": "canonical-json",
+      "key_order": "lexicographic",
+      "nonfinite_json_values_forbidden": true,
+      "sha256_required": true
+    },
+    "symbol": "Gamma(a,s;r,p)"
+  },
+  "schema_version": 1,
+  "selection_rule": {
+    "admissible_set": "A_adm(s)={a:Regret_R(a,s)<=epsilon_R}",
+    "cross_state_or_cross_lane_selection_forbidden": true,
+    "deterministic_ambiguity_resolution": [
+      "prefer fallback_invoked=false",
+      "minimize latency_wall_time_ns",
+      "minimize compute_primary_time_ns",
+      "minimize peak_allocated_bytes",
+      "lexicographically smallest action_id"
+    ],
+    "exact_reserve_path": "LOCAL_SWEEP",
+    "no_admissible_complete_candidate_rule": "select exact reserve path",
+    "pareto_rule": {
+      "dominance": "A is no worse than B within each registered field tolerance and strictly better beyond tolerance on at least one active field",
+      "missing_or_incomplete_vector_fails_closed": true,
+      "name": "registered_tolerance_aware_pareto_v1",
+      "scalarization": null
+    },
+    "response_admission_precedes_cost": true
+  },
+  "semantic_separation": {
+    "computational_mechanism": "M(a)",
+    "cost_equivalence": "a_i ~_C a_j",
+    "cost_equivalence_implies_response_equivalence": false,
+    "cost_vector": "C(a,s;r,p)=Phi(Gamma(a,s;r,p))",
+    "required_result": "R(a,s)",
+    "resource_trajectory": "Gamma(a,s;r,p)",
+    "response_equivalence": "a_i ~_R a_j",
+    "response_equivalence_implies_cost_equivalence": false
+  },
+  "slice": "QW-LC2-resource-cost-contract",
+  "source": {
+    "lc1_repository_freeze_commit": "631f940965058a7ef9071329bf3cdd02f5de8615",
+    "main_commit": "858403cbb2423ad3427ab7a042266880ca34c0b7",
+    "main_first_parent": "9d073bc3c90eeda53ca03d0f7762b65da8749269",
+    "required_response_contract_id": "stage3b-qwake-lc1-required-response-schema-v1",
+    "required_response_contract_sha256": "sha256:c7923249c538b29a34f8ffcfcac987b9925a911eb107a085a166ab1d7ca22992",
+    "required_response_schema_commit": "de2b5a37583b22946073390caa244bee35dd793b",
+    "transition_commit": "9e8f33a5fcf5399dcf834bdedefa5ca404f89fef",
+    "transition_id": "stage3b-qwake-lc2-transition-v1",
+    "transition_receipt_sha256": "sha256:9a7e21fa573aa497e5c85ab92aade9e84e15dc0bd05e18e948ad8fac0194df23",
+    "transition_registry_sha256": "sha256:e5991b9175ebbdc60562a4185e06464d1754d84a12aeb1415ab4e2844395775c"
+  },
+  "status": "resource_cost_contract_frozen_execution_closed"
+}

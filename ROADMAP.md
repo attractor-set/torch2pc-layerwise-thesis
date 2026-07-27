@@ -431,3 +431,17 @@ qwake_qw_lc2_open=false
 next_slice=QW-LC2-transition-merge
 post_merge_next_slice=QW-LC2-resource-cost-contract
 ```
+
+## Этап 28 — `QW-LC2`: контракт ресурсов и стоимости
+
+Состояние: контракт материализован в ветке. `Γ`, `Φ`, `C`, `~C`, профили,
+допуски, Pareto-правило и tie-break зафиксированы. До завершения `QW-LC2`
+требуется отдельная фиксация состояния репозитория. `QW-LC3`, реализация,
+выполнение и научная кампания остаются закрытыми.
+
+```text
+qwake_qw_lc2_resource_cost_contract_frozen=true
+qwake_qw_lc2_complete=false
+qwake_qw_lc3_transition_permitted=false
+next_slice=QW-LC2-repository-freeze
+```

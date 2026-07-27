@@ -308,3 +308,46 @@ cost_equivalence_operator_definition_open=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 16. `QW-LC2` resource and cost contract
+
+Contract `stage3b-qwake-lc2-resource-cost-contract-v1` freezes resource trajectory `Γ(a,s;r,p)` as an
+ordered record of identity, root interval, interval ownership, memory peaks,
+unique artifact bytes, observer calibration, and fallback. `Φ` produces `C`
+in this order:
+
+```text
+compute_primary_time_ns
+latency_wall_time_ns
+peak_allocated_bytes
+peak_reserved_bytes
+diagnostic_primary_time_ns
+diagnostic_materialized_bytes
+observer_overhead_time_ns
+observer_evidence_bytes
+control_wall_time_ns
+fallback_wall_time_ns
+fallback_invoked
+```
+
+Latency remains an independent inclusive component and is not added to
+decomposed times. Intervals are unioned, memory uses maxima, artifact bytes are
+counted once by owner and SHA-256, and observer overhead is not subtracted from
+latency or compute.
+
+`shadow_mechanism_v1` is not decision-facing. Future `end_to_end_v1` requires
+completed `QW-LC3`. `~C` applies only within identical opaque state binding,
+lane profile, and cost profile; transitivity is not assumed. After `~R`
+admission, tolerance-aware Pareto and the registered tie-break apply. A missing
+or incomplete cost vector selects `LOCAL_SWEEP`.
+
+```text
+resource_trajectory_schema_frozen=true
+measurement_to_cost_mapping_frozen=true
+cost_equivalence_operator_definition_frozen=true
+pareto_and_tie_break_rule_frozen=true
+qwake_qw_lc2_complete=false
+qwake_qw_lc3_transition_permitted=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

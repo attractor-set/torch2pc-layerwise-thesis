@@ -925,3 +925,46 @@ publication_permitted=false
 qwake_next_slice=QW-LC2-transition-merge
 qwake_post_merge_next_slice=QW-LC2-resource-cost-contract
 ```
+
+## `QW-LC2`: контракт ресурсов и стоимости материализован
+
+После слияния и независимой проверки перехода на `main` `858403cbb2423ad3427ab7a042266880ca34c0b7`
+материализован контракт `stage3b-qwake-lc2-resource-cost-contract-v1`. Он фиксирует каноническую исходную
+траекторию `Γ(a,s;r,p)`, отображение `Φ` без двойного учёта, 11-полевой `C`,
+инженерный теневой и будущий сквозной профили, покомпонентный `~C`,
+Pareto-правило и детерминированное разрешение неоднозначности.
+
+Сырые интервалы, пики памяти и артефакты остаются отделены от решенческого
+вектора. Сквозная задержка не складывается с декомпозированными временами,
+память не суммируется, а отрицательный остаток калибровки наблюдателя не
+трактуется как отрицательная физическая стоимость. Проверка состояния,
+восстановление ГПСЧ, проверка резервного суффикса, агрегация повторов,
+реализация и выполнение остаются последующими срезами.
+
+```text
+qwake_qw_lc2_transition_complete=true
+qwake_qw_lc2_open=true
+qwake_qw_lc2_resource_cost_contract_frozen=true
+qwake_qw_lc2_contract_id=stage3b-qwake-lc2-resource-cost-contract-v1
+qwake_qw_lc2_contract_sha256=sha256:313dc969ab59db20ee27976d3158fca23ce511801e0dc7700dde0d2d002ab69d
+qwake_qw_lc2_contract_registry_sha256=sha256:61763ad19c968dbad3eef16e5bee3a11d9dbfad74a7bf45dfc2e64cc022cf311
+resource_trajectory_schema_open=false
+resource_trajectory_schema_frozen=true
+measurement_to_cost_mapping_open=false
+measurement_to_cost_mapping_frozen=true
+cost_equivalence_operator_definition_open=false
+cost_equivalence_operator_definition_frozen=true
+pareto_and_tie_break_rule_frozen=true
+qwake_qw_lc2_complete=false
+qwake_qw_lc3_transition_permitted=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+runtime_rerun_performed=false
+qwake_next_slice=QW-LC2-repository-freeze
+```

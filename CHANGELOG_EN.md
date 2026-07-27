@@ -5,6 +5,8 @@
 ## [Unreleased] — B1/B2 preregistration
 ### Added
 
+- froze the `QW-LC2` resource-and-cost contract: canonical `Γ(a,s;r,p)`, no-double-counting `Φ`, an 11-field `C`, engineering shadow and future end-to-end profiles, zero-safe `~C`, a Pareto rule, and deterministic tie-break; `QW-LC3`, implementation, and execution remain closed;
+
 - materialized the `QW-LC2` transition: completed `QW-LC1` is bound to a two-file receipt, the future contract is limited to the `Γ(a,s)` schema, `Φ` mapping, and `~C`, while fields, units, cost, implementation, and execution remain closed pending merge;
 
 - materialized the `QW-LC1` repository freeze: schema commit `de2b5a37583b22946073390caa244bee35dd793b` was verified on `main` `59e3143ba105a5b298e2cd551b221b8f6dae96f7`, a separate two-file receipt was created, and `QW-LC1` completion, transition to `QW-LC2`, resource trajectory, cost, implementation, and execution remain closed pending merge and revalidation;

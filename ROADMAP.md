@@ -445,3 +445,17 @@ qwake_qw_lc2_complete=false
 qwake_qw_lc3_transition_permitted=false
 next_slice=QW-LC2-repository-freeze
 ```
+
+## Этап 29 — `QW-LC2`: фиксация состояния репозитория
+
+Состояние: квитанция материализована в ветке. До её слияния `QW-LC2`
+не завершён и переход к `QW-LC3` запрещён.
+
+```text
+qwake_qw_lc2_repository_freeze_materialized=true
+qwake_qw_lc2_repository_freeze_complete=false
+qwake_qw_lc2_complete=false
+qwake_qw_lc3_transition_permitted=false
+next_slice=QW-LC2-repository-freeze-merge
+post_merge_next_slice=QW-LC3-transition
+```

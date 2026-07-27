@@ -438,3 +438,17 @@ qwake_qw_lc2_complete=false
 qwake_qw_lc3_transition_permitted=false
 next_slice=QW-LC2-repository-freeze
 ```
+
+## Stage 29 — `QW-LC2`: repository freeze
+
+Status: the receipt is materialized on the branch. Until it is merged,
+`QW-LC2` is incomplete and transition to `QW-LC3` is prohibited.
+
+```text
+qwake_qw_lc2_repository_freeze_materialized=true
+qwake_qw_lc2_repository_freeze_complete=false
+qwake_qw_lc2_complete=false
+qwake_qw_lc3_transition_permitted=false
+next_slice=QW-LC2-repository-freeze-merge
+post_merge_next_slice=QW-LC3-transition
+```

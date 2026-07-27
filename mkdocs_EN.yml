@@ -107,6 +107,7 @@ nav:
       - ADR-054 QWake LC1 repository freeze: decisions/ADR-054-stage3b-qwake-lc1-repository-freeze_EN.md
       - ADR-055 QWake LC2 transition: decisions/ADR-055-stage3b-qwake-lc2-transition_EN.md
       - ADR-056 QWake LC2 resource-cost contract: decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract_EN.md
+      - ADR-057 QWake LC2 repository freeze: decisions/ADR-057-stage3b-qwake-lc2-repository-freeze_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

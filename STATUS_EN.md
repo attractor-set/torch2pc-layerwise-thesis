@@ -1292,3 +1292,12 @@ ENGINEERING_EVIDENCE_PRESENT=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+### Execution-control state clarification
+
+This stage specifies only the verifiable rules for a future run. It does not
+create an ownership file, consume the authorization, or invoke model
+computation. A separate implementation must preserve a single exclusive
+attempt, atomic state transitions, immutable inputs, and fail-closed behavior
+for every error. Execution, result production, and evidence publication remain
+forbidden until that implementation passes independent verification.

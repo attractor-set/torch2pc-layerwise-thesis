@@ -1,0 +1,356 @@
+{
+  "claim_boundary": {
+    "forbidden_claims": [
+      "analytic_candidate_response_equivalence_established",
+      "analytic_candidate_cost_superiority_established",
+      "candidate_implementation_correctness_established",
+      "runtime_or_engineering_evidence_exists",
+      "policy_activation_is_safe",
+      "scientific_evidence",
+      "generalization_beyond_registered_domain",
+      "deployment_readiness"
+    ],
+    "permitted_claims": [
+      "matched_shadow_validation_protocol_frozen",
+      "opaque_state_reference_definition_frozen",
+      "rng_restoration_protocol_frozen",
+      "complete_exact_reserve_suffix_validation_frozen",
+      "repeat_order_and_paired_aggregation_protocol_frozen"
+    ]
+  },
+  "contract_id": "stage3b-qwake-lc3-matched-shadow-validation-contract-v1",
+  "gates": {
+    "exact_reserve_suffix_validation_frozen": true,
+    "feature_collection_permitted": false,
+    "local_compute_execution_open": false,
+    "local_compute_implementation_open": false,
+    "matched_shadow_validation_protocol_frozen": true,
+    "opaque_state_ref_definition_frozen": true,
+    "oracle_label_generation_open": false,
+    "policy_activation_permitted": false,
+    "publication_permitted": false,
+    "qw_lc3_complete": false,
+    "qw_lc3_matched_shadow_validation_contract_frozen": true,
+    "qw_lc3_open": true,
+    "qw_lc3_transition_complete": true,
+    "qw_lc4_implementation_permitted": false,
+    "repeat_aggregation_protocol_frozen": true,
+    "rng_restoration_protocol_frozen": true,
+    "runtime_rerun_performed": false,
+    "scientific_execution_open": false,
+    "scientific_image_freeze_permitted": false,
+    "test_dataset_access": false
+  },
+  "matched_shadow_validation": {
+    "admission_order": [
+      "registered_domain_match",
+      "complete_opaque_state_snapshot",
+      "exact_shared_opaque_state_ref",
+      "complete_rng_inventory_and_snapshot",
+      "arm_level_state_and_rng_restoration",
+      "registered_response_equivalence",
+      "complete_resource_trajectory",
+      "complete_exact_reserve_suffix_validation",
+      "balanced_order_effect_gate",
+      "paired_componentwise_aggregation"
+    ],
+    "arm_definitions": {
+      "analytic_candidate": {
+        "action_family": "ANALYTIC_COMPLETION",
+        "action_id": "fixedpred_eta1_wavefront_completion_v1",
+        "must_start_from_disposable_fork": true,
+        "normal_arm_fallback_invoked_required": false
+      },
+      "exact_reference": {
+        "action_family": "LOCAL_SWEEP",
+        "action_id": "complete_suffix_stage2_baseline_v1",
+        "must_execute_complete_registered_suffix": true,
+        "must_start_from_disposable_fork": true
+      }
+    },
+    "comparison_constraints": {
+      "cross_cost_profile_comparison_permitted": false,
+      "cross_lane_comparison_permitted": false,
+      "cross_state_comparison_permitted": false,
+      "same_comparison_profile_id_required": true,
+      "same_cost_profile_id_required": true,
+      "same_lane_profile_id_required": true,
+      "same_opaque_state_ref_required": true,
+      "same_repeat_index_required": true
+    },
+    "cost_rule": {
+      "cost_superiority_required_for_contract_pass": false,
+      "end_to_end_v1_eligible_only_after_all_control_gates_pass": true,
+      "fallback_probe_cost_excluded_from_normal_candidate_aggregation": true,
+      "normal_arms_require_complete_cost_vector": true,
+      "scalar_total_forbidden": true,
+      "selection_or_policy_activation_forbidden": true
+    },
+    "pair_count": 12,
+    "pair_schedule": [
+      {
+        "arm_order": [
+          "exact_reference",
+          "analytic_candidate"
+        ],
+        "repeat_index": 0
+      },
+      {
+        "arm_order": [
+          "analytic_candidate",
+          "exact_reference"
+        ],
+        "repeat_index": 1
+      },
+      {
+        "arm_order": [
+          "exact_reference",
+          "analytic_candidate"
+        ],
+        "repeat_index": 2
+      },
+      {
+        "arm_order": [
+          "analytic_candidate",
+          "exact_reference"
+        ],
+        "repeat_index": 3
+      },
+      {
+        "arm_order": [
+          "exact_reference",
+          "analytic_candidate"
+        ],
+        "repeat_index": 4
+      },
+      {
+        "arm_order": [
+          "analytic_candidate",
+          "exact_reference"
+        ],
+        "repeat_index": 5
+      },
+      {
+        "arm_order": [
+          "exact_reference",
+          "analytic_candidate"
+        ],
+        "repeat_index": 6
+      },
+      {
+        "arm_order": [
+          "analytic_candidate",
+          "exact_reference"
+        ],
+        "repeat_index": 7
+      },
+      {
+        "arm_order": [
+          "exact_reference",
+          "analytic_candidate"
+        ],
+        "repeat_index": 8
+      },
+      {
+        "arm_order": [
+          "analytic_candidate",
+          "exact_reference"
+        ],
+        "repeat_index": 9
+      },
+      {
+        "arm_order": [
+          "exact_reference",
+          "analytic_candidate"
+        ],
+        "repeat_index": 10
+      },
+      {
+        "arm_order": [
+          "analytic_candidate",
+          "exact_reference"
+        ],
+        "repeat_index": 11
+      }
+    ],
+    "pairing_unit": "opaque_state_ref_x_lane_profile_id_x_comparison_profile_id_x_cost_profile_id_x_candidate_index_x_repeat_index",
+    "response_rule": {
+      "all_pairs_must_pass": true,
+      "exact_digest_equality_sufficient_not_required": true,
+      "majority_vote_forbidden": true,
+      "predicate_id": "registered_response_equivalence_v1",
+      "schema_id": "stage3b-qwake-lc1-required-response-schema-v1"
+    },
+    "validation_id": "stage3b-qwake-matched-shadow-validation-v1"
+  },
+  "next_slice": "QW-LC3-repository-freeze",
+  "opaque_state_reference": {
+    "canonical_serialization": {
+      "manifest_character_encoding": "utf-8",
+      "manifest_key_order": "lexicographic",
+      "manifest_media_type": "application/json",
+      "manifest_separators": [
+        ",",
+        ":"
+      ],
+      "manifest_trailing_newline": true,
+      "non_finite_json_numbers_permitted": false,
+      "payload_byte_order": "little_endian",
+      "payload_memory_order": "C_contiguous",
+      "payload_source_dtype_preserved": true
+    },
+    "construction": "opaque_state_ref=sha256(canonical_state_manifest_bytes_with_ordered_payload_sha256_values)",
+    "disposable_fork_rule": "every arm and reserve probe receives a fresh fork from the immutable captured snapshot",
+    "identity_fields": [
+      "state_schema_id",
+      "method",
+      "eta",
+      "architecture",
+      "executor",
+      "decision_epoch",
+      "candidate_index",
+      "reference_suffix_length",
+      "lane_profile_id",
+      "comparison_profile_id",
+      "input_batch_sha256",
+      "target_batch_sha256",
+      "parameter_manifest_sha256",
+      "buffer_manifest_sha256",
+      "belief_state_manifest_sha256",
+      "optional_update_state_manifest_sha256",
+      "runtime_control_manifest_sha256"
+    ],
+    "immutable_source_rule": "captured source snapshot must retain the same opaque_state_ref before and after the complete validation cell",
+    "missing_optional_state_encoding": "explicit not_present status included in canonical manifest",
+    "payload_groups": [
+      "registered_input_batch",
+      "registered_target_batch",
+      "model_parameters",
+      "model_buffers",
+      "decision_epoch_belief_state",
+      "optional_optimizer_or_update_state",
+      "deterministic_runtime_controls"
+    ],
+    "schema_id": "stage3b-qwake-opaque-state-v1",
+    "state_mismatch_rule": "any missing payload, digest mismatch, source mutation, or fork mismatch fails the cell closed"
+  },
+  "paired_aggregation": {
+    "aggregate_id": "stage3b-qwake-paired-aggregation-v1",
+    "boolean_fields": {
+      "fallback_invoked": "exact false for every normal arm",
+      "pair_complete": "logical and over all twelve pairs",
+      "response_passed": "logical and over all twelve pairs"
+    },
+    "cost_numeric_fields": "active numeric fields from the registered QW-LC2 cost profile",
+    "missing_or_excluded_repeat_rule": "fail closed; imputation and repeat exclusion are forbidden",
+    "order_effect_gate": {
+      "action_strata": [
+        "action_executed_first",
+        "action_executed_second"
+      ],
+      "comparison": "componentwise median vectors compared with the registered QW-LC2 field tolerance classes",
+      "pass_rule": "every active field passes within the same lane and cost profile",
+      "purpose": "detect residual order contamination; not a statistical confidence interval"
+    },
+    "paired_delta_direction": "analytic_candidate_minus_exact_reference",
+    "quantile_rule_for_twelve_values": {
+      "median": "mean(sorted[5],sorted[6])",
+      "q1": "mean(sorted[2],sorted[3])",
+      "q3": "mean(sorted[8],sorted[9])"
+    },
+    "reported_per_field": [
+      "median_paired_delta",
+      "q1_paired_delta",
+      "q3_paired_delta",
+      "minimum_paired_delta",
+      "maximum_paired_delta"
+    ],
+    "scalarization_forbidden": true,
+    "statistical_significance_claim_permitted": false
+  },
+  "registered_domain": {
+    "action_family": [
+      "LOCAL_SWEEP",
+      "ANALYTIC_COMPLETION"
+    ],
+    "analytic_candidate_action_id": "fixedpred_eta1_wavefront_completion_v1",
+    "architecture": "lenet_classic",
+    "candidate_indices": "t_in_[0,K_ref]",
+    "canonical_reference_action": "COMPLETE_SUFFIX",
+    "decision_epoch": "after_S_t_before_sweep_t_plus_1",
+    "eta": 1.0,
+    "executor": "stage2_baseline",
+    "generalization_claim": false,
+    "method": "fixedpred"
+  },
+  "reserve_suffix_validation": {
+    "candidate_partial_state_reuse_forbidden": true,
+    "direct_reference_response_digest_match_required": true,
+    "exact_reference_action": "LOCAL_SWEEP",
+    "forced_failure_point": "before analytic candidate mutates its disposable fork",
+    "normal_arm_and_probe_records_must_be_separate": true,
+    "probe_count_per_validation_cell": 2,
+    "probe_positions": [
+      "before_repeat_0",
+      "after_repeat_11"
+    ],
+    "required_trace_fields": [
+      "opaque_state_ref",
+      "candidate_index",
+      "expected_suffix_indices",
+      "completed_suffix_indices",
+      "no_skipped_indices",
+      "no_duplicate_indices",
+      "fallback_available",
+      "fallback_invoked",
+      "fallback_completed",
+      "fallback_response_sha256",
+      "direct_reference_response_sha256",
+      "rng_post_sha256"
+    ],
+    "response_rule": "fallback and direct exact reference canonical_response_sha256 must match exactly",
+    "suffix_rule": "completed_suffix_indices must exactly equal the ordered registered suffix from candidate_index+1 through K_ref",
+    "validation_id": "stage3b-qwake-complete-exact-reserve-suffix-v1"
+  },
+  "rng_restoration": {
+    "arm_rule": "restore the same pre-pair RNG snapshot immediately before every arm and reserve probe",
+    "canonical_inventory": {
+      "cpu_float64_engineering": [
+        "python_random_global",
+        "numpy_legacy_global",
+        "torch_cpu_default_generator"
+      ],
+      "rocm_float32_canonical": [
+        "python_random_global",
+        "numpy_legacy_global",
+        "torch_cpu_default_generator",
+        "torch_rocm_all_visible_device_generators"
+      ]
+    },
+    "custom_generator_rule": "every reachable non-default generator must be explicitly registered, snapshotted, restored, and hashed",
+    "inventory_completeness_rule": "unregistered or unreadable randomness source fails the cell closed",
+    "outer_process_non_interference": "restore the captured pre-cell RNG snapshot after the validation cell",
+    "pair_post_state_rule": "candidate and reference post-arm RNG inventory digests must match exactly within every repeat",
+    "snapshot_digest": "sha256 over ordered generator_id, state_encoding, state_sha256 records",
+    "snapshot_id": "stage3b-qwake-rng-snapshot-v1",
+    "snapshot_timing": "after opaque state capture and before the first reserve probe or matched arm"
+  },
+  "slice": "QW-LC3-matched-shadow-validation-contract",
+  "source": {
+    "lc1_contract_id": "stage3b-qwake-lc1-required-response-schema-v1",
+    "lc1_contract_registry_sha256": "sha256:4a5dca3848bd8ffb0f70013fb5c42a6f6427dd0e1752eb950f5332207b8e269f",
+    "lc1_contract_sha256": "sha256:c7923249c538b29a34f8ffcfcac987b9925a911eb107a085a166ab1d7ca22992",
+    "lc2_contract_id": "stage3b-qwake-lc2-resource-cost-contract-v1",
+    "lc2_contract_registry_sha256": "sha256:61763ad19c968dbad3eef16e5bee3a11d9dbfad74a7bf45dfc2e64cc022cf311",
+    "lc2_contract_sha256": "sha256:313dc969ab59db20ee27976d3158fca23ce511801e0dc7700dde0d2d002ab69d",
+    "main_commit": "a7e0c4ec1978042d68abc7437e3005e4295e75ff",
+    "main_first_parent": "4f7c533047214398e7ec4dde9d58b5fc06964b90",
+    "merge_method": "merge-commit",
+    "pr_number": 120,
+    "transition_commit": "a8993e3a996317eeb44270ee37e0e879537d5d65",
+    "transition_id": "stage3b-qwake-lc3-transition-v1",
+    "transition_receipt_sha256": "sha256:c541703f8bc1d449aed88f175b83b9fc03e2574acb5c2be715b157be68733602",
+    "transition_registry_sha256": "sha256:715ed365105aa86d165b8d4911a7a16766972c19f637e78b424398283e34663d"
+  },
+  "status": "matched_shadow_validation_contract_frozen_execution_closed"
+}

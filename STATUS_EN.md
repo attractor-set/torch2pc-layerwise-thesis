@@ -1002,3 +1002,44 @@ runtime_rerun_performed=false
 qwake_next_slice=QW-LC3-transition-merge
 qwake_post_merge_next_slice=QW-LC3-matched-shadow-validation-contract
 ```
+
+## `QW-LC3`: matched shadow-validation contract materialized
+
+After the PR #120 transition merge into `main`
+`a7e0c4ec1978042d68abc7437e3005e4295e75ff` was independently verified,
+contract `stage3b-qwake-lc3-matched-shadow-validation-contract-v1` was
+materialized. It freezes a canonical opaque shared-state reference, complete
+RNG inventory and restoration, twelve balanced matched repeats, two forced
+complete exact-reserve suffix probes, componentwise cost aggregation, and a
+separate order-effect gate.
+
+Every arm and reserve probe starts from a fresh disposable fork of one immutable
+snapshot. `~R` must pass for all twelve pairs; repeat exclusion, majority voting,
+and cost scalarization are forbidden. The contract contains no implementation
+and reports no empirical result.
+
+```text
+qwake_qw_lc3_transition_complete=true
+qwake_qw_lc3_open=true
+qwake_qw_lc3_matched_shadow_validation_contract_frozen=true
+qwake_qw_lc3_contract_id=stage3b-qwake-lc3-matched-shadow-validation-contract-v1
+qwake_qw_lc3_contract_sha256=sha256:e1512f29b3e3e3882001172df360e895e6e628b8ea8e4103b9574990775dd5d8
+qwake_qw_lc3_contract_registry_sha256=sha256:2b001f3002add8d55ce75b02b1caba6bd3c655d177aeb02fe09026e2054dcef1
+matched_shadow_validation_protocol_frozen=true
+opaque_state_ref_definition_frozen=true
+rng_restoration_protocol_frozen=true
+exact_reserve_suffix_validation_frozen=true
+repeat_aggregation_protocol_frozen=true
+qwake_qw_lc3_complete=false
+qwake_qw_lc4_implementation_permitted=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+runtime_rerun_performed=false
+qwake_next_slice=QW-LC3-repository-freeze
+```

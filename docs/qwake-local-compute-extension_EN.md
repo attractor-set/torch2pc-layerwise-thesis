@@ -351,3 +351,18 @@ qwake_qw_lc3_transition_permitted=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 17. `QW-LC2` repository freeze
+
+The receipt binds `stage3b-qwake-lc2-resource-cost-contract-v1` to merge commit `8f24229bcf19736086fe6f0340bda26dd533936a`, first parent
+`858403cbb2423ad3427ab7a042266880ca34c0b7`, and contract commit `3f1682765089b0819dcaaf9bb449c4c1bd155142`. It confirms
+preservation of `Γ`, `Φ`, `C`, `~C`, profiles, and rules, but contains no
+implementation and permits no execution.
+
+```text
+qwake_qw_lc2_repository_freeze_materialized=true
+qwake_qw_lc2_repository_freeze_complete=false
+qwake_qw_lc3_transition_permitted=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

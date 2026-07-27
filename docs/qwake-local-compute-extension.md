@@ -347,3 +347,18 @@ qwake_qw_lc3_transition_permitted=false
 local_compute_implementation_open=false
 local_compute_execution_open=false
 ```
+
+## 17. Фиксация состояния репозитория `QW-LC2`
+
+Квитанция связывает `stage3b-qwake-lc2-resource-cost-contract-v1` с коммитом слияния `8f24229bcf19736086fe6f0340bda26dd533936a`, первым
+родителем `858403cbb2423ad3427ab7a042266880ca34c0b7` и коммитом контракта `3f1682765089b0819dcaaf9bb449c4c1bd155142`.
+Она подтверждает сохранение `Γ`, `Φ`, `C`, `~C`, профилей и правил, но не
+содержит реализации и не разрешает выполнение.
+
+```text
+qwake_qw_lc2_repository_freeze_materialized=true
+qwake_qw_lc2_repository_freeze_complete=false
+qwake_qw_lc3_transition_permitted=false
+local_compute_implementation_open=false
+local_compute_execution_open=false
+```

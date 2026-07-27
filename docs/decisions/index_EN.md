@@ -80,3 +80,5 @@
 - [ADR-054](ADR-054-stage3b-qwake-lc1-repository-freeze_EN.md): records the `QW-LC1` schema state on `main`, materializes a separate receipt, and keeps `QW-LC1` completion, transition to `QW-LC2`, [resource trajectory](../glossary_EN.md#term-resource-trajectory), cost, implementation, and execution closed pending merge and revalidation.
 - [ADR-055](ADR-055-stage3b-qwake-lc2-transition_EN.md): materializes the transition from completed `QW-LC1` to design of `Γ`, `Φ`, `C`, and `~C`, while keeping fields, cost, code, and execution closed pending merge.
 - [ADR-056](ADR-056-stage3b-qwake-lc2-resource-cost-contract_EN.md): freezes canonical `Γ`, no-double-counting `Φ`, an 11-field `C`, profiles, tolerances, `~C`, Pareto, and tie-break while keeping `QW-LC3`, implementation, and execution closed.
+
+- [ADR-057](ADR-057-stage3b-qwake-lc2-repository-freeze_EN.md): freezes state after the resource-cost contract merge while keeping `QW-LC3`, implementation, and execution closed.

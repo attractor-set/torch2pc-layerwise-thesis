@@ -1266,3 +1266,23 @@ RUNTIME_EXECUTION_PERFORMED=false
 ENGINEERING_EVIDENCE_PRESENT=false
 SCIENTIFIC_EXECUTION_OPEN=false
 ```
+## `QW-LC4-E`: авторинг допуска материализован
+
+См. [ADR-064](docs/decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring.md).
+
+Добавлены чистая схема и валидатор будущего одноразового допуска. Они проверяют
+точный пакет `QW-LC4-F`, подтверждение оператора и отсутствие каталога
+результатов и файла владения. Исполнитель модели и запись допуска отсутствуют.
+
+```text
+qwake_adr=ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring
+QW_LC4_F_COMPLETE=true
+QW_LC4_E_BRANCH_OPEN=true
+EXECUTION_ADMISSION_IMPLEMENTED=true
+EXECUTION_ADMISSION_ISSUED=false
+QW_LC4_E_EXECUTION_PERMITTED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

@@ -91,3 +91,6 @@
   exact image, CPU/ROCm checks, static chain, one-attempt authorization, and
   the ten-file `QW-LC4-F` package while keeping execution and `QW-LC4-E`
   closed pending merge and revalidation.
+- [ADR-064](ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring_EN.md):
+  introduces a separate fail-closed `QW-LC4-E` admission schema without
+  creating an admission record, lease, result root, or executor.

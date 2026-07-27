@@ -1213,3 +1213,23 @@ RUNTIME_EXECUTION_PERFORMED=false
 ENGINEERING_EVIDENCE_PRESENT=false
 SCIENTIFIC_EXECUTION_OPEN=false
 ```
+## `QW-LC4-E`: admission authoring materialized
+
+See [ADR-064](docs/decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring_EN.md).
+
+A pure schema and validator for a future one-attempt admission were added.
+They verify the exact `QW-LC4-F` package, operator acknowledgement, and absence
+of the result root and lease. No model executor or admission record exists.
+
+```text
+qwake_adr=ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring
+QW_LC4_F_COMPLETE=true
+QW_LC4_E_BRANCH_OPEN=true
+EXECUTION_ADMISSION_IMPLEMENTED=true
+EXECUTION_ADMISSION_ISSUED=false
+QW_LC4_E_EXECUTION_PERMITTED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

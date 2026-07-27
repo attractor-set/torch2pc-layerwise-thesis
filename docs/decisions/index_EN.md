@@ -97,3 +97,6 @@
 - [ADR-065](ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze_EN.md):
   freezes one concrete `QW-LC4-E` admission while keeping the branch-level
   gate, lease, executor, results, and publication closed.
+- [ADR-066](ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring_EN.md):
+  introduces a prospective one-attempt lease and future execution-wrapper
+  contract while keeping writers, executors, results, and execution closed.

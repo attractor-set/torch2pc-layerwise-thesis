@@ -1317,3 +1317,31 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+## `QW-LC4-E`: проектирование владения и исполняющей обёртки
+
+См. [ADR-066](docs/decisions/ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring.md).
+
+Срез проверяет слитую запись допуска, предварительную одноразовую запись
+владения и будущий контракт исполняющей обёртки только в памяти. Программы
+записи владения и результатов и исполнитель рабочей среды отсутствуют.
+
+```text
+qwake_adr=ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring
+qwake_lease_test_vector_sha256=sha256:66961a641d7f9cc9b7b2f958c432a492c1ada171056b827136171dd0df2b355a
+qwake_wrapper_contract_test_vector_sha256=sha256:0ff0cf0b0f23bf21d65567079212e5bad04e16e257815143d3f581664fa4dbf0
+ADMISSION_FREEZE_MERGED=true
+EXECUTION_LEASE_WRAPPER_AUTHORING_BRANCH_OPEN=true
+EXECUTION_LEASE_SCHEMA_IMPLEMENTED=true
+EXECUTION_WRAPPER_CONTRACT_IMPLEMENTED=true
+EXECUTION_LEASE_MATERIALIZED=false
+EXECUTION_LEASE_WRITER_PRESENT=false
+RUNTIME_EXECUTOR_PRESENT=false
+RESULT_WRITER_PRESENT=false
+QW_LC4_E_EXECUTION_PERMITTED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

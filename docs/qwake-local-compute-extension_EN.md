@@ -525,3 +525,9 @@ execution lease or executor exists.
 freezes an admission record bound to `main` `bce821dff0729629db0ccb306d8f3fd1dd9a2e13`. Its one-attempt
 permission does not open the branch-level execution gate. No lease, executor,
 results, or evidence exists.
+## `QW-LC4-E`: lease and wrapper contract authoring
+
+[ADR-066](decisions/ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring_EN.md)
+introduces a prospective one-attempt lease and wrapper effect contract. Both
+objects exist only in memory; no lease file, executor, output root, or evidence
+exists.

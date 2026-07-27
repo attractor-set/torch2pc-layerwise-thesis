@@ -1,0 +1,10 @@
+COMMAND=python scripts/verify_stage3b_qwake_lc4_execution_admission.py --project-root . --admission experiments/frozen/stage3b-qwake-lc4-e-execution-admission-freeze-v1/admission.json --control-plane-commit bce821dff0729629db0ccb306d8f3fd1dd9a2e13
+EXIT_STATUS=0
+ADMISSION_VERIFIED=true
+RUNTIME_EXECUTION_PERMITTED=true
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false

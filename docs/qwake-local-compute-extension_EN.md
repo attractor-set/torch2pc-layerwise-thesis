@@ -519,3 +519,9 @@ independent verification of `QW-LC4-F`.
 separates frozen authorization, verified control-plane admission, and actual
 execution start. This slice materializes only the schema and validator; no
 execution lease or executor exists.
+## `QW-LC4-E`: concrete admission freeze
+
+[ADR-065](decisions/ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze_EN.md)
+freezes an admission record bound to `main` `bce821dff0729629db0ccb306d8f3fd1dd9a2e13`. Its one-attempt
+permission does not open the branch-level execution gate. No lease, executor,
+results, or evidence exists.

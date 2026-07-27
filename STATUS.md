@@ -1179,3 +1179,62 @@ runtime_rerun_performed=false
 qwake_next_slice=QW-LC4-I-merge
 qwake_post_merge_next_slice=QW-LC4-F
 ```
+
+## `QW-LC4-F`: authoring рабочей фиксации материализован
+
+Ограниченная реализация `QW-LC4-I` слита через PR №123 в `main`
+`c9f3dadcd5330887584b8bf71d906c667dacf076` и независимо проверена. Authoring
+пакет `stage3b-qwake-lc4-f-runtime-freeze-authoring-v1` материализует runtime
+frontier adapter, deny-all preflight, точную схему одной инженерной
+authorization и sealing boundary без runtime executor.
+
+Отдельный запрос фиксирует две полосы, индексы кандидата `0..6`, двенадцать
+повторов на каждую комбинацию и два точных reserve probes. Матрица содержит 14
+runtime cells, 168 matched-pair cells и 28 reserve probes. Ничего из этого в
+текущем срезе не выполнялось.
+
+Фактический image digest ещё не зафиксирован: сначала authoring-срез должен быть
+закоммичен, затем образ должен быть построен из этого точного коммита. Поэтому
+сам runtime-freeze и `QW-LC4-E` остаются закрыты.
+
+```text
+qwake_qw_lc4_i_merged=true
+qwake_qw_lc4_i_complete=true
+qwake_qw_lc4_i_merge_commit=c9f3dadcd5330887584b8bf71d906c667dacf076
+qwake_qw_lc4_f_authoring_open=true
+qwake_qw_lc4_f_authoring_materialized=true
+qwake_qw_lc4_f_authoring_id=stage3b-qwake-lc4-f-runtime-freeze-authoring-v1
+qwake_qw_lc4_f_authoring_sha256=sha256:c0a11996708b091e737a0bfa60e2a000f65b9e9f0971e8c3041838f25922860a
+qwake_qw_lc4_f_authoring_registry_sha256=sha256:a59af6fe70612277ceaecba9a86a2dc49dcb2612154993d9c7cc10d8c3bcb7f4
+qwake_qw_lc4_f_request_frozen=true
+qwake_qw_lc4_f_request_id=stage3b-qwake-lc4-f-runtime-freeze-request-v1
+qwake_qw_lc4_f_request_sha256=sha256:bc4e36f9265837dc0a36f0eca039b057a5113c4ef872f72e1698db5bc4930506
+qwake_qw_lc4_f_request_registry_sha256=sha256:0a58be97a03c7283cf1b46e5815e7ca58271b4b61a29cd53566fa6d7600212ea
+qwake_qw_lc4_f_runtime_module_sha256=sha256:003759e0eac5062e34b0ead1f24c1e1babb09f096023539ac3303a2af9957a7c
+qwake_qw_lc4_f_adapter_registry_sha256=sha256:40397474de6c97663ac44c718d4c52846a4ba077bc5343a0d10114afd576bbde
+qwake_qw_lc4_f_runtime_cell_count=14
+qwake_qw_lc4_f_matched_pair_count=168
+qwake_qw_lc4_f_reserve_probe_count=28
+qwake_qw_lc4_f_materialized=false
+qwake_qw_lc4_f_complete=false
+qwake_qw_lc4_e_branch_permitted=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+qwake_scientific_image_freeze_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+runtime_rerun_performed=false
+qwake_next_slice=QW-LC4-F-authoring-commit
+qwake_post_commit_next_slice=QW-LC4-F-runtime-materialization
+```
+
+Текущее состояние является только подготовкой проверяемой рабочей границы.
+Оно не подтверждает результат вычисления и не создаёт эмпирического
+свидетельства. Переход к следующему действию допустим лишь после отдельной
+проверки неизменяемого исходного коммита, образа, внешнего checkout и полного
+набора квитанций. Любой преждевременный запуск должен завершаться отказом и не
+может учитываться в исследовании.

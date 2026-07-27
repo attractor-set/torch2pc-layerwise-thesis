@@ -470,3 +470,35 @@ scientific_execution_open=false
 next_slice=QW-LC4-I-merge
 post_merge_next_slice=QW-LC4-F
 ```
+
+## 22. Авторинг фиксации рабочей среды `QW-LC4-F`
+
+После слияния `QW-LC4-I` через PR №123 в `main`
+`c9f3dadcd5330887584b8bf71d906c667dacf076` материализован слой авторинга
+фиксации рабочей среды. Он добавляет адаптер уже захваченного состояния
+FixedPred, запрещающий все возможности `preflight`, точную схему одной
+инженерной `authorization` и процедуру фиксации без исполнителя рабочей среды.
+
+Запрос фиксирует две полосы, семь индексов кандидата, двенадцать повторов на
+каждую комбинацию и два резервных зонда. Это 14 ячеек рабочей среды, 168
+сопоставленных пар и 28 резервных зондов. Ни одна ячейка не выполняется в
+срезе авторинга.
+
+Фиксация разделена на две фазы, потому что хэш образа должен принадлежать
+коммиту, содержащему сам адаптер и код допуска. Сначала код авторинга должен
+быть проверен и закоммичен; затем из этого коммита строится неизменяемый образ
+и материализуются фактические объекты `preflight`, `authorization` и квитанции
+проверки.
+
+```text
+qw_lc4_i_complete=true
+qw_lc4_f_authoring_materialized=true
+qw_lc4_f_request_frozen=true
+qw_lc4_f_materialized=false
+qw_lc4_e_branch_permitted=false
+local_compute_execution_open=false
+runtime_execution_performed=false
+scientific_execution_open=false
+next_slice=QW-LC4-F-authoring-commit
+post_commit_next_slice=QW-LC4-F-runtime-materialization
+```

@@ -94,3 +94,6 @@
 - [ADR-064](ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring_EN.md):
   introduces a separate fail-closed `QW-LC4-E` admission schema without
   creating an admission record, lease, result root, or executor.
+- [ADR-065](ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze_EN.md):
+  freezes one concrete `QW-LC4-E` admission while keeping the branch-level
+  gate, lease, executor, results, and publication closed.

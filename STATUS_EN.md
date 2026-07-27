@@ -1233,3 +1233,34 @@ RUNTIME_EXECUTION_PERFORMED=false
 ENGINEERING_EVIDENCE_PRESENT=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+## `QW-LC4-E`: concrete admission frozen
+
+See [ADR-065](docs/decisions/ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze_EN.md).
+
+The five-file package is bound to `main` `bce821dff0729629db0ccb306d8f3fd1dd9a2e13`. The admission permits one
+engineering attempt, but no lease, executor, or result root exists. The
+branch-level execution gate remains closed.
+
+```text
+qwake_adr=ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze
+qwake_admission_sha256=sha256:d1ee6d022588f0a2cf0ac23f3bf8de9b27f9aad4fc1153435bd70e1ab83e296c
+qwake_admission_file_sha256=sha256:d819f8a7e03314242c0072e2d020a59fbe6b7f6984fda99ff0dcd306cc97ca70
+qwake_admission_receipt_sha256=sha256:d4b9d33117cbf522b1c62173c7a81f9638cde703eb6b3bbb392ff46e45a17c25
+qwake_admission_package_registry_sha256=sha256:411f3e8d62b367755a6f02070ad84bc6f37cfefad602d885674a844b57aa74cd
+QW_LC4_E_AUTHORING_MERGED=true
+ADMISSION_FREEZE_BRANCH_OPEN=true
+ADMISSION_FREEZE_MATERIALIZED=true
+EXECUTION_ADMISSION_ISSUED=true
+ADMISSION_RECORD_RUNTIME_EXECUTION_PERMITTED=true
+QW_LC4_E_EXECUTION_PERMITTED=false
+AUTHORIZATION_CONSUMED=false
+EXECUTION_LEASE_PRESENT=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

@@ -164,3 +164,4 @@ docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation.md,docs/decisi
 docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring.md,docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring_EN.md,required
 docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze.md,docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze_EN.md,required
 docs/decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring.md,docs/decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring_EN.md,required
+docs/decisions/ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze.md,docs/decisions/ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze_EN.md,required

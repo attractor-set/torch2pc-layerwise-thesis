@@ -1088,3 +1088,44 @@ publication_permitted=false
 runtime_rerun_performed=false
 qwake_next_slice=QW-LC3-repository-freeze
 ```
+
+## `QW-LC3`: фиксация состояния репозитория материализована
+
+Контракт `stage3b-qwake-lc3-matched-shadow-validation-contract-v1` слит через PR №121 в
+`main` `71e73f56408c720334b8fa03e7133762c8bbcc43` и независимо проверен. Квитанция
+`stage3b-qwake-lc3-repository-freeze-v1` связывает это состояние с коммитом
+контракта `fb3f1cd4a4d3b4261db1179badcc1ccacddfe936` и его контрольными суммами.
+
+До слияния квитанции `QW-LC3` незавершён, а `QW-LC4-I`, реализация и
+выполнение закрыты.
+Фиксация подтверждает только целостность уже принятого описания проверки. Она не подтверждает корректность будущего алгоритма, равенство результатов, снижение стоимости или готовность к научному запуску.
+Проверяемое состояние остаётся подготовительным: оно сохраняет происхождение решений, исключает скрытое расширение области и требует отдельного допуска для каждого последующего шага. Любое вычисление до такого допуска считается запрещённым и не может использоваться как результат исследования.
+
+```text
+qwake_qw_lc3_matched_shadow_validation_contract_merged=true
+qwake_qw_lc3_matched_shadow_validation_contract_complete=true
+qwake_qw_lc3_contract_id=stage3b-qwake-lc3-matched-shadow-validation-contract-v1
+qwake_qw_lc3_contract_sha256=sha256:e1512f29b3e3e3882001172df360e895e6e628b8ea8e4103b9574990775dd5d8
+qwake_qw_lc3_repository_main_commit=71e73f56408c720334b8fa03e7133762c8bbcc43
+qwake_qw_lc3_contract_commit=fb3f1cd4a4d3b4261db1179badcc1ccacddfe936
+qwake_qw_lc3_repository_freeze_materialized=true
+qwake_qw_lc3_repository_freeze_complete=false
+qwake_qw_lc3_complete=false
+qwake_qw_lc4_implementation_permitted=false
+matched_shadow_validation_protocol_frozen=true
+opaque_state_ref_definition_frozen=true
+rng_restoration_protocol_frozen=true
+exact_reserve_suffix_validation_frozen=true
+repeat_aggregation_protocol_frozen=true
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+feature_collection_permitted=false
+oracle_label_generation_open=false
+policy_activation_permitted=false
+scientific_execution_open=false
+test_dataset_access=false
+publication_permitted=false
+runtime_rerun_performed=false
+qwake_next_slice=QW-LC3-repository-freeze-merge
+qwake_post_merge_next_slice=QW-LC4-I
+```

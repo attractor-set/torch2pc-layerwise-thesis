@@ -427,3 +427,21 @@ local_compute_implementation_open=false
 local_compute_execution_open=false
 next_slice=QW-LC3-repository-freeze
 ```
+
+## 20. `QW-LC3` repository freeze
+
+After contract merge through PR #121 into `main` `71e73f56408c720334b8fa03e7133762c8bbcc43`, a separate
+receipt binds the verified tree to contract commit `fb3f1cd4a4d3b4261db1179badcc1ccacddfe936`, the
+`QW-LC3` transition, and their checksums. Receipt materialization does not
+complete `QW-LC3` before its own merge and reverification.
+
+```text
+qwake_qw_lc3_repository_freeze_materialized=true
+qwake_qw_lc3_repository_freeze_complete=false
+qwake_qw_lc3_complete=false
+qwake_qw_lc4_implementation_permitted=false
+qwake_local_compute_implementation_open=false
+qwake_local_compute_execution_open=false
+qwake_next_slice=QW-LC3-repository-freeze-merge
+qwake_post_merge_next_slice=QW-LC4-I
+```

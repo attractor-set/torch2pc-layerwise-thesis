@@ -161,3 +161,5 @@ docs/decisions/ADR-058-stage3b-qwake-lc3-transition.md,docs/decisions/ADR-058-st
 docs/decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract.md,docs/decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract_EN.md,required
 docs/decisions/ADR-060-stage3b-qwake-lc3-repository-freeze.md,docs/decisions/ADR-060-stage3b-qwake-lc3-repository-freeze_EN.md,required
 docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation.md,docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation_EN.md,required
+docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring.md,docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring_EN.md,required
+docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze.md,docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze_EN.md,required

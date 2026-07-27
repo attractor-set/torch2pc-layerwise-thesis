@@ -1,0 +1,1403 @@
+
+=== CHECK source_commit ===
+CHECK_ID=source_commit
+CHECK_STATUS=0
+
+=== CHECK source_cleanliness_before ===
+CHECK_ID=source_cleanliness_before
+CHECK_STATUS=0
+
+=== CHECK torch2pc_identity ===
+CHECK_ID=torch2pc_identity
+CHECK_STATUS=0
+
+=== CHECK torch2pc_cleanliness_before ===
+CHECK_ID=torch2pc_cleanliness_before
+CHECK_STATUS=0
+
+=== CHECK image_source_identity ===
+CHECK_ID=image_source_identity
+CHECK_STATUS=0
+
+=== CHECK pip_check ===
+No broken requirements found.
+CHECK_ID=pip_check
+CHECK_STATUS=0
+
+=== CHECK git_diff_check ===
+CHECK_ID=git_diff_check
+CHECK_STATUS=0
+
+=== CHECK ruff_source_scripts_tests ===
+All checks passed!
+CHECK_ID=ruff_source_scripts_tests
+CHECK_STATUS=0
+
+=== CHECK mypy_source ===
+Success: no issues found in 92 source files
+CHECK_ID=mypy_source
+CHECK_STATUS=0
+
+=== CHECK epistemic_language ===
+{
+  "status": "ok",
+  "checked_sources": 464,
+  "findings": []
+}
+CHECK_ID=epistemic_language
+CHECK_STATUS=0
+
+=== CHECK glossary_usage ===
+{
+  "status": "ok",
+  "glossary_terms": 117,
+  "scanned_documents": 220,
+  "linked_first_uses": 1133,
+  "errors": []
+}
+CHECK_ID=glossary_usage
+CHECK_STATUS=0
+
+=== CHECK language_structure ===
+{
+  "status": "ok",
+  "pairs": 162,
+  "errors": [],
+  "records": [
+    {
+      "russian": "README.md",
+      "english": "README_EN.md",
+      "russian_cyrillic_ratio": 0.5309,
+      "english_latin_ratio": 0.9992
+    },
+    {
+      "russian": "STATUS.md",
+      "english": "STATUS_EN.md",
+      "russian_cyrillic_ratio": 0.3538,
+      "english_latin_ratio": 0.9997
+    },
+    {
+      "russian": "ROADMAP.md",
+      "english": "ROADMAP_EN.md",
+      "russian_cyrillic_ratio": 0.4667,
+      "english_latin_ratio": 0.9991
+    },
+    {
+      "russian": "CHANGELOG.md",
+      "english": "CHANGELOG_EN.md",
+      "russian_cyrillic_ratio": 0.6719,
+      "english_latin_ratio": 0.9991
+    },
+    {
+      "russian": "CONTRIBUTING.md",
+      "english": "CONTRIBUTING_EN.md",
+      "russian_cyrillic_ratio": 0.7991,
+      "english_latin_ratio": 0.9709
+    },
+    {
+      "russian": "SECURITY.md",
+      "english": "SECURITY_EN.md",
+      "russian_cyrillic_ratio": 0.8197,
+      "english_latin_ratio": 0.9602
+    },
+    {
+      "russian": "CODE_OF_CONDUCT.md",
+      "english": "CODE_OF_CONDUCT_EN.md",
+      "russian_cyrillic_ratio": 0.8361,
+      "english_latin_ratio": 0.9427
+    },
+    {
+      "russian": "LANGUAGE_POLICY.md",
+      "english": "LANGUAGE_POLICY_EN.md",
+      "russian_cyrillic_ratio": 0.8595,
+      "english_latin_ratio": 0.9952
+    },
+    {
+      "russian": "docs/glossary.md",
+      "english": "docs/glossary_EN.md",
+      "russian_cyrillic_ratio": 0.786,
+      "english_latin_ratio": 0.9365
+    },
+    {
+      "russian": "RESEARCH_PRINCIPLES.md",
+      "english": "RESEARCH_PRINCIPLES_EN.md",
+      "russian_cyrillic_ratio": 0.9266,
+      "english_latin_ratio": 0.9867
+    },
+    {
+      "russian": "HYPOTHESES.md",
+      "english": "HYPOTHESES_EN.md",
+      "russian_cyrillic_ratio": 0.7628,
+      "english_latin_ratio": 0.9977
+    },
+    {
+      "russian": "PREREGISTRATION.md",
+      "english": "PREREGISTRATION_EN.md",
+      "russian_cyrillic_ratio": 0.6972,
+      "english_latin_ratio": 0.9979
+    },
+    {
+      "russian": "PROJECT_STRUCTURE.md",
+      "english": "PROJECT_STRUCTURE_EN.md",
+      "russian_cyrillic_ratio": 0.4515,
+      "english_latin_ratio": 0.9941
+    },
+    {
+      "russian": "FIRST_COMMIT.md",
+      "english": "FIRST_COMMIT_EN.md",
+      "russian_cyrillic_ratio": 0.7205,
+      "english_latin_ratio": 0.9293
+    },
+    {
+      "russian": "article/README.md",
+      "english": "article/README_EN.md",
+      "russian_cyrillic_ratio": 0.8333,
+      "english_latin_ratio": 0.9561
+    },
+    {
+      "russian": "article/structure.md",
+      "english": "article/structure_EN.md",
+      "russian_cyrillic_ratio": 0.8502,
+      "english_latin_ratio": 0.9488
+    },
+    {
+      "russian": "configs/README.md",
+      "english": "configs/README_EN.md",
+      "russian_cyrillic_ratio": 0.3767,
+      "english_latin_ratio": 0.9827
+    },
+    {
+      "russian": "data/README.md",
+      "english": "data/README_EN.md",
+      "russian_cyrillic_ratio": 0.8551,
+      "english_latin_ratio": 0.9623
+    },
+    {
+      "russian": "experiments/README.md",
+      "english": "experiments/README_EN.md",
+      "russian_cyrillic_ratio": 0.7455,
+      "english_latin_ratio": 0.9381
+    },
+    {
+      "russian": "experiments/planned/EXP-001.md",
+      "english": "experiments/planned/EXP-001_EN.md",
+      "russian_cyrillic_ratio": 0.6297,
+      "english_latin_ratio": 0.9668
+    },
+    {
+      "russian": "external/README.md",
+      "english": "external/README_EN.md",
+      "russian_cyrillic_ratio": 0.6339,
+      "english_latin_ratio": 0.9698
+    },
+    {
+      "russian": "notebooks/README.md",
+      "english": "notebooks/README_EN.md",
+      "russian_cyrillic_ratio": 0.8084,
+      "english_latin_ratio": 0.9478
+    },
+    {
+      "russian": "private/README.md",
+      "english": "private/README_EN.md",
+      "russian_cyrillic_ratio": 0.8629,
+      "english_latin_ratio": 0.9696
+    },
+    {
+      "russian": "references/README.md",
+      "english": "references/README_EN.md",
+      "russian_cyrillic_ratio": 0.8759,
+      "english_latin_ratio": 0.9564
+    },
+    {
+      "russian": "results/README.md",
+      "english": "results/README_EN.md",
+      "russian_cyrillic_ratio": 0.5546,
+      "english_latin_ratio": 0.9587
+    },
+    {
+      "russian": "tests/correctness/README.md",
+      "english": "tests/correctness/README_EN.md",
+      "russian_cyrillic_ratio": 0.723,
+      "english_latin_ratio": 0.9309
+    },
+    {
+      "russian": "thesis/README.md",
+      "english": "thesis/README_EN.md",
+      "russian_cyrillic_ratio": 0.8122,
+      "english_latin_ratio": 0.967
+    },
+    {
+      "russian": "docs/index.md",
+      "english": "docs/index_EN.md",
+      "russian_cyrillic_ratio": 0.4068,
+      "english_latin_ratio": 0.9979
+    },
+    {
+      "russian": "docs/research-question.md",
+      "english": "docs/research-question_EN.md",
+      "russian_cyrillic_ratio": 0.7351,
+      "english_latin_ratio": 0.9961
+    },
+    {
+      "russian": "docs/methodology.md",
+      "english": "docs/methodology_EN.md",
+      "russian_cyrillic_ratio": 0.5624,
+      "english_latin_ratio": 0.9961
+    },
+    {
+      "russian": "docs/analysis-plan.md",
+      "english": "docs/analysis-plan_EN.md",
+      "russian_cyrillic_ratio": 0.4903,
+      "english_latin_ratio": 0.9981
+    },
+    {
+      "russian": "docs/stage3a-statistical-results.md",
+      "english": "docs/stage3a-statistical-results_EN.md",
+      "russian_cyrillic_ratio": 0.7304,
+      "english_latin_ratio": 0.9982
+    },
+    {
+      "russian": "docs/experiment-protocol.md",
+      "english": "docs/experiment-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.841,
+      "english_latin_ratio": 0.9895
+    },
+    {
+      "russian": "docs/reproducibility.md",
+      "english": "docs/reproducibility_EN.md",
+      "russian_cyrillic_ratio": 0.879,
+      "english_latin_ratio": 0.9963
+    },
+    {
+      "russian": "docs/data-management.md",
+      "english": "docs/data-management_EN.md",
+      "russian_cyrillic_ratio": 0.8532,
+      "english_latin_ratio": 0.9861
+    },
+    {
+      "russian": "docs/hardware.md",
+      "english": "docs/hardware_EN.md",
+      "russian_cyrillic_ratio": 0.8057,
+      "english_latin_ratio": 0.9675
+    },
+    {
+      "russian": "docs/publication-plan.md",
+      "english": "docs/publication-plan_EN.md",
+      "russian_cyrillic_ratio": 0.8528,
+      "english_latin_ratio": 0.9878
+    },
+    {
+      "russian": "docs/github-setup.md",
+      "english": "docs/github-setup_EN.md",
+      "russian_cyrillic_ratio": 0.7112,
+      "english_latin_ratio": 0.9642
+    },
+    {
+      "russian": "docs/decisions/index.md",
+      "english": "docs/decisions/index_EN.md",
+      "russian_cyrillic_ratio": 0.6738,
+      "english_latin_ratio": 0.9988
+    },
+    {
+      "russian": "docs/decisions/ADR-001-use-torch2pc.md",
+      "english": "docs/decisions/ADR-001-use-torch2pc_EN.md",
+      "russian_cyrillic_ratio": 0.8004,
+      "english_latin_ratio": 0.9696
+    },
+    {
+      "russian": "docs/decisions/ADR-002-use-rocm-docker.md",
+      "english": "docs/decisions/ADR-002-use-rocm-docker_EN.md",
+      "russian_cyrillic_ratio": 0.7925,
+      "english_latin_ratio": 0.9715
+    },
+    {
+      "russian": "docs/decisions/ADR-003-primary-metric.md",
+      "english": "docs/decisions/ADR-003-primary-metric_EN.md",
+      "russian_cyrillic_ratio": 0.8784,
+      "english_latin_ratio": 0.9651
+    },
+    {
+      "russian": "docs/decisions/ADR-004-statistical-protocol.md",
+      "english": "docs/decisions/ADR-004-statistical-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.8713,
+      "english_latin_ratio": 0.9695
+    },
+    {
+      "russian": "docs/research-log/2026-07.md",
+      "english": "docs/research-log/2026-07_EN.md",
+      "russian_cyrillic_ratio": 0.845,
+      "english_latin_ratio": 0.9989
+    },
+    {
+      "russian": "docs/research-log/template.md",
+      "english": "docs/research-log/template_EN.md",
+      "russian_cyrillic_ratio": 0.8744,
+      "english_latin_ratio": 0.9222
+    },
+    {
+      "russian": "docs/research-design/design.md",
+      "english": "docs/research-design/design_EN.md",
+      "russian_cyrillic_ratio": 0.6834,
+      "english_latin_ratio": 0.9701
+    },
+    {
+      "russian": "docs/research-design/controlled-compute.md",
+      "english": "docs/research-design/controlled-compute_EN.md",
+      "russian_cyrillic_ratio": 0.8343,
+      "english_latin_ratio": 0.9639
+    },
+    {
+      "russian": "docs/research-design/run-checklist.md",
+      "english": "docs/research-design/run-checklist_EN.md",
+      "russian_cyrillic_ratio": 0.7983,
+      "english_latin_ratio": 0.9809
+    },
+    {
+      "russian": "docs/research-design/article-plan.md",
+      "english": "docs/research-design/article-plan_EN.md",
+      "russian_cyrillic_ratio": 0.9091,
+      "english_latin_ratio": 0.9592
+    },
+    {
+      "russian": ".github/PULL_REQUEST_TEMPLATE/default.md",
+      "english": ".github/PULL_REQUEST_TEMPLATE/default_EN.md",
+      "russian_cyrillic_ratio": 0.7307,
+      "english_latin_ratio": 0.9668
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/bug.yml",
+      "english": ".github/ISSUE_TEMPLATE/bug_EN.yml",
+      "russian_cyrillic_ratio": 0.3138,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/experiment.yml",
+      "english": ".github/ISSUE_TEMPLATE/experiment_EN.yml",
+      "russian_cyrillic_ratio": 0.5123,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/literature.yml",
+      "english": ".github/ISSUE_TEMPLATE/literature_EN.yml",
+      "russian_cyrillic_ratio": 0.5386,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/research-decision.yml",
+      "english": ".github/ISSUE_TEMPLATE/research-decision_EN.yml",
+      "russian_cyrillic_ratio": 0.3038,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/writing.yml",
+      "english": ".github/ISSUE_TEMPLATE/writing_EN.yml",
+      "russian_cyrillic_ratio": 0.4158,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "mkdocs.yml",
+      "english": "mkdocs_EN.yml",
+      "russian_cyrillic_ratio": 0.1393,
+      "english_latin_ratio": 0.9958
+    },
+    {
+      "russian": "NOTICE",
+      "english": "NOTICE_EN",
+      "russian_cyrillic_ratio": 0.7751,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "LICENSE-DOCS",
+      "english": "LICENSE-DOCS_EN",
+      "russian_cyrillic_ratio": 0.742,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/threats-to-validity.md",
+      "english": "docs/threats-to-validity_EN.md",
+      "russian_cyrillic_ratio": 0.9297,
+      "english_latin_ratio": 0.9926
+    },
+    {
+      "russian": "docs/validation.md",
+      "english": "docs/validation_EN.md",
+      "russian_cyrillic_ratio": 0.5872,
+      "english_latin_ratio": 0.9866
+    },
+    {
+      "russian": "docs/stage-3-protocol.md",
+      "english": "docs/stage-3-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.8386,
+      "english_latin_ratio": 0.9979
+    },
+    {
+      "russian": "docs/stage-3-readiness.md",
+      "english": "docs/stage-3-readiness_EN.md",
+      "russian_cyrillic_ratio": 0.788,
+      "english_latin_ratio": 0.9926
+    },
+    {
+      "russian": "docs/decisions/ADR-006-stage3-scope.md",
+      "english": "docs/decisions/ADR-006-stage3-scope_EN.md",
+      "russian_cyrillic_ratio": 0.9105,
+      "english_latin_ratio": 0.9884
+    },
+    {
+      "russian": "docs/decisions/ADR-007-stage3-locality-taxonomy.md",
+      "english": "docs/decisions/ADR-007-stage3-locality-taxonomy_EN.md",
+      "russian_cyrillic_ratio": 0.9101,
+      "english_latin_ratio": 0.9849
+    },
+    {
+      "russian": "experiments/planned/STAGE3-001.md",
+      "english": "experiments/planned/STAGE3-001_EN.md",
+      "russian_cyrillic_ratio": 0.5123,
+      "english_latin_ratio": 0.9742
+    },
+    {
+      "russian": "results/stage-3/README.md",
+      "english": "results/stage-3/README_EN.md",
+      "russian_cyrillic_ratio": 0.4548,
+      "english_latin_ratio": 0.9583
+    },
+    {
+      "russian": "docs/decisions/ADR-008-predict-correct-acceleration.md",
+      "english": "docs/decisions/ADR-008-predict-correct-acceleration_EN.md",
+      "russian_cyrillic_ratio": 0.8679,
+      "english_latin_ratio": 0.994
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-PROFILING-LOCALITY.md",
+      "english": "experiments/planned/STAGE3B-PROFILING-LOCALITY_EN.md",
+      "russian_cyrillic_ratio": 0.4327,
+      "english_latin_ratio": 0.9983
+    },
+    {
+      "russian": "docs/decisions/ADR-005-post-pilot-final-execution.md",
+      "english": "docs/decisions/ADR-005-post-pilot-final-execution_EN.md",
+      "russian_cyrillic_ratio": 0.885,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-009-stage3b-rocm-canonical-lane.md",
+      "english": "docs/decisions/ADR-009-stage3b-rocm-canonical-lane_EN.md",
+      "russian_cyrillic_ratio": 0.8614,
+      "english_latin_ratio": 0.9937
+    },
+    {
+      "russian": "docs/decisions/ADR-010-stage3b-per-cell-process-isolation.md",
+      "english": "docs/decisions/ADR-010-stage3b-per-cell-process-isolation_EN.md",
+      "russian_cyrillic_ratio": 0.875,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-011-stage3b-b0-derived-evidence-seal.md",
+      "english": "docs/decisions/ADR-011-stage3b-b0-derived-evidence-seal_EN.md",
+      "russian_cyrillic_ratio": 0.8377,
+      "english_latin_ratio": 0.9945
+    },
+    {
+      "russian": "docs/stage-2-protocol.md",
+      "english": "docs/stage-2-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.8646,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/stage3-layerwise-analysis.md",
+      "english": "docs/stage3-layerwise-analysis_EN.md",
+      "russian_cyrillic_ratio": 0.7297,
+      "english_latin_ratio": 0.9968
+    },
+    {
+      "russian": "docs/stage3a-publication-finalization.md",
+      "english": "docs/stage3a-publication-finalization_EN.md",
+      "russian_cyrillic_ratio": 0.8246,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/stage3b-b0-analysis-pipeline.md",
+      "english": "docs/stage3b-b0-analysis-pipeline_EN.md",
+      "russian_cyrillic_ratio": 0.7875,
+      "english_latin_ratio": 0.9909
+    },
+    {
+      "russian": "docs/stage3b-b0-sealing.md",
+      "english": "docs/stage3b-b0-sealing_EN.md",
+      "russian_cyrillic_ratio": 0.8528,
+      "english_latin_ratio": 0.9932
+    },
+    {
+      "russian": "docs/torch2pc-patched-v1-equivalence.md",
+      "english": "docs/torch2pc-patched-v1-equivalence_EN.md",
+      "russian_cyrillic_ratio": 0.7581,
+      "english_latin_ratio": 0.9989
+    },
+    {
+      "russian": "docs/pc-tref-balanced-core.md",
+      "english": "docs/pc-tref-balanced-core_EN.md",
+      "russian_cyrillic_ratio": 0.6595,
+      "english_latin_ratio": 0.9978
+    },
+    {
+      "russian": "docs/pc-catm-operator-model.md",
+      "english": "docs/pc-catm-operator-model_EN.md",
+      "russian_cyrillic_ratio": 0.5918,
+      "english_latin_ratio": 0.9976
+    },
+    {
+      "russian": "docs/masters-thesis-plan.md",
+      "english": "docs/masters-thesis-plan_EN.md",
+      "russian_cyrillic_ratio": 0.5625,
+      "english_latin_ratio": 0.9975
+    },
+    {
+      "russian": "docs/stage3b-primary-scenario-a.md",
+      "english": "docs/stage3b-primary-scenario-a_EN.md",
+      "russian_cyrillic_ratio": 0.7602,
+      "english_latin_ratio": 0.9984
+    },
+    {
+      "russian": "docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a.md",
+      "english": "docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md",
+      "russian_cyrillic_ratio": 0.8338,
+      "english_latin_ratio": 0.9926
+    },
+    {
+      "russian": "docs/research-design/stage3b-si-ma0-confirmatory-aggregation.md",
+      "english": "docs/research-design/stage3b-si-ma0-confirmatory-aggregation_EN.md",
+      "russian_cyrillic_ratio": 0.839,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-SI-MA1.md",
+      "english": "experiments/planned/STAGE3B-SI-MA1_EN.md",
+      "russian_cyrillic_ratio": 0.6929,
+      "english_latin_ratio": 0.9983
+    },
+    {
+      "russian": "docs/pc-tref-pc-catm-theoretical-foundation.md",
+      "english": "docs/pc-tref-pc-catm-theoretical-foundation_EN.md",
+      "russian_cyrillic_ratio": 0.7243,
+      "english_latin_ratio": 0.9985
+    },
+    {
+      "russian": "docs/decisions/ADR-013-pc-tref-operational-semantics.md",
+      "english": "docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md",
+      "russian_cyrillic_ratio": 0.697,
+      "english_latin_ratio": 0.9947
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B1.md",
+      "english": "experiments/planned/STAGE3B-B1_EN.md",
+      "russian_cyrillic_ratio": 0.7352,
+      "english_latin_ratio": 0.9933
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B2.md",
+      "english": "experiments/planned/STAGE3B-B2_EN.md",
+      "russian_cyrillic_ratio": 0.6298,
+      "english_latin_ratio": 0.992
+    },
+    {
+      "russian": "docs/stage3b-b1-b2-preregistration.md",
+      "english": "docs/stage3b-b1-b2-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.7639,
+      "english_latin_ratio": 0.995
+    },
+    {
+      "russian": "docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md",
+      "english": "docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md",
+      "russian_cyrillic_ratio": 0.8048,
+      "english_latin_ratio": 0.9896
+    },
+    {
+      "russian": "docs/qwake-pc-design.md",
+      "english": "docs/qwake-pc-design_EN.md",
+      "russian_cyrillic_ratio": 0.7039,
+      "english_latin_ratio": 0.998
+    },
+    {
+      "russian": "docs/ecz-targeted-local-sweep.md",
+      "english": "docs/ecz-targeted-local-sweep_EN.md",
+      "russian_cyrillic_ratio": 0.7979,
+      "english_latin_ratio": 0.9932
+    },
+    {
+      "russian": "docs/stage3b-future-policy-boundary.md",
+      "english": "docs/stage3b-future-policy-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.7687,
+      "english_latin_ratio": 0.9942
+    },
+    {
+      "russian": "docs/decisions/ADR-015-stage3b-matched-measurement-sealing.md",
+      "english": "docs/decisions/ADR-015-stage3b-matched-measurement-sealing_EN.md",
+      "russian_cyrillic_ratio": 0.8723,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/stage3b-matched-evidence.md",
+      "english": "docs/stage3b-matched-evidence_EN.md",
+      "russian_cyrillic_ratio": 0.6457,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/pc-tref-sufficiency-boundary.md",
+      "english": "docs/pc-tref-sufficiency-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.6763,
+      "english_latin_ratio": 0.9988
+    },
+    {
+      "russian": "docs/decisions/ADR-016-stage3b-sufficiency-boundary.md",
+      "english": "docs/decisions/ADR-016-stage3b-sufficiency-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.79,
+      "english_latin_ratio": 0.9951
+    },
+    {
+      "russian": "docs/decisions/ADR-017-stage3b-288cell-correctness-repair.md",
+      "english": "docs/decisions/ADR-017-stage3b-288cell-correctness-repair_EN.md",
+      "russian_cyrillic_ratio": 0.9238,
+      "english_latin_ratio": 0.9946
+    },
+    {
+      "russian": "docs/decisions/ADR-018-stage3b-b1-confirmatory-preregistration.md",
+      "english": "docs/decisions/ADR-018-stage3b-b1-confirmatory-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.8554,
+      "english_latin_ratio": 0.9939
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B1-CONFIRMATORY.md",
+      "english": "experiments/planned/STAGE3B-B1-CONFIRMATORY_EN.md",
+      "russian_cyrillic_ratio": 0.4345,
+      "english_latin_ratio": 0.9922
+    },
+    {
+      "russian": "docs/decisions/ADR-019-stage3b-b1-confirmatory-opening.md",
+      "english": "docs/decisions/ADR-019-stage3b-b1-confirmatory-opening_EN.md",
+      "russian_cyrillic_ratio": 0.8075,
+      "english_latin_ratio": 0.9962
+    },
+    {
+      "russian": "docs/pc-multiscale-mechanism-decision-architecture.md",
+      "english": "docs/pc-multiscale-mechanism-decision-architecture_EN.md",
+      "russian_cyrillic_ratio": 0.7625,
+      "english_latin_ratio": 0.9981
+    },
+    {
+      "russian": "docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md",
+      "english": "docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md",
+      "russian_cyrillic_ratio": 0.7243,
+      "english_latin_ratio": 0.9933
+    },
+    {
+      "russian": "docs/decisions/ADR-021-stage3b-b2-confirmatory-preregistration.md",
+      "english": "docs/decisions/ADR-021-stage3b-b2-confirmatory-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.8278,
+      "english_latin_ratio": 0.9947
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B2-CONFIRMATORY.md",
+      "english": "experiments/planned/STAGE3B-B2-CONFIRMATORY_EN.md",
+      "russian_cyrillic_ratio": 0.3944,
+      "english_latin_ratio": 0.995
+    },
+    {
+      "russian": "docs/decisions/ADR-022-stage3b-b2-confirmatory-opening.md",
+      "english": "docs/decisions/ADR-022-stage3b-b2-confirmatory-opening_EN.md",
+      "russian_cyrillic_ratio": 0.735,
+      "english_latin_ratio": 0.9966
+    },
+    {
+      "russian": "docs/decisions/ADR-023-stage3b-b2-confirmatory-request-freeze.md",
+      "english": "docs/decisions/ADR-023-stage3b-b2-confirmatory-request-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.675,
+      "english_latin_ratio": 0.9936
+    },
+    {
+      "russian": "docs/decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation.md",
+      "english": "docs/decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md",
+      "russian_cyrillic_ratio": 0.6315,
+      "english_latin_ratio": 0.9959
+    },
+    {
+      "russian": "docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md",
+      "english": "docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze_EN.md",
+      "russian_cyrillic_ratio": 0.6871,
+      "english_latin_ratio": 0.9903
+    },
+    {
+      "russian": "docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md",
+      "english": "docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md",
+      "russian_cyrillic_ratio": 0.5796,
+      "english_latin_ratio": 0.9969
+    },
+    {
+      "russian": "docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol.md",
+      "english": "docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.7516,
+      "english_latin_ratio": 0.9949
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md",
+      "russian_cyrillic_ratio": 0.7946,
+      "english_latin_ratio": 0.998
+    },
+    {
+      "russian": "docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation.md",
+      "english": "docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.756,
+      "english_latin_ratio": 0.9954
+    },
+    {
+      "russian": "docs/decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening.md",
+      "english": "docs/decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening_EN.md",
+      "russian_cyrillic_ratio": 0.6708,
+      "english_latin_ratio": 0.9962
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md",
+      "russian_cyrillic_ratio": 0.5455,
+      "english_latin_ratio": 0.9929
+    },
+    {
+      "russian": "docs/decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze.md",
+      "english": "docs/decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.7016,
+      "english_latin_ratio": 0.9921
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT_EN.md",
+      "russian_cyrillic_ratio": 0.5245,
+      "english_latin_ratio": 0.9933
+    },
+    {
+      "russian": "docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation.md",
+      "english": "docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.655,
+      "english_latin_ratio": 0.995
+    },
+    {
+      "russian": "docs/decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze.md",
+      "english": "docs/decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.547,
+      "english_latin_ratio": 0.992
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION_EN.md",
+      "russian_cyrillic_ratio": 0.5309,
+      "english_latin_ratio": 0.9904
+    },
+    {
+      "russian": "docs/decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze.md",
+      "english": "docs/decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.5159,
+      "english_latin_ratio": 0.9932
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL_EN.md",
+      "russian_cyrillic_ratio": 0.4637,
+      "english_latin_ratio": 0.9929
+    },
+    {
+      "russian": "docs/decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze.md",
+      "english": "docs/decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.7782,
+      "english_latin_ratio": 0.9952
+    },
+    {
+      "russian": "docs/stage3b-recursive-sufficiency-aggregate-direction.md",
+      "english": "docs/stage3b-recursive-sufficiency-aggregate-direction_EN.md",
+      "russian_cyrillic_ratio": 0.6963,
+      "english_latin_ratio": 0.9977
+    },
+    {
+      "russian": "docs/decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction.md",
+      "english": "docs/decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md",
+      "russian_cyrillic_ratio": 0.8985,
+      "english_latin_ratio": 0.9959
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE_EN.md",
+      "russian_cyrillic_ratio": 0.5275,
+      "english_latin_ratio": 0.9931
+    },
+    {
+      "russian": "docs/decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate.md",
+      "english": "docs/decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md",
+      "russian_cyrillic_ratio": 0.7973,
+      "english_latin_ratio": 0.9918
+    },
+    {
+      "russian": "docs/decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt.md",
+      "english": "docs/decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md",
+      "russian_cyrillic_ratio": 0.6347,
+      "english_latin_ratio": 0.9906
+    },
+    {
+      "russian": "docs/decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary.md",
+      "english": "docs/decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.8189,
+      "english_latin_ratio": 0.9962
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-EX-IF0.md",
+      "english": "experiments/planned/STAGE3B-EX-IF0_EN.md",
+      "russian_cyrillic_ratio": 0.6453,
+      "english_latin_ratio": 0.9973
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-design.md",
+      "english": "docs/fixedpred-sufficiency-dus-design_EN.md",
+      "russian_cyrillic_ratio": 0.6518,
+      "english_latin_ratio": 0.9969
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-metrics.md",
+      "english": "docs/fixedpred-sufficiency-dus-metrics_EN.md",
+      "russian_cyrillic_ratio": 0.4086,
+      "english_latin_ratio": 0.9961
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-refactoring-plan.md",
+      "english": "docs/fixedpred-sufficiency-dus-refactoring-plan_EN.md",
+      "russian_cyrillic_ratio": 0.4539,
+      "english_latin_ratio": 0.9946
+    },
+    {
+      "russian": "docs/decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md",
+      "english": "docs/decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md",
+      "russian_cyrillic_ratio": 0.351,
+      "english_latin_ratio": 0.9924
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS.md",
+      "english": "experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md",
+      "russian_cyrillic_ratio": 0.527,
+      "english_latin_ratio": 0.992
+    },
+    {
+      "russian": "docs/stage3b-integrated-frontier-model.md",
+      "english": "docs/stage3b-integrated-frontier-model_EN.md",
+      "russian_cyrillic_ratio": 0.5268,
+      "english_latin_ratio": 0.9985
+    },
+    {
+      "russian": "docs/decisions/ADR-040-stage3b-integrated-frontier-model.md",
+      "english": "docs/decisions/ADR-040-stage3b-integrated-frontier-model_EN.md",
+      "russian_cyrillic_ratio": 0.6022,
+      "english_latin_ratio": 0.9951
+    },
+    {
+      "russian": "docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md",
+      "english": "docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md",
+      "russian_cyrillic_ratio": 0.5378,
+      "english_latin_ratio": 0.9977
+    },
+    {
+      "russian": "docs/qwake-fp-experimental-plan.md",
+      "english": "docs/qwake-fp-experimental-plan_EN.md",
+      "russian_cyrillic_ratio": 0.6363,
+      "english_latin_ratio": 0.9982
+    },
+    {
+      "russian": "docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md",
+      "english": "docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md",
+      "russian_cyrillic_ratio": 0.4283,
+      "english_latin_ratio": 0.9983
+    },
+    {
+      "russian": "docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md",
+      "english": "docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md",
+      "russian_cyrillic_ratio": 0.4716,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation.md",
+      "english": "docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation_EN.md",
+      "russian_cyrillic_ratio": 0.75,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation.md",
+      "english": "docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.7254,
+      "english_latin_ratio": 0.9977
+    },
+    {
+      "russian": "docs/qwake-local-compute-extension.md",
+      "english": "docs/qwake-local-compute-extension_EN.md",
+      "russian_cyrillic_ratio": 0.5772,
+      "english_latin_ratio": 0.9991
+    },
+    {
+      "russian": "docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset.md",
+      "english": "docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md",
+      "russian_cyrillic_ratio": 0.7109,
+      "english_latin_ratio": 0.9931
+    },
+    {
+      "russian": "docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2.md",
+      "english": "docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2_EN.md",
+      "russian_cyrillic_ratio": 0.5745,
+      "english_latin_ratio": 0.9953
+    },
+    {
+      "russian": "docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2.md",
+      "english": "docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md",
+      "russian_cyrillic_ratio": 0.7098,
+      "english_latin_ratio": 0.9935
+    },
+    {
+      "russian": "docs/decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition.md",
+      "english": "docs/decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition_EN.md",
+      "russian_cyrillic_ratio": 0.5207,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze.md",
+      "english": "docs/decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.6368,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-051-stage3b-qwake-lc0-repository-freeze.md",
+      "english": "docs/decisions/ADR-051-stage3b-qwake-lc0-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.5189,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-052-stage3b-qwake-lc1-transition.md",
+      "english": "docs/decisions/ADR-052-stage3b-qwake-lc1-transition_EN.md",
+      "russian_cyrillic_ratio": 0.5477,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-053-stage3b-qwake-lc1-required-response-schema.md",
+      "english": "docs/decisions/ADR-053-stage3b-qwake-lc1-required-response-schema_EN.md",
+      "russian_cyrillic_ratio": 0.6023,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-054-stage3b-qwake-lc1-repository-freeze.md",
+      "english": "docs/decisions/ADR-054-stage3b-qwake-lc1-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.541,
+      "english_latin_ratio": 0.9934
+    },
+    {
+      "russian": "docs/decisions/ADR-055-stage3b-qwake-lc2-transition.md",
+      "english": "docs/decisions/ADR-055-stage3b-qwake-lc2-transition_EN.md",
+      "russian_cyrillic_ratio": 0.563,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract.md",
+      "english": "docs/decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract_EN.md",
+      "russian_cyrillic_ratio": 0.6746,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-057-stage3b-qwake-lc2-repository-freeze.md",
+      "english": "docs/decisions/ADR-057-stage3b-qwake-lc2-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.4204,
+      "english_latin_ratio": 0.9931
+    },
+    {
+      "russian": "docs/decisions/ADR-058-stage3b-qwake-lc3-transition.md",
+      "english": "docs/decisions/ADR-058-stage3b-qwake-lc3-transition_EN.md",
+      "russian_cyrillic_ratio": 0.6098,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract.md",
+      "english": "docs/decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract_EN.md",
+      "russian_cyrillic_ratio": 0.6943,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-060-stage3b-qwake-lc3-repository-freeze.md",
+      "english": "docs/decisions/ADR-060-stage3b-qwake-lc3-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.4146,
+      "english_latin_ratio": 0.9935
+    },
+    {
+      "russian": "docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation.md",
+      "english": "docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.8319,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring.md",
+      "english": "docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.675,
+      "english_latin_ratio": 1.0
+    }
+  ],
+  "glossary_terms": 117,
+  "discovered_docs_pairs": 111
+}
+CHECK_ID=language_structure
+CHECK_STATUS=0
+
+=== CHECK local_links ===
+{
+  "status": "ok",
+  "checked_links": 2228,
+  "errors": []
+}
+CHECK_ID=local_links
+CHECK_STATUS=0
+
+=== CHECK compileall_qwake_lc4 ===
+CHECK_ID=compileall_qwake_lc4
+CHECK_STATUS=0
+
+=== CHECK mkdocs_ru_strict ===
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: /tmp/qwake-lc4-f-runtime-freeze-51fc7537-inputs/site-ru
+INFO    -  The following pages exist in the docs directory, but are not included in the "nav" configuration:
+  - analysis-plan_EN.md
+  - data-management_EN.md
+  - ecz-targeted-local-sweep_EN.md
+  - experiment-protocol_EN.md
+  - fixedpred-sufficiency-dus-design_EN.md
+  - fixedpred-sufficiency-dus-metrics_EN.md
+  - fixedpred-sufficiency-dus-refactoring-plan_EN.md
+  - github-setup_EN.md
+  - glossary_EN.md
+  - hardware_EN.md
+  - masters-thesis-plan_EN.md
+  - methodology_EN.md
+  - pc-catm-operator-model_EN.md
+  - pc-multiscale-mechanism-decision-architecture_EN.md
+  - pc-tref-balanced-core_EN.md
+  - pc-tref-pc-catm-theoretical-foundation_EN.md
+  - pc-tref-sufficiency-boundary_EN.md
+  - publication-plan_EN.md
+  - qwake-fp-experimental-plan_EN.md
+  - qwake-local-compute-extension_EN.md
+  - qwake-pc-design_EN.md
+  - reproducibility_EN.md
+  - research-question_EN.md
+  - stage-2-protocol_EN.md
+  - stage-3-protocol_EN.md
+  - stage-3-readiness_EN.md
+  - stage3-layerwise-analysis.md
+  - stage3-layerwise-analysis_EN.md
+  - stage3a-publication-finalization.md
+  - stage3a-publication-finalization_EN.md
+  - stage3a-statistical-results_EN.md
+  - stage3b-b0-analysis-pipeline_EN.md
+  - stage3b-b0-sealing_EN.md
+  - stage3b-b1-b2-preregistration_EN.md
+  - stage3b-future-policy-boundary_EN.md
+  - stage3b-integrated-frontier-model_EN.md
+  - stage3b-matched-evidence.md
+  - stage3b-matched-evidence_EN.md
+  - stage3b-primary-scenario-a_EN.md
+  - stage3b-recursive-sufficiency-aggregate-direction.md
+  - stage3b-recursive-sufficiency-aggregate-direction_EN.md
+  - threats-to-validity_EN.md
+  - torch2pc-patched-v1-equivalence_EN.md
+  - validation.md
+  - validation_EN.md
+  - decisions/ADR-001-use-torch2pc_EN.md
+  - decisions/ADR-002-use-rocm-docker_EN.md
+  - decisions/ADR-003-primary-metric_EN.md
+  - decisions/ADR-004-statistical-protocol_EN.md
+  - decisions/ADR-005-post-pilot-final-execution.md
+  - decisions/ADR-005-post-pilot-final-execution_EN.md
+  - decisions/ADR-006-stage3-scope_EN.md
+  - decisions/ADR-007-stage3-locality-taxonomy_EN.md
+  - decisions/ADR-008-predict-correct-acceleration_EN.md
+  - decisions/ADR-009-stage3b-rocm-canonical-lane.md
+  - decisions/ADR-009-stage3b-rocm-canonical-lane_EN.md
+  - decisions/ADR-010-stage3b-per-cell-process-isolation.md
+  - decisions/ADR-010-stage3b-per-cell-process-isolation_EN.md
+  - decisions/ADR-011-stage3b-b0-derived-evidence-seal.md
+  - decisions/ADR-011-stage3b-b0-derived-evidence-seal_EN.md
+  - decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md
+  - decisions/ADR-013-pc-tref-operational-semantics_EN.md
+  - decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md
+  - decisions/ADR-015-stage3b-matched-measurement-sealing_EN.md
+  - decisions/ADR-016-stage3b-sufficiency-boundary_EN.md
+  - decisions/ADR-017-stage3b-288cell-correctness-repair_EN.md
+  - decisions/ADR-018-stage3b-b1-confirmatory-preregistration_EN.md
+  - decisions/ADR-019-stage3b-b1-confirmatory-opening_EN.md
+  - decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md
+  - decisions/ADR-021-stage3b-b2-confirmatory-preregistration_EN.md
+  - decisions/ADR-022-stage3b-b2-confirmatory-opening_EN.md
+  - decisions/ADR-023-stage3b-b2-confirmatory-request-freeze_EN.md
+  - decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md
+  - decisions/ADR-025-stage3b-matched-profiling-request-refreeze_EN.md
+  - decisions/ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md
+  - decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md
+  - decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md
+  - decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening_EN.md
+  - decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md
+  - decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md
+  - decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md
+  - decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md
+  - decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md
+  - decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md
+  - decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md
+  - decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md
+  - decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary_EN.md
+  - decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md
+  - decisions/ADR-040-stage3b-integrated-frontier-model_EN.md
+  - decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md
+  - decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md
+  - decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md
+  - decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation_EN.md
+  - decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md
+  - decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md
+  - decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2_EN.md
+  - decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md
+  - decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition_EN.md
+  - decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze_EN.md
+  - decisions/ADR-051-stage3b-qwake-lc0-repository-freeze_EN.md
+  - decisions/ADR-052-stage3b-qwake-lc1-transition_EN.md
+  - decisions/ADR-053-stage3b-qwake-lc1-required-response-schema_EN.md
+  - decisions/ADR-054-stage3b-qwake-lc1-repository-freeze_EN.md
+  - decisions/ADR-055-stage3b-qwake-lc2-transition_EN.md
+  - decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract_EN.md
+  - decisions/ADR-057-stage3b-qwake-lc2-repository-freeze_EN.md
+  - decisions/ADR-058-stage3b-qwake-lc3-transition.md
+  - decisions/ADR-058-stage3b-qwake-lc3-transition_EN.md
+  - decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract.md
+  - decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract_EN.md
+  - decisions/ADR-060-stage3b-qwake-lc3-repository-freeze.md
+  - decisions/ADR-060-stage3b-qwake-lc3-repository-freeze_EN.md
+  - decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation.md
+  - decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation_EN.md
+  - decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring.md
+  - decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring_EN.md
+  - decisions/index_EN.md
+  - research-design/article-plan_EN.md
+  - research-design/controlled-compute_EN.md
+  - research-design/design_EN.md
+  - research-design/run-checklist_EN.md
+  - research-design/stage3b-si-ma0-confirmatory-aggregation.md
+  - research-design/stage3b-si-ma0-confirmatory-aggregation_EN.md
+  - research-log/2026-07_EN.md
+  - research-log/template_EN.md
+INFO    -  Documentation built in 3.17 seconds
+CHECK_ID=mkdocs_ru_strict
+CHECK_STATUS=0
+
+=== CHECK mkdocs_en_strict ===
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: /tmp/qwake-lc4-f-runtime-freeze-51fc7537-inputs/site-en
+INFO    -  The following pages exist in the docs directory, but are not included in the "nav" configuration:
+  - analysis-plan.md
+  - data-management.md
+  - ecz-targeted-local-sweep.md
+  - experiment-protocol.md
+  - fixedpred-sufficiency-dus-design.md
+  - fixedpred-sufficiency-dus-metrics.md
+  - fixedpred-sufficiency-dus-refactoring-plan.md
+  - github-setup.md
+  - glossary.md
+  - hardware.md
+  - masters-thesis-plan.md
+  - methodology.md
+  - pc-catm-operator-model.md
+  - pc-multiscale-mechanism-decision-architecture.md
+  - pc-tref-balanced-core.md
+  - pc-tref-pc-catm-theoretical-foundation.md
+  - pc-tref-sufficiency-boundary.md
+  - publication-plan.md
+  - qwake-fp-experimental-plan.md
+  - qwake-local-compute-extension.md
+  - qwake-pc-design.md
+  - reproducibility.md
+  - research-question.md
+  - stage-2-protocol.md
+  - stage-3-protocol.md
+  - stage-3-readiness.md
+  - stage3-layerwise-analysis.md
+  - stage3-layerwise-analysis_EN.md
+  - stage3a-publication-finalization.md
+  - stage3a-publication-finalization_EN.md
+  - stage3a-statistical-results.md
+  - stage3b-b0-analysis-pipeline.md
+  - stage3b-b0-sealing.md
+  - stage3b-b1-b2-preregistration.md
+  - stage3b-future-policy-boundary.md
+  - stage3b-integrated-frontier-model.md
+  - stage3b-matched-evidence.md
+  - stage3b-matched-evidence_EN.md
+  - stage3b-primary-scenario-a.md
+  - stage3b-recursive-sufficiency-aggregate-direction.md
+  - stage3b-recursive-sufficiency-aggregate-direction_EN.md
+  - threats-to-validity.md
+  - torch2pc-patched-v1-equivalence.md
+  - validation.md
+  - validation_EN.md
+  - decisions/index.md
+  - decisions/ADR-001-use-torch2pc.md
+  - decisions/ADR-002-use-rocm-docker.md
+  - decisions/ADR-003-primary-metric.md
+  - decisions/ADR-004-statistical-protocol.md
+  - decisions/ADR-005-post-pilot-final-execution.md
+  - decisions/ADR-005-post-pilot-final-execution_EN.md
+  - decisions/ADR-006-stage3-scope.md
+  - decisions/ADR-007-stage3-locality-taxonomy.md
+  - decisions/ADR-008-predict-correct-acceleration.md
+  - decisions/ADR-009-stage3b-rocm-canonical-lane.md
+  - decisions/ADR-009-stage3b-rocm-canonical-lane_EN.md
+  - decisions/ADR-010-stage3b-per-cell-process-isolation.md
+  - decisions/ADR-010-stage3b-per-cell-process-isolation_EN.md
+  - decisions/ADR-011-stage3b-b0-derived-evidence-seal.md
+  - decisions/ADR-011-stage3b-b0-derived-evidence-seal_EN.md
+  - decisions/ADR-012-pc-tref-pc-catm-scenario-a.md
+  - decisions/ADR-013-pc-tref-operational-semantics.md
+  - decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md
+  - decisions/ADR-015-stage3b-matched-measurement-sealing.md
+  - decisions/ADR-016-stage3b-sufficiency-boundary.md
+  - decisions/ADR-017-stage3b-288cell-correctness-repair.md
+  - decisions/ADR-018-stage3b-b1-confirmatory-preregistration.md
+  - decisions/ADR-019-stage3b-b1-confirmatory-opening.md
+  - decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md
+  - decisions/ADR-021-stage3b-b2-confirmatory-preregistration.md
+  - decisions/ADR-022-stage3b-b2-confirmatory-opening.md
+  - decisions/ADR-023-stage3b-b2-confirmatory-request-freeze.md
+  - decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation.md
+  - decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md
+  - decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md
+  - decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol.md
+  - decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation.md
+  - decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening.md
+  - decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze.md
+  - decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation.md
+  - decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze.md
+  - decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze.md
+  - decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze.md
+  - decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction.md
+  - decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate.md
+  - decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt.md
+  - decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary.md
+  - decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md
+  - decisions/ADR-040-stage3b-integrated-frontier-model.md
+  - decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md
+  - decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md
+  - decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md
+  - decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation.md
+  - decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation.md
+  - decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset.md
+  - decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2.md
+  - decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2.md
+  - decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition.md
+  - decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze.md
+  - decisions/ADR-051-stage3b-qwake-lc0-repository-freeze.md
+  - decisions/ADR-052-stage3b-qwake-lc1-transition.md
+  - decisions/ADR-053-stage3b-qwake-lc1-required-response-schema.md
+  - decisions/ADR-054-stage3b-qwake-lc1-repository-freeze.md
+  - decisions/ADR-055-stage3b-qwake-lc2-transition.md
+  - decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract.md
+  - decisions/ADR-057-stage3b-qwake-lc2-repository-freeze.md
+  - decisions/ADR-058-stage3b-qwake-lc3-transition.md
+  - decisions/ADR-058-stage3b-qwake-lc3-transition_EN.md
+  - decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract.md
+  - decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract_EN.md
+  - decisions/ADR-060-stage3b-qwake-lc3-repository-freeze.md
+  - decisions/ADR-060-stage3b-qwake-lc3-repository-freeze_EN.md
+  - decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation.md
+  - decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation_EN.md
+  - decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring.md
+  - decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring_EN.md
+  - research-design/article-plan.md
+  - research-design/controlled-compute.md
+  - research-design/design.md
+  - research-design/run-checklist.md
+  - research-design/stage3b-si-ma0-confirmatory-aggregation.md
+  - research-design/stage3b-si-ma0-confirmatory-aggregation_EN.md
+  - research-log/2026-07.md
+  - research-log/template.md
+INFO    -  Documentation built in 3.18 seconds
+CHECK_ID=mkdocs_en_strict
+CHECK_STATUS=0
+
+=== CHECK targeted_qwake_lc4_tests ===
+........................................................................ [ 69%]
+...............................                                          [100%]
+103 passed in 3.21s
+CHECK_ID=targeted_qwake_lc4_tests
+CHECK_STATUS=0
+
+=== CHECK full_unit_suite ===
+........................................................................ [  6%]
+........................................................................ [ 13%]
+........................................................................ [ 20%]
+........................................................................ [ 26%]
+........................................................................ [ 33%]
+........................................................................ [ 40%]
+........................................................................ [ 46%]
+........................................................................ [ 53%]
+........................................................................ [ 60%]
+........................................................................ [ 66%]
+........................................................................ [ 73%]
+........................................................................ [ 80%]
+........................................................................ [ 86%]
+........................................................................ [ 93%]
+....................................................................     [100%]
+=============================== warnings summary ===============================
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64
+  /opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+  /opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+  /opt/venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+../opt/venv/lib/python3.12/site-packages/matplotlib/_mathtext.py:45
+  /opt/venv/lib/python3.12/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1076 passed, 14 warnings in 111.68s (0:01:51)
+CHECK_ID=full_unit_suite
+CHECK_STATUS=0
+
+=== CHECK runtime_output_absent ===
+CHECK_ID=runtime_output_absent
+CHECK_STATUS=0
+
+=== CHECK freeze_output_absent ===
+CHECK_ID=freeze_output_absent
+CHECK_STATUS=0
+
+=== CHECK source_cleanliness_after ===
+CHECK_ID=source_cleanliness_after
+CHECK_STATUS=0
+
+=== CHECK torch2pc_cleanliness_after ===
+CHECK_ID=torch2pc_cleanliness_after
+CHECK_STATUS=0
+
+=== STATIC VALIDATION RESULT ===
+VALIDATION_STATUS=0
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+IMAGE_FREEZE_PERMITTED=false

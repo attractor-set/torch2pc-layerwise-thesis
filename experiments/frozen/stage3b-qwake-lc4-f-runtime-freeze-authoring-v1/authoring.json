@@ -1,0 +1,102 @@
+{
+  "authoring_id": "stage3b-qwake-lc4-f-runtime-freeze-authoring-v1",
+  "claim_boundary": {
+    "forbidden_claims": [
+      "runtime_freeze_materialized",
+      "runtime_execution_performed",
+      "engineering_evidence_exists",
+      "scientific_evidence",
+      "response_equivalence_established_on_registered_runtime",
+      "cost_superiority_established",
+      "qw_lc4_e_permitted",
+      "publication_permitted"
+    ],
+    "permitted_claims": [
+      "runtime_freeze_authoring_code_materialized",
+      "runtime_freeze_request_frozen",
+      "runtime_adapter_schema_materialized",
+      "deny_all_preflight_schema_materialized",
+      "single_attempt_authorization_schema_materialized",
+      "executor_free_sealing_boundary_materialized"
+    ]
+  },
+  "gates": {
+    "feature_collection_permitted": false,
+    "local_compute_execution_open": false,
+    "local_compute_implementation_open": false,
+    "oracle_label_generation_open": false,
+    "policy_activation_permitted": false,
+    "publication_permitted": false,
+    "qw_lc4_e_branch_permitted": false,
+    "qw_lc4_f_authoring_materialized": true,
+    "qw_lc4_f_complete": false,
+    "qw_lc4_f_materialized": false,
+    "qw_lc4_f_request_frozen": true,
+    "qw_lc4_i_complete": true,
+    "runtime_rerun_performed": false,
+    "scientific_execution_open": false,
+    "test_dataset_access": false
+  },
+  "module": {
+    "dataset_loader_present": false,
+    "path": "src/torch2pc_thesis/stage3b_qwake_lc4_runtime_freeze.py",
+    "result_writer_present": false,
+    "runtime_executor_present": false,
+    "scientific_adjudicator_present": false,
+    "sha256": "sha256:003759e0eac5062e34b0ead1f24c1e1babb09f096023539ac3303a2af9957a7c"
+  },
+  "next_slice": "QW-LC4-F-authoring-commit",
+  "post_commit_next_slice": "QW-LC4-F-runtime-materialization",
+  "request": {
+    "id": "stage3b-qwake-lc4-f-runtime-freeze-request-v1",
+    "path": "experiments/frozen/stage3b-qwake-lc4-f-runtime-freeze-request-v1/request.json",
+    "registry_path": "experiments/frozen/stage3b-qwake-lc4-f-runtime-freeze-request-v1/SHA256SUMS",
+    "registry_sha256": "sha256:0a58be97a03c7283cf1b46e5815e7ca58271b4b61a29cd53566fa6d7600212ea",
+    "sha256": "sha256:bc4e36f9265837dc0a36f0eca039b057a5113c4ef872f72e1698db5bc4930506"
+  },
+  "runtime_matrix": {
+    "authorization_cell_count": 168,
+    "candidate_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "lanes": [
+      "cpu_float64_engineering",
+      "rocm_float32_canonical"
+    ],
+    "matched_pair_count": 168,
+    "pair_count_per_cell": 12,
+    "reserve_probe_count": 28,
+    "runtime_cell_count": 14
+  },
+  "schema_version": 1,
+  "scripts": {
+    "authorization": {
+      "path": "scripts/authorize_stage3b_qwake_lc4_runtime.py",
+      "sha256": "sha256:c6a2454e2f7b8aaadd3c67badf7b70d605a59c422dffcbf07a1b2c88b5e3cf64"
+    },
+    "preflight": {
+      "path": "scripts/preflight_stage3b_qwake_lc4_runtime.py",
+      "sha256": "sha256:8f014be2a41b4fe726da0ad7cf5c36ced9a4dc2359514705f15ae924a0a262ff"
+    },
+    "seal": {
+      "path": "scripts/seal_stage3b_qwake_lc4_runtime_freeze.py",
+      "sha256": "sha256:eb74d56fd09857a91906e904c3be44dc6afe3bc050b63d353d53a2b956a873a0"
+    }
+  },
+  "slice": "QW-LC4-F-runtime-freeze-authoring",
+  "source": {
+    "implementation_commit": "7f46fd2cc4a7289bf1a9c08147ea70221a2c6930",
+    "implementation_manifest_sha256": "sha256:4dc7b123e2af3a09d675550e52aff361146a744bcf5b4717b426137d44b88dfa",
+    "implementation_registry_sha256": "sha256:f1ca469d3aeb3fe5c4a90f6bdb068a61444bf9b8eb0efe25b29121821c990894",
+    "implementation_source_sha256": "sha256:9ed9761e963a691a7d4010e27ac6ec71c388fbe5690dcd69ad3d2db4c6d62f91",
+    "main_commit": "c9f3dadcd5330887584b8bf71d906c667dacf076",
+    "pr_number": 123
+  },
+  "status": "runtime_freeze_authoring_materialized_execution_closed"
+}

@@ -471,3 +471,45 @@ scientific_execution_open=false
 next_slice=QW-LC4-I-merge
 post_merge_next_slice=QW-LC4-F
 ```
+
+## 22. `QW-LC4-F` runtime-freeze authoring
+
+After `QW-LC4-I` merged through PR #123 into `main`
+`c9f3dadcd5330887584b8bf71d906c667dacf076`, the runtime-freeze authoring layer
+is materialized. It adds an adapter for already captured FixedPred state, a
+deny-all preflight, an exact one-[attempt](glossary_EN.md#term-attempt) engineering authorization schema, and
+a sealing procedure with no runtime executor.
+
+The request freezes two lanes, seven candidate indices, twelve repeats per
+combination, and two reserve probes. This yields 14 runtime cells, 168
+matched-pair cells, and 28 reserve probes. No cell is executed in the authoring
+slice.
+
+The freeze is split into two phases because the image digest must belong to the
+commit that contains the adapter and admission code. The authoring code is
+first verified and committed; an immutable image is then built from that commit
+and the actual preflight, authorization, and validation receipts are
+materialized.
+
+```text
+qw_lc4_i_complete=true
+qw_lc4_f_authoring_materialized=true
+qw_lc4_f_request_frozen=true
+qw_lc4_f_materialized=false
+qw_lc4_e_branch_permitted=false
+local_compute_execution_open=false
+runtime_execution_performed=false
+scientific_execution_open=false
+next_slice=QW-LC4-F-authoring-commit
+post_commit_next_slice=QW-LC4-F-runtime-materialization
+```
+## `QW-LC4-F`: authorization frozen without execution
+
+[ADR-063](decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze_EN.md) binds
+the bounded implementation to the exact image, CPU/ROCm checks, static
+receipt, and one-attempt authorization. The freeze covers 14 runtime cells,
+168 matched cells, and 28 reserve probes.
+
+`runtime_execution_permitted=true` inside authorization does not open
+execution on the freeze branch. `QW-LC4-E` is permitted only after merge and
+independent verification of `QW-LC4-F`.

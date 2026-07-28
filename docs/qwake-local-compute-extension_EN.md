@@ -548,3 +548,16 @@ the lease persists and retry remains prohibited.
 The verifier exercises this path under `/tmp` only. Repository execution,
 evidence, science, test-data access, and publication remain closed pending a
 separate freeze of the exact implementation commit.
+## `QW-LC4-E`: execution-freeze authoring
+
+See [ADR-068](decisions/ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring_EN.md).
+
+- PR #128 merged into `main` as `24966cd2a0380e46ab1924ff4ab8987f17e1fe9e`;
+- the exact 16-file implementation tree, SHA-256 identities, and CI 2/2 passed;
+- the deterministic request binds implementation, admission, lease/output
+  paths, 168 cells, and 28 reserve probes;
+- claim and execution must occur in one process without retry;
+- the concrete backend and one-shot entrypoint remain absent;
+- execution freeze, lease, execution, engineering evidence, and publication
+  remain closed;
+- the post-merge next slice is `QW-LC4-E-runtime-backend-implementation`.

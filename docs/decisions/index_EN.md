@@ -104,3 +104,4 @@
   implements an exclusive atomic lease claim, post-claim race check, typed
   execution wrapper, and no-replace result promotion while keeping actual
   claim and execution closed.
+- [ADR-068](ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring_EN.md): binds the exact implementation merge and deterministic execution-freeze request while recording the required absence of the concrete backend, one-shot entrypoint, lease, and execution permission.

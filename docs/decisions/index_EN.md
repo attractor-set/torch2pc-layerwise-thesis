@@ -106,3 +106,5 @@
   claim and execution closed.
 - [ADR-068](ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring_EN.md): binds the exact implementation merge and deterministic execution-freeze request while recording the required absence of the concrete backend, one-shot entrypoint, lease, and execution permission.
 - [ADR-069](ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation_EN.md): implements the bounded synthetic backend, numerical canonicalization of the already-completed wavefront, and a one-shot future-freeze guard while keeping the lease, image, and execution closed.
+
+- [ADR-070](ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization_EN.md): freezes the exact image and canonical execution package while keeping the branch closed until a separate one-shot engineering invocation.

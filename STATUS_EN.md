@@ -1346,3 +1346,41 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+## `QW-LC4-E`: execution-freeze authoring
+
+See [ADR-068](docs/decisions/ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring_EN.md).
+
+PR #128 merged into `main` as
+`24966cd2a0380e46ab1924ff4ab8987f17e1fe9e`; its exact implementation tree and
+CI passed independent verification. A new pure contract binds that state to the
+frozen admission and builds a deterministic execution-freeze request.
+
+The check exposes a required incomplete boundary: the generic wrapper exists,
+but the concrete backend that obtains real FixedPred frontier states and the
+one-shot invocation entrypoint do not. The immutable execution image,
+execution freeze, and run permission therefore remain closed.
+
+```text
+qwake_adr=ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring
+qwake_execution_freeze_request_sha256=sha256:9b28943043082efe96fb313f94875ef18c7f8e7361d8c0eb1b8c140e82a1e312
+qwake_authoring_json_sha256=sha256:9dfe3177442abdbe255047732a33d02d0987e4d634f0b1c629e1671fc68677dd
+qwake_authoring_registry_sha256=sha256:9b65ba87c817fa67670ab4e225f15e9b1f2544459439cda2e5e0b621b324ca53
+LEASE_WRAPPER_IMPLEMENTATION_MERGED=true
+EXECUTION_FREEZE_BRANCH_OPEN=true
+EXECUTION_FREEZE_CONTRACT_MATERIALIZED=true
+CONCRETE_RUNTIME_BACKEND_PRESENT=false
+ONE_SHOT_ENTRYPOINT_PRESENT=false
+IMMUTABLE_EXECUTION_IMAGE_PRESENT=false
+EXECUTION_FREEZE_MATERIALIZED=false
+EXECUTION_LEASE_MATERIALIZED=false
+QW_LC4_E_EXECUTION_PERMITTED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

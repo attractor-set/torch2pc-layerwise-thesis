@@ -13,3 +13,6 @@ results/stage-3/b1/**/*.csv binary
 
 # Preserve sealed Stage 3B B2 evidence CSV byte-for-byte.
 results/stage-3/b2/**/*.csv binary
+
+# Preserve the sealed QW-LC4-E immutable-image build log byte-for-byte.
+experiments/frozen/stage3b-qwake-lc4-e-execution-freeze-v1/image-build.log binary

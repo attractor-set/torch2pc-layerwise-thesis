@@ -1424,3 +1424,14 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+### `QW-LC4-E` execution-freeze materialization
+
+See [ADR-070](docs/decisions/ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization_EN.md).
+
+- PR #130 merged into `main` `67a084c0b970ad79ad0692442f660085a73b080a` and passed independent verification;
+- immutable image `torch2pc-layerwise-thesis:0.1.0-qw-lc4-e-freeze-67a084c0b970` was built from that commit with identity `sha256:7da92b8f77f6dc37d42db832c5613ef6149dc488adc5b66465faa33e48ca021d`;
+- the nine-file `execution-freeze-v1` package binds the image, backend, entrypoint, admission, and authorization;
+- raw `image-build.log` bytes are preserved exactly and the single path is classified in `.gitattributes` as sealed binary evidence;
+- the internal record enables the future one-shot entrypoint, but the branch-level execution gate remains closed;
+- no lease, output root, engineering evidence, scientific execution, test-dataset access, or publication exists.

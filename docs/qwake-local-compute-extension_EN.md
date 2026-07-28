@@ -561,3 +561,20 @@ See [ADR-068](decisions/ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring_E
 - execution freeze, lease, execution, engineering evidence, and publication
   remain closed;
 - the post-merge next slice is `QW-LC4-E-runtime-backend-implementation`.
+
+## `QW-LC4-E`: bounded backend and negative-outcome preservation
+
+See [ADR-069](decisions/ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation_EN.md).
+
+The concrete backend binds the frozen matrix to `lenet_classic`, the synthetic
+batch, the exact `LOCAL_SWEEP` suffix, and `ANALYTIC_COMPLETION`. Numerical
+canonicalization does not broaden the domain: it replaces only already
+completed upper residuals with the algebraic `fixed - beliefs` form when the
+raw defect is within the lane tolerance, and retains both digests. Every arm
+starts from one canonical `opaque_state_ref`.
+
+Integrity and empirical success are separate. An incomplete matrix or an
+invalid identity or digest fails the backend. A complete matrix with a negative
+`~R`, RNG, reserve, or order-effect outcome is retained with
+`validation_passed=false`. This avoids irreversibly losing a negative result
+after a single-attempt admission is claimed.

@@ -1440,3 +1440,43 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: ограниченный runtime backend
+
+См. [ADR-069](docs/decisions/ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation.md).
+
+Отдельный срез материализует конкретный backend для замороженной синтетической
+матрицы `2 × 7 × 12`, 28 точных резервных зондов и одноразовую точку входа.
+Backend не читает набор данных и не выполняется при импорте. Будущая команда
+сначала обязана проверить точный пакет `execution-freeze-v1`, commit Torch2PC,
+SHA-256 кода и digest неизменяемого образа; пока пакет отсутствует, она
+останавливается до захвата файла владения.
+
+Для реальных frontier `lenet_classic` зафиксирована чистая канонизация только
+уже завершённых верхних ошибок `fixed - beliefs` в пределах строгого допуска.
+Исходный и канонический frontier имеют отдельные SHA-256. Превышение допуска
+закрывает попытку. Отрицательные эмпирические результаты `~R`, ГПСЧ,
+резервного пути или эффекта порядка сохраняются как инженерное свидетельство,
+а не приводят к потере staging после одноразового допуска.
+
+```text
+qwake_adr=ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation
+RUNTIME_BACKEND_BRANCH_OPEN=true
+CONCRETE_RUNTIME_BACKEND_PRESENT=true
+ONE_SHOT_ENTRYPOINT_PRESENT=true
+RUNTIME_EXECUTION_FREEZE_GUARD_PRESENT=true
+FRONTIER_ROUNDOFF_CANONICALIZATION_PRESENT=true
+NEGATIVE_VALIDATION_EVIDENCE_PRESERVED=true
+IMMUTABLE_EXECUTION_IMAGE_PRESENT=false
+EXECUTION_FREEZE_MATERIALIZED=false
+EXECUTION_LEASE_MATERIALIZED=false
+QW_LC4_E_EXECUTION_PERMITTED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

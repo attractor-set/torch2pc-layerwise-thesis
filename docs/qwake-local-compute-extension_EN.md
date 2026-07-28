@@ -531,3 +531,20 @@ results, or evidence exists.
 introduces a prospective one-attempt lease and wrapper effect contract. Both
 objects exist only in memory; no lease file, executor, output root, or evidence
 exists.
+
+## `QW-LC4-E`: atomic lease/wrapper implementation
+
+[ADR-067](decisions/ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation_EN.md)
+adds effect mechanics in a separate module while preserving the frozen
+authoring module. The lease name is claimed with a same-directory temporary
+file, `fsync`, and a no-replace hard link. Output absence is checked again
+after the claim, so a race consumes the lease and blocks backend invocation.
+
+The backend is confined to a hidden staging tree. Symlinks, non-regular files,
+empty output, and invalid receipts fail closed. A complete synchronized tree is
+promoted with `renameat2(RENAME_NOREPLACE)`. Failure removes only staging while
+the lease persists and retry remains prohibited.
+
+The verifier exercises this path under `/tmp` only. Repository execution,
+evidence, science, test-data access, and publication remain closed pending a
+separate freeze of the exact implementation commit.

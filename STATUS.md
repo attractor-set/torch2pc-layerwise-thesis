@@ -1354,3 +1354,51 @@ FILES_STAGED=false
 попытки, атомарность переходов, неизменность исходных данных и закрытое
 состояние при любой ошибке. До независимой проверки реализации запуск,
 формирование результатов и публикация свидетельств остаются запрещёнными.
+
+## `QW-LC4-E`: атомарная реализация владения и исполняющей обёртки
+
+См. [ADR-067](docs/decisions/ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation.md).
+
+Атомарная реализация добавлена отдельным модулем после слияния и независимой
+проверки проектирования. Он умеет создать файл владения через временный файл,
+синхронизацию и исключительную жёсткую ссылку, повторно проверить отсутствие
+каталога результата после захвата, выполнить внедрённый backend только во
+временном каталоге и продвинуть полный результат через
+`renameat2(RENAME_NOREPLACE)`.
+
+Реализация сохраняет файл владения после любой ошибки и запрещает повторную
+попытку. Неполный временный каталог удаляется, чужой каталог результата никогда
+не заменяется, символические ссылки и нерегулярные файлы отклоняются. Проверка
+механики выполняется только в одноразовом каталоге `/tmp`; в репозитории файл
+владения и результат не создаются.
+
+Наличие программы записи и исполнителя не открывает выполнение. Ветка всё ещё
+не содержит команды фактического запуска, неизменяемой фиксации точного коммита
+реализации или разрешения на потребление допуска. До отдельной фиксации
+выполнения любое применение эффектов запрещено и не является инженерным
+свидетельством `QW-LC4-E`.
+
+```text
+qwake_adr=ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation
+qwake_implementation_json_sha256=sha256:f7cb2c72f5e9516d808f8f76802e2e560579f407aa1e155675bae2570a09b08e
+qwake_implementation_registry_sha256=sha256:348b574bf7093edd4db263779014c256209a38b1c9e4c78f9598d0f82bf8b59a
+LEASE_WRAPPER_AUTHORING_MERGED=true
+LEASE_WRAPPER_IMPLEMENTATION_BRANCH_OPEN=true
+LEASE_WRAPPER_IMPLEMENTATION_MATERIALIZED=true
+EXECUTION_LEASE_SCHEMA_IMPLEMENTED=true
+EXECUTION_WRAPPER_CONTRACT_IMPLEMENTED=true
+EXECUTION_LEASE_WRITER_PRESENT=true
+RUNTIME_EXECUTOR_PRESENT=true
+RESULT_WRITER_PRESENT=true
+EXECUTION_LEASE_MATERIALIZED=false
+QW_LC4_E_EXECUTION_PERMITTED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

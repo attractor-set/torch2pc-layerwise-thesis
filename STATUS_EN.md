@@ -1301,3 +1301,48 @@ computation. A separate implementation must preserve a single exclusive
 attempt, atomic state transitions, immutable inputs, and fail-closed behavior
 for every error. Execution, result production, and evidence publication remain
 forbidden until that implementation passes independent verification.
+
+## `QW-LC4-E`: atomic lease/wrapper implementation
+
+See [ADR-067](docs/decisions/ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation_EN.md).
+
+A separate effect implementation follows the merged and independently verified
+authoring slice. It provides a temporary-file plus hard-link exclusive lease
+claim, a post-claim output race check, an injected backend confined to a hidden
+staging directory, and Linux `renameat2(RENAME_NOREPLACE)` promotion of a
+complete result tree.
+
+The lease persists after every failure, retry after claim is prohibited,
+partial staging output is removed, and an existing result tree is never
+replaced. The verifier exercises these mechanics only under `/tmp`; it leaves
+the repository lease and runtime output absent.
+
+Implementation availability is not execution authorization. No real invocation
+command or immutable execution freeze is present, so authorization consumption,
+runtime execution, evidence, science, test-data access, and publication remain
+closed.
+
+```text
+qwake_adr=ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation
+qwake_implementation_json_sha256=sha256:f7cb2c72f5e9516d808f8f76802e2e560579f407aa1e155675bae2570a09b08e
+qwake_implementation_registry_sha256=sha256:348b574bf7093edd4db263779014c256209a38b1c9e4c78f9598d0f82bf8b59a
+LEASE_WRAPPER_AUTHORING_MERGED=true
+LEASE_WRAPPER_IMPLEMENTATION_BRANCH_OPEN=true
+LEASE_WRAPPER_IMPLEMENTATION_MATERIALIZED=true
+EXECUTION_LEASE_SCHEMA_IMPLEMENTED=true
+EXECUTION_WRAPPER_CONTRACT_IMPLEMENTED=true
+EXECUTION_LEASE_WRITER_PRESENT=true
+RUNTIME_EXECUTOR_PRESENT=true
+RESULT_WRITER_PRESENT=true
+EXECUTION_LEASE_MATERIALIZED=false
+QW_LC4_E_EXECUTION_PERMITTED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

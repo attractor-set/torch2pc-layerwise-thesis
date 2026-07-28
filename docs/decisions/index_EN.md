@@ -100,3 +100,7 @@
 - [ADR-066](ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring_EN.md):
   introduces a prospective one-attempt lease and future execution-wrapper
   contract while keeping writers, executors, results, and execution closed.
+- [ADR-067](ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation_EN.md):
+  implements an exclusive atomic lease claim, post-claim race check, typed
+  execution wrapper, and no-replace result promotion while keeping actual
+  claim and execution closed.

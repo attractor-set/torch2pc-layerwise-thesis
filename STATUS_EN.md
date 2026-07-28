@@ -1384,3 +1384,43 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: bounded runtime backend
+
+See [ADR-069](docs/decisions/ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation_EN.md).
+
+A separate slice materializes the concrete backend for the frozen synthetic
+`2 × 7 × 12` matrix, 28 exact-reserve probes, and a one-shot entrypoint. The
+backend does not read a dataset and has no import-time execution effect. The
+future command must first verify the exact `execution-freeze-v1` package,
+Torch2PC commit, code SHA-256 values, and immutable image digest; while that
+package is absent it stops before claiming a lease.
+
+Real `lenet_classic` frontiers use a pure canonicalization of only already
+completed upper errors to `fixed - beliefs` within a strict tolerance. Raw and
+canonical frontiers retain separate SHA-256 values. A tolerance violation
+fails closed. Negative empirical `~R`, RNG, reserve-path, or order-effect
+outcomes are preserved as engineering evidence rather than discarded after a
+single-attempt admission.
+
+```text
+qwake_adr=ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation
+RUNTIME_BACKEND_BRANCH_OPEN=true
+CONCRETE_RUNTIME_BACKEND_PRESENT=true
+ONE_SHOT_ENTRYPOINT_PRESENT=true
+RUNTIME_EXECUTION_FREEZE_GUARD_PRESENT=true
+FRONTIER_ROUNDOFF_CANONICALIZATION_PRESENT=true
+NEGATIVE_VALIDATION_EVIDENCE_PRESERVED=true
+IMMUTABLE_EXECUTION_IMAGE_PRESENT=false
+EXECUTION_FREEZE_MATERIALIZED=false
+EXECUTION_LEASE_MATERIALIZED=false
+QW_LC4_E_EXECUTION_PERMITTED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

@@ -1765,3 +1765,45 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: pre-execution contract for the one-shot engineering invocation materialized
+
+See [ADR-080](docs/decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification_EN.md).
+
+After independent verification of the PR #140 merge, a pure pre-execution
+contract was materialized. It binds the authorization merge commit to the exact
+host-invoker implementation and records that both image inspections, both
+command materializations, and the single child creation belong to one future
+call. The current branch performs no dynamic image verification, command
+materialization, lease creation, or `docker run`.
+
+```text
+qwake_adr=ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification
+qwake_preexecution_base_commit=49c4b97e93b47cefbf35576736927ece02c9402b
+qwake_preexecution_verification_sha256=sha256:833371b427a5c8a6e602d675711b85b2edc68441b9e5be191321a2911bce6128
+INVOCATION_OPERATION_COMPLETE=true
+EXECUTION_AUTHORIZATION_COMPLETE=true
+PREEXECUTION_VERIFICATION_RECORD_PRESENT=true
+PREEXECUTION_VERIFIER_IMPLEMENTED=true
+PREEXECUTION_STATIC_CONTRACT_VERIFIED=true
+PREEXECUTION_VERIFICATION_SLICE_OPEN=true
+PREEXECUTION_IDENTITY_VERIFIED=false
+ONE_SHOT_ENGINEERING_INVOCATION_EXECUTION_OPEN=true
+ONE_SHOT_ENGINEERING_INVOCATION_RUNTIME_OPERATION_OPEN=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERFORMED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

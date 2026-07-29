@@ -724,3 +724,16 @@ See [ADR-079](decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocat
 - verification must use the exact 13 host resources, two equal image inspections, two equal argv materializations, and at most one `Popen`;
 - the authoring branch preserves `PREEXECUTION_IDENTITY_VERIFIED=false` and `ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false`;
 - no image inspection, command materialization, lease, spawn, result, or scientific capability is present.
+
+### Pre-execution contract for the `QW-LC4-E` one-shot engineering invocation
+
+See [ADR-080](decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification_EN.md).
+
+- PR #140 was merged into `main` as `49c4b97e93b47cefbf35576736927ece02c9402b` and independently verified;
+- the contract binds the merged authorization to the exact host-invoker implementation;
+- the future atomic operation must call `invoke_one_shot_host_runtime` exactly once;
+- both image inspections, both canonical argv materializations, and the single child creation remain one continuous sequence;
+- the static verifier does not call Docker and preserves `PREEXECUTION_IDENTITY_VERIFIED=false`;
+- the lease, output, [evidence](glossary_EN.md#term-evidence), and actual [execution](glossary_EN.md#term-execution) remain absent.
+
+`decision marker`: `ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification`.

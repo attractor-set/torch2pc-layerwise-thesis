@@ -728,3 +728,16 @@ ADR-073 добавляет закрытую при ошибке проверку
 - проверка обязана использовать 13 точных ресурсов хоста, два одинаковых `image inspection`, две одинаковые материализации `argv` и не более одного `Popen`;
 - подготовительная ветка сохраняет `PREEXECUTION_IDENTITY_VERIFIED=false` и `ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false`;
 - образ не проверялся, команда не материализовалась, `lease`, запуск, результат и научные возможности отсутствуют.
+
+### Контракт проверки перед одноразовым инженерным вызовом `QW-LC4-E`
+
+См. [ADR-080](decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification.md).
+
+- PR №140 слит в `main` `49c4b97e93b47cefbf35576736927ece02c9402b` и независимо проверен;
+- контракт связывает слитую авторизацию с точной реализацией хостового исполнителя;
+- будущая атомарная операция обязана вызвать `invoke_one_shot_host_runtime` ровно один раз;
+- две проверки образа, две материализации канонического `argv` и создание единственного дочернего процесса остаются одной непрерывной последовательностью;
+- статическая проверяющая программа не вызывает Docker и сохраняет `PREEXECUTION_IDENTITY_VERIFIED=false`;
+- файл владения, результат, [доказательные материалы](glossary.md#term-evidence) и фактическое [выполнение](glossary.md#term-execution) отсутствуют.
+
+`decision marker`: `ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification`.

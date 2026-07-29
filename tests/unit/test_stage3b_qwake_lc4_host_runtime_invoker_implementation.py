@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import shutil
 import signal
 import subprocess
 from dataclasses import replace
@@ -116,6 +117,41 @@ def _inspection() -> LocalImageInspection:
     )
 
 
+@pytest.fixture(scope="module")
+def runtime_root(
+    tmp_path_factory: pytest.TempPathFactory,
+) -> Path:
+    """Build a real symlink-free root for fake-spawn tests."""
+
+    root = tmp_path_factory.mktemp(
+        "qwake-lc4-host-runtime-invoker"
+    )
+    for relative in (
+        Path("experiments/frozen"),
+        Path("scripts"),
+        Path("src"),
+        Path("tests"),
+    ):
+        shutil.copytree(
+            ROOT / relative,
+            root / relative,
+        )
+
+    (root / "external/Torch2PC").mkdir(parents=True)
+    (root / "results").mkdir(parents=True)
+
+    for relative in (
+        Path("experiments/frozen"),
+        Path("external/Torch2PC"),
+        Path("results"),
+    ):
+        candidate = root / relative
+        assert candidate.is_dir()
+        assert not candidate.is_symlink()
+
+    return root
+
+
 class _FakeProcess:
     def __init__(
         self,
@@ -199,7 +235,7 @@ def test_changed_implementation_state_fails_closed() -> None:
         replace(state, state_sha256="sha256:" + "0" * 64).require()
 
 
-def test_success_path_reinspects_and_spawns_exactly_once() -> None:
+def test_success_path_reinspects_and_spawns_exactly_once(runtime_root: Path) -> None:
     inspection = _inspection()
     inspect_calls: list[tuple[Path, float]] = []
 
@@ -212,7 +248,7 @@ def test_success_path_reinspects_and_spawns_exactly_once() -> None:
     signals: list[tuple[int, int]] = []
 
     outcome = invoke_one_shot_host_runtime(
-        ROOT,
+        runtime_root,
         host_resources=_resources(),
         claimed_at_utc=FIXTURE_CLAIMED_AT_UTC,
         operator_acknowledgement=INVOCATION_OPERATOR_ACKNOWLEDGEMENT,
@@ -222,10 +258,14 @@ def test_success_path_reinspects_and_spawns_exactly_once() -> None:
     )
 
     assert len(inspect_calls) == 2
+    assert {
+        observed_root
+        for observed_root, _ in inspect_calls
+    } == {runtime_root}
     assert len(spawner.calls) == 1
     argv, kwargs = spawner.calls[0]
     assert argv[:2] == ("docker", "run")
-    assert kwargs["cwd"] == ROOT
+    assert kwargs["cwd"] == runtime_root
     assert kwargs["env"] == dict(HOST_PROCESS_ENVIRONMENT)
     assert kwargs["shell"] is False
     assert kwargs["start_new_session"] is True
@@ -240,7 +280,7 @@ def test_success_path_reinspects_and_spawns_exactly_once() -> None:
     assert signals == []
 
 
-def test_spawn_error_is_single_and_terminal() -> None:
+def test_spawn_error_is_single_and_terminal(runtime_root: Path) -> None:
     inspection = _inspection()
     attempts = 0
 
@@ -258,7 +298,7 @@ def test_spawn_error_is_single_and_terminal() -> None:
         match="spawn failed",
     ):
         invoke_one_shot_host_runtime(
-            ROOT,
+            runtime_root,
             host_resources=_resources(),
             claimed_at_utc=FIXTURE_CLAIMED_AT_UTC,
             operator_acknowledgement=INVOCATION_OPERATOR_ACKNOWLEDGEMENT,
@@ -270,7 +310,7 @@ def test_spawn_error_is_single_and_terminal() -> None:
 
 
 
-def test_invalid_child_identifier_never_targets_host_process_group() -> None:
+def test_invalid_child_identifier_never_targets_host_process_group(runtime_root: Path) -> None:
     inspection = _inspection()
 
     def inspect(_root: Path, *, timeout_seconds: float) -> LocalImageInspection:
@@ -284,7 +324,7 @@ def test_invalid_child_identifier_never_targets_host_process_group() -> None:
         match="identifier differs",
     ):
         invoke_one_shot_host_runtime(
-            ROOT,
+            runtime_root,
             host_resources=_resources(),
             claimed_at_utc=FIXTURE_CLAIMED_AT_UTC,
             operator_acknowledgement=INVOCATION_OPERATOR_ACKNOWLEDGEMENT,
@@ -295,7 +335,7 @@ def test_invalid_child_identifier_never_targets_host_process_group() -> None:
     assert signals == []
 
 
-def test_timeout_sends_term_without_retry() -> None:
+def test_timeout_sends_term_without_retry(runtime_root: Path) -> None:
     inspection = _inspection()
 
     def inspect(_root: Path, *, timeout_seconds: float) -> LocalImageInspection:
@@ -312,7 +352,7 @@ def test_timeout_sends_term_without_retry() -> None:
     signals: list[tuple[int, int]] = []
 
     outcome = invoke_one_shot_host_runtime(
-        ROOT,
+        runtime_root,
         host_resources=_resources(),
         claimed_at_utc=FIXTURE_CLAIMED_AT_UTC,
         operator_acknowledgement=INVOCATION_OPERATOR_ACKNOWLEDGEMENT,
@@ -329,9 +369,11 @@ def test_timeout_sends_term_without_retry() -> None:
     assert process.wait_calls == [7200.0, 30.0]
 
 
-def test_output_capture_is_bounded() -> None:
+def test_output_capture_is_bounded(
+    runtime_root: Path,
+) -> None:
     inspection = _inspection()
-    contract = build_host_runtime_invoker_contract(ROOT)
+    contract = build_host_runtime_invoker_contract(runtime_root)
     payload = b"x" * (contract.stdout_capture_limit_bytes + 100)
 
     def inspect(_root: Path, *, timeout_seconds: float) -> LocalImageInspection:
@@ -340,7 +382,7 @@ def test_output_capture_is_bounded() -> None:
 
     process = _FakeProcess(stdout=payload)
     outcome = invoke_one_shot_host_runtime(
-        ROOT,
+        runtime_root,
         host_resources=_resources(),
         claimed_at_utc=FIXTURE_CLAIMED_AT_UTC,
         operator_acknowledgement=INVOCATION_OPERATOR_ACKNOWLEDGEMENT,

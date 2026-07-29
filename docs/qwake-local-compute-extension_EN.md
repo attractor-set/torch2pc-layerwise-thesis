@@ -702,3 +702,14 @@ See [ADR-077](decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocat
 - static identities are verified without image inspection or process spawn;
 - the future operator operation must recheck image, resources, lease, output, and staging;
 - branch permission, invocation, lease, output, and scientific capabilities remain closed.
+
+### `QW-LC4-E` one-shot engineering invocation operation record
+
+See [ADR-078](decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation_EN.md).
+
+- PR #138 merged into `main` `28be77706bc86abaf34f86e9bdcbdcb9cc2810a8` and passed independent verification;
+- the operation record binds the admission merge commit, authorization, image, Torch2PC revision, and host invoker;
+- it freezes 13 required host-resource keys, two image inspections, two canonical-argv materializations, and one allowed `Popen`;
+- current-runtime verification has not occurred: `PREEXECUTION_IDENTITY_VERIFIED=false`;
+- image inspection, command, lease, spawn, output, and scientific capabilities remain closed;
+- after record merge, the next atomic step is a separate effectful execution operation.

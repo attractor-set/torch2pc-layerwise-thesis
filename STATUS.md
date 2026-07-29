@@ -1740,3 +1740,42 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: запись операции одноразового инженерного вызова материализована
+
+См. [ADR-078](docs/decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation.md).
+
+После независимой проверки слияния PR №138 материализована чистая запись
+операции. Она связывает merge commit допуска, авторизацию, образ, Torch2PC и
+ограниченный хостовый исполнитель, а также фиксирует точные динамические
+проверки будущего запуска. Этот срез не выполняет image inspection, не
+материализует команду, не создаёт `lease` и не вызывает `docker run`.
+
+```text
+qwake_adr=ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation
+qwake_operation_base_commit=28be77706bc86abaf34f86e9bdcbdcb9cc2810a8
+qwake_invocation_operation_sha256=sha256:10a612ef1b765362b361ecea57923d00a9f7339c9d3f9e3b27337f92f15326e9
+REPOSITORY_FREEZE_COMPLETE=true
+INVOCATION_ADMISSION_COMPLETE=true
+INVOCATION_OPERATION_RECORD_PRESENT=true
+PREEXECUTION_IDENTITY_CHECKS_IMPLEMENTED=true
+PREEXECUTION_IDENTITY_VERIFIED=false
+ONE_SHOT_ENGINEERING_INVOCATION_SLICE_OPEN=true
+ONE_SHOT_ENGINEERING_INVOCATION_OPERATION_OPEN=true
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERFORMED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

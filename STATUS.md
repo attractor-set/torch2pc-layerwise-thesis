@@ -1491,3 +1491,36 @@ LOCAL_COMPUTE_EXECUTION_OPEN=false
 - исходный `image-build.log` сохраняется байт-в-байт и точечно классифицируется в `.gitattributes` как двоичное запечатанное свидетельство;
 - внутренняя запись разрешает будущую одноразовую точку входа, но веточный допуск выполнения остаётся закрытым;
 - файл владения, каталог результата, инженерные материалы, научное выполнение, тестовая выборка и публикация отсутствуют.
+
+## `QW-LC4-E`: разрешение одноразового инженерного вызова
+
+См. [ADR-071](docs/decisions/ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization.md).
+
+После проверенного слияния PR №131 материализован отдельный машиночитаемый
+пакет разрешения. Он связывает точные идентичности неизменяемого образа,
+`execution-freeze-v1`, допуска, матричной авторизации, вычислительного модуля, обёртки и точки
+входа. Внутренняя запись разрешает один будущий инженерный вызов и один будущий
+захват файла владения.
+
+Разрешение не является выполнением. На ветке не создан файл владения, отсутствуют
+каталог результата и подготовительный каталог, авторизация не потреблена, модель не вызывалась.
+
+```text
+qwake_adr=ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization
+qwake_invocation_authorization_sha256=sha256:0a60dacc1bfd5073cf52d76f2ec33ae54f00899aad9877d44607199659fda75a
+qwake_invocation_authorization_registry_sha256=sha256:9a47f79e9607db98a2c7c224c25cbeee920974d4c339eef4ef82d4f9aa7c8f83
+ONE_SHOT_INVOCATION_AUTHORIZED=true
+FUTURE_LEASE_CLAIM_AUTHORIZED=true
+FUTURE_RUNTIME_EXECUTION_AUTHORIZED=true
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

@@ -589,3 +589,37 @@ See [ADR-070](decisions/ADR-070-stage3b-qwake-lc4-e-execution-freeze-materializa
 - raw `image-build.log` bytes are preserved exactly and the single path is classified in `.gitattributes` as sealed binary evidence;
 - the internal record enables the future one-shot entrypoint, but the branch-level execution gate remains closed;
 - no lease, output root, engineering [evidence](glossary_EN.md#term-evidence), scientific execution, [test-dataset access](glossary_EN.md#term-test-dataset-access) to the test [dataset](glossary_EN.md#term-dataset), or publication exists.
+
+### QW-LC4-E one-shot engineering invocation authorization
+
+See [ADR-071](decisions/ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization_EN.md).
+
+After verified merge of PR #131, a separate machine-readable authorization
+package is materialized. It binds the exact immutable image,
+`execution-freeze-v1`, admission, matrix authorization, backend, wrapper, and
+entrypoint identities. The internal record authorizes one future engineering
+invocation and one future lease claim.
+
+Authorization is not execution. No lease, output root, or staging tree is
+created on this branch; authorization is unconsumed and model code is not
+invoked.
+
+```text
+qwake_adr=ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization
+qwake_invocation_authorization_sha256=sha256:0a60dacc1bfd5073cf52d76f2ec33ae54f00899aad9877d44607199659fda75a
+qwake_invocation_authorization_registry_sha256=sha256:9a47f79e9607db98a2c7c224c25cbeee920974d4c339eef4ef82d4f9aa7c8f83
+ONE_SHOT_INVOCATION_AUTHORIZED=true
+FUTURE_LEASE_CLAIM_AUTHORIZED=true
+FUTURE_RUNTIME_EXECUTION_AUTHORIZED=true
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

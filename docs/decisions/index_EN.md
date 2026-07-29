@@ -111,3 +111,4 @@
 
 - [ADR-071](ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization_EN.md): binds the exact image, freeze, admission, matrix authorization, backend, and entrypoint to one future engineering invocation while keeping the lease and execution closed.
 - [ADR-072](ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring_EN.md): freezes the pure host-wrapper contract, exact image, minimal mounts, and isolation while leaving container invocation, lease claim, and execution absent.
+- [ADR-073](ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation_EN.md): implements exact local-image inspection through `docker image inspect` and deterministic argv materialization without a host invoker, lease, or [execution](../glossary_EN.md#term-execution).

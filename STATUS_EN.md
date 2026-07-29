@@ -1511,3 +1511,37 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: one-shot host invocation-wrapper implementation
+
+See [ADR-073](docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation_EN.md).
+
+After post-merge verification of PR #133, a separate module implements exact
+inspection of the local immutable image. Its only external operation is
+`docker image inspect` of the exact image repo digest; the tag, image ID, every
+layer, source label, `SOURCE_GIT_COMMIT`, entrypoint, and working directory are
+compared with `execution-freeze-v1`.
+
+The future invocation is materialized only as a canonical in-memory argv tuple.
+It forbids image pulling, networking, privileged mode, excess capabilities,
+project-source mounts, and [dataset](docs/glossary_EN.md#term-dataset) access.
+The command is neither persisted nor executed.
+
+```text
+qwake_adr=ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation
+IMAGE_INSPECTION_IMPLEMENTED=true
+INVOCATION_COMMAND_MATERIALIZED=true
+INVOCATION_COMMAND_PERSISTED=false
+HOST_RUNTIME_INVOKER_PRESENT=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

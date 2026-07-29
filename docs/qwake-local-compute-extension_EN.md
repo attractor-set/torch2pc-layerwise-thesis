@@ -651,3 +651,12 @@ AUTHORIZATION_CONSUMED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+### `QW-LC4-E` one-shot host invocation-wrapper implementation
+
+ADR-073 adds fail-closed inspection of the exact local image and a deterministic
+builder for the future `docker run` argv as data. The implementation compares
+the full normalized image identity, requires canonical resource inputs, and
+constructs exactly three mounts and two devices. It contains no host invoker,
+creates no lease, and does not open `LOCAL_COMPUTE`
+[execution](glossary_EN.md#term-execution).

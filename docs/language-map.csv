@@ -172,3 +172,4 @@ docs/decisions/ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation.md,doc
 docs/decisions/ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization.md,docs/decisions/ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization_EN.md,required
 docs/decisions/ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization.md,docs/decisions/ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization_EN.md,required
 docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring.md,docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring_EN.md,required
+docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation.md,docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation_EN.md,required

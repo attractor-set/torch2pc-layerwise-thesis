@@ -671,3 +671,13 @@ See [ADR-074](decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoke
 - only the container entrypoint may claim the execution lease, in the same process that invokes the backend;
 - automatic retry is forbidden after spawn, and a claimed lease persists after every failure;
 - the invoker, lease, output, [evidence](glossary_EN.md#term-evidence), test data, and publication remain absent.
+
+### `QW-LC4-E` one-shot host-runtime-invoker implementation
+
+See [ADR-075](decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation_EN.md).
+
+- PR #135 merged into `main` `7f1655346bca77834d73a660c9857f1ff23b826c` and passed independent verification;
+- double image and canonical-argv revalidation, one no-shell `Popen`, and a fixed host environment are implemented;
+- the child receives a separate process group, `SIGINT`/`SIGTERM` forwarding, a terminal timeout, and bounded output;
+- the host writes no lease and persists neither command nor logs;
+- the verifier and tests never invoke Docker runtime, so execution and output remain absent.

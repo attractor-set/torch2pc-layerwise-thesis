@@ -1636,3 +1636,31 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: реализация одноразового хостового исполнителя
+
+См. [ADR-075](docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation.md).
+
+После проверки PR №135 после слияния реализован ограниченный хостовый исполнитель. Он дважды проверяет образ и канонический `argv`, создаёт не более одного дочернего процесса без оболочки, использует отдельную группу процессов, пересылает сигналы, применяет терминальный тайм-аут и ограничивает вывод. Проверяющая программа не вызывает исполнитель, а тесты используют только поддельный процесс.
+
+```text
+qwake_adr=ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation
+HOST_RUNTIME_INVOKER_IMPLEMENTATION_PRESENT=true
+HOST_RUNTIME_INVOKER_PRESENT=true
+HOST_RUNTIME_INVOKER_EXECUTABLE=true
+HOST_DOCKER_RUN_IMPLEMENTED=true
+PRELAUNCH_IMAGE_INSPECTION_COUNT=2
+PRELAUNCH_MATERIALIZATION_COUNT=2
+SUBPROCESS_POPEN_CALL_LIMIT=1
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

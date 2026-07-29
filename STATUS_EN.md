@@ -1581,3 +1581,31 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: one-shot host-runtime-invoker implementation
+
+See [ADR-075](docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation_EN.md).
+
+After post-merge verification of PR #135, the bounded host invoker is implemented. It reinspects the image and canonical argv twice, creates at most one no-shell child in a separate process group, forwards signals, applies a terminal timeout, and bounds output. The verifier never calls the invoker, and tests use only a fake child process.
+
+```text
+qwake_adr=ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation
+HOST_RUNTIME_INVOKER_IMPLEMENTATION_PRESENT=true
+HOST_RUNTIME_INVOKER_PRESENT=true
+HOST_RUNTIME_INVOKER_EXECUTABLE=true
+HOST_DOCKER_RUN_IMPLEMENTED=true
+PRELAUNCH_IMAGE_INSPECTION_COUNT=2
+PRELAUNCH_MATERIALIZATION_COUNT=2
+SUBPROCESS_POPEN_CALL_LIMIT=1
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

@@ -1600,3 +1600,39 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: авторинг одноразового хостового исполнителя
+
+См. [ADR-074](docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring.md).
+
+После проверки PR №134 после слияния отдельный чистый контракт связывает
+реализацию канонического `argv` с единственной будущей попыткой container spawn.
+Хост повторно проверяет образ и команду, но не записывает execution lease:
+атомарный захват остаётся обязанностью контейнерной точки входа в том же
+процессе, который затем выполняет вычислительный модуль.
+
+Контракт фиксирует запрет оболочки, один дочерний процесс, отсутствие
+автоматического повтора после spawn, тайм-аут, пересылку сигналов, ограниченный
+захват вывода и сохранение lease после ошибки. Сам исполнитель отсутствует.
+
+```text
+qwake_adr=ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring
+HOST_RUNTIME_INVOKER_CONTRACT_PRESENT=true
+HOST_RUNTIME_INVOKER_PRESENT=false
+HOST_RUNTIME_INVOKER_EXECUTABLE=false
+HOST_DOCKER_RUN_IMPLEMENTED=false
+EXACT_ARGV_ONLY=true
+SHELL_INTERPRETATION_FORBIDDEN=true
+EXECUTION_ATTEMPT_LIMIT=1
+HOST_EXECUTION_LEASE_WRITE_FORBIDDEN=true
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

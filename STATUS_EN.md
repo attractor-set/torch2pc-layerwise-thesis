@@ -1545,3 +1545,39 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: one-shot host-runtime-invoker authoring
+
+See [ADR-074](docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring_EN.md).
+
+After post-merge verification of PR #134, a separate pure contract binds the
+canonical argv implementation to one future child-container spawn. The host
+reinspects the image and command but cannot write the execution lease: atomic
+claim remains owned by the container entrypoint in the same process that then
+invokes the backend.
+
+The contract freezes no-shell argv execution, one child spawn, no automatic
+retry after spawn, timeout, signal forwarding, bounded output capture, and
+lease persistence after failure. The invoker itself remains absent.
+
+```text
+qwake_adr=ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring
+HOST_RUNTIME_INVOKER_CONTRACT_PRESENT=true
+HOST_RUNTIME_INVOKER_PRESENT=false
+HOST_RUNTIME_INVOKER_EXECUTABLE=false
+HOST_DOCKER_RUN_IMPLEMENTED=false
+EXACT_ARGV_ONLY=true
+SHELL_INTERPRETATION_FORBIDDEN=true
+EXECUTION_ATTEMPT_LIMIT=1
+HOST_EXECUTION_LEASE_WRITE_FORBIDDEN=true
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

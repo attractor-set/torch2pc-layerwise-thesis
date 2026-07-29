@@ -660,3 +660,14 @@ the full normalized image identity, requires canonical resource inputs, and
 constructs exactly three mounts and two devices. It contains no host invoker,
 creates no lease, and does not open `LOCAL_COMPUTE`
 [execution](glossary_EN.md#term-execution).
+
+### `QW-LC4-E` one-shot host-runtime-invoker authoring
+
+See [ADR-074](decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring_EN.md).
+
+- PR #134 merged into `main` `be6486a9e3670343132f2c863a5a0cd5969ee9f6` and passed independent verification;
+- the pure contract binds exact image inspection and canonical argv implementation to one future spawn attempt;
+- the host must recheck image, command, and effect absence immediately before spawn;
+- only the container entrypoint may claim the execution lease, in the same process that invokes the backend;
+- automatic retry is forbidden after spawn, and a claimed lease persists after every failure;
+- the invoker, lease, output, [evidence](glossary_EN.md#term-evidence), test data, and publication remain absent.

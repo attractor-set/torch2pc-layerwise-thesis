@@ -681,3 +681,14 @@ See [ADR-075](decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoke
 - the child receives a separate process group, `SIGINT`/`SIGTERM` forwarding, a terminal timeout, and bounded output;
 - the host writes no lease and persists neither command nor logs;
 - the verifier and tests never invoke Docker runtime, so execution and output remain absent.
+
+### `QW-LC4-E` one-shot host-runtime-invoker repository freeze
+
+See [ADR-076](decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze_EN.md).
+
+- PR #136 merged into `main` `da51c8d858c541372525125640db99062041fc20` and passed independent verification;
+- the receipt binds both parents, both implementation commits, the 16-file tree, and corrected hashes;
+- it records 2/2 CI checks, 139 targeted tests, and 1186 full tests;
+- the implementation and exact `docker run` path exist, but the one-shot engineering invocation is not yet permitted;
+- image inspection, `docker run`, lease claim, authorization consumption, output, and scientific capabilities remain absent;
+- after receipt merge, the next atomic step is a separate one-shot operator operation.

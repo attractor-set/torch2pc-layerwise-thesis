@@ -175,3 +175,4 @@ docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring
 docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation.md,docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation_EN.md,required
 docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring.md,docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring_EN.md,required
 docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation.md,docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation_EN.md,required
+docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze.md,docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze_EN.md,required

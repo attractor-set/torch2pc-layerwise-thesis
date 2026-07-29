@@ -110,3 +110,4 @@
 - [ADR-070](ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization_EN.md): freezes the exact image and canonical execution package while keeping the branch closed until a separate one-shot engineering invocation.
 
 - [ADR-071](ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization_EN.md): binds the exact image, freeze, admission, matrix authorization, backend, and entrypoint to one future engineering invocation while keeping the lease and execution closed.
+- [ADR-072](ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring_EN.md): freezes the pure host-wrapper contract, exact image, minimal mounts, and isolation while leaving container invocation, lease claim, and execution absent.

@@ -1524,3 +1524,45 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: авторинг хостовой обёртки одноразового вызова
+
+См. [ADR-072](docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring.md).
+
+После проверки PR №132 после слияния отдельный чистый модуль фиксирует будущую
+хостовую границу вызова. Контракт требует точный `image repo digest`, проверку
+исходной метки образа, отключённую сеть, корневую файловую систему только для
+чтения и отдельную временную файловую систему `/tmp`. Разрешены ровно три
+монтирования каталогов, устройства `/dev/kfd` и `/dev/dri`, явный пользователь,
+дополнительные группы и зафиксированные входы ограничений ресурсов. Исходное
+дерево проекта и набор данных монтировать запрещено.
+
+Текущий срез не содержит `subprocess`, вызова Docker или материализованной
+команды. Он только повторно проверяет разрешение и строит канонический контракт
+будущего вызова во временной памяти.
+
+```text
+qwake_adr=ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring
+qwake_invocation_wrapper_contract_sha256=sha256:4c4cb163e8c2a33b0563cc3b9cb873a87acf8ea75bb3e807d157d51c5a4dd29b
+INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
+INVOCATION_WRAPPER_AUTHORING_BRANCH_OPEN=true
+INVOCATION_WRAPPER_CONTRACT_PRESENT=true
+CONTAINER_COMMAND_TEMPLATE_PRESENT=true
+GPU_DEVICE_BINDING_COUNT=2
+TMPFS_REQUIRED=true
+TMPFS_TARGET=/tmp
+HOST_RUNTIME_INVOKER_PRESENT=false
+IMAGE_INSPECTION_IMPLEMENTED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

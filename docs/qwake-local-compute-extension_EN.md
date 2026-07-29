@@ -623,3 +623,31 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+### `QW-LC4-E` one-shot host invocation-wrapper authoring
+
+See [ADR-072](decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring_EN.md).
+
+After verified merge of PR #132, only the pure future host-wrapper contract is
+materialized. It binds authorization to the exact immutable image and in-image
+entrypoint, forbids project-source and dataset mounts, and limits a future
+container to frozen packages, Torch2PC, and the results directory. The contract
+also fixes `/dev/kfd` and `/dev/dri`, user/group and resource-input wiring, the
+exact command template, and the `/tmp` tmpfs required by a read-only root
+filesystem. Container invocation, local-image inspection, lease claim, and
+execution remain absent.
+
+```text
+qwake_invocation_wrapper_contract_sha256=sha256:4c4cb163e8c2a33b0563cc3b9cb873a87acf8ea75bb3e807d157d51c5a4dd29b
+INVOCATION_WRAPPER_CONTRACT_PRESENT=true
+CONTAINER_COMMAND_TEMPLATE_PRESENT=true
+GPU_DEVICE_BINDING_COUNT=2
+TMPFS_REQUIRED=true
+TMPFS_TARGET=/tmp
+HOST_RUNTIME_INVOKER_PRESENT=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

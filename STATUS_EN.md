@@ -1469,3 +1469,45 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: one-shot host invocation-wrapper authoring
+
+See [ADR-072](docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring_EN.md).
+
+After post-merge verification of PR #132, a separate pure module freezes the
+future host invocation boundary. The contract requires the exact image repo
+digest, source-label verification, disabled networking, a read-only root
+filesystem, and a dedicated `/tmp` tmpfs. It permits exactly three bind mounts,
+requires `/dev/kfd` and `/dev/dri`, fixes user/group and resource-input wiring,
+and forbids binding the project source tree or a dataset.
+
+This slice contains no `subprocess`, container-runtime invocation, or
+materialized command. It only reverifies authorization and constructs the
+canonical prospective contract in memory and under a temporary verifier
+directory.
+
+```text
+qwake_adr=ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring
+qwake_invocation_wrapper_contract_sha256=sha256:4c4cb163e8c2a33b0563cc3b9cb873a87acf8ea75bb3e807d157d51c5a4dd29b
+INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
+INVOCATION_WRAPPER_AUTHORING_BRANCH_OPEN=true
+INVOCATION_WRAPPER_CONTRACT_PRESENT=true
+CONTAINER_COMMAND_TEMPLATE_PRESENT=true
+GPU_DEVICE_BINDING_COUNT=2
+TMPFS_REQUIRED=true
+TMPFS_TARGET=/tmp
+HOST_RUNTIME_INVOKER_PRESENT=false
+IMAGE_INSPECTION_IMPLEMENTED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

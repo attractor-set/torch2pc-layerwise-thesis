@@ -626,3 +626,32 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+### Авторинг хостовой обёртки одноразового вызова `QW-LC4-E`
+
+См. [ADR-072](decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring.md).
+
+После проверенного слияния PR №132 материализован только чистый контракт
+будущей хостовой обёртки. Он привязывает разрешение к точному неизменяемому
+образу и внутренней точке входа, запрещает монтирование исходного дерева и
+набора данных и ограничивает будущий контейнер зафиксированными пакетами,
+Torch2PC и каталогом результатов. Дополнительно зафиксированы устройства
+`/dev/kfd` и `/dev/dri`, пользователь и группы, входы ограничений ресурсов,
+точный шаблон команды и временная файловая система `/tmp`, необходимая при
+корневой файловой системе только для чтения. Вызов Docker, проверка локального
+образа, файл владения и выполнение отсутствуют.
+
+```text
+qwake_invocation_wrapper_contract_sha256=sha256:4c4cb163e8c2a33b0563cc3b9cb873a87acf8ea75bb3e807d157d51c5a4dd29b
+INVOCATION_WRAPPER_CONTRACT_PRESENT=true
+CONTAINER_COMMAND_TEMPLATE_PRESENT=true
+GPU_DEVICE_BINDING_COUNT=2
+TMPFS_REQUIRED=true
+TMPFS_TARGET=/tmp
+HOST_RUNTIME_INVOKER_PRESENT=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

@@ -692,3 +692,13 @@ See [ADR-076](decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoke
 - the implementation and exact `docker run` path exist, but the one-shot engineering invocation is not yet permitted;
 - image inspection, `docker run`, lease claim, authorization consumption, output, and scientific capabilities remain absent;
 - after receipt merge, the next atomic step is a separate one-shot operator operation.
+
+### `QW-LC4-E` one-shot engineering invocation admission
+
+See [ADR-077](decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission_EN.md).
+
+- the PR #137 repository freeze is complete on `main` `3454d12d3cc16c9c50977e2a598e2bc1a8768441`;
+- the admission rebinds the authorization, image, Torch2PC revision, and executable host invoker;
+- static identities are verified without image inspection or process spawn;
+- the future operator operation must recheck image, resources, lease, output, and staging;
+- branch permission, invocation, lease, output, and scientific capabilities remain closed.

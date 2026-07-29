@@ -1648,3 +1648,39 @@ DOCKER_RUN_PERFORMED=false
 RUNTIME_RERUN_PERFORMED=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: one-shot engineering invocation admission materialized
+
+See [ADR-077](docs/decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission_EN.md).
+
+After independent verification of the PR #137 merge, a pure admission now binds
+the exact repository freeze, the previously issued one-shot authorization, the
+immutable image, and the bounded host invoker. Runtime inspection and the
+invocation remain a separate operator operation; this slice performs no image
+inspection, `docker run`, lease claim, or output write.
+
+```text
+qwake_adr=ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission
+qwake_invocation_base_commit=3454d12d3cc16c9c50977e2a598e2bc1a8768441
+qwake_invocation_admission_sha256=sha256:fe07bc20bf5866d84730df945c2ababc7b5f4f255648c5de6e3185ba4e37c01d
+REPOSITORY_FREEZE_COMPLETE=true
+INVOCATION_ADMISSION_RECORD_PRESENT=true
+PREEXECUTION_IDENTITY_CHECKS_IMPLEMENTED=true
+PREEXECUTION_IDENTITY_VERIFIED=false
+ONE_SHOT_ENGINEERING_INVOCATION_SLICE_OPEN=true
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERFORMED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+IMAGE_INSPECTION_PERFORMED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

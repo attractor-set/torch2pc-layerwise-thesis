@@ -713,3 +713,14 @@ See [ADR-078](decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocat
 - current-runtime verification has not occurred: `PREEXECUTION_IDENTITY_VERIFIED=false`;
 - image inspection, command, lease, spawn, output, and scientific capabilities remain closed;
 - after record merge, the next atomic step is a separate effectful execution operation.
+
+### `QW-LC4-E` one-shot engineering invocation execution authorization
+
+See [ADR-079](decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization_EN.md).
+
+- PR #139 was merged into `main` at `b0f6729e8fd1cb1aa172eef488dc56e36b335173` and independently verified;
+- the authorization binds the operation merge, `operation-v1`, previous one-shot permission, image, Torch2PC revision, and host invoker;
+- only one future pre-execution verification and one future engineering invocation are authorized after separate post-merge verification;
+- verification must use the exact 13 host resources, two equal image inspections, two equal argv materializations, and at most one `Popen`;
+- the authoring branch preserves `PREEXECUTION_IDENTITY_VERIFIED=false` and `ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false`;
+- no image inspection, command materialization, lease, spawn, result, or scientific capability is present.

@@ -1779,3 +1779,46 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: авторизация выполнения одноразового инженерного вызова материализована
+
+См. [ADR-079](docs/decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization.md).
+
+После независимой проверки слияния PR №139 материализована чистая авторизация
+одного будущего вызова. Она связывает коммит слияния операции, прежнюю
+одноразовую авторизацию, образ, Torch2PC и ограниченный хостовый исполнитель и
+фиксирует обязательную проверку перед выполнением в рамках одного процесса. Подготовительная ветка не
+выполняет image inspection, не материализует команду, не создаёт `lease` и не
+вызывает `docker run`.
+
+```text
+qwake_adr=ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization
+qwake_execution_base_commit=b0f6729e8fd1cb1aa172eef488dc56e36b335173
+qwake_execution_authorization_sha256=sha256:ff136538faee0d7952dc444e521d7ec760c7d54cd38406cb9b19ff1e00d9437b
+REPOSITORY_FREEZE_COMPLETE=true
+INVOCATION_ADMISSION_COMPLETE=true
+INVOCATION_OPERATION_COMPLETE=true
+EXECUTION_AUTHORIZATION_RECORD_PRESENT=true
+EXECUTION_AUTHORIZATION_ISSUED=true
+PREEXECUTION_VERIFICATION_MATERIALIZATION_IMPLEMENTED=true
+PREEXECUTION_IDENTITY_VERIFIED=false
+ONE_SHOT_ENGINEERING_INVOCATION_SLICE_OPEN=true
+ONE_SHOT_ENGINEERING_INVOCATION_OPERATION_OPEN=true
+ONE_SHOT_ENGINEERING_INVOCATION_EXECUTION_OPEN=true
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERFORMED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

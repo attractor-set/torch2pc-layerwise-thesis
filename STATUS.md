@@ -1664,3 +1664,43 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: фиксация состояния репозитория хостового исполнителя материализована
+
+См. [ADR-076](docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze.md).
+
+После независимой проверки слияния PR №136 материализована двухфайловая
+квитанция, связывающая точный merge commit, оба родителя, исправленную
+герметичную проверку, хэши реализации и ревизию Torch2PC. Этот срез не вызывает
+исполнитель, не проверяет локальный образ и не создаёт файл владения или
+результат. Заморозка останется незавершённой до слияния квитанции и повторной
+проверки.
+
+```text
+qwake_adr=ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze
+qwake_host_runtime_invoker_repository_main_commit=da51c8d858c541372525125640db99062041fc20
+qwake_host_runtime_invoker_implementation_head=181abda36465d3a91db5970e684938266200a798
+qwake_host_runtime_invoker_repository_freeze_materialized=true
+qwake_host_runtime_invoker_repository_freeze_complete=false
+qwake_next_slice=QW-LC4-E-one-shot-host-runtime-invoker-repository-freeze-merge
+qwake_post_merge_next_slice=QW-LC4-E-one-shot-engineering-invocation
+HOST_RUNTIME_INVOKER_IMPLEMENTATION_PRESENT=true
+HOST_RUNTIME_INVOKER_PRESENT=true
+HOST_RUNTIME_INVOKER_EXECUTABLE=true
+HOST_DOCKER_RUN_IMPLEMENTED=true
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+IMAGE_INSPECTION_PERFORMED=false
+DOCKER_RUN_PERFORMED=false
+RUNTIME_RERUN_PERFORMED=false
+FILES_STAGED=false
+```

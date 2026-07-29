@@ -177,3 +177,4 @@ docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authori
 docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation.md,docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation_EN.md,required
 docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze.md,docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze_EN.md,required
 docs/decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission.md,docs/decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission_EN.md,required
+docs/decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation.md,docs/decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation_EN.md,required

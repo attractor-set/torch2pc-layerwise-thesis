@@ -894,3 +894,34 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: реализация механизма записи финального подтверждения
+
+ADR-088 реализует атомарное сохранение уже проверенного конверта подтверждения
+в единственный путь ADR-087. Применяются `O_EXCL`, жёсткая ссылка без
+перезаписи, режим `0600`, `fsync`, запрет символических родительских каталогов,
+запрет оставшихся временных файлов и точная повторная проверка байтов.
+Производственная точка вызова отсутствует, поэтому слияние реализации не
+создаёт подтверждение и не открывает вызов.
+
+```text
+issuance_authoring_pr=148
+issuance_authoring_focused_tests=61
+issuance_authoring_targeted_tests=262
+issuance_authoring_full_tests=1309
+issuance_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

@@ -2065,3 +2065,38 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: реализация выпуска финального подтверждения
+
+См. [ADR-088](docs/decisions/ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation.md).
+
+После независимой проверки слияния PR №148 как
+`8343724c66b1d22f01846d9fc70f01738a09127a` реализован атомарный механизм
+записи канонического конверта финального подтверждения. Он обеспечивает запись
+без перезаписи, режим `0600`, `fsync`, запрет символических родительских
+каталогов и повторную проверку байтов. Производственная точка вызова и файл
+подтверждения отсутствуют; выполнение остаётся закрытым.
+
+```text
+issuance_authoring_pr=148
+issuance_authoring_focused_tests=61
+issuance_authoring_targeted_tests=262
+issuance_authoring_full_tests=1309
+issuance_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_AUTHORING_POST_MERGE_VERIFIED=true
+ACKNOWLEDGEMENT_ISSUANCE_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

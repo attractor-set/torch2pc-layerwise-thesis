@@ -129,3 +129,5 @@
 - [ADR-086](ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring_EN.md): freezes the static format for a separate operator acknowledgement, binds it to the complete evidence chain, image, Torch2PC, and one attempt, but does not issue the acknowledgement or open execution.
 
 - [ADR-087](ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring_EN.md): freezes the future atomic acknowledgement-issuance contract without writer implementation, acknowledgement materialization, lease, or execution.
+
+- [ADR-088](ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation_EN.md): implements the atomic no-overwrite acknowledgement writer without a production callsite, materialization, or execution.

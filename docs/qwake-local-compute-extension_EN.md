@@ -916,3 +916,11 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+### Final acknowledgement materialization authoring
+
+After the writer implementation merge, a separate static slice binds future
+materialization to the exact operator, issuer, materializer, ordered UTC times,
+target path, and canonical-envelope SHA-256. The writer is not called; the
+acknowledgement, lease, and local compute remain absent.

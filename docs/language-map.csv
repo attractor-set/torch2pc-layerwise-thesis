@@ -188,3 +188,4 @@ docs/decisions/ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring.md,do
 docs/decisions/ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring.md,docs/decisions/ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring_EN.md,required
 docs/decisions/ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring.md,docs/decisions/ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring_EN.md,required
 docs/decisions/ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation.md,docs/decisions/ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation_EN.md,required
+docs/decisions/ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring.md,docs/decisions/ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring_EN.md,required

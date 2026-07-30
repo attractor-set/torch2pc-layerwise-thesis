@@ -131,3 +131,6 @@
 - [ADR-087](ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring_EN.md): freezes the future atomic acknowledgement-issuance contract without writer implementation, acknowledgement materialization, lease, or execution.
 
 - [ADR-088](ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation_EN.md): implements the atomic no-overwrite acknowledgement writer without a production callsite, materialization, or execution.
+
+
+- [ADR-089](ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring_EN.md): freezes the operator-bound contract and provenance for the sole future materialization without calling the writer or creating the acknowledgement.

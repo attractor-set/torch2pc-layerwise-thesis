@@ -2100,3 +2100,40 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: подготовка материализации финального подтверждения
+
+См. [ADR-089](docs/decisions/ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring.md).
+
+После независимой проверки слияния PR №149 как
+`31206012ef7cbd2b7b21a2017374c11123abd42c` зафиксирован статический
+operator-bound контракт будущей materialization-записи. Он связывает точную
+реализацию writer, операторскую фразу, идентичности оператора, выпускающего и
+материализующего субъекта, упорядоченные времена, путь и канонический SHA-256.
+Файл подтверждения и производственная точка вызова отсутствуют; выполнение
+остаётся закрытым.
+
+```text
+issuance_implementation_pr=149
+issuance_implementation_focused_tests=79
+issuance_implementation_targeted_tests=280
+issuance_implementation_full_tests=1327
+issuance_implementation_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTATION_POST_MERGE_VERIFIED=true
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=true
+ACKNOWLEDGEMENT_MATERIALIZATION_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_MATERIALIZATION_IMPLEMENTED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

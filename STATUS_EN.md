@@ -2042,3 +2042,39 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: final acknowledgement materialization authoring
+
+See [ADR-089](docs/decisions/ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring_EN.md).
+
+After independent verification of PR #149 merged as
+`31206012ef7cbd2b7b21a2017374c11123abd42c`, a static operator-bound contract
+for the future materialization is frozen. It binds the exact writer
+implementation, operator phrase, operator/issuer/materializer identities,
+ordered timestamps, target path, and canonical SHA-256. The acknowledgement
+file and production callsite remain absent; execution stays closed.
+
+```text
+issuance_implementation_pr=149
+issuance_implementation_focused_tests=79
+issuance_implementation_targeted_tests=280
+issuance_implementation_full_tests=1327
+issuance_implementation_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTATION_POST_MERGE_VERIFIED=true
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=true
+ACKNOWLEDGEMENT_MATERIALIZATION_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_MATERIALIZATION_IMPLEMENTED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

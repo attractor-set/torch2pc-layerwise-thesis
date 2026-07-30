@@ -1894,3 +1894,32 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: persistent evidence chain v2 writers implemented
+
+See [ADR-084](docs/decisions/ADR-084-stage3b-qwake-lc4-e-persistent-evidence-chain-v2-implementation_EN.md).
+
+From PR #144 merge `3d092440b0314f02072c9773cc91018bf2860744`,
+fail-closed writers now implement the persistent lease v2 and durable terminal
+host outcome. The implementation provides exclusive no-overwrite, mode `0600`,
+file/directory `fsync`, symbolic-parent rejection, temporary cleanup, and exact
+canonical lease-byte verification before outcome persistence. Host-invoker
+wiring and execution remain closed.
+
+```text
+PERSISTENT_LEASE_V2_IMPLEMENTATION_PRESENT=true
+DURABLE_OUTCOME_WRITER_IMPLEMENTED=true
+LEASE_BOUND_HOST_INVOKER_ENFORCED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

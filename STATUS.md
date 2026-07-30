@@ -2031,3 +2031,37 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: подготовка выпуска финального подтверждения
+
+См. [ADR-087](docs/decisions/ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring.md).
+
+После независимой проверки слияния PR №147 на
+`eb20c157584efff8e9aa0418385242c7d7b26eab` статический контракт выпуска
+связывает точный пакет ADR-086 с единственным будущим путём подтверждения,
+оператором, выпускающим, двумя временами по всемирному координированному
+времени и атомарной записью без перезаписи. Программа записи и само
+подтверждение отсутствуют; файл владения и выполнение остаются закрытыми.
+
+```text
+acknowledgement_authoring_pr=147
+acknowledgement_authoring_focused_tests=50
+acknowledgement_authoring_targeted_tests=251
+acknowledgement_authoring_full_tests=1298
+acknowledgement_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

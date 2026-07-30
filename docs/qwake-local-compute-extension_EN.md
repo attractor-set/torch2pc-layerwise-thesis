@@ -737,3 +737,35 @@ See [ADR-080](decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocat
 - the lease, output, [evidence](glossary_EN.md#term-evidence), and actual [execution](glossary_EN.md#term-execution) remain absent.
 
 `decision marker`: `ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification`.
+
+## `QW-LC4-E`: bounded one-shot engineering invocation runtime operation
+
+See [ADR-081](decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation_EN.md).
+
+After independent verification of the PR #141 merge, a pure atomic-operation
+contract and bounded entry point are materialized. It accepts exact host
+resources, a claim time, two acknowledgements, and explicit permission, then
+may delegate dynamic verification and launch exactly once to the previously
+frozen host invoker. The verifier never calls the new entry point.
+
+```text
+qwake_adr=ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation
+qwake_runtime_operation_base_commit=494e6a0b2f10c26b49c90fbb84c23565699a4064
+qwake_runtime_operation_sha256=sha256:0332428014f7f8385c789ba7e7c55d6c2ec03b020e3f83df9ac9714483bb6bf8
+PREEXECUTION_VERIFICATION_COMPLETE=true
+RUNTIME_OPERATION_RECORD_PRESENT=true
+RUNTIME_OPERATION_EXECUTOR_ENTRYPOINT_IMPLEMENTED=true
+RUNTIME_OPERATION_STATIC_CONTRACT_VERIFIED=true
+ONE_SHOT_ENGINEERING_INVOCATION_RUNTIME_OPERATION_OPEN=true
+PREEXECUTION_IDENTITY_VERIFIED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

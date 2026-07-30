@@ -1807,3 +1807,46 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: bounded one-shot engineering invocation runtime operation materialized
+
+See [ADR-081](docs/decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation_EN.md).
+
+After independent verification of the PR #141 merge, a pure atomic-operation
+contract and bounded entry point are materialized. It requires explicit
+permission, exact acknowledgement, a post-merge claim time, the previous
+authorization acknowledgement, and the complete host-resource set. Dynamic
+verification and the sole spawn are delegated to the existing host invoker;
+the authoring branch does not inspect the image, materialize a command, create
+a lease, or invoke Docker.
+
+```text
+qwake_adr=ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation
+qwake_runtime_operation_base_commit=494e6a0b2f10c26b49c90fbb84c23565699a4064
+qwake_runtime_operation_sha256=sha256:0332428014f7f8385c789ba7e7c55d6c2ec03b020e3f83df9ac9714483bb6bf8
+EXECUTION_AUTHORIZATION_COMPLETE=true
+PREEXECUTION_VERIFICATION_COMPLETE=true
+PREEXECUTION_STATIC_CONTRACT_VERIFIED=true
+RUNTIME_OPERATION_RECORD_PRESENT=true
+RUNTIME_OPERATION_EXECUTOR_ENTRYPOINT_IMPLEMENTED=true
+RUNTIME_OPERATION_STATIC_CONTRACT_VERIFIED=true
+ONE_SHOT_ENGINEERING_INVOCATION_RUNTIME_OPERATION_SLICE_OPEN=true
+ONE_SHOT_ENGINEERING_INVOCATION_RUNTIME_OPERATION_OPEN=true
+PREEXECUTION_IDENTITY_VERIFIED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERFORMED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+ENGINEERING_EVIDENCE_PRESENT=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

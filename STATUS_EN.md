@@ -1975,3 +1975,36 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: final acknowledgement issuance authoring
+
+See [ADR-087](docs/decisions/ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring_EN.md).
+
+After independent verification of PR #147 merged as
+`eb20c157584efff8e9aa0418385242c7d7b26eab`, the static issuance contract
+binds the exact ADR-086 package to the sole future acknowledgement path, the
+operator, issuer, two UTC timestamps, and atomic no-overwrite persistence. The
+writer and acknowledgement remain absent; lease and execution stay closed.
+
+```text
+acknowledgement_authoring_pr=147
+acknowledgement_authoring_focused_tests=50
+acknowledgement_authoring_targeted_tests=251
+acknowledgement_authoring_full_tests=1298
+acknowledgement_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

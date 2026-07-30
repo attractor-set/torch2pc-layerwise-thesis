@@ -855,3 +855,34 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: final acknowledgement issuance authoring
+
+ADR-087 binds the verified PR #147 merge and exact ADR-086 package to the sole
+future acknowledgement file. The contract requires separate operator and issuer
+identities, ordered timestamps, canonical JSON, atomic no-overwrite persistence,
+mode `0600`, `fsync`, and exact persisted-byte reverification. Writer
+implementation, acknowledgement, lease, and invocation remain absent.
+
+```text
+acknowledgement_authoring_pr=147
+acknowledgement_authoring_focused_tests=50
+acknowledgement_authoring_targeted_tests=251
+acknowledgement_authoring_full_tests=1298
+acknowledgement_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

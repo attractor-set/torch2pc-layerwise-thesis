@@ -862,3 +862,35 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: подготовка выпуска финального подтверждения
+
+ADR-087 связывает проверенное слияние PR №147 и точный пакет ADR-086 с
+единственным будущим файлом подтверждения. Контракт требует отдельные
+идентичности оператора и выпускающего, упорядоченные времена, канонический `JSON`,
+атомарную запись без перезаписи, режим `0600`, `fsync` и повторную проверку
+сохранённых байтов. Реализация записи, само подтверждение, файл владения и
+вызов отсутствуют.
+
+```text
+acknowledgement_authoring_pr=147
+acknowledgement_authoring_focused_tests=50
+acknowledgement_authoring_targeted_tests=251
+acknowledgement_authoring_full_tests=1298
+acknowledgement_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

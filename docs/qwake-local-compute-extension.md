@@ -784,3 +784,33 @@ LOCAL_COMPUTE_EXECUTION_OPEN=false
 собственную исполняемую идентичность. Запрос выполнения остаётся закрытым до
 повторной полной проверки, слияния исправления, постоянного файла владения v2
 и устойчивой квитанции отрицательного исхода хоста.
+
+### Постоянная доказательная цепочка v2 `QW-LC4-E`
+
+См. [ADR-083](decisions/ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2.md).
+
+После независимой проверки слияния PR №143 отдельный пакет подготовки связывает
+актуальные идентичности авторизации вызова, авторизации выполнения, проверки
+перед выполнением, операции рабочей среды и восстановления идентичности с
+точным образом, Torch2PC, каталогом результатов и `invocation_count=1`. Чистые
+конструкторы определяют будущий постоянный файл владения v2 и обязательную
+терминальную квитанцию исхода хоста, включая отказ до запуска, ошибку создания
+процесса, ненулевой код, тайм-аут и сигнал. Атомарная запись, привязка полномочия
+к файлу владения и фактический вызов остаются закрытыми.
+
+```text
+qwake_adr=ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2
+qwake_persistent_evidence_chain_v2_sha256=sha256:c0a6195080cec64e6104a90076366cc2bfa10a723b45a7389cd77fa1b3b11bd1
+CORRECTED_FULL_VALIDATION_RECEIPT_PRESENT=true
+RUNTIME_OPERATION_IDENTITY_REPAIR_MERGED=true
+LATEST_AUTHORIZATION_BOUND_IN_PERSISTENT_LEASE_TEMPLATE=true
+DURABLE_NEGATIVE_HOST_OUTCOME_DEFINED=true
+PERSISTENT_LEASE_V2_IMPLEMENTATION_PRESENT=false
+DURABLE_OUTCOME_WRITER_IMPLEMENTED=false
+LEASE_BOUND_HOST_INVOKER_ENFORCED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

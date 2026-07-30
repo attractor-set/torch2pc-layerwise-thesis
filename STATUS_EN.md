@@ -1859,3 +1859,38 @@ FILES_STAGED=false
 - historical ADR-081 and package v1 are not rewritten;
 - execution remains blocked pending corrected validation, repair merge, persistent lease v2, and a durable negative host outcome;
 - `ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false`, `DOCKER_RUN_PERFORMED=false`.
+
+## `QW-LC4-E`: persistent evidence chain v2 materialized as an authoring contract
+
+See [ADR-083](docs/decisions/ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2_EN.md).
+
+PR #143 was merged as `5e61ed650c9beda2cde1f58650345f01694836f6` and
+independently verified with `24` focused, `201` targeted, and `1248` full tests.
+The authoring package binds the complete current authorization and operation
+chain into a persistent lease-v2 template and defines a mandatory durable
+terminal host-outcome receipt. Persistence and lease-bound wiring are not yet
+implemented; execution remains closed.
+
+```text
+qwake_adr=ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2
+qwake_persistent_evidence_chain_v2_base=5e61ed650c9beda2cde1f58650345f01694836f6
+qwake_persistent_evidence_chain_v2_sha256=sha256:c0a6195080cec64e6104a90076366cc2bfa10a723b45a7389cd77fa1b3b11bd1
+CORRECTED_FULL_VALIDATION_RECEIPT_PRESENT=true
+RUNTIME_OPERATION_IDENTITY_REPAIR_MERGED=true
+LATEST_AUTHORIZATION_BOUND_IN_PERSISTENT_LEASE_TEMPLATE=true
+DURABLE_NEGATIVE_HOST_OUTCOME_DEFINED=true
+PERSISTENT_LEASE_V2_IMPLEMENTATION_PRESENT=false
+DURABLE_OUTCOME_WRITER_IMPLEMENTED=false
+LEASE_BOUND_HOST_INVOKER_ENFORCED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

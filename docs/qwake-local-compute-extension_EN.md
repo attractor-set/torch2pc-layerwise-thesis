@@ -779,3 +779,33 @@ binds the corrected source tree to the PR #142 merge commit and requires the
 runtime-operation verifier to check its own executable identity. The execution
 request remains closed pending corrected validation, repair merge, persistent
 lease v2, and a durable negative host outcome.
+
+### `QW-LC4-E` persistent evidence chain v2
+
+See [ADR-083](decisions/ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2_EN.md).
+
+After independent verification of the PR #143 merge, a separate authoring
+package binds the current invocation authorization, execution authorization,
+pre-execution, runtime-operation, and identity-repair identities to the exact
+image, Torch2PC revision, output root, and `invocation_count=1`. Pure builders
+define the future persistent lease v2 and mandatory terminal host-outcome
+receipt, including prelaunch/spawn failure, nonzero return, timeout, and signal.
+Atomic persistence, the lease-bound capability, and actual invocation remain
+closed.
+
+```text
+qwake_adr=ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2
+qwake_persistent_evidence_chain_v2_sha256=sha256:c0a6195080cec64e6104a90076366cc2bfa10a723b45a7389cd77fa1b3b11bd1
+CORRECTED_FULL_VALIDATION_RECEIPT_PRESENT=true
+RUNTIME_OPERATION_IDENTITY_REPAIR_MERGED=true
+LATEST_AUTHORIZATION_BOUND_IN_PERSISTENT_LEASE_TEMPLATE=true
+DURABLE_NEGATIVE_HOST_OUTCOME_DEFINED=true
+PERSISTENT_LEASE_V2_IMPLEMENTATION_PRESENT=false
+DURABLE_OUTCOME_WRITER_IMPLEMENTED=false
+LEASE_BOUND_HOST_INVOKER_ENFORCED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

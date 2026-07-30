@@ -1915,3 +1915,38 @@ FILES_STAGED=false
 - исторический ADR-081 и пакет v1 не переписываются;
 - выполнение остаётся заблокированным до повторной полной проверки, слияния исправления, постоянного файла владения v2 и устойчивой квитанции отрицательного исхода;
 - `ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false`, `DOCKER_RUN_PERFORMED=false`.
+
+## `QW-LC4-E`: постоянная доказательная цепочка v2 материализована как authoring-контракт
+
+См. [ADR-083](docs/decisions/ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2.md).
+
+PR №143 слит коммитом `5e61ed650c9beda2cde1f58650345f01694836f6` и
+независимо проверен: `24` focused, `201` targeted и `1248` полных тестов.
+Authoring-пакет связывает полную актуальную цепочку авторизаций и операций в
+шаблоне persistent lease v2 и определяет обязательную устойчивую квитанцию
+терминального host outcome. Запись обоих артефактов и lease-bound wiring ещё не
+реализованы; выполнение остаётся закрытым.
+
+```text
+qwake_adr=ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2
+qwake_persistent_evidence_chain_v2_base=5e61ed650c9beda2cde1f58650345f01694836f6
+qwake_persistent_evidence_chain_v2_sha256=sha256:c0a6195080cec64e6104a90076366cc2bfa10a723b45a7389cd77fa1b3b11bd1
+CORRECTED_FULL_VALIDATION_RECEIPT_PRESENT=true
+RUNTIME_OPERATION_IDENTITY_REPAIR_MERGED=true
+LATEST_AUTHORIZATION_BOUND_IN_PERSISTENT_LEASE_TEMPLATE=true
+DURABLE_NEGATIVE_HOST_OUTCOME_DEFINED=true
+PERSISTENT_LEASE_V2_IMPLEMENTATION_PRESENT=false
+DURABLE_OUTCOME_WRITER_IMPLEMENTED=false
+LEASE_BOUND_HOST_INVOKER_ENFORCED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

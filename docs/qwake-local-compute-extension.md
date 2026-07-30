@@ -829,3 +829,36 @@ ADR-084 реализует эксклюзивную запись постоян�
 ## Привязка исполнителя хоста к файлу владения v2
 
 ADR-085 вводит единственный перспективный вход, привязанный к файлу владения: до проверки образа и создания процесса он требует точные сохранённые байты постоянного файла владения v2, а после требования формирует устойчивую терминальную квитанцию без повторной попытки. Историческая прямая операция сохранена только как замороженное свидетельство и заменена для будущей авторизации. Выполнение остаётся закрытым.
+
+## `QW-LC4-E`: подготовка финального подтверждения выполнения
+
+ADR-086 вводит статический контракт будущего отдельного операторского
+подтверждения после проверенного слияния PR №146 на
+`2957d8f6975c88e7bdb23243e3915c7f51d4ba47`. Контракт связывает цепочку v2,
+реализацию постоянной записи, привязанный к файлу владения исполнитель, образ,
+Torch2PC, каталог результатов и `invocation_count=1`. Для будущего выпуска
+обязательны точная фраза
+`ACKNOWLEDGE_QWAKE_LC4_FINAL_ONE_SHOT_EXECUTION`, идентичность оператора и время
+по всемирному координированному времени после слияния. Авторинг не выпускает подтверждение, не материализует файл
+владения и не выполняет вызов.
+
+```text
+wiring_pr=146
+wiring_focused_tests=39
+wiring_targeted_tests=240
+wiring_full_tests=1287
+wiring_full_test_warnings=14
+FINAL_EXECUTION_ACKNOWLEDGEMENT_AUTHORED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

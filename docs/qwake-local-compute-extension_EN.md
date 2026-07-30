@@ -823,3 +823,35 @@ materialization, and execution remain absent.
 ## Lease-bound host invoker
 
 ADR-085 adds the only prospective lease-bound entry point. It requires exact persisted lease-v2 bytes before image inspection or process creation and writes a durable terminal receipt with no retry after the claim. The historical direct operation remains only as frozen evidence and is superseded for future authorization. Execution stays closed.
+
+## `QW-LC4-E`: final execution acknowledgement authoring
+
+ADR-086 introduces the static contract for a future separate operator
+acknowledgement after verified PR #146 was merged as
+`2957d8f6975c88e7bdb23243e3915c7f51d4ba47`. The contract binds evidence chain
+v2, persistent-writer implementation, the lease-bound invoker, image,
+Torch2PC, output root, and `invocation_count=1`. Future issuance requires the
+exact phrase `ACKNOWLEDGE_QWAKE_LC4_FINAL_ONE_SHOT_EXECUTION`, operator identity,
+and a UTC time after merge. Authoring does not issue the acknowledgement,
+materialize the lease, or perform invocation.
+
+```text
+wiring_pr=146
+wiring_focused_tests=39
+wiring_targeted_tests=240
+wiring_full_tests=1287
+wiring_full_test_warnings=14
+FINAL_EXECUTION_ACKNOWLEDGEMENT_AUTHORED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

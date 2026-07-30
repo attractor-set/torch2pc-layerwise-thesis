@@ -126,3 +126,4 @@
 - [ADR-084](ADR-084-stage3b-qwake-lc4-e-persistent-evidence-chain-v2-implementation_EN.md): implements exclusive atomic persistence of the persistent lease v2 and durable terminal host-outcome receipt with `0600`, `fsync`, no-overwrite, and exact lease-byte validation while keeping runtime wiring and execution closed.
 
 - [ADR-085](ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring_EN.md): requires exact persisted lease v2 before host invocation, writes one durable terminal receipt, and forbids new direct lower-level call sites while execution remains closed.
+- [ADR-086](ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring_EN.md): freezes the static format for a separate operator acknowledgement, binds it to the complete evidence chain, image, Torch2PC, and one attempt, but does not issue the acknowledgement or open execution.

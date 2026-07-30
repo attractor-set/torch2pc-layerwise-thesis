@@ -1995,3 +1995,39 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: подготовка финального подтверждения выполнения
+
+См. [ADR-086](docs/decisions/ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring.md).
+
+После независимой проверки слияния PR №146 на
+`2957d8f6975c88e7bdb23243e3915c7f51d4ba47` отдельный статический пакет
+подготовки связывает доказательную цепочку v2, её реализацию, привязанный к
+файлу владения исполнитель, авторизации, точный образ, Torch2PC, каталог
+результатов и `invocation_count=1`. Будущее подтверждение требует точную фразу
+`ACKNOWLEDGE_QWAKE_LC4_FINAL_ONE_SHOT_EXECUTION`, идентичность оператора и время
+по всемирному координированному времени после слияния. Пакет не выпускает подтверждение и не выполняет переход к
+файлу владения или запуску.
+
+```text
+qwake_adr=ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring
+qwake_acknowledgement_authoring_base=2957d8f6975c88e7bdb23243e3915c7f51d4ba47
+wiring_pr=146
+wiring_focused_tests=39
+wiring_targeted_tests=240
+wiring_full_tests=1287
+wiring_full_test_warnings=14
+FINAL_EXECUTION_ACKNOWLEDGEMENT_AUTHORED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

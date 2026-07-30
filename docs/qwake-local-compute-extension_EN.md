@@ -886,3 +886,33 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: final acknowledgement writer implementation
+
+ADR-088 implements atomic persistence of an already-verified acknowledgement
+envelope to the sole ADR-087 path. It uses `O_EXCL`, a no-overwrite hard link,
+mode `0600`, `fsync`, symbolic-parent rejection, stale-temporary rejection, and
+exact-byte reverification. No production callsite exists, so merging the
+implementation neither creates an acknowledgement nor opens invocation.
+
+```text
+issuance_authoring_pr=148
+issuance_authoring_focused_tests=61
+issuance_authoring_targeted_tests=262
+issuance_authoring_full_tests=1309
+issuance_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

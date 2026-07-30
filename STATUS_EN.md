@@ -2008,3 +2008,37 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: final acknowledgement issuance implementation
+
+See [ADR-088](docs/decisions/ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation_EN.md).
+
+After independent verification of PR #148 merged as
+`8343724c66b1d22f01846d9fc70f01738a09127a`, an atomic writer for the canonical
+final-acknowledgement envelope is implemented. It enforces no-overwrite, mode
+`0600`, `fsync`, symbolic-parent rejection, and exact-byte reverification. No
+production callsite or acknowledgement file exists; execution remains closed.
+
+```text
+issuance_authoring_pr=148
+issuance_authoring_focused_tests=61
+issuance_authoring_targeted_tests=262
+issuance_authoring_full_tests=1309
+issuance_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_ISSUANCE_AUTHORING_POST_MERGE_VERIFIED=true
+ACKNOWLEDGEMENT_ISSUANCE_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_ISSUANCE_IMPLEMENTED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

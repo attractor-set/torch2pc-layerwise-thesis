@@ -1979,3 +1979,19 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: исполнитель хоста привязан к постоянному файлу владения v2
+
+См. [ADR-085](docs/decisions/ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring.md). Новый перспективный вход проверяет точные сохранённые байты файла владения v2 до обращения к исполнителю, запрещает повтор и формирует устойчивую терминальную квитанцию. Историческая прямая операция сохранена неизменной, но заменена для будущей авторизации.
+
+```text
+LEASE_BOUND_HOST_INVOKER_ENFORCED=true
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_EXECUTION_PERFORMED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

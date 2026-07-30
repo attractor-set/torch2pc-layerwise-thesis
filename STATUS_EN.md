@@ -1923,3 +1923,19 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## `QW-LC4-E`: host invoker bound to persistent lease v2
+
+See [ADR-085](docs/decisions/ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring_EN.md). The prospective entry point verifies exact persisted lease-v2 bytes before delegation, forbids retry, and writes a durable terminal receipt. The historical direct operation remains unchanged but is superseded for future authorization.
+
+```text
+LEASE_BOUND_HOST_INVOKER_ENFORCED=true
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_EXECUTION_PERFORMED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+FILES_STAGED=false
+```

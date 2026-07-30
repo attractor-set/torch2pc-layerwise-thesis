@@ -124,3 +124,5 @@
 - [ADR-082](ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair_EN.md): preserves historical ADR-081 and its package unchanged, binds the corrected runtime-operation source to the PR #142 merge commit, and keeps execution closed pending persistent lease v2 and a durable negative outcome.
 - [ADR-083](ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2_EN.md): freezes the complete current identity chain in a persistent lease-v2 template and requires a durable terminal receipt for successful and negative outcomes while keeping persistence, capability wiring, and execution closed.
 - [ADR-084](ADR-084-stage3b-qwake-lc4-e-persistent-evidence-chain-v2-implementation_EN.md): implements exclusive atomic persistence of the persistent lease v2 and durable terminal host-outcome receipt with `0600`, `fsync`, no-overwrite, and exact lease-byte validation while keeping runtime wiring and execution closed.
+
+- [ADR-085](ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring_EN.md): requires exact persisted lease v2 before host invocation, writes one durable terminal receipt, and forbids new direct lower-level call sites while execution remains closed.

@@ -2137,3 +2137,40 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: реализация материализации финального подтверждения
+
+См. [ADR-090](docs/decisions/ADR-090-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-implementation.md).
+
+После независимой проверки PR #150, слитого как
+`6497cd904f9403622249c5a32f08ef6e8bb11532`, реализована узкая функция
+материализации. При отдельном будущем вызове она принимает только точную
+предварительно сформированную материализацию, передаёт одну атомарную операцию
+модулю записи и один раз повторно проверяет сохранённые байты. В текущей ветке
+эта функция не вызывается; рабочее подтверждение и артефакты среды выполнения
+отсутствуют.
+
+```text
+materialization_authoring_pr=150
+materialization_authoring_focused_tests=92
+materialization_authoring_targeted_tests=293
+materialization_authoring_full_tests=1340
+materialization_authoring_full_test_warnings=14
+MATERIALIZATION_AUTHORING_POST_MERGE_VERIFIED=true
+ACKNOWLEDGEMENT_MATERIALIZATION_CONTRACT_AUTHORED=true
+ACKNOWLEDGEMENT_MATERIALIZATION_IMPLEMENTED=true
+MATERIALIZER_CALLED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

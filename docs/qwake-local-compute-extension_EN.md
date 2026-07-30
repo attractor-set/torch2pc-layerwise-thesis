@@ -924,3 +924,11 @@ After the writer implementation merge, a separate static slice binds future
 materialization to the exact operator, issuer, materializer, ordered UTC times,
 target path, and canonical-envelope SHA-256. The writer is not called; the
 acknowledgement, lease, and local compute remain absent.
+
+
+### Final acknowledgement materialization implementation
+
+ADR-090 adds a materializer whose import is effect free. Only a separate
+explicit call can pass the exact prospective materialization to the existing
+atomic writer and then reverify the persisted bytes. No call occurs in the
+current slice; the acknowledgement, lease, and local compute remain absent.

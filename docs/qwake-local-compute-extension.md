@@ -741,3 +741,35 @@ ADR-073 добавляет закрытую при ошибке проверку
 - файл владения, результат, [доказательные материалы](glossary.md#term-evidence) и фактическое [выполнение](glossary.md#term-execution) отсутствуют.
 
 `decision marker`: `ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification`.
+
+## `QW-LC4-E`: ограниченная операция одноразового инженерного вызова
+
+См. [ADR-081](decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation.md).
+
+После независимой проверки слияния PR №141 материализован чистый контракт
+атомарной операции и ограниченная точка входа. Она принимает точные ресурсы
+хоста, время требования, два подтверждения и явное разрешение, а затем может
+ровно один раз делегировать динамическую проверку и запуск ранее зафиксированному
+хостовому исполнителю. Проверяющая программа новую точку входа не вызывает.
+
+```text
+qwake_adr=ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation
+qwake_runtime_operation_base_commit=494e6a0b2f10c26b49c90fbb84c23565699a4064
+qwake_runtime_operation_sha256=sha256:0332428014f7f8385c789ba7e7c55d6c2ec03b020e3f83df9ac9714483bb6bf8
+PREEXECUTION_VERIFICATION_COMPLETE=true
+RUNTIME_OPERATION_RECORD_PRESENT=true
+RUNTIME_OPERATION_EXECUTOR_ENTRYPOINT_IMPLEMENTED=true
+RUNTIME_OPERATION_STATIC_CONTRACT_VERIFIED=true
+ONE_SHOT_ENGINEERING_INVOCATION_RUNTIME_OPERATION_OPEN=true
+PREEXECUTION_IDENTITY_VERIFIED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+BRANCH_RUNTIME_EXECUTION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+IMAGE_INSPECTION_PERFORMED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+DOCKER_RUN_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

@@ -1850,3 +1850,12 @@ DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 FILES_STAGED=false
 ```
+
+## QW-LC4-E: runtime-operation identity repair
+
+- PR #142 was merged into `main` as `97dacb207aa201f1fd2f43c66ae34b1adced32bb`;
+- the historical ADR-081 retained the pre-Ruff module SHA while its two-file package did not bind executable source;
+- ADR-082 adds a non-retroactive identity-repair package and mandatory runtime-operation verifier self-identity verification;
+- historical ADR-081 and package v1 are not rewritten;
+- execution remains blocked pending corrected validation, repair merge, persistent lease v2, and a durable negative host outcome;
+- `ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false`, `DOCKER_RUN_PERFORMED=false`.

@@ -769,3 +769,13 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+### `QW-LC4-E` runtime-operation identity repair
+
+See [ADR-082](decisions/ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair_EN.md).
+
+Historical ADR-081 and package v1 remain unchanged. A separate repair package
+binds the corrected source tree to the PR #142 merge commit and requires the
+runtime-operation verifier to check its own executable identity. The execution
+request remains closed pending corrected validation, repair merge, persistent
+lease v2, and a durable negative host outcome.

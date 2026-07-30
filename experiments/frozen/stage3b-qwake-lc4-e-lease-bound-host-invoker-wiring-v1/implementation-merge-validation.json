@@ -1,0 +1,22 @@
+{
+  "base_commit": "3d092440b0314f02072c9773cc91018bf2860744",
+  "commit_count": 1,
+  "en_mkdocs_passed": true,
+  "file_count": 18,
+  "focused_tests_passed": 29,
+  "full_test_warnings": 14,
+  "full_tests_passed": 1277,
+  "head_commit": "45488d8d6d96b6e4419d835479dacd5398aa30f5",
+  "merge_commit": "0303a1514e2875a057ef1b20293a01b36a9c6b2b",
+  "merged_at_utc": "2026-07-30T12:53:35Z",
+  "mypy_passed": true,
+  "pr_number": 145,
+  "receipt_id": "stage3b-qwake-lc4-e-persistent-evidence-chain-v2-implementation-post-merge-validation-v1",
+  "receipt_sha256": "sha256:01a98ac5979fd28ed5492643a3ca10e02488f57dd3b850f97bb24305bf081f59",
+  "required_ci_checks_passed": true,
+  "ru_mkdocs_passed": true,
+  "ruff_passed": true,
+  "runtime_boundary_closed": true,
+  "schema_version": 1,
+  "targeted_tests_passed": 230
+}

@@ -819,3 +819,7 @@ bytes. Durability uses mode `0600`, file `fsync`, no-replace hard-link
 promotion, and parent-directory `fsync`. The implementation is not yet wired to
 the host invoker; the real lease, outcome, image inspection, command
 materialization, and execution remain absent.
+
+## Lease-bound host invoker
+
+ADR-085 adds the only prospective lease-bound entry point. It requires exact persisted lease-v2 bytes before image inspection or process creation and writes a durable terminal receipt with no retry after the claim. The historical direct operation remains only as frozen evidence and is superseded for future authorization. Execution stays closed.

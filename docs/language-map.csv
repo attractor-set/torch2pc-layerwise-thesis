@@ -181,3 +181,4 @@ docs/decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-opera
 docs/decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization.md,docs/decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization_EN.md,required
 docs/decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification.md,docs/decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification_EN.md,required
 docs/decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation.md,docs/decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation_EN.md,required
+docs/decisions/ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair.md,docs/decisions/ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair_EN.md,required

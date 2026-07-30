@@ -121,3 +121,4 @@
 - [ADR-080](ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification_EN.md): binds the merged authorization to the exact host invoker and freezes continuous current-runtime verification in the same process as the single future child creation while keeping dynamic verification and execution closed.
 
 - [ADR-081](ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation_EN.md): freezes the bounded atomic-operation entry point, explicit permission and acknowledgement, exact host resources, and sole delegation to the host invoker while keeping dynamic verification, lease, and execution closed.
+- [ADR-082](ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair_EN.md): preserves historical ADR-081 and its package unchanged, binds the corrected runtime-operation source to the PR #142 merge commit, and keeps execution closed pending persistent lease v2 and a durable negative outcome.

@@ -36,6 +36,9 @@ from torch2pc_thesis.stage3b_qwake_lc4_engineering_invocation_preexecution_verif
     PREEXECUTION_VERIFICATION_ID,
     verify_engineering_invocation_preexecution_verification,
 )
+from torch2pc_thesis.stage3b_qwake_lc4_engineering_invocation_runtime_operation_identity_repair import (
+    verify_runtime_operation_identity_repair,
+)
 from torch2pc_thesis.stage3b_qwake_lc4_host_runtime_invoker import (
     HOST_RUNTIME_INVOKER_CONTRACT_ID,
 )
@@ -814,6 +817,13 @@ def verify_engineering_invocation_runtime_operation(
     root = project_root.expanduser().resolve()
     _require_effect_boundary_closed(root)
     _verify_package(root)
+    repair = verify_runtime_operation_identity_repair(root)
+    if repair.source.runtime_operation_sha256 != (
+        build_engineering_invocation_runtime_operation().operation_sha256
+    ):
+        raise QWakeLC4EngineeringInvocationRuntimeOperationError(
+            "runtime-operation identity repair semantic source differs"
+        )
 
     exact_files: tuple[tuple[Path, str], ...] = (
         (

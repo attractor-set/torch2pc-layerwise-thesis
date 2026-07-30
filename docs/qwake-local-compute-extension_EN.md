@@ -809,3 +809,13 @@ RUNTIME_EXECUTION_PERFORMED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: persistent evidence chain v2 implementation
+
+ADR-084 implements exclusive persistence of the persistent lease v2 and durable
+terminal host-outcome receipt. Persistence fails closed on any collision,
+symbolic link, incomplete frozen identity, or mismatch in the exact lease
+bytes. Durability uses mode `0600`, file `fsync`, no-replace hard-link
+promotion, and parent-directory `fsync`. The implementation is not yet wired to
+the host invoker; the real lease, outcome, image inspection, command
+materialization, and execution remain absent.

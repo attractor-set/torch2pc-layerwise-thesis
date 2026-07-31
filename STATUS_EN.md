@@ -2114,3 +2114,41 @@ INVOCATION_COMMAND_MATERIALIZED=false
 DOCKER_RUN_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: final-acknowledgement materializer invocation authoring
+
+See [ADR-091](docs/decisions/ADR-091-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-authoring_EN.md).
+
+After independent verification of PR #151 merged as
+`7d5e5058af6a845cf4a6add2e7fe199894f48b24`, a pure contract for the sole
+future materializer call is frozen. It requires exact operator-bound inputs, one
+materializer call, no direct writer call, and durable-state inspection before
+recovery. Automatic and blind retry are forbidden, while explicit recovery is
+allowed after state classification. No actual call or acknowledgement exists.
+
+```text
+materialization_implementation_pr=151
+materialization_implementation_focused_tests=108
+materialization_implementation_targeted_tests=309
+materialization_implementation_full_tests=1356
+materialization_implementation_full_test_warnings=14
+MATERIALIZATION_IMPLEMENTATION_POST_MERGE_VERIFIED=true
+ACKNOWLEDGEMENT_MATERIALIZATION_IMPLEMENTED=true
+MATERIALIZATION_INVOCATION_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_IMPLEMENTED=false
+MATERIALIZATION_INVOKED=false
+MATERIALIZER_CALLED=false
+WRITER_CALLED=false
+AUTOMATIC_RETRY_FORBIDDEN=true
+BLIND_RETRY_FORBIDDEN=true
+EXPLICIT_RECOVERY_PERMITTED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+ONE_SHOT_ENGINEERING_INVOCATION_PERMITTED=false
+EXECUTION_LEASE_MATERIALIZED=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

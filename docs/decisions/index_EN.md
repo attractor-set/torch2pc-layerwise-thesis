@@ -136,3 +136,5 @@
 - [ADR-089](ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring_EN.md): freezes the operator-bound contract and provenance for the sole future materialization without calling the writer or creating the acknowledgement.
 
 - [ADR-090](ADR-090-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-implementation_EN.md): implements a narrow adapter with exactly one writer call and one exact-byte reverification while leaving the production acknowledgement and execution closed.
+
+- [ADR-091](ADR-091-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-authoring_EN.md): freezes the sole future operator-bound materializer call, forbids direct writer calls and automatic retry, and permits only explicit recovery after durable-state inspection.

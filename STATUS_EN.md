@@ -2152,3 +2152,39 @@ RUNTIME_EXECUTION_STARTED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: final-acknowledgement materialization invocation implementation
+
+See [ADR-092](docs/decisions/ADR-092-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-implementation_EN.md).
+
+After independent verification of PR #152 merged as
+`febfba65d2f200fd2163928643eadd807a6b4d21`, a bounded library adapter is
+implemented. It classifies durable state first, delegates at most one
+materializer call when the target is absent, treats a valid existing target as
+completed without another call, and rejects an invalid target. No production
+callsite or acknowledgement exists.
+
+```text
+invocation_authoring_pr=152
+invocation_authoring_focused_tests=124
+invocation_authoring_targeted_tests=325
+invocation_authoring_full_tests=1372
+invocation_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_MATERIALIZATION_INVOCATION_AUTHORING_POST_MERGE_VERIFIED=true
+MATERIALIZATION_INVOCATION_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_IMPLEMENTED=true
+MATERIALIZATION_INVOKED=false
+MATERIALIZER_CALLED=false
+WRITER_CALLED=false
+AUTOMATIC_RETRY_FORBIDDEN=true
+BLIND_RETRY_FORBIDDEN=true
+EXPLICIT_RECOVERY_PERMITTED=true
+RECOVERY_STATE_PROBE_REQUIRED=true
+VALID_EXISTING_TARGET_TREATED_AS_SUCCESS=true
+INVALID_EXISTING_TARGET_FAIL_CLOSED=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

@@ -2250,3 +2250,39 @@ EXECUTION_LEASE_MATERIALIZED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: подготовка операторской операции вызова материализации подтверждения
+
+См. [ADR-093](docs/decisions/ADR-093-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-authoring.md).
+
+После независимой проверки PR №153, слитого как
+`0ace9f1025100fa29ff0af7523fde17674c4852b`, зафиксирован чистый контракт
+будущей операторской операции. Отдельная фраза операции связывается с точным
+будущим вызовом и идентичностью оператора. Будущая реализация сможет обратиться
+только к библиотечному адаптеру и не более одного раза; отдельная предварительная
+проверка, прямые вызовы материализатора и модуля записи запрещены. Операция и
+подтверждение отсутствуют.
+
+```text
+invocation_implementation_pr=153
+invocation_implementation_focused_tests=144
+invocation_implementation_targeted_tests=345
+invocation_implementation_full_tests=1392
+invocation_implementation_full_test_warnings=14
+ACKNOWLEDGEMENT_MATERIALIZATION_INVOCATION_IMPLEMENTATION_POST_MERGE_VERIFIED=true
+MATERIALIZATION_INVOCATION_IMPLEMENTED=true
+MATERIALIZATION_INVOCATION_OPERATION_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_OPERATION_IMPLEMENTED=false
+MATERIALIZATION_INVOCATION_OPERATION_PERFORMED=false
+INVOCATION_ADAPTER_CALLED=false
+MATERIALIZATION_INVOKED=false
+MATERIALIZER_CALLED=false
+WRITER_CALLED=false
+ADAPTER_OWNED_RECOVERY_PROBE_REQUIRED=true
+STANDALONE_PREPROBE_FORBIDDEN=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

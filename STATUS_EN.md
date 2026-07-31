@@ -2188,3 +2188,38 @@ EXECUTION_LEASE_MATERIALIZED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: operator-operation authoring for acknowledgement materialization invocation
+
+See [ADR-093](docs/decisions/ADR-093-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-authoring_EN.md).
+
+After independent verification of PR #153 merged as
+`0ace9f1025100fa29ff0af7523fde17674c4852b`, a pure future operator-operation
+contract is frozen. A distinct operation phrase is bound to the exact prospective
+invocation and operator identity. A future implementation may call only the
+library adapter and at most once; standalone pre-probing and direct materializer
+or writer calls are forbidden. No operation or acknowledgement exists.
+
+```text
+invocation_implementation_pr=153
+invocation_implementation_focused_tests=144
+invocation_implementation_targeted_tests=345
+invocation_implementation_full_tests=1392
+invocation_implementation_full_test_warnings=14
+ACKNOWLEDGEMENT_MATERIALIZATION_INVOCATION_IMPLEMENTATION_POST_MERGE_VERIFIED=true
+MATERIALIZATION_INVOCATION_IMPLEMENTED=true
+MATERIALIZATION_INVOCATION_OPERATION_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_OPERATION_IMPLEMENTED=false
+MATERIALIZATION_INVOCATION_OPERATION_PERFORMED=false
+INVOCATION_ADAPTER_CALLED=false
+MATERIALIZATION_INVOKED=false
+MATERIALIZER_CALLED=false
+WRITER_CALLED=false
+ADAPTER_OWNED_RECOVERY_PROBE_REQUIRED=true
+STANDALONE_PREPROBE_FORBIDDEN=true
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+FINAL_EXECUTION_ACKNOWLEDGED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

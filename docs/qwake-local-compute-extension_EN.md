@@ -957,3 +957,12 @@ operation to the exact invocation object, operator, and authorization time. The
 operation phrase is distinct from the execution-acknowledgement phrase. A future
 implementation must not pre-probe separately from the adapter: the adapter-owned
 probe remains the sole authoritative classification before action.
+
+
+### `QW-LC4-E`: materialization invocation operator-operation implementation
+
+ADR-094 implements an import-safe library operation that verifies the frozen
+action object and delegates its exact prospective invocation to the existing
+adapter exactly once. Standalone durable-state probing and direct lower-layer
+calls are forbidden. No production callsite exists, so the operation,
+acknowledgement, and [local compute](glossary_EN.md#term-local-compute) remain absent.

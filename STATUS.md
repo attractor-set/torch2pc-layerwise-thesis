@@ -2286,3 +2286,37 @@ EXECUTION_LEASE_MATERIALIZED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: реализация операторской операции вызова материализации подтверждения
+
+См. [ADR-094](docs/decisions/ADR-094-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-implementation.md).
+
+После независимой проверки PR №154, слитого как
+`5ee6d2346e558be19cfdf79e8a77b0568475bf4c`, реализована ограниченная
+библиотечная операция. Она проверяет точный предварительно сформированный объект операции и делегирует
+ровно один раз существующему адаптеру. Отдельная предварительная проверка,
+прямые вызовы материализатора и модуля записи, производственная точка вызова и
+фактическая операция отсутствуют.
+
+```text
+operation_authoring_pr=154
+operation_authoring_focused_tests=162
+operation_authoring_targeted_tests=363
+operation_authoring_full_tests=1410
+operation_authoring_full_test_warnings=14
+ACKNOWLEDGEMENT_MATERIALIZATION_INVOCATION_OPERATION_AUTHORING_POST_MERGE_VERIFIED=true
+MATERIALIZATION_INVOCATION_OPERATION_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_OPERATION_IMPLEMENTED=true
+MATERIALIZATION_INVOCATION_OPERATION_PERFORMED=false
+INVOCATION_ADAPTER_CALLED=false
+ADAPTER_CALL_LIMIT=1
+STANDALONE_PREPROBE_FORBIDDEN=true
+DIRECT_MATERIALIZER_CALL_FORBIDDEN=true
+DIRECT_WRITER_CALL_FORBIDDEN=true
+PRODUCTION_CALLSITE_PRESENT=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

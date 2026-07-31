@@ -949,3 +949,11 @@ ADR-092 implements a library adapter without a production callsite. It probes
 the exact target before the materializer: absence permits one call, a valid
 existing target is successful recovery without another call, and an invalid
 target fails closed. Automatic and blind retry are absent.
+
+### `QW-LC4-E`: operator operation for acknowledgement materialization invocation
+
+After adapter implementation, a separate authoring layer binds one future
+operation to the exact invocation object, operator, and authorization time. The
+operation phrase is distinct from the execution-acknowledgement phrase. A future
+implementation must not pre-probe separately from the adapter: the adapter-owned
+probe remains the sole authoritative classification before action.

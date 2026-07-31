@@ -932,3 +932,13 @@ ADR-090 adds a materializer whose import is effect free. Only a separate
 explicit call can pass the exact prospective materialization to the existing
 atomic writer and then reverify the persisted bytes. No call occurs in the
 current slice; the acknowledgement, lease, and local compute remain absent.
+
+### Final-acknowledgement materializer invocation authoring
+
+ADR-091 separates the pure invocation contract from the adapter implementation
+and the actual materialization. The future adapter may call only the exact
+materializer and may not call the writer directly. Automatic and blind retry are
+forbidden: an uncertain outcome must first inspect the durable target. An absent
+target permits only a newly and explicitly authorized attempt, a valid existing
+target is treated as success without another call, and an invalid target fails
+closed. The materializer is not called in this slice.

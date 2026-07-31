@@ -138,3 +138,4 @@
 - [ADR-090](ADR-090-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-implementation_EN.md): implements a narrow adapter with exactly one writer call and one exact-byte reverification while leaving the production acknowledgement and execution closed.
 
 - [ADR-091](ADR-091-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-authoring_EN.md): freezes the sole future operator-bound materializer call, forbids direct writer calls and automatic retry, and permits only explicit recovery after durable-state inspection.
+- [ADR-092](ADR-092-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-implementation_EN.md): implements durable-state probing and a bounded adapter with at most one materializer call, no production callsite, and no automatic retry.

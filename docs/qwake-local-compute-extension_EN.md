@@ -942,3 +942,10 @@ forbidden: an uncertain outcome must first inspect the durable target. An absent
 target permits only a newly and explicitly authorized attempt, a valid existing
 target is treated as success without another call, and an invalid target fails
 closed. The materializer is not called in this slice.
+
+### Final-acknowledgement materialization invocation implementation
+
+ADR-092 implements a library adapter without a production callsite. It probes
+the exact target before the materializer: absence permits one call, a valid
+existing target is successful recovery without another call, and an invalid
+target fails closed. Automatic and blind retry are absent.

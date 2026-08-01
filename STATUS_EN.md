@@ -2256,3 +2256,32 @@ EXECUTION_LEASE_MATERIALIZED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+## `QW-LC4-E`: production-callsite authoring for the operator operation
+
+See [ADR-095](docs/decisions/ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-authoring_EN.md).
+
+After independent verification of PR #155 merged as
+`23a86cc0769f20b4b7536e64250f3dee062aaa62`, the future production-callsite
+contract is frozen. Its path, CLI inputs, and single library delegate are exact.
+The callsite file remains absent; the operation, adapter, materializer, and writer
+are not called.
+
+```text
+operation_implementation_pr=155
+operation_implementation_focused_tests=180
+operation_implementation_targeted_tests=381
+operation_implementation_full_tests=1428
+operation_implementation_full_test_warnings=14
+ACKNOWLEDGEMENT_MATERIALIZATION_INVOCATION_OPERATION_IMPLEMENTATION_POST_MERGE_VERIFIED=true
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_IMPLEMENTED=false
+PRODUCTION_CALLSITE_PRESENT=false
+MATERIALIZATION_INVOCATION_OPERATION_PERFORMED=false
+INVOCATION_ADAPTER_CALLED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

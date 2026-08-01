@@ -2349,3 +2349,33 @@ EXECUTION_LEASE_MATERIALIZED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: реализация производственной точки вызова операторской операции
+
+См. [ADR-096](docs/decisions/ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation.md).
+
+После reconciliation-проверки PR №162, слитого как
+`b27e252cf7c64e88d5d61bf7a23c70ffc5957959`, реализован точный командный
+интерфейс с обязательными `--project-root` и `--operation-json`. Он принимает
+только канонический файл операции, делегирует библиотечной операции ровно один
+раз и выводит только проверенный канонический результат. В основном рабочем
+дереве интерфейс не запускался.
+
+```text
+callsite_authoring_pr=162
+callsite_authoring_actual_first_parent=dc8dc200515959858d43b68984dbd87f27f3446c
+callsite_authoring_merge=b27e252cf7c64e88d5d61bf7a23c70ffc5957959
+callsite_authoring_first_parent_files=18
+callsite_authoring_first_parent_insertions=1516
+callsite_authoring_first_parent_deletions=0
+ACKNOWLEDGEMENT_MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_AUTHORING_POST_MERGE_VERIFIED=true
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_IMPLEMENTED=true
+PRODUCTION_CALLSITE_PRESENT=true
+MATERIALIZATION_INVOCATION_OPERATION_PERFORMED=false
+INVOCATION_ADAPTER_CALLED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

@@ -2285,3 +2285,33 @@ EXECUTION_LEASE_MATERIALIZED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: production-callsite implementation for the operator operation
+
+See [ADR-096](docs/decisions/ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation_EN.md).
+
+After reconciliation of PR #162 merged as
+`b27e252cf7c64e88d5d61bf7a23c70ffc5957959`, the exact command interface is
+implemented with required `--project-root` and `--operation-json` inputs. It
+accepts only a canonical operation file, delegates exactly once to the library
+operation, and emits only a verified canonical result. It was not executed in
+the primary worktree.
+
+```text
+callsite_authoring_pr=162
+callsite_authoring_actual_first_parent=dc8dc200515959858d43b68984dbd87f27f3446c
+callsite_authoring_merge=b27e252cf7c64e88d5d61bf7a23c70ffc5957959
+callsite_authoring_first_parent_files=18
+callsite_authoring_first_parent_insertions=1516
+callsite_authoring_first_parent_deletions=0
+ACKNOWLEDGEMENT_MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_AUTHORING_POST_MERGE_VERIFIED=true
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_IMPLEMENTED=true
+PRODUCTION_CALLSITE_PRESENT=true
+MATERIALIZATION_INVOCATION_OPERATION_PERFORMED=false
+INVOCATION_ADAPTER_CALLED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+EXECUTION_LEASE_MATERIALIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

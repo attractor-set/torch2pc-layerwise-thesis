@@ -156,3 +156,5 @@ ADR фиксируют решения, влияющие на интерпрет�
 - [ADR-094](ADR-094-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-implementation.md): реализует ограниченную библиотечную операторскую операцию с одной передачей точному адаптеру, без отдельной предварительной проверки, производственной точки вызова или фактического выполнения операции.
 
 - [ADR-095: подготовка производственной точки вызова операторской операции](ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-authoring.md)
+
+- [ADR-096: реализация производственной точки вызова операторской операции](ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation.md)

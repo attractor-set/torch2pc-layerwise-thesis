@@ -974,3 +974,13 @@ ADR-095 freezes the single future CLI path, explicit inputs, and single library
 operation delegate. Implicit inputs, standalone pre-probing, direct lower-level
 calls, and retries are forbidden. The callsite file is not created in this slice,
 and no acknowledgement exists.
+
+### Production-callsite implementation for the operator operation
+
+ADR-096 adds the sole command interface previously frozen by ADR-095. It
+requires explicit project and canonical-operation paths, verifies the complete
+field set, calls the library operation exactly once, and prints only the
+verified canonical result. Standard input, environment fallback, interactive
+confirmation, standalone pre-probing, direct lower-level calls, and retries are
+forbidden. The file does not open [execution](glossary_EN.md#term-execution):
+the operation was not run in the primary worktree and no acknowledgement exists.

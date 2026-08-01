@@ -144,3 +144,5 @@
 - [ADR-094](ADR-094-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-implementation_EN.md): implements the bounded library operator operation with one exact adapter delegation and no standalone pre-probe, production callsite, or performed operation.
 
 - [ADR-095: production-callsite authoring for the operator operation](ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-authoring_EN.md)
+
+- [ADR-096: production-callsite implementation for the operator operation](ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation_EN.md)

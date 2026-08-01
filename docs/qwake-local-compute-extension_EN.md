@@ -966,3 +966,11 @@ action object and delegates its exact prospective invocation to the existing
 adapter exactly once. Standalone durable-state probing and direct lower-layer
 calls are forbidden. No production callsite exists, so the operation,
 acknowledgement, and [local compute](glossary_EN.md#term-local-compute) remain absent.
+
+
+### Production-callsite authoring for the operator operation
+
+ADR-095 freezes the single future CLI path, explicit inputs, and single library
+operation delegate. Implicit inputs, standalone pre-probing, direct lower-level
+calls, and retries are forbidden. The callsite file is not created in this slice,
+and no acknowledgement exists.

@@ -142,3 +142,5 @@
 - [ADR-093](ADR-093-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-authoring_EN.md): freezes a distinct operator operation over the exact prospective adapter invocation, a separate action phrase, temporal ordering, and one future adapter call without implementing or performing the operation.
 
 - [ADR-094](ADR-094-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-implementation_EN.md): implements the bounded library operator operation with one exact adapter delegation and no standalone pre-probe, production callsite, or performed operation.
+
+- [ADR-095: production-callsite authoring for the operator operation](ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-authoring_EN.md)

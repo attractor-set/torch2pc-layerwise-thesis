@@ -990,3 +990,7 @@ the operation was not run in the primary worktree and no acknowledgement exists.
 ### Production-callsite execution authoring
 
 ADR-097 freezes a separate future authorization, canonical operation file, exact argv, and one no-shell attempt without retry. The production callsite exists but is not executed in the authoring slice; acknowledgement and [local compute](glossary_EN.md#term-local-compute) remain absent.
+
+### Production-callsite execution authorization
+
+ADR-098 materializes a separate single-use authorization record and canonical operation file bound to the operator, callsite, and SHA-256 identity. The record is not effective yet: the future merge commit requires independent post-merge verification. Authorization is unconsumed, the production callsite is not executed, and the acknowledgement and [local compute](glossary_EN.md#term-local-compute) remain absent.

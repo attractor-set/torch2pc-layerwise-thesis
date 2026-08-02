@@ -149,3 +149,5 @@
 
 
 - [ADR-097: production-callsite execution authoring](ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring_EN.md)
+
+- [ADR-098: production-callsite execution authorization](ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization_EN.md)

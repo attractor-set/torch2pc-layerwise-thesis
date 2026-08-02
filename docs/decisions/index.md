@@ -161,3 +161,5 @@ ADR фиксируют решения, влияющие на интерпрет�
 
 
 - [ADR-097: подготовка выполнения производственной точки вызова](ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring.md)
+
+- [ADR-098: авторизация выполнения производственной точки вызова](ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization.md)

@@ -2339,3 +2339,26 @@ FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: production-callsite execution authorization
+
+See [ADR-098](docs/decisions/ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization_EN.md).
+
+After independent verification of PR #164 merged as `75936adac9ee100f9538f5af13a8ce312642ee0b`, a separate single-use authorization record and canonical `operation.json` are materialized. The record is bound to the operator, exact callsite, and input SHA-256, but it is not effective until this slice is independently verified after merge. The production callsite was not executed.
+
+```text
+execution_authoring_pr=164
+execution_authoring_focused_tests=240
+execution_authoring_targeted_tests=441
+execution_authoring_full_tests=1488
+execution_authoring_full_test_warnings=14
+EXECUTION_AUTHORIZATION_RECORD_PRESENT=true
+EXECUTION_AUTHORIZATION_ISSUED=true
+CANONICAL_OPERATION_JSON_MATERIALIZED=true
+EXECUTION_AUTHORIZATION_POST_MERGE_VERIFIED=false
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_EXECUTION_AUTHORIZED=false
+PRODUCTION_CALLSITE_EXECUTED=false
+AUTHORIZATION_CONSUMED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

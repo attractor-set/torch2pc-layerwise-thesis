@@ -2379,3 +2379,28 @@ EXECUTION_LEASE_MATERIALIZED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+
+## `QW-LC4-E`: контракт выполнения производственной точки вызова
+
+См. [ADR-097](docs/decisions/ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring.md).
+
+После независимой проверки PR №163, слитого как `78129528d05e8268b4e40fdf708fd9d2c8e3ab29`, зафиксирован контракт будущего однократного выполнения производственной точки вызова. Запись разрешения и канонический файл операции остаются отдельными и отсутствующими; производственная точка вызова не выполняется.
+Подготовительный срез только описывает будущие предусловия и проверяемые границы. Он не предоставляет разрешение оператору, не создаёт входной файл операции и не изменяет состояние исполнения. Любое последующее действие должно быть оформлено отдельным машиночитаемым решением и независимо проверено после слияния.
+
+```text
+callsite_implementation_pr=163
+callsite_implementation_focused_tests=219
+callsite_implementation_targeted_tests=420
+callsite_implementation_full_tests=1467
+callsite_implementation_full_test_warnings=14
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_EXECUTION_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_EXECUTION_AUTHORIZED=false
+PRODUCTION_CALLSITE_PRESENT=true
+PRODUCTION_CALLSITE_EXECUTED=false
+MATERIALIZATION_INVOCATION_OPERATION_PERFORMED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

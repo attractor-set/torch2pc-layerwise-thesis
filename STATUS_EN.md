@@ -2315,3 +2315,27 @@ EXECUTION_LEASE_MATERIALIZED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+
+
+## `QW-LC4-E`: production-callsite execution contract
+
+See [ADR-097](docs/decisions/ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring_EN.md).
+
+After independent verification of PR #163 merged as `78129528d05e8268b4e40fdf708fd9d2c8e3ab29`, the contract for one future production-callsite execution is frozen. Authorization and `operation.json` remain separate and absent; the callsite is not executed.
+
+```text
+callsite_implementation_pr=163
+callsite_implementation_focused_tests=219
+callsite_implementation_targeted_tests=420
+callsite_implementation_full_tests=1467
+callsite_implementation_full_test_warnings=14
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_EXECUTION_CONTRACT_AUTHORED=true
+MATERIALIZATION_INVOCATION_OPERATION_CALLSITE_EXECUTION_AUTHORIZED=false
+PRODUCTION_CALLSITE_PRESENT=true
+PRODUCTION_CALLSITE_EXECUTED=false
+MATERIALIZATION_INVOCATION_OPERATION_PERFORMED=false
+FINAL_EXECUTION_ACKNOWLEDGEMENT_ISSUED=false
+RUNTIME_EXECUTION_PERFORMED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+```

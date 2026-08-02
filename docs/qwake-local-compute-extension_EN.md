@@ -984,3 +984,9 @@ verified canonical result. Standard input, environment fallback, interactive
 confirmation, standalone pre-probing, direct lower-level calls, and retries are
 forbidden. The file does not open [execution](glossary_EN.md#term-execution):
 the operation was not run in the primary worktree and no acknowledgement exists.
+
+
+
+### Production-callsite execution authoring
+
+ADR-097 freezes a separate future authorization, canonical operation file, exact argv, and one no-shell attempt without retry. The production callsite exists but is not executed in the authoring slice; acknowledgement and [local compute](glossary_EN.md#term-local-compute) remain absent.

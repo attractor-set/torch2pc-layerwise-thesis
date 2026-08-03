@@ -1016,3 +1016,7 @@ slice adds no runtime code, creates no authorization or lease, and does not open
 ### Final engineering-invocation admission authoring
 
 See [ADR-101](decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring_EN.md). The pure schema and admission record bind exact source packages and the sole prospective entrypoint while preserving `FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=false` and `FINAL_ENGINEERING_INVOCATION_PERMITTED=false`.
+
+### Final engineering-invocation admission repository seal
+
+See [ADR-102](decisions/ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal_EN.md). The repository receipt binds the admission to PR #169 and exact `main` `d2539eb440e758c1f29b935f8599561bec7126bc`. It preserves `FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=false`, `FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_PERMITTED=false`, and every execution gate closed until its own merge and independent verification.

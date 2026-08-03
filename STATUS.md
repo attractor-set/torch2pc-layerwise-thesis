@@ -2654,3 +2654,47 @@ PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-record-authoring-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-scope-freeze
 ```
+
+## `QW-LC4-E`: фиксация области подготовки попытки потребления авторизации
+
+См. [ADR-105](docs/decisions/ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze.md).
+
+После слияния и независимой проверки PR №172 одноразовая авторизация считается
+post-merge verified и эффективной для точного `main`
+`47bb24dc8fa95292be33428ba8bc7ee598c49b1e`, но остаётся непотреблённой.
+Текущий срез фиксирует только входы, будущие поверхности и атомарную семантику
+подготовки одной попытки потребления. Он не создаёт запись попытки, не начинает
+попытку и не создаёт файл владения v2.
+
+Подготовка будущей записи попытки должна оставаться неисполняющей. Только после
+её собственного слияния и независимой проверки отдельная рабочая операция
+сможет атомарно потребить авторизацию, начать попытку и эксклюзивно создать
+устойчивый файл владения v2 до вызова `invoke_lease_bound_host_runtime`.
+
+```text
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_LINE_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=true
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_SCOPE_FROZEN=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_RECORD_PRESENT=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_PREPARED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_POST_MERGE_VERIFIED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_STARTED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-scope-freeze-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-record-authoring
+```

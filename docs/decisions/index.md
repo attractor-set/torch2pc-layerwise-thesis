@@ -171,3 +171,5 @@ ADR фиксируют решения, влияющие на интерпрет�
 - [ADR-102](ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal.md): связывает проверенный пакет допуска с точным состоянием после слияния `main`, материализуя репозиторную печать при закрытых авторизации, выполнении и `QW-5`.
 - [ADR-103](ADR-103-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-authoring-scope-freeze.md): фиксирует точные входы, будущие поверхности и одноразовую семантику новой авторизации, не создавая запись, фразу оператора или рабочие эффекты.
 - [ADR-104: подготовка канонической одноразовой авторизации финального инженерного вызова](ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring.md)
+
+- [ADR-105](ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze.md): фиксирует точные входы, будущие поверхности и атомарную семантику подготовки одной попытки потребления эффективной, но непотреблённой авторизации, не создавая запись попытки или рабочие эффекты.

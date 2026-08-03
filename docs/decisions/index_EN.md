@@ -155,3 +155,4 @@
 - [ADR-099](ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition_EN.md): freezes the completed and non-reusable final-acknowledgement materialization-callsite line, the absence of an extension engineering report, and the closed `QW-5` boundary while permitting only separate future authoring of actual one-shot engineering-invocation admission.
 
 - [ADR-100](ADR-100-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring-scope-freeze_EN.md): freezes exact inputs, the sole prospective engineering-invocation entry point, the new one-shot authorization boundary, forbidden effects, and future admission-authoring acceptance criteria while `QW-5` remains closed.
+- [ADR-101](ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring_EN.md): materializes the pure schema and canonical final engineering-invocation admission record while keeping authorization, lease, runtime effects, and `QW-5` closed.

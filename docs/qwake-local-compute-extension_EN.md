@@ -1012,3 +1012,7 @@ freezes exact future admission-authoring inputs, the sole prospective
 authorization, and the prohibition on reusing historical permissions. This
 slice adds no runtime code, creates no authorization or lease, and does not open
 `QW-5`.
+
+### Final engineering-invocation admission authoring
+
+See [ADR-101](decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring_EN.md). The pure schema and admission record bind exact source packages and the sole prospective entrypoint while preserving `FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=false` and `FINAL_ENGINEERING_INVOCATION_PERMITTED=false`.

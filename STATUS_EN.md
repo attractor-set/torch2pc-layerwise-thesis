@@ -2425,3 +2425,36 @@ PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring-scope-freeze-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring
 ```
+
+## `QW-LC4-E`: final engineering-invocation admission authoring
+
+See [ADR-101](docs/decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring_EN.md).
+
+A pure schema, verifier, temporary-directory negative tests, and canonical
+admission record are materialized. The record binds exact source identities and
+the future `invoke_lease_bound_host_runtime` entrypoint, but it is not an
+authorization and does not permit invocation.
+
+```text
+FINAL_ENGINEERING_INVOCATION_ADMISSION_AUTHORING_SCOPE_FROZEN=true
+FINAL_ENGINEERING_INVOCATION_ADMISSION_AUTHORED=true
+FINAL_ENGINEERING_INVOCATION_ADMISSION_RECORD_PRESENT=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=false
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-repository-seal
+```

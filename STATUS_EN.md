@@ -2495,3 +2495,43 @@ PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-repository-seal-merge
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-authoring
 ```
+
+## `QW-LC4-E`: new one-shot authorization-authoring scope freeze
+
+See [ADR-103](docs/decisions/ADR-103-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-authoring-scope-freeze_EN.md).
+
+After PR #170 merge and independent verification, the admission repository seal
+is complete for exact `main`
+`a5b96edb1f82485561e0f52d6a98432d55ae8609`. Only exact inputs, future
+authoring surfaces, and one-shot semantics for a distinct new authorization are
+frozen. The schema, verifier, tests, authorization record, and operator phrase
+remain absent. This slice neither permits invocation nor creates runtime
+artifacts.
+
+```text
+FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_SCOPE_FROZEN=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_PRESENT=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=false
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+OPERATOR_PHRASE_RESERVED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-authoring-scope-freeze-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-record-authoring
+```

@@ -1020,3 +1020,18 @@ See [ADR-101](decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation
 ### Final engineering-invocation admission repository seal
 
 See [ADR-102](decisions/ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal_EN.md). The repository receipt binds the admission to PR #169 and exact `main` `d2539eb440e758c1f29b935f8599561bec7126bc`. It preserves `FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=false`, `FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_PERMITTED=false`, and every execution gate closed until its own merge and independent verification.
+
+## New one-shot authorization-authoring scope freeze
+
+After completion of the admission repository seal, a separate non-executing
+slice freezes exact inputs and future surfaces for a new one-shot
+authorization. Historical authorizations remain evidence of non-reuse only.
+The authorization record, operator phrase, command, lease v2, durable outcome,
+and runtime output are absent.
+
+The future record must bind exact verified `main`, the repository seal,
+admission record, image, and sole `invoke_lease_bound_host_runtime` entry point.
+It may be issued when materialized but gains no effective authority before its
+own merge and independent post-merge verification. Exactly one future attempt
+is allowed, with atomic consumption, attempt start, and exclusive lease-v2
+creation.

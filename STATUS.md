@@ -2456,3 +2456,37 @@ PUBLICATION_PERMITTED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring
 ```
+
+## `QW-LC4-E`: фиксация области подготовки допуска финального инженерного вызова
+
+См. [ADR-100](docs/decisions/ADR-100-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring-scope-freeze.md).
+
+Зафиксированы точные входные идентичности, единственная перспективная точка
+`invoke_lease_bound_host_runtime`, требование новой отдельной одноразовой
+авторизации и критерии будущей подготовки допуска. Схема допуска, программа
+проверки, запись допуска и авторизация ещё отсутствуют. Файл владения v2,
+устойчивый исход хоста и выход выполнения не создавались.
+
+```text
+FINAL_ENGINEERING_INVOCATION_ADMISSION_AUTHORING_SCOPE_FROZEN=true
+FINAL_ENGINEERING_INVOCATION_ADMISSION_AUTHORED=false
+FINAL_ENGINEERING_INVOCATION_ADMISSION_RECORD_PRESENT=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=false
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring-scope-freeze-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring
+```

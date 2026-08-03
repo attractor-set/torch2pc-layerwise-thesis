@@ -1072,3 +1072,14 @@ unconsumed, the attempt not started, and command and lease v2 absent.
 Atomic action remains closed until the record's own merge and independent
 verification. The next admissible slice only freezes the atomic-transition
 scope; it must not perform the transition.
+
+## ADR-107: atomic-transition scope freeze
+
+[ADR-107](decisions/ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze_EN.md) reduces the future indivisible
+transition to one durable commit object: the exact lease-v2 file. Atomic
+no-replace creation of that object simultaneously denotes consumption of the new
+authorization, start of the prepared attempt, and lease-v2 presence.
+
+Runtime occurs after commit and is permitted only after reverification of the
+exact persisted bytes. This slice creates no transition implementation and
+performs no operational effect.

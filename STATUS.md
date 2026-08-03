@@ -2671,6 +2671,21 @@ post-merge verified и эффективной для точного `main`
 сможет атомарно потребить авторизацию, начать попытку и эксклюзивно создать
 устойчивый файл владения v2 до вызова `invoke_lease_bound_host_runtime`.
 
+
+
+Фиксация не предполагает изменения ранее выпущенных записей. Проверяемое
+состояние определяется только точным типом, режимом и содержимым финального
+файла владения. До его появления сохраняется исходная закрытая граница. После
+его точного появления повтор становится недопустимым независимо от того,
+успела ли среда выполнения начать работу. Это правило устраняет возможность
+двойного использования одноразового полномочия при сбоях процесса.
+
+Будущая реализация обязана отдельно различать отказ до устойчивой фиксации,
+успешную фиксацию без последующего запуска и неопределённый исход после
+фиксации. Ни один из этих случаев не открывает научную кампанию, доступ к
+тестовой выборке или публикацию. Любая неоднозначность должна сохранять
+закрытое состояние и запрещать повторный рабочий вызов.
+
 ```text
 FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_LINE_COMPLETE=true
 FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
@@ -2747,4 +2762,60 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-record-authoring-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze
+```
+
+## `QW-LC4-E`: фиксация области атомарного перехода потребления авторизации
+
+См. [ADR-107](docs/decisions/ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze.md).
+
+После независимой проверки слияния PR №174 подготовленная запись попытки
+считается проверенной после слияния. ADR-107 фиксирует единственный commit-объект
+будущего перехода: точный устойчивый файл владения v2. Потребление авторизации и
+начало попытки являются производными от атомарного неперезаписывающего создания
+его полностью подготовленных канонических байтов.
+
+Текущий срез только фиксирует область. Он не создаёт реализацию перехода, не
+потребляет авторизацию, не начинает попытку, не создаёт владение и не вызывает
+среду выполнения.
+
+Выбранная конструкция исключает промежуточное подтверждённое состояние: до
+создания точного финального файла все три эффекта ложны, а после создания все
+три считаются совершившимися. Неизменяемые записи авторизации и попытки не
+перезаписываются. При неоднозначном состоянии файловой системы операция должна
+закрываться без вызова и без разрешения повтора.
+
+```text
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_LINE_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=true
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_SCOPE_FROZEN=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_SCOPE_FREEZE_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_RECORD_PRESENT=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_PREPARED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_SCOPE_FROZEN=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_SCOPE_RECORD_PRESENT=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_SCOPE_FREEZE_POST_MERGE_VERIFIED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_AUTHORING_ADMISSIBLE=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_AUTHORED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_ACTION_PERMITTED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_ACTION_COMMITTED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_STARTED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring
 ```

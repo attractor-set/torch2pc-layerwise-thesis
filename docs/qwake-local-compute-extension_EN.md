@@ -1035,3 +1035,16 @@ It may be issued when materialized but gains no effective authority before its
 own merge and independent post-merge verification. Exactly one future attempt
 is allowed, with atomic consumption, attempt start, and exclusive lease-v2
 creation.
+
+## ADR-104: new one-shot final engineering-invocation authorization
+
+[ADR-104](decisions/ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring_EN.md) materializes a canonical record,
+pure schema, verifier, and tests. The record binds the exact operator, separate
+action phrase, single future attempt, and
+`invoke_lease_bound_host_runtime`.
+
+The record has `authorization_issued=true` while retaining
+`authorization_post_merge_verified=false`,
+`final_engineering_invocation_permitted=false`, and
+`authorization_consumed=false`. Command, lease v2, durable host outcome,
+runtime output, and `QW-5` remain absent.

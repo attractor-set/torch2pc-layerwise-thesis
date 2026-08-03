@@ -2582,6 +2582,15 @@ POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-author
 оператора ещё отсутствуют. Текущий срез не разрешает вызов и не создаёт рабочие
 артефакты.
 
+
+Проверяемая запись не меняет фактическое состояние вычислительной среды. Она
+лишь связывает происхождение входов, личность оператора, отдельное словесное
+подтверждение и строгий порядок будущего действия. До отдельной проверки
+слияния любая попытка трактовать запись как действующее разрешение должна
+завершаться закрыто. Состояние репозитория остаётся единственным источником
+проверяемой истины о выпуске записи, а рабочая среда не получает никаких
+новых файлов, процессов или результатов.
+
 ```text
 FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=true
 FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_SCOPE_FROZEN=true
@@ -2608,4 +2617,40 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-authoring-scope-freeze-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-record-authoring
+```
+
+## 2026-08-03 — подготовка новой одноразовой авторизации финального инженерного вызова
+
+- добавлен [ADR-104](docs/decisions/ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring.md);
+- после независимой проверки слияния PR №171 на `61f190db2fbd4bf0ee8a58cac8b6841fbecc6cdd` материализованы чистая схема, программа проверки, тесты и каноническая запись новой одноразовой авторизации;
+- запись связана с оператором `local-posix-account:dzmitry-prychyna` и отдельной фразой `AUTHORIZE_QWAKE_LC4_FINAL_ENGINEERING_INVOCATION_ONCE_AFTER_POST_MERGE_VERIFICATION`;
+- запись выпущена, но до собственного слияния и независимой проверки после слияния не создаёт эффективного полномочия вызова;
+- команда, потребление, файл владения v2, устойчивый исход хоста, выход выполнения и `QW-5` отсутствуют.
+
+```text
+FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_SCOPE_FREEZE_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_PRESENT=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=false
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+OPERATOR_PHRASE_RESERVED=true
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-record-authoring-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-scope-freeze
 ```

@@ -2508,6 +2508,15 @@ frozen. The schema, verifier, tests, authorization record, and operator phrase
 remain absent. This slice neither permits invocation nor creates runtime
 artifacts.
 
+
+The verifiable record does not change the actual compute-environment state. It
+only binds input provenance, operator identity, a separate verbal
+acknowledgement, and the strict ordering of a future action. Before separate
+merge verification, every attempt to treat the record as effective authority
+must fail closed. Repository state remains the sole verifiable source of truth
+about record issuance, while the operational environment receives no new
+files, processes, or results.
+
 ```text
 FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=true
 FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_SCOPE_FROZEN=true
@@ -2534,4 +2543,42 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-authoring-scope-freeze-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-record-authoring
+```
+
+## 2026-08-03 — author the new one-shot final engineering-invocation authorization
+
+- added [ADR-104](docs/decisions/ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring_EN.md);
+- after independent verification of PR #171 merged as `61f190db2fbd4bf0ee8a58cac8b6841fbecc6cdd`, materialized a pure schema, verifier, tests, and canonical distinct one-shot authorization record;
+- the record binds operator `local-posix-account:dzmitry-prychyna` and separate phrase `AUTHORIZE_QWAKE_LC4_FINAL_ENGINEERING_INVOCATION_ONCE_AFTER_POST_MERGE_VERIFICATION`;
+- the record is issued but creates no effective invocation authority before its own merge and independent post-merge verification;
+- the new record is distinct from every historical authorization and serves only as a verifiable repository basis for a future one-shot operator action;
+- current authoring keeps the complete operational boundary closed: it starts no attempt, changes no lease state, and creates no observable result;
+- command, consumption, lease v2, durable host outcome, runtime output, and `QW-5` remain absent.
+
+```text
+FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_SCOPE_FREEZE_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_PRESENT=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=false
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+OPERATOR_PHRASE_RESERVED=true
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-record-authoring-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-scope-freeze
 ```

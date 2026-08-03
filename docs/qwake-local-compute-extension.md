@@ -1031,3 +1031,7 @@ ADR-098 материализует отдельную однократную з�
 ### Подготовка допуска финального инженерного вызова
 
 См. [ADR-101](decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring.md). Чистая схема и запись допуска связывают точные исходные пакеты и единственную перспективную точку, но сохраняют `FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=false` и `FINAL_ENGINEERING_INVOCATION_PERMITTED=false`.
+
+### Репозиторная печать допуска финального инженерного вызова
+
+См. [ADR-102](decisions/ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal.md). Репозиторная квитанция связывает допуск с PR №169 и точным `main` `d2539eb440e758c1f29b935f8599561bec7126bc`. Она сохраняет `FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=false`, `FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_PERMITTED=false` и все границы выполнения закрытыми до собственного слияния и независимой проверки.

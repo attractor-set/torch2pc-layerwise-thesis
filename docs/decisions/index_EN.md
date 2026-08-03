@@ -156,3 +156,4 @@
 
 - [ADR-100](ADR-100-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring-scope-freeze_EN.md): freezes exact inputs, the sole prospective engineering-invocation entry point, the new one-shot authorization boundary, forbidden effects, and future admission-authoring acceptance criteria while `QW-5` remains closed.
 - [ADR-101](ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring_EN.md): materializes the pure schema and canonical final engineering-invocation admission record while keeping authorization, lease, runtime effects, and `QW-5` closed.
+- [ADR-102](ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal_EN.md): binds the verified admission package to the exact merged `main` state, materializing a repository seal while authorization, execution, and `QW-5` remain closed.

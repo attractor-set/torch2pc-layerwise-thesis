@@ -2523,3 +2523,49 @@ PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-repository-seal
 ```
+
+## `QW-LC4-E`: репозиторная печать допуска финального инженерного вызова материализована
+
+См. [ADR-102](docs/decisions/ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal.md).
+
+После независимой проверки PR №169 запись допуска связана с точным `main`
+`d2539eb440e758c1f29b935f8599561bec7126bc`, обоими PR-коммитами, областью из 17 файлов и точными SHA-256
+артефактов. Двухфайловая репозиторная квитанция материализована, но станет
+завершённой только после собственного слияния и независимой post-merge
+проверки. Новая авторизация отсутствует; даже её отдельная подготовка пока не
+разрешена. Квитанция подтверждает только целостность уже проверенного состояния
+репозитория и не меняет ни одно разрешение. Она не является командой запуска,
+не подтверждает успешность вычисления и не создаёт научных данных. Отдельная
+проверка после будущего слияния должна повторно подтвердить родителей коммита,
+область изменений, контрольные суммы и закрытое состояние всех разрешений. До
+этого момента любые действия оператора, подготовка команды и резервирование
+попытки считаются недопустимыми. Сохранённое состояние описывает только
+целостность документации и программных поверхностей, уже находящихся в
+репозитории.
+
+```text
+FINAL_ENGINEERING_INVOCATION_ADMISSION_PR=169
+FINAL_ENGINEERING_INVOCATION_ADMISSION_PR_HEAD=b81c11971f1e9b78e59dd39c4d182722a3001044
+FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_MAIN_COMMIT=d2539eb440e758c1f29b935f8599561bec7126bc
+FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_MATERIALIZED=true
+FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_PERMITTED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=false
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-repository-seal-merge
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-authoring
+```

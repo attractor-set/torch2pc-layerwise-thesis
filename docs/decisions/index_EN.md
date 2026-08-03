@@ -151,3 +151,5 @@
 - [ADR-097: production-callsite execution authoring](ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring_EN.md)
 
 - [ADR-098: production-callsite execution authorization](ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization_EN.md)
+
+- [ADR-099](ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition_EN.md): freezes the completed and non-reusable final-acknowledgement materialization-callsite line, the absence of an extension engineering report, and the closed `QW-5` boundary while permitting only separate future authoring of actual one-shot engineering-invocation admission.

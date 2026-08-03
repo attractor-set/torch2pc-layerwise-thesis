@@ -198,3 +198,5 @@ docs/decisions/ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-mater
 docs/decisions/ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation.md,docs/decisions/ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation_EN.md,required
 docs/decisions/ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring.md,docs/decisions/ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring_EN.md,required
 docs/decisions/ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization.md,docs/decisions/ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization_EN.md,required
+
+docs/decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition.md,docs/decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition_EN.md,required

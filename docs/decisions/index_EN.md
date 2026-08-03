@@ -159,3 +159,5 @@
 - [ADR-102](ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal_EN.md): binds the verified admission package to the exact merged `main` state, materializing a repository seal while authorization, execution, and `QW-5` remain closed.
 - [ADR-103](ADR-103-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-authoring-scope-freeze_EN.md): freezes exact inputs, future surfaces, and one-shot semantics for the new authorization without creating the record, operator phrase, or runtime effects.
 - [ADR-104: author the canonical one-shot authorization for the final engineering invocation](ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring_EN.md)
+
+- [ADR-105](ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze_EN.md): freezes exact inputs, future surfaces, and atomic semantics for preparing one attempt to consume the effective but unconsumed authorization without creating an attempt record or runtime effects.

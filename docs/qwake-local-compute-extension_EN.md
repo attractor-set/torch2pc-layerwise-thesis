@@ -1048,3 +1048,16 @@ The record has `authorization_issued=true` while retaining
 `final_engineering_invocation_permitted=false`, and
 `authorization_consumed=false`. Command, lease v2, durable host outcome,
 runtime output, and `QW-5` remain absent.
+
+## ADR-105: authorization consumption-attempt scope freeze
+
+[ADR-105](decisions/ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze_EN.md)
+freezes exact inputs, future surfaces, and the atomic boundary for one attempt
+to consume the post-merge-verified authorization. The authorization is
+effective but remains unconsumed.
+
+The future attempt record may only prepare a canonical object and must preserve
+absence of the command, attempt start, and lease v2. Actual consumption is
+admissible only in a separate future action where consumption, attempt start,
+and exclusive durable lease-v2 creation form one indivisible transition before
+`invoke_lease_bound_host_runtime`.

@@ -1003,3 +1003,12 @@ still-absent extension engineering report. The consumed authorization for that
 callsite cannot be reused. `QW-5` remains closed until a separate one-shot
 engineering invocation through the lease-bound host invoker, terminal report,
 and repository seal exist.
+
+## Final engineering-invocation admission-authoring scope freeze
+
+[ADR-100](decisions/ADR-100-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring-scope-freeze_EN.md)
+freezes exact future admission-authoring inputs, the sole prospective
+`invoke_lease_bound_host_runtime` entry point, a new distinct one-shot
+authorization, and the prohibition on reusing historical permissions. This
+slice adds no runtime code, creates no authorization or lease, and does not open
+`QW-5`.

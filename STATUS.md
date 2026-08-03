@@ -2569,3 +2569,43 @@ PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-repository-seal-merge
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-authoring
 ```
+
+## `QW-LC4-E`: фиксация области подготовки новой одноразовой авторизации
+
+См. [ADR-103](docs/decisions/ADR-103-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-authoring-scope-freeze.md).
+
+После слияния и независимой проверки PR №170 репозиторная печать допуска
+считается завершённой для точного `main`
+`a5b96edb1f82485561e0f52d6a98432d55ae8609`. Зафиксированы только точные
+входы, будущие программные поверхности и одноразовая семантика отдельной новой
+авторизации. Схема, программа проверки, тесты, запись авторизации и фраза
+оператора ещё отсутствуют. Текущий срез не разрешает вызов и не создаёт рабочие
+артефакты.
+
+```text
+FINAL_ENGINEERING_INVOCATION_ADMISSION_REPOSITORY_SEAL_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORING_SCOPE_FROZEN=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_AUTHORED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_PRESENT=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_ISSUED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=false
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=false
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+OPERATOR_PHRASE_RESERVED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-authoring-scope-freeze-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-record-authoring
+```

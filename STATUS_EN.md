@@ -2362,3 +2362,32 @@ AUTHORIZATION_CONSUMED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: transition after final-acknowledgement materialization
+
+See [ADR-099](docs/decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition_EN.md).
+
+The one-shot production callsite for final-acknowledgement materialization is
+complete. Its authorization is consumed, the acknowledgement is issued and
+verified, and retry is forbidden. No persistent lease v2, terminal host receipt,
+or runtime output exists. This evidence package is therefore not the successful
+extension engineering report and does not open `QW-5`.
+
+```text
+QW_LC4_E_ACKNOWLEDGEMENT_LINE_COMPLETE=true
+QW_LC4_E_ACKNOWLEDGEMENT_AUTHORIZATION_CONSUMED=true
+QW_LC4_E_ACKNOWLEDGEMENT_RETRY_PERMITTED=false
+QW_LC4_E_ACKNOWLEDGEMENT_REINVOCATION_FORBIDDEN=true
+QW_LC4_E_EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+C1_COLLECTION_OPEN=false
+C2_CALIBRATION_OPEN=false
+C3_CONFIRMATORY_OPEN=false
+REPLICATION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring
+```

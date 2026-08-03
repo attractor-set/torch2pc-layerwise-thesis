@@ -2427,3 +2427,32 @@ AUTHORIZATION_CONSUMED=false
 RUNTIME_EXECUTION_PERFORMED=false
 LOCAL_COMPUTE_EXECUTION_OPEN=false
 ```
+
+## `QW-LC4-E`: переход после материализации финального подтверждения
+
+См. [ADR-099](docs/decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition.md).
+
+Одноразовая производственная точка вызова материализации финального
+подтверждения завершена. Её разрешение потреблено, подтверждение выпущено и проверено, а
+повтор запрещён. Постоянный файл владения v2, терминальная квитанция хоста и выход выполнения
+отсутствуют. Поэтому этот пакет доказательных материалов не является успешным
+инженерным отчётом расширения и не открывает `QW-5`.
+
+```text
+QW_LC4_E_ACKNOWLEDGEMENT_LINE_COMPLETE=true
+QW_LC4_E_ACKNOWLEDGEMENT_AUTHORIZATION_CONSUMED=true
+QW_LC4_E_ACKNOWLEDGEMENT_RETRY_PERMITTED=false
+QW_LC4_E_ACKNOWLEDGEMENT_REINVOCATION_FORBIDDEN=true
+QW_LC4_E_EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+C1_COLLECTION_OPEN=false
+C2_CALIBRATION_OPEN=false
+C3_CONFIRMATORY_OPEN=false
+REPLICATION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-admission-authoring
+```

@@ -994,3 +994,12 @@ ADR-097 freezes a separate future authorization, canonical operation file, exact
 ### Production-callsite execution authorization
 
 ADR-098 materializes a separate single-use authorization record and canonical operation file bound to the operator, callsite, and SHA-256 identity. The record is not effective yet: the future merge commit requires independent post-merge verification. Authorization is unconsumed, the production callsite is not executed, and the acknowledgement and [local compute](glossary_EN.md#term-local-compute) remain absent.
+
+## Transition after `QW-LC4-E` final-acknowledgement materialization
+
+[ADR-099](decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition_EN.md)
+separates the completed production-callsite materialization attempt from the
+still-absent extension engineering report. The consumed authorization for that
+callsite cannot be reused. `QW-5` remains closed until a separate one-shot
+engineering invocation through the lease-bound host invoker, terminal report,
+and repository seal exist.

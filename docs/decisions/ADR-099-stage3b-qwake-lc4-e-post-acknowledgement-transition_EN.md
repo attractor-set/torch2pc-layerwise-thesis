@@ -13,11 +13,11 @@
 ADR-098 issued a separate single-use authorization for the production callsite
 that materializes the final operator acknowledgement. After merge, that
 callsite was executed once. The authorization is consumed, the acknowledgement
-is materialized and verified, and retry of the same attempt is forbidden.
+is materialized and verified, and retry of the same [attempt](../glossary_EN.md#term-attempt) is forbidden.
 
 The executed callsite concerns acknowledgement materialization only. It is not
 the one-shot `QW-LC4-E` extension engineering invocation: no persistent lease
-v2, durable host-outcome receipt, or runtime output exists.
+v2, durable host-outcome receipt, or [runtime](../glossary_EN.md#term-runtime) output exists.
 
 The experimental plan permits transition to `QW-5` only after a successful
 `QW-LC4-E` engineering report. The materialized acknowledgement is therefore a
@@ -26,7 +26,7 @@ or its report.
 
 ## Verified state
 
-The sealed evidence package proves:
+The sealed [evidence](../glossary_EN.md#term-evidence) package proves:
 
 ```text
 ACKNOWLEDGEMENT_CALLSITE_ATTEMPT_STARTED=true

@@ -2626,3 +2626,48 @@ PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-scope-freeze-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-record-authoring
 ```
+
+## `QW-LC4-E`: prepared authorization-consumption attempt record
+
+See [ADR-106](docs/decisions/ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring_EN.md).
+
+After PR #173 merge and independent verification, the ADR-105 scope freeze is
+complete for exact `main` `28b4627436244893195231f55f2d0d5fb2d1062e`. A pure
+schema, verifier, tests, and distinct canonical attempt record are materialized.
+The record is prepared but grants no atomic-action authority before its own
+merge and independent verification.
+
+Authorization remains effective and unconsumed. The attempt is not started;
+the command, lease v2, durable host outcome, and [runtime](docs/glossary_EN.md#term-runtime) output are absent.
+
+```text
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_LINE_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=true
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_SCOPE_FROZEN=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_SCOPE_FREEZE_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_RECORD_AUTHORING_ADMISSIBLE=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_RECORD_AUTHORED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_RECORD_PRESENT=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_PREPARED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_POST_MERGE_VERIFIED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_ACTION_PERMITTED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_STARTED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-record-authoring-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze
+```

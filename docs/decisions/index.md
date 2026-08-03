@@ -173,3 +173,5 @@ ADR фиксируют решения, влияющие на интерпрет�
 - [ADR-104: подготовка канонической одноразовой авторизации финального инженерного вызова](ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring.md)
 
 - [ADR-105](ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze.md): фиксирует точные входы, будущие поверхности и атомарную семантику подготовки одной попытки потребления эффективной, но непотреблённой авторизации, не создавая запись попытки или рабочие эффекты.
+
+- [ADR-106](ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring.md): материализует отдельную подготовленную запись попытки, сохраняя авторизацию непотреблённой, попытку неначатой и атомарное действие закрытым до собственного слияния и независимой проверки.

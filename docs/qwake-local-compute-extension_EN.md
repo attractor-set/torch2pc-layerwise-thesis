@@ -1061,3 +1061,14 @@ absence of the command, attempt start, and lease v2. Actual consumption is
 admissible only in a separate future action where consumption, attempt start,
 and exclusive durable lease-v2 creation form one indivisible transition before
 `invoke_lease_bound_host_runtime`.
+
+## ADR-106: authorization consumption-attempt record authoring
+
+[ADR-106](decisions/ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring_EN.md)
+materializes a distinct canonical record, pure schema, verifier, and tests. The
+record has `consumption_attempt_prepared=true` while preserving authorization
+unconsumed, the attempt not started, and command and lease v2 absent.
+
+Atomic action remains closed until the record's own merge and independent
+verification. The next admissible slice only freezes the atomic-transition
+scope; it must not perform the transition.

@@ -2698,3 +2698,53 @@ PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-scope-freeze-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-record-authoring
 ```
+
+## `QW-LC4-E`: подготовленная запись попытки потребления авторизации
+
+См. [ADR-106](docs/decisions/ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring.md).
+
+После слияния и независимой проверки PR №173 фиксация области ADR-105 считается
+завершённой для точного `main` `28b4627436244893195231f55f2d0d5fb2d1062e`.
+Материализованы чистая схема, программа проверки, тесты и отдельная каноническая
+запись попытки. Запись подготовлена, но не разрешает атомарное действие до
+собственного слияния и независимой проверки.
+
+Авторизация остаётся эффективной и непотреблённой. Попытка не начата; команда,
+владение v2, устойчивый исход хоста и выход среды выполнения отсутствуют.
+Подготовленная запись описывает только намерение будущего неделимого перехода.
+Она не меняет устойчивое состояние, не резервирует вычислительный ресурс и не
+создаёт право на повтор при неопределённом исходе. Все последующие действия
+должны оставаться раздельными, проверяемыми и закрытыми при любом расхождении
+идентичностей, содержимого или порядка переходов.
+
+```text
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_RECORD_LINE_COMPLETE=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=true
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_SCOPE_FROZEN=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_SCOPE_FREEZE_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_RECORD_AUTHORING_ADMISSIBLE=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_RECORD_AUTHORED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_RECORD_PRESENT=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_PREPARED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_POST_MERGE_VERIFIED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_ACTION_PERMITTED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_STARTED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+EXTENSION_ENGINEERING_REPORT_PRESENT=false
+QW_LC4_E_COMPLETE=false
+QW5_TRANSITION_PERMITTED=false
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-record-authoring-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze
+```

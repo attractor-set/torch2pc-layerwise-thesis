@@ -163,3 +163,5 @@
 - [ADR-105](ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze_EN.md): freezes exact inputs, future surfaces, and atomic semantics for preparing one attempt to consume the effective but unconsumed authorization without creating an attempt record or runtime effects.
 
 - [ADR-106](ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring_EN.md): materializes a distinct prepared attempt record while preserving authorization unconsumed, the attempt not started, and atomic action closed until its own merge and independent verification.
+
+- [ADR-107](ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze_EN.md): freezes the sole durable atomic-transition commit object—the exact lease-v2 file—and the derived authorization-consumption and attempt-start semantics without performing the transition.

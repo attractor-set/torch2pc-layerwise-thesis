@@ -19,7 +19,6 @@ from torch2pc_thesis.stage3b_qwake_lc4_final_engineering_invocation_admission im
     FINAL_ENGINEERING_INVOCATION_ADMISSION_STATUS,
     OUTPUT_ROOT,
     RUNTIME_ENTRYPOINT,
-    RUNTIME_ENTRYPOINT_MODULE,
     SCOPE_FREEZE_MERGE_COMMIT,
     FinalEngineeringInvocationAdmissionError,
     build_final_engineering_invocation_admission,

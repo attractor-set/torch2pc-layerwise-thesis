@@ -1086,3 +1086,9 @@ performs no operational effect.
 ## QW-LC4-E: atomic-transition authoring
 
 [ADR-108](decisions/ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring_EN.md) implements one effectful entrypoint over the existing persistent lease-v2 writer. Authoring and verification remain non-executing, and runtime invocation is outside the commit boundary. The exact lease is the only durable commit object; retry after commit or an unknown state is forbidden.
+
+## ADR-109: atomic-transition operation scope
+
+[ADR-109](decisions/ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze_EN.md) freezes the exact admission object and ordering for a future operator operation over the already authored atomic-transition entrypoint. `implementation_merge_commit` is fixed as `3a0cf60e37de80cffdbc397616db6ad437a734e0`; `claimed_at_utc` must be obtained once only after future operation admission.
+
+This slice does not invoke the transition, create lease v2, or open runtime. After its own merge it admits only separate non-executing operation authoring.

@@ -2851,3 +2851,46 @@ LOCAL_COMPUTE_EXECUTION_OPEN=false
 TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 ```
+
+## `QW-LC4-E`: фиксация области эксплуатации атомарного перехода (ADR-109)
+
+После независимой проверки слияния PR №176 переход ADR-108 считается проверенным после слияния. [ADR-109](docs/decisions/ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze.md) фиксирует точный admission, порядок предварительной проверки, единственный будущий вызов и состояния отказа для отдельной операторской операции.
+
+Текущий срез создаёт только неизменяемую область. Он не вызывает атомарный переход или механизм записи, не потребляет разрешение, не начинает попытку и не создаёт владение v2.
+
+Фиксация отделяет проверяемую подготовку от необратимого файлового эффекта. До отдельного слияния и независимой проверки запрещены построение производственного вызова, получение рабочей временной отметки и любое создание конечного файла владения. Ошибка или неоднозначность на любой предварительной проверке сохраняет закрытое состояние и не разрешает автоматический повтор.
+
+Отдельная фиксация области нужна для того, чтобы будущая операция не могла незаметно изменить набор входов, порядок проверок или значение коммита реализации. Она также сохраняет различие между атомарной фиксацией владения и последующим вызовом среды исполнения. Ни успешное слияние текущей документации, ни проверка её целостности не являются выполнением операции и не порождают производственных данных.
+
+```text
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=true
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_PREPARED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_SCOPE_FREEZE_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_AUTHORED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_SCOPE_FREEZE_ADMISSIBLE=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_SCOPE_FROZEN=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_SCOPE_RECORD_PRESENT=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_SCOPE_FREEZE_POST_MERGE_VERIFIED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_AUTHORING_ADMISSIBLE=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_AUTHORED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_ACTION_PERMITTED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_ACTION_COMMITTED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_STARTED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+QW5_TRANSITION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze-commit
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring
+```

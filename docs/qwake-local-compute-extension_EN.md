@@ -1083,3 +1083,6 @@ authorization, start of the prepared attempt, and lease-v2 presence.
 Runtime occurs after commit and is permitted only after reverification of the
 exact persisted bytes. This slice creates no transition implementation and
 performs no operational effect.
+## QW-LC4-E: atomic-transition authoring
+
+[ADR-108](decisions/ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring_EN.md) implements one effectful entrypoint over the existing persistent lease-v2 writer. Authoring and verification remain non-executing, and runtime invocation is outside the commit boundary. The exact lease is the only durable commit object; retry after commit or an unknown state is forbidden.

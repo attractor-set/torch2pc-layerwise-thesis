@@ -166,3 +166,5 @@
 
 - [ADR-107](ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze_EN.md): freezes the sole durable atomic-transition commit object—the exact lease-v2 file—and the derived authorization-consumption and attempt-start semantics without performing the transition.
 - [ADR-108: authorization-consumption atomic-transition authoring](ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring_EN.md)
+
+- [ADR-109](ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze_EN.md): freezes exact admission, preflight ordering, and the sole future operator-operation call for the atomic transition without performing the effect.

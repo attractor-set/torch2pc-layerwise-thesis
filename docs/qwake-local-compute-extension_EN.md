@@ -1092,3 +1092,11 @@ performs no operational effect.
 [ADR-109](decisions/ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze_EN.md) freezes the exact admission object and ordering for a future operator operation over the already authored atomic-transition entrypoint. `implementation_merge_commit` is fixed as `3a0cf60e37de80cffdbc397616db6ad437a734e0`; `claimed_at_utc` must be obtained once only after future operation admission.
 
 This slice does not invoke the transition, create lease v2, or open runtime. After its own merge it admits only separate non-executing operation authoring.
+
+## ADR-110: combined one-shot operation authoring
+
+After PR #177 merge, the atomic-transition operation scope is post-merge verified. ADR-110 shortens the remaining chain: the wrapper, embedded post-merge admission, immutable record, verifier, and tests are created in one non-executing PR.
+
+The wrapper verifies the exact merged package, clean repository identity, frozen `Torch2PC`, and closed filesystem boundary. It then obtains one UTC timestamp and delegates at most once to `execute_final_engineering_invocation_atomic_transition_once`. It neither imports nor invokes `invoke_lease_bound_host_runtime`.
+
+The atomic action remains closed before ADR-110 merges. After independent merge verification, one external operation is admissible; no separate implementation or admission PR is required. A successful operation creates only lease v2. Actual runtime execution remains a separate decision.

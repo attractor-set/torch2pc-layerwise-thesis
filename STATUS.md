@@ -2894,3 +2894,45 @@ PUBLICATION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze-commit
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring
 ```
+
+## `QW-LC4-E`: объединённая подготовка одноразовой операции атомарного перехода (ADR-110)
+
+После независимой проверки слияния PR №177 как `e33448d10ced2bffd1e48449e6da46b2de938141` область ADR-109 считается проверенной после слияния. [ADR-110](docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring.md) объединяет модуль операции, неизменяемую запись, встроенный контракт допуска, проверяющий модуль и тесты в одном неисполняющем срезе.
+
+Wrapper существует, но не вызывается. После собственного слияния и независимой проверки он сможет получить одну временную отметку и ровно один раз делегировать уже проверенному атомарному переходу. Запуск среды выполнения остаётся отдельным последующим действием.
+
+```text
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
+FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_CONSUMED=false
+FINAL_ENGINEERING_INVOCATION_PERMITTED=true
+FINAL_ENGINEERING_INVOCATION_STARTED=false
+FINAL_ENGINEERING_INVOCATION_PERFORMED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_PREPARED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_SCOPE_FROZEN=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_SCOPE_FREEZE_POST_MERGE_VERIFIED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_AUTHORING_ADMISSIBLE=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_AUTHORED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_MODULE_CREATED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_VERIFIER_CREATED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_TESTS_CREATED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_RECORD_PRESENT=true
+COMBINED_OPERATION_ADMISSION_CONTRACT_CREATED=true
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_TRANSITION_OPERATION_POST_MERGE_VERIFIED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_ACTION_PERMITTED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_ATOMIC_ACTION_COMMITTED=false
+AUTHORIZATION_CONSUMPTION_ATTEMPT_STARTED=false
+INVOCATION_COMMAND_MATERIALIZED=false
+EXECUTION_LEASE_V1_PRESENT=false
+EXECUTION_LEASE_V2_PRESENT=false
+DURABLE_HOST_OUTCOME_PRESENT=false
+RUNTIME_OUTPUT_PRESENT=false
+QW5_TRANSITION_PERMITTED=false
+LOCAL_COMPUTE_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-execution
+```
+
+Объединение не ослабляет проверяемую границу. Подготовленная обёртка остаётся библиотечной поверхностью без самостоятельного права на применение: точный коммит после слияния, чистое состояние репозитория, закреплённая зависимость, личность оператора и обе обязательные фразы должны быть независимо подтверждены до построения допуска. Любое расхождение сохраняет закрытое состояние. Существующий конечный объект классифицируется до получения временной отметки, поэтому повторный вход не может создать новую попытку или скрыто изменить уже зафиксированный результат. Даже успешная атомарная фиксация не начинает среду исполнения и не открывает научный сбор данных.

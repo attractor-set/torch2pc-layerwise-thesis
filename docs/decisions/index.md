@@ -180,3 +180,4 @@ ADR фиксируют решения, влияющие на интерпрет�
 - [ADR-108: подготовка атомарного перехода потребления разрешения](ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring.md)
 
 - [ADR-109](ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze.md): фиксирует точный объект допуска, порядок предварительной проверки и единственный будущий вызов операторской операции атомарного перехода, не выполняя эффект.
+- [ADR-110](ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring.md): объединяет одноразовую операторскую обёртку атомарного перехода, неизменяемую запись, контракт допуска, проверяющий модуль и тесты в одном неисполняющем PR без отдельного PR допуска.

@@ -174,3 +174,5 @@
 
 - [ADR-113](ADR-113-stage3b-qwake-lc4-e-attempt-002-execution-freeze_EN.md): freezes the corrected image, normalized host identity, and attempt-002 execution boundary without authorization issuance or runtime invocation.
 - [ADR-114](ADR-114-stage3b-qwake-lc4-e-attempt-002-host-invocation-chain_EN.md): binds the corrected image and attempt-002 freeze to a pure verifiable future host-command constructor without a process spawner, authorization, or execution effects.
+
+- [ADR-115](ADR-115-stage3b-qwake-lc4-e-attempt-002-one-shot-authorization_EN.md): issues a distinct one-shot attempt-002 authorization bound to the corrected freeze and host chain while leaving consumption, invocation, and execution effects closed.

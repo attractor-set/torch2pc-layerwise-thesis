@@ -14,11 +14,11 @@ from pathlib import Path
 from typing import Final, cast
 
 from torch2pc_thesis.stage3b_qwake_lc4_attempt_002_contract import (
-    ATTEMPT_002_AUTHORIZATION_ROOT,
     ATTEMPT_002_DURABLE_OUTCOME_RELATIVE,
     ATTEMPT_002_LEASE_V1_RELATIVE,
     ATTEMPT_002_LEASE_V2_RELATIVE,
     ATTEMPT_002_OUTPUT_ROOT,
+    verify_unconsumed_attempt_002_authorization,
 )
 from torch2pc_thesis.stage3b_qwake_lc4_attempt_002_host_invocation_chain import (
     EXPECTED_IMAGE_DIGEST,
@@ -31,6 +31,7 @@ from torch2pc_thesis.stage3b_qwake_lc4_attempt_002_host_invocation_chain import 
     build_attempt_002_host_invocation_chain_state,
     build_attempt_002_host_invocation_contract,
     canonical_json,
+    load_attempt_002_host_execution_freeze,
     load_attempt_002_host_image_identity,
     sha256_object,
 )
@@ -125,7 +126,7 @@ EXPECTED_AUTHORING_SHA256: Final = (
     "sha256:dc5a092c322506258466f3da106750d4f0d6d08e3dd10a4225e67b773bd54860"
 )
 EXPECTED_STATE_SHA256: Final = (
-    "sha256:a1a8211d88dbdb65a6ca8dab577dd196e525692ca6570c81392dee18ac7d86e1"
+    "sha256:5be02c44c300fbbe1f3d289792cbe2e13aa0dd84fbcbe59ee64816ad9350f530"
 )
 EXPECTED_SOURCE_HEAD: Final = "2f346498a28377d355b88560aa099890f829af46"
 OLD_IMAGE_DIGEST: Final = (
@@ -178,6 +179,8 @@ def verify(project_root: Path) -> None:
     host_image = _read_json(root / HOST_IMAGE_JSON)
     _verify_host_image_binding(host_image, image_identity.identity_sha256)
 
+    freeze = load_attempt_002_host_execution_freeze(root)
+    authorization = verify_unconsumed_attempt_002_authorization(root, freeze)
     state = build_attempt_002_host_invocation_chain_state(root)
     if state.state_sha256 != EXPECTED_STATE_SHA256:
         raise Attempt002HostInvocationChainVerificationError(
@@ -200,8 +203,9 @@ def verify(project_root: Path) -> None:
     print("HOST_PROCESS_SPAWNER_PRESENT=false")
     print("DOCKER_RUN_IMPLEMENTED=false")
     print("DOCKER_RUN_INVOKED=false")
-    print("ATTEMPT_002_AUTHORIZATION_AUTHORING_ADMISSIBLE=true")
-    print("ATTEMPT_002_AUTHORIZATION_ISSUED=false")
+    print("ATTEMPT_002_AUTHORIZATION_AUTHORING_ADMISSIBLE=false")
+    print("ATTEMPT_002_AUTHORIZATION_ISSUED=true")
+    print(f"ATTEMPT_002_AUTHORIZATION_SHA256={authorization.authorization_sha256}")
     print("ATTEMPT_002_AUTHORIZATION_CONSUMED=false")
     print("ATTEMPT_002_LEASE_V1_PRESENT=false")
     print("ATTEMPT_002_LEASE_V2_PRESENT=false")
@@ -403,7 +407,6 @@ def _verify_package_text(package: Path, root: Path) -> None:
 
 def _verify_effect_boundary(root: Path) -> None:
     for relative in (
-        ATTEMPT_002_AUTHORIZATION_ROOT,
         ATTEMPT_002_OUTPUT_ROOT,
         ATTEMPT_002_LEASE_V1_RELATIVE,
         ATTEMPT_002_LEASE_V2_RELATIVE,

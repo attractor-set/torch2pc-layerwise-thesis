@@ -9,6 +9,7 @@ from types import ModuleType
 import pytest
 
 from torch2pc_thesis.stage3b_qwake_lc4_attempt_002_contract import (
+    ATTEMPT_002_AUTHORIZATION_ROOT,
     ATTEMPT_002_LEASE_V1_RELATIVE,
     Attempt002ContractError,
     canonical_json,
@@ -78,6 +79,7 @@ def _copy_fixture(tmp_path: Path) -> Path:
         target = destination / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source / relative, target)
+    (destination / ATTEMPT_002_AUTHORIZATION_ROOT).mkdir(parents=True)
     return destination
 
 
@@ -158,6 +160,22 @@ def test_verifier_rejects_existing_attempt_002_lease(
     lease = root / ATTEMPT_002_LEASE_V1_RELATIVE
     lease.parent.mkdir(parents=True, exist_ok=True)
     lease.write_text("{}\n", encoding="utf-8")
+    verifier = _load_verifier(root)
+    with pytest.raises(
+        verifier.Attempt002ExecutionFreezeVerificationError,
+    ):
+        verifier.verify(root)
+
+
+def test_verifier_rejects_symlinked_authorization_control_root(
+    tmp_path: Path,
+) -> None:
+    root = _copy_fixture(tmp_path)
+    authorization_root = root / ATTEMPT_002_AUTHORIZATION_ROOT
+    authorization_root.rmdir()
+    target = root / "authorization-control-target"
+    target.mkdir()
+    authorization_root.symlink_to(target, target_is_directory=True)
     verifier = _load_verifier(root)
     with pytest.raises(
         verifier.Attempt002ExecutionFreezeVerificationError,

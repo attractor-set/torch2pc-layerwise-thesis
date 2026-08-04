@@ -526,13 +526,21 @@ def _verify_effect_boundary(root: Path) -> None:
         ATTEMPT_002_LEASE_V1_RELATIVE,
         ATTEMPT_002_LEASE_V2_RELATIVE,
         ATTEMPT_002_DURABLE_OUTCOME_RELATIVE,
-        ATTEMPT_002_AUTHORIZATION_ROOT,
     )
     for relative in paths:
         if os.path.lexists(root / relative):
             raise Attempt002ExecutionFreezeVerificationError(
                 f"attempt-002 effect boundary is open: {relative}"
             )
+
+    authorization_root = root / ATTEMPT_002_AUTHORIZATION_ROOT
+    if os.path.lexists(authorization_root) and (
+        authorization_root.is_symlink() or not authorization_root.is_dir()
+    ):
+        raise Attempt002ExecutionFreezeVerificationError(
+            "attempt-002 authorization control-plane root differs"
+        )
+
     staging_pattern = f".{ATTEMPT_002_OUTPUT_ROOT.name}.staging-*"
     if tuple((root / ATTEMPT_002_OUTPUT_ROOT.parent).glob(staging_pattern)):
         raise Attempt002ExecutionFreezeVerificationError(

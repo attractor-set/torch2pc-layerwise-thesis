@@ -28,6 +28,7 @@ from torch2pc_thesis.stage3b_qwake_lc4_attempt_002_contract import (
     ATTEMPT_002_LEASE_V2_RELATIVE,
     ATTEMPT_002_OUTPUT_ROOT,
     Attempt002ExecutionFreeze,
+    verify_unconsumed_attempt_002_authorization,
 )
 
 HOST_INVOCATION_CHAIN_ID: Final = (
@@ -35,6 +36,9 @@ HOST_INVOCATION_CHAIN_ID: Final = (
 )
 HOST_INVOCATION_CHAIN_STATUS: Final = (
     "corrected_image_host_command_chain_authored_authorization_absent"
+)
+HOST_INVOCATION_CHAIN_AUTHORIZED_STATUS: Final = (
+    "corrected_image_host_command_chain_authorized_unconsumed"
 )
 HOST_INVOCATION_CONTRACT_ID: Final = (
     "stage3b-qwake-lc4-e-attempt-002-host-invocation-contract-v1"
@@ -135,6 +139,7 @@ __all__ = [
     "HostInvocationContract",
     "HostInvocationResources",
     "HostMountContract",
+    "HOST_INVOCATION_CHAIN_AUTHORIZED_STATUS",
     "LocalImageInspection",
     "MaterializedHostInvocation",
     "build_attempt_002_host_invocation_chain_state",
@@ -668,10 +673,15 @@ class Attempt002HostInvocationChainState:
     state_sha256: str
 
     def require(self) -> None:
+        expected_status = (
+            HOST_INVOCATION_CHAIN_AUTHORIZED_STATUS
+            if self.authorization_issued
+            else HOST_INVOCATION_CHAIN_STATUS
+        )
         expected: Mapping[str, object] = {
             "schema_version": 1,
             "chain_id": HOST_INVOCATION_CHAIN_ID,
-            "status": HOST_INVOCATION_CHAIN_STATUS,
+            "status": expected_status,
             "freeze_sha256": EXPECTED_FREEZE_SHA256,
             "image_identity_sha256": EXPECTED_IMAGE_IDENTITY_SHA256,
             "host_image_identity_present": True,
@@ -679,8 +689,7 @@ class Attempt002HostInvocationChainState:
             "host_command_materialization_present": True,
             "host_process_spawner_present": False,
             "docker_run_implemented": False,
-            "authorization_authoring_admissible": True,
-            "authorization_issued": False,
+            "authorization_authoring_admissible": not self.authorization_issued,
             "authorization_consumed": False,
             "lease_v1_present": False,
             "lease_v2_present": False,
@@ -1065,15 +1074,26 @@ def materialize_attempt_002_host_invocation(
 def build_attempt_002_host_invocation_chain_state(
     project_root: Path,
 ) -> Attempt002HostInvocationChainState:
-    """Build the closed authoring state for the host chain."""
+    """Build the current host chain state without starting execution."""
 
     root = project_root.expanduser().resolve()
     _require_effect_boundary(root)
     contract = build_attempt_002_host_invocation_contract(root)
+    authorization_path = root / ATTEMPT_002_AUTHORIZATION_ROOT / "authorization.json"
+    authorization_issued = authorization_path.is_file() and not authorization_path.is_symlink()
+    if authorization_issued:
+        freeze = load_attempt_002_host_execution_freeze(root)
+        verify_unconsumed_attempt_002_authorization(root, freeze)
+    status = (
+        HOST_INVOCATION_CHAIN_AUTHORIZED_STATUS
+        if authorization_issued
+        else HOST_INVOCATION_CHAIN_STATUS
+    )
+    authorization_authoring_admissible = not authorization_issued
     payload: dict[str, object] = {
         "schema_version": 1,
         "chain_id": HOST_INVOCATION_CHAIN_ID,
-        "status": HOST_INVOCATION_CHAIN_STATUS,
+        "status": status,
         "freeze_sha256": EXPECTED_FREEZE_SHA256,
         "image_identity_sha256": EXPECTED_IMAGE_IDENTITY_SHA256,
         "contract_sha256": contract.contract_sha256,
@@ -1082,8 +1102,8 @@ def build_attempt_002_host_invocation_chain_state(
         "host_command_materialization_present": True,
         "host_process_spawner_present": False,
         "docker_run_implemented": False,
-        "authorization_authoring_admissible": True,
-        "authorization_issued": False,
+        "authorization_authoring_admissible": authorization_authoring_admissible,
+        "authorization_issued": authorization_issued,
         "authorization_consumed": False,
         "lease_v1_present": False,
         "lease_v2_present": False,
@@ -1097,7 +1117,7 @@ def build_attempt_002_host_invocation_chain_state(
     state = Attempt002HostInvocationChainState(
         schema_version=1,
         chain_id=HOST_INVOCATION_CHAIN_ID,
-        status=HOST_INVOCATION_CHAIN_STATUS,
+        status=status,
         freeze_sha256=EXPECTED_FREEZE_SHA256,
         image_identity_sha256=EXPECTED_IMAGE_IDENTITY_SHA256,
         contract_sha256=contract.contract_sha256,
@@ -1106,8 +1126,8 @@ def build_attempt_002_host_invocation_chain_state(
         host_command_materialization_present=True,
         host_process_spawner_present=False,
         docker_run_implemented=False,
-        authorization_authoring_admissible=True,
-        authorization_issued=False,
+        authorization_authoring_admissible=authorization_authoring_admissible,
+        authorization_issued=authorization_issued,
         authorization_consumed=False,
         lease_v1_present=False,
         lease_v2_present=False,
@@ -1125,7 +1145,6 @@ def build_attempt_002_host_invocation_chain_state(
 
 def _require_effect_boundary(root: Path) -> None:
     for relative in (
-        ATTEMPT_002_AUTHORIZATION_ROOT,
         ATTEMPT_002_OUTPUT_ROOT,
         ATTEMPT_002_LEASE_V1_RELATIVE,
         ATTEMPT_002_LEASE_V2_RELATIVE,

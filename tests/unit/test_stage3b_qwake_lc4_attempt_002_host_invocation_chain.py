@@ -13,10 +13,12 @@ from torch2pc_thesis.stage3b_qwake_lc4_attempt_002_contract import (
     ATTEMPT_002_AUTHORIZATION_ROOT,
     ATTEMPT_002_INVOCATION_ACKNOWLEDGEMENT,
     ATTEMPT_002_LEASE_ACKNOWLEDGEMENT,
+    ATTEMPT_002_OUTPUT_ROOT,
 )
 from torch2pc_thesis.stage3b_qwake_lc4_attempt_002_host_invocation_chain import (
     EXPECTED_IMAGE_DIGEST,
     EXPECTED_IMAGE_REPO_DIGEST,
+    HOST_INVOCATION_CHAIN_AUTHORIZED_STATUS,
     Attempt002HostInvocationChainError,
     HostInvocationResources,
     build_attempt_002_host_invocation_chain_state,
@@ -238,9 +240,15 @@ def test_wrong_invocation_acknowledgement_fails_closed() -> None:
         )
 
 
-def test_closed_effect_boundary_rejects_authorization(tmp_path: Path) -> None:
-    path = tmp_path / ATTEMPT_002_AUTHORIZATION_ROOT
-    path.mkdir(parents=True)
+def test_closed_effect_boundary_allows_authorization_only(
+    tmp_path: Path,
+) -> None:
+    authorization = tmp_path / ATTEMPT_002_AUTHORIZATION_ROOT
+    authorization.mkdir(parents=True)
+    chain_module._require_effect_boundary(tmp_path)
+
+    output = tmp_path / ATTEMPT_002_OUTPUT_ROOT
+    output.mkdir(parents=True)
     with pytest.raises(
         Attempt002HostInvocationChainError,
         match="closed effect exists",
@@ -248,11 +256,12 @@ def test_closed_effect_boundary_rejects_authorization(tmp_path: Path) -> None:
         chain_module._require_effect_boundary(tmp_path)
 
 
-def test_chain_state_opens_only_authorization_authoring() -> None:
+def test_chain_state_records_unconsumed_authorization() -> None:
     state = build_attempt_002_host_invocation_chain_state(ROOT)
     state.require()
-    assert state.authorization_authoring_admissible is True
-    assert state.authorization_issued is False
+    assert state.status == HOST_INVOCATION_CHAIN_AUTHORIZED_STATUS
+    assert state.authorization_authoring_admissible is False
+    assert state.authorization_issued is True
     assert state.host_process_spawner_present is False
     assert state.docker_run_implemented is False
     assert state.runtime_execution_started is False

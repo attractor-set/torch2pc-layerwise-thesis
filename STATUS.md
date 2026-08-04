@@ -2993,3 +2993,29 @@ ATTEMPT_002_RUNTIME_STARTED=false
 ATTEMPT_002_RUNTIME_PERFORMED=false
 QW5_OPENED=false
 ```
+
+## `QW-LC4-E`: чистая хостовая цепочка вызова попытки 002 (ADR-114)
+
+ADR-114 связывает исправленный образ и фиксацию ADR-113 с отдельным чистым контрактом хостового вызова. Модуль проверяет сохранённую идентичность образа и строит точный будущий вектор аргументов как данные. Он не содержит механизма запуска процесса и не применяет команду.
+
+```text
+ATTEMPT_002_EXECUTION_FREEZE_VERIFIED=true
+HOST_IMAGE_IDENTITY_PRESENT=true
+HOST_INVOCATION_CONTRACT_PRESENT=true
+HOST_COMMAND_MATERIALIZATION_PRESENT=true
+HOST_PROCESS_SPAWNER_PRESENT=false
+DOCKER_RUN_IMPLEMENTED=false
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+CONTAINER_CREATED=false
+ATTEMPT_002_AUTHORIZATION_AUTHORING_ADMISSIBLE=true
+ATTEMPT_002_AUTHORIZATION_ISSUED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMED=false
+ATTEMPT_002_LEASE_V1_PRESENT=false
+ATTEMPT_002_LEASE_V2_PRESENT=false
+ATTEMPT_002_DURABLE_OUTCOME_PRESENT=false
+ATTEMPT_002_RUNTIME_STARTED=false
+ATTEMPT_002_RUNTIME_PERFORMED=false
+QW5_OPENED=false
+NEXT_SLICE=QW-LC4-E-attempt-002-one-shot-authorization-authoring
+```

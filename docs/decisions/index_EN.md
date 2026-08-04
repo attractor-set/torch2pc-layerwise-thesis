@@ -173,3 +173,4 @@
 - [ADR-112](ADR-112-stage3b-qwake-lc4-e-attempt-002-container-runtime_EN.md): introduces a separate container runtime and disjoint effect paths for future attempt 002 without building an image, issuing authorization, or creating runtime effects.
 
 - [ADR-113](ADR-113-stage3b-qwake-lc4-e-attempt-002-execution-freeze_EN.md): freezes the corrected image, normalized host identity, and attempt-002 execution boundary without authorization issuance or runtime invocation.
+- [ADR-114](ADR-114-stage3b-qwake-lc4-e-attempt-002-host-invocation-chain_EN.md): binds the corrected image and attempt-002 freeze to a pure verifiable future host-command constructor without a process spawner, authorization, or execution effects.

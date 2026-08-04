@@ -34,7 +34,6 @@ from torch2pc_thesis.stage3b_qwake_lc4_final_engineering_invocation_authorizatio
     ATOMIC_TRANSITION_ID,
     DURABLE_HOST_OUTCOME_RELATIVE,
     EXECUTION_LEASE_V1_RELATIVE,
-    EXECUTION_LEASE_V2_RELATIVE,
     OPERATOR_IDENTITY,
     OPERATOR_IDENTITY_KIND,
     OUTPUT_ROOT,
@@ -49,6 +48,7 @@ from torch2pc_thesis.stage3b_qwake_lc4_final_engineering_invocation_authorizatio
 )
 from torch2pc_thesis.stage3b_qwake_lc4_persistent_evidence_chain_v2 import (
     CHAIN_RECORD_RELATIVE,
+    EXECUTION_LEASE_V2_RELATIVE,
     PERSISTENT_LEASE_V2_OPERATOR_ACKNOWLEDGEMENT,
     PersistentExecutionLeaseV2,
     load_persistent_evidence_chain_v2,

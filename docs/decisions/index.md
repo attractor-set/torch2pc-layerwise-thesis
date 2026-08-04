@@ -177,3 +177,4 @@ ADR фиксируют решения, влияющие на интерпрет�
 - [ADR-106](ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring.md): материализует отдельную подготовленную запись попытки, сохраняя авторизацию непотреблённой, попытку неначатой и атомарное действие закрытым до собственного слияния и независимой проверки.
 
 - [ADR-107](ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze.md): фиксирует единственный устойчивый объект устойчивой фиксации атомарного перехода — точный файл владения v2 — и производную семантику потребления авторизации и начала попытки, не выполняя переход.
+- [ADR-108: подготовка атомарного перехода потребления разрешения](ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring.md)

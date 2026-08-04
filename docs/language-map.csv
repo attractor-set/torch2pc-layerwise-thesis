@@ -217,3 +217,4 @@ docs/decisions/ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authoriz
 docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring.md,docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring_EN.md,required
 docs/decisions/ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction.md,docs/decisions/ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction_EN.md,required
 docs/decisions/ADR-112-stage3b-qwake-lc4-e-attempt-002-container-runtime.md,docs/decisions/ADR-112-stage3b-qwake-lc4-e-attempt-002-container-runtime_EN.md,required
+docs/decisions/ADR-113-stage3b-qwake-lc4-e-attempt-002-execution-freeze.md,docs/decisions/ADR-113-stage3b-qwake-lc4-e-attempt-002-execution-freeze_EN.md,required

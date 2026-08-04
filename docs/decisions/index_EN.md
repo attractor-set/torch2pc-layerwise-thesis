@@ -171,3 +171,5 @@
 - [ADR-110](ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring_EN.md): combines the one-shot atomic-transition wrapper, immutable record, admission contract, verifier, and tests in one non-executing PR without a separate admission PR.
 - [ADR-111](ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction_EN.md): preserves terminal attempt 001 and historical frozen identities while materializing a verified overlay that carries one admission through build, claim, and execute for a future attempt 002 in the same sole corrective PR.
 - [ADR-112](ADR-112-stage3b-qwake-lc4-e-attempt-002-container-runtime_EN.md): introduces a separate container runtime and disjoint effect paths for future attempt 002 without building an image, issuing authorization, or creating runtime effects.
+
+- [ADR-113](ADR-113-stage3b-qwake-lc4-e-attempt-002-execution-freeze_EN.md): freezes the corrected image, normalized host identity, and attempt-002 execution boundary without authorization issuance or runtime invocation.

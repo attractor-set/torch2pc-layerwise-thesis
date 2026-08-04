@@ -2869,3 +2869,21 @@ ATTEMPT_002_DURABLE_OUTCOME_PRESENT=false
 ATTEMPT_002_RUNTIME_STARTED=false
 ATTEMPT_002_RUNTIME_PERFORMED=false
 QW5_OPENED=false
+
+## `QW-LC4-E`: corrected image and attempt-002 execution freeze (ADR-113)
+
+One corrected image was built from exact commit `02afcc3e79b2d456cc3f1c075d4d792a0be608f7` and inspected twice without container creation. ADR-113 binds the image digest, attempt-002 source, pinned Torch2PC, and disjoint effect paths. The one-shot authorization, host invocation chain, and execution remain absent.
+
+```text
+CORRECTED_IMAGE_BUILT=true
+CORRECTED_IMAGE_DIGEST=sha256:f78fdbc699f3d00347d1dfdb78c03dd3df3957371f64eca9488de7cc06ce2b1d
+CORRECTED_IMAGE_CONTAINER_CREATED=false
+ATTEMPT_002_EXECUTION_FREEZE_MATERIALIZED=true
+ATTEMPT_002_AUTHORIZATION_ISSUED=false
+ATTEMPT_002_LEASE_V1_PRESENT=false
+ATTEMPT_002_LEASE_V2_PRESENT=false
+ATTEMPT_002_DURABLE_OUTCOME_PRESENT=false
+ATTEMPT_002_RUNTIME_STARTED=false
+ATTEMPT_002_RUNTIME_PERFORMED=false
+QW5_OPENED=false
+```

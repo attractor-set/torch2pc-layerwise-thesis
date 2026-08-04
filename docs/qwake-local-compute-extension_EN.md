@@ -1100,3 +1100,19 @@ After PR #177 merge, the atomic-transition operation scope is post-merge verifie
 The wrapper verifies the exact merged package, clean repository identity, frozen `Torch2PC`, and closed filesystem boundary. It then obtains one UTC timestamp and delegates at most once to `execute_final_engineering_invocation_atomic_transition_once`. It neither imports nor invokes `invoke_lease_bound_host_runtime`.
 
 The atomic action remains closed before ADR-110 merges. After independent merge verification, one external operation is admissible; no separate implementation or admission PR is required. A successful operation creates only lease v2. Actual runtime execution remains a separate decision.
+
+## Attempt-002 authorization-consumption operation scope
+
+After independent verification of the fifth PR #179 commit, only the next-stage scope freeze is admissible. `ADR-116` enumerates the exact future paths and keeps every effect closed:
+
+```text
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_SCOPE_FROZEN=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_AUTHORED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_INVOKED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMED=false
+ATTEMPT_002_ATTEMPT_STARTED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+```
+
+The next stage may author only the enumerated module, verifier, tests, package, and bilingual decision. A production call remains a distinct later transition.

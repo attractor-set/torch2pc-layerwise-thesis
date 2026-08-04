@@ -2930,3 +2930,24 @@ DO_NOT_MERGE_YET=true
 ```
 
 The next transition is admissible only after independent verification of the fifth PR #179 commit.
+
+## QW-LC4-E — attempt-002 authorization-consumption operation scope freeze
+
+```text
+ATTEMPT_002_AUTHORIZATION_POST_COMMIT_VERIFIED=true
+ATTEMPT_002_AUTHORIZATION_EFFECTIVE=true
+ATTEMPT_002_AUTHORIZATION_CONSUMED=false
+ATTEMPT_002_ATTEMPT_STARTED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_SCOPE_FROZEN=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_SCOPE_RECORD_PRESENT=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_AUTHORED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_INVOKED=false
+HOST_PROCESS_SPAWNER_PRESENT=false
+DOCKER_RUN_IMPLEMENTED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+SIXTH_COMMIT_CREATED=false
+DO_NOT_MERGE_YET=true
+```
+
+The current slice freezes only the admissible scope of the next operation-authoring stage. Authorization consumption and execution effects remain closed.

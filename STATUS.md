@@ -3036,3 +3036,24 @@ DO_NOT_MERGE_YET=true
 ```
 
 Следующий переход допускается только после независимой проверки пятого коммита PR №179.
+
+## QW-LC4-E — фиксация области операции потребления авторизации попытки 002
+
+```text
+ATTEMPT_002_AUTHORIZATION_POST_COMMIT_VERIFIED=true
+ATTEMPT_002_AUTHORIZATION_EFFECTIVE=true
+ATTEMPT_002_AUTHORIZATION_CONSUMED=false
+ATTEMPT_002_ATTEMPT_STARTED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_SCOPE_FROZEN=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_SCOPE_RECORD_PRESENT=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_AUTHORED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_INVOKED=false
+HOST_PROCESS_SPAWNER_PRESENT=false
+DOCKER_RUN_IMPLEMENTED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+SIXTH_COMMIT_CREATED=false
+DO_NOT_MERGE_YET=true
+```
+
+Текущий срез фиксирует только допустимую область следующего этапа подготовки операции. Потребление авторизации и эффекты выполнения остаются закрытыми.

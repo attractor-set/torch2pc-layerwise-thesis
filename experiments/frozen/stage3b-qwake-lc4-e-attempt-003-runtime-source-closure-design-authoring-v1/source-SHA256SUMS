@@ -1,0 +1,6 @@
+c708d6c5a0a553ed41b2e051ac4ed8e871fbcfaecbda404bdad908ccacb75bb7  docs/decisions/ADR-119-stage3b-qwake-lc4-e-attempt-003-runtime-source-closure-design_EN.md
+5585e97a75ed3508d49cef4ee4fc2a1d413160ef63604981f8e4e41c61b323b0  docs/decisions/ADR-119-stage3b-qwake-lc4-e-attempt-003-runtime-source-closure-design.md
+00224a0c1f4ba3c125ed25a42f146a167c2c160c2d00648c1e81f919a2d272d8  docs/language-map.csv
+0afe2a6f616a64dbb9afe8c2aa835324cde3340ef018b8ded16fcbe13c07df4c  experiments/frozen/stage3b-qwake-lc4-e-attempt-003-runtime-source-closure-design-authoring-v1/contract.json
+8ca0432eb89ac60677081dd6e79edbd51e4e21fe8d600d09ea1edd621e37a38b  scripts/verify_stage3b_qwake_lc4_attempt_003_design_authoring.py
+835459e0fcfac5ec14ef74a10238cad0b8e842377622cfb0d8d2e450e9d8d746  tests/unit/test_stage3b_qwake_lc4_attempt_003_design_authoring.py

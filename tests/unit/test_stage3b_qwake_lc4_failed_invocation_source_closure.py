@@ -1,20 +1,24 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
 import pytest
 
+from torch2pc_thesis import (
+    stage3b_qwake_lc4_failed_invocation_source_closure as source_closure,
+)
 from torch2pc_thesis.stage3b_qwake_lc4_failed_invocation_source_closure import (
     FIRST_REGISTRY_EXACT_COMMIT,
     FREEZE_MATERIALIZATION_COMMIT,
     FREEZE_MATERIALIZATION_MISMATCHES,
     IMAGE_SOURCE_ABSENT_PATHS,
     IMAGE_SOURCE_COMMIT,
+    RegistryEntry,
     SourceClosureCorrectionError,
     canonical_json,
     classify_registry_at_commit,
-    parse_registry,
     sha256_object,
     verify_failed_outcome,
     verify_semantic_digest,
@@ -25,11 +29,6 @@ PACKAGE = ROOT / (
     "experiments/frozen/"
     "stage3b-qwake-lc4-e-attempt-002-failed-invocation-"
     "source-closure-correction-v1"
-)
-FREEZE_REGISTRY = ROOT / (
-    "experiments/frozen/"
-    "stage3b-qwake-lc4-e-attempt-002-execution-freeze-v1/"
-    "source-SHA256SUMS"
 )
 
 
@@ -54,45 +53,128 @@ def test_failed_outcome_is_terminal_prelease_failure() -> None:
     )
 
 
+def test_classifier_distinguishes_exact_and_absent(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    exact_content = b"exact-content"
+    entries = (
+        RegistryEntry(
+            hashlib.sha256(exact_content).hexdigest(),
+            "exact.txt",
+        ),
+        RegistryEntry(
+            hashlib.sha256(b"absent-content").hexdigest(),
+            "absent.txt",
+        ),
+    )
 
+    def synthetic_blob(
+        root: Path,
+        commit: str,
+        relative: str,
+    ) -> bytes | None:
+        assert root == ROOT
+        assert commit == "synthetic-exact-absent"
+        if relative == "exact.txt":
+            return exact_content
+        return None
 
-def test_image_source_has_two_absent_registry_paths() -> None:
-    entries = parse_registry(FREEZE_REGISTRY)
+    monkeypatch.setattr(source_closure, "git_blob", synthetic_blob)
     classification = classify_registry_at_commit(
         ROOT,
-        IMAGE_SOURCE_COMMIT,
+        "synthetic-exact-absent",
         entries,
     )
-    assert len(classification.exact) == 10
-    assert classification.absent == IMAGE_SOURCE_ABSENT_PATHS
+
+    assert classification.exact == ("exact.txt",)
+    assert classification.absent == ("absent.txt",)
     assert classification.mismatches == ()
+    assert not classification.is_exact
 
 
-def test_freeze_materialization_has_two_hash_mismatches() -> None:
-    entries = parse_registry(FREEZE_REGISTRY)
+def test_classifier_reports_hash_mismatch(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    expected_content = b"expected-content"
+    observed_content = b"observed-content"
+    expected_sha256 = hashlib.sha256(expected_content).hexdigest()
+    observed_sha256 = hashlib.sha256(observed_content).hexdigest()
+    entries = (
+        RegistryEntry(expected_sha256, "mismatch.txt"),
+    )
+
+    def synthetic_blob(
+        root: Path,
+        commit: str,
+        relative: str,
+    ) -> bytes | None:
+        assert root == ROOT
+        assert commit == "synthetic-mismatch"
+        assert relative == "mismatch.txt"
+        return observed_content
+
+    monkeypatch.setattr(source_closure, "git_blob", synthetic_blob)
     classification = classify_registry_at_commit(
         ROOT,
-        FREEZE_MATERIALIZATION_COMMIT,
+        "synthetic-mismatch",
         entries,
     )
-    observed = {
-        relative: (expected, actual)
-        for relative, expected, actual in classification.mismatches
-    }
-    assert len(classification.exact) == 10
+
+    assert classification.exact == ()
     assert classification.absent == ()
-    assert observed == FREEZE_MATERIALIZATION_MISMATCHES
-
-
-def test_first_registry_exact_commit_is_byte_exact() -> None:
-    entries = parse_registry(FREEZE_REGISTRY)
-    classification = classify_registry_at_commit(
-        ROOT,
-        FIRST_REGISTRY_EXACT_COMMIT,
-        entries,
+    assert classification.mismatches == (
+        (
+            "mismatch.txt",
+            expected_sha256,
+            observed_sha256,
+        ),
     )
-    assert len(classification.exact) == 12
-    assert classification.is_exact
+    assert not classification.is_exact
+
+
+def test_temporal_source_closure_constants_are_exact() -> None:
+    assert IMAGE_SOURCE_COMMIT == (
+        "02afcc3e79b2d456cc3f1c075d4d792a0be608f7"
+    )
+    assert FREEZE_MATERIALIZATION_COMMIT == (
+        "2f346498a28377d355b88560aa099890f829af46"
+    )
+    assert FIRST_REGISTRY_EXACT_COMMIT == (
+        "b5b29be5802641287e6e29bb42240ad9e41744b4"
+    )
+    assert IMAGE_SOURCE_ABSENT_PATHS == (
+        (
+            "scripts/"
+            "verify_stage3b_qwake_lc4_attempt_002_execution_freeze.py"
+        ),
+        (
+            "tests/unit/"
+            "test_stage3b_qwake_lc4_attempt_002_execution_freeze.py"
+        ),
+    )
+    observed_mismatches = FREEZE_MATERIALIZATION_MISMATCHES
+    assert observed_mismatches == {
+        IMAGE_SOURCE_ABSENT_PATHS[0]: (
+            (
+                "db2de557423cfde173851a01a517bfd7df12fdb627ec9a519"
+                "8621225be3fc332"
+            ),
+            (
+                "6691eea819da03e7da06e766c6a4044441cef7a476e204cd"
+                "08698afb9cb280e3"
+            ),
+        ),
+        IMAGE_SOURCE_ABSENT_PATHS[1]: (
+            (
+                "418414f0f976d9304446618bd2afe71a21dd11aac62e1ace"
+                "eb5423f47b1f7b1c"
+            ),
+            (
+                "55f365431c2497a1f30180556b8b4dc0477f7357063d4e3e"
+                "b9aa4e319fcba43d"
+            ),
+        ),
+    }
 
 
 def test_committed_correction_semantic_digests() -> None:

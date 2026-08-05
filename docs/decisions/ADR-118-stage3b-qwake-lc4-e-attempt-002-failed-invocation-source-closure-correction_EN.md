@@ -13,7 +13,7 @@ absent; authorization was not consumed under lease semantics.
 
 The image was built from commit
 `02afcc3e79b2d456cc3f1c075d4d792a0be608f7`. Against the final
-execution-freeze `source-SHA256SUMS`, that commit contains ten byte-exact
+[execution](../glossary_EN.md#term-execution)-freeze `source-SHA256SUMS`, that commit contains ten byte-exact
 paths and lacks two paths:
 
 - `scripts/verify_stage3b_qwake_lc4_attempt_002_execution_freeze.py`;
@@ -30,12 +30,12 @@ and match byte-for-byte is authorization commit
 
 Therefore, image source, execution-freeze materialization, and final
 registry identity belong to three different temporal snapshots. Host
-preflight checked the current control-plane tree, while runtime checked
+preflight checked the current control-plane tree, while [runtime](../glossary_EN.md#term-runtime) checked
 the older image `/workspace`.
 
 ## Decision
 
-1. Attempt-002 is terminal as a failed irreversible attempt.
+1. [Attempt](../glossary_EN.md#term-attempt)-002 is terminal as a failed irreversible attempt.
 2. The durable outcome, freeze-v1, authorization-v1, host chain, operation,
    and both invocation scripts remain immutable.
 3. Attempt-002 retry and reuse of its authorization decision are forbidden.
@@ -46,7 +46,7 @@ the older image `/workspace`.
    blob before build.
 7. After `COPY . /workspace`, Docker build verifies the runtime registry.
 8. A post-build gate verifies image digest, OCI revision, and container-side
-   source closure without model or dataset execution.
+   source closure without model or [dataset](../glossary_EN.md#term-dataset) execution.
 9. Future authorization is issued only after complete image/source-closure
    proof.
 

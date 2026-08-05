@@ -1116,3 +1116,21 @@ RUNTIME_EXECUTION_PERFORMED=false
 ```
 
 The next stage may author only the enumerated module, verifier, tests, package, and bilingual decision. A production call remains a distinct later transition.
+
+## Attempt-002 authorization-consumption operation
+
+After independent verification of the sixth PR #179 commit, a distinct non-executing operation contract is authored:
+
+```text
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_AUTHORED=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_POST_COMMIT_VERIFIED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_INVOKED=false
+PRODUCTION_CALLSITE_PRESENT=false
+HOST_PROCESS_SPAWNER_PRESENT=false
+ATTEMPT_002_AUTHORIZATION_CONSUMED=false
+ATTEMPT_002_ATTEMPT_STARTED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+```
+
+The operation validates post-commit admission, creates an in-memory claim, and declares exactly one injected transition call. This slice creates no production callsite and does not perform that transition.

@@ -2951,3 +2951,30 @@ DO_NOT_MERGE_YET=true
 ```
 
 The current slice freezes only the admissible scope of the next operation-authoring stage. Authorization consumption and execution effects remain closed.
+
+## QW-LC4-E — attempt-002 authorization-consumption operation authoring
+
+```text
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_SCOPE_FREEZE_POST_COMMIT_VERIFIED=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_AUTHORING_ADMISSIBLE=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_AUTHORED=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_POST_COMMIT_VERIFIED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_INVOKED=false
+PRODUCTION_CALLSITE_PRESENT=false
+HOST_PROCESS_SPAWNER_PRESENT=false
+ATTEMPT_002_AUTHORIZATION_CONSUMED=false
+ATTEMPT_002_ATTEMPT_STARTED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+SEVENTH_COMMIT_CREATED=false
+AUTHORIZATION_CONSUMPTION_PERMITTED=false
+DO_NOT_MERGE_YET=true
+```
+
+The current slice authors only the non-executing operation contract, verifier, tests, and package. The production call and every attempt-002 effect remain closed.
+
+### Current slice boundary clarification
+
+The prepared operation exists only as a verifiable software contract. It does not consume the issued authorization, create an execution lease, start a container, model, or compute process, or modify attempt-001 evidence. Until a separate post-commit verification is complete, the production entrypoint, any external effect, an attempt retry, and corrective-branch merge remain forbidden. The next admissible step is limited to recording the already validated package in a separate seventh commit; that step does not grant authorization-consumption permission.
+
+The current state preserves the strict order: immutable requirement and authorization first, then the atomic execution claim, and only after a successful claim the single permitted transition. Any ambiguity in identity, repository state, or prior outcome closes the operation without a side effect. Until the seventh commit is independently verified, the authorization remains effective but unconsumed, the attempt remains unstarted, and the execution boundary remains closed.

@@ -1132,3 +1132,21 @@ RUNTIME_EXECUTION_PERFORMED=false
 ```
 
 Следующий этап может подготовить только перечисленные модуль, проверяющий модуль, тесты, пакет и двуязычное решение. Производственный вызов остаётся отдельным будущим переходом.
+
+## Операция потребления авторизации попытки 002
+
+После независимой проверки шестого коммита PR №179 подготовлен отдельный неисполняющий контракт операции:
+
+```text
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_AUTHORED=true
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_POST_COMMIT_VERIFIED=false
+ATTEMPT_002_AUTHORIZATION_CONSUMPTION_OPERATION_INVOKED=false
+PRODUCTION_CALLSITE_PRESENT=false
+HOST_PROCESS_SPAWNER_PRESENT=false
+ATTEMPT_002_AUTHORIZATION_CONSUMED=false
+ATTEMPT_002_ATTEMPT_STARTED=false
+RUNTIME_EXECUTION_STARTED=false
+RUNTIME_EXECUTION_PERFORMED=false
+```
+
+Операция проверяет допуск после коммита, создаёт каноническое заявление права в памяти и описывает ровно один вызов внедрённого перехода. Текущий срез не создаёт производственную точку вызова и не выполняет этот переход.

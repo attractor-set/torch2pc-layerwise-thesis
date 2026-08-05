@@ -178,3 +178,5 @@
 - [ADR-115](ADR-115-stage3b-qwake-lc4-e-attempt-002-one-shot-authorization_EN.md): issues a distinct one-shot attempt-002 authorization bound to the corrected freeze and host chain while leaving consumption, invocation, and execution effects closed.
 
 - [ADR-116](ADR-116-stage3b-qwake-lc4-e-attempt-002-authorization-consumption-operation-scope-freeze_EN.md): freezes the exact scope of a distinct attempt-002 authorization-consumption operation without creating the operation module, callsite, lease, outcome, or execution effect.
+
+- [ADR-117](ADR-117-stage3b-qwake-lc4-e-attempt-002-authorization-consumption-operation-authoring_EN.md): authors an import-effect-free one-shot attempt-002 authorization-consumption operation contract without a production callsite, process spawner, authorization consumption, or execution effect.

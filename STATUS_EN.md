@@ -2795,7 +2795,7 @@ POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consum
 
 After independent verification of PR #177 merged as `e33448d10ced2bffd1e48449e6da46b2de938141`, the ADR-109 scope is post-merge verified. [ADR-110](docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring_EN.md) combines the operation module, immutable record, embedded admission contract, verifier, and tests in one non-executing slice.
 
-The wrapper exists but is not invoked. After its own merge and independent verification, it may obtain one timestamp and delegate exactly once to the already verified atomic transition. Runtime execution remains a separate later action.
+At the ADR-110 authoring checkpoint, the wrapper existed but had not yet been invoked. The block below records that historical pre-execution state; the actual terminal outcome of attempt 001 and the current state are defined by the later ADR-111 section.
 
 ```text
 FINAL_ENGINEERING_INVOCATION_AUTHORIZATION_POST_MERGE_VERIFIED=true
@@ -2829,4 +2829,26 @@ LOCAL_COMPUTE_EXECUTION_OPEN=false
 TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 POST_MERGE_NEXT_SLICE=QW-LC4-E-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-execution
+```
+
+
+## `QW-LC4-E`: terminal attempt 001 and claim/execute correction (ADR-111)
+
+Attempt 001 ended with `nonzero_return_code=1` after one child spawn. Lease v1, lease v2, and the durable host receipt are preserved; retry is forbidden. The defect is localized to a repeated pre-claim admission check after the successful lease-v1 claim.
+
+ADR-111 preserves historical source identities and adds an immutable correction overlay. The corrected entrypoint carries one `FrozenAdmissionIdentity` through build, atomic materialization, and the claimed wrapper without a post-claim unconsumed-state check. The corrected image and attempt 002 are not yet materialized; runtime and `QW-5` remain closed.
+
+```text
+ATTEMPT_001_TERMINAL=true
+ATTEMPT_001_TERMINATION_CLASS=nonzero_return_code
+ATTEMPT_001_RETURN_CODE=1
+ATTEMPT_001_RETRY_PERMITTED=false
+ATTEMPT_001_TERMINAL_RECEIPT_VERIFIED=true
+HISTORICAL_FROZEN_SOURCE_MODIFIED=false
+CLAIM_EXECUTE_ORDER_CORRECTION_AUTHORED=true
+CORRECTED_IMAGE_BUILT=false
+ATTEMPT_002_AUTHORIZED=false
+RUNTIME_EXECUTION_PERFORMED=false
+QW5_TRANSITION_PERMITTED=false
+NEXT_SLICE=QW-LC4-E-claim-execute-order-correction-image-and-attempt-002-materialization
 ```

@@ -169,3 +169,4 @@
 
 - [ADR-109](ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze_EN.md): freezes exact admission, preflight ordering, and the sole future operator-operation call for the atomic transition without performing the effect.
 - [ADR-110](ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring_EN.md): combines the one-shot atomic-transition wrapper, immutable record, admission contract, verifier, and tests in one non-executing PR without a separate admission PR.
+- [ADR-111](ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction_EN.md): preserves terminal attempt 001 and historical frozen identities while materializing a verified overlay that carries one admission through build, claim, and execute for a future attempt 002 in the same sole corrective PR.

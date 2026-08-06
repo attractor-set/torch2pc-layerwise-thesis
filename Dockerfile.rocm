@@ -25,6 +25,10 @@ RUN python -m pip install --no-cache-dir "pip==${PIP_VERSION}" \
     && python -m pip check
 
 COPY . /workspace
+# QWake attempt-003 runtime source-closure gate.
+RUN cd /workspace \
+    && sha256sum -c experiments/frozen/stage3b-qwake-attempt-003-clean-source-closure-implementation-authoring-v1/runtime-SHA256SUMS \
+    && python scripts/verify_stage3b_qwake_attempt_003_buildtime_closure.py --project-root /workspace
 RUN chmod 0755 /workspace/scripts \
     && chmod 0755 /workspace/scripts/*.sh
 

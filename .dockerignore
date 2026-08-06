@@ -28,3 +28,24 @@ results/raw
 *.pth
 *.ckpt
 *.pdf
+# BEGIN QWAKE ATTEMPT-003 RUNTIME SOURCE CLOSURE
+!.dockerignore
+!Dockerfile.rocm
+!pyproject.toml
+!requirements/
+!requirements/rocm.txt
+!scripts/
+!scripts/container_entrypoint.sh
+!scripts/run_stage3b_qwake_attempt_003_authorized_runtime.py
+!scripts/verify_stage3b_qwake_attempt_003_buildtime_closure.py
+!scripts/verify_stage3b_qwake_attempt_003_prebuild_closure.py
+!src/
+!src/torch2pc_thesis/
+!src/torch2pc_thesis/stage3b_qwake_attempt_003_contract.py
+!src/torch2pc_thesis/stage3b_qwake_attempt_003_execution_wrapper.py
+!src/torch2pc_thesis/stage3b_qwake_attempt_003_runtime_backend.py
+!src/torch2pc_thesis/stage3b_qwake_attempt_003_source_closure.py
+!tests/
+!tests/unit/
+!tests/unit/test_stage3b_qwake_attempt_003_source_closure.py
+# END QWAKE ATTEMPT-003 RUNTIME SOURCE CLOSURE

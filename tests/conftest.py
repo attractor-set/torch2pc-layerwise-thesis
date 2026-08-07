@@ -21,6 +21,10 @@ _PRE_AUTHORIZATION_TEST_FILES = {
     "test_stage3b_qwake_lc4_final_execution_acknowledgement_materialization_"
     "invocation_operation_callsite_execution_authoring.py",
 }
+_PRE_ATTEMPT003_FREEZE_TEST_FILES = {
+    "test_stage3b_qwake_attempt_003_execution_freeze_materialization.py",
+}
+
 _PRODUCTION_CALLSITE = Path(
     "scripts/invoke_stage3b_qwake_lc4_final_execution_acknowledgement_"
     "materialization_operation.py"
@@ -29,6 +33,9 @@ _EXECUTION_AUTHORIZATION_PACKAGE = Path(
     "experiments/frozen/stage3b-qwake-lc4-e-final-execution-"
     "acknowledgement-materialization-invocation-operation-callsite-execution-"
     "authorization-v1"
+)
+_ATTEMPT003_EXECUTION_FREEZE_PACKAGE = Path(
+    "experiments/frozen/stage3b-qwake-attempt-003-execution-freeze-v1"
 )
 
 _HISTORICAL_CONFTEST_BYTES = base64.b64decode(
@@ -77,6 +84,22 @@ def _historical_qwake_stage_views(
     if authorization_package.exists() or authorization_package.is_symlink():
         shutil.rmtree(authorization_package)
 
+    pre_attempt003_freeze_root = _copy_repository(
+        root,
+        base / "pre-attempt003-freeze",
+    )
+    (pre_attempt003_freeze_root / "tests/conftest.py").write_bytes(
+        _HISTORICAL_CONFTEST_BYTES
+    )
+    attempt003_freeze_package = (
+        pre_attempt003_freeze_root / _ATTEMPT003_EXECUTION_FREEZE_PACKAGE
+    )
+    if (
+        attempt003_freeze_package.exists()
+        or attempt003_freeze_package.is_symlink()
+    ):
+        shutil.rmtree(attempt003_freeze_package)
+
     previous: dict[str, Path] = {}
     for module_name, module in tuple(sys.modules.items()):
         module_file = getattr(module, "__file__", None)
@@ -88,6 +111,8 @@ def _historical_qwake_stage_views(
             replacement = pre_callsite_root
         elif filename in _PRE_AUTHORIZATION_TEST_FILES:
             replacement = pre_authorization_root
+        elif filename in _PRE_ATTEMPT003_FREEZE_TEST_FILES:
+            replacement = pre_attempt003_freeze_root
         if replacement is None:
             continue
         previous[module_name] = module.ROOT

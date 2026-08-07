@@ -205,6 +205,20 @@ def verify_language_map(root: Path) -> None:
         raise VerificationError("exactly one ADR-113 language-map row required")
 
 
+def select_history_verification_mode(
+    *,
+    history_objects_present: bool,
+    shallow_repository: bool,
+) -> str:
+    if history_objects_present:
+        return "full_history"
+    if shallow_repository:
+        return "shallow_runtime_registry"
+    raise VerificationError(
+        "required history objects are missing in a non-shallow repository"
+    )
+
+
 def verify(project_root: Path) -> None:
     root = project_root.expanduser().resolve()
     package = root / PACKAGE
@@ -232,6 +246,13 @@ def verify(project_root: Path) -> None:
         "base_image": BASE_IMAGE,
         "runtime_source_path_count": 13,
         "source_commit_binding_established": True,
+        "source_binding_full_history_verified_at_authoring": True,
+        "repository_reverification_method": (
+            "full_history_or_shallow_runtime_sha256_registry"
+        ),
+        "repository_reverification_shallow_fallback_permitted": True,
+        "repository_reverification_shallow_fallback_requires_shallow": True,
+        "repository_reverification_non_shallow_missing_history_fails_closed": True,
         "historical_implementation_record_rewritten": False,
         "historical_source_commit_binding_pending_preserved": True,
         "image_built": False,
@@ -260,49 +281,107 @@ def verify(project_root: Path) -> None:
     if implementation.get("pr_merged") is not False:
         raise VerificationError("historical merge flag was rewritten")
 
-    merge_line = git(
-        root,
-        "rev-list",
-        "--parents",
-        "-n",
-        "1",
-        SOURCE_COMMIT,
-    ).decode("utf-8").strip()
-    expected_merge = f"{SOURCE_COMMIT} {PRE_MERGE_MAIN} {IMPLEMENTATION_COMMIT}"
-    if merge_line != expected_merge:
-        raise VerificationError("source merge topology differs")
-
-    parent = git(root, "rev-parse", f"{IMPLEMENTATION_COMMIT}^").decode(
-        "utf-8"
-    ).strip()
-    if parent != DESIGN_COMMIT:
-        raise VerificationError("design to implementation parent differs")
-
-    runtime_raw = git(
-        root,
-        "show",
-        f"{SOURCE_COMMIT}:{RUNTIME_REGISTRY.as_posix()}",
+    history_object_names = (
+        f"{SOURCE_COMMIT}^{{commit}}",
+        f"{PRE_MERGE_MAIN}^{{commit}}",
+        f"{IMPLEMENTATION_COMMIT}^{{commit}}",
+        f"{DESIGN_COMMIT}^{{commit}}",
     )
-    if hashlib.sha256(runtime_raw).hexdigest() != (
-        "15b008c563ebd73ca0ce3b288d636e87591e7f94bce10e8c89dc2e95f2475086"
-    ):
-        raise VerificationError("runtime registry file identity differs")
-    runtime_rows = read_registry(root / RUNTIME_REGISTRY)
-    runtime_paths = tuple(relative for _, relative in runtime_rows)
-    if runtime_paths != EXPECTED_RUNTIME_PATHS:
-        raise VerificationError("runtime registry path set differs")
-    for digest, relative in runtime_rows:
-        object_name = f"{SOURCE_COMMIT}:{relative}"
-        present = subprocess.run(
+    history_objects_present = all(
+        subprocess.run(
             ["git", "-C", str(root), "cat-file", "-e", object_name],
             capture_output=True,
             check=False,
+        ).returncode
+        == 0
+        for object_name in history_object_names
+    )
+
+    shallow_raw = git(
+        root,
+        "rev-parse",
+        "--is-shallow-repository",
+    ).decode("utf-8").strip()
+    if shallow_raw not in {"true", "false"}:
+        raise VerificationError("unexpected shallow-repository state")
+
+    verification_mode = select_history_verification_mode(
+        history_objects_present=history_objects_present,
+        shallow_repository=shallow_raw == "true",
+    )
+
+    runtime_registry_path = root / RUNTIME_REGISTRY
+    runtime_registry_raw = runtime_registry_path.read_bytes()
+    if hashlib.sha256(runtime_registry_raw).hexdigest() != (
+        "15b008c563ebd73ca0ce3b288d636e87591e7f94bce10e8c89dc2e95f2475086"
+    ):
+        raise VerificationError("runtime registry file identity differs")
+
+    runtime_rows = read_registry(runtime_registry_path)
+    runtime_paths = tuple(relative for _, relative in runtime_rows)
+    if runtime_paths != EXPECTED_RUNTIME_PATHS:
+        raise VerificationError("runtime registry path set differs")
+
+    if verification_mode == "full_history":
+        merge_line = git(
+            root,
+            "rev-list",
+            "--parents",
+            "-n",
+            "1",
+            SOURCE_COMMIT,
+        ).decode("utf-8").strip()
+        expected_merge = (
+            f"{SOURCE_COMMIT} {PRE_MERGE_MAIN} {IMPLEMENTATION_COMMIT}"
         )
-        if present.returncode != 0:
-            raise VerificationError(f"runtime object missing: {relative}")
-        raw = git(root, "show", object_name)
-        if hashlib.sha256(raw).hexdigest() != digest:
-            raise VerificationError(f"runtime object digest differs: {relative}")
+        if merge_line != expected_merge:
+            raise VerificationError("source merge topology differs")
+
+        parent = git(
+            root,
+            "rev-parse",
+            f"{IMPLEMENTATION_COMMIT}^",
+        ).decode("utf-8").strip()
+        if parent != DESIGN_COMMIT:
+            raise VerificationError("design to implementation parent differs")
+
+        source_runtime_registry = git(
+            root,
+            "show",
+            f"{SOURCE_COMMIT}:{RUNTIME_REGISTRY.as_posix()}",
+        )
+        if source_runtime_registry != runtime_registry_raw:
+            raise VerificationError(
+                "source runtime registry bytes differ from checkout"
+            )
+
+        for digest, relative in runtime_rows:
+            object_name = f"{SOURCE_COMMIT}:{relative}"
+            present = subprocess.run(
+                ["git", "-C", str(root), "cat-file", "-e", object_name],
+                capture_output=True,
+                check=False,
+            )
+            if present.returncode != 0:
+                raise VerificationError(
+                    f"runtime object missing: {relative}"
+                )
+            raw = git(root, "show", object_name)
+            if hashlib.sha256(raw).hexdigest() != digest:
+                raise VerificationError(
+                    f"runtime object digest differs: {relative}"
+                )
+    else:
+        for digest, relative in runtime_rows:
+            target = root / relative
+            if not target.is_file() or target.is_symlink():
+                raise VerificationError(
+                    f"shallow runtime file missing: {relative}"
+                )
+            if hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+                raise VerificationError(
+                    f"shallow runtime file digest differs: {relative}"
+                )
 
     verify_registry(
         package / "source-SHA256SUMS",

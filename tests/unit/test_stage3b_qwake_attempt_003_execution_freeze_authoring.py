@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from types import ModuleType
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[2]
 VERIFIER = ROOT / (
     "scripts/verify_stage3b_qwake_attempt_003_execution_freeze_authoring.py"
@@ -95,3 +97,54 @@ def test_language_map_is_semantic_not_byte_bound() -> None:
         encoding="utf-8"
     )
     assert "docs/language-map.csv" not in source_registry
+
+def test_history_mode_prefers_full_history() -> None:
+    module = load_verifier()
+    assert (
+        module.select_history_verification_mode(
+            history_objects_present=True,
+            shallow_repository=False,
+        )
+        == "full_history"
+    )
+
+
+def test_history_mode_allows_shallow_registry_fallback() -> None:
+    module = load_verifier()
+    assert (
+        module.select_history_verification_mode(
+            history_objects_present=False,
+            shallow_repository=True,
+        )
+        == "shallow_runtime_registry"
+    )
+
+
+def test_history_mode_fails_closed_when_non_shallow_history_is_missing() -> None:
+    module = load_verifier()
+    with pytest.raises(
+        module.VerificationError,
+        match="required history objects are missing",
+    ):
+        module.select_history_verification_mode(
+            history_objects_present=False,
+            shallow_repository=False,
+        )
+
+
+def test_contract_records_bounded_shallow_reverification() -> None:
+    contract = json.loads(
+        (PACKAGE / "contract.json").read_text(encoding="utf-8")
+    )
+    assert contract["source_binding_full_history_verified_at_authoring"] is True
+    assert contract["repository_reverification_shallow_fallback_permitted"] is True
+    assert (
+        contract["repository_reverification_shallow_fallback_requires_shallow"]
+        is True
+    )
+    assert (
+        contract[
+            "repository_reverification_non_shallow_missing_history_fails_closed"
+        ]
+        is True
+    )

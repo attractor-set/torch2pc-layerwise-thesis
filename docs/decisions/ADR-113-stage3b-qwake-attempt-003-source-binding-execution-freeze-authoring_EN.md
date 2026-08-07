@@ -2,17 +2,17 @@
 
 ## Status
 
-Accepted as the authoring contract for source binding and a future execution
+Accepted as the authoring contract for source binding and a future [execution](../glossary_EN.md#term-execution)
 freeze. No image is built, no execution freeze is materialized, and no
 computational effect is authorized.
 
 ## Context
 
-PR #180 merged the clean attempt-003 source-closure implementation into
+PR #180 merged the clean [attempt](../glossary_EN.md#term-attempt)-003 source-closure implementation into
 `main` as `541b34a57297d2c5a82851bd846b583d4904fba6`. Its parents are the previous `main`
 `26e0328bbec433d6f2ec1841ee76a8c2c4312ccc` and implementation commit `4cf74c9632c537459b80e494e6ae88b0bc220c90`.
 Historical frozen implementation records are not rewritten: their existing
-`source_commit_binding_pending=true` remains evidence of the state at the time
+`source_commit_binding_pending=true` remains [evidence](../glossary_EN.md#term-evidence) of the state at the time
 of implementation authoring.
 
 The separate post-merge freeze has semantic identity
@@ -44,7 +44,7 @@ digest, exact OCI revision, and exact OCI base image.
 Only after successful image inspection may a separate later slice materialize
 `experiments/frozen/stage3b-qwake-attempt-003-execution-freeze-v1`. Its future
 `execution.json` must set both `source_commit` and `wrapper_commit` to
-`541b34a57297d2c5a82851bd846b583d4904fba6` and bind the exact image identities, the four runtime
+`541b34a57297d2c5a82851bd846b583d4904fba6` and bind the exact image identities, the four [runtime](../glossary_EN.md#term-runtime)
 components, pinned Torch2PC `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`, and the scientific
 authorization.
 
@@ -53,5 +53,5 @@ authorization.
 This slice materializes only the authoring contract and a verifiable merged
 source binding. It does not build or run Docker, create an image identity,
 materialize an execution freeze, issue or use authorization, create a lease or
-outcome, invoke runtime/model code, access the dataset, author a host
+outcome, invoke runtime/model code, access the [dataset](../glossary_EN.md#term-dataset), author a host
 invocation chain, commit/push/create a PR/merge, or open `QW-5`.

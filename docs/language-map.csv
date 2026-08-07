@@ -218,3 +218,4 @@ docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authoriz
 docs/decisions/ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction.md,docs/decisions/ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction_EN.md,required
 docs/decisions/ADR-112-stage3b-qwake-attempt-003-clean-source-closure-design.md,docs/decisions/ADR-112-stage3b-qwake-attempt-003-clean-source-closure-design_EN.md,required
 docs/decisions/ADR-113-stage3b-qwake-attempt-003-source-binding-execution-freeze-authoring.md,docs/decisions/ADR-113-stage3b-qwake-attempt-003-source-binding-execution-freeze-authoring_EN.md,required
+docs/decisions/ADR-114-stage3b-qwake-attempt-003-execution-freeze-materialization-implementation.md,docs/decisions/ADR-114-stage3b-qwake-attempt-003-execution-freeze-materialization-implementation_EN.md,required

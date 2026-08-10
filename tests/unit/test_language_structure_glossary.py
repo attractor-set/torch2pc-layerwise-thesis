@@ -4,9 +4,12 @@ from scripts.check_language_structure import (
     discover_docs_pairs,
     duplicate_values,
     extract_glossary_term_ids,
+    extract_language_facts,
     heading_levels,
+    language_source_paths,
     long_hashes,
     normalized_numeric_literals,
+    numeric_literal_drift,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -64,3 +67,54 @@ def test_numeric_literals_normalize_language_separators() -> None:
 
 def test_long_hashes_are_case_insensitive() -> None:
     assert long_hashes("ABCDEF123456") == {"abcdef123456"}
+
+
+def test_numeric_literal_drift_is_diagnostic_not_semantic_equivalence() -> None:
+    drift = numeric_literal_drift(
+        "Исполнитель использует восемь потоков.",
+        "The executor uses 8 threads.",
+    )
+    assert drift == {
+        "russian_only": [],
+        "english_only": ["8"],
+    }
+
+
+def test_raw_numeric_set_equality_cannot_detect_context_swap() -> None:
+    russian = "7 кандидатов; 2 прогрева."
+    english = "2 candidates; 7 warm-ups."
+    assert normalized_numeric_literals(russian) == normalized_numeric_literals(
+        english
+    )
+
+    ru_facts = extract_language_facts(
+        "<!-- LANG-FACT: candidate_count = 7 -->\n"
+        "<!-- LANG-FACT: warmup_count = 2 -->\n"
+    )
+    en_facts = extract_language_facts(
+        "<!-- LANG-FACT: candidate_count = 2 -->\n"
+        "<!-- LANG-FACT: warmup_count = 7 -->\n"
+    )
+    assert ru_facts != en_facts
+
+
+def test_language_facts_preserve_json_types_and_context() -> None:
+    text = (
+        '<!-- LANG-FACT: cpu_affinity = [0] -->\n'
+        '<!-- LANG-FACT: measured_pair_count = 12 -->\n'
+        '<!-- LANG-FACT: execution_open = false -->\n'
+    )
+    assert extract_language_facts(text) == {
+        "cpu_affinity": [0],
+        "measured_pair_count": 12,
+        "execution_open": False,
+    }
+
+
+def test_language_source_paths_are_language_neutral() -> None:
+    text = (
+        "<!-- LANG-SOURCE: ../../experiments/frozen/example/contract.json -->\n"
+    )
+    assert language_source_paths(text) == {
+        "../../experiments/frozen/example/contract.json"
+    }

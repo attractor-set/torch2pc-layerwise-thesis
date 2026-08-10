@@ -48,6 +48,71 @@ def heading_levels(text: str) -> list[int]:
     return [len(match.group(1)) for match in HEADING.finditer(text)]
 
 
+LANG_FACT = re.compile(
+    r"<!--\s*LANG-FACT:\s*([A-Za-z0-9_.-]+)\s*=\s*(.*?)\s*-->"
+)
+LANG_SOURCE = re.compile(
+    r"<!--\s*LANG-SOURCE:\s*([^\s<>]+)\s*-->"
+)
+
+
+def numeric_literal_drift(
+    russian_text: str,
+    english_text: str,
+) -> dict[str, list[str]]:
+    """Report lexical numeric drift without treating it as semantics."""
+
+    russian = normalized_numeric_literals(russian_text)
+    english = normalized_numeric_literals(english_text)
+    return {
+        "russian_only": sorted(russian - english),
+        "english_only": sorted(english - russian),
+    }
+
+
+def extract_language_facts(text: str) -> dict[str, object]:
+    """Parse language-neutral LANG-FACT key/JSON-value contracts."""
+
+    facts: dict[str, object] = {}
+    for match in LANG_FACT.finditer(text):
+        key = match.group(1)
+        raw_value = match.group(2)
+        if key in facts:
+            raise ValueError(f"duplicate LANG-FACT key: {key}")
+        try:
+            value = json.loads(raw_value)
+        except json.JSONDecodeError as exc:
+            raise ValueError(
+                f"LANG-FACT {key} must contain a JSON value"
+            ) from exc
+        facts[key] = value
+    return facts
+
+
+def language_source_paths(text: str) -> set[str]:
+    """Return explicit shared machine-readable semantic sources."""
+
+    return {match.group(1) for match in LANG_SOURCE.finditer(text)}
+
+
+def validate_language_sources(
+    document: Path,
+    sources: set[str],
+) -> list[str]:
+    errors: list[str] = []
+    for raw in sorted(sources):
+        target = (document.parent / raw).resolve()
+        if not target.is_relative_to(ROOT):
+            errors.append(
+                f"{document.relative_to(ROOT)}: LANG-SOURCE leaves repository: {raw}"
+            )
+            continue
+        if not target.is_file() or target.is_symlink():
+            errors.append(
+                f"{document.relative_to(ROOT)}: LANG-SOURCE is not a regular file: {raw}"
+            )
+    return errors
+
 def extract_glossary_term_ids(text: str) -> list[str]:
     return GLOSSARY_TERM.findall(text)
 
@@ -77,6 +142,9 @@ def discover_docs_pairs() -> set[tuple[str, str]]:
 
 def main() -> None:
     errors: list[str] = []
+    warnings: list[dict[str, object]] = []
+    fact_contract_pairs = 0
+    source_contract_pairs = 0
     records: list[dict[str, object]] = []
 
     with MAP.open("r", newline="", encoding="utf-8") as stream:
@@ -131,13 +199,46 @@ def main() -> None:
                     "Русская и английская версии содержат разные длинные хэши: "
                     f"{ru.relative_to(ROOT)} -> {en.relative_to(ROOT)}"
                 )
-            if normalized_numeric_literals(ru_text) != normalized_numeric_literals(
-                en_text
-            ):
-                errors.append(
-                    "Русская и английская версии содержат разные числовые значения: "
-                    f"{ru.relative_to(ROOT)} -> {en.relative_to(ROOT)}"
+            numeric_drift = numeric_literal_drift(ru_text, en_text)
+            if numeric_drift["russian_only"] or numeric_drift["english_only"]:
+                warnings.append(
+                    {
+                        "kind": "numeric_literal_drift",
+                        "russian": str(ru.relative_to(ROOT)),
+                        "english": str(en.relative_to(ROOT)),
+                        **numeric_drift,
+                    }
                 )
+
+            try:
+                ru_facts = extract_language_facts(ru_text)
+                en_facts = extract_language_facts(en_text)
+            except ValueError as exc:
+                errors.append(
+                    "Некорректный машинно-читаемый языковой факт: "
+                    f"{ru.relative_to(ROOT)} -> {en.relative_to(ROOT)}: {exc}"
+                )
+            else:
+                if ru_facts or en_facts:
+                    fact_contract_pairs += 1
+                    if ru_facts != en_facts:
+                        errors.append(
+                            "Русская и английская версии имеют разные LANG-FACT контракты: "
+                            f"{ru.relative_to(ROOT)} -> {en.relative_to(ROOT)}"
+                        )
+
+            ru_sources = language_source_paths(ru_text)
+            en_sources = language_source_paths(en_text)
+            if ru_sources or en_sources:
+                source_contract_pairs += 1
+                if ru_sources != en_sources:
+                    errors.append(
+                        "Русская и английская версии имеют разные LANG-SOURCE контракты: "
+                        f"{ru.relative_to(ROOT)} -> {en.relative_to(ROOT)}"
+                    )
+                else:
+                    errors.extend(validate_language_sources(ru, ru_sources))
+                    errors.extend(validate_language_sources(en, en_sources))
 
         if ru.suffix == ".md" and ru_ratio < 0.35:
             errors.append(
@@ -200,6 +301,9 @@ def main() -> None:
         "status": "ok" if not errors else "failed",
         "pairs": len(rows),
         "errors": errors,
+        "warnings": warnings,
+        "fact_contract_pairs": fact_contract_pairs,
+        "source_contract_pairs": source_contract_pairs,
         "records": records,
         "glossary_terms": glossary_term_count,
         "discovered_docs_pairs": len(discovered_docs_pairs),

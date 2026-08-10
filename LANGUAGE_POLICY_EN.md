@@ -83,3 +83,38 @@ The following retain their standard technical names:
 Program identifiers and APIs remain English for compatibility with Python,
 Torch2PC, and the scientific software ecosystem. User-facing messages,
 explanations, and documentation follow this policy.
+
+## Bilingual equivalence contract
+
+Paired documents must remain equivalent in facts, claim boundaries, stage
+state, and stable identifiers, but equivalence is not defined by equality of
+the set of digits that happen to occur in prose.
+
+Automated validation separates three levels:
+
+- the structural level checks pair registration, document language, heading
+  hierarchy, and long immutable identifiers;
+- the semantic level may declare language-neutral facts with hidden
+  `LANG-FACT` comments whose values are valid JSON, or a shared
+  machine-readable source with `LANG-SOURCE`;
+- drift in undeclared numeric literals is emitted as a diagnostic warning and
+  does not by itself make a translation invalid.
+
+Fact form:
+
+```text
+<!-- LANG-FACT: measured_pair_count = 12 -->
+<!-- LANG-FACT: cpu_affinity = [0] -->
+```
+
+Shared-source form:
+
+```text
+<!-- LANG-SOURCE: ../../experiments/frozen/example/contract.json -->
+```
+
+If `LANG-FACT` or `LANG-SOURCE` occurs in either member of a pair, the
+corresponding contract must be identical in both versions. New or materially
+changed documents with normative quantitative claims should prefer a
+`LANG-SOURCE` that points to an existing machine-readable contract; Markdown
+then remains a language representation rather than a second source of truth.

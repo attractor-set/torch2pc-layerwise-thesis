@@ -573,7 +573,7 @@ def build_preflight_invocation_evidence(
         claimed_at_utc=PREFLIGHT_CLAIMED_AT_UTC,
         argv=tuple(cast(list[str], typed["preflight_argv"])),
         environment=tuple(
-            tuple(cast(list[str], pair))
+            (pair[0], pair[1])
             for pair in cast(list[list[str]], typed["preflight_environment"])
         ),
         mount_sources=tuple(cast(list[str], typed["preflight_mount_sources"])),

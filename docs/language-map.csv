@@ -223,3 +223,4 @@ docs/decisions/ADR-115-stage3b-qwake-attempt-003-authorization-materialization-a
 docs/decisions/ADR-116-stage3b-qwake-attempt-003-host-invocation-chain-authoring.md,docs/decisions/ADR-116-stage3b-qwake-attempt-003-host-invocation-chain-authoring_EN.md,required
 docs/decisions/ADR-117-stage3b-qwake-attempt-003-host-invocation-command-materialization-authoring.md,docs/decisions/ADR-117-stage3b-qwake-attempt-003-host-invocation-command-materialization-authoring_EN.md,required
 docs/decisions/ADR-118-stage3b-qwake-attempt-003-host-invocation-process-spawner-authoring.md,docs/decisions/ADR-118-stage3b-qwake-attempt-003-host-invocation-process-spawner-authoring_EN.md,required
+docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization.md,docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization_EN.md,required

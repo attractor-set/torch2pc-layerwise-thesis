@@ -7,11 +7,13 @@ import ast
 import hashlib
 import json
 import os
+import subprocess
 from pathlib import Path
 from typing import Final
 
 BASE_COMMIT: Final = "60a215c53fb734bcd9cb002817cf072da75c26c8"
 BASE_TREE: Final = "9d8e652ad73c85a16eac428a3cdb784e7dba93ee"
+AUTHORING_COMMIT: Final = "c9d889da10274878fb2b8ea5f68c06a50c170c53"
 GENERIC_BACKEND_SHA256: Final = (
     "d9ad10efe959e19d7f1b6d61d8eddd1228cb9753fa9191823d5d1ded68e9fd72"
 )
@@ -97,7 +99,7 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def verify_registry(path: Path, base: Path) -> dict[str, str]:
+def parse_registry(path: Path) -> dict[str, str]:
     if not path.is_file() or path.is_symlink():
         raise VerificationError(f"registry absent: {path}")
     entries: dict[str, str] = {}
@@ -107,12 +109,47 @@ def verify_registry(path: Path, base: Path) -> dict[str, str]:
             raise VerificationError(f"malformed registry: {path}")
         if relative in entries:
             raise VerificationError(f"duplicate registry path: {relative}")
-        target = base / relative
-        if sha(target) != digest:
-            raise VerificationError(f"registry digest differs: {relative}")
         entries[relative] = digest
     if not entries:
         raise VerificationError(f"empty registry: {path}")
+    return entries
+
+
+def verify_registry(path: Path, base: Path) -> dict[str, str]:
+    entries = parse_registry(path)
+    for relative, digest in entries.items():
+        if sha(base / relative) != digest:
+            raise VerificationError(f"registry digest differs: {relative}")
+    return entries
+
+
+def git_blob(root: Path, commit: str, relative: str) -> bytes:
+    result = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"],
+        cwd=root,
+        stdin=subprocess.DEVNULL,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise VerificationError(
+            f"historical source is absent: {commit}:{relative}"
+        )
+    return result.stdout
+
+
+def verify_registry_at_commit(
+    path: Path,
+    root: Path,
+    commit: str,
+) -> dict[str, str]:
+    entries = parse_registry(path)
+    for relative, digest in entries.items():
+        observed = hashlib.sha256(git_blob(root, commit, relative)).hexdigest()
+        if observed != digest:
+            raise VerificationError(
+                f"historical registry digest differs: {relative}"
+            )
     return entries
 
 
@@ -168,7 +205,35 @@ def verify(project_root: Path) -> None:
         if contract_raw.get(key) != value:
             raise VerificationError(f"authoring contract {key} differs")
 
-    source_registry = verify_registry(root / SOURCE_SUMS, root)
+    authoring_parent = subprocess.run(
+        ["git", "rev-parse", f"{AUTHORING_COMMIT}^"],
+        cwd=root,
+        stdin=subprocess.DEVNULL,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if (
+        authoring_parent.returncode != 0
+        or authoring_parent.stdout.strip() != BASE_COMMIT
+    ):
+        raise VerificationError("authoring commit parent differs")
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", AUTHORING_COMMIT, "HEAD"],
+        cwd=root,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if ancestor.returncode != 0:
+        raise VerificationError("authoring commit is not an ancestor of HEAD")
+
+    source_registry = verify_registry_at_commit(
+        root / SOURCE_SUMS,
+        root,
+        AUTHORING_COMMIT,
+    )
     package_registry = verify_registry(root / PACKAGE_SUMS, root / PACKAGE)
     if set(package_registry) != {"contract.json", "source-SHA256SUMS"}:
         raise VerificationError("package registry scope differs")
@@ -221,6 +286,9 @@ def verify(project_root: Path) -> None:
         '("OPENBLAS_NUM_THREADS", "1")',
         '("NUMEXPR_NUM_THREADS", "1")',
         "automatic_retry_performed",
+        'image_digest = record.get("Id")',
+        'repo_digest = matching[0] if matching else ""',
+        "freeze.image_digest,",
     ):
         if token not in host_text:
             raise VerificationError(f"host spawner invariant absent: {token}")
@@ -248,6 +316,10 @@ def verify(project_root: Path) -> None:
     print("ATTEMPT004_EXECUTION_CHAIN_AUTHORING_VERIFIER=PASS")
     print(f"BASE_COMMIT={BASE_COMMIT}")
     print(f"BASE_TREE={BASE_TREE}")
+    print(f"AUTHORING_COMMIT={AUTHORING_COMMIT}")
+    print("SOURCE_REGISTRY_VERIFICATION=authoring_commit_relative")
+    print("LOCAL_IMAGE_ID_AUTHORITATIVE=true")
+    print("REPO_DIGEST_OPTIONAL_OBSERVATION=true")
     print(f"GENERIC_RUNTIME_BACKEND_SHA256={GENERIC_BACKEND_SHA256}")
     print("GENERIC_RUNTIME_BACKEND_MODIFIED=false")
     print("ATTEMPT003_IDENTITIES_REUSED=false")

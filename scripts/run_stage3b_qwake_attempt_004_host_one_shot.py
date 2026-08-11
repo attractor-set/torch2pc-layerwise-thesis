@@ -308,7 +308,16 @@ def _build_image(
     if not isinstance(value, list) or len(value) != 1:
         raise Attempt004HostOneShotError("Docker image inspection differs")
     record = cast(dict[str, Any], value[0])
+    image_digest = record.get("Id")
+    if not isinstance(image_digest, str) or re.fullmatch(
+        r"sha256:[0-9a-f]{64}",
+        image_digest,
+    ) is None:
+        raise Attempt004HostOneShotError("Docker local image ID differs")
+
     repo_digests = record.get("RepoDigests")
+    if repo_digests is None:
+        repo_digests = []
     if not isinstance(repo_digests, list):
         raise Attempt004HostOneShotError("Docker RepoDigests differs")
     matching = sorted(
@@ -316,12 +325,11 @@ def _build_image(
         for item in repo_digests
         if isinstance(item, str) and item.startswith(IMAGE_REPO_PREFIX)
     )
-    if len(matching) != 1:
+    if len(matching) > 1:
         raise Attempt004HostOneShotError(
-            "exact local torch2pc-layerwise-thesis repo digest is absent"
+            "multiple local torch2pc-layerwise-thesis repo digests observed"
         )
-    repo_digest = matching[0]
-    image_digest = "sha256:" + repo_digest.rsplit("@sha256:", 1)[1]
+    repo_digest = matching[0] if matching else ""
     labels = (
         record.get("Config", {}).get("Labels", {})
         if isinstance(record.get("Config"), dict)
@@ -637,7 +645,7 @@ def _materialize_command(
         argv.extend(("--volume", f"{source}:{target}:{access}"))
     argv.extend(
         (
-            freeze.image_repo_digest,
+            freeze.image_digest,
             "python",
             f"/workspace/{ATTEMPT_004_ENTRYPOINT_RELATIVE.as_posix()}",
             "--project-root",

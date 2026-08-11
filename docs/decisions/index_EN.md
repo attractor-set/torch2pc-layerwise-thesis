@@ -174,3 +174,5 @@
 - [ADR-123](ADR-123-stage3b-qwake-qw5-single-scientific-image-freeze_EN.md): freezes the single `QW-5` scientific image through the verified corrective evidence chain while preserving original `Attempt-001` as terminal and keeping C1 closed.
 
 - [ADR-124](ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator_EN.md): preserves the QW-5 version-1 image unchanged and adds a preregistered generic scientific orchestrator without building a new image or opening C1.
+
+- [ADR-125](ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze_EN.md): preserves QW-5 v1 as a historical freeze and integrates the independently verified superseding scientific image as the sole operational image for future C1/C2/C3/R without opening C1.

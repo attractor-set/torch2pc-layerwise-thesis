@@ -225,3 +225,4 @@ docs/decisions/ADR-117-stage3b-qwake-attempt-003-host-invocation-command-materia
 docs/decisions/ADR-118-stage3b-qwake-attempt-003-host-invocation-process-spawner-authoring.md,docs/decisions/ADR-118-stage3b-qwake-attempt-003-host-invocation-process-spawner-authoring_EN.md,required
 docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization.md,docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization_EN.md,required
 docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain.md,docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain_EN.md,required
+docs/decisions/ADR-121-stage3b-qwake-attempt-005-lane-isolated-integration-confirmation.md,docs/decisions/ADR-121-stage3b-qwake-attempt-005-lane-isolated-integration-confirmation_EN.md,required

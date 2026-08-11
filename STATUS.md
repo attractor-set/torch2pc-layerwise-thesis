@@ -3061,3 +3061,29 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=merge-post-merge-verify-then-superseding-image-build-and-freeze
 ```
+
+## `QW-5`: замещающий научный образ зафиксирован и независимо проверен (ADR-125)
+
+После ADR-124 замещающий образ был построен ровно один раз из слитых исходников
+`95a0bf35c87f87ee836596c02ab90a71703714f3` и независимо проверен. ADR-125 интегрирует
+неизменённые доказательные материалы фиксации в репозиторий. Исторический
+`QW-5` v1 сохраняется, но для будущих `C1/C2/C3/R` операционным образом
+становится новый идентификатор.
+
+```text
+QW5_V1_HISTORICAL_FREEZE_PRESERVED=true
+SUPERSEDING_QW5_IMAGE_DIGEST=sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb
+SUPERSEDING_QW5_FREEZE_SHA256=sha256:47c20698ac57c1b50f4bbe0314649b0d07494ecc1199b32819ecde7b684d9904
+SUPERSEDING_IMAGE_FREEZE_INDEPENDENTLY_VERIFIED=true
+REPOSITORY_INTEGRATION_SHA256=sha256:e35d1c90c3dc118c3a1514a62c7487196c48482de4cb1aae74e9ba942b2b518c
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+C1_COLLECTION_OPEN=false
+C2_CALIBRATION_OPEN=false
+C3_CONFIRMATORY_OPEN=false
+REPLICATION_OPEN=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=merge-post-merge-verify-then-C1-request-freeze-and-authorization
+```

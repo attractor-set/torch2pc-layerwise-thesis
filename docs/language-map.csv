@@ -229,3 +229,4 @@ docs/decisions/ADR-121-stage3b-qwake-attempt-005-lane-isolated-integration-confi
 docs/decisions/ADR-122-stage3b-qwake-lc4-e-attempt-005-successful-validation-transition.md,docs/decisions/ADR-122-stage3b-qwake-lc4-e-attempt-005-successful-validation-transition_EN.md,required
 docs/decisions/ADR-123-stage3b-qwake-qw5-single-scientific-image-freeze.md,docs/decisions/ADR-123-stage3b-qwake-qw5-single-scientific-image-freeze_EN.md,required
 docs/decisions/ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator.md,docs/decisions/ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator_EN.md,required
+docs/decisions/ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze.md,docs/decisions/ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze_EN.md,required

@@ -1,0 +1,143 @@
+=== QW-5 SUPERSEDING IMAGE FREEZE INDEPENDENT VERIFICATION V1 ===
+READ_ONLY=true
+GIT_MUTATION_INVOKED=false
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+DOCKER_PULL_INVOKED=false
+DOCKER_TAG_INVOKED=false
+DOCKER_COMMIT_INVOKED=false
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+/home/dzmitry-prychyna/torch2pc-layerwise-thesis-qw5-superseding-image-freeze-integration
+95a0bf35c87f87ee836596c02ab90a71703714f3
+e0fdaa3214f4a39b92e82e2d2529c6c506513166
+95a0bf35c87f87ee836596c02ab90a71703714f3	refs/heads/main
+e0fdaa3214f4a39b92e82e2d2529c6c506513166
+SOURCE_WORKTREE_EXACT=true
+QW5_V1_FREEZE_EXACT=true
+QW5_V1_MUTATED=false
+HISTORICAL_LC4_BOUNDED_IDENTITY_EXACT=true
+FREEZE_EVIDENCE_INVENTORY_EXACT=true
+FREEZE_SHA256SUMS_EXACT=true
+FREEZE_SEMANTIC_CHAIN_EXACT=true
+CANDIDATE_IMAGE_DIGEST=sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb
+FREEZE_SHA256=sha256:47c20698ac57c1b50f4bbe0314649b0d07494ecc1199b32819ecde7b684d9904
+[
+    {
+        "Id": "sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb",
+        "RepoTags": [
+            "torch2pc-layerwise-thesis:0.1.0-qw5v2-95a0bf35c87f"
+        ],
+        "RepoDigests": [
+            "torch2pc-layerwise-thesis@sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-08-11T20:05:52.088139621-03:00",
+        "Config": {
+            "User": "root",
+            "Env": [
+                "PATH=/opt/venv/bin:/opt/rocm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "DEBIAN_FRONTEND=noninteractive",
+                "LD_LIBRARY_PATH=/opt/rocm/lib",
+                "PYTHONUNBUFFERED=1",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONHASHSEED=0",
+                "SOURCE_GIT_COMMIT=95a0bf35c87f87ee836596c02ab90a71703714f3",
+                "PIP_DISABLE_PIP_VERSION_CHECK=1"
+            ],
+            "Entrypoint": [
+                "/usr/bin/tini",
+                "--",
+                "/workspace/scripts/container_entrypoint.sh"
+            ],
+            "Cmd": [
+                "torch2pc-thesis",
+                "validate",
+                "--stage",
+                "smoke",
+                "--method",
+                "bp"
+            ],
+            "WorkingDir": "/workspace",
+            "Labels": {
+                "io.torch2pc.base-image": "rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191",
+                "org.opencontainers.image.description": "Controlled ROCm environment for predictive-coding experiments",
+                "org.opencontainers.image.ref.name": "rocm/pytorch:rocm7.2.1_ubuntu24.04_py3.12_pytorch_release_2.9.1",
+                "org.opencontainers.image.revision": "95a0bf35c87f87ee836596c02ab90a71703714f3",
+                "org.opencontainers.image.title": "Torch2PC Layer-wise Thesis",
+                "org.opencontainers.image.version": "0.1.0"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 10906974301,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:f2a7f072635332d307212e318e07284948b89f4167fce5c4d7c9cfb7590b74b6",
+                "sha256:38431d8e5f8b31c89008ccae537f0577d7baaed71b09aaf4bfe1404c5cf498bc",
+                "sha256:c680c862a0120b3b714242412df2e5cf9815097ddf100f3e927d232a332a9789",
+                "sha256:88f02404abb2fd82fbf049034af019ef5bfcd72fdd3494a857713a5e81554aad",
+                "sha256:636db6118fd07e4d965c6e5601961fc508a20c5eec25ced32f29ae9bfc66bc3b",
+                "sha256:cc599bf66a6e61bba98a5e9856f42cbc1e85d1042ce764042e8e38809556636e",
+                "sha256:94ee51b3a67cd13c1f60ca536f0cc3fa7c73965559ffe8f8342f4e4078cd7822",
+                "sha256:11400d5d58b53c828726b13f195c991d3582d12940657418174972a7f054d910",
+                "sha256:98d73268af6375b2aab14633c80e19928462eb72f8b348c06b9ef412311a4c8a",
+                "sha256:504fd093a64c59d5bd0dc9bf0c5912809cf1fac26df415330afe58055477a10a",
+                "sha256:6e35c36e86e260bb991dfcc89b80c899dd752ff6a0ad71f88e062bfc69db46dd",
+                "sha256:799d3db601a4561b7829f1ff1885881997e2b496a4698dc65530912799a8a0c0",
+                "sha256:d40659b96f109fdfe067a172b4eb4fe82f36423563969a541908eb9b530e44a7",
+                "sha256:d5fb18ea8f051f436d7dd98a724e92db2ea1133ee04d7b2a7a7d3258272e665e",
+                "sha256:f609111ceb1e2bb448ab2543fdf5755b74f7de90c238bb87136654ab4b6036ca",
+                "sha256:5dafba494cf15974fd7623c91690709a31f83ae6a1b6134156332262b85bad20",
+                "sha256:7d654a0f938a7f7bf19deeec0edd5179a228a92d4cf9b9646ce93f5c24ad559d"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-08-11T23:06:18.538514728Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "zbgfdyqcx7p3zat7v2k1we8pf",
+                    "CreatedAt": "2026-08-11T20:06:27.162089643-03:00"
+                }
+            ]
+        }
+    }
+]
+LOCAL_FROZEN_IMAGE_IDENTITY_EXACT=true
+LOCAL_FROZEN_IMAGE_SOURCE_BINDING_EXACT=true
+LOCAL_FROZEN_IMAGE_BASE_BINDING_EXACT=true
+=== QW-5 SUPERSEDING IMAGE FREEZE INDEPENDENT VERIFICATION V1 SUCCESS ===
+FINAL_STATUS=0
+SOURCE_COMMIT=95a0bf35c87f87ee836596c02ab90a71703714f3
+SOURCE_TREE=e0fdaa3214f4a39b92e82e2d2529c6c506513166
+CANDIDATE_IMAGE_DIGEST=sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb
+FREEZE_SHA256=sha256:47c20698ac57c1b50f4bbe0314649b0d07494ecc1199b32819ecde7b684d9904
+SUPERSEDING_IMAGE_FROZEN=true
+SUPERSEDING_IMAGE_FREEZE_INDEPENDENTLY_VERIFIED=true
+QW5_V1_MUTATED=false
+CANDIDATE_REBUILT=false
+CANDIDATE_IMAGE_MUTATED=false
+SOURCE_OVERLAY=false
+AUTOMATIC_RETRY_PERMITTED=false
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+C1_COLLECTION_OPEN=false
+C2_CALIBRATION_OPEN=false
+C3_CONFIRMATORY_OPEN=false
+REPLICATION_OPEN=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT=repository_integrate_superseding_image_freeze_then_c1_request_freeze

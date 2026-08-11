@@ -172,3 +172,5 @@
 - [ADR-111](ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction_EN.md): preserves terminal attempt 001 and historical frozen identities while materializing a verified overlay that carries one admission through build, claim, and execute for a future attempt 002 in the same sole corrective PR.
 
 - [ADR-123](ADR-123-stage3b-qwake-qw5-single-scientific-image-freeze_EN.md): freezes the single `QW-5` scientific image through the verified corrective evidence chain while preserving original `Attempt-001` as terminal and keeping C1 closed.
+
+- [ADR-124](ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator_EN.md): preserves the QW-5 version-1 image unchanged and adds a preregistered generic scientific orchestrator without building a new image or opening C1.

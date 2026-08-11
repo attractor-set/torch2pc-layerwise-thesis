@@ -2920,3 +2920,36 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=C1-request-freeze-and-authorization
 ```
+
+
+## `QW-5`: superseding scientific orchestrator authored (ADR-124)
+
+The structural C1-readiness audit found that the ADR-123 image contains the
+closed capability model and scientific components but no preregistered
+scientific-campaign entrypoint. The version-1 image and its corrective freeze
+remain immutable.
+
+ADR-124 adds source only for the generic host and embedded orchestrator, closed
+canonical requests and authorizations, one-shot host claiming, and exact receipt
+binding. No new image is built in this slice; `C1/C2/C3/R`, scientific
+execution, test-dataset access, and publication remain closed.
+
+```text
+QW5_V1_PRESERVED=true
+QW5_V1_IMAGE_DIGEST=sha256:800471114a6fec7d401fcbc3c781957265aaa351babaa5adf823d1521a95a8e3
+QW5_V1_CORRECTIVE_FREEZE_SHA256=sha256:b435c09c02783f09156cfb7f68045151aa659e144e3c95d85480cee99020f6f4
+C1_READINESS_AUDIT_V3_SHA256=sha256:c521e6992d5d9dbf2e0c8acdde4482d1b0ead82b1b4d8af0fcd1d2b3d0e1b5e2
+SUPERSEDING_ORCHESTRATOR_AUTHORED=true
+SUPERSEDING_QW5_IMAGE_BUILT=false
+SUPERSEDING_QW5_IMAGE_FROZEN=false
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+C1_COLLECTION_OPEN=false
+C2_CALIBRATION_OPEN=false
+C3_CONFIRMATORY_OPEN=false
+REPLICATION_OPEN=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=merge-post-merge-verify-then-superseding-image-build-and-freeze
+```

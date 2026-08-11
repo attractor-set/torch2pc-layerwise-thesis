@@ -43,7 +43,15 @@ from torch2pc_thesis.stage3b_qwake_fp_spec import (
     QWakeFPBaselineId,
 )
 
-type Scalar = bool | int | float | str
+type CanonicalValue = (
+    None
+    | bool
+    | int
+    | float
+    | str
+    | tuple[CanonicalValue, ...]
+    | Mapping[str, CanonicalValue]
+)
 
 _FORBIDDEN_PREACTION_TOKENS: Final[tuple[str, ...]] = (
     "oracle",
@@ -61,6 +69,15 @@ _OBSERVATION_RANK: Final[Mapping[ObservationLevel, int]] = {
     ObservationLevel.A1: 1,
     ObservationLevel.A2: 2,
 }
+_NUMERIC_POLICY_FIELDS: Final[frozenset[str]] = frozenset(
+    {
+        "compute_step",
+        "reference_horizon_k_ref",
+        "remaining_sweeps",
+        "global_prediction_error_l2_sq",
+        "global_state_delta_l2_sq",
+    }
+)
 _ANALYTIC_BY_ID: Final = {item.analytic_id: item for item in ANALYTIC_REGISTRY}
 
 
@@ -198,7 +215,7 @@ class FrozenFeatureVector:
     """Canonical pre-action feature vector with no oracle fields."""
 
     level: ObservationLevel
-    fields: tuple[tuple[str, Scalar], ...]
+    fields: tuple[tuple[str, CanonicalValue], ...]
 
     def __post_init__(self) -> None:
         names = tuple(name for name, _ in self.fields)
@@ -212,10 +229,10 @@ class FrozenFeatureVector:
                 raise QWakeFPPipelineError("oracle data cannot enter pre-action features")
             _validate_scalar(value, field_name=name)
 
-    def as_mapping(self) -> dict[str, Scalar]:
+    def as_mapping(self) -> dict[str, CanonicalValue]:
         return dict(self.fields)
 
-    def value(self, field_name: str) -> Scalar:
+    def value(self, field_name: str) -> CanonicalValue:
         values = self.as_mapping()
         if field_name not in values:
             raise QWakeFPPipelineError(f"feature is unavailable: {field_name}")
@@ -228,7 +245,7 @@ class FrozenAnalyticOutput:
 
     analytic_id: QWakeFPAnalyticId
     outcome: AnalyticOutcome
-    fields: tuple[tuple[str, Scalar], ...]
+    fields: tuple[tuple[str, CanonicalValue], ...]
     measurement: EdgeMeasurement
 
     def __post_init__(self) -> None:
@@ -375,6 +392,10 @@ class PolicyRule:
                 raise QWakeFPPipelineError("feature predicates require name and threshold")
             if self.feature_name not in A2_FIELDS:
                 raise QWakeFPPipelineError("policy feature is outside the QW-2 registry")
+            if self.feature_name not in _NUMERIC_POLICY_FIELDS:
+                raise QWakeFPPipelineError(
+                    "policy numeric predicate requires a registered scalar feature"
+                )
             if any(
                 token in self.feature_name for token in _FORBIDDEN_PREACTION_TOKENS
             ):
@@ -734,7 +755,7 @@ def plan_component(
 
 def build_feature_vector(
     level: ObservationLevel,
-    values: Mapping[str, Scalar],
+    values: Mapping[str, CanonicalValue],
 ) -> FrozenFeatureVector:
     """Build one exact cumulative feature vector in QW-2 field order."""
 
@@ -1062,15 +1083,32 @@ def _accept_or_suffix(condition: bool) -> FrontierAction:
     )
 
 
-def _validate_scalar(value: Scalar, *, field_name: str) -> None:
-    if isinstance(value, float) and not math.isfinite(value):
-        raise QWakeFPPipelineError(f"{field_name} must be finite")
-    if not isinstance(value, bool | int | float | str):
-        raise QWakeFPPipelineError(f"{field_name} has an unsupported scalar type")
+def _validate_scalar(value: CanonicalValue, *, field_name: str) -> None:
+    if value is None:
+        return
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise QWakeFPPipelineError(f"{field_name} must be finite")
+        return
+    if isinstance(value, bool | int | str):
+        return
+    if isinstance(value, tuple):
+        for index, item in enumerate(value):
+            _validate_scalar(item, field_name=f"{field_name}[{index}]")
+        return
+    if isinstance(value, Mapping):
+        for key, item in value.items():
+            if not isinstance(key, str) or not key:
+                raise QWakeFPPipelineError(
+                    f"{field_name} mapping keys must be non-empty strings"
+                )
+            _validate_scalar(item, field_name=f"{field_name}.{key}")
+        return
+    raise QWakeFPPipelineError(f"{field_name} has an unsupported canonical value type")
 
 
-def _as_float(value: Scalar, field_name: str) -> float:
-    if isinstance(value, bool | str):
+def _as_float(value: CanonicalValue, field_name: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, int | float):
         raise QWakeFPPipelineError(f"{field_name} must be numeric")
     converted = float(value)
     if not math.isfinite(converted):
@@ -1078,8 +1116,8 @@ def _as_float(value: Scalar, field_name: str) -> float:
     return converted
 
 
-def _as_int(value: Scalar, field_name: str) -> int:
-    if isinstance(value, bool | float | str):
+def _as_int(value: CanonicalValue, field_name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
         raise QWakeFPPipelineError(f"{field_name} must be an integer")
     return value
 

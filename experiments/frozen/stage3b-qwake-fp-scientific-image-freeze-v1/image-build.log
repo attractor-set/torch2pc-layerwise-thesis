@@ -1,0 +1,628 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.rocm
+#1 transferring dockerfile: 1.75kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+#2 DONE 1.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 1.16kB done
+#3 DONE 0.0s
+
+#4 [ 1/10] FROM docker.io/rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+#4 resolve docker.io/rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191 0.0s done
+#4 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 319.34MB 1.4s done
+#5 DONE 1.5s
+
+#6 [ 2/10] RUN apt-get update     && apt-get install -y --no-install-recommends        ca-certificates curl git jq make numactl pciutils procps tini     && rm -rf /var/lib/apt/lists/*
+#6 0.427 Get:1 https://repo.radeon.com/amdgpu/30.30.1/ubuntu noble InRelease [3185 B]
+#6 0.441 Get:2 https://repo.radeon.com/rocm/apt/7.2.1 noble InRelease [2605 B]
+#6 0.450 Get:3 https://repo.radeon.com/graphics/7.2.1/ubuntu noble InRelease [3194 B]
+#6 0.564 Get:4 https://repo.radeon.com/amdgpu/30.30.1/ubuntu noble/main i386 Packages [1333 B]
+#6 0.599 Get:5 http://archive.ubuntu.com/ubuntu noble InRelease [256 kB]
+#6 0.604 Get:6 https://repo.radeon.com/amdgpu/30.30.1/ubuntu noble/main amd64 Packages [1333 B]
+#6 0.655 Get:7 https://repo.radeon.com/rocm/apt/7.2.1 noble/main amd64 Packages [61.3 kB]
+#6 0.729 Get:8 https://repo.radeon.com/graphics/7.2.1/ubuntu noble/main i386 Packages [8845 B]
+#6 0.762 Get:9 https://repo.radeon.com/graphics/7.2.1/ubuntu noble/main amd64 Packages [10.3 kB]
+#6 1.014 Get:10 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+#6 1.292 Get:11 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+#6 1.463 Get:12 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+#6 1.484 Get:13 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu noble InRelease [17.8 kB]
+#6 1.636 Get:14 http://archive.ubuntu.com/ubuntu noble/main amd64 Packages [1808 kB]
+#6 1.947 Get:15 https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu noble/main amd64 Packages [45.7 kB]
+#6 2.139 Get:16 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1148 kB]
+#6 2.152 Get:17 http://archive.ubuntu.com/ubuntu noble/main amd64 Components [665 kB]
+#6 2.314 Get:18 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [19.3 MB]
+#6 3.730 Get:19 http://security.ubuntu.com/ubuntu noble-security/main amd64 Components [58.9 kB]
+#6 3.744 Get:20 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1522 kB]
+#6 4.767 Get:21 http://archive.ubuntu.com/ubuntu noble/universe amd64 Components [5943 kB]
+#6 4.837 Get:22 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Components [97.8 kB]
+#6 5.217 Get:23 http://archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [117 kB]
+#6 5.224 Get:24 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [331 kB]
+#6 5.226 Get:25 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Components [41.9 kB]
+#6 5.255 Get:26 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1473 kB]
+#6 5.276 Get:27 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [242 kB]
+#6 5.290 Get:28 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2140 kB]
+#6 5.318 Get:29 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1644 kB]
+#6 5.366 Get:30 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Components [157 B]
+#6 5.367 Get:31 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [50.0 kB]
+#6 5.367 Get:32 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [158 B]
+#6 5.595 Get:33 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [534 kB]
+#6 5.634 Get:34 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1758 kB]
+#6 6.478 Get:35 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [159 B]
+#6 6.478 Get:36 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [55.8 kB]
+#6 6.479 Get:37 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [887 B]
+#6 6.480 Get:38 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [48.9 kB]
+#6 6.480 Get:39 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [6350 B]
+#6 6.480 Get:40 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [35.9 kB]
+#6 6.677 Get:41 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [13.6 kB]
+#6 6.677 Get:42 http://archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [160 B]
+#6 6.677 Get:43 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [671 B]
+#6 6.677 Get:44 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [161 B]
+#6 8.956 Fetched 39.8 MB in 6s (6232 kB/s)
+#6 8.956 Reading package lists...
+#6 10.34 Reading package lists...
+#6 11.72 Building dependency tree...
+#6 12.00 Reading state information...
+#6 12.33 git is already the newest version (1:2.43.0-1ubuntu7.3).
+#6 12.33 make is already the newest version (4.3-4.1build2).
+#6 12.33 make set to manually installed.
+#6 12.33 pciutils is already the newest version (1:3.10.0-2build1).
+#6 12.33 pciutils set to manually installed.
+#6 12.33 procps is already the newest version (2:4.0.4-4ubuntu3.2).
+#6 12.33 The following NEW packages will be installed:
+#6 12.33   jq libjq1 libonig5 numactl tini
+#6 12.33 The following packages will be upgraded:
+#6 12.33   ca-certificates curl libcurl3t64-gnutls libcurl4t64
+#6 12.72 4 upgraded, 5 newly installed, 0 to remove and 146 not upgraded.
+#6 12.72 Need to get 1737 kB of archives.
+#6 12.72 After this operation, 2056 kB of additional disk space will be used.
+#6 12.72 Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 ca-certificates all 20260601~24.04.1 [139 kB]
+#6 14.36 Get:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 numactl amd64 2.0.18-1ubuntu0.24.04.1 [39.1 kB]
+#6 14.37 Get:3 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 curl amd64 8.5.0-2ubuntu10.11 [226 kB]
+#6 14.59 Get:4 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcurl4t64 amd64 8.5.0-2ubuntu10.11 [342 kB]
+#6 14.79 Get:5 http://archive.ubuntu.com/ubuntu noble/main amd64 libonig5 amd64 6.9.9-1build1 [172 kB]
+#6 14.79 Get:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libjq1 amd64 1.7.1-3ubuntu0.24.04.2 [142 kB]
+#6 14.82 Get:7 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 jq amd64 1.7.1-3ubuntu0.24.04.2 [65.7 kB]
+#6 14.85 Get:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcurl3t64-gnutls amd64 8.5.0-2ubuntu10.11 [334 kB]
+#6 15.18 Get:9 http://archive.ubuntu.com/ubuntu noble/universe amd64 tini amd64 0.19.0-1 [276 kB]
+#6 15.50 debconf: delaying package configuration, since apt-utils is not installed
+#6 15.57 Fetched 1737 kB in 3s (614 kB/s)
+#6 15.61 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 95170 files and directories currently installed.)
+#6 15.76 Preparing to unpack .../0-ca-certificates_20260601~24.04.1_all.deb ...
+#6 15.77 Unpacking ca-certificates (20260601~24.04.1) over (20240203) ...
+#6 15.98 Selecting previously unselected package numactl.
+#6 15.99 Preparing to unpack .../1-numactl_2.0.18-1ubuntu0.24.04.1_amd64.deb ...
+#6 16.00 Unpacking numactl (2.0.18-1ubuntu0.24.04.1) ...
+#6 16.04 Preparing to unpack .../2-curl_8.5.0-2ubuntu10.11_amd64.deb ...
+#6 16.05 Unpacking curl (8.5.0-2ubuntu10.11) over (8.5.0-2ubuntu10.8) ...
+#6 16.10 Preparing to unpack .../3-libcurl4t64_8.5.0-2ubuntu10.11_amd64.deb ...
+#6 16.11 Unpacking libcurl4t64:amd64 (8.5.0-2ubuntu10.11) over (8.5.0-2ubuntu10.8) ...
+#6 16.16 Selecting previously unselected package libonig5:amd64.
+#6 16.17 Preparing to unpack .../4-libonig5_6.9.9-1build1_amd64.deb ...
+#6 16.17 Unpacking libonig5:amd64 (6.9.9-1build1) ...
+#6 16.21 Selecting previously unselected package libjq1:amd64.
+#6 16.22 Preparing to unpack .../5-libjq1_1.7.1-3ubuntu0.24.04.2_amd64.deb ...
+#6 16.23 Unpacking libjq1:amd64 (1.7.1-3ubuntu0.24.04.2) ...
+#6 16.26 Selecting previously unselected package jq.
+#6 16.27 Preparing to unpack .../6-jq_1.7.1-3ubuntu0.24.04.2_amd64.deb ...
+#6 16.27 Unpacking jq (1.7.1-3ubuntu0.24.04.2) ...
+#6 16.32 Preparing to unpack .../7-libcurl3t64-gnutls_8.5.0-2ubuntu10.11_amd64.deb ...
+#6 16.33 Unpacking libcurl3t64-gnutls:amd64 (8.5.0-2ubuntu10.11) over (8.5.0-2ubuntu10.8) ...
+#6 16.37 Selecting previously unselected package tini.
+#6 16.38 Preparing to unpack .../8-tini_0.19.0-1_amd64.deb ...
+#6 16.39 Unpacking tini (0.19.0-1) ...
+#6 16.47 Setting up numactl (2.0.18-1ubuntu0.24.04.1) ...
+#6 16.48 Setting up libcurl4t64:amd64 (8.5.0-2ubuntu10.11) ...
+#6 16.48 Setting up libcurl3t64-gnutls:amd64 (8.5.0-2ubuntu10.11) ...
+#6 16.49 Setting up ca-certificates (20260601~24.04.1) ...
+#6 18.36 Updating certificates in /etc/ssl/certs...
+#6 19.37 rehash: warning: skipping ca-certificates.crt,it does not contain exactly one certificate or CRL
+#6 19.37 14 added, 39 removed; done.
+#6 19.41 Setting up tini (0.19.0-1) ...
+#6 19.42 Setting up curl (8.5.0-2ubuntu10.11) ...
+#6 19.43 Setting up libonig5:amd64 (6.9.9-1build1) ...
+#6 19.43 Setting up libjq1:amd64 (1.7.1-3ubuntu0.24.04.2) ...
+#6 19.44 Setting up jq (1.7.1-3ubuntu0.24.04.2) ...
+#6 19.44 Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
+#6 19.84 Processing triggers for ca-certificates (20260601~24.04.1) ...
+#6 19.85 Updating certificates in /etc/ssl/certs...
+#6 20.45 0 added, 0 removed; done.
+#6 20.45 Running hooks in /etc/ca-certificates/update.d...
+#6 20.45 done.
+#6 DONE 20.6s
+
+#7 [ 3/10] WORKDIR /workspace
+#7 DONE 0.0s
+
+#8 [ 4/10] COPY pyproject.toml README.md LICENSE /workspace/
+#8 DONE 0.0s
+
+#9 [ 5/10] COPY src /workspace/src
+#9 DONE 0.1s
+
+#10 [ 6/10] COPY requirements /workspace/requirements
+#10 DONE 0.0s
+
+#11 [ 7/10] RUN python -m pip install --no-cache-dir "pip==25.1.1"     && python -m pip install --no-cache-dir -r requirements/rocm.txt     && python -m pip check
+#11 0.908 Collecting pip==25.1.1
+#11 1.033   Downloading pip-25.1.1-py3-none-any.whl.metadata (3.6 kB)
+#11 1.048 Downloading pip-25.1.1-py3-none-any.whl (1.8 MB)
+#11 1.283    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 11.5 MB/s  0:00:00
+#11 1.402 Installing collected packages: pip
+#11 1.402   Attempting uninstall: pip
+#11 1.405     Found existing installation: pip 26.0.1
+#11 1.478     Uninstalling pip-26.0.1:
+#11 1.857       Successfully uninstalled pip-26.0.1
+#11 3.274 Successfully installed pip-25.1.1
+#11 3.477 
+#11 3.477 [notice] A new release of pip is available: 25.1.1 -> 26.2.1
+#11 3.477 [notice] To update, run: pip install --upgrade pip
+#11 4.067 Obtaining file:///workspace
+#11 4.070   Installing build dependencies: started
+#11 5.651   Installing build dependencies: finished with status 'done'
+#11 5.652   Checking if build backend supports build_editable: started
+#11 5.713   Checking if build backend supports build_editable: finished with status 'done'
+#11 5.715   Getting requirements to build editable: started
+#11 5.940   Getting requirements to build editable: finished with status 'done'
+#11 5.942   Installing backend dependencies: started
+#11 6.862   Installing backend dependencies: finished with status 'done'
+#11 6.864   Preparing editable metadata (pyproject.toml): started
+#11 7.117   Preparing editable metadata (pyproject.toml): finished with status 'done'
+#11 7.238 Collecting nbclient<1,>=0.10 (from torch2pc-layerwise-thesis==0.1.0)
+#11 7.313   Downloading nbclient-0.10.2-py3-none-any.whl.metadata (8.3 kB)
+#11 7.349 Collecting nbformat<6,>=5.10 (from torch2pc-layerwise-thesis==0.1.0)
+#11 7.363   Downloading nbformat-5.10.4-py3-none-any.whl.metadata (3.6 kB)
+#11 7.789 Collecting numpy<3,>=2.1 (from torch2pc-layerwise-thesis==0.1.0)
+#11 7.802   Downloading numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (62 kB)
+#11 7.871 Collecting openpyxl<4,>=3.1 (from torch2pc-layerwise-thesis==0.1.0)
+#11 7.882   Downloading openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+#11 8.114 Collecting pandas<3,>=2.2 (from torch2pc-layerwise-thesis==0.1.0)
+#11 8.129   Downloading pandas-2.3.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (91 kB)
+#11 8.330 Collecting psutil<8,>=6 (from torch2pc-layerwise-thesis==0.1.0)
+#11 8.345   Downloading psutil-7.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (22 kB)
+#11 8.354 Requirement already satisfied: pyyaml<7,>=6.0 in /opt/venv/lib/python3.12/site-packages (from torch2pc-layerwise-thesis==0.1.0) (6.0.3)
+#11 8.509 Collecting scikit-learn<2,>=1.6 (from torch2pc-layerwise-thesis==0.1.0)
+#11 8.523   Downloading scikit_learn-1.7.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (11 kB)
+#11 8.784 Collecting scipy<2,>=1.14 (from torch2pc-layerwise-thesis==0.1.0)
+#11 8.798   Downloading scipy-1.16.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (61 kB)
+#11 8.879 Collecting ipykernel<7,>=6.29 (from torch2pc-layerwise-thesis==0.1.0)
+#11 8.893   Downloading ipykernel-6.29.5-py3-none-any.whl.metadata (6.3 kB)
+#11 9.082 Collecting jupyterlab<5,>=4.3 (from torch2pc-layerwise-thesis==0.1.0)
+#11 9.096   Downloading jupyterlab-4.4.4-py3-none-any.whl.metadata (16 kB)
+#11 9.366 Collecting matplotlib<4,>=3.9 (from torch2pc-layerwise-thesis==0.1.0)
+#11 9.378   Downloading matplotlib-3.11.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (80 kB)
+#11 9.600 Collecting mkdocs-material<10,>=9.6 (from torch2pc-layerwise-thesis==0.1.0)
+#11 9.614   Downloading mkdocs_material-9.6.15-py3-none-any.whl.metadata (19 kB)
+#11 9.650 Collecting mkdocs<2,>=1.6 (from torch2pc-layerwise-thesis==0.1.0)
+#11 9.663   Downloading mkdocs-1.6.1-py3-none-any.whl.metadata (6.0 kB)
+#11 9.879 Collecting mypy<3,>=1.14 (from torch2pc-layerwise-thesis==0.1.0)
+#11 9.892   Downloading mypy-2.3.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#11 9.921 Collecting pytest-cov<7,>=6 (from torch2pc-layerwise-thesis==0.1.0)
+#11 9.935   Downloading pytest_cov-6.2.1-py3-none-any.whl.metadata (30 kB)
+#11 10.00 Collecting pytest<9,>=8.3 (from torch2pc-layerwise-thesis==0.1.0)
+#11 10.01   Downloading pytest-8.4.1-py3-none-any.whl.metadata (7.7 kB)
+#11 10.77 Collecting ruff<1,>=0.9 (from torch2pc-layerwise-thesis==0.1.0)
+#11 10.78   Downloading ruff-0.12.2-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (25 kB)
+#11 10.82 Collecting types-pyyaml<7,>=6.0 (from torch2pc-layerwise-thesis==0.1.0)
+#11 10.83   Downloading types_pyyaml-6.0.12.20260724-py3-none-any.whl.metadata (1.7 kB)
+#11 10.85 Collecting comm>=0.1.1 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 10.86   Downloading comm-0.2.3-py3-none-any.whl.metadata (3.7 kB)
+#11 11.03 Collecting debugpy>=1.6.5 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.04   Downloading debugpy-1.8.21-cp312-cp312-manylinux_2_34_x86_64.whl.metadata (1.4 kB)
+#11 11.12 Collecting ipython>=7.23.1 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.13   Downloading ipython-9.16.1-py3-none-any.whl.metadata (4.6 kB)
+#11 11.18 Collecting jupyter-client>=6.1.12 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.19   Downloading jupyter_client-8.9.1-py3-none-any.whl.metadata (8.5 kB)
+#11 11.24 Collecting jupyter-core!=5.0.*,>=4.12 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.25   Downloading jupyter_core-5.9.1-py3-none-any.whl.metadata (1.5 kB)
+#11 11.27 Collecting matplotlib-inline>=0.1 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.28   Downloading matplotlib_inline-0.2.2-py3-none-any.whl.metadata (2.4 kB)
+#11 11.30 Collecting nest-asyncio (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.32   Downloading nest_asyncio-1.6.0-py3-none-any.whl.metadata (2.8 kB)
+#11 11.32 Requirement already satisfied: packaging in /opt/venv/lib/python3.12/site-packages (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0) (26.0)
+#11 11.74 Collecting pyzmq>=24 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.75   Downloading pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (6.0 kB)
+#11 11.82 Collecting tornado>=6.1 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.83   Downloading tornado-6.5.8-cp39-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (2.8 kB)
+#11 11.93 Collecting traitlets>=5.4.0 (from ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 11.95   Downloading traitlets-5.16.1-py3-none-any.whl.metadata (10 kB)
+#11 11.97 Collecting async-lru>=1.0.0 (from jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 11.99   Downloading async_lru-2.3.0-py3-none-any.whl.metadata (7.6 kB)
+#11 12.02 Collecting httpx>=0.25.0 (from jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.03   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#11 12.05 Requirement already satisfied: jinja2>=3.0.3 in /opt/venv/lib/python3.12/site-packages (from jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0) (3.1.6)
+#11 12.07 Collecting jupyter-lsp>=2.0.0 (from jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.09   Downloading jupyter_lsp-2.3.1-py3-none-any.whl.metadata (1.8 kB)
+#11 12.15 Collecting jupyter-server<3,>=2.4.0 (from jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.16   Downloading jupyter_server-2.20.0-py3-none-any.whl.metadata (8.5 kB)
+#11 12.20 Collecting jupyterlab-server<3,>=2.27.1 (from jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.22   Downloading jupyterlab_server-2.28.0-py3-none-any.whl.metadata (5.9 kB)
+#11 12.24 Collecting notebook-shim>=0.2 (from jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.25   Downloading notebook_shim-0.2.4-py3-none-any.whl.metadata (4.0 kB)
+#11 12.25 Requirement already satisfied: setuptools>=41.1.0 in /opt/venv/lib/python3.12/site-packages (from jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0) (82.0.1)
+#11 12.30 Collecting anyio>=3.1.0 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.31   Downloading anyio-4.14.2-py3-none-any.whl.metadata (4.6 kB)
+#11 12.34 Collecting argon2-cffi>=21.1 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.36   Downloading argon2_cffi-25.1.0-py3-none-any.whl.metadata (4.1 kB)
+#11 12.39 Collecting jupyter-events>=0.11.0 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.40   Downloading jupyter_events-0.12.1-py3-none-any.whl.metadata (5.8 kB)
+#11 12.43 Collecting jupyter-server-terminals>=0.4.4 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.44   Downloading jupyter_server_terminals-0.5.4-py3-none-any.whl.metadata (5.9 kB)
+#11 12.48 Collecting nbconvert>=6.4.4 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.50   Downloading nbconvert-7.17.1-py3-none-any.whl.metadata (8.4 kB)
+#11 12.54 Collecting prometheus-client>=0.9 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.55   Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)
+#11 12.57 Collecting send2trash>=1.8.2 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.58   Downloading send2trash-2.1.0-py3-none-any.whl.metadata (4.1 kB)
+#11 12.61 Collecting terminado>=0.8.3 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.62   Downloading terminado-0.18.1-py3-none-any.whl.metadata (5.8 kB)
+#11 12.66 Collecting websocket-client>=1.7 (from jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.67   Downloading websocket_client-1.9.0-py3-none-any.whl.metadata (8.3 kB)
+#11 12.70 Collecting babel>=2.10 (from jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.71   Downloading babel-2.18.0-py3-none-any.whl.metadata (2.2 kB)
+#11 12.75 Collecting json5>=0.9.0 (from jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.76   Downloading json5-0.15.0-py3-none-any.whl.metadata (37 kB)
+#11 12.81 Collecting jsonschema>=4.18.0 (from jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.82   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#11 12.89 Collecting requests>=2.31 (from jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 12.90   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+#11 12.91 Requirement already satisfied: contourpy>=1.0.1 in /opt/venv/lib/python3.12/site-packages (from matplotlib<4,>=3.9->torch2pc-layerwise-thesis==0.1.0) (1.3.3)
+#11 12.91 Requirement already satisfied: cycler>=0.10 in /opt/venv/lib/python3.12/site-packages (from matplotlib<4,>=3.9->torch2pc-layerwise-thesis==0.1.0) (0.12.1)
+#11 12.91 Requirement already satisfied: fonttools>=4.28.2 in /opt/venv/lib/python3.12/site-packages (from matplotlib<4,>=3.9->torch2pc-layerwise-thesis==0.1.0) (4.62.1)
+#11 12.91 Requirement already satisfied: kiwisolver>=1.3.1 in /opt/venv/lib/python3.12/site-packages (from matplotlib<4,>=3.9->torch2pc-layerwise-thesis==0.1.0) (1.5.0)
+#11 12.93 Requirement already satisfied: pillow>=9 in /opt/venv/lib/python3.12/site-packages (from matplotlib<4,>=3.9->torch2pc-layerwise-thesis==0.1.0) (12.1.1)
+#11 12.93 Requirement already satisfied: pyparsing>=3 in /opt/venv/lib/python3.12/site-packages (from matplotlib<4,>=3.9->torch2pc-layerwise-thesis==0.1.0) (3.3.2)
+#11 12.93 Requirement already satisfied: python-dateutil>=2.7 in /opt/venv/lib/python3.12/site-packages (from matplotlib<4,>=3.9->torch2pc-layerwise-thesis==0.1.0) (2.9.0.post0)
+#11 12.96 Collecting click>=7.0 (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 12.97   Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+#11 12.99 Collecting ghp-import>=1.0 (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.01   Downloading ghp_import-2.1.0-py3-none-any.whl.metadata (7.2 kB)
+#11 13.04 Collecting markdown>=3.3.6 (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.05   Downloading markdown-3.10.3-py3-none-any.whl.metadata (5.1 kB)
+#11 13.06 Requirement already satisfied: markupsafe>=2.0.1 in /opt/venv/lib/python3.12/site-packages (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0) (3.0.3)
+#11 13.07 Collecting mergedeep>=1.3.4 (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.08   Downloading mergedeep-1.3.4-py3-none-any.whl.metadata (4.3 kB)
+#11 13.10 Collecting mkdocs-get-deps>=0.2.0 (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.12   Downloading mkdocs_get_deps-0.2.2-py3-none-any.whl.metadata (4.0 kB)
+#11 13.14 Collecting pathspec>=0.11.1 (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.15   Downloading pathspec-1.1.1-py3-none-any.whl.metadata (14 kB)
+#11 13.17 Collecting pyyaml-env-tag>=0.1 (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.19   Downloading pyyaml_env_tag-1.1-py3-none-any.whl.metadata (5.5 kB)
+#11 13.27 Collecting watchdog>=2.0 (from mkdocs<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.29   Downloading watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl.metadata (44 kB)
+#11 13.34 Collecting backrefs~=5.7.post1 (from mkdocs-material<10,>=9.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.35   Downloading backrefs-5.9-py312-none-any.whl.metadata (3.2 kB)
+#11 13.38 Collecting colorama~=0.4 (from mkdocs-material<10,>=9.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.39   Downloading colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+#11 13.42 Collecting mkdocs-material-extensions~=1.3 (from mkdocs-material<10,>=9.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.44   Downloading mkdocs_material_extensions-1.3.1-py3-none-any.whl.metadata (6.9 kB)
+#11 13.46 Collecting paginate~=0.5 (from mkdocs-material<10,>=9.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.48   Downloading paginate-0.5.7-py2.py3-none-any.whl.metadata (11 kB)
+#11 13.48 Requirement already satisfied: pygments~=2.16 in /opt/venv/lib/python3.12/site-packages (from mkdocs-material<10,>=9.6->torch2pc-layerwise-thesis==0.1.0) (2.20.0)
+#11 13.53 Collecting pymdown-extensions~=10.2 (from mkdocs-material<10,>=9.6->torch2pc-layerwise-thesis==0.1.0)
+#11 13.55   Downloading pymdown_extensions-10.21.3-py3-none-any.whl.metadata (3.1 kB)
+#11 13.58 Requirement already satisfied: typing_extensions>=4.6.0 in /opt/venv/lib/python3.12/site-packages (from mypy<3,>=1.14->torch2pc-layerwise-thesis==0.1.0) (4.15.0)
+#11 13.60 Collecting mypy_extensions>=1.0.0 (from mypy<3,>=1.14->torch2pc-layerwise-thesis==0.1.0)
+#11 13.61   Downloading mypy_extensions-1.1.0-py3-none-any.whl.metadata (1.1 kB)
+#11 13.86 Collecting librt>=0.13.0 (from mypy<3,>=1.14->torch2pc-layerwise-thesis==0.1.0)
+#11 13.87   Downloading librt-0.15.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (1.3 kB)
+#11 13.93 Collecting ast-serialize<1.0.0,>=0.6.0 (from mypy<3,>=1.14->torch2pc-layerwise-thesis==0.1.0)
+#11 13.95   Downloading ast_serialize-0.8.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.4 kB)
+#11 13.99 Collecting fastjsonschema>=2.15 (from nbformat<6,>=5.10->torch2pc-layerwise-thesis==0.1.0)
+#11 14.00   Downloading fastjsonschema-2.22.1-py3-none-any.whl.metadata (2.1 kB)
+#11 14.05 Collecting et-xmlfile (from openpyxl<4,>=3.1->torch2pc-layerwise-thesis==0.1.0)
+#11 14.06   Downloading et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+#11 14.14 Collecting pytz>=2020.1 (from pandas<3,>=2.2->torch2pc-layerwise-thesis==0.1.0)
+#11 14.16   Downloading pytz-2026.3.post1-py2.py3-none-any.whl.metadata (22 kB)
+#11 14.19 Collecting tzdata>=2022.7 (from pandas<3,>=2.2->torch2pc-layerwise-thesis==0.1.0)
+#11 14.20   Downloading tzdata-2026.3-py2.py3-none-any.whl.metadata (1.4 kB)
+#11 14.22 Requirement already satisfied: iniconfig>=1 in /opt/venv/lib/python3.12/site-packages (from pytest<9,>=8.3->torch2pc-layerwise-thesis==0.1.0) (2.3.0)
+#11 14.22 Requirement already satisfied: pluggy<2,>=1.5 in /opt/venv/lib/python3.12/site-packages (from pytest<9,>=8.3->torch2pc-layerwise-thesis==0.1.0) (1.6.0)
+#11 15.09 Collecting coverage>=7.5 (from coverage[toml]>=7.5->pytest-cov<7,>=6->torch2pc-layerwise-thesis==0.1.0)
+#11 15.11   Downloading coverage-7.15.4-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (8.6 kB)
+#11 15.31 Collecting charset_normalizer<4,>=2 (from requests>=2.31->jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 15.33   Downloading charset_normalizer-3.4.9-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (41 kB)
+#11 15.36 Collecting idna<4,>=2.5 (from requests>=2.31->jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 15.37   Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+#11 15.42 Collecting urllib3<3,>=1.26 (from requests>=2.31->jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 15.43   Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+#11 15.47 Collecting certifi>=2023.5.7 (from requests>=2.31->jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 15.48   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+#11 15.55 Collecting joblib>=1.2.0 (from scikit-learn<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 15.56   Downloading joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)
+#11 15.59 Collecting threadpoolctl>=3.1.0 (from scikit-learn<2,>=1.6->torch2pc-layerwise-thesis==0.1.0)
+#11 15.60   Downloading threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)
+#11 15.66 Collecting argon2-cffi-bindings (from argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 15.67   Downloading argon2_cffi_bindings-25.1.0-cp39-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (7.4 kB)
+#11 15.75 Collecting httpcore==1.* (from httpx>=0.25.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 15.76   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#11 15.79 Collecting h11>=0.16 (from httpcore==1.*->httpx>=0.25.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 15.80   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#11 15.82 Collecting ipython-pygments-lexers>=1.0.0 (from ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 15.83   Downloading ipython_pygments_lexers-1.1.1-py3-none-any.whl.metadata (1.1 kB)
+#11 15.86 Collecting jedi>=0.18.2 (from ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 15.87   Downloading jedi-0.20.0-py2.py3-none-any.whl.metadata (23 kB)
+#11 15.90 Collecting pexpect>4.6 (from ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 15.91   Downloading pexpect-4.9.0-py2.py3-none-any.whl.metadata (2.5 kB)
+#11 15.96 Collecting prompt_toolkit<3.1.0,>=3.0.41 (from ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 15.97   Downloading prompt_toolkit-3.0.53-py3-none-any.whl.metadata (6.4 kB)
+#11 16.00 Collecting stack_data>=0.6.0 (from ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 16.01   Downloading stack_data-0.6.3-py3-none-any.whl.metadata (18 kB)
+#11 16.06 Collecting wcwidth>=0.1.4 (from prompt_toolkit<3.1.0,>=3.0.41->ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 16.07   Downloading wcwidth-0.8.2-py3-none-any.whl.metadata (43 kB)
+#11 16.10 Collecting parso<0.9.0,>=0.8.6 (from jedi>=0.18.2->ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 16.12   Downloading parso-0.8.7-py2.py3-none-any.whl.metadata (8.2 kB)
+#11 16.16 Collecting attrs>=22.2.0 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 16.17   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#11 16.19 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 16.20   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#11 16.24 Collecting referencing>=0.28.4 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 16.26   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#11 16.88 Collecting rpds-py>=0.25.0 (from jsonschema>=4.18.0->jupyterlab-server<3,>=2.27.1->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 16.90   Downloading rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#11 17.01 Collecting platformdirs>=2.5 (from jupyter-core!=5.0.*,>=4.12->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 17.02   Downloading platformdirs-4.11.2-py3-none-any.whl.metadata (5.5 kB)
+#11 17.05 Collecting python-json-logger>=2.0.4 (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.06   Downloading python_json_logger-4.1.0-py3-none-any.whl.metadata (3.7 kB)
+#11 17.08 Collecting rfc3339-validator (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.09   Downloading rfc3339_validator-0.1.4-py2.py3-none-any.whl.metadata (1.5 kB)
+#11 17.11 Collecting rfc3986-validator>=0.1.1 (from jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.13   Downloading rfc3986_validator-0.1.1-py2.py3-none-any.whl.metadata (1.7 kB)
+#11 17.15 Collecting fqdn (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.16   Downloading fqdn-1.5.1-py3-none-any.whl.metadata (1.4 kB)
+#11 17.18 Collecting isoduration (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.19   Downloading isoduration-20.11.0-py3-none-any.whl.metadata (5.7 kB)
+#11 17.21 Collecting jsonpointer>1.13 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.22   Downloading jsonpointer-3.1.1-py3-none-any.whl.metadata (2.4 kB)
+#11 17.24 Collecting rfc3987-syntax>=1.1.0 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.25   Downloading rfc3987_syntax-1.1.0-py3-none-any.whl.metadata (7.7 kB)
+#11 17.27 Collecting uri-template (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.29   Downloading uri_template-1.3.0-py3-none-any.whl.metadata (8.8 kB)
+#11 17.31 Collecting webcolors>=24.6.0 (from jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.32   Downloading webcolors-25.10.0-py3-none-any.whl.metadata (2.2 kB)
+#11 17.43 Collecting beautifulsoup4 (from nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.45   Downloading beautifulsoup4-4.15.0-py3-none-any.whl.metadata (3.8 kB)
+#11 17.48 Collecting bleach!=5.0.0 (from bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.49   Downloading bleach-6.4.0-py3-none-any.whl.metadata (32 kB)
+#11 17.52 Collecting defusedxml (from nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.53   Downloading defusedxml-0.7.1-py2.py3-none-any.whl.metadata (32 kB)
+#11 17.57 Collecting jupyterlab-pygments (from nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.58   Downloading jupyterlab_pygments-0.3.0-py3-none-any.whl.metadata (4.4 kB)
+#11 17.61 Collecting mistune<4,>=2.0.3 (from nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.63   Downloading mistune-3.3.4-py3-none-any.whl.metadata (1.9 kB)
+#11 17.65 Collecting pandocfilters>=1.4.1 (from nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.67   Downloading pandocfilters-1.5.1-py2.py3-none-any.whl.metadata (9.0 kB)
+#11 17.69 Collecting webencodings (from bleach!=5.0.0->bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.71   Downloading webencodings-0.5.1-py2.py3-none-any.whl.metadata (2.1 kB)
+#11 17.73 Collecting tinycss2>=1.1.0 (from bleach[css]!=5.0.0->nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.74   Downloading tinycss2-1.5.1-py3-none-any.whl.metadata (3.0 kB)
+#11 17.80 Collecting ptyprocess>=0.5 (from pexpect>4.6->ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 17.81   Downloading ptyprocess-0.7.0-py2.py3-none-any.whl.metadata (1.3 kB)
+#11 17.84 Requirement already satisfied: six>=1.5 in /opt/venv/lib/python3.12/site-packages (from python-dateutil>=2.7->matplotlib<4,>=3.9->torch2pc-layerwise-thesis==0.1.0) (1.17.0)
+#11 17.90 Collecting lark>=1.2.2 (from rfc3987-syntax>=1.1.0->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 17.91   Downloading lark-1.3.1-py3-none-any.whl.metadata (1.8 kB)
+#11 17.97 Collecting executing>=1.2.0 (from stack_data>=0.6.0->ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 17.98   Downloading executing-2.2.1-py2.py3-none-any.whl.metadata (8.9 kB)
+#11 18.00 Collecting asttokens>=2.1.0 (from stack_data>=0.6.0->ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 18.01   Downloading asttokens-3.0.2-py3-none-any.whl.metadata (5.7 kB)
+#11 18.03 Collecting pure-eval (from stack_data>=0.6.0->ipython>=7.23.1->ipykernel<7,>=6.29->torch2pc-layerwise-thesis==0.1.0)
+#11 18.05   Downloading pure_eval-0.2.3-py3-none-any.whl.metadata (6.3 kB)
+#11 18.32 Collecting cffi>=1.0.1 (from argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 18.34   Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+#11 18.36 Collecting pycparser (from cffi>=1.0.1->argon2-cffi-bindings->argon2-cffi>=21.1->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 18.38   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#11 18.42 Collecting soupsieve>=1.6.1 (from beautifulsoup4->nbconvert>=6.4.4->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 18.43   Downloading soupsieve-2.9.2-py3-none-any.whl.metadata (4.6 kB)
+#11 18.49 Collecting arrow>=0.15.0 (from isoduration->jsonschema[format-nongpl]>=4.18.0->jupyter-events>=0.11.0->jupyter-server<3,>=2.4.0->jupyterlab<5,>=4.3->torch2pc-layerwise-thesis==0.1.0)
+#11 18.50   Downloading arrow-1.4.0-py3-none-any.whl.metadata (7.7 kB)
+#11 18.57 Downloading ipykernel-6.29.5-py3-none-any.whl (117 kB)
+#11 18.68 Downloading jupyterlab-4.4.4-py3-none-any.whl (12.3 MB)
+#11 20.23    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.3/12.3 MB 7.9 MB/s eta 0:00:00
+#11 20.24 Downloading jupyter_server-2.20.0-py3-none-any.whl (393 kB)
+#11 20.29 Downloading jupyterlab_server-2.28.0-py3-none-any.whl (59 kB)
+#11 20.31 Downloading matplotlib-3.11.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (10.0 MB)
+#11 21.52    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.0/10.0 MB 8.3 MB/s eta 0:00:00
+#11 21.53 Downloading mkdocs-1.6.1-py3-none-any.whl (3.9 MB)
+#11 21.98    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.9/3.9 MB 8.7 MB/s eta 0:00:00
+#11 21.99 Downloading mkdocs_material-9.6.15-py3-none-any.whl (8.7 MB)
+#11 23.07    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.7/8.7 MB 8.0 MB/s eta 0:00:00
+#11 23.08 Downloading babel-2.18.0-py3-none-any.whl (10.2 MB)
+#11 24.38    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.2/10.2 MB 7.9 MB/s eta 0:00:00
+#11 24.40 Downloading backrefs-5.9-py312-none-any.whl (397 kB)
+#11 24.45 Downloading colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+#11 24.47 Downloading markdown-3.10.3-py3-none-any.whl (110 kB)
+#11 24.49 Downloading mkdocs_material_extensions-1.3.1-py3-none-any.whl (8.7 kB)
+#11 24.50 Downloading mypy-2.3.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (15.3 MB)
+#11 26.19    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.3/15.3 MB 9.1 MB/s eta 0:00:00
+#11 26.20 Downloading ast_serialize-0.8.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.3 MB)
+#11 26.37    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 8.0 MB/s eta 0:00:00
+#11 26.38 Downloading nbclient-0.10.2-py3-none-any.whl (25 kB)
+#11 26.39 Downloading nbformat-5.10.4-py3-none-any.whl (78 kB)
+#11 26.41 Downloading numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (16.5 MB)
+#11 28.33    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.5/16.5 MB 8.6 MB/s eta 0:00:00
+#11 28.35 Downloading openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
+#11 28.38 Downloading paginate-0.5.7-py2.py3-none-any.whl (13 kB)
+#11 28.39 Downloading pandas-2.3.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (12.0 MB)
+#11 29.78    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.0/12.0 MB 8.7 MB/s eta 0:00:00
+#11 29.79 Downloading psutil-7.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (277 kB)
+#11 29.84 Downloading pymdown_extensions-10.21.3-py3-none-any.whl (269 kB)
+#11 29.88 Downloading pytest-8.4.1-py3-none-any.whl (365 kB)
+#11 29.94 Downloading pytest_cov-6.2.1-py3-none-any.whl (24 kB)
+#11 29.95 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+#11 29.97 Downloading charset_normalizer-3.4.9-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (224 kB)
+#11 30.01 Downloading idna-3.18-py3-none-any.whl (65 kB)
+#11 30.03 Downloading ruff-0.12.2-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.6 MB)
+#11 31.45    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.6/11.6 MB 8.2 MB/s eta 0:00:00
+#11 31.46 Downloading scikit_learn-1.7.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (9.5 MB)
+#11 32.48    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.5/9.5 MB 9.4 MB/s eta 0:00:00
+#11 32.49 Downloading scipy-1.16.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (35.1 MB)
+#11 36.50    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.1/35.1 MB 8.7 MB/s eta 0:00:00
+#11 36.51 Downloading types_pyyaml-6.0.12.20260724-py3-none-any.whl (20 kB)
+#11 36.52 Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
+#11 36.55 Downloading anyio-4.14.2-py3-none-any.whl (125 kB)
+#11 36.57 Downloading argon2_cffi-25.1.0-py3-none-any.whl (14 kB)
+#11 36.58 Downloading async_lru-2.3.0-py3-none-any.whl (8.4 kB)
+#11 36.59 Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#11 36.61 Downloading click-8.4.2-py3-none-any.whl (119 kB)
+#11 36.64 Downloading comm-0.2.3-py3-none-any.whl (7.3 kB)
+#11 36.65 Downloading coverage-7.15.4-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (257 kB)
+#11 36.69 Downloading debugpy-1.8.21-cp312-cp312-manylinux_2_34_x86_64.whl (4.0 MB)
+#11 37.13    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.0/4.0 MB 9.1 MB/s eta 0:00:00
+#11 37.15 Downloading fastjsonschema-2.22.1-py3-none-any.whl (26 kB)
+#11 37.16 Downloading ghp_import-2.1.0-py3-none-any.whl (11 kB)
+#11 37.17 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#11 37.19 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#11 37.21 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#11 37.23 Downloading ipython-9.16.1-py3-none-any.whl (625 kB)
+#11 37.30    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 626.0/626.0 kB 8.4 MB/s eta 0:00:00
+#11 37.32 Downloading prompt_toolkit-3.0.53-py3-none-any.whl (392 kB)
+#11 37.38 Downloading ipython_pygments_lexers-1.1.1-py3-none-any.whl (8.1 kB)
+#11 37.39 Downloading jedi-0.20.0-py2.py3-none-any.whl (4.9 MB)
+#11 38.01    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.9/4.9 MB 8.0 MB/s eta 0:00:00
+#11 38.02 Downloading parso-0.8.7-py2.py3-none-any.whl (107 kB)
+#11 38.05 Downloading joblib-1.5.3-py3-none-any.whl (309 kB)
+#11 38.10 Downloading json5-0.15.0-py3-none-any.whl (36 kB)
+#11 38.11 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#11 38.13 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#11 38.15 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#11 38.16 Downloading jupyter_client-8.9.1-py3-none-any.whl (109 kB)
+#11 38.18 Downloading jupyter_core-5.9.1-py3-none-any.whl (29 kB)
+#11 38.19 Downloading jupyter_events-0.12.1-py3-none-any.whl (19 kB)
+#11 38.21 Downloading jsonpointer-3.1.1-py3-none-any.whl (7.7 kB)
+#11 38.22 Downloading jupyter_lsp-2.3.1-py3-none-any.whl (77 kB)
+#11 38.24 Downloading jupyter_server_terminals-0.5.4-py3-none-any.whl (13 kB)
+#11 38.25 Downloading librt-0.15.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (531 kB)
+#11 38.31    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 531.9/531.9 kB 8.0 MB/s eta 0:00:00
+#11 38.32 Downloading matplotlib_inline-0.2.2-py3-none-any.whl (9.5 kB)
+#11 38.33 Downloading mergedeep-1.3.4-py3-none-any.whl (6.4 kB)
+#11 38.34 Downloading mkdocs_get_deps-0.2.2-py3-none-any.whl (9.6 kB)
+#11 38.36 Downloading mypy_extensions-1.1.0-py3-none-any.whl (5.0 kB)
+#11 38.37 Downloading nbconvert-7.17.1-py3-none-any.whl (261 kB)
+#11 38.41 Downloading mistune-3.3.4-py3-none-any.whl (66 kB)
+#11 38.42 Downloading bleach-6.4.0-py3-none-any.whl (165 kB)
+#11 38.46 Downloading notebook_shim-0.2.4-py3-none-any.whl (13 kB)
+#11 38.47 Downloading pandocfilters-1.5.1-py2.py3-none-any.whl (8.7 kB)
+#11 38.48 Downloading pathspec-1.1.1-py3-none-any.whl (57 kB)
+#11 38.50 Downloading pexpect-4.9.0-py2.py3-none-any.whl (63 kB)
+#11 38.52 Downloading platformdirs-4.11.2-py3-none-any.whl (23 kB)
+#11 38.53 Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)
+#11 38.55 Downloading ptyprocess-0.7.0-py2.py3-none-any.whl (13 kB)
+#11 38.56 Downloading python_json_logger-4.1.0-py3-none-any.whl (15 kB)
+#11 38.58 Downloading pytz-2026.3.post1-py2.py3-none-any.whl (508 kB)
+#11 38.65 Downloading pyyaml_env_tag-1.1-py3-none-any.whl (4.7 kB)
+#11 38.66 Downloading pyzmq-27.1.0-cp312-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (840 kB)
+#11 38.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 841.0/841.0 kB 9.6 MB/s eta 0:00:00
+#11 38.76 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#11 38.78 Downloading rfc3986_validator-0.1.1-py2.py3-none-any.whl (4.2 kB)
+#11 38.79 Downloading rfc3987_syntax-1.1.0-py3-none-any.whl (8.0 kB)
+#11 38.80 Downloading lark-1.3.1-py3-none-any.whl (113 kB)
+#11 38.83 Downloading rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (366 kB)
+#11 38.87 Downloading send2trash-2.1.0-py3-none-any.whl (17 kB)
+#11 38.88 Downloading stack_data-0.6.3-py3-none-any.whl (24 kB)
+#11 38.89 Downloading asttokens-3.0.2-py3-none-any.whl (28 kB)
+#11 38.91 Downloading executing-2.2.1-py2.py3-none-any.whl (28 kB)
+#11 38.92 Downloading terminado-0.18.1-py3-none-any.whl (14 kB)
+#11 38.93 Downloading threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+#11 38.94 Downloading tinycss2-1.5.1-py3-none-any.whl (28 kB)
+#11 38.96 Downloading tornado-6.5.8-cp39-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (450 kB)
+#11 39.02 Downloading traitlets-5.16.1-py3-none-any.whl (86 kB)
+#11 39.03 Downloading tzdata-2026.3-py2.py3-none-any.whl (348 kB)
+#11 39.10 Downloading watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl (79 kB)
+#11 39.11 Downloading wcwidth-0.8.2-py3-none-any.whl (323 kB)
+#11 39.16 Downloading webcolors-25.10.0-py3-none-any.whl (14 kB)
+#11 39.18 Downloading webencodings-0.5.1-py2.py3-none-any.whl (11 kB)
+#11 39.19 Downloading websocket_client-1.9.0-py3-none-any.whl (82 kB)
+#11 39.21 Downloading argon2_cffi_bindings-25.1.0-cp39-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (87 kB)
+#11 39.22 Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
+#11 39.26 Downloading beautifulsoup4-4.15.0-py3-none-any.whl (109 kB)
+#11 39.28 Downloading soupsieve-2.9.2-py3-none-any.whl (37 kB)
+#11 39.30 Downloading defusedxml-0.7.1-py2.py3-none-any.whl (25 kB)
+#11 39.31 Downloading et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+#11 39.32 Downloading fqdn-1.5.1-py3-none-any.whl (9.1 kB)
+#11 39.33 Downloading isoduration-20.11.0-py3-none-any.whl (11 kB)
+#11 39.34 Downloading arrow-1.4.0-py3-none-any.whl (68 kB)
+#11 39.36 Downloading jupyterlab_pygments-0.3.0-py3-none-any.whl (15 kB)
+#11 39.38 Downloading nest_asyncio-1.6.0-py3-none-any.whl (5.2 kB)
+#11 39.39 Downloading pure_eval-0.2.3-py3-none-any.whl (11 kB)
+#11 39.40 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#11 39.42 Downloading rfc3339_validator-0.1.4-py2.py3-none-any.whl (3.5 kB)
+#11 39.43 Downloading uri_template-1.3.0-py3-none-any.whl (11 kB)
+#11 39.91 Building wheels for collected packages: torch2pc-layerwise-thesis
+#11 39.92   Building editable for torch2pc-layerwise-thesis (pyproject.toml): started
+#11 39.97   Building editable for torch2pc-layerwise-thesis (pyproject.toml): finished with status 'done'
+#11 39.97   Created wheel for torch2pc-layerwise-thesis: filename=torch2pc_layerwise_thesis-0.1.0-py3-none-any.whl size=15921 sha256=055b2cffc6514b1dc37eba6db7d39b8512615746e146d2ca0b3805e76ce070ae
+#11 39.97   Stored in directory: /tmp/pip-ephem-wheel-cache-qzedro08/wheels/b0/41/ab/4e04a8678980f3355548f1261923479fbf2a713a7393a7dea8
+#11 39.98 Successfully built torch2pc-layerwise-thesis
+#11 40.62 Installing collected packages: webencodings, pytz, pure-eval, ptyprocess, paginate, websocket-client, webcolors, wcwidth, watchdog, urllib3, uri-template, tzdata, types-pyyaml, traitlets, tornado, tinycss2, threadpoolctl, soupsieve, send2trash, ruff, rpds-py, rfc3986-validator, rfc3339-validator, pyzmq, pyyaml-env-tag, python-json-logger, pytest, pycparser, psutil, prometheus-client, platformdirs, pexpect, pathspec, parso, pandocfilters, numpy, nest-asyncio, mypy_extensions, mkdocs-material-extensions, mistune, mergedeep, markdown, librt, lark, jupyterlab-pygments, jsonpointer, json5, joblib, ipython-pygments-lexers, idna, h11, fqdn, fastjsonschema, executing, et-xmlfile, defusedxml, debugpy, coverage, comm, colorama, click, charset_normalizer, certifi, bleach, backrefs, babel, attrs, async-lru, asttokens, ast-serialize, terminado, stack_data, scipy, rfc3987-syntax, requests, referencing, pymdown-extensions, prompt_toolkit, pandas, openpyxl, mypy, mkdocs-get-deps, matplotlib-inline, jupyter-core, jedi, httpcore, ghp-import, cffi, beautifulsoup4, arrow, anyio, scikit-learn, pytest-cov, mkdocs, matplotlib, jupyter-server-terminals, jupyter-client, jsonschema-specifications, isoduration, ipython, httpx, argon2-cffi-bindings, mkdocs-material, jsonschema, ipykernel, argon2-cffi, nbformat, nbclient, jupyter-events, torch2pc-layerwise-thesis, nbconvert, jupyter-server, notebook-shim, jupyterlab-server, jupyter-lsp, jupyterlab
+#11 42.84   Attempting uninstall: pytest
+#11 42.85     Found existing installation: pytest 9.0.2
+#11 42.87     Uninstalling pytest-9.0.2:
+#11 43.65       Successfully uninstalled pytest-9.0.2
+#11 44.62   Attempting uninstall: numpy
+#11 44.62     Found existing installation: numpy 2.4.4
+#11 44.72     Uninstalling numpy-2.4.4:
+#11 45.36       Successfully uninstalled numpy-2.4.4
+#11 51.94   Attempting uninstall: scipy
+#11 51.95     Found existing installation: scipy 1.17.1
+#11 52.14     Uninstalling scipy-1.17.1:
+#11 53.29       Successfully uninstalled scipy-1.17.1
+#11 60.38   Attempting uninstall: pandas
+#11 60.40     Found existing installation: pandas 3.0.1
+#11 60.64     Uninstalling pandas-3.0.1:
+#11 61.88       Successfully uninstalled pandas-3.0.1
+#11 72.42   Attempting uninstall: matplotlib
+#11 72.43     Found existing installation: matplotlib 3.10.8
+#11 72.46     Uninstalling matplotlib-3.10.8:
+#11 73.09       Successfully uninstalled matplotlib-3.10.8
+#11 78.92 
+#11 78.94 Successfully installed anyio-4.14.2 argon2-cffi-25.1.0 argon2-cffi-bindings-25.1.0 arrow-1.4.0 ast-serialize-0.8.0 asttokens-3.0.2 async-lru-2.3.0 attrs-26.1.0 babel-2.18.0 backrefs-5.9 beautifulsoup4-4.15.0 bleach-6.4.0 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.4.9 click-8.4.2 colorama-0.4.6 comm-0.2.3 coverage-7.15.4 debugpy-1.8.21 defusedxml-0.7.1 et-xmlfile-2.0.0 executing-2.2.1 fastjsonschema-2.22.1 fqdn-1.5.1 ghp-import-2.1.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.18 ipykernel-6.29.5 ipython-9.16.1 ipython-pygments-lexers-1.1.1 isoduration-20.11.0 jedi-0.20.0 joblib-1.5.3 json5-0.15.0 jsonpointer-3.1.1 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 jupyter-client-8.9.1 jupyter-core-5.9.1 jupyter-events-0.12.1 jupyter-lsp-2.3.1 jupyter-server-2.20.0 jupyter-server-terminals-0.5.4 jupyterlab-4.4.4 jupyterlab-pygments-0.3.0 jupyterlab-server-2.28.0 lark-1.3.1 librt-0.15.0 markdown-3.10.3 matplotlib-3.11.1 matplotlib-inline-0.2.2 mergedeep-1.3.4 mistune-3.3.4 mkdocs-1.6.1 mkdocs-get-deps-0.2.2 mkdocs-material-9.6.15 mkdocs-material-extensions-1.3.1 mypy-2.3.0 mypy_extensions-1.1.0 nbclient-0.10.2 nbconvert-7.17.1 nbformat-5.10.4 nest-asyncio-1.6.0 notebook-shim-0.2.4 numpy-2.2.6 openpyxl-3.1.5 paginate-0.5.7 pandas-2.3.1 pandocfilters-1.5.1 parso-0.8.7 pathspec-1.1.1 pexpect-4.9.0 platformdirs-4.11.2 prometheus-client-0.26.0 prompt_toolkit-3.0.53 psutil-7.0.0 ptyprocess-0.7.0 pure-eval-0.2.3 pycparser-3.0 pymdown-extensions-10.21.3 pytest-8.4.1 pytest-cov-6.2.1 python-json-logger-4.1.0 pytz-2026.3.post1 pyyaml-env-tag-1.1 pyzmq-27.1.0 referencing-0.37.0 requests-2.34.2 rfc3339-validator-0.1.4 rfc3986-validator-0.1.1 rfc3987-syntax-1.1.0 rpds-py-2026.6.3 ruff-0.12.2 scikit-learn-1.7.1 scipy-1.16.0 send2trash-2.1.0 soupsieve-2.9.2 stack_data-0.6.3 terminado-0.18.1 threadpoolctl-3.6.0 tinycss2-1.5.1 torch2pc-layerwise-thesis-0.1.0 tornado-6.5.8 traitlets-5.16.1 types-pyyaml-6.0.12.20260724 tzdata-2026.3 uri-template-1.3.0 urllib3-2.7.0 watchdog-6.0.0 wcwidth-0.8.2 webcolors-25.10.0 webencodings-0.5.1 websocket-client-1.9.0
+#11 79.05 
+#11 79.05 [notice] A new release of pip is available: 25.1.1 -> 26.2.1
+#11 79.05 [notice] To update, run: pip install --upgrade pip
+#11 80.32 No broken requirements found.
+#11 DONE 81.0s
+
+#12 [ 8/10] COPY . /workspace
+#12 DONE 0.9s
+
+#13 [ 9/10] RUN cd /workspace     && sha256sum -c experiments/frozen/stage3b-qwake-attempt-003-clean-source-closure-implementation-authoring-v1/runtime-SHA256SUMS     && python scripts/verify_stage3b_qwake_attempt_003_buildtime_closure.py --project-root /workspace
+#13 0.172 .dockerignore: OK
+#13 0.172 Dockerfile.rocm: OK
+#13 0.172 pyproject.toml: OK
+#13 0.172 requirements/rocm.txt: OK
+#13 0.172 scripts/container_entrypoint.sh: OK
+#13 0.172 scripts/run_stage3b_qwake_attempt_003_authorized_runtime.py: OK
+#13 0.172 scripts/verify_stage3b_qwake_attempt_003_buildtime_closure.py: OK
+#13 0.172 scripts/verify_stage3b_qwake_attempt_003_prebuild_closure.py: OK
+#13 0.172 src/torch2pc_thesis/stage3b_qwake_attempt_003_contract.py: OK
+#13 0.172 src/torch2pc_thesis/stage3b_qwake_attempt_003_execution_wrapper.py: OK
+#13 0.172 src/torch2pc_thesis/stage3b_qwake_attempt_003_runtime_backend.py: OK
+#13 0.172 src/torch2pc_thesis/stage3b_qwake_attempt_003_source_closure.py: OK
+#13 0.172 tests/unit/test_stage3b_qwake_attempt_003_source_closure.py: OK
+#13 0.236 ATTEMPT_003_BUILDTIME_SOURCE_CLOSURE_VERIFIED=true
+#13 0.236 RUNTIME_SOURCE_REGISTRY_EXACT=true
+#13 0.236 RUNTIME_EXECUTION_PERFORMED=false
+#13 0.236 MODEL_CODE_INVOKED=false
+#13 0.236 DATASET_ACCESSED=false
+#13 DONE 0.3s
+
+#14 [10/10] RUN chmod 0755 /workspace/scripts     && chmod 0755 /workspace/scripts/*.sh
+#14 DONE 0.4s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 29.2s done
+#15 exporting manifest sha256:de3a71b2078641c52d1a70e47000018e504f45e586dabcab52a236d3feffb80d done
+#15 exporting config sha256:ad0deb9531576da9d73a76ce3003ed95f7f94b033aa5be4ba2db6b1a15c75af0 done
+#15 exporting attestation manifest sha256:83ee403ec8f564924b53f4fbdc9f6e99ee7c459e54ef27b5894ff0780cefc036 0.0s done
+#15 exporting manifest list sha256:800471114a6fec7d401fcbc3c781957265aaa351babaa5adf823d1521a95a8e3 done
+#15 naming to docker.io/library/torch2pc-layerwise-thesis:0.1.0-qw5-4eb23b6f5e2e done
+#15 unpacking to docker.io/library/torch2pc-layerwise-thesis:0.1.0-qw5-4eb23b6f5e2e
+#15 unpacking to docker.io/library/torch2pc-layerwise-thesis:0.1.0-qw5-4eb23b6f5e2e 9.8s done
+#15 DONE 39.0s

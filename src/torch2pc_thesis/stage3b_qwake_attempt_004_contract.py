@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass, is_dataclass
 from pathlib import Path
@@ -145,7 +146,7 @@ class Attempt004ContractError(RuntimeError):
 
 @dataclass(frozen=True)
 class Attempt004ExecutionFreeze:
-    """Exact corrected image and source identities for attempt 004."""
+    """Exact local image ID, optional repo digest, and source identities."""
 
     schema_version: int
     freeze_id: str
@@ -247,13 +248,10 @@ class Attempt004ExecutionFreeze:
             (self.freeze_sha256, "freeze_sha256"),
         ):
             _require_sha256(value, field_name)
-        if self.image_repo_digest.count("@sha256:") != 1:
-            raise Attempt004ContractError("attempt-004 image repo digest differs")
-        image_hex = self.image_digest.removeprefix("sha256:")
-        if not self.image_repo_digest.endswith(image_hex):
-            raise Attempt004ContractError(
-                "attempt-004 image and repository digests differ"
-            )
+        _require_optional_repo_digest(
+            self.image_repo_digest,
+            "image_repo_digest",
+        )
         if self.freeze_sha256 != sha256_object(self._payload_without_digest()):
             raise Attempt004ContractError("attempt-004 freeze digest differs")
 
@@ -396,8 +394,19 @@ class Attempt004AdmissionIdentity:
             (self.torch2pc_commit, "torch2pc_commit"),
         ):
             _require_commit(value, field_name)
-        if self.image_repo_digest.count("@sha256:") != 1:
-            raise Attempt004ContractError("attempt-004 admission image differs")
+        _require_optional_repo_digest(
+            self.image_repo_digest,
+            "image_repo_digest",
+        )
+
+
+def _require_optional_repo_digest(value: str, field_name: str) -> None:
+    if not value:
+        return
+    if re.fullmatch(r"[^@\s]+@sha256:[0-9a-f]{64}", value) is None:
+        raise Attempt004ContractError(
+            f"attempt-004 {field_name} is not an optional repository digest"
+        )
 
 
 def canonical_json(value: object) -> str:

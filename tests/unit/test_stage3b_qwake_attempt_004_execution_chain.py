@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import ast
+import importlib.util
+import json
+import subprocess
+from dataclasses import replace
 from pathlib import Path
 from typing import cast
 
@@ -17,6 +21,7 @@ from torch2pc_thesis.stage3b_qwake_attempt_004_contract import (
     EXPECTED_SCIENTIFIC_AUTHORIZATION_SHA256,
     EXPECTED_TORCH2PC_COMMIT,
     Attempt004AdmissionIdentity,
+    Attempt004ContractError,
 )
 from torch2pc_thesis.stage3b_qwake_attempt_004_cpu_measurement_stabilization import (
     Attempt004CPUStabilizedMatrixExecutor,
@@ -47,7 +52,7 @@ def _admission() -> Attempt004AdmissionIdentity:
         wrapper_commit="3" * 40,
         torch2pc_commit=EXPECTED_TORCH2PC_COMMIT,
         image_digest="sha256:" + "4" * 64,
-        image_repo_digest="torch2pc-layerwise-thesis@sha256:" + "4" * 64,
+        image_repo_digest="",
         scientific_authorization_sha256=(
             EXPECTED_SCIENTIFIC_AUTHORIZATION_SHA256
         ),
@@ -187,6 +192,9 @@ def test_host_spawner_has_exact_single_spawn_and_fixed_cpu_profile() -> None:
         assert f'("{name}", "1")' in source
 
     assert "automatic_retry_performed" in source
+    assert 'image_digest = record.get("Id")' in source
+    assert 'repo_digest = matching[0] if matching else ""' in source
+    assert "freeze.image_digest," in source
     assert "automatic_retry_permitted" in source
     assert '["git", "reset"' not in source
     assert '["git", "clean"' not in source
@@ -203,3 +211,114 @@ def test_host_command_is_distinct_from_authorization() -> None:
     assert ATTEMPT_004_LEASE_ACKNOWLEDGEMENT == (
         "CLAIM_QWAKE_LC4_ATTEMPT_004_FROM_CPU_STABILIZED_EXECUTION_FREEZE"
     )
+
+def test_repo_digest_is_optional_observational_identity() -> None:
+    admission = _admission()
+    replace(
+        admission,
+        image_repo_digest="torch2pc-layerwise-thesis@sha256:" + "5" * 64,
+    ).require()
+
+    with pytest.raises(Attempt004ContractError):
+        replace(admission, image_repo_digest="not-a-repo-digest").require()
+
+
+def _load_host_module():
+    spec = importlib.util.spec_from_file_location(
+        "attempt004_host_one_shot_test_module",
+        HOST,
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_build_image_uses_local_image_id_without_repo_digest(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    host = _load_host_module()
+    source_commit = "3" * 40
+    image_id = "sha256:" + "4" * 64
+    inspection = [
+        {
+            "Id": image_id,
+            "RepoDigests": [],
+            "Config": {
+                "Labels": {
+                    "org.opencontainers.image.revision": source_commit,
+                    "io.torch2pc.base-image": host.BASE_IMAGE,
+                }
+            },
+        }
+    ]
+
+    monkeypatch.setattr(host.shutil, "which", lambda name: "/usr/bin/docker")
+    monkeypatch.setattr(
+        host,
+        "_run",
+        lambda argv, cwd, env=None: subprocess.CompletedProcess(
+            argv,
+            0,
+            stdout=b"build-ok\n",
+        ),
+    )
+    monkeypatch.setattr(
+        host,
+        "_require_command",
+        lambda argv, cwd, label, env=None: json.dumps(inspection).encode(),
+    )
+
+    observed_id, repo_digest, _, _ = host._build_image(
+        tmp_path,
+        source_commit,
+    )
+    assert observed_id == image_id
+    assert repo_digest == ""
+
+
+def test_repo_digest_does_not_redefine_local_image_id(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    host = _load_host_module()
+    source_commit = "3" * 40
+    image_id = "sha256:" + "4" * 64
+    repo_digest = "torch2pc-layerwise-thesis@sha256:" + "5" * 64
+    inspection = [
+        {
+            "Id": image_id,
+            "RepoDigests": [repo_digest],
+            "Config": {
+                "Labels": {
+                    "org.opencontainers.image.revision": source_commit,
+                    "io.torch2pc.base-image": host.BASE_IMAGE,
+                }
+            },
+        }
+    ]
+
+    monkeypatch.setattr(host.shutil, "which", lambda name: "/usr/bin/docker")
+    monkeypatch.setattr(
+        host,
+        "_run",
+        lambda argv, cwd, env=None: subprocess.CompletedProcess(
+            argv,
+            0,
+            stdout=b"build-ok\n",
+        ),
+    )
+    monkeypatch.setattr(
+        host,
+        "_require_command",
+        lambda argv, cwd, label, env=None: json.dumps(inspection).encode(),
+    )
+
+    observed_id, observed_repo_digest, _, _ = host._build_image(
+        tmp_path,
+        source_commit,
+    )
+    assert observed_id == image_id
+    assert observed_repo_digest == repo_digest
+    assert observed_id.removeprefix("sha256:") not in observed_repo_digest

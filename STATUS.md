@@ -2958,3 +2958,42 @@ RUNTIME_EXECUTION_PERFORMED=false
 QW5_TRANSITION_PERMITTED=false
 NEXT_SLICE=QW-LC4-E-claim-execute-order-correction-image-and-attempt-002-materialization
 ```
+
+
+## `QW-LC4-E`: Attempt-005 terminal PASS и переход к `QW-5` (ADR-122)
+
+Attempt-005 выполнен один раз из canonical `main` `7168d6ebf3fbc27f5b85e1e44a7e8252f28038b0`. Единый
+engineering report имеет `validation_passed=true`: 168 measured cells, 28
+reserve probes, 14 aggregates, CPU `7/7`, ROCm `7/7`, order-effect failures
+отсутствуют. Автоматический повтор не выполнялся и запрещён.
+
+ADR-122 связывает terminal evidence и завершает `QW-LC4-E`. Открывается только
+следующая preregistered граница `QW-5` scientific-image freeze; сам scientific
+image ещё не материализован. `C1/C2/C3/R`, test dataset и publication остаются
+закрытыми.
+
+```text
+ATTEMPT_005_TERMINAL=true
+ATTEMPT_005_VALIDATION_PASSED=true
+ATTEMPT_005_RETRY_PERMITTED=false
+ATTEMPT_005_AUTHORIZED_CELL_COUNT=168
+ATTEMPT_005_RESERVE_PROBE_COUNT=28
+ATTEMPT_005_AGGREGATE_COUNT=14
+ATTEMPT_005_CPU_ORDER_EFFECT_PASS_COUNT=7
+ATTEMPT_005_ROCM_ORDER_EFFECT_PASS_COUNT=7
+ATTEMPT_005_ORDER_EFFECT_FAILURE_COUNT=0
+QW_LC4_E_COMPLETE=true
+QW5_TRANSITION_PERMITTED=true
+QW5_OPEN=true
+QW5_SCIENTIFIC_IMAGE_FREEZE_OPEN=true
+QW5_IMAGE_FROZEN=false
+SCIENTIFIC_EXECUTION_OPEN=false
+C1_COLLECTION_OPEN=false
+C2_CALIBRATION_OPEN=false
+C3_CONFIRMATORY_OPEN=false
+REPLICATION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+RUNTIME_RERUN_PERFORMED=false
+NEXT_SLICE=QW-5-scientific-image-freeze
+```

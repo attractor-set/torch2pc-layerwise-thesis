@@ -2891,3 +2891,32 @@ PUBLICATION_PERMITTED=false
 RUNTIME_RERUN_PERFORMED=false
 NEXT_SLICE=QW-5-scientific-image-freeze
 ```
+
+
+## `QW-5`: single scientific image frozen (ADR-123)
+
+`QW-5` is complete through a separately proven corrective freeze of immutable
+image `sha256:800471114a6fec7d401fcbc3c781957265aaa351babaa5adf823d1521a95a8e3`. Original `Attempt-001` remains a terminal failure:
+`success=false`, `reinterpreted=false`, `retry_performed=false`. The same image
+digest is mandatory across `C1/C2/C3/R`; C1 is not open yet.
+
+```text
+QW5_IMAGE_FROZEN=true
+QW5_FREEZE_MODE=corrective_evidence
+QW5_IMAGE_DIGEST=sha256:800471114a6fec7d401fcbc3c781957265aaa351babaa5adf823d1521a95a8e3
+QW5_CORRECTIVE_FREEZE_SHA256=sha256:b435c09c02783f09156cfb7f68045151aa659e144e3c95d85480cee99020f6f4
+ATTEMPT001_TERMINAL=true
+ATTEMPT001_SUCCESS=false
+ATTEMPT001_REINTERPRETED=false
+EXECUTION_IMAGE_STRATEGY=single_immutable_superset_image
+SAME_IMAGE_DIGEST_REQUIRED_ACROSS_C1_C2_C3_R=true
+EXECUTABLE_CODE_CHANGES_AFTER_IMAGE_FREEZE=false
+C1_COLLECTION_OPEN=false
+C2_CALIBRATION_OPEN=false
+C3_CONFIRMATORY_OPEN=false
+REPLICATION_OPEN=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=C1-request-freeze-and-authorization
+```

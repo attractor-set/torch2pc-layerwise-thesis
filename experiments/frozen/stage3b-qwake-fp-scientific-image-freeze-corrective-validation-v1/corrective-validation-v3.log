@@ -1,0 +1,120 @@
+=== QW-5 EXISTING CANDIDATE CORRECTIVE VALIDATION V3 ===
+VALIDATION_ONLY=true
+DOCKER_BUILD_INVOKED=false
+DOCKER_PULL_INVOKED=false
+DOCKER_TAG_INVOKED=false
+DOCKER_COMMIT_INVOKED=false
+SOURCE_REPOSITORY_WRITE_PERFORMED=false
+QW5_FREEZE_MATERIALIZATION_INVOKED=false
+GIT_DIR_ENV_EXPORTED=false
+GIT_WORK_TREE_ENV_EXPORTED=false
+GIT_OPTIONAL_LOCKS=0
+C1_COLLECTION_OPEN=false
+C2_CALIBRATION_OPEN=false
+C3_CONFIRMATORY_OPEN=false
+REPLICATION_OPEN=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+SOURCE_REPOSITORY_IDENTITY_EXACT=true
+BASE_HEAD=4eb23b6f5e2e3b2f3cdee83a4732f8a091b7b662
+BASE_TREE=1db3999089bf15d153a0a83920f6c1e9a1431218
+IMAGE_INSPECTION_ENCODING=raw_docker_inspect_json
+IMAGE_INSPECTION_FILE_SHA256=sha256:781e7d8ff574f75fdd0769bcdafa57f513260fb074d1b522c8123f2029f435b9
+ATTEMPT001_TERMINAL=true
+ATTEMPT001_REINTERPRETED=false
+QW5_FREEZE_MATERIALIZED=false
+CANDIDATE_IMAGE_DIGEST=sha256:800471114a6fec7d401fcbc3c781957265aaa351babaa5adf823d1521a95a8e3
+ATTEMPT001_SOURCE_REGISTRY_HOST_BYTES_EXACT=true
+ATTEMPT001_SOURCE_REGISTRY_COMMITTED_BLOBS_EXACT=true
+ATTEMPT001_SOURCE_REGISTRY_PATH_COUNT=318
+HISTORICAL_RUNTIME_REGISTRY_HOST_BYTES_EXACT=true
+HISTORICAL_RUNTIME_REGISTRY_COMMITTED_BLOBS_EXACT=true
+HISTORICAL_RUNTIME_REGISTRY_PATH_COUNT=13
+CANDIDATE_IMAGE_LOCAL_IDENTITY_EXACT=true
+CANDIDATE_IMAGE_MUTATED=false
+CANDIDATE_DEFAULT_USER_ROOT=true
+GIT_METADATA_CAPSULE_EXACT=true
+GIT_METADATA_CAPSULE_SELF_CONTAINED=true
+GIT_METADATA_CAPSULE_REFS_PRESENT=false
+WORKSPACE_SOURCE_OVERLAY=false
+CONTAINER_GIT_DISCOVERY_EXACT=true
+GIT_DIR_ENV_EXPORTED=false
+GIT_WORK_TREE_ENV_EXPORTED=false
+TEMPORARY_GIT_INIT_ISOLATION=PASS
+WORKSPACE_GIT_METADATA_MOUNT_READONLY=true
+WORKSPACE_STATUS_LINE_COUNT=2
+WORKSPACE_STATUS=?? experiments/frozen/stage3b-qwake-fp-scientific-image-freeze-v1/materialization-attempt.json
+WORKSPACE_STATUS=?? experiments/frozen/stage3b-qwake-fp-scientific-image-freeze-v1/source-SHA256SUMS
+SOURCE_BYTES_EQUAL_TO_ATTEMPT001_REGISTRY=true
+=== HISTORICAL_GIT_DEPENDENT_VERIFIER ===
+ATTEMPT_003_PREBUILD_SOURCE_CLOSURE_VERIFIED=true
+GIT_OBJECT_PRESENCE_EXACT=true
+COMMITTED_BLOB_HASHES_EXACT=true
+DOCKER_CONTEXT_INCLUSION_EXACT=true
+DOCKER_BUILD_INVOKED=false
+RUNTIME_INVOKED=false
+HISTORICAL_GIT_DEPENDENT_VERIFIER=PASS
+=== PIP_CHECK ===
+No broken requirements found.
+PIP_CHECK_PASSED=true
+=== FULL_PYTEST ===
+ssssssss................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 30%]
+........................................................................ [ 34%]
+........................................................................ [ 38%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 51%]
+........................................................................ [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 64%]
+........................................................................ [ 69%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+........................................................................ [ 90%]
+........................................................................ [ 95%]
+........................................................................ [ 99%]
+...........                                                              [100%]
+=========================== short test summary info ============================
+SKIPPED [2] tests/correctness/test_stage3b_b1_patched_reference.py:24: prepared external/Torch2PC checkout is unavailable
+SKIPPED [2] tests/correctness/test_stage3b_b1_smoke_patched_reference.py:58: prepared external/Torch2PC checkout is unavailable
+SKIPPED [2] tests/correctness/test_stage3b_b2_patched_reference.py:65: prepared external/Torch2PC checkout is unavailable
+SKIPPED [2] tests/correctness/test_stage3b_b2_smoke_patched_reference.py:116: prepared external/Torch2PC checkout is unavailable
+1659 passed, 8 skipped in 135.93s (0:02:15)
+FULL_PYTEST_PASSED=true
+PIP_FREEZE_SHA256=sha256:225cd5e218fea336ebec680a9b602b74fc8539741083b125fe222f50113fa886
+SOURCE_BYTES_EQUAL_TO_ATTEMPT001_REGISTRY=true
+=== DATASET_ABSENCE_AUDIT ===
+DATASET_PAYLOAD_PRESENT=false
+DATASET_PAYLOAD_PRESENT=false
+CANDIDATE_IMAGE_LOCAL_IDENTITY_EXACT=true
+CANDIDATE_IMAGE_MUTATED=false
+CANDIDATE_DEFAULT_USER_ROOT=true
+=== QW-5 EXISTING CANDIDATE CORRECTIVE VALIDATION V3 SUCCESS ===
+FINAL_STATUS=0
+CANDIDATE_IMAGE_DIGEST=sha256:800471114a6fec7d401fcbc3c781957265aaa351babaa5adf823d1521a95a8e3
+ATTEMPT001_TERMINAL=true
+ATTEMPT001_REINTERPRETED=false
+CORRECTIVE_VALIDATION_PASSED=true
+QW5_FREEZE_MATERIALIZED=false
+DOCKER_BUILD_INVOKED=false
+CANDIDATE_IMAGE_MUTATED=false
+WORKSPACE_SOURCE_OVERLAY=false
+WORKSPACE_GIT_METADATA_MOUNT_READONLY=true
+GIT_DIR_ENV_EXPORTED=false
+GIT_WORK_TREE_ENV_EXPORTED=false
+TEMPORARY_GIT_INIT_ISOLATION=PASS
+NETWORK_ENABLED=false
+GPU_DEVICE_MOUNTED=false
+SCIENTIFIC_EXECUTION_PERFORMED=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT=author_corrective_validation_evidence_for_same_candidate_image

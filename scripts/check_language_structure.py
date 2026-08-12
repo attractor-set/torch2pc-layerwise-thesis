@@ -17,6 +17,25 @@ NUMBER = re.compile(
     r"(?<![A-Za-z_])\d+(?:\.\d+)?(?:e[+-]?\d+)?(?![A-Za-z_])",
     re.IGNORECASE,
 )
+FENCE = re.compile(r"^[ \t]{0,3}(`{3,}|~{3,})(.*)$")
+HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
+INLINE_CODE = re.compile(r"(`+)(.+?)\1", re.DOTALL)
+REFERENCE_DEFINITION = re.compile(r"^[ \t]{0,3}\[[^\]]+\]:\s*\S+.*$", re.MULTILINE)
+AUTOLINK = re.compile(r"<(?:(?:https?|mailto):[^>]+)>", re.IGNORECASE)
+BARE_URL = re.compile(r"\b(?:https?|ftp)://\S+", re.IGNORECASE)
+MARKDOWN_LINK = re.compile(r"!?\[([^\]]*)\]\([^)]*\)")
+REFERENCE_LINK = re.compile(r"!?\[([^\]]*)\]\[[^\]]*\]")
+HTML_TAG = re.compile(r"</?[A-Za-z][^>]*>")
+MACHINE_ASSIGNMENT = re.compile(
+    r"(?<![\w`])(?:[A-Z][A-Z0-9_]{2,}|[a-z][A-Za-z0-9_.-]*_[A-Za-z0-9_.-]+)"
+    r"\s*=\s*[^\s,;]+"
+)
+MACHINE_IDENTIFIER = re.compile(r"(?<![\w`])[A-Z][A-Z0-9_]{2,}(?![\w`])")
+PATH_TOKEN = re.compile(
+    r"(?<![\w`])(?:\.?\.?/)?(?:[A-Za-z0-9_.-]+/)+[A-Za-z0-9_.-]+(?:\.[A-Za-z0-9_.-]+)?"
+)
+CLI_OPTION = re.compile(r"(?<![\w`])--[A-Za-z0-9][A-Za-z0-9_.-]*(?:=[^\s,;]+)?")
+LONG_MACHINE_HEX = re.compile(r"(?<![0-9A-Fa-f])[0-9A-Fa-f]{12,}(?![0-9A-Fa-f])")
 
 
 def text_ratio(pattern: re.Pattern[str], text: str) -> float:
@@ -26,6 +45,58 @@ def text_ratio(pattern: re.Pattern[str], text: str) -> float:
     return len(pattern.findall(text)) / len(letters)
 
 
+def strip_fenced_code_blocks(text: str) -> str:
+    """Remove fenced verbatim blocks while preserving surrounding prose lines."""
+
+    output: list[str] = []
+    fence_char: str | None = None
+    fence_len = 0
+    for line in text.splitlines(keepends=True):
+        match = FENCE.match(line)
+        if fence_char is None:
+            if match is None:
+                output.append(line)
+                continue
+            token = match.group(1)
+            fence_char = token[0]
+            fence_len = len(token)
+            output.append("\n" if line.endswith("\n") else "")
+            continue
+
+        stripped = line.lstrip(" \t")
+        if stripped.startswith(fence_char * fence_len):
+            closing = len(stripped) - len(stripped.lstrip(fence_char))
+            if closing >= fence_len:
+                fence_char = None
+                fence_len = 0
+        output.append("\n" if line.endswith("\n") else "")
+    return "".join(output)
+
+
+def markdown_prose_surface(text: str) -> str:
+    """Return human-language Markdown prose, excluding machine/verbatim surfaces."""
+
+    prose = strip_fenced_code_blocks(text)
+    prose = HTML_COMMENT.sub(" ", prose)
+    prose = REFERENCE_DEFINITION.sub(" ", prose)
+    prose = INLINE_CODE.sub(" ", prose)
+    prose = AUTOLINK.sub(" ", prose)
+    prose = BARE_URL.sub(" ", prose)
+    prose = MARKDOWN_LINK.sub(lambda match: match.group(1), prose)
+    prose = REFERENCE_LINK.sub(lambda match: match.group(1), prose)
+    prose = HTML_TAG.sub(" ", prose)
+    prose = LONG_MACHINE_HEX.sub(" ", prose)
+    prose = CLI_OPTION.sub(" ", prose)
+    prose = PATH_TOKEN.sub(" ", prose)
+    prose = MACHINE_ASSIGNMENT.sub(" ", prose)
+    prose = MACHINE_IDENTIFIER.sub(" ", prose)
+    return prose
+
+
+def language_ratio(pattern: re.Pattern[str], text: str) -> float:
+    """Measure natural-language identity on the human prose surface only."""
+
+    return text_ratio(pattern, markdown_prose_surface(text))
 
 
 def normalized_numeric_literals(text: str) -> set[str]:
@@ -48,12 +119,8 @@ def heading_levels(text: str) -> list[int]:
     return [len(match.group(1)) for match in HEADING.finditer(text)]
 
 
-LANG_FACT = re.compile(
-    r"<!--\s*LANG-FACT:\s*([A-Za-z0-9_.-]+)\s*=\s*(.*?)\s*-->"
-)
-LANG_SOURCE = re.compile(
-    r"<!--\s*LANG-SOURCE:\s*([^\s<>]+)\s*-->"
-)
+LANG_FACT = re.compile(r"<!--\s*LANG-FACT:\s*([A-Za-z0-9_.-]+)\s*=\s*(.*?)\s*-->")
+LANG_SOURCE = re.compile(r"<!--\s*LANG-SOURCE:\s*([^\s<>]+)\s*-->")
 
 
 def numeric_literal_drift(
@@ -82,9 +149,7 @@ def extract_language_facts(text: str) -> dict[str, object]:
         try:
             value = json.loads(raw_value)
         except json.JSONDecodeError as exc:
-            raise ValueError(
-                f"LANG-FACT {key} must contain a JSON value"
-            ) from exc
+            raise ValueError(f"LANG-FACT {key} must contain a JSON value") from exc
         facts[key] = value
     return facts
 
@@ -103,15 +168,12 @@ def validate_language_sources(
     for raw in sorted(sources):
         target = (document.parent / raw).resolve()
         if not target.is_relative_to(ROOT):
-            errors.append(
-                f"{document.relative_to(ROOT)}: LANG-SOURCE leaves repository: {raw}"
-            )
+            errors.append(f"{document.relative_to(ROOT)}: LANG-SOURCE leaves repository: {raw}")
             continue
         if not target.is_file() or target.is_symlink():
-            errors.append(
-                f"{document.relative_to(ROOT)}: LANG-SOURCE is not a regular file: {raw}"
-            )
+            errors.append(f"{document.relative_to(ROOT)}: LANG-SOURCE is not a regular file: {raw}")
     return errors
+
 
 def extract_glossary_term_ids(text: str) -> list[str]:
     return GLOSSARY_TERM.findall(text)
@@ -125,7 +187,6 @@ def duplicate_values(values: list[str]) -> list[str]:
             duplicates.add(value)
         seen.add(value)
     return sorted(duplicates)
-
 
 
 def discover_docs_pairs() -> set[tuple[str, str]]:
@@ -153,8 +214,7 @@ def main() -> None:
     registered_docs_pairs = {
         (row["russian_primary"], row["english_version"])
         for row in rows
-        if row["russian_primary"].startswith("docs/")
-        and row["russian_primary"].endswith(".md")
+        if row["russian_primary"].startswith("docs/") and row["russian_primary"].endswith(".md")
     }
     discovered_docs_pairs = discover_docs_pairs()
     missing_pairs = sorted(discovered_docs_pairs - registered_docs_pairs)
@@ -180,8 +240,10 @@ def main() -> None:
 
         ru_text = ru.read_text(encoding="utf-8")
         en_text = en.read_text(encoding="utf-8")
-        ru_ratio = text_ratio(CYRILLIC, ru_text)
-        en_ratio = text_ratio(LATIN, en_text)
+        ru_raw_ratio = text_ratio(CYRILLIC, ru_text)
+        en_raw_ratio = text_ratio(LATIN, en_text)
+        ru_ratio = language_ratio(CYRILLIC, ru_text)
+        en_ratio = language_ratio(LATIN, en_text)
 
         if (
             ru.suffix == ".md"
@@ -257,6 +319,9 @@ def main() -> None:
                 "english": str(en.relative_to(ROOT)),
                 "russian_cyrillic_ratio": round(ru_ratio, 4),
                 "english_latin_ratio": round(en_ratio, 4),
+                "russian_raw_cyrillic_ratio": round(ru_raw_ratio, 4),
+                "english_raw_latin_ratio": round(en_raw_ratio, 4),
+                "language_surface": "markdown_prose",
             }
         )
 

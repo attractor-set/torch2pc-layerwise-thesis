@@ -118,3 +118,25 @@ corresponding contract must be identical in both versions. New or materially
 changed documents with normative quantitative claims should prefer a
 `LANG-SOURCE` that points to an existing machine-readable contract; Markdown
 then remains a language representation rather than a second source of truth.
+
+## Markdown language surface
+
+Language validation applies to **human prose**, not to the aggregate of every
+letter in the Markdown bytes. Machine-readable and verbatim surfaces must not
+artificially dilute the Russian or English natural-language signal.
+
+`scripts/check_language_structure.py` builds a `markdown_prose_surface` and
+excludes fenced code blocks, inline code, HTML comments (including
+`LANG-FACT`/`LANG-SOURCE`), URLs and link destinations, reference definitions,
+long machine hashes, paths, CLI options, assignment-like machine markers, and
+ALL_CAPS identifiers from the language ratio. Human-visible link labels remain
+part of prose.
+
+This separation does not weaken machine-surface validation: those surfaces are
+covered by dedicated structural and semantic contracts, including heading
+hierarchy, long-hash parity, `LANG-FACT`, `LANG-SOURCE`, and diagnostic numeric
+literal drift. Per-file or per-ADR exemptions are forbidden.
+
+The language threshold remains a blocking gate, but is computed on the prose
+surface. A document made only of machine blocks has zero language signal and
+cannot pass as Russian or English documentation without substantive prose.

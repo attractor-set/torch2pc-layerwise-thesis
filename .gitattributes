@@ -16,3 +16,6 @@ results/stage-3/b2/**/*.csv binary
 
 # Preserve the sealed QW-LC4-E immutable-image build log byte-for-byte.
 experiments/frozen/stage3b-qwake-lc4-e-execution-freeze-v1/image-build.log binary
+
+# Preserve sealed host-identity-corrected C1 scientific-image logs byte-for-byte.
+experiments/frozen/stage3b-qwake-c1-host-identity-corrected-scientific-image-freeze-v1/*.log binary

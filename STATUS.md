@@ -3191,3 +3191,25 @@ ATTEMPT002_CREATED=false
 TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 ```
+
+
+## Научный образ C1 после исправления идентичности хоста (ADR-130)
+
+Новый независимо проверенный образ `sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d` связан с исправлением
+ADR-129 и точным runtime-манифестом `sha256:fbfd01ecd41cc1615acef9f0fc9b3dd390e9605ebadd9a5dc86d78a425e2ac7b`. Интеграция
+копирует внешнюю фиксацию побайтно и не открывает новую попытку или выполнение.
+
+```text
+SOURCE_COMMIT=98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2
+IMAGE_DIGEST=sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d
+FREEZE_SHA256=sha256:ea207e6d31507d449e24fc30bb74fb21ec6560b1ec4a777cb1199de3ad63184f
+REPOSITORY_INTEGRATION_SHA256=sha256:66369e9f6f666e94625f403c341028ae2249a7e74707c22b0fef75231b67fc46
+PREVIOUS_C1_REQUEST_REUSABLE=false
+NEW_C1_REQUEST_FREEZE_REQUIRED=true
+NEW_C1_REQUEST_FROZEN=false
+ATTEMPT002_CREATED=false
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+```

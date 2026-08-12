@@ -3003,3 +3003,37 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=merge-post-merge-verify-then-corrected-image-build-validation-freeze
 ```
+
+
+## `C1`: corrected scientific image frozen and being repository-integrated (ADR-127)
+
+After ADR-126, the corrected scientific runtime was merged as `3858d3a7e6d7b3401e999523bc6675dc7dd0223d` and
+built exactly once into new image `sha256:89703b0b37b2729855835a6ed19ba1ca397ae14614c318344bd7625d12c727ef`. The image passed
+the 157-path runtime closure check, a dedicated `5 passed` train-only isolation
+validation, the `45 passed` targeted validation, was frozen, and was
+independently verified without a rebuild.
+
+ADR-127 integrates the original evidence byte-for-byte and binds it to the
+repository. Previous image `sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb` remains preserved as the
+historical superseding image but stays C1-inadmissible. The previously issued
+C1 request-freeze authorization is not consumed.
+
+```text
+CORRECTED_SCIENTIFIC_IMAGE_DIGEST=sha256:89703b0b37b2729855835a6ed19ba1ca397ae14614c318344bd7625d12c727ef
+CORRECTED_SCIENTIFIC_IMAGE_FREEZE_SHA256=sha256:ce8c054c92df18512b2a88ac25148f44c15487d8c2d4e68d8751966ac17bf287
+CORRECTED_SCIENTIFIC_IMAGE_FREEZE_INDEPENDENTLY_VERIFIED=true
+TRAIN_ONLY_ISOLATION_VALIDATED=true
+RUNTIME_SOURCE_MANIFEST_SHA256=sha256:01d86f045bf42554382654d2c48f2be23f4763b6fbdc4aa1c9e7cff939367561
+REPOSITORY_INTEGRATION_SHA256=sha256:70012413e1d6bd69dbad060cef0d4b19e0bfe2635eca4dbe746ccfc42544ae72
+PREVIOUS_SUPERSEDING_IMAGE_PRESERVED=true
+PREVIOUS_SUPERSEDING_IMAGE_C1_ADMISSIBLE=false
+C1_REQUEST_FREEZE_AUTHORIZATION_PREVIOUSLY_ISSUED=true
+C1_REQUEST_FREEZE_AUTHORIZATION_CONSUMED=false
+C1_REQUEST_FREEZE_PERMITTED=false
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=merge-post-merge-verify-then-resume-existing-C1-request-freeze-boundary
+```

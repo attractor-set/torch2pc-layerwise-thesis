@@ -1,0 +1,1620 @@
+=== QWAKE C1 TRAIN-ONLY DATASET ISOLATION CORRECTION POST-MERGE VERIFICATION V1 ===
+READ_ONLY=true
+GIT_MUTATION_INVOKED=false
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+C1_REQUEST_FREEZE_AUTHORIZATION_CONSUMED=false
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+/home/dzmitry-prychyna/torch2pc-layerwise-thesis-c1-train-only-post-merge
+3858d3a7e6d7b3401e999523bc6675dc7dd0223d
+f516667472e1ea2a8e2826f520c055cfe2dd0351
+3858d3a7e6d7b3401e999523bc6675dc7dd0223d	refs/heads/main
+f6ce596c2d7ff45a054ed8c0bb5d6ceb3cc3b97d
+f516667472e1ea2a8e2826f520c055cfe2dd0351
+M	STATUS.md
+M	STATUS_EN.md
+A	docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction.md
+A	docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md
+M	docs/decisions/index.md
+M	docs/decisions/index_EN.md
+M	docs/language-map.csv
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/SHA256SUMS
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/admission-finding.json
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/authorization.json
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/implementation.json
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/runtime-SHA256SUMS
+M	src/torch2pc_thesis/stage3b_qwake_scientific_campaign.py
+M	src/torch2pc_thesis/stage3b_qwake_scientific_runtime.py
+M	tests/unit/test_stage3b_qwake_scientific_campaign.py
+A	tests/unit/test_stage3b_qwake_scientific_train_only_dataset.py
+{"url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198","id":4258211091,"node_id":"PR_kwDOTU9MBc79zyUT","html_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis/pull/198","diff_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis/pull/198.diff","patch_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis/pull/198.patch","issue_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/198","number":198,"state":"closed","locked":false,"title":"fix(stage3b): isolate C1 train-only dataset access","user":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"body":"Authors the minimal project-owned train-only dataset-isolation\ncorrection required before C1 request freeze can resume.\n\nBase:\n`2d748751482a6b3ecb200fb3816d41f48d8ed8cc` / `f6ce596c2d7ff45a054ed8c0bb5d6ceb3cc3b97d`\n\nAdmission audit:\n`sha256:119113ab83b2622ab0e005bc16318bf88fc4e41ced56ad183c10813d5e63f784`\n\nCurrent frozen image is preserved unchanged:\n`sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb`\n\nCurrent freeze:\n`sha256:47c20698ac57c1b50f4bbe0314649b0d07494ecc1199b32819ecde7b684d9904`\n\nProspective corrected runtime manifest:\n`sha256:01d86f045bf42554382654d2c48f2be23f4763b6fbdc4aa1c9e7cff939367561`\n\nThe correction:\n- restricts live scientific requests to exactly the uncompressed train-image and\n  train-label IDX pair;\n- rejects t10k/test resources at request-schema construction;\n- removes the torchvision Dataset constructor from scientific runtime;\n- parses only the two bound train IDX files;\n- preserves the existing 28x28 -> 1x32x32 zero-pad/scale transform;\n- includes an adversarial t10k open trap and malformed-IDX fail-closed tests.\n\nThis PR does NOT build/run/pull/tag/commit a Docker image, mutate the current\nfrozen image/evidence, freeze C1, consume the prior C1 request-freeze\nauthorization, issue C1 execution authorization, execute science, access test\ndata, or permit publication.\n\nAfter merge: independently verify canonical main, then use a separate\nauthorization to build/validate/freeze the corrected scientific image.\n\n\nAuthoring recovery note:\nthe initial authorized materialization passed its 18 targeted tests but stopped\nbefore the Git authoring boundary on Ruff I001 in the newly added test import\nblock. The preserved dirty state was recovered with a three-path deterministic\ndelta: import ordering plus the two dependent evidence hashes. Scientific\nruntime source and the 157-path prospective runtime manifest are unchanged.\n","created_at":"2026-08-12T01:06:00Z","updated_at":"2026-08-12T01:16:21Z","closed_at":"2026-08-12T01:16:17Z","merged_at":"2026-08-12T01:16:17Z","merge_commit_sha":"3858d3a7e6d7b3401e999523bc6675dc7dd0223d","assignees":[],"requested_reviewers":[],"requested_teams":[],"labels":[],"milestone":null,"draft":false,"commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198/commits","review_comments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198/comments","review_comment_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/comments{/number}","comments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/198/comments","statuses_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/statuses/3d6289dbae8cdb6209c8bd0f8721f162a2250f74","head":{"label":"attractor-set:research/stage3b-qwake-c1-train-only-dataset-isolation-correction","ref":"research/stage3b-qwake-c1-train-only-dataset-isolation-correction","sha":"3d6289dbae8cdb6209c8bd0f8721f162a2250f74","user":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"repo":{"id":1297042437,"node_id":"R_kgDOTU9MBQ","name":"torch2pc-layerwise-thesis","full_name":"attractor-set/torch2pc-layerwise-thesis","private":false,"owner":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"html_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis","description":"Воспроизводимый проект магистерской диссертации по predictive coding в Torch2PC: послойное и compute-matched сравнение с backpropagation, PC-CATM/PC-TREF, механизмная диагностика state inference и QWake-PC для адаптивного exact inference в Ubuntu/ROCm — reproducible research on mechanism-aware predictive coding.","fork":false,"url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis","forks_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/forks","keys_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/keys{/key_id}","collaborators_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/teams","hooks_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/hooks","issue_events_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/events{/number}","events_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/events","assignees_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/assignees{/user}","branches_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/branches{/branch}","tags_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/tags","blobs_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/refs{/sha}","trees_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/trees{/sha}","statuses_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/statuses/{sha}","languages_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/languages","stargazers_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/stargazers","contributors_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/contributors","subscribers_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/subscribers","subscription_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/subscription","commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/commits{/sha}","git_commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/commits{/sha}","comments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/comments{/number}","issue_comment_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/comments{/number}","contents_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/contents/{+path}","compare_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/compare/{base}...{head}","merges_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/merges","archive_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/downloads","issues_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues{/number}","pulls_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls{/number}","milestones_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/milestones{/number}","notifications_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/labels{/name}","releases_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/releases{/id}","deployments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/deployments","created_at":"2026-07-11T01:50:31Z","updated_at":"2026-08-12T01:16:21Z","pushed_at":"2026-08-12T01:16:21Z","git_url":"git://github.com/attractor-set/torch2pc-layerwise-thesis.git","ssh_url":"git@github.com:attractor-set/torch2pc-layerwise-thesis.git","clone_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis.git","svn_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis","homepage":"","size":27130,"stargazers_count":0,"watchers_count":0,"language":"Python","has_issues":true,"has_projects":true,"has_downloads":false,"has_wiki":false,"has_pages":false,"has_discussions":false,"forks_count":0,"mirror_url":null,"archived":false,"disabled":false,"open_issues_count":0,"license":{"key":"apache-2.0","name":"Apache License 2.0","spdx_id":"Apache-2.0","url":"https://api.github.com/licenses/apache-2.0","node_id":"MDc6TGljZW5zZTI="},"allow_forking":true,"is_template":false,"web_commit_signoff_required":false,"has_pull_requests":true,"pull_request_creation_policy":"all","topics":[],"visibility":"public","forks":0,"open_issues":0,"watchers":0,"default_branch":"main"}},"base":{"label":"attractor-set:main","ref":"main","sha":"2d748751482a6b3ecb200fb3816d41f48d8ed8cc","user":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"repo":{"id":1297042437,"node_id":"R_kgDOTU9MBQ","name":"torch2pc-layerwise-thesis","full_name":"attractor-set/torch2pc-layerwise-thesis","private":false,"owner":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"html_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis","description":"Воспроизводимый проект магистерской диссертации по predictive coding в Torch2PC: послойное и compute-matched сравнение с backpropagation, PC-CATM/PC-TREF, механизмная диагностика state inference и QWake-PC для адаптивного exact inference в Ubuntu/ROCm — reproducible research on mechanism-aware predictive coding.","fork":false,"url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis","forks_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/forks","keys_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/keys{/key_id}","collaborators_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/teams","hooks_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/hooks","issue_events_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/events{/number}","events_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/events","assignees_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/assignees{/user}","branches_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/branches{/branch}","tags_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/tags","blobs_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/refs{/sha}","trees_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/trees{/sha}","statuses_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/statuses/{sha}","languages_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/languages","stargazers_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/stargazers","contributors_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/contributors","subscribers_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/subscribers","subscription_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/subscription","commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/commits{/sha}","git_commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/commits{/sha}","comments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/comments{/number}","issue_comment_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/comments{/number}","contents_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/contents/{+path}","compare_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/compare/{base}...{head}","merges_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/merges","archive_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/downloads","issues_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues{/number}","pulls_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls{/number}","milestones_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/milestones{/number}","notifications_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/labels{/name}","releases_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/releases{/id}","deployments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/deployments","created_at":"2026-07-11T01:50:31Z","updated_at":"2026-08-12T01:16:21Z","pushed_at":"2026-08-12T01:16:21Z","git_url":"git://github.com/attractor-set/torch2pc-layerwise-thesis.git","ssh_url":"git@github.com:attractor-set/torch2pc-layerwise-thesis.git","clone_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis.git","svn_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis","homepage":"","size":27130,"stargazers_count":0,"watchers_count":0,"language":"Python","has_issues":true,"has_projects":true,"has_downloads":false,"has_wiki":false,"has_pages":false,"has_discussions":false,"forks_count":0,"mirror_url":null,"archived":false,"disabled":false,"open_issues_count":0,"license":{"key":"apache-2.0","name":"Apache License 2.0","spdx_id":"Apache-2.0","url":"https://api.github.com/licenses/apache-2.0","node_id":"MDc6TGljZW5zZTI="},"allow_forking":true,"is_template":false,"web_commit_signoff_required":false,"has_pull_requests":true,"pull_request_creation_policy":"all","topics":[],"visibility":"public","forks":0,"open_issues":0,"watchers":0,"default_branch":"main"}},"_links":{"self":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198"},"html":{"href":"https://github.com/attractor-set/torch2pc-layerwise-thesis/pull/198"},"issue":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/198"},"comments":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/198/comments"},"review_comments":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198/comments"},"review_comment":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/comments{/number}"},"commits":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198/commits"},"statuses":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/statuses/3d6289dbae8cdb6209c8bd0f8721f162a2250f74"}},"author_association":"OWNER","auto_merge":null,"assignee":null,"active_lock_reason":null,"merged":true,"mergeable":null,"rebaseable":null,"mergeable_state":"unknown","merged_by":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"comments":0,"review_comments":0,"maintainer_can_modify":false,"commits":1,"additions":727,"deletions":18,"changed_files":16}
+POST_MERGE_GIT_IDENTITY_EXACT=true
+MERGE_COMMIT=3858d3a7e6d7b3401e999523bc6675dc7dd0223d
+MERGE_TREE=f516667472e1ea2a8e2826f520c055cfe2dd0351
+PR198_MERGED=true
+BASE_TO_MAIN_DELTA_EXACT=true
+BASE_TO_MAIN_MODIFIED_COUNT=8
+BASE_TO_MAIN_ADDED_COUNT=8
+BASE_TO_MAIN_DELETED_COUNT=0
+MERGED_PATCH_BYTES_EXACT=true
+MERGED_PATCH_PATH_COUNT=16
+CURRENT_SUPERSEDING_IMAGE_FREEZE_EXACT=true
+CURRENT_SUPERSEDING_IMAGE_MUTATED=false
+CURRENT_SUPERSEDING_IMAGE_C1_ADMISSIBLE=false
+HISTORICAL_ORCHESTRATOR_MANIFEST_EXACT=true
+HISTORICAL_LC4_BOUNDED_IDENTITY_EXACT=true
+CORRECTION_EVIDENCE_PACKAGE_EXACT=true
+CORRECTION_SHA256SUMS_EXACT=true
+NEW_RUNTIME_SOURCE_CLOSURE_EXACT=true
+NEW_RUNTIME_SOURCE_PATH_COUNT=157
+REQUEST_SCHEMA_EXACT_TRAIN_ASSET_COUNT=2
+REQUEST_SCHEMA_TEST_RESOURCE_BINDING_PERMITTED=false
+TORCHVISION_DATASET_CONSTRUCTOR_IN_SCIENTIFIC_RUNTIME=false
+TRAIN_ONLY_IDX_PARSER=true
+NEW_RUNTIME_SOURCE_MANIFEST_SHA256=sha256:01d86f045bf42554382654d2c48f2be23f4763b6fbdc4aa1c9e7cff939367561
+=== POST_MERGE_C1_TRAIN_ONLY_TARGETED ===
+..................                                                       [100%]
+18 passed in 5.53s
+POST_MERGE_C1_TRAIN_ONLY_TARGETED_STATUS=0
+POST_MERGE_C1_TRAIN_ONLY_TARGETED_EXPECTED_PASS_COUNT=18
+=== POST_MERGE_C1_TRAIN_ONLY_RUFF ===
+All checks passed!
+POST_MERGE_C1_TRAIN_ONLY_RUFF_STATUS=0
+=== POST_MERGE_C1_TRAIN_ONLY_MYPY ===
+Success: no issues found in 146 source files
+POST_MERGE_C1_TRAIN_ONLY_MYPY_STATUS=0
+=== POST_MERGE_C1_TRAIN_ONLY_LANGUAGE_STRUCTURE ===
+{
+  "status": "ok",
+  "pairs": 226,
+  "errors": [],
+  "warnings": [
+    {
+      "kind": "numeric_literal_drift",
+      "russian": "docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization.md",
+      "english": "docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization_EN.md",
+      "russian_only": [
+        "12"
+      ],
+      "english_only": []
+    },
+    {
+      "kind": "numeric_literal_drift",
+      "russian": "docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain.md",
+      "english": "docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain_EN.md",
+      "russian_only": [],
+      "english_only": [
+        "003"
+      ]
+    },
+    {
+      "kind": "numeric_literal_drift",
+      "russian": "docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction.md",
+      "english": "docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md",
+      "russian_only": [
+        "28"
+      ],
+      "english_only": []
+    }
+  ],
+  "fact_contract_pairs": 0,
+  "source_contract_pairs": 7,
+  "records": [
+    {
+      "russian": "README.md",
+      "english": "README_EN.md",
+      "russian_cyrillic_ratio": 0.5309,
+      "english_latin_ratio": 0.9992
+    },
+    {
+      "russian": "STATUS.md",
+      "english": "STATUS_EN.md",
+      "russian_cyrillic_ratio": 0.3517,
+      "english_latin_ratio": 0.9999
+    },
+    {
+      "russian": "ROADMAP.md",
+      "english": "ROADMAP_EN.md",
+      "russian_cyrillic_ratio": 0.4667,
+      "english_latin_ratio": 0.9991
+    },
+    {
+      "russian": "CHANGELOG.md",
+      "english": "CHANGELOG_EN.md",
+      "russian_cyrillic_ratio": 0.6719,
+      "english_latin_ratio": 0.9991
+    },
+    {
+      "russian": "CONTRIBUTING.md",
+      "english": "CONTRIBUTING_EN.md",
+      "russian_cyrillic_ratio": 0.7991,
+      "english_latin_ratio": 0.9709
+    },
+    {
+      "russian": "SECURITY.md",
+      "english": "SECURITY_EN.md",
+      "russian_cyrillic_ratio": 0.8197,
+      "english_latin_ratio": 0.9602
+    },
+    {
+      "russian": "CODE_OF_CONDUCT.md",
+      "english": "CODE_OF_CONDUCT_EN.md",
+      "russian_cyrillic_ratio": 0.8361,
+      "english_latin_ratio": 0.9427
+    },
+    {
+      "russian": "LANGUAGE_POLICY.md",
+      "english": "LANGUAGE_POLICY_EN.md",
+      "russian_cyrillic_ratio": 0.8592,
+      "english_latin_ratio": 0.9965
+    },
+    {
+      "russian": "docs/glossary.md",
+      "english": "docs/glossary_EN.md",
+      "russian_cyrillic_ratio": 0.786,
+      "english_latin_ratio": 0.9365
+    },
+    {
+      "russian": "RESEARCH_PRINCIPLES.md",
+      "english": "RESEARCH_PRINCIPLES_EN.md",
+      "russian_cyrillic_ratio": 0.9266,
+      "english_latin_ratio": 0.9867
+    },
+    {
+      "russian": "HYPOTHESES.md",
+      "english": "HYPOTHESES_EN.md",
+      "russian_cyrillic_ratio": 0.7628,
+      "english_latin_ratio": 0.9977
+    },
+    {
+      "russian": "PREREGISTRATION.md",
+      "english": "PREREGISTRATION_EN.md",
+      "russian_cyrillic_ratio": 0.6972,
+      "english_latin_ratio": 0.9979
+    },
+    {
+      "russian": "PROJECT_STRUCTURE.md",
+      "english": "PROJECT_STRUCTURE_EN.md",
+      "russian_cyrillic_ratio": 0.4515,
+      "english_latin_ratio": 0.9941
+    },
+    {
+      "russian": "FIRST_COMMIT.md",
+      "english": "FIRST_COMMIT_EN.md",
+      "russian_cyrillic_ratio": 0.7205,
+      "english_latin_ratio": 0.9293
+    },
+    {
+      "russian": "article/README.md",
+      "english": "article/README_EN.md",
+      "russian_cyrillic_ratio": 0.8333,
+      "english_latin_ratio": 0.9561
+    },
+    {
+      "russian": "article/structure.md",
+      "english": "article/structure_EN.md",
+      "russian_cyrillic_ratio": 0.8502,
+      "english_latin_ratio": 0.9488
+    },
+    {
+      "russian": "configs/README.md",
+      "english": "configs/README_EN.md",
+      "russian_cyrillic_ratio": 0.3767,
+      "english_latin_ratio": 0.9827
+    },
+    {
+      "russian": "data/README.md",
+      "english": "data/README_EN.md",
+      "russian_cyrillic_ratio": 0.8551,
+      "english_latin_ratio": 0.9623
+    },
+    {
+      "russian": "experiments/README.md",
+      "english": "experiments/README_EN.md",
+      "russian_cyrillic_ratio": 0.7455,
+      "english_latin_ratio": 0.9381
+    },
+    {
+      "russian": "experiments/planned/EXP-001.md",
+      "english": "experiments/planned/EXP-001_EN.md",
+      "russian_cyrillic_ratio": 0.6297,
+      "english_latin_ratio": 0.9668
+    },
+    {
+      "russian": "external/README.md",
+      "english": "external/README_EN.md",
+      "russian_cyrillic_ratio": 0.6339,
+      "english_latin_ratio": 0.9698
+    },
+    {
+      "russian": "notebooks/README.md",
+      "english": "notebooks/README_EN.md",
+      "russian_cyrillic_ratio": 0.8084,
+      "english_latin_ratio": 0.9478
+    },
+    {
+      "russian": "private/README.md",
+      "english": "private/README_EN.md",
+      "russian_cyrillic_ratio": 0.8629,
+      "english_latin_ratio": 0.9696
+    },
+    {
+      "russian": "references/README.md",
+      "english": "references/README_EN.md",
+      "russian_cyrillic_ratio": 0.8759,
+      "english_latin_ratio": 0.9564
+    },
+    {
+      "russian": "results/README.md",
+      "english": "results/README_EN.md",
+      "russian_cyrillic_ratio": 0.5546,
+      "english_latin_ratio": 0.9587
+    },
+    {
+      "russian": "tests/correctness/README.md",
+      "english": "tests/correctness/README_EN.md",
+      "russian_cyrillic_ratio": 0.723,
+      "english_latin_ratio": 0.9309
+    },
+    {
+      "russian": "thesis/README.md",
+      "english": "thesis/README_EN.md",
+      "russian_cyrillic_ratio": 0.8122,
+      "english_latin_ratio": 0.967
+    },
+    {
+      "russian": "docs/index.md",
+      "english": "docs/index_EN.md",
+      "russian_cyrillic_ratio": 0.4068,
+      "english_latin_ratio": 0.9979
+    },
+    {
+      "russian": "docs/research-question.md",
+      "english": "docs/research-question_EN.md",
+      "russian_cyrillic_ratio": 0.7351,
+      "english_latin_ratio": 0.9961
+    },
+    {
+      "russian": "docs/methodology.md",
+      "english": "docs/methodology_EN.md",
+      "russian_cyrillic_ratio": 0.5624,
+      "english_latin_ratio": 0.9961
+    },
+    {
+      "russian": "docs/analysis-plan.md",
+      "english": "docs/analysis-plan_EN.md",
+      "russian_cyrillic_ratio": 0.4903,
+      "english_latin_ratio": 0.9981
+    },
+    {
+      "russian": "docs/stage3a-statistical-results.md",
+      "english": "docs/stage3a-statistical-results_EN.md",
+      "russian_cyrillic_ratio": 0.7304,
+      "english_latin_ratio": 0.9982
+    },
+    {
+      "russian": "docs/experiment-protocol.md",
+      "english": "docs/experiment-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.841,
+      "english_latin_ratio": 0.9895
+    },
+    {
+      "russian": "docs/reproducibility.md",
+      "english": "docs/reproducibility_EN.md",
+      "russian_cyrillic_ratio": 0.879,
+      "english_latin_ratio": 0.9963
+    },
+    {
+      "russian": "docs/data-management.md",
+      "english": "docs/data-management_EN.md",
+      "russian_cyrillic_ratio": 0.8532,
+      "english_latin_ratio": 0.9861
+    },
+    {
+      "russian": "docs/hardware.md",
+      "english": "docs/hardware_EN.md",
+      "russian_cyrillic_ratio": 0.8057,
+      "english_latin_ratio": 0.9675
+    },
+    {
+      "russian": "docs/publication-plan.md",
+      "english": "docs/publication-plan_EN.md",
+      "russian_cyrillic_ratio": 0.8528,
+      "english_latin_ratio": 0.9878
+    },
+    {
+      "russian": "docs/github-setup.md",
+      "english": "docs/github-setup_EN.md",
+      "russian_cyrillic_ratio": 0.7112,
+      "english_latin_ratio": 0.9642
+    },
+    {
+      "russian": "docs/decisions/index.md",
+      "english": "docs/decisions/index_EN.md",
+      "russian_cyrillic_ratio": 0.6697,
+      "english_latin_ratio": 0.9994
+    },
+    {
+      "russian": "docs/decisions/ADR-001-use-torch2pc.md",
+      "english": "docs/decisions/ADR-001-use-torch2pc_EN.md",
+      "russian_cyrillic_ratio": 0.8004,
+      "english_latin_ratio": 0.9696
+    },
+    {
+      "russian": "docs/decisions/ADR-002-use-rocm-docker.md",
+      "english": "docs/decisions/ADR-002-use-rocm-docker_EN.md",
+      "russian_cyrillic_ratio": 0.7925,
+      "english_latin_ratio": 0.9715
+    },
+    {
+      "russian": "docs/decisions/ADR-003-primary-metric.md",
+      "english": "docs/decisions/ADR-003-primary-metric_EN.md",
+      "russian_cyrillic_ratio": 0.8784,
+      "english_latin_ratio": 0.9651
+    },
+    {
+      "russian": "docs/decisions/ADR-004-statistical-protocol.md",
+      "english": "docs/decisions/ADR-004-statistical-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.8713,
+      "english_latin_ratio": 0.9695
+    },
+    {
+      "russian": "docs/research-log/2026-07.md",
+      "english": "docs/research-log/2026-07_EN.md",
+      "russian_cyrillic_ratio": 0.8273,
+      "english_latin_ratio": 0.9996
+    },
+    {
+      "russian": "docs/research-log/template.md",
+      "english": "docs/research-log/template_EN.md",
+      "russian_cyrillic_ratio": 0.8744,
+      "english_latin_ratio": 0.9222
+    },
+    {
+      "russian": "docs/research-design/design.md",
+      "english": "docs/research-design/design_EN.md",
+      "russian_cyrillic_ratio": 0.6834,
+      "english_latin_ratio": 0.9701
+    },
+    {
+      "russian": "docs/research-design/controlled-compute.md",
+      "english": "docs/research-design/controlled-compute_EN.md",
+      "russian_cyrillic_ratio": 0.8343,
+      "english_latin_ratio": 0.9639
+    },
+    {
+      "russian": "docs/research-design/run-checklist.md",
+      "english": "docs/research-design/run-checklist_EN.md",
+      "russian_cyrillic_ratio": 0.7983,
+      "english_latin_ratio": 0.9809
+    },
+    {
+      "russian": "docs/research-design/article-plan.md",
+      "english": "docs/research-design/article-plan_EN.md",
+      "russian_cyrillic_ratio": 0.9091,
+      "english_latin_ratio": 0.9592
+    },
+    {
+      "russian": ".github/PULL_REQUEST_TEMPLATE/default.md",
+      "english": ".github/PULL_REQUEST_TEMPLATE/default_EN.md",
+      "russian_cyrillic_ratio": 0.7307,
+      "english_latin_ratio": 0.9668
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/bug.yml",
+      "english": ".github/ISSUE_TEMPLATE/bug_EN.yml",
+      "russian_cyrillic_ratio": 0.3138,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/experiment.yml",
+      "english": ".github/ISSUE_TEMPLATE/experiment_EN.yml",
+      "russian_cyrillic_ratio": 0.5123,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/literature.yml",
+      "english": ".github/ISSUE_TEMPLATE/literature_EN.yml",
+      "russian_cyrillic_ratio": 0.5386,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/research-decision.yml",
+      "english": ".github/ISSUE_TEMPLATE/research-decision_EN.yml",
+      "russian_cyrillic_ratio": 0.3038,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/writing.yml",
+      "english": ".github/ISSUE_TEMPLATE/writing_EN.yml",
+      "russian_cyrillic_ratio": 0.4158,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "mkdocs.yml",
+      "english": "mkdocs_EN.yml",
+      "russian_cyrillic_ratio": 0.1393,
+      "english_latin_ratio": 0.9958
+    },
+    {
+      "russian": "NOTICE",
+      "english": "NOTICE_EN",
+      "russian_cyrillic_ratio": 0.7751,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "LICENSE-DOCS",
+      "english": "LICENSE-DOCS_EN",
+      "russian_cyrillic_ratio": 0.742,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/threats-to-validity.md",
+      "english": "docs/threats-to-validity_EN.md",
+      "russian_cyrillic_ratio": 0.9297,
+      "english_latin_ratio": 0.9926
+    },
+    {
+      "russian": "docs/validation.md",
+      "english": "docs/validation_EN.md",
+      "russian_cyrillic_ratio": 0.5872,
+      "english_latin_ratio": 0.9866
+    },
+    {
+      "russian": "docs/stage-3-protocol.md",
+      "english": "docs/stage-3-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.8386,
+      "english_latin_ratio": 0.9979
+    },
+    {
+      "russian": "docs/stage-3-readiness.md",
+      "english": "docs/stage-3-readiness_EN.md",
+      "russian_cyrillic_ratio": 0.788,
+      "english_latin_ratio": 0.9926
+    },
+    {
+      "russian": "docs/decisions/ADR-006-stage3-scope.md",
+      "english": "docs/decisions/ADR-006-stage3-scope_EN.md",
+      "russian_cyrillic_ratio": 0.9105,
+      "english_latin_ratio": 0.9884
+    },
+    {
+      "russian": "docs/decisions/ADR-007-stage3-locality-taxonomy.md",
+      "english": "docs/decisions/ADR-007-stage3-locality-taxonomy_EN.md",
+      "russian_cyrillic_ratio": 0.9101,
+      "english_latin_ratio": 0.9849
+    },
+    {
+      "russian": "experiments/planned/STAGE3-001.md",
+      "english": "experiments/planned/STAGE3-001_EN.md",
+      "russian_cyrillic_ratio": 0.5123,
+      "english_latin_ratio": 0.9742
+    },
+    {
+      "russian": "results/stage-3/README.md",
+      "english": "results/stage-3/README_EN.md",
+      "russian_cyrillic_ratio": 0.4548,
+      "english_latin_ratio": 0.9583
+    },
+    {
+      "russian": "docs/decisions/ADR-008-predict-correct-acceleration.md",
+      "english": "docs/decisions/ADR-008-predict-correct-acceleration_EN.md",
+      "russian_cyrillic_ratio": 0.8679,
+      "english_latin_ratio": 0.994
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-PROFILING-LOCALITY.md",
+      "english": "experiments/planned/STAGE3B-PROFILING-LOCALITY_EN.md",
+      "russian_cyrillic_ratio": 0.4327,
+      "english_latin_ratio": 0.9983
+    },
+    {
+      "russian": "docs/decisions/ADR-005-post-pilot-final-execution.md",
+      "english": "docs/decisions/ADR-005-post-pilot-final-execution_EN.md",
+      "russian_cyrillic_ratio": 0.885,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-009-stage3b-rocm-canonical-lane.md",
+      "english": "docs/decisions/ADR-009-stage3b-rocm-canonical-lane_EN.md",
+      "russian_cyrillic_ratio": 0.8614,
+      "english_latin_ratio": 0.9937
+    },
+    {
+      "russian": "docs/decisions/ADR-010-stage3b-per-cell-process-isolation.md",
+      "english": "docs/decisions/ADR-010-stage3b-per-cell-process-isolation_EN.md",
+      "russian_cyrillic_ratio": 0.875,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-011-stage3b-b0-derived-evidence-seal.md",
+      "english": "docs/decisions/ADR-011-stage3b-b0-derived-evidence-seal_EN.md",
+      "russian_cyrillic_ratio": 0.8377,
+      "english_latin_ratio": 0.9945
+    },
+    {
+      "russian": "docs/stage-2-protocol.md",
+      "english": "docs/stage-2-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.8646,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/stage3-layerwise-analysis.md",
+      "english": "docs/stage3-layerwise-analysis_EN.md",
+      "russian_cyrillic_ratio": 0.7297,
+      "english_latin_ratio": 0.9968
+    },
+    {
+      "russian": "docs/stage3a-publication-finalization.md",
+      "english": "docs/stage3a-publication-finalization_EN.md",
+      "russian_cyrillic_ratio": 0.8246,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/stage3b-b0-analysis-pipeline.md",
+      "english": "docs/stage3b-b0-analysis-pipeline_EN.md",
+      "russian_cyrillic_ratio": 0.7875,
+      "english_latin_ratio": 0.9909
+    },
+    {
+      "russian": "docs/stage3b-b0-sealing.md",
+      "english": "docs/stage3b-b0-sealing_EN.md",
+      "russian_cyrillic_ratio": 0.8528,
+      "english_latin_ratio": 0.9932
+    },
+    {
+      "russian": "docs/torch2pc-patched-v1-equivalence.md",
+      "english": "docs/torch2pc-patched-v1-equivalence_EN.md",
+      "russian_cyrillic_ratio": 0.7581,
+      "english_latin_ratio": 0.9989
+    },
+    {
+      "russian": "docs/pc-tref-balanced-core.md",
+      "english": "docs/pc-tref-balanced-core_EN.md",
+      "russian_cyrillic_ratio": 0.6595,
+      "english_latin_ratio": 0.9978
+    },
+    {
+      "russian": "docs/pc-catm-operator-model.md",
+      "english": "docs/pc-catm-operator-model_EN.md",
+      "russian_cyrillic_ratio": 0.5918,
+      "english_latin_ratio": 0.9976
+    },
+    {
+      "russian": "docs/masters-thesis-plan.md",
+      "english": "docs/masters-thesis-plan_EN.md",
+      "russian_cyrillic_ratio": 0.5625,
+      "english_latin_ratio": 0.9975
+    },
+    {
+      "russian": "docs/stage3b-primary-scenario-a.md",
+      "english": "docs/stage3b-primary-scenario-a_EN.md",
+      "russian_cyrillic_ratio": 0.7602,
+      "english_latin_ratio": 0.9984
+    },
+    {
+      "russian": "docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a.md",
+      "english": "docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md",
+      "russian_cyrillic_ratio": 0.8338,
+      "english_latin_ratio": 0.9926
+    },
+    {
+      "russian": "docs/research-design/stage3b-si-ma0-confirmatory-aggregation.md",
+      "english": "docs/research-design/stage3b-si-ma0-confirmatory-aggregation_EN.md",
+      "russian_cyrillic_ratio": 0.839,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-SI-MA1.md",
+      "english": "experiments/planned/STAGE3B-SI-MA1_EN.md",
+      "russian_cyrillic_ratio": 0.6929,
+      "english_latin_ratio": 0.9983
+    },
+    {
+      "russian": "docs/pc-tref-pc-catm-theoretical-foundation.md",
+      "english": "docs/pc-tref-pc-catm-theoretical-foundation_EN.md",
+      "russian_cyrillic_ratio": 0.7243,
+      "english_latin_ratio": 0.9985
+    },
+    {
+      "russian": "docs/decisions/ADR-013-pc-tref-operational-semantics.md",
+      "english": "docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md",
+      "russian_cyrillic_ratio": 0.697,
+      "english_latin_ratio": 0.9947
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B1.md",
+      "english": "experiments/planned/STAGE3B-B1_EN.md",
+      "russian_cyrillic_ratio": 0.7352,
+      "english_latin_ratio": 0.9933
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B2.md",
+      "english": "experiments/planned/STAGE3B-B2_EN.md",
+      "russian_cyrillic_ratio": 0.6298,
+      "english_latin_ratio": 0.992
+    },
+    {
+      "russian": "docs/stage3b-b1-b2-preregistration.md",
+      "english": "docs/stage3b-b1-b2-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.7639,
+      "english_latin_ratio": 0.995
+    },
+    {
+      "russian": "docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md",
+      "english": "docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md",
+      "russian_cyrillic_ratio": 0.8048,
+      "english_latin_ratio": 0.9896
+    },
+    {
+      "russian": "docs/qwake-pc-design.md",
+      "english": "docs/qwake-pc-design_EN.md",
+      "russian_cyrillic_ratio": 0.7039,
+      "english_latin_ratio": 0.998
+    },
+    {
+      "russian": "docs/ecz-targeted-local-sweep.md",
+      "english": "docs/ecz-targeted-local-sweep_EN.md",
+      "russian_cyrillic_ratio": 0.7979,
+      "english_latin_ratio": 0.9932
+    },
+    {
+      "russian": "docs/stage3b-future-policy-boundary.md",
+      "english": "docs/stage3b-future-policy-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.7687,
+      "english_latin_ratio": 0.9942
+    },
+    {
+      "russian": "docs/decisions/ADR-015-stage3b-matched-measurement-sealing.md",
+      "english": "docs/decisions/ADR-015-stage3b-matched-measurement-sealing_EN.md",
+      "russian_cyrillic_ratio": 0.8723,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/stage3b-matched-evidence.md",
+      "english": "docs/stage3b-matched-evidence_EN.md",
+      "russian_cyrillic_ratio": 0.6457,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/pc-tref-sufficiency-boundary.md",
+      "english": "docs/pc-tref-sufficiency-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.6763,
+      "english_latin_ratio": 0.9988
+    },
+    {
+      "russian": "docs/decisions/ADR-016-stage3b-sufficiency-boundary.md",
+      "english": "docs/decisions/ADR-016-stage3b-sufficiency-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.79,
+      "english_latin_ratio": 0.9951
+    },
+    {
+      "russian": "docs/decisions/ADR-017-stage3b-288cell-correctness-repair.md",
+      "english": "docs/decisions/ADR-017-stage3b-288cell-correctness-repair_EN.md",
+      "russian_cyrillic_ratio": 0.9238,
+      "english_latin_ratio": 0.9946
+    },
+    {
+      "russian": "docs/decisions/ADR-018-stage3b-b1-confirmatory-preregistration.md",
+      "english": "docs/decisions/ADR-018-stage3b-b1-confirmatory-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.8554,
+      "english_latin_ratio": 0.9939
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B1-CONFIRMATORY.md",
+      "english": "experiments/planned/STAGE3B-B1-CONFIRMATORY_EN.md",
+      "russian_cyrillic_ratio": 0.4345,
+      "english_latin_ratio": 0.9922
+    },
+    {
+      "russian": "docs/decisions/ADR-019-stage3b-b1-confirmatory-opening.md",
+      "english": "docs/decisions/ADR-019-stage3b-b1-confirmatory-opening_EN.md",
+      "russian_cyrillic_ratio": 0.8075,
+      "english_latin_ratio": 0.9962
+    },
+    {
+      "russian": "docs/pc-multiscale-mechanism-decision-architecture.md",
+      "english": "docs/pc-multiscale-mechanism-decision-architecture_EN.md",
+      "russian_cyrillic_ratio": 0.7625,
+      "english_latin_ratio": 0.9981
+    },
+    {
+      "russian": "docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md",
+      "english": "docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md",
+      "russian_cyrillic_ratio": 0.7243,
+      "english_latin_ratio": 0.9933
+    },
+    {
+      "russian": "docs/decisions/ADR-021-stage3b-b2-confirmatory-preregistration.md",
+      "english": "docs/decisions/ADR-021-stage3b-b2-confirmatory-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.8278,
+      "english_latin_ratio": 0.9947
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B2-CONFIRMATORY.md",
+      "english": "experiments/planned/STAGE3B-B2-CONFIRMATORY_EN.md",
+      "russian_cyrillic_ratio": 0.3944,
+      "english_latin_ratio": 0.995
+    },
+    {
+      "russian": "docs/decisions/ADR-022-stage3b-b2-confirmatory-opening.md",
+      "english": "docs/decisions/ADR-022-stage3b-b2-confirmatory-opening_EN.md",
+      "russian_cyrillic_ratio": 0.735,
+      "english_latin_ratio": 0.9966
+    },
+    {
+      "russian": "docs/decisions/ADR-023-stage3b-b2-confirmatory-request-freeze.md",
+      "english": "docs/decisions/ADR-023-stage3b-b2-confirmatory-request-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.675,
+      "english_latin_ratio": 0.9936
+    },
+    {
+      "russian": "docs/decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation.md",
+      "english": "docs/decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md",
+      "russian_cyrillic_ratio": 0.6315,
+      "english_latin_ratio": 0.9959
+    },
+    {
+      "russian": "docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md",
+      "english": "docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze_EN.md",
+      "russian_cyrillic_ratio": 0.6871,
+      "english_latin_ratio": 0.9903
+    },
+    {
+      "russian": "docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md",
+      "english": "docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md",
+      "russian_cyrillic_ratio": 0.5796,
+      "english_latin_ratio": 0.9969
+    },
+    {
+      "russian": "docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol.md",
+      "english": "docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.7516,
+      "english_latin_ratio": 0.9949
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md",
+      "russian_cyrillic_ratio": 0.7946,
+      "english_latin_ratio": 0.998
+    },
+    {
+      "russian": "docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation.md",
+      "english": "docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.756,
+      "english_latin_ratio": 0.9954
+    },
+    {
+      "russian": "docs/decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening.md",
+      "english": "docs/decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening_EN.md",
+      "russian_cyrillic_ratio": 0.6708,
+      "english_latin_ratio": 0.9962
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md",
+      "russian_cyrillic_ratio": 0.5455,
+      "english_latin_ratio": 0.9929
+    },
+    {
+      "russian": "docs/decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze.md",
+      "english": "docs/decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.7016,
+      "english_latin_ratio": 0.9921
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT_EN.md",
+      "russian_cyrillic_ratio": 0.5245,
+      "english_latin_ratio": 0.9933
+    },
+    {
+      "russian": "docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation.md",
+      "english": "docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.655,
+      "english_latin_ratio": 0.995
+    },
+    {
+      "russian": "docs/decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze.md",
+      "english": "docs/decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.547,
+      "english_latin_ratio": 0.992
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION_EN.md",
+      "russian_cyrillic_ratio": 0.5309,
+      "english_latin_ratio": 0.9904
+    },
+    {
+      "russian": "docs/decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze.md",
+      "english": "docs/decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.5159,
+      "english_latin_ratio": 0.9932
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL_EN.md",
+      "russian_cyrillic_ratio": 0.4637,
+      "english_latin_ratio": 0.9929
+    },
+    {
+      "russian": "docs/decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze.md",
+      "english": "docs/decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.7782,
+      "english_latin_ratio": 0.9952
+    },
+    {
+      "russian": "docs/stage3b-recursive-sufficiency-aggregate-direction.md",
+      "english": "docs/stage3b-recursive-sufficiency-aggregate-direction_EN.md",
+      "russian_cyrillic_ratio": 0.6963,
+      "english_latin_ratio": 0.9977
+    },
+    {
+      "russian": "docs/decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction.md",
+      "english": "docs/decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md",
+      "russian_cyrillic_ratio": 0.8985,
+      "english_latin_ratio": 0.9959
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE_EN.md",
+      "russian_cyrillic_ratio": 0.5275,
+      "english_latin_ratio": 0.9931
+    },
+    {
+      "russian": "docs/decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate.md",
+      "english": "docs/decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md",
+      "russian_cyrillic_ratio": 0.7973,
+      "english_latin_ratio": 0.9918
+    },
+    {
+      "russian": "docs/decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt.md",
+      "english": "docs/decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md",
+      "russian_cyrillic_ratio": 0.6347,
+      "english_latin_ratio": 0.9906
+    },
+    {
+      "russian": "docs/decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary.md",
+      "english": "docs/decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.8189,
+      "english_latin_ratio": 0.9962
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-EX-IF0.md",
+      "english": "experiments/planned/STAGE3B-EX-IF0_EN.md",
+      "russian_cyrillic_ratio": 0.6453,
+      "english_latin_ratio": 0.9973
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-design.md",
+      "english": "docs/fixedpred-sufficiency-dus-design_EN.md",
+      "russian_cyrillic_ratio": 0.6518,
+      "english_latin_ratio": 0.9969
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-metrics.md",
+      "english": "docs/fixedpred-sufficiency-dus-metrics_EN.md",
+      "russian_cyrillic_ratio": 0.4086,
+      "english_latin_ratio": 0.9961
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-refactoring-plan.md",
+      "english": "docs/fixedpred-sufficiency-dus-refactoring-plan_EN.md",
+      "russian_cyrillic_ratio": 0.4539,
+      "english_latin_ratio": 0.9946
+    },
+    {
+      "russian": "docs/decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md",
+      "english": "docs/decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md",
+      "russian_cyrillic_ratio": 0.351,
+      "english_latin_ratio": 0.9924
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS.md",
+      "english": "experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md",
+      "russian_cyrillic_ratio": 0.527,
+      "english_latin_ratio": 0.992
+    },
+    {
+      "russian": "docs/stage3b-integrated-frontier-model.md",
+      "english": "docs/stage3b-integrated-frontier-model_EN.md",
+      "russian_cyrillic_ratio": 0.5268,
+      "english_latin_ratio": 0.9985
+    },
+    {
+      "russian": "docs/decisions/ADR-040-stage3b-integrated-frontier-model.md",
+      "english": "docs/decisions/ADR-040-stage3b-integrated-frontier-model_EN.md",
+      "russian_cyrillic_ratio": 0.6022,
+      "english_latin_ratio": 0.9951
+    },
+    {
+      "russian": "docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md",
+      "english": "docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md",
+      "russian_cyrillic_ratio": 0.5378,
+      "english_latin_ratio": 0.9977
+    },
+    {
+      "russian": "docs/qwake-fp-experimental-plan.md",
+      "english": "docs/qwake-fp-experimental-plan_EN.md",
+      "russian_cyrillic_ratio": 0.6363,
+      "english_latin_ratio": 0.9982
+    },
+    {
+      "russian": "docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md",
+      "english": "docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md",
+      "russian_cyrillic_ratio": 0.4283,
+      "english_latin_ratio": 0.9983
+    },
+    {
+      "russian": "docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md",
+      "english": "docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md",
+      "russian_cyrillic_ratio": 0.4716,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation.md",
+      "english": "docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation_EN.md",
+      "russian_cyrillic_ratio": 0.75,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation.md",
+      "english": "docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.7254,
+      "english_latin_ratio": 0.9977
+    },
+    {
+      "russian": "docs/qwake-local-compute-extension.md",
+      "english": "docs/qwake-local-compute-extension_EN.md",
+      "russian_cyrillic_ratio": 0.6564,
+      "english_latin_ratio": 0.9997
+    },
+    {
+      "russian": "docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset.md",
+      "english": "docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md",
+      "russian_cyrillic_ratio": 0.7109,
+      "english_latin_ratio": 0.9931
+    },
+    {
+      "russian": "docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2.md",
+      "english": "docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2_EN.md",
+      "russian_cyrillic_ratio": 0.5745,
+      "english_latin_ratio": 0.9953
+    },
+    {
+      "russian": "docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2.md",
+      "english": "docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md",
+      "russian_cyrillic_ratio": 0.7098,
+      "english_latin_ratio": 0.9935
+    },
+    {
+      "russian": "docs/decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition.md",
+      "english": "docs/decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition_EN.md",
+      "russian_cyrillic_ratio": 0.5207,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze.md",
+      "english": "docs/decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.6368,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-051-stage3b-qwake-lc0-repository-freeze.md",
+      "english": "docs/decisions/ADR-051-stage3b-qwake-lc0-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.5189,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-052-stage3b-qwake-lc1-transition.md",
+      "english": "docs/decisions/ADR-052-stage3b-qwake-lc1-transition_EN.md",
+      "russian_cyrillic_ratio": 0.5477,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-053-stage3b-qwake-lc1-required-response-schema.md",
+      "english": "docs/decisions/ADR-053-stage3b-qwake-lc1-required-response-schema_EN.md",
+      "russian_cyrillic_ratio": 0.6023,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-054-stage3b-qwake-lc1-repository-freeze.md",
+      "english": "docs/decisions/ADR-054-stage3b-qwake-lc1-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.541,
+      "english_latin_ratio": 0.9934
+    },
+    {
+      "russian": "docs/decisions/ADR-055-stage3b-qwake-lc2-transition.md",
+      "english": "docs/decisions/ADR-055-stage3b-qwake-lc2-transition_EN.md",
+      "russian_cyrillic_ratio": 0.563,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract.md",
+      "english": "docs/decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract_EN.md",
+      "russian_cyrillic_ratio": 0.6746,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-057-stage3b-qwake-lc2-repository-freeze.md",
+      "english": "docs/decisions/ADR-057-stage3b-qwake-lc2-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.4204,
+      "english_latin_ratio": 0.9931
+    },
+    {
+      "russian": "docs/decisions/ADR-058-stage3b-qwake-lc3-transition.md",
+      "english": "docs/decisions/ADR-058-stage3b-qwake-lc3-transition_EN.md",
+      "russian_cyrillic_ratio": 0.6098,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract.md",
+      "english": "docs/decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract_EN.md",
+      "russian_cyrillic_ratio": 0.6943,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-060-stage3b-qwake-lc3-repository-freeze.md",
+      "english": "docs/decisions/ADR-060-stage3b-qwake-lc3-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.4146,
+      "english_latin_ratio": 0.9935
+    },
+    {
+      "russian": "docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation.md",
+      "english": "docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.8319,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring.md",
+      "english": "docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.675,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze.md",
+      "english": "docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.5626,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring.md",
+      "english": "docs/decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.5936,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze.md",
+      "english": "docs/decisions/ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.394,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring.md",
+      "english": "docs/decisions/ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.5643,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation.md",
+      "english": "docs/decisions/ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.6908,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring.md",
+      "english": "docs/decisions/ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.6734,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation.md",
+      "english": "docs/decisions/ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.6862,
+      "english_latin_ratio": 0.9965
+    },
+    {
+      "russian": "docs/decisions/ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization.md",
+      "english": "docs/decisions/ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization_EN.md",
+      "russian_cyrillic_ratio": 0.7498,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization.md",
+      "english": "docs/decisions/ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization_EN.md",
+      "russian_cyrillic_ratio": 0.7588,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring.md",
+      "english": "docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.6216,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation.md",
+      "english": "docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.5977,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring.md",
+      "english": "docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.7949,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation.md",
+      "english": "docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.6155,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze.md",
+      "english": "docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.4922,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission.md",
+      "english": "docs/decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission_EN.md",
+      "russian_cyrillic_ratio": 0.4559,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation.md",
+      "english": "docs/decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation_EN.md",
+      "russian_cyrillic_ratio": 0.5114,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization.md",
+      "english": "docs/decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization_EN.md",
+      "russian_cyrillic_ratio": 0.5263,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification.md",
+      "english": "docs/decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification_EN.md",
+      "russian_cyrillic_ratio": 0.5681,
+      "english_latin_ratio": 0.9964
+    },
+    {
+      "russian": "docs/decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation.md",
+      "english": "docs/decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation_EN.md",
+      "russian_cyrillic_ratio": 0.5712,
+      "english_latin_ratio": 0.9965
+    },
+    {
+      "russian": "docs/decisions/ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair.md",
+      "english": "docs/decisions/ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair_EN.md",
+      "russian_cyrillic_ratio": 0.5026,
+      "english_latin_ratio": 0.9954
+    },
+    {
+      "russian": "docs/decisions/ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2.md",
+      "english": "docs/decisions/ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2_EN.md",
+      "russian_cyrillic_ratio": 0.6499,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-084-stage3b-qwake-lc4-e-persistent-evidence-chain-v2-implementation.md",
+      "english": "docs/decisions/ADR-084-stage3b-qwake-lc4-e-persistent-evidence-chain-v2-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.8546,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring.md",
+      "english": "docs/decisions/ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring_EN.md",
+      "russian_cyrillic_ratio": 0.7924,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring.md",
+      "english": "docs/decisions/ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.6044,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring.md",
+      "english": "docs/decisions/ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.5951,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation.md",
+      "english": "docs/decisions/ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.7109,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring.md",
+      "english": "docs/decisions/ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.7196,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-090-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-implementation.md",
+      "english": "docs/decisions/ADR-090-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.7054,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-091-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-authoring.md",
+      "english": "docs/decisions/ADR-091-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.6945,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-092-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-implementation.md",
+      "english": "docs/decisions/ADR-092-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.6211,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-093-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-authoring.md",
+      "english": "docs/decisions/ADR-093-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.6157,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-094-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-implementation.md",
+      "english": "docs/decisions/ADR-094-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.5351,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-authoring.md",
+      "english": "docs/decisions/ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.6255,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation.md",
+      "english": "docs/decisions/ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.7213,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring.md",
+      "english": "docs/decisions/ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.6264,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization.md",
+      "english": "docs/decisions/ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization_EN.md",
+      "russian_cyrillic_ratio": 0.757,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition.md",
+      "english": "docs/decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition_EN.md",
+      "russian_cyrillic_ratio": 0.6459,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-100-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring-scope-freeze.md",
+      "english": "docs/decisions/ADR-100-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.6744,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring.md",
+      "english": "docs/decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.598,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal.md",
+      "english": "docs/decisions/ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal_EN.md",
+      "russian_cyrillic_ratio": 0.5134,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-103-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-authoring-scope-freeze.md",
+      "english": "docs/decisions/ADR-103-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-authoring-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.6054,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring.md",
+      "english": "docs/decisions/ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.4695,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze.md",
+      "english": "docs/decisions/ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.5877,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring.md",
+      "english": "docs/decisions/ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.4491,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze.md",
+      "english": "docs/decisions/ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.559,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring.md",
+      "english": "docs/decisions/ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.5545,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze.md",
+      "english": "docs/decisions/ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.4193,
+      "english_latin_ratio": 0.9976
+    },
+    {
+      "russian": "docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring.md",
+      "english": "docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.5668,
+      "english_latin_ratio": 0.997
+    },
+    {
+      "russian": "docs/decisions/ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction.md",
+      "english": "docs/decisions/ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction_EN.md",
+      "russian_cyrillic_ratio": 0.813,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-112-stage3b-qwake-attempt-003-clean-source-closure-design.md",
+      "english": "docs/decisions/ADR-112-stage3b-qwake-attempt-003-clean-source-closure-design_EN.md",
+      "russian_cyrillic_ratio": 0.8621,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-113-stage3b-qwake-attempt-003-source-binding-execution-freeze-authoring.md",
+      "english": "docs/decisions/ADR-113-stage3b-qwake-attempt-003-source-binding-execution-freeze-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.8566,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-114-stage3b-qwake-attempt-003-execution-freeze-materialization-implementation.md",
+      "english": "docs/decisions/ADR-114-stage3b-qwake-attempt-003-execution-freeze-materialization-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.836,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-115-stage3b-qwake-attempt-003-authorization-materialization-authoring.md",
+      "english": "docs/decisions/ADR-115-stage3b-qwake-attempt-003-authorization-materialization-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.7977,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-116-stage3b-qwake-attempt-003-host-invocation-chain-authoring.md",
+      "english": "docs/decisions/ADR-116-stage3b-qwake-attempt-003-host-invocation-chain-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.8079,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-117-stage3b-qwake-attempt-003-host-invocation-command-materialization-authoring.md",
+      "english": "docs/decisions/ADR-117-stage3b-qwake-attempt-003-host-invocation-command-materialization-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.8033,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-118-stage3b-qwake-attempt-003-host-invocation-process-spawner-authoring.md",
+      "english": "docs/decisions/ADR-118-stage3b-qwake-attempt-003-host-invocation-process-spawner-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.6743,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization.md",
+      "english": "docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization_EN.md",
+      "russian_cyrillic_ratio": 0.8693,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain.md",
+      "english": "docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain_EN.md",
+      "russian_cyrillic_ratio": 0.7984,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-121-stage3b-qwake-attempt-005-lane-isolated-integration-confirmation.md",
+      "english": "docs/decisions/ADR-121-stage3b-qwake-attempt-005-lane-isolated-integration-confirmation_EN.md",
+      "russian_cyrillic_ratio": 0.845,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-122-stage3b-qwake-lc4-e-attempt-005-successful-validation-transition.md",
+      "english": "docs/decisions/ADR-122-stage3b-qwake-lc4-e-attempt-005-successful-validation-transition_EN.md",
+      "russian_cyrillic_ratio": 0.6289,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-123-stage3b-qwake-qw5-single-scientific-image-freeze.md",
+      "english": "docs/decisions/ADR-123-stage3b-qwake-qw5-single-scientific-image-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.5372,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator.md",
+      "english": "docs/decisions/ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator_EN.md",
+      "russian_cyrillic_ratio": 0.6615,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze.md",
+      "english": "docs/decisions/ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.5133,
+      "english_latin_ratio": 1.0
+    },
+    {
+      "russian": "docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction.md",
+      "english": "docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md",
+      "russian_cyrillic_ratio": 0.5835,
+      "english_latin_ratio": 1.0
+    }
+  ],
+  "glossary_terms": 117,
+  "discovered_docs_pairs": 175
+}
+POST_MERGE_C1_TRAIN_ONLY_LANGUAGE_STRUCTURE_STATUS=0
+=== POST_MERGE_C1_TRAIN_ONLY_GLOSSARY ===
+{
+  "status": "ok",
+  "glossary_terms": 117,
+  "scanned_documents": 348,
+  "linked_first_uses": 1543,
+  "errors": []
+}
+POST_MERGE_C1_TRAIN_ONLY_GLOSSARY_STATUS=0
+=== POST_MERGE_C1_TRAIN_ONLY_EPISTEMIC ===
+{
+  "status": "ok",
+  "checked_sources": 581,
+  "findings": []
+}
+POST_MERGE_C1_TRAIN_ONLY_EPISTEMIC_STATUS=0
+=== POST_MERGE_C1_TRAIN_ONLY_LOCAL_LINKS ===
+{
+  "status": "ok",
+  "checked_links": 3158,
+  "errors": []
+}
+POST_MERGE_C1_TRAIN_ONLY_LOCAL_LINKS_STATUS=0
+=== POST_MERGE_C1_TRAIN_ONLY_FULL_PYTEST ===
+ssssssss................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 29%]
+........................................................................ [ 34%]
+........................................................................ [ 38%]
+........................................................................ [ 42%]
+........................................................................ [ 47%]
+........................................................................ [ 51%]
+........................................................................ [ 55%]
+........................................................................ [ 59%]
+........................................................................ [ 64%]
+........................................................................ [ 68%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 81%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 94%]
+........................................................................ [ 98%]
+.............................                                            [100%]
+=============================== warnings summary ===============================
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64
+  /home/dzmitry-prychyna/torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85
+  /home/dzmitry-prychyna/torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89
+  /home/dzmitry-prychyna/torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+../torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_mathtext.py:45
+  /home/dzmitry-prychyna/torch2pc-layerwise-thesis/.venv/lib/python3.12/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [2] tests/correctness/test_stage3b_b1_patched_reference.py:24: prepared external/Torch2PC checkout is unavailable
+SKIPPED [2] tests/correctness/test_stage3b_b1_smoke_patched_reference.py:58: prepared external/Torch2PC checkout is unavailable
+SKIPPED [2] tests/correctness/test_stage3b_b2_patched_reference.py:65: prepared external/Torch2PC checkout is unavailable
+SKIPPED [2] tests/correctness/test_stage3b_b2_smoke_patched_reference.py:116: prepared external/Torch2PC checkout is unavailable
+1677 passed, 8 skipped, 14 warnings in 128.69s (0:02:08)
+POST_MERGE_C1_TRAIN_ONLY_FULL_PYTEST_STATUS=0
+POST_MERGE_C1_TRAIN_ONLY_COMPLETE_REPOSITORY_VALIDATION=PASS
+/home/dzmitry-prychyna/torch2pc-layerwise-thesis-c1-train-only-post-merge
+3858d3a7e6d7b3401e999523bc6675dc7dd0223d
+f516667472e1ea2a8e2826f520c055cfe2dd0351
+3858d3a7e6d7b3401e999523bc6675dc7dd0223d	refs/heads/main
+f6ce596c2d7ff45a054ed8c0bb5d6ceb3cc3b97d
+f516667472e1ea2a8e2826f520c055cfe2dd0351
+M	STATUS.md
+M	STATUS_EN.md
+A	docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction.md
+A	docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md
+M	docs/decisions/index.md
+M	docs/decisions/index_EN.md
+M	docs/language-map.csv
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/SHA256SUMS
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/admission-finding.json
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/authorization.json
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/implementation.json
+A	experiments/frozen/stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/runtime-SHA256SUMS
+M	src/torch2pc_thesis/stage3b_qwake_scientific_campaign.py
+M	src/torch2pc_thesis/stage3b_qwake_scientific_runtime.py
+M	tests/unit/test_stage3b_qwake_scientific_campaign.py
+A	tests/unit/test_stage3b_qwake_scientific_train_only_dataset.py
+{"url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198","id":4258211091,"node_id":"PR_kwDOTU9MBc79zyUT","html_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis/pull/198","diff_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis/pull/198.diff","patch_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis/pull/198.patch","issue_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/198","number":198,"state":"closed","locked":false,"title":"fix(stage3b): isolate C1 train-only dataset access","user":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"body":"Authors the minimal project-owned train-only dataset-isolation\ncorrection required before C1 request freeze can resume.\n\nBase:\n`2d748751482a6b3ecb200fb3816d41f48d8ed8cc` / `f6ce596c2d7ff45a054ed8c0bb5d6ceb3cc3b97d`\n\nAdmission audit:\n`sha256:119113ab83b2622ab0e005bc16318bf88fc4e41ced56ad183c10813d5e63f784`\n\nCurrent frozen image is preserved unchanged:\n`sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb`\n\nCurrent freeze:\n`sha256:47c20698ac57c1b50f4bbe0314649b0d07494ecc1199b32819ecde7b684d9904`\n\nProspective corrected runtime manifest:\n`sha256:01d86f045bf42554382654d2c48f2be23f4763b6fbdc4aa1c9e7cff939367561`\n\nThe correction:\n- restricts live scientific requests to exactly the uncompressed train-image and\n  train-label IDX pair;\n- rejects t10k/test resources at request-schema construction;\n- removes the torchvision Dataset constructor from scientific runtime;\n- parses only the two bound train IDX files;\n- preserves the existing 28x28 -> 1x32x32 zero-pad/scale transform;\n- includes an adversarial t10k open trap and malformed-IDX fail-closed tests.\n\nThis PR does NOT build/run/pull/tag/commit a Docker image, mutate the current\nfrozen image/evidence, freeze C1, consume the prior C1 request-freeze\nauthorization, issue C1 execution authorization, execute science, access test\ndata, or permit publication.\n\nAfter merge: independently verify canonical main, then use a separate\nauthorization to build/validate/freeze the corrected scientific image.\n\n\nAuthoring recovery note:\nthe initial authorized materialization passed its 18 targeted tests but stopped\nbefore the Git authoring boundary on Ruff I001 in the newly added test import\nblock. The preserved dirty state was recovered with a three-path deterministic\ndelta: import ordering plus the two dependent evidence hashes. Scientific\nruntime source and the 157-path prospective runtime manifest are unchanged.\n","created_at":"2026-08-12T01:06:00Z","updated_at":"2026-08-12T01:16:21Z","closed_at":"2026-08-12T01:16:17Z","merged_at":"2026-08-12T01:16:17Z","merge_commit_sha":"3858d3a7e6d7b3401e999523bc6675dc7dd0223d","assignees":[],"requested_reviewers":[],"requested_teams":[],"labels":[],"milestone":null,"draft":false,"commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198/commits","review_comments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198/comments","review_comment_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/comments{/number}","comments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/198/comments","statuses_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/statuses/3d6289dbae8cdb6209c8bd0f8721f162a2250f74","head":{"label":"attractor-set:research/stage3b-qwake-c1-train-only-dataset-isolation-correction","ref":"research/stage3b-qwake-c1-train-only-dataset-isolation-correction","sha":"3d6289dbae8cdb6209c8bd0f8721f162a2250f74","user":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"repo":{"id":1297042437,"node_id":"R_kgDOTU9MBQ","name":"torch2pc-layerwise-thesis","full_name":"attractor-set/torch2pc-layerwise-thesis","private":false,"owner":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"html_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis","description":"Воспроизводимый проект магистерской диссертации по predictive coding в Torch2PC: послойное и compute-matched сравнение с backpropagation, PC-CATM/PC-TREF, механизмная диагностика state inference и QWake-PC для адаптивного exact inference в Ubuntu/ROCm — reproducible research on mechanism-aware predictive coding.","fork":false,"url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis","forks_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/forks","keys_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/keys{/key_id}","collaborators_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/teams","hooks_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/hooks","issue_events_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/events{/number}","events_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/events","assignees_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/assignees{/user}","branches_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/branches{/branch}","tags_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/tags","blobs_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/refs{/sha}","trees_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/trees{/sha}","statuses_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/statuses/{sha}","languages_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/languages","stargazers_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/stargazers","contributors_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/contributors","subscribers_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/subscribers","subscription_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/subscription","commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/commits{/sha}","git_commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/commits{/sha}","comments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/comments{/number}","issue_comment_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/comments{/number}","contents_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/contents/{+path}","compare_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/compare/{base}...{head}","merges_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/merges","archive_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/downloads","issues_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues{/number}","pulls_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls{/number}","milestones_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/milestones{/number}","notifications_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/labels{/name}","releases_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/releases{/id}","deployments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/deployments","created_at":"2026-07-11T01:50:31Z","updated_at":"2026-08-12T01:16:21Z","pushed_at":"2026-08-12T01:16:21Z","git_url":"git://github.com/attractor-set/torch2pc-layerwise-thesis.git","ssh_url":"git@github.com:attractor-set/torch2pc-layerwise-thesis.git","clone_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis.git","svn_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis","homepage":"","size":27130,"stargazers_count":0,"watchers_count":0,"language":"Python","has_issues":true,"has_projects":true,"has_downloads":false,"has_wiki":false,"has_pages":false,"has_discussions":false,"forks_count":0,"mirror_url":null,"archived":false,"disabled":false,"open_issues_count":0,"license":{"key":"apache-2.0","name":"Apache License 2.0","spdx_id":"Apache-2.0","url":"https://api.github.com/licenses/apache-2.0","node_id":"MDc6TGljZW5zZTI="},"allow_forking":true,"is_template":false,"web_commit_signoff_required":false,"has_pull_requests":true,"pull_request_creation_policy":"all","topics":[],"visibility":"public","forks":0,"open_issues":0,"watchers":0,"default_branch":"main"}},"base":{"label":"attractor-set:main","ref":"main","sha":"2d748751482a6b3ecb200fb3816d41f48d8ed8cc","user":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"repo":{"id":1297042437,"node_id":"R_kgDOTU9MBQ","name":"torch2pc-layerwise-thesis","full_name":"attractor-set/torch2pc-layerwise-thesis","private":false,"owner":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"html_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis","description":"Воспроизводимый проект магистерской диссертации по predictive coding в Torch2PC: послойное и compute-matched сравнение с backpropagation, PC-CATM/PC-TREF, механизмная диагностика state inference и QWake-PC для адаптивного exact inference в Ubuntu/ROCm — reproducible research on mechanism-aware predictive coding.","fork":false,"url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis","forks_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/forks","keys_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/keys{/key_id}","collaborators_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/teams","hooks_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/hooks","issue_events_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/events{/number}","events_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/events","assignees_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/assignees{/user}","branches_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/branches{/branch}","tags_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/tags","blobs_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/refs{/sha}","trees_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/trees{/sha}","statuses_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/statuses/{sha}","languages_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/languages","stargazers_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/stargazers","contributors_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/contributors","subscribers_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/subscribers","subscription_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/subscription","commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/commits{/sha}","git_commits_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/git/commits{/sha}","comments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/comments{/number}","issue_comment_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/comments{/number}","contents_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/contents/{+path}","compare_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/compare/{base}...{head}","merges_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/merges","archive_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/downloads","issues_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues{/number}","pulls_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls{/number}","milestones_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/milestones{/number}","notifications_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/labels{/name}","releases_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/releases{/id}","deployments_url":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/deployments","created_at":"2026-07-11T01:50:31Z","updated_at":"2026-08-12T01:16:21Z","pushed_at":"2026-08-12T01:16:21Z","git_url":"git://github.com/attractor-set/torch2pc-layerwise-thesis.git","ssh_url":"git@github.com:attractor-set/torch2pc-layerwise-thesis.git","clone_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis.git","svn_url":"https://github.com/attractor-set/torch2pc-layerwise-thesis","homepage":"","size":27130,"stargazers_count":0,"watchers_count":0,"language":"Python","has_issues":true,"has_projects":true,"has_downloads":false,"has_wiki":false,"has_pages":false,"has_discussions":false,"forks_count":0,"mirror_url":null,"archived":false,"disabled":false,"open_issues_count":0,"license":{"key":"apache-2.0","name":"Apache License 2.0","spdx_id":"Apache-2.0","url":"https://api.github.com/licenses/apache-2.0","node_id":"MDc6TGljZW5zZTI="},"allow_forking":true,"is_template":false,"web_commit_signoff_required":false,"has_pull_requests":true,"pull_request_creation_policy":"all","topics":[],"visibility":"public","forks":0,"open_issues":0,"watchers":0,"default_branch":"main"}},"_links":{"self":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198"},"html":{"href":"https://github.com/attractor-set/torch2pc-layerwise-thesis/pull/198"},"issue":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/198"},"comments":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/issues/198/comments"},"review_comments":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198/comments"},"review_comment":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/comments{/number}"},"commits":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/pulls/198/commits"},"statuses":{"href":"https://api.github.com/repos/attractor-set/torch2pc-layerwise-thesis/statuses/3d6289dbae8cdb6209c8bd0f8721f162a2250f74"}},"author_association":"OWNER","auto_merge":null,"assignee":null,"active_lock_reason":null,"merged":true,"mergeable":null,"rebaseable":null,"mergeable_state":"unknown","merged_by":{"login":"attractor-set","id":5798304,"node_id":"MDQ6VXNlcjU3OTgzMDQ=","avatar_url":"https://avatars.githubusercontent.com/u/5798304?v=4","gravatar_id":"","url":"https://api.github.com/users/attractor-set","html_url":"https://github.com/attractor-set","followers_url":"https://api.github.com/users/attractor-set/followers","following_url":"https://api.github.com/users/attractor-set/following{/other_user}","gists_url":"https://api.github.com/users/attractor-set/gists{/gist_id}","starred_url":"https://api.github.com/users/attractor-set/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/attractor-set/subscriptions","organizations_url":"https://api.github.com/users/attractor-set/orgs","repos_url":"https://api.github.com/users/attractor-set/repos","events_url":"https://api.github.com/users/attractor-set/events{/privacy}","received_events_url":"https://api.github.com/users/attractor-set/received_events","type":"User","user_view_type":"public","site_admin":false},"comments":0,"review_comments":0,"maintainer_can_modify":false,"commits":1,"additions":727,"deletions":18,"changed_files":16}
+POST_MERGE_GIT_IDENTITY_EXACT=true
+MERGE_COMMIT=3858d3a7e6d7b3401e999523bc6675dc7dd0223d
+MERGE_TREE=f516667472e1ea2a8e2826f520c055cfe2dd0351
+PR198_MERGED=true
+BASE_TO_MAIN_DELTA_EXACT=true
+BASE_TO_MAIN_MODIFIED_COUNT=8
+BASE_TO_MAIN_ADDED_COUNT=8
+BASE_TO_MAIN_DELETED_COUNT=0
+MERGED_PATCH_BYTES_EXACT=true
+MERGED_PATCH_PATH_COUNT=16
+CURRENT_SUPERSEDING_IMAGE_FREEZE_EXACT=true
+CURRENT_SUPERSEDING_IMAGE_MUTATED=false
+CURRENT_SUPERSEDING_IMAGE_C1_ADMISSIBLE=false
+HISTORICAL_ORCHESTRATOR_MANIFEST_EXACT=true
+HISTORICAL_LC4_BOUNDED_IDENTITY_EXACT=true
+CORRECTION_EVIDENCE_PACKAGE_EXACT=true
+CORRECTION_SHA256SUMS_EXACT=true
+NEW_RUNTIME_SOURCE_CLOSURE_EXACT=true
+NEW_RUNTIME_SOURCE_PATH_COUNT=157
+REQUEST_SCHEMA_EXACT_TRAIN_ASSET_COUNT=2
+REQUEST_SCHEMA_TEST_RESOURCE_BINDING_PERMITTED=false
+TORCHVISION_DATASET_CONSTRUCTOR_IN_SCIENTIFIC_RUNTIME=false
+TRAIN_ONLY_IDX_PARSER=true
+NEW_RUNTIME_SOURCE_MANIFEST_SHA256=sha256:01d86f045bf42554382654d2c48f2be23f4763b6fbdc4aa1c9e7cff939367561
+=== QWAKE C1 TRAIN-ONLY DATASET ISOLATION CORRECTION POST-MERGE VERIFICATION V1 SUCCESS ===
+FINAL_STATUS=0
+MERGE_COMMIT=3858d3a7e6d7b3401e999523bc6675dc7dd0223d
+MERGE_TREE=f516667472e1ea2a8e2826f520c055cfe2dd0351
+AUTHORING_COMMIT=3d6289dbae8cdb6209c8bd0f8721f162a2250f74
+PR198_MERGED=true
+C1_TRAIN_ONLY_DATASET_ISOLATION_CORRECTION_POST_MERGE_VERIFIED=true
+REQUEST_SCHEMA_TEST_RESOURCE_BINDING_PERMITTED=false
+TORCHVISION_DATASET_CONSTRUCTOR_IN_SCIENTIFIC_RUNTIME=false
+TRAIN_ONLY_IDX_PARSER=true
+NEW_RUNTIME_SOURCE_MANIFEST_SHA256=sha256:01d86f045bf42554382654d2c48f2be23f4763b6fbdc4aa1c9e7cff939367561
+CURRENT_SUPERSEDING_IMAGE_MUTATED=false
+CURRENT_SUPERSEDING_IMAGE_C1_ADMISSIBLE=false
+NEW_SCIENTIFIC_IMAGE_REQUIRED=true
+NEW_SCIENTIFIC_IMAGE_BUILT=false
+C1_REQUEST_FREEZE_AUTHORIZATION_CONSUMED=false
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT=authorize_corrected_scientific_image_build_validation_and_freeze

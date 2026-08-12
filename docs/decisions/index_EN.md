@@ -178,3 +178,5 @@
 - [ADR-125](ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze_EN.md): preserves QW-5 v1 as a historical freeze and integrates the independently verified superseding scientific image as the sole operational image for future C1/C2/C3/R without opening C1.
 
 - [ADR-126](ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md): makes C1 test-data isolation project-owned by restricting requests to the exact train IDX pair and replacing the torchvision live-data constructor with a closed train-only parser, without building an image or freezing C1.
+
+- [ADR-127](ADR-127-stage3b-qwake-c1-train-only-corrected-scientific-image-freeze_EN.md): integrates the independently verified corrected train-only scientific image as ADR-125's operational successor for future C1/C2/C3/R while preserving predecessor images historically and keeping C1 closed until separate post-merge verification.

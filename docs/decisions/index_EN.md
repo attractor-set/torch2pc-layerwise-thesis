@@ -176,3 +176,5 @@
 - [ADR-124](ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator_EN.md): preserves the QW-5 version-1 image unchanged and adds a preregistered generic scientific orchestrator without building a new image or opening C1.
 
 - [ADR-125](ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze_EN.md): preserves QW-5 v1 as a historical freeze and integrates the independently verified superseding scientific image as the sole operational image for future C1/C2/C3/R without opening C1.
+
+- [ADR-126](ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md): makes C1 test-data isolation project-owned by restricting requests to the exact train IDX pair and replacing the torchvision live-data constructor with a closed train-only parser, without building an image or freezing C1.

@@ -103,6 +103,28 @@ class ScientificBatchSpec:
             raise ScientificCampaignError("batch indices must be canonically sorted")
 
 
+_TRAIN_ONLY_IDX_FILENAMES: Final = (
+    "train-images-idx3-ubyte",
+    "train-labels-idx1-ubyte",
+)
+
+
+def canonical_train_dataset_asset_paths(
+    dataset_name: str,
+    dataset_root: str,
+) -> tuple[str, str]:
+    """Return the sole admissible live-data assets for MNIST-family campaigns."""
+
+    if dataset_name not in {"FashionMNIST", "MNIST"}:
+        raise ScientificCampaignError("dataset is outside the QWake-FP registry")
+    _require_confined_relative(dataset_root, "dataset_root")
+    root = Path(dataset_root)
+    return (
+        (root / dataset_name / "raw" / _TRAIN_ONLY_IDX_FILENAMES[0]).as_posix(),
+        (root / dataset_name / "raw" / _TRAIN_ONLY_IDX_FILENAMES[1]).as_posix(),
+    )
+
+
 @dataclass(frozen=True)
 class ScientificDatasetBinding:
     """Read-only dataset/split binding; test data is never represented."""
@@ -132,6 +154,15 @@ class ScientificDatasetBinding:
                 raise ScientificCampaignError(
                     "dataset asset must remain under dataset_root"
                 ) from exc
+        expected_assets = canonical_train_dataset_asset_paths(
+            self.dataset_name,
+            self.dataset_root,
+        )
+        observed_assets = tuple(asset.relative_path for asset in self.dataset_assets)
+        if observed_assets != expected_assets:
+            raise ScientificCampaignError(
+                "dataset assets must be the exact canonical train-only IDX files"
+            )
         _require_nondata_artifact_namespace(self.split.relative_path, "split artifact")
         if not self.split_key.strip():
             raise ScientificCampaignError("split_key cannot be empty")

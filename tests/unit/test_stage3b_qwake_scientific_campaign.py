@@ -68,7 +68,10 @@ def _binding(partition: ScientificDataPartition) -> ScientificDatasetBinding:
         dataset_name="FashionMNIST",
         dataset_root="data",
         split=ArtifactBinding("results/splits/frozen.npz", SHA_A),
-        dataset_assets=(ArtifactBinding("data/raw/frozen.bin", SHA_B),),
+        dataset_assets=(
+            ArtifactBinding("data/FashionMNIST/raw/train-images-idx3-ubyte", SHA_B),
+            ArtifactBinding("data/FashionMNIST/raw/train-labels-idx1-ubyte", SHA_C),
+        ),
         split_key="validation_idx",
         partition=partition,
         batches=(ScientificBatchSpec("batch-000", (0, 1)),),

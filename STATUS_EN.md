@@ -2979,3 +2979,27 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=merge-post-merge-verify-then-C1-request-freeze-and-authorization
 ```
+
+## `C1`: train-only dataset isolation correction authored (ADR-126)
+
+C1 request-freeze admission remained closed because the scientific live-data
+path delegated dataset preflight to torchvision before train-only materialization.
+ADR-126 makes the invariant project-owned: the request schema can bind only the
+two canonical uncompressed train IDX files, and the scientific runtime parses
+only those files without a torchvision Dataset constructor. The current frozen
+image remains immutable but is not C1-admissible; no C1 authorization is consumed.
+
+```text
+C1_TRAIN_ONLY_DATASET_ISOLATION_CORRECTION_AUTHORED=true
+RUNTIME_SOURCE_MANIFEST_SHA256=sha256:01d86f045bf42554382654d2c48f2be23f4763b6fbdc4aa1c9e7cff939367561
+CURRENT_SUPERSEDING_IMAGE_C1_ADMISSIBLE=false
+NEW_SCIENTIFIC_IMAGE_REQUIRED=true
+NEW_SCIENTIFIC_IMAGE_BUILT=false
+C1_REQUEST_FREEZE_AUTHORIZATION_CONSUMED=false
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=merge-post-merge-verify-then-corrected-image-build-validation-freeze
+```

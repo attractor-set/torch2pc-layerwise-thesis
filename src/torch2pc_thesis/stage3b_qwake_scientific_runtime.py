@@ -18,6 +18,7 @@ import json
 import math
 import os
 import re
+import struct
 import time
 from dataclasses import asdict, dataclass, is_dataclass, replace
 from enum import StrEnum
@@ -27,8 +28,8 @@ from typing import Any, Final, cast
 import numpy as np
 import torch
 from torch import Tensor, nn
+from torch.nn import functional as F
 
-from torch2pc_thesis.data import DATASETS, image_transform
 from torch2pc_thesis.models import build_model
 from torch2pc_thesis.stage3b_qwake_core import (
     ROLE_CAPABILITY_ALLOWLIST,
@@ -94,6 +95,7 @@ from torch2pc_thesis.stage3b_qwake_scientific_campaign import (
     ScientificCampaignRequest,
     ScientificDatasetBinding,
     ScientificHostClaim,
+    canonical_train_dataset_asset_paths,
     load_scientific_host_claim,
 )
 
@@ -102,7 +104,9 @@ _CONTRACT_ID: Final = QWAKE_FP_SPECIAL_CASE_CONTRACT.contract_id
 _COMPARISON_PROFILE_ID: Final = "rocm_float32_canonical"
 _COST_PROFILE_ID: Final = "shadow_mechanism_v1"
 _RUNTIME_MANIFEST_RELATIVE: Final = Path(
-    "experiments/frozen/stage3b-qwake-scientific-orchestrator-v1/runtime-SHA256SUMS"
+    "experiments/frozen/"
+    "stage3b-qwake-c1-train-only-dataset-isolation-correction-v1/"
+    "runtime-SHA256SUMS"
 )
 _HOST_CLAIM_FILENAME: Final = "host-claim.json"
 
@@ -1081,13 +1085,81 @@ def _sample_reductions(
     return result
 
 
+@dataclass(frozen=True)
+class _TrainOnlyIDXDataset:
+    """In-memory train-only MNIST-family dataset with the canonical 32x32 transform."""
+
+    images: Tensor
+    targets: Tensor
+
+    def __post_init__(self) -> None:
+        if self.images.dtype != torch.uint8 or self.images.ndim != 3:
+            raise ScientificRuntimeError("train image tensor must be uint8 N x H x W")
+        if self.images.shape[1:] != (28, 28):
+            raise ScientificRuntimeError("train image geometry must be 28x28")
+        if self.targets.dtype != torch.uint8 or self.targets.ndim != 1:
+            raise ScientificRuntimeError("train target tensor must be uint8 N")
+        if self.images.shape[0] != self.targets.shape[0]:
+            raise ScientificRuntimeError("train image/target cardinality differs")
+
+    def __len__(self) -> int:
+        return int(self.targets.shape[0])
+
+    def __getitem__(self, index: int) -> tuple[Tensor, int]:
+        image = self.images[index].to(dtype=torch.float32).div(255.0).unsqueeze(0)
+        padded = F.pad(image, (2, 2, 2, 2), value=0.0)
+        return padded, int(self.targets[index].item())
+
+
+def _read_idx_images(path: Path) -> Tensor:
+    raw = path.read_bytes()
+    if len(raw) < 16:
+        raise ScientificRuntimeError("train image IDX payload is truncated")
+    magic, count, rows, columns = struct.unpack(">IIII", raw[:16])
+    if magic != 2051:
+        raise ScientificRuntimeError("train image IDX magic differs")
+    if rows != 28 or columns != 28:
+        raise ScientificRuntimeError("train image IDX geometry differs")
+    expected = count * rows * columns
+    payload = raw[16:]
+    if len(payload) != expected:
+        raise ScientificRuntimeError("train image IDX payload length differs")
+    array = np.frombuffer(payload, dtype=np.uint8).copy().reshape(count, rows, columns)
+    return torch.from_numpy(array)
+
+
+def _read_idx_labels(path: Path) -> Tensor:
+    raw = path.read_bytes()
+    if len(raw) < 8:
+        raise ScientificRuntimeError("train label IDX payload is truncated")
+    magic, count = struct.unpack(">II", raw[:8])
+    if magic != 2049:
+        raise ScientificRuntimeError("train label IDX magic differs")
+    payload = raw[8:]
+    if len(payload) != count:
+        raise ScientificRuntimeError("train label IDX payload length differs")
+    return torch.from_numpy(np.frombuffer(payload, dtype=np.uint8).copy())
+
+
 def _load_read_only_dataset(
     root: Path,
     binding: ScientificDatasetBinding,
-) -> tuple[Any, set[int]]:
+) -> tuple[_TrainOnlyIDXDataset, set[int]]:
     dataset_root = _resolve_confined(root, binding.dataset_root)
     if not dataset_root.is_dir():
         raise ScientificRuntimeError("dataset root is absent")
+
+    expected_assets = canonical_train_dataset_asset_paths(
+        binding.dataset_name,
+        binding.dataset_root,
+    )
+    observed_assets = tuple(asset.relative_path for asset in binding.dataset_assets)
+    if observed_assets != expected_assets:
+        raise ScientificRuntimeError(
+            "live dataset binding is not the exact train-only IDX pair"
+        )
+
+    verified_assets: dict[str, Path] = {}
     for asset in binding.dataset_assets:
         asset_path = _verified_artifact(root, asset)
         try:
@@ -1096,24 +1168,21 @@ def _load_read_only_dataset(
             raise ScientificRuntimeError(
                 "bound dataset asset is outside dataset_root"
             ) from exc
+        verified_assets[asset.relative_path] = asset_path
+
     split_path = _verified_artifact(root, binding.split)
     with np.load(split_path, allow_pickle=False) as loaded:
         if binding.split_key not in loaded.files:
             raise ScientificRuntimeError("frozen split key is absent")
-        allowed = {int(value) for value in np.asarray(loaded[binding.split_key], dtype=np.int64)}
-    try:
-        dataset_cls = DATASETS[binding.dataset_name]
-    except KeyError as exc:
-        raise ScientificRuntimeError("dataset implementation is outside the registry") from exc
-    kwargs = {"split": "digits"} if binding.dataset_name == "EMNIST" else {}
-    dataset = dataset_cls(
-        root=str(dataset_root),
-        train=True,
-        download=False,
-        transform=image_transform(),
-        **kwargs,
-    )
-    if any(index >= len(dataset) for index in allowed):
+        allowed = {
+            int(value)
+            for value in np.asarray(loaded[binding.split_key], dtype=np.int64)
+        }
+
+    images = _read_idx_images(verified_assets[expected_assets[0]])
+    targets = _read_idx_labels(verified_assets[expected_assets[1]])
+    dataset = _TrainOnlyIDXDataset(images=images, targets=targets)
+    if any(index < 0 or index >= len(dataset) for index in allowed):
         raise ScientificRuntimeError("split contains out-of-range dataset index")
     return dataset, allowed
 

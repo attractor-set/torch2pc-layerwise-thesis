@@ -182,3 +182,5 @@
 - [ADR-127](ADR-127-stage3b-qwake-c1-train-only-corrected-scientific-image-freeze_EN.md): integrates the independently verified corrected train-only scientific image as ADR-125's operational successor for future C1/C2/C3/R while preserving predecessor images historically and keeping C1 closed until separate post-merge verification.
 
 - [ADR-128](ADR-128-stage3b-qwake-c1-request-freeze-repository-integration_EN.md): integrates the byte-preserved independently verified preregistered C1 request without refreezing it or opening execution before a separate post-merge boundary.
+
+- [ADR-129](ADR-129-stage3b-qwake-c1-attempt-001-host-identity-permission-correction_EN.md): records the terminal consumed C1 Attempt-001 failure and corrects the scientific host with host UID/GID, ROCm groups, and a pre-claim owner-write contract without weakening cap-drop=ALL or retrying execution.

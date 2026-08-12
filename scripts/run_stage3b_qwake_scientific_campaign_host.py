@@ -15,9 +15,11 @@ is never removed and the launcher never retries automatically.
 from __future__ import annotations
 
 import argparse
+import grp
 import json
 import os
 import shutil
+import stat
 import subprocess
 from pathlib import Path
 from typing import Final
@@ -58,16 +60,14 @@ def _require_run(argv: list[str], *, cwd: Path, label: str) -> bytes:
         output = result.stdout.decode("utf-8", errors="replace")
         if output:
             print(output, end="" if output.endswith("\n") else "\n")
-        raise ScientificHostLaunchError(
-            f"{label} failed with status {result.returncode}"
-        )
+        raise ScientificHostLaunchError(f"{label} failed with status {result.returncode}")
     return result.stdout
 
 
 def _scalar(argv: list[str], *, cwd: Path) -> str:
-    return _require_run(argv, cwd=cwd, label=" ".join(argv)).decode(
-        "utf-8", errors="strict"
-    ).strip()
+    return (
+        _require_run(argv, cwd=cwd, label=" ".join(argv)).decode("utf-8", errors="strict").strip()
+    )
 
 
 def _require_exact_source_checkout(root: Path, source_commit: str) -> None:
@@ -233,6 +233,42 @@ def _write_exclusive(path: Path, content: bytes) -> None:
         os.fsync(stream.fileno())
 
 
+def _group_gid(name: str) -> int:
+    try:
+        return grp.getgrnam(name).gr_gid
+    except KeyError as exc:
+        raise ScientificHostLaunchError(f"required host group is unavailable: {name}") from exc
+
+
+def _host_container_identity() -> tuple[int, int, int, int]:
+    return (
+        os.getuid(),
+        os.getgid(),
+        _group_gid("video"),
+        _group_gid("render"),
+    )
+
+
+def _require_output_owner_write_contract(
+    output_root: Path,
+    *,
+    host_uid: int,
+) -> int:
+    if not output_root.is_dir() or output_root.is_symlink():
+        raise ScientificHostLaunchError(
+            "authorized output root must be a real directory before host claim"
+        )
+    snapshot = os.stat(output_root, follow_symlinks=False)
+    if snapshot.st_uid != host_uid:
+        raise ScientificHostLaunchError("authorized output root owner differs from container uid")
+    mode = stat.S_IMODE(snapshot.st_mode)
+    if not mode & stat.S_IWUSR or not mode & stat.S_IXUSR:
+        raise ScientificHostLaunchError(
+            "authorized output root lacks owner write/execute permission"
+        )
+    return mode
+
+
 def _docker_command(
     docker: str,
     root: Path,
@@ -242,6 +278,11 @@ def _docker_command(
     host_claim: ScientificHostClaim,
     input_mounts: tuple[tuple[Path, Path], ...],
     output_root: Path,
+    *,
+    host_uid: int,
+    host_gid: int,
+    video_gid: int,
+    render_gid: int,
 ) -> list[str]:
     command = [
         docker,
@@ -251,6 +292,12 @@ def _docker_command(
         "--read-only",
         "--security-opt=no-new-privileges",
         "--cap-drop=ALL",
+        "--user",
+        f"{host_uid}:{host_gid}",
+        "--group-add",
+        str(video_gid),
+        "--group-add",
+        str(render_gid),
         "--shm-size=2g",
         "--tmpfs",
         "/tmp:rw,nosuid,nodev,size=2g",
@@ -268,9 +315,7 @@ def _docker_command(
         _mount_arg(authorization_path, _CONTAINER_AUTHORIZATION, readonly=True),
     ]
     for host_dir, container_dir in input_mounts:
-        command.extend(
-            ["--mount", _mount_arg(host_dir, container_dir, readonly=True)]
-        )
+        command.extend(["--mount", _mount_arg(host_dir, container_dir, readonly=True)])
     command.extend(
         [
             "--mount",
@@ -321,6 +366,8 @@ def main() -> None:
     if not Path("/dev/kfd").exists() or not Path("/dev/dri").exists():
         raise ScientificHostLaunchError("required ROCm device nodes are unavailable")
 
+    host_uid, host_gid, video_gid, render_gid = _host_container_identity()
+
     input_mounts = _input_parent_mounts(root, request)
     output_root = _resolved(root, request.output_root)
     if output_root.exists():
@@ -340,10 +387,27 @@ def main() -> None:
     print("PUBLICATION_PERMITTED=false")
     print("DOCKER_BUILD_INVOKED=false")
     print("AUTOMATIC_RETRY_PERMITTED=false")
+    print(f"HOST_UID={host_uid}")
+    print(f"HOST_GID={host_gid}")
+    print(f"VIDEO_GID={video_gid}")
+    print(f"RENDER_GID={render_gid}")
+    print(f"CONTAINER_PRIMARY_IDENTITY={host_uid}:{host_gid}")
+    print("CAP_DROP_ALL=true")
+    print("CAP_DAC_OVERRIDE_PRESENT=false")
 
     # Authorization-consumption boundary.  Never remove this directory/claim
     # on subsequent failure and never retry automatically.
-    output_root.mkdir(parents=False, exist_ok=False)
+    output_root.mkdir(parents=False, exist_ok=False, mode=0o700)
+    os.chmod(output_root, 0o700)
+    output_mode = _require_output_owner_write_contract(
+        output_root,
+        host_uid=host_uid,
+    )
+    print(f"OUTPUT_ROOT_OWNER_UID={host_uid}")
+    print(f"OUTPUT_ROOT_MODE={oct(output_mode)}")
+    print("OUTPUT_ROOT_OWNER_WRITE_CONTRACT=true")
+    print("CONTAINER_UID_MATCHES_OUTPUT_OWNER=true")
+
     host_claim = ScientificHostClaim.create(request, authorization)
     claim_path = output_root / "host-claim.json"
     _write_exclusive(claim_path, host_claim.canonical_json().encode("utf-8"))
@@ -361,6 +425,10 @@ def main() -> None:
         host_claim,
         input_mounts,
         output_root,
+        host_uid=host_uid,
+        host_gid=host_gid,
+        video_gid=video_gid,
+        render_gid=render_gid,
     )
     invoked = _run(command, cwd=root)
     output = invoked.stdout.decode("utf-8", errors="replace")

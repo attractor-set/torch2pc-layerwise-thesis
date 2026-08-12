@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import importlib.util
+import os
 from dataclasses import replace
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import torch
@@ -285,12 +288,25 @@ def _manual_dataset() -> SealedTrajectoryDataset:
     feature = FrozenFeatureVector(
         ObservationLevel.A2,
         tuple(
-            (name, (
-                "snapshot-0" if name == "snapshot_id" else
-                1 if name in {"compute_step", "reference_horizon_k_ref", "remaining_sweeps", "diagnostic_budget_remaining_ns"} else
-                "frozen" if name in {"registered_layer_order", "registered_block_order", "acquired_analytic_ids"} else
-                0.01
-            ))
+            (
+                name,
+                (
+                    "snapshot-0"
+                    if name == "snapshot_id"
+                    else 1
+                    if name
+                    in {
+                        "compute_step",
+                        "reference_horizon_k_ref",
+                        "remaining_sweeps",
+                        "diagnostic_budget_remaining_ns",
+                    }
+                    else "frozen"
+                    if name
+                    in {"registered_layer_order", "registered_block_order", "acquired_analytic_ids"}
+                    else 0.01
+                ),
+            )
             for name in A2_FIELDS
         ),
     )
@@ -301,7 +317,9 @@ def _manual_dataset() -> SealedTrajectoryDataset:
         compute_step=1,
         observation=feature,
         analytics=(),
-        measured_edges=(MeasuredEdge("control", CostCategory.CONTROL, EdgeMeasurement(host_time_ns=1)),),
+        measured_edges=(
+            MeasuredEdge("control", CostCategory.CONTROL, EdgeMeasurement(host_time_ns=1)),
+        ),
         remaining_suffix_ns=100,
         provenance=Provenance(1, "unit", SHA_A, SHA_B),
         oracle_label=OracleLabel("snapshot-0", SHA_C, 0.0, True),
@@ -468,12 +486,31 @@ def test_predecessor_receipt_binds_exact_c1_artifact(tmp_path: Path) -> None:
     refs = _verify_predecessor_receipts(tmp_path, request)
     assert tuple(item.kind for item in refs) == (ReceiptKind.C1_COLLECTION,)
     context = _execution_context(request, refs)
-    assert tuple(plan.component_id for plan in _plan_campaign_components(context, request)) == request.component_sequence
+    assert (
+        tuple(plan.component_id for plan in _plan_campaign_components(context, request))
+        == request.component_sequence
+    )
+
+
+def _load_scientific_host_launcher():
+    root = Path(__file__).resolve().parents[2]
+    path = root / "scripts/run_stage3b_qwake_scientific_campaign_host.py"
+    spec = importlib.util.spec_from_file_location(
+        "stage3b_qwake_scientific_campaign_host_test_subject",
+        path,
+    )
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def test_host_launcher_has_fixed_docker_command_surface() -> None:
     root = Path(__file__).resolve().parents[2]
-    source = (root / "scripts/run_stage3b_qwake_scientific_campaign_host.py").read_text(encoding="utf-8")
+    source = (root / "scripts/run_stage3b_qwake_scientific_campaign_host.py").read_text(
+        encoding="utf-8"
+    )
     tree = ast.parse(source)
     string_literals = {
         node.value
@@ -483,7 +520,78 @@ def test_host_launcher_has_fixed_docker_command_surface() -> None:
     assert "--network=none" in string_literals
     assert "--read-only" in string_literals
     assert "--cap-drop=ALL" in string_literals
+    assert "--user" in string_literals
+    assert "--group-add" in string_literals
     assert "/workspace/scripts/run_stage3b_qwake_scientific_campaign.py" in string_literals
+    assert "--cap-add" not in string_literals
     assert "docker build" not in source
     assert "docker pull" not in source
     assert "shell=True" not in source
+
+
+def test_host_docker_command_binds_host_identity_and_rocm_groups(tmp_path: Path) -> None:
+    host = _load_scientific_host_launcher()
+    request = SimpleNamespace(
+        image_digest=SHA_A,
+        output_root="results/scientific/C1_COLLECTION",
+    )
+    claim = SimpleNamespace(claim_sha256=SHA_B)
+    command = host._docker_command(
+        "docker",
+        tmp_path,
+        tmp_path / "request.json",
+        tmp_path / "authorization.json",
+        request,
+        claim,
+        (),
+        tmp_path / "results/scientific/C1_COLLECTION",
+        host_uid=1000,
+        host_gid=1001,
+        video_gid=44,
+        render_gid=109,
+    )
+
+    user_index = command.index("--user")
+    assert command[user_index + 1] == "1000:1001"
+    group_indices = [index for index, value in enumerate(command) if value == "--group-add"]
+    assert [command[index + 1] for index in group_indices] == ["44", "109"]
+    assert "--cap-drop=ALL" in command
+    assert "--security-opt=no-new-privileges" in command
+    assert "--network=none" in command
+    assert "CAP_DAC_OVERRIDE" not in command
+
+
+def test_host_output_owner_write_contract_is_preclaim_and_owner_scoped(
+    tmp_path: Path,
+) -> None:
+    host = _load_scientific_host_launcher()
+    output_root = tmp_path / "output"
+    output_root.mkdir(mode=0o700)
+    os.chmod(output_root, 0o700)
+
+    assert (
+        host._require_output_owner_write_contract(
+            output_root,
+            host_uid=os.getuid(),
+        )
+        == 0o700
+    )
+
+    with pytest.raises(
+        host.ScientificHostLaunchError,
+        match="owner differs from container uid",
+    ):
+        host._require_output_owner_write_contract(
+            output_root,
+            host_uid=os.getuid() + 1,
+        )
+
+    os.chmod(output_root, 0o500)
+    with pytest.raises(
+        host.ScientificHostLaunchError,
+        match="lacks owner write/execute",
+    ):
+        host._require_output_owner_write_contract(
+            output_root,
+            host_uid=os.getuid(),
+        )

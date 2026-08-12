@@ -3062,3 +3062,23 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=merge-post-merge-verify-then-authorize-C1-execution-boundary
 ```
+
+
+## `C1 Attempt-001`: terminal permission failure and host identity correction (ADR-129)
+
+Attempt-001 terminally consumed authorization `sha256:1d62b313f609be9b9ba9a813761c672e1866c35ca794253babb6c829f42fdc6b` and cannot be retried. ADR-129 corrects the host/container DAC identity contract without weakening `cap-drop=ALL`.
+
+```text
+ATTEMPT001_AUTHORIZATION_CONSUMED=true
+ATTEMPT001_RETRY_PERMITTED=false
+CAP_DROP_ALL_PRESERVED=true
+CAP_DAC_OVERRIDE_ADDED=false
+SUCCESSOR_RUNTIME_MANIFEST_SHA256=sha256:fbfd01ecd41cc1615acef9f0fc9b3dd390e9605ebadd9a5dc86d78a425e2ac7b
+CORRECTION_SHA256=sha256:dd827f2ecb5fc983ad9d800961c34f61d443240651dc007526332fe6215d24aa
+NEW_SCIENTIFIC_IMAGE_REQUIRED=true
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+ATTEMPT002_CREATED=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+```

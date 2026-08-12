@@ -3112,3 +3112,37 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=merge-post-merge-verify-then-corrected-image-build-validation-freeze
 ```
+
+
+## `C1`: исправленный научный образ зафиксирован и интегрируется в репозиторий (ADR-127)
+
+После ADR-126 исправленная научная среда выполнения была слита как `3858d3a7e6d7b3401e999523bc6675dc7dd0223d` и
+собран ровно один раз в новый образ `sha256:89703b0b37b2729855835a6ed19ba1ca397ae14614c318344bd7625d12c727ef`. Образ прошёл
+157-путевую проверку замыкания, отдельную проверку изоляции только обучающих данных `5 passed`,
+целевую проверку `45 passed`, был зафиксирован и независимо проверен без
+повторной сборки.
+
+ADR-127 интегрирует исходные доказательные материалы побайтно и связывает их с
+репозиторием. Предыдущий образ `sha256:7aefbc241ad725f4ac31d8b72c63a82247516ad4831aad6f7d0ef89817f9dacb` сохраняется как
+исторический superseding image, но остаётся недопустимым для C1. Ранее выданная
+авторизация C1 request freeze не потребляется.
+
+```text
+CORRECTED_SCIENTIFIC_IMAGE_DIGEST=sha256:89703b0b37b2729855835a6ed19ba1ca397ae14614c318344bd7625d12c727ef
+CORRECTED_SCIENTIFIC_IMAGE_FREEZE_SHA256=sha256:ce8c054c92df18512b2a88ac25148f44c15487d8c2d4e68d8751966ac17bf287
+CORRECTED_SCIENTIFIC_IMAGE_FREEZE_INDEPENDENTLY_VERIFIED=true
+TRAIN_ONLY_ISOLATION_VALIDATED=true
+RUNTIME_SOURCE_MANIFEST_SHA256=sha256:01d86f045bf42554382654d2c48f2be23f4763b6fbdc4aa1c9e7cff939367561
+REPOSITORY_INTEGRATION_SHA256=sha256:70012413e1d6bd69dbad060cef0d4b19e0bfe2635eca4dbe746ccfc42544ae72
+PREVIOUS_SUPERSEDING_IMAGE_PRESERVED=true
+PREVIOUS_SUPERSEDING_IMAGE_C1_ADMISSIBLE=false
+C1_REQUEST_FREEZE_AUTHORIZATION_PREVIOUSLY_ISSUED=true
+C1_REQUEST_FREEZE_AUTHORIZATION_CONSUMED=false
+C1_REQUEST_FREEZE_PERMITTED=false
+C1_REQUEST_FROZEN=false
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=merge-post-merge-verify-then-resume-existing-C1-request-freeze-boundary
+```

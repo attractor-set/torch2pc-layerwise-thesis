@@ -232,3 +232,4 @@ docs/decisions/ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator.md,
 docs/decisions/ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze.md,docs/decisions/ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze_EN.md,required
 docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction.md,docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md,required
 docs/decisions/ADR-127-stage3b-qwake-c1-train-only-corrected-scientific-image-freeze.md,docs/decisions/ADR-127-stage3b-qwake-c1-train-only-corrected-scientific-image-freeze_EN.md,required
+docs/decisions/ADR-128-stage3b-qwake-c1-request-freeze-repository-integration.md,docs/decisions/ADR-128-stage3b-qwake-c1-request-freeze-repository-integration_EN.md,required

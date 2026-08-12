@@ -3146,3 +3146,28 @@ TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 NEXT_SLICE=merge-post-merge-verify-then-resume-existing-C1-request-freeze-boundary
 ```
+
+
+## `C1`: зафиксированный запрос интегрируется в репозиторий (ADR-128)
+
+Запрос `C1_COLLECTION` уже пререгистрирован, зафиксирован и независимо
+проверен. Его семантическая идентичность — `sha256:7e238ed8a61b7d80e52d67eef8a5f3af6e0c889c81b885a28a98df237284442e`, фиксация —
+`sha256:340f46bae2ca11e679893464f9f430ac93f1af49d39606b57638ba714e131bcc`. ADR-128 копирует исходные доказательные материалы
+побайтно и связывает их с каноническим репозиторием без повторной фиксации и
+без выдачи разрешения на выполнение.
+
+```text
+C1_REQUEST_SHA256=sha256:7e238ed8a61b7d80e52d67eef8a5f3af6e0c889c81b885a28a98df237284442e
+C1_REQUEST_FREEZE_SHA256=sha256:340f46bae2ca11e679893464f9f430ac93f1af49d39606b57638ba714e131bcc
+C1_REQUEST_FREEZE_INDEPENDENTLY_VERIFIED=true
+REPOSITORY_INTEGRATION_SHA256=sha256:a053011096dee7c3b4e5690190bca1909b2bf325fc4352366728c6ef4129a433
+FRESH_REQUEST_FREEZE_AUTHORIZATION_CONSUMED=true
+FRESH_REQUEST_FREEZE_AUTHORIZATION_RECONSUMED=false
+C1_REQUEST_FROZEN=true
+C1_EXECUTION_AUTHORIZATION_ISSUED=false
+C1_COLLECTION_OPEN=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=merge-post-merge-verify-then-authorize-C1-execution-boundary
+```

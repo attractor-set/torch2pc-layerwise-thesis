@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import json
 import os
 from pathlib import Path
 from types import SimpleNamespace
@@ -43,6 +44,15 @@ def _load_host():
     return module
 
 
+def _load_legacy_host():
+    path = ROOT / "scripts/run_stage3b_qwake_scientific_campaign_host.py"
+    spec = importlib.util.spec_from_file_location("qwake_arch_legacy_host_subject", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def _image(runtime_sha: str = SHA_B) -> dict[str, object]:
     relative = ACTIVE_MANIFEST.as_posix()
     return {
@@ -55,6 +65,7 @@ def _image(runtime_sha: str = SHA_B) -> dict[str, object]:
             },
             "Env": [
                 f"{SOURCE_COMMIT_ENV}={COMMIT}",
+                "SOURCE_GIT_COMMIT=LEGACY_HOST_REJECTED_BY_SUCCESSOR_V2",
                 f"{RUNTIME_MANIFEST_RELATIVE_ENV}={relative}",
                 f"{RUNTIME_MANIFEST_SHA256_ENV}={runtime_sha}",
             ],
@@ -114,6 +125,8 @@ def test_docker_build_contract_has_no_attempt003_wiring_and_bakes_identity() -> 
     assert RUNTIME_MANIFEST_SHA256_LABEL in dockerfile
     assert "requirements/qwake-scientific-runtime.txt" in dockerfile
     assert "requirements/rocm.txt" not in dockerfile
+    assert "QWAKE_SCIENTIFIC_SOURCE_COMMIT_V2=${SOURCE_GIT_COMMIT}" in dockerfile
+    assert "SOURCE_GIT_COMMIT=LEGACY_HOST_REJECTED_BY_SUCCESSOR_V2" in dockerfile
 
 
 def test_host_claim_occurs_only_after_shared_preclaim_and_command_materialization() -> None:
@@ -212,6 +225,25 @@ def test_builder_uses_explicit_rocm_dockerfile_and_read_only_runtime_dirs() -> N
     assert "--read-only" in builder
     assert "verify_stage3b_qwake_scientific_runtime_identity_v2.py" in builder
 
+
+
+
+def test_successor_image_is_rejected_by_legacy_host_before_claim(monkeypatch: pytest.MonkeyPatch) -> None:
+    legacy = _load_legacy_host()
+    inspected = json.dumps([_image()]).encode("utf-8")
+    monkeypatch.setattr(legacy, "_require_run", lambda *args, **kwargs: inspected)
+    request = SimpleNamespace(image_digest=SHA_A, source_commit=COMMIT)
+    with pytest.raises(legacy.ScientificHostLaunchError, match="Docker SOURCE_GIT_COMMIT differs"):
+        legacy._require_exact_local_image("docker", ROOT, request)
+
+
+def test_in_image_verifier_imports_exact_production_entrypoint() -> None:
+    source = (
+        ROOT / "scripts/verify_stage3b_qwake_scientific_runtime_identity_v2.py"
+    ).read_text(encoding="utf-8")
+    assert "runpy.run_path(" in source
+    assert "scripts/run_stage3b_qwake_scientific_campaign_v2.py" in source
+    assert "QWAKE_PRODUCTION_ENTRYPOINT_IMPORT_PREFLIGHT=PASS" in source
 
 def test_request_freezer_derives_runtime_identity_from_image_truth() -> None:
     source = (

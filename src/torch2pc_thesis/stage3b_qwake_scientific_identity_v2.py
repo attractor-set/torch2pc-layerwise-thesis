@@ -19,7 +19,7 @@ RUNTIME_MANIFEST_RELATIVE_ENV: Final = "QWAKE_RUNTIME_MANIFEST_RELATIVE"
 RUNTIME_MANIFEST_SHA256_ENV: Final = "QWAKE_RUNTIME_MANIFEST_SHA256"
 RUNTIME_MANIFEST_RELATIVE_LABEL: Final = "io.torch2pc.qwake-runtime-manifest-relative"
 RUNTIME_MANIFEST_SHA256_LABEL: Final = "io.torch2pc.qwake-runtime-manifest-sha256"
-SOURCE_COMMIT_ENV: Final = "SOURCE_GIT_COMMIT"
+SOURCE_COMMIT_ENV: Final = "QWAKE_SCIENTIFIC_SOURCE_COMMIT_V2"
 SOURCE_COMMIT_LABEL: Final = "org.opencontainers.image.revision"
 
 _SHA256_RE: Final = re.compile(r"sha256:[0-9a-f]{64}")

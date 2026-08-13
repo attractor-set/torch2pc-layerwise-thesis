@@ -3105,3 +3105,29 @@ DOCKER_RUN_INVOKED=false
 TEST_DATASET_ACCESS=false
 PUBLICATION_PERMITTED=false
 ```
+
+
+## `C1`: new request freeze being repository-integrated (ADR-131)
+
+The new `C1_COLLECTION` request is already frozen and independently verified
+after the host-identity correction and new scientific-image freeze. Its
+semantic identity is `sha256:af7c27ec0db83d907b51361a8bb726db51f41fdbdc6bc341156b420648c606fd` and its request freeze is
+`sha256:7fe57faefcc3aa92463e01422546e015e02e7a68c13dbbc9df1ef9feb7452b82`. Integration preserves the original evidence
+bytes and does not open Attempt-002.
+
+```text
+C1_REQUEST_SHA256=sha256:af7c27ec0db83d907b51361a8bb726db51f41fdbdc6bc341156b420648c606fd
+C1_REQUEST_FREEZE_SHA256=sha256:7fe57faefcc3aa92463e01422546e015e02e7a68c13dbbc9df1ef9feb7452b82
+C1_REQUEST_FREEZE_INDEPENDENTLY_VERIFIED=true
+REPOSITORY_INTEGRATION_SHA256=sha256:9bffb8d2bc2516d1075c2a4615c4140b18b2eb2cc9068bac7581a1c7ed001e8f
+PREVIOUS_C1_REQUEST_REUSABLE=false
+REQUEST_FREEZE_AUTHORIZATION_RECONSUMED=false
+NEW_C1_REQUEST_FROZEN=true
+NEW_C1_EXECUTION_AUTHORIZATION_ISSUED=false
+ATTEMPT002_CREATED=false
+C1_COLLECTION_OPEN=false
+SCIENTIFIC_EXECUTION_OPEN=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT_SLICE=merge-post-merge-verify-then-authorize-C1-Attempt-002-execution
+```

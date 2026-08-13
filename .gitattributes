@@ -19,3 +19,6 @@ experiments/frozen/stage3b-qwake-lc4-e-execution-freeze-v1/image-build.log binar
 
 # Preserve sealed host-identity-corrected C1 scientific-image logs byte-for-byte.
 experiments/frozen/stage3b-qwake-c1-host-identity-corrected-scientific-image-freeze-v1/*.log binary
+
+# Preserve sealed hostfix-image-bound C1 request-freeze logs byte-for-byte.
+experiments/frozen/stage3b-qwake-c1-hostfix-image-bound-request-freeze-v1/*.log binary

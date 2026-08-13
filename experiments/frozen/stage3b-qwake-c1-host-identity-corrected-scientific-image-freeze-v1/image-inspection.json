@@ -1,0 +1,90 @@
+[
+    {
+        "Id": "sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d",
+        "RepoTags": [
+            "torch2pc-layerwise-thesis:0.1.0-c1hostfix-98cff5b2ecd6"
+        ],
+        "RepoDigests": [
+            "torch2pc-layerwise-thesis@sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-08-12T18:38:52.648603228-03:00",
+        "Config": {
+            "User": "root",
+            "Env": [
+                "PATH=/opt/venv/bin:/opt/rocm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "DEBIAN_FRONTEND=noninteractive",
+                "LD_LIBRARY_PATH=/opt/rocm/lib",
+                "PYTHONUNBUFFERED=1",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONHASHSEED=0",
+                "SOURCE_GIT_COMMIT=98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2",
+                "PIP_DISABLE_PIP_VERSION_CHECK=1"
+            ],
+            "Entrypoint": [
+                "/usr/bin/tini",
+                "--",
+                "/workspace/scripts/container_entrypoint.sh"
+            ],
+            "Cmd": [
+                "torch2pc-thesis",
+                "validate",
+                "--stage",
+                "smoke",
+                "--method",
+                "bp"
+            ],
+            "WorkingDir": "/workspace",
+            "Labels": {
+                "io.torch2pc.base-image": "rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191",
+                "org.opencontainers.image.description": "Controlled ROCm environment for predictive-coding experiments",
+                "org.opencontainers.image.ref.name": "rocm/pytorch:rocm7.2.1_ubuntu24.04_py3.12_pytorch_release_2.9.1",
+                "org.opencontainers.image.revision": "98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2",
+                "org.opencontainers.image.title": "Torch2PC Layer-wise Thesis",
+                "org.opencontainers.image.version": "0.1.0"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 10907237878,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:f2a7f072635332d307212e318e07284948b89f4167fce5c4d7c9cfb7590b74b6",
+                "sha256:38431d8e5f8b31c89008ccae537f0577d7baaed71b09aaf4bfe1404c5cf498bc",
+                "sha256:c680c862a0120b3b714242412df2e5cf9815097ddf100f3e927d232a332a9789",
+                "sha256:88f02404abb2fd82fbf049034af019ef5bfcd72fdd3494a857713a5e81554aad",
+                "sha256:636db6118fd07e4d965c6e5601961fc508a20c5eec25ced32f29ae9bfc66bc3b",
+                "sha256:cc599bf66a6e61bba98a5e9856f42cbc1e85d1042ce764042e8e38809556636e",
+                "sha256:94ee51b3a67cd13c1f60ca536f0cc3fa7c73965559ffe8f8342f4e4078cd7822",
+                "sha256:11400d5d58b53c828726b13f195c991d3582d12940657418174972a7f054d910",
+                "sha256:67b4448beec2362bdfeb7891cf40d25e0209331b1fd13fbdccd538ac98394293",
+                "sha256:76a5ef2e648209a38ca927f89f6bf6c025f8e2b86faf254bc2bd76ac8b66f407",
+                "sha256:e6172b0feeca67823f5ac2522ef760baf7c12f49aef42289288fe063ad4d7114",
+                "sha256:335865b4b90a86e05cb3cb6b543b0b42201d0e47e89ebea6cdbd1cb4cec9d560",
+                "sha256:8f9d69fe7aa7aa147a05e7e676d13013eda7dd0d1cff02e2b5d3c8b620d69491",
+                "sha256:25c70a6644cbb7471b75b99088cb5115ec68ddfb3466ef8291d8527eeb34ff41",
+                "sha256:111278a187dc12737d6bff0ecfe810f7dda70e4ae989dfede8fa55db930b1a68",
+                "sha256:10cc600a11155d5d14e0740df474463b2aa767361ad9e9168acaac8969f8fb8a",
+                "sha256:8a1978a7f8c67016b28ab697e1c4625f0367ba51b8d9671a80bfd1256d92da6b"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-08-12T21:39:19.092821505Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "9ec1sb6p3gcxdp3e1r0zka4kp",
+                    "CreatedAt": "2026-08-12T18:39:27.780596328-03:00"
+                }
+            ]
+        }
+    }
+]

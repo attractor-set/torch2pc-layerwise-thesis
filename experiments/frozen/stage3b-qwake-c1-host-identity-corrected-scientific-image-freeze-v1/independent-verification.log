@@ -1,0 +1,2356 @@
+=== QWAKE C1 HOST-IDENTITY-CORRECTED IMAGE FREEZE VERIFY V1 ===
+READ_ONLY=true
+GIT_MUTATION_INVOKED=false
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+DOCKER_PULL_INVOKED=false
+DOCKER_TAG_INVOKED=false
+DOCKER_COMMIT_INVOKED=false
+SCIENTIFIC_AUTHORIZATION_ISSUED=false
+NEW_C1_REQUEST_FROZEN=false
+ATTEMPT002_CREATED=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+/home/dzmitry-prychyna/torch2pc-layerwise-thesis-c1-hostfix-image-freeze-integration-v1
+98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2
+855889593a33bb6450e31cfc9feb152d14bd5292
+98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2	refs/heads/main
+98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2 fe4ed4271a07dbf9334530a06f31ed57fc044d22 af8b25872ef6fa092fb3a24e9c390489aa23f986
+855889593a33bb6450e31cfc9feb152d14bd5292
+SOURCE_IDENTITY_EXACT=true
+SOURCE_COMMIT=98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2
+SOURCE_TREE=855889593a33bb6450e31cfc9feb152d14bd5292
+MERGE_TREE_EQUALS_AUTHORING_TREE=true
+SOURCE_WORKTREE_CLEAN=true
+=== QWAKE C1 HOST IDENTITY CORRECTION POST-MERGE VERIFY V1 ===
+READ_ONLY=true
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+SCIENTIFIC_AUTHORIZATION_ISSUED=false
+SCIENTIFIC_EXECUTION_PERFORMED=false
+ATTEMPT002_CREATED=false
+/home/dzmitry-prychyna/torch2pc-layerwise-thesis-c1-hostfix-image-freeze-integration-v1
+98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2
+855889593a33bb6450e31cfc9feb152d14bd5292
+fe4ed4271a07dbf9334530a06f31ed57fc044d22 af8b25872ef6fa092fb3a24e9c390489aa23f986
+fe4ed4271a07dbf9334530a06f31ed57fc044d22
+855889593a33bb6450e31cfc9feb152d14bd5292
+98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2	refs/heads/main
+POST_MERGE_GIT_IDENTITY_EXACT=true
+MERGE_COMMIT=98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2
+MERGE_TREE=855889593a33bb6450e31cfc9feb152d14bd5292
+MERGE_PARENT_1=fe4ed4271a07dbf9334530a06f31ed57fc044d22
+MERGE_PARENT_2=af8b25872ef6fa092fb3a24e9c390489aa23f986
+MERGE_TREE_EQUALS_AUTHORING_TREE=true
+ORIGIN_MAIN_EQUALS_MERGE_COMMIT=true
+STATUS.md
+STATUS_EN.md
+docs/decisions/ADR-129-stage3b-qwake-c1-attempt-001-host-identity-permission-correction.md
+docs/decisions/ADR-129-stage3b-qwake-c1-attempt-001-host-identity-permission-correction_EN.md
+docs/decisions/index.md
+docs/decisions/index_EN.md
+docs/language-map.csv
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/SHA256SUMS
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/attempt001-execution-outcome.json
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/attempt001-host-claim.json
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/attempt001-host-invocation.log
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/attempt001-permission-audit.log
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/attempt001-post-merge-verification.log
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/attempt001-scientific-authorization.json
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/attempt001-user-execution-authorization.json
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/correction-authorization.json
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/correction.json
+experiments/frozen/stage3b-qwake-c1-attempt-001-host-identity-permission-correction-v1/runtime-SHA256SUMS
+scripts/run_stage3b_qwake_scientific_campaign_host.py
+tests/unit/test_stage3b_qwake_scientific_campaign.py
+BASE_TO_MERGE_SCOPE_EXACT=true
+PATCH_PATH_COUNT=20
+CORRECTION_SELF_HASH_EXACT=true
+C1_HOST_IDENTITY_CORRECTION_SHA256=sha256:dd827f2ecb5fc983ad9d800961c34f61d443240651dc007526332fe6215d24aa
+SUCCESSOR_RUNTIME_MANIFEST_SHA256=sha256:fbfd01ecd41cc1615acef9f0fc9b3dd390e9605ebadd9a5dc86d78a425e2ac7b
+PACKAGE_SHA256SUMS_ENTRY_COUNT=10
+PACKAGE_SHA256SUMS_EXACT=true
+SUCCESSOR_RUNTIME_SOURCE_CLOSURE_EXACT=true
+SUCCESSOR_RUNTIME_SOURCE_PATH_COUNT=157
+ATTEMPT001_AUTHORIZATION_CONSUMED=true
+ATTEMPT001_RETRY_PERMITTED=false
+ATTEMPT001_TERMINAL_FAILURE=true
+CAP_DROP_ALL_PRESERVED=true
+CAP_DAC_OVERRIDE_ADDED=false
+CONTAINER_PRIMARY_IDENTITY_BOUND_TO_HOST_UID_GID=true
+VIDEO_RENDER_SUPPLEMENTARY_GROUPS_BOUND=true
+PRECLAIM_OUTPUT_OWNER_WRITE_CONTRACT=true
+RUFF_FORWARD_RECOVERY_PROVENANCE_PRESENT=true
+GLOSSARY_FORWARD_RECOVERY_PROVENANCE_PRESENT=true
+SCIENTIFIC_RUNTIME_CHANGED_BY_GLOSSARY_RECOVERY=false
+NEW_SCIENTIFIC_IMAGE_REQUIRED=true
+=== LANGUAGE STRUCTURE ===
+{
+  "status": "ok",
+  "pairs": 229,
+  "errors": [],
+  "warnings": [
+    {
+      "kind": "numeric_literal_drift",
+      "russian": "docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization.md",
+      "english": "docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization_EN.md",
+      "russian_only": [
+        "12"
+      ],
+      "english_only": []
+    },
+    {
+      "kind": "numeric_literal_drift",
+      "russian": "docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain.md",
+      "english": "docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain_EN.md",
+      "russian_only": [],
+      "english_only": [
+        "003"
+      ]
+    },
+    {
+      "kind": "numeric_literal_drift",
+      "russian": "docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction.md",
+      "english": "docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md",
+      "russian_only": [
+        "28"
+      ],
+      "english_only": []
+    }
+  ],
+  "fact_contract_pairs": 0,
+  "source_contract_pairs": 10,
+  "records": [
+    {
+      "russian": "README.md",
+      "english": "README_EN.md",
+      "russian_cyrillic_ratio": 0.8416,
+      "english_latin_ratio": 0.9985,
+      "russian_raw_cyrillic_ratio": 0.5309,
+      "english_raw_latin_ratio": 0.9992,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "STATUS.md",
+      "english": "STATUS_EN.md",
+      "russian_cyrillic_ratio": 0.9099,
+      "english_latin_ratio": 0.9996,
+      "russian_raw_cyrillic_ratio": 0.3506,
+      "english_raw_latin_ratio": 0.9999,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "ROADMAP.md",
+      "english": "ROADMAP_EN.md",
+      "russian_cyrillic_ratio": 0.7887,
+      "english_latin_ratio": 0.9984,
+      "russian_raw_cyrillic_ratio": 0.4667,
+      "english_raw_latin_ratio": 0.9991,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "CHANGELOG.md",
+      "english": "CHANGELOG_EN.md",
+      "russian_cyrillic_ratio": 0.7709,
+      "english_latin_ratio": 0.999,
+      "russian_raw_cyrillic_ratio": 0.6719,
+      "english_raw_latin_ratio": 0.9991,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "CONTRIBUTING.md",
+      "english": "CONTRIBUTING_EN.md",
+      "russian_cyrillic_ratio": 0.8974,
+      "english_latin_ratio": 0.9676,
+      "russian_raw_cyrillic_ratio": 0.7991,
+      "english_raw_latin_ratio": 0.9709,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "SECURITY.md",
+      "english": "SECURITY_EN.md",
+      "russian_cyrillic_ratio": 0.8441,
+      "english_latin_ratio": 0.959,
+      "russian_raw_cyrillic_ratio": 0.8197,
+      "english_raw_latin_ratio": 0.9602,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "CODE_OF_CONDUCT.md",
+      "english": "CODE_OF_CONDUCT_EN.md",
+      "russian_cyrillic_ratio": 0.8987,
+      "english_latin_ratio": 0.9387,
+      "russian_raw_cyrillic_ratio": 0.8361,
+      "english_raw_latin_ratio": 0.9427,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "LANGUAGE_POLICY.md",
+      "english": "LANGUAGE_POLICY_EN.md",
+      "russian_cyrillic_ratio": 0.9333,
+      "english_latin_ratio": 0.9968,
+      "russian_raw_cyrillic_ratio": 0.8221,
+      "english_raw_latin_ratio": 0.9972,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/glossary.md",
+      "english": "docs/glossary_EN.md",
+      "russian_cyrillic_ratio": 0.9056,
+      "english_latin_ratio": 0.9257,
+      "russian_raw_cyrillic_ratio": 0.786,
+      "english_raw_latin_ratio": 0.9365,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "RESEARCH_PRINCIPLES.md",
+      "english": "RESEARCH_PRINCIPLES_EN.md",
+      "russian_cyrillic_ratio": 0.9383,
+      "english_latin_ratio": 0.9863,
+      "russian_raw_cyrillic_ratio": 0.9266,
+      "english_raw_latin_ratio": 0.9867,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "HYPOTHESES.md",
+      "english": "HYPOTHESES_EN.md",
+      "russian_cyrillic_ratio": 0.8455,
+      "english_latin_ratio": 0.9974,
+      "russian_raw_cyrillic_ratio": 0.7628,
+      "english_raw_latin_ratio": 0.9977,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "PREREGISTRATION.md",
+      "english": "PREREGISTRATION_EN.md",
+      "russian_cyrillic_ratio": 0.801,
+      "english_latin_ratio": 0.9975,
+      "russian_raw_cyrillic_ratio": 0.6972,
+      "english_raw_latin_ratio": 0.9979,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "PROJECT_STRUCTURE.md",
+      "english": "PROJECT_STRUCTURE_EN.md",
+      "russian_cyrillic_ratio": 0.7906,
+      "english_latin_ratio": 0.9907,
+      "russian_raw_cyrillic_ratio": 0.4515,
+      "english_raw_latin_ratio": 0.9941,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "FIRST_COMMIT.md",
+      "english": "FIRST_COMMIT_EN.md",
+      "russian_cyrillic_ratio": 0.9271,
+      "english_latin_ratio": 0.8898,
+      "russian_raw_cyrillic_ratio": 0.7205,
+      "english_raw_latin_ratio": 0.9293,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "article/README.md",
+      "english": "article/README_EN.md",
+      "russian_cyrillic_ratio": 0.9111,
+      "english_latin_ratio": 0.9549,
+      "russian_raw_cyrillic_ratio": 0.8333,
+      "english_raw_latin_ratio": 0.9561,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "article/structure.md",
+      "english": "article/structure_EN.md",
+      "russian_cyrillic_ratio": 0.9077,
+      "english_latin_ratio": 0.9461,
+      "russian_raw_cyrillic_ratio": 0.8502,
+      "english_raw_latin_ratio": 0.9488,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "configs/README.md",
+      "english": "configs/README_EN.md",
+      "russian_cyrillic_ratio": 0.6317,
+      "english_latin_ratio": 0.9679,
+      "russian_raw_cyrillic_ratio": 0.3767,
+      "english_raw_latin_ratio": 0.9827,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "data/README.md",
+      "english": "data/README_EN.md",
+      "russian_cyrillic_ratio": 0.9344,
+      "english_latin_ratio": 0.9598,
+      "russian_raw_cyrillic_ratio": 0.8551,
+      "english_raw_latin_ratio": 0.9623,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/README.md",
+      "english": "experiments/README_EN.md",
+      "russian_cyrillic_ratio": 0.9455,
+      "english_latin_ratio": 0.9207,
+      "russian_raw_cyrillic_ratio": 0.7455,
+      "english_raw_latin_ratio": 0.9381,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/EXP-001.md",
+      "english": "experiments/planned/EXP-001_EN.md",
+      "russian_cyrillic_ratio": 0.7987,
+      "english_latin_ratio": 0.9581,
+      "russian_raw_cyrillic_ratio": 0.6297,
+      "english_raw_latin_ratio": 0.9668,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "external/README.md",
+      "english": "external/README_EN.md",
+      "russian_cyrillic_ratio": 0.7854,
+      "english_latin_ratio": 0.967,
+      "russian_raw_cyrillic_ratio": 0.6339,
+      "english_raw_latin_ratio": 0.9698,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "notebooks/README.md",
+      "english": "notebooks/README_EN.md",
+      "russian_cyrillic_ratio": 0.9536,
+      "english_latin_ratio": 0.9316,
+      "russian_raw_cyrillic_ratio": 0.8084,
+      "english_raw_latin_ratio": 0.9478,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "private/README.md",
+      "english": "private/README_EN.md",
+      "russian_cyrillic_ratio": 0.9524,
+      "english_latin_ratio": 0.9672,
+      "russian_raw_cyrillic_ratio": 0.8629,
+      "english_raw_latin_ratio": 0.9696,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "references/README.md",
+      "english": "references/README_EN.md",
+      "russian_cyrillic_ratio": 0.9421,
+      "english_latin_ratio": 0.9529,
+      "russian_raw_cyrillic_ratio": 0.8759,
+      "english_raw_latin_ratio": 0.9564,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "results/README.md",
+      "english": "results/README_EN.md",
+      "russian_cyrillic_ratio": 0.7071,
+      "english_latin_ratio": 0.9458,
+      "russian_raw_cyrillic_ratio": 0.5546,
+      "english_raw_latin_ratio": 0.9587,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "tests/correctness/README.md",
+      "english": "tests/correctness/README_EN.md",
+      "russian_cyrillic_ratio": 0.7585,
+      "english_latin_ratio": 0.9266,
+      "russian_raw_cyrillic_ratio": 0.723,
+      "english_raw_latin_ratio": 0.9309,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "thesis/README.md",
+      "english": "thesis/README_EN.md",
+      "russian_cyrillic_ratio": 0.8989,
+      "english_latin_ratio": 0.9637,
+      "russian_raw_cyrillic_ratio": 0.8122,
+      "english_raw_latin_ratio": 0.967,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/index.md",
+      "english": "docs/index_EN.md",
+      "russian_cyrillic_ratio": 0.9678,
+      "english_latin_ratio": 0.9924,
+      "russian_raw_cyrillic_ratio": 0.4068,
+      "english_raw_latin_ratio": 0.9979,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/research-question.md",
+      "english": "docs/research-question_EN.md",
+      "russian_cyrillic_ratio": 0.9757,
+      "english_latin_ratio": 0.9953,
+      "russian_raw_cyrillic_ratio": 0.7351,
+      "english_raw_latin_ratio": 0.9961,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/methodology.md",
+      "english": "docs/methodology_EN.md",
+      "russian_cyrillic_ratio": 0.9555,
+      "english_latin_ratio": 0.995,
+      "russian_raw_cyrillic_ratio": 0.5624,
+      "english_raw_latin_ratio": 0.9961,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/analysis-plan.md",
+      "english": "docs/analysis-plan_EN.md",
+      "russian_cyrillic_ratio": 0.9759,
+      "english_latin_ratio": 0.9967,
+      "russian_raw_cyrillic_ratio": 0.4903,
+      "english_raw_latin_ratio": 0.9981,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3a-statistical-results.md",
+      "english": "docs/stage3a-statistical-results_EN.md",
+      "russian_cyrillic_ratio": 0.9583,
+      "english_latin_ratio": 0.9967,
+      "russian_raw_cyrillic_ratio": 0.7304,
+      "english_raw_latin_ratio": 0.9982,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/experiment-protocol.md",
+      "english": "docs/experiment-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.9784,
+      "english_latin_ratio": 0.9844,
+      "russian_raw_cyrillic_ratio": 0.841,
+      "english_raw_latin_ratio": 0.9895,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/reproducibility.md",
+      "english": "docs/reproducibility_EN.md",
+      "russian_cyrillic_ratio": 0.9764,
+      "english_latin_ratio": 0.9957,
+      "russian_raw_cyrillic_ratio": 0.879,
+      "english_raw_latin_ratio": 0.9963,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/data-management.md",
+      "english": "docs/data-management_EN.md",
+      "russian_cyrillic_ratio": 0.9653,
+      "english_latin_ratio": 0.9822,
+      "russian_raw_cyrillic_ratio": 0.8532,
+      "english_raw_latin_ratio": 0.9861,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/hardware.md",
+      "english": "docs/hardware_EN.md",
+      "russian_cyrillic_ratio": 0.8642,
+      "english_latin_ratio": 0.9613,
+      "russian_raw_cyrillic_ratio": 0.8057,
+      "english_raw_latin_ratio": 0.9675,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/publication-plan.md",
+      "english": "docs/publication-plan_EN.md",
+      "russian_cyrillic_ratio": 0.9668,
+      "english_latin_ratio": 0.9846,
+      "russian_raw_cyrillic_ratio": 0.8528,
+      "english_raw_latin_ratio": 0.9878,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/github-setup.md",
+      "english": "docs/github-setup_EN.md",
+      "russian_cyrillic_ratio": 0.8896,
+      "english_latin_ratio": 0.957,
+      "russian_raw_cyrillic_ratio": 0.7112,
+      "english_raw_latin_ratio": 0.9642,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/index.md",
+      "english": "docs/decisions/index_EN.md",
+      "russian_cyrillic_ratio": 0.9931,
+      "english_latin_ratio": 0.9991,
+      "russian_raw_cyrillic_ratio": 0.6701,
+      "english_raw_latin_ratio": 0.9994,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-001-use-torch2pc.md",
+      "english": "docs/decisions/ADR-001-use-torch2pc_EN.md",
+      "russian_cyrillic_ratio": 0.886,
+      "english_latin_ratio": 0.9661,
+      "russian_raw_cyrillic_ratio": 0.8004,
+      "english_raw_latin_ratio": 0.9696,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-002-use-rocm-docker.md",
+      "english": "docs/decisions/ADR-002-use-rocm-docker_EN.md",
+      "russian_cyrillic_ratio": 0.891,
+      "english_latin_ratio": 0.9665,
+      "russian_raw_cyrillic_ratio": 0.7925,
+      "english_raw_latin_ratio": 0.9715,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-003-primary-metric.md",
+      "english": "docs/decisions/ADR-003-primary-metric_EN.md",
+      "russian_cyrillic_ratio": 0.9444,
+      "english_latin_ratio": 0.9556,
+      "russian_raw_cyrillic_ratio": 0.8784,
+      "english_raw_latin_ratio": 0.9651,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-004-statistical-protocol.md",
+      "english": "docs/decisions/ADR-004-statistical-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.9617,
+      "english_latin_ratio": 0.9643,
+      "russian_raw_cyrillic_ratio": 0.8713,
+      "english_raw_latin_ratio": 0.9695,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/research-log/2026-07.md",
+      "english": "docs/research-log/2026-07_EN.md",
+      "russian_cyrillic_ratio": 0.9884,
+      "english_latin_ratio": 0.9995,
+      "russian_raw_cyrillic_ratio": 0.8273,
+      "english_raw_latin_ratio": 0.9996,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/research-log/template.md",
+      "english": "docs/research-log/template_EN.md",
+      "russian_cyrillic_ratio": 0.9282,
+      "english_latin_ratio": 0.915,
+      "russian_raw_cyrillic_ratio": 0.8744,
+      "english_raw_latin_ratio": 0.9222,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/research-design/design.md",
+      "english": "docs/research-design/design_EN.md",
+      "russian_cyrillic_ratio": 0.8968,
+      "english_latin_ratio": 0.9596,
+      "russian_raw_cyrillic_ratio": 0.6834,
+      "english_raw_latin_ratio": 0.9701,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/research-design/controlled-compute.md",
+      "english": "docs/research-design/controlled-compute_EN.md",
+      "russian_cyrillic_ratio": 0.9349,
+      "english_latin_ratio": 0.9567,
+      "russian_raw_cyrillic_ratio": 0.8343,
+      "english_raw_latin_ratio": 0.9639,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/research-design/run-checklist.md",
+      "english": "docs/research-design/run-checklist_EN.md",
+      "russian_cyrillic_ratio": 0.9466,
+      "english_latin_ratio": 0.975,
+      "russian_raw_cyrillic_ratio": 0.7983,
+      "english_raw_latin_ratio": 0.9809,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/research-design/article-plan.md",
+      "english": "docs/research-design/article-plan_EN.md",
+      "russian_cyrillic_ratio": 0.9539,
+      "english_latin_ratio": 0.9575,
+      "russian_raw_cyrillic_ratio": 0.9091,
+      "english_raw_latin_ratio": 0.9592,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": ".github/PULL_REQUEST_TEMPLATE/default.md",
+      "english": ".github/PULL_REQUEST_TEMPLATE/default_EN.md",
+      "russian_cyrillic_ratio": 0.9096,
+      "english_latin_ratio": 0.9592,
+      "russian_raw_cyrillic_ratio": 0.7307,
+      "english_raw_latin_ratio": 0.9668,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/bug.yml",
+      "english": ".github/ISSUE_TEMPLATE/bug_EN.yml",
+      "russian_cyrillic_ratio": 0.3168,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.3138,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/experiment.yml",
+      "english": ".github/ISSUE_TEMPLATE/experiment_EN.yml",
+      "russian_cyrillic_ratio": 0.5172,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5123,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/literature.yml",
+      "english": ".github/ISSUE_TEMPLATE/literature_EN.yml",
+      "russian_cyrillic_ratio": 0.5443,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5386,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/research-decision.yml",
+      "english": ".github/ISSUE_TEMPLATE/research-decision_EN.yml",
+      "russian_cyrillic_ratio": 0.3083,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.3038,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": ".github/ISSUE_TEMPLATE/writing.yml",
+      "english": ".github/ISSUE_TEMPLATE/writing_EN.yml",
+      "russian_cyrillic_ratio": 0.4217,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.4158,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "mkdocs.yml",
+      "english": "mkdocs_EN.yml",
+      "russian_cyrillic_ratio": 0.2716,
+      "english_latin_ratio": 0.9915,
+      "russian_raw_cyrillic_ratio": 0.1393,
+      "english_raw_latin_ratio": 0.9958,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "NOTICE",
+      "english": "NOTICE_EN",
+      "russian_cyrillic_ratio": 0.8058,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7751,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "LICENSE-DOCS",
+      "english": "LICENSE-DOCS_EN",
+      "russian_cyrillic_ratio": 0.8562,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.742,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/threats-to-validity.md",
+      "english": "docs/threats-to-validity_EN.md",
+      "russian_cyrillic_ratio": 0.9779,
+      "english_latin_ratio": 0.9922,
+      "russian_raw_cyrillic_ratio": 0.9297,
+      "english_raw_latin_ratio": 0.9926,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/validation.md",
+      "english": "docs/validation_EN.md",
+      "russian_cyrillic_ratio": 0.9439,
+      "english_latin_ratio": 0.9769,
+      "russian_raw_cyrillic_ratio": 0.5872,
+      "english_raw_latin_ratio": 0.9866,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage-3-protocol.md",
+      "english": "docs/stage-3-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.9755,
+      "english_latin_ratio": 0.9972,
+      "russian_raw_cyrillic_ratio": 0.8386,
+      "english_raw_latin_ratio": 0.9979,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage-3-readiness.md",
+      "english": "docs/stage-3-readiness_EN.md",
+      "russian_cyrillic_ratio": 0.9764,
+      "english_latin_ratio": 0.9889,
+      "russian_raw_cyrillic_ratio": 0.788,
+      "english_raw_latin_ratio": 0.9926,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-006-stage3-scope.md",
+      "english": "docs/decisions/ADR-006-stage3-scope_EN.md",
+      "russian_cyrillic_ratio": 0.9889,
+      "english_latin_ratio": 0.9863,
+      "russian_raw_cyrillic_ratio": 0.9105,
+      "english_raw_latin_ratio": 0.9884,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-007-stage3-locality-taxonomy.md",
+      "english": "docs/decisions/ADR-007-stage3-locality-taxonomy_EN.md",
+      "russian_cyrillic_ratio": 0.9616,
+      "english_latin_ratio": 0.9816,
+      "russian_raw_cyrillic_ratio": 0.9101,
+      "english_raw_latin_ratio": 0.9849,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3-001.md",
+      "english": "experiments/planned/STAGE3-001_EN.md",
+      "russian_cyrillic_ratio": 0.5796,
+      "english_latin_ratio": 0.9688,
+      "russian_raw_cyrillic_ratio": 0.5123,
+      "english_raw_latin_ratio": 0.9742,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "results/stage-3/README.md",
+      "english": "results/stage-3/README_EN.md",
+      "russian_cyrillic_ratio": 0.5306,
+      "english_latin_ratio": 0.9544,
+      "russian_raw_cyrillic_ratio": 0.4548,
+      "english_raw_latin_ratio": 0.9583,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-008-predict-correct-acceleration.md",
+      "english": "docs/decisions/ADR-008-predict-correct-acceleration_EN.md",
+      "russian_cyrillic_ratio": 0.979,
+      "english_latin_ratio": 0.9926,
+      "russian_raw_cyrillic_ratio": 0.8679,
+      "english_raw_latin_ratio": 0.994,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-PROFILING-LOCALITY.md",
+      "english": "experiments/planned/STAGE3B-PROFILING-LOCALITY_EN.md",
+      "russian_cyrillic_ratio": 0.5117,
+      "english_latin_ratio": 0.998,
+      "russian_raw_cyrillic_ratio": 0.4327,
+      "english_raw_latin_ratio": 0.9983,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-005-post-pilot-final-execution.md",
+      "english": "docs/decisions/ADR-005-post-pilot-final-execution_EN.md",
+      "russian_cyrillic_ratio": 0.9836,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.885,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-009-stage3b-rocm-canonical-lane.md",
+      "english": "docs/decisions/ADR-009-stage3b-rocm-canonical-lane_EN.md",
+      "russian_cyrillic_ratio": 0.9712,
+      "english_latin_ratio": 0.9921,
+      "russian_raw_cyrillic_ratio": 0.8614,
+      "english_raw_latin_ratio": 0.9937,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-010-stage3b-per-cell-process-isolation.md",
+      "english": "docs/decisions/ADR-010-stage3b-per-cell-process-isolation_EN.md",
+      "russian_cyrillic_ratio": 0.9891,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.875,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-011-stage3b-b0-derived-evidence-seal.md",
+      "english": "docs/decisions/ADR-011-stage3b-b0-derived-evidence-seal_EN.md",
+      "russian_cyrillic_ratio": 0.9872,
+      "english_latin_ratio": 0.9927,
+      "russian_raw_cyrillic_ratio": 0.8377,
+      "english_raw_latin_ratio": 0.9945,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage-2-protocol.md",
+      "english": "docs/stage-2-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.9493,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8646,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3-layerwise-analysis.md",
+      "english": "docs/stage3-layerwise-analysis_EN.md",
+      "russian_cyrillic_ratio": 0.9748,
+      "english_latin_ratio": 0.9952,
+      "russian_raw_cyrillic_ratio": 0.7297,
+      "english_raw_latin_ratio": 0.9968,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3a-publication-finalization.md",
+      "english": "docs/stage3a-publication-finalization_EN.md",
+      "russian_cyrillic_ratio": 0.9645,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8246,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3b-b0-analysis-pipeline.md",
+      "english": "docs/stage3b-b0-analysis-pipeline_EN.md",
+      "russian_cyrillic_ratio": 0.9852,
+      "english_latin_ratio": 0.9862,
+      "russian_raw_cyrillic_ratio": 0.7875,
+      "english_raw_latin_ratio": 0.9909,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3b-b0-sealing.md",
+      "english": "docs/stage3b-b0-sealing_EN.md",
+      "russian_cyrillic_ratio": 0.9804,
+      "english_latin_ratio": 0.9906,
+      "russian_raw_cyrillic_ratio": 0.8528,
+      "english_raw_latin_ratio": 0.9932,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/torch2pc-patched-v1-equivalence.md",
+      "english": "docs/torch2pc-patched-v1-equivalence_EN.md",
+      "russian_cyrillic_ratio": 0.956,
+      "english_latin_ratio": 0.9985,
+      "russian_raw_cyrillic_ratio": 0.7581,
+      "english_raw_latin_ratio": 0.9989,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/pc-tref-balanced-core.md",
+      "english": "docs/pc-tref-balanced-core_EN.md",
+      "russian_cyrillic_ratio": 0.9335,
+      "english_latin_ratio": 0.9972,
+      "russian_raw_cyrillic_ratio": 0.6595,
+      "english_raw_latin_ratio": 0.9978,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/pc-catm-operator-model.md",
+      "english": "docs/pc-catm-operator-model_EN.md",
+      "russian_cyrillic_ratio": 0.9601,
+      "english_latin_ratio": 0.9966,
+      "russian_raw_cyrillic_ratio": 0.5918,
+      "english_raw_latin_ratio": 0.9976,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/masters-thesis-plan.md",
+      "english": "docs/masters-thesis-plan_EN.md",
+      "russian_cyrillic_ratio": 0.9651,
+      "english_latin_ratio": 0.9969,
+      "russian_raw_cyrillic_ratio": 0.5625,
+      "english_raw_latin_ratio": 0.9975,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3b-primary-scenario-a.md",
+      "english": "docs/stage3b-primary-scenario-a_EN.md",
+      "russian_cyrillic_ratio": 0.9788,
+      "english_latin_ratio": 0.9979,
+      "russian_raw_cyrillic_ratio": 0.7602,
+      "english_raw_latin_ratio": 0.9984,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a.md",
+      "english": "docs/decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md",
+      "russian_cyrillic_ratio": 0.9778,
+      "english_latin_ratio": 0.9911,
+      "russian_raw_cyrillic_ratio": 0.8338,
+      "english_raw_latin_ratio": 0.9926,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/research-design/stage3b-si-ma0-confirmatory-aggregation.md",
+      "english": "docs/research-design/stage3b-si-ma0-confirmatory-aggregation_EN.md",
+      "russian_cyrillic_ratio": 0.9916,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.839,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-SI-MA1.md",
+      "english": "experiments/planned/STAGE3B-SI-MA1_EN.md",
+      "russian_cyrillic_ratio": 0.9955,
+      "english_latin_ratio": 0.9976,
+      "russian_raw_cyrillic_ratio": 0.6929,
+      "english_raw_latin_ratio": 0.9983,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/pc-tref-pc-catm-theoretical-foundation.md",
+      "english": "docs/pc-tref-pc-catm-theoretical-foundation_EN.md",
+      "russian_cyrillic_ratio": 0.9586,
+      "english_latin_ratio": 0.9981,
+      "russian_raw_cyrillic_ratio": 0.7243,
+      "english_raw_latin_ratio": 0.9985,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-013-pc-tref-operational-semantics.md",
+      "english": "docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md",
+      "russian_cyrillic_ratio": 0.9534,
+      "english_latin_ratio": 0.9935,
+      "russian_raw_cyrillic_ratio": 0.697,
+      "english_raw_latin_ratio": 0.9947,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B1.md",
+      "english": "experiments/planned/STAGE3B-B1_EN.md",
+      "russian_cyrillic_ratio": 0.818,
+      "english_latin_ratio": 0.9925,
+      "russian_raw_cyrillic_ratio": 0.7352,
+      "english_raw_latin_ratio": 0.9933,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B2.md",
+      "english": "experiments/planned/STAGE3B-B2_EN.md",
+      "russian_cyrillic_ratio": 0.7238,
+      "english_latin_ratio": 0.9907,
+      "russian_raw_cyrillic_ratio": 0.6298,
+      "english_raw_latin_ratio": 0.992,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3b-b1-b2-preregistration.md",
+      "english": "docs/stage3b-b1-b2-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.986,
+      "english_latin_ratio": 0.9933,
+      "russian_raw_cyrillic_ratio": 0.7639,
+      "english_raw_latin_ratio": 0.995,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md",
+      "english": "docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md",
+      "russian_cyrillic_ratio": 0.9832,
+      "english_latin_ratio": 0.9867,
+      "russian_raw_cyrillic_ratio": 0.8048,
+      "english_raw_latin_ratio": 0.9896,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/qwake-pc-design.md",
+      "english": "docs/qwake-pc-design_EN.md",
+      "russian_cyrillic_ratio": 0.985,
+      "english_latin_ratio": 0.9972,
+      "russian_raw_cyrillic_ratio": 0.7039,
+      "english_raw_latin_ratio": 0.998,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/ecz-targeted-local-sweep.md",
+      "english": "docs/ecz-targeted-local-sweep_EN.md",
+      "russian_cyrillic_ratio": 0.9886,
+      "english_latin_ratio": 0.9911,
+      "russian_raw_cyrillic_ratio": 0.7979,
+      "english_raw_latin_ratio": 0.9932,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3b-future-policy-boundary.md",
+      "english": "docs/stage3b-future-policy-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.9888,
+      "english_latin_ratio": 0.9922,
+      "russian_raw_cyrillic_ratio": 0.7687,
+      "english_raw_latin_ratio": 0.9942,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-015-stage3b-matched-measurement-sealing.md",
+      "english": "docs/decisions/ADR-015-stage3b-matched-measurement-sealing_EN.md",
+      "russian_cyrillic_ratio": 0.9908,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8723,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3b-matched-evidence.md",
+      "english": "docs/stage3b-matched-evidence_EN.md",
+      "russian_cyrillic_ratio": 0.9909,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6457,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/pc-tref-sufficiency-boundary.md",
+      "english": "docs/pc-tref-sufficiency-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.9462,
+      "english_latin_ratio": 0.9984,
+      "russian_raw_cyrillic_ratio": 0.6763,
+      "english_raw_latin_ratio": 0.9988,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-016-stage3b-sufficiency-boundary.md",
+      "english": "docs/decisions/ADR-016-stage3b-sufficiency-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.9625,
+      "english_latin_ratio": 0.9945,
+      "russian_raw_cyrillic_ratio": 0.79,
+      "english_raw_latin_ratio": 0.9951,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-017-stage3b-288cell-correctness-repair.md",
+      "english": "docs/decisions/ADR-017-stage3b-288cell-correctness-repair_EN.md",
+      "russian_cyrillic_ratio": 0.9931,
+      "english_latin_ratio": 0.9937,
+      "russian_raw_cyrillic_ratio": 0.9238,
+      "english_raw_latin_ratio": 0.9946,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-018-stage3b-b1-confirmatory-preregistration.md",
+      "english": "docs/decisions/ADR-018-stage3b-b1-confirmatory-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.9915,
+      "english_latin_ratio": 0.9923,
+      "russian_raw_cyrillic_ratio": 0.8554,
+      "english_raw_latin_ratio": 0.9939,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B1-CONFIRMATORY.md",
+      "english": "experiments/planned/STAGE3B-B1-CONFIRMATORY_EN.md",
+      "russian_cyrillic_ratio": 0.5687,
+      "english_latin_ratio": 0.9899,
+      "russian_raw_cyrillic_ratio": 0.4345,
+      "english_raw_latin_ratio": 0.9922,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-019-stage3b-b1-confirmatory-opening.md",
+      "english": "docs/decisions/ADR-019-stage3b-b1-confirmatory-opening_EN.md",
+      "russian_cyrillic_ratio": 0.992,
+      "english_latin_ratio": 0.9951,
+      "russian_raw_cyrillic_ratio": 0.8075,
+      "english_raw_latin_ratio": 0.9962,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/pc-multiscale-mechanism-decision-architecture.md",
+      "english": "docs/pc-multiscale-mechanism-decision-architecture_EN.md",
+      "russian_cyrillic_ratio": 0.975,
+      "english_latin_ratio": 0.9975,
+      "russian_raw_cyrillic_ratio": 0.7625,
+      "english_raw_latin_ratio": 0.9981,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md",
+      "english": "docs/decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md",
+      "russian_cyrillic_ratio": 0.9865,
+      "english_latin_ratio": 0.9908,
+      "russian_raw_cyrillic_ratio": 0.7243,
+      "english_raw_latin_ratio": 0.9933,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-021-stage3b-b2-confirmatory-preregistration.md",
+      "english": "docs/decisions/ADR-021-stage3b-b2-confirmatory-preregistration_EN.md",
+      "russian_cyrillic_ratio": 0.9899,
+      "english_latin_ratio": 0.9933,
+      "russian_raw_cyrillic_ratio": 0.8278,
+      "english_raw_latin_ratio": 0.9947,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-B2-CONFIRMATORY.md",
+      "english": "experiments/planned/STAGE3B-B2-CONFIRMATORY_EN.md",
+      "russian_cyrillic_ratio": 0.5369,
+      "english_latin_ratio": 0.9932,
+      "russian_raw_cyrillic_ratio": 0.3944,
+      "english_raw_latin_ratio": 0.995,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-022-stage3b-b2-confirmatory-opening.md",
+      "english": "docs/decisions/ADR-022-stage3b-b2-confirmatory-opening_EN.md",
+      "russian_cyrillic_ratio": 0.9888,
+      "english_latin_ratio": 0.9952,
+      "russian_raw_cyrillic_ratio": 0.735,
+      "english_raw_latin_ratio": 0.9966,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-023-stage3b-b2-confirmatory-request-freeze.md",
+      "english": "docs/decisions/ADR-023-stage3b-b2-confirmatory-request-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9835,
+      "english_latin_ratio": 0.9903,
+      "russian_raw_cyrillic_ratio": 0.675,
+      "english_raw_latin_ratio": 0.9936,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation.md",
+      "english": "docs/decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md",
+      "russian_cyrillic_ratio": 0.9861,
+      "english_latin_ratio": 0.9933,
+      "russian_raw_cyrillic_ratio": 0.6315,
+      "english_raw_latin_ratio": 0.9959,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md",
+      "english": "docs/decisions/ADR-025-stage3b-matched-profiling-request-refreeze_EN.md",
+      "russian_cyrillic_ratio": 0.9817,
+      "english_latin_ratio": 0.9856,
+      "russian_raw_cyrillic_ratio": 0.6871,
+      "english_raw_latin_ratio": 0.9903,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md",
+      "english": "docs/decisions/ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md",
+      "russian_cyrillic_ratio": 0.98,
+      "english_latin_ratio": 0.9946,
+      "russian_raw_cyrillic_ratio": 0.5796,
+      "english_raw_latin_ratio": 0.9969,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol.md",
+      "english": "docs/decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md",
+      "russian_cyrillic_ratio": 0.9925,
+      "english_latin_ratio": 0.9929,
+      "russian_raw_cyrillic_ratio": 0.7516,
+      "english_raw_latin_ratio": 0.9949,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md",
+      "russian_cyrillic_ratio": 0.9884,
+      "english_latin_ratio": 0.9975,
+      "russian_raw_cyrillic_ratio": 0.7946,
+      "english_raw_latin_ratio": 0.998,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation.md",
+      "english": "docs/decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9938,
+      "english_latin_ratio": 0.9937,
+      "russian_raw_cyrillic_ratio": 0.756,
+      "english_raw_latin_ratio": 0.9954,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening.md",
+      "english": "docs/decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening_EN.md",
+      "russian_cyrillic_ratio": 0.9941,
+      "english_latin_ratio": 0.9943,
+      "russian_raw_cyrillic_ratio": 0.6708,
+      "english_raw_latin_ratio": 0.9962,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md",
+      "russian_cyrillic_ratio": 0.8165,
+      "english_latin_ratio": 0.9892,
+      "russian_raw_cyrillic_ratio": 0.5455,
+      "english_raw_latin_ratio": 0.9929,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze.md",
+      "english": "docs/decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9887,
+      "english_latin_ratio": 0.9887,
+      "russian_raw_cyrillic_ratio": 0.7016,
+      "english_raw_latin_ratio": 0.9921,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT_EN.md",
+      "russian_cyrillic_ratio": 0.7425,
+      "english_latin_ratio": 0.991,
+      "russian_raw_cyrillic_ratio": 0.5245,
+      "english_raw_latin_ratio": 0.9933,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation.md",
+      "english": "docs/decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9855,
+      "english_latin_ratio": 0.9931,
+      "russian_raw_cyrillic_ratio": 0.655,
+      "english_raw_latin_ratio": 0.995,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze.md",
+      "english": "docs/decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9849,
+      "english_latin_ratio": 0.9862,
+      "russian_raw_cyrillic_ratio": 0.547,
+      "english_raw_latin_ratio": 0.992,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION_EN.md",
+      "russian_cyrillic_ratio": 0.7878,
+      "english_latin_ratio": 0.986,
+      "russian_raw_cyrillic_ratio": 0.5309,
+      "english_raw_latin_ratio": 0.9904,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze.md",
+      "english": "docs/decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9861,
+      "english_latin_ratio": 0.9896,
+      "russian_raw_cyrillic_ratio": 0.5159,
+      "english_raw_latin_ratio": 0.9932,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL_EN.md",
+      "russian_cyrillic_ratio": 0.8891,
+      "english_latin_ratio": 0.9807,
+      "russian_raw_cyrillic_ratio": 0.4637,
+      "english_raw_latin_ratio": 0.9929,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze.md",
+      "english": "docs/decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9934,
+      "english_latin_ratio": 0.9933,
+      "russian_raw_cyrillic_ratio": 0.7782,
+      "english_raw_latin_ratio": 0.9952,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3b-recursive-sufficiency-aggregate-direction.md",
+      "english": "docs/stage3b-recursive-sufficiency-aggregate-direction_EN.md",
+      "russian_cyrillic_ratio": 0.9907,
+      "english_latin_ratio": 0.9968,
+      "russian_raw_cyrillic_ratio": 0.6963,
+      "english_raw_latin_ratio": 0.9977,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction.md",
+      "english": "docs/decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md",
+      "russian_cyrillic_ratio": 0.9919,
+      "english_latin_ratio": 0.995,
+      "russian_raw_cyrillic_ratio": 0.8985,
+      "english_raw_latin_ratio": 0.9959,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE.md",
+      "english": "experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE_EN.md",
+      "russian_cyrillic_ratio": 0.7006,
+      "english_latin_ratio": 0.9908,
+      "russian_raw_cyrillic_ratio": 0.5275,
+      "english_raw_latin_ratio": 0.9931,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate.md",
+      "english": "docs/decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md",
+      "russian_cyrillic_ratio": 0.9894,
+      "english_latin_ratio": 0.9894,
+      "russian_raw_cyrillic_ratio": 0.7973,
+      "english_raw_latin_ratio": 0.9918,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt.md",
+      "english": "docs/decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md",
+      "russian_cyrillic_ratio": 0.9712,
+      "english_latin_ratio": 0.9857,
+      "russian_raw_cyrillic_ratio": 0.6347,
+      "english_raw_latin_ratio": 0.9906,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary.md",
+      "english": "docs/decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary_EN.md",
+      "russian_cyrillic_ratio": 0.9935,
+      "english_latin_ratio": 0.9952,
+      "russian_raw_cyrillic_ratio": 0.8189,
+      "english_raw_latin_ratio": 0.9962,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-EX-IF0.md",
+      "english": "experiments/planned/STAGE3B-EX-IF0_EN.md",
+      "russian_cyrillic_ratio": 0.8391,
+      "english_latin_ratio": 0.9964,
+      "russian_raw_cyrillic_ratio": 0.6453,
+      "english_raw_latin_ratio": 0.9973,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-design.md",
+      "english": "docs/fixedpred-sufficiency-dus-design_EN.md",
+      "russian_cyrillic_ratio": 0.9086,
+      "english_latin_ratio": 0.9962,
+      "russian_raw_cyrillic_ratio": 0.6518,
+      "english_raw_latin_ratio": 0.9969,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-metrics.md",
+      "english": "docs/fixedpred-sufficiency-dus-metrics_EN.md",
+      "russian_cyrillic_ratio": 0.7408,
+      "english_latin_ratio": 0.9942,
+      "russian_raw_cyrillic_ratio": 0.4086,
+      "english_raw_latin_ratio": 0.9961,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/fixedpred-sufficiency-dus-refactoring-plan.md",
+      "english": "docs/fixedpred-sufficiency-dus-refactoring-plan_EN.md",
+      "russian_cyrillic_ratio": 0.9797,
+      "english_latin_ratio": 0.9934,
+      "russian_raw_cyrillic_ratio": 0.4539,
+      "english_raw_latin_ratio": 0.9946,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md",
+      "english": "docs/decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md",
+      "russian_cyrillic_ratio": 0.978,
+      "english_latin_ratio": 0.9885,
+      "russian_raw_cyrillic_ratio": 0.351,
+      "english_raw_latin_ratio": 0.9924,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS.md",
+      "english": "experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md",
+      "russian_cyrillic_ratio": 0.9845,
+      "english_latin_ratio": 0.9885,
+      "russian_raw_cyrillic_ratio": 0.527,
+      "english_raw_latin_ratio": 0.992,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/stage3b-integrated-frontier-model.md",
+      "english": "docs/stage3b-integrated-frontier-model_EN.md",
+      "russian_cyrillic_ratio": 0.9927,
+      "english_latin_ratio": 0.9972,
+      "russian_raw_cyrillic_ratio": 0.5268,
+      "english_raw_latin_ratio": 0.9985,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-040-stage3b-integrated-frontier-model.md",
+      "english": "docs/decisions/ADR-040-stage3b-integrated-frontier-model_EN.md",
+      "russian_cyrillic_ratio": 0.9915,
+      "english_latin_ratio": 0.9918,
+      "russian_raw_cyrillic_ratio": 0.6022,
+      "english_raw_latin_ratio": 0.9951,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md",
+      "english": "docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md",
+      "russian_cyrillic_ratio": 0.9614,
+      "english_latin_ratio": 0.9953,
+      "russian_raw_cyrillic_ratio": 0.5378,
+      "english_raw_latin_ratio": 0.9977,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/qwake-fp-experimental-plan.md",
+      "english": "docs/qwake-fp-experimental-plan_EN.md",
+      "russian_cyrillic_ratio": 0.9952,
+      "english_latin_ratio": 0.9969,
+      "russian_raw_cyrillic_ratio": 0.6363,
+      "english_raw_latin_ratio": 0.9982,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md",
+      "english": "docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md",
+      "russian_cyrillic_ratio": 0.9956,
+      "english_latin_ratio": 0.9969,
+      "russian_raw_cyrillic_ratio": 0.4283,
+      "english_raw_latin_ratio": 0.9983,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md",
+      "english": "docs/decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md",
+      "russian_cyrillic_ratio": 0.9912,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.4716,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation.md",
+      "english": "docs/decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation_EN.md",
+      "russian_cyrillic_ratio": 0.9958,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.75,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation.md",
+      "english": "docs/decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9723,
+      "english_latin_ratio": 0.9966,
+      "russian_raw_cyrillic_ratio": 0.7254,
+      "english_raw_latin_ratio": 0.9977,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/qwake-local-compute-extension.md",
+      "english": "docs/qwake-local-compute-extension_EN.md",
+      "russian_cyrillic_ratio": 0.9937,
+      "english_latin_ratio": 0.9995,
+      "russian_raw_cyrillic_ratio": 0.6564,
+      "english_raw_latin_ratio": 0.9997,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset.md",
+      "english": "docs/decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md",
+      "russian_cyrillic_ratio": 0.9905,
+      "english_latin_ratio": 0.9898,
+      "russian_raw_cyrillic_ratio": 0.7109,
+      "english_raw_latin_ratio": 0.9931,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2.md",
+      "english": "docs/decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2_EN.md",
+      "russian_cyrillic_ratio": 0.9845,
+      "english_latin_ratio": 0.9913,
+      "russian_raw_cyrillic_ratio": 0.5745,
+      "english_raw_latin_ratio": 0.9953,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2.md",
+      "english": "docs/decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md",
+      "russian_cyrillic_ratio": 0.9851,
+      "english_latin_ratio": 0.9902,
+      "russian_raw_cyrillic_ratio": 0.7098,
+      "english_raw_latin_ratio": 0.9935,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition.md",
+      "english": "docs/decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition_EN.md",
+      "russian_cyrillic_ratio": 0.9834,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5207,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze.md",
+      "english": "docs/decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9928,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6368,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-051-stage3b-qwake-lc0-repository-freeze.md",
+      "english": "docs/decisions/ADR-051-stage3b-qwake-lc0-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9848,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5189,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-052-stage3b-qwake-lc1-transition.md",
+      "english": "docs/decisions/ADR-052-stage3b-qwake-lc1-transition_EN.md",
+      "russian_cyrillic_ratio": 0.9858,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5477,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-053-stage3b-qwake-lc1-required-response-schema.md",
+      "english": "docs/decisions/ADR-053-stage3b-qwake-lc1-required-response-schema_EN.md",
+      "russian_cyrillic_ratio": 0.9926,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6023,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-054-stage3b-qwake-lc1-repository-freeze.md",
+      "english": "docs/decisions/ADR-054-stage3b-qwake-lc1-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9872,
+      "english_latin_ratio": 0.9875,
+      "russian_raw_cyrillic_ratio": 0.541,
+      "english_raw_latin_ratio": 0.9934,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-055-stage3b-qwake-lc2-transition.md",
+      "english": "docs/decisions/ADR-055-stage3b-qwake-lc2-transition_EN.md",
+      "russian_cyrillic_ratio": 0.9823,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.563,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract.md",
+      "english": "docs/decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract_EN.md",
+      "russian_cyrillic_ratio": 0.9913,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6746,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-057-stage3b-qwake-lc2-repository-freeze.md",
+      "english": "docs/decisions/ADR-057-stage3b-qwake-lc2-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.983,
+      "english_latin_ratio": 0.9831,
+      "russian_raw_cyrillic_ratio": 0.4204,
+      "english_raw_latin_ratio": 0.9931,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-058-stage3b-qwake-lc3-transition.md",
+      "english": "docs/decisions/ADR-058-stage3b-qwake-lc3-transition_EN.md",
+      "russian_cyrillic_ratio": 0.9909,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6098,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract.md",
+      "english": "docs/decisions/ADR-059-stage3b-qwake-lc3-matched-shadow-validation-contract_EN.md",
+      "russian_cyrillic_ratio": 0.9925,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6943,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-060-stage3b-qwake-lc3-repository-freeze.md",
+      "english": "docs/decisions/ADR-060-stage3b-qwake-lc3-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9816,
+      "english_latin_ratio": 0.9841,
+      "russian_raw_cyrillic_ratio": 0.4146,
+      "english_raw_latin_ratio": 0.9935,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation.md",
+      "english": "docs/decisions/ADR-061-stage3b-qwake-lc4-i-bounded-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9881,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8319,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring.md",
+      "english": "docs/decisions/ADR-062-stage3b-qwake-lc4-f-runtime-freeze-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.983,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.675,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze.md",
+      "english": "docs/decisions/ADR-063-stage3b-qwake-lc4-f-runtime-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9844,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5626,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring.md",
+      "english": "docs/decisions/ADR-064-stage3b-qwake-lc4-e-execution-admission-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9874,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5936,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze.md",
+      "english": "docs/decisions/ADR-065-stage3b-qwake-lc4-e-execution-admission-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9754,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.394,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring.md",
+      "english": "docs/decisions/ADR-066-stage3b-qwake-lc4-e-execution-lease-wrapper-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9876,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5643,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation.md",
+      "english": "docs/decisions/ADR-067-stage3b-qwake-lc4-e-execution-lease-wrapper-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9949,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6908,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring.md",
+      "english": "docs/decisions/ADR-068-stage3b-qwake-lc4-e-execution-freeze-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9856,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6734,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation.md",
+      "english": "docs/decisions/ADR-069-stage3b-qwake-lc4-e-runtime-backend-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9911,
+      "english_latin_ratio": 0.9947,
+      "russian_raw_cyrillic_ratio": 0.6862,
+      "english_raw_latin_ratio": 0.9965,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization.md",
+      "english": "docs/decisions/ADR-070-stage3b-qwake-lc4-e-execution-freeze-materialization_EN.md",
+      "russian_cyrillic_ratio": 0.9981,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7498,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization.md",
+      "english": "docs/decisions/ADR-071-stage3b-qwake-lc4-e-one-shot-invocation-authorization_EN.md",
+      "russian_cyrillic_ratio": 0.9917,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7588,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring.md",
+      "english": "docs/decisions/ADR-072-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9859,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6216,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation.md",
+      "english": "docs/decisions/ADR-073-stage3b-qwake-lc4-e-one-shot-invocation-wrapper-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.988,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5977,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring.md",
+      "english": "docs/decisions/ADR-074-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9976,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7949,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation.md",
+      "english": "docs/decisions/ADR-075-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9968,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6155,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze.md",
+      "english": "docs/decisions/ADR-076-stage3b-qwake-lc4-e-one-shot-host-runtime-invoker-repository-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9775,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.4922,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission.md",
+      "english": "docs/decisions/ADR-077-stage3b-qwake-lc4-e-one-shot-engineering-invocation-admission_EN.md",
+      "russian_cyrillic_ratio": 0.9792,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.4559,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation.md",
+      "english": "docs/decisions/ADR-078-stage3b-qwake-lc4-e-one-shot-engineering-invocation-operation_EN.md",
+      "russian_cyrillic_ratio": 0.9789,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5114,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization.md",
+      "english": "docs/decisions/ADR-079-stage3b-qwake-lc4-e-one-shot-engineering-invocation-execution-authorization_EN.md",
+      "russian_cyrillic_ratio": 0.9865,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5263,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification.md",
+      "english": "docs/decisions/ADR-080-stage3b-qwake-lc4-e-one-shot-engineering-invocation-preexecution-verification_EN.md",
+      "russian_cyrillic_ratio": 0.9885,
+      "english_latin_ratio": 0.9933,
+      "russian_raw_cyrillic_ratio": 0.5681,
+      "english_raw_latin_ratio": 0.9964,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation.md",
+      "english": "docs/decisions/ADR-081-stage3b-qwake-lc4-e-one-shot-engineering-invocation-runtime-operation_EN.md",
+      "russian_cyrillic_ratio": 0.9883,
+      "english_latin_ratio": 0.9936,
+      "russian_raw_cyrillic_ratio": 0.5712,
+      "english_raw_latin_ratio": 0.9965,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair.md",
+      "english": "docs/decisions/ADR-082-stage3b-qwake-lc4-e-runtime-operation-identity-repair_EN.md",
+      "russian_cyrillic_ratio": 0.9832,
+      "english_latin_ratio": 0.99,
+      "russian_raw_cyrillic_ratio": 0.5026,
+      "english_raw_latin_ratio": 0.9954,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2.md",
+      "english": "docs/decisions/ADR-083-stage3b-qwake-lc4-e-persistent-evidence-chain-v2_EN.md",
+      "russian_cyrillic_ratio": 0.9803,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6499,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-084-stage3b-qwake-lc4-e-persistent-evidence-chain-v2-implementation.md",
+      "english": "docs/decisions/ADR-084-stage3b-qwake-lc4-e-persistent-evidence-chain-v2-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9916,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8546,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring.md",
+      "english": "docs/decisions/ADR-085-stage3b-qwake-lc4-e-lease-bound-host-invoker-wiring_EN.md",
+      "russian_cyrillic_ratio": 0.9927,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7924,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring.md",
+      "english": "docs/decisions/ADR-086-stage3b-qwake-lc4-e-final-execution-acknowledgement-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9736,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6044,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring.md",
+      "english": "docs/decisions/ADR-087-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9778,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5951,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation.md",
+      "english": "docs/decisions/ADR-088-stage3b-qwake-lc4-e-final-execution-acknowledgement-issuance-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9879,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7109,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring.md",
+      "english": "docs/decisions/ADR-089-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9932,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7196,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-090-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-implementation.md",
+      "english": "docs/decisions/ADR-090-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9939,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7054,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-091-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-authoring.md",
+      "english": "docs/decisions/ADR-091-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9897,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6945,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-092-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-implementation.md",
+      "english": "docs/decisions/ADR-092-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9881,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6211,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-093-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-authoring.md",
+      "english": "docs/decisions/ADR-093-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9878,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6157,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-094-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-implementation.md",
+      "english": "docs/decisions/ADR-094-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9864,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5351,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-authoring.md",
+      "english": "docs/decisions/ADR-095-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.994,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6255,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation.md",
+      "english": "docs/decisions/ADR-096-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-implementation_EN.md",
+      "russian_cyrillic_ratio": 0.9991,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7213,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring.md",
+      "english": "docs/decisions/ADR-097-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9897,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6264,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization.md",
+      "english": "docs/decisions/ADR-098-stage3b-qwake-lc4-e-final-execution-acknowledgement-materialization-invocation-operation-callsite-execution-authorization_EN.md",
+      "russian_cyrillic_ratio": 0.9976,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.757,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition.md",
+      "english": "docs/decisions/ADR-099-stage3b-qwake-lc4-e-post-acknowledgement-transition_EN.md",
+      "russian_cyrillic_ratio": 0.9874,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6459,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-100-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring-scope-freeze.md",
+      "english": "docs/decisions/ADR-100-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9887,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6744,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring.md",
+      "english": "docs/decisions/ADR-101-stage3b-qwake-lc4-e-final-engineering-invocation-admission-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9868,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.598,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal.md",
+      "english": "docs/decisions/ADR-102-stage3b-qwake-lc4-e-final-engineering-invocation-admission-repository-seal_EN.md",
+      "russian_cyrillic_ratio": 0.984,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5134,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-103-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-authoring-scope-freeze.md",
+      "english": "docs/decisions/ADR-103-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-authoring-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9841,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6054,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring.md",
+      "english": "docs/decisions/ADR-104-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-record-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9813,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.4695,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze.md",
+      "english": "docs/decisions/ADR-105-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9869,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5877,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring.md",
+      "english": "docs/decisions/ADR-106-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-record-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9879,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.4491,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze.md",
+      "english": "docs/decisions/ADR-107-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9922,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.559,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring.md",
+      "english": "docs/decisions/ADR-108-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9966,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5545,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze.md",
+      "english": "docs/decisions/ADR-109-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-scope-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.988,
+      "english_latin_ratio": 0.994,
+      "russian_raw_cyrillic_ratio": 0.4193,
+      "english_raw_latin_ratio": 0.9976,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring.md",
+      "english": "docs/decisions/ADR-110-stage3b-qwake-lc4-e-final-engineering-invocation-authorization-consumption-attempt-atomic-transition-operation-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9875,
+      "english_latin_ratio": 0.9944,
+      "russian_raw_cyrillic_ratio": 0.5668,
+      "english_raw_latin_ratio": 0.997,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction.md",
+      "english": "docs/decisions/ADR-111-stage3b-qwake-lc4-e-claim-execute-order-correction_EN.md",
+      "russian_cyrillic_ratio": 0.9945,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.813,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-112-stage3b-qwake-attempt-003-clean-source-closure-design.md",
+      "english": "docs/decisions/ADR-112-stage3b-qwake-attempt-003-clean-source-closure-design_EN.md",
+      "russian_cyrillic_ratio": 0.9982,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8621,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-113-stage3b-qwake-attempt-003-source-binding-execution-freeze-authoring.md",
+      "english": "docs/decisions/ADR-113-stage3b-qwake-attempt-003-source-binding-execution-freeze-authoring_EN.md",
+      "russian_cyrillic_ratio": 1.0,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8566,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-114-stage3b-qwake-attempt-003-execution-freeze-materialization-implementation.md",
+      "english": "docs/decisions/ADR-114-stage3b-qwake-attempt-003-execution-freeze-materialization-implementation_EN.md",
+      "russian_cyrillic_ratio": 1.0,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.836,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-115-stage3b-qwake-attempt-003-authorization-materialization-authoring.md",
+      "english": "docs/decisions/ADR-115-stage3b-qwake-attempt-003-authorization-materialization-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9962,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7977,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-116-stage3b-qwake-attempt-003-host-invocation-chain-authoring.md",
+      "english": "docs/decisions/ADR-116-stage3b-qwake-attempt-003-host-invocation-chain-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9878,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8079,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-117-stage3b-qwake-attempt-003-host-invocation-command-materialization-authoring.md",
+      "english": "docs/decisions/ADR-117-stage3b-qwake-attempt-003-host-invocation-command-materialization-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.991,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8033,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-118-stage3b-qwake-attempt-003-host-invocation-process-spawner-authoring.md",
+      "english": "docs/decisions/ADR-118-stage3b-qwake-attempt-003-host-invocation-process-spawner-authoring_EN.md",
+      "russian_cyrillic_ratio": 0.9936,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6743,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization.md",
+      "english": "docs/decisions/ADR-119-stage3b-qwake-attempt-004-cpu-measurement-stabilization_EN.md",
+      "russian_cyrillic_ratio": 0.9863,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.8693,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain.md",
+      "english": "docs/decisions/ADR-120-stage3b-qwake-attempt-004-consolidated-execution-chain_EN.md",
+      "russian_cyrillic_ratio": 0.9855,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.7984,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-121-stage3b-qwake-attempt-005-lane-isolated-integration-confirmation.md",
+      "english": "docs/decisions/ADR-121-stage3b-qwake-attempt-005-lane-isolated-integration-confirmation_EN.md",
+      "russian_cyrillic_ratio": 0.9809,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.845,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-122-stage3b-qwake-lc4-e-attempt-005-successful-validation-transition.md",
+      "english": "docs/decisions/ADR-122-stage3b-qwake-lc4-e-attempt-005-successful-validation-transition_EN.md",
+      "russian_cyrillic_ratio": 0.9978,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6289,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-123-stage3b-qwake-qw5-single-scientific-image-freeze.md",
+      "english": "docs/decisions/ADR-123-stage3b-qwake-qw5-single-scientific-image-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9916,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5372,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator.md",
+      "english": "docs/decisions/ADR-124-stage3b-qwake-qw5-superseding-scientific-orchestrator_EN.md",
+      "russian_cyrillic_ratio": 0.9929,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.6615,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze.md",
+      "english": "docs/decisions/ADR-125-stage3b-qwake-qw5-superseding-scientific-image-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9864,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5133,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction.md",
+      "english": "docs/decisions/ADR-126-stage3b-qwake-c1-train-only-dataset-isolation-correction_EN.md",
+      "russian_cyrillic_ratio": 0.9877,
+      "english_latin_ratio": 1.0,
+      "russian_raw_cyrillic_ratio": 0.5835,
+      "english_raw_latin_ratio": 1.0,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-127-stage3b-qwake-c1-train-only-corrected-scientific-image-freeze.md",
+      "english": "docs/decisions/ADR-127-stage3b-qwake-c1-train-only-corrected-scientific-image-freeze_EN.md",
+      "russian_cyrillic_ratio": 0.9878,
+      "english_latin_ratio": 0.9933,
+      "russian_raw_cyrillic_ratio": 0.5421,
+      "english_raw_latin_ratio": 0.9965,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-128-stage3b-qwake-c1-request-freeze-repository-integration.md",
+      "english": "docs/decisions/ADR-128-stage3b-qwake-c1-request-freeze-repository-integration_EN.md",
+      "russian_cyrillic_ratio": 0.9847,
+      "english_latin_ratio": 0.9892,
+      "russian_raw_cyrillic_ratio": 0.4728,
+      "english_raw_latin_ratio": 0.995,
+      "language_surface": "markdown_prose"
+    },
+    {
+      "russian": "docs/decisions/ADR-129-stage3b-qwake-c1-attempt-001-host-identity-permission-correction.md",
+      "english": "docs/decisions/ADR-129-stage3b-qwake-c1-attempt-001-host-identity-permission-correction_EN.md",
+      "russian_cyrillic_ratio": 0.9826,
+      "english_latin_ratio": 0.9871,
+      "russian_raw_cyrillic_ratio": 0.5237,
+      "english_raw_latin_ratio": 0.9936,
+      "language_surface": "markdown_prose"
+    }
+  ],
+  "glossary_terms": 117,
+  "discovered_docs_pairs": 178
+}
+LANGUAGE_PAIR_COUNT=229
+LANGUAGE_WARNING_COUNT=3
+LANGUAGE_STRUCTURE=PASS
+=== GLOSSARY ===
+{
+  "status": "ok",
+  "glossary_terms": 117,
+  "scanned_documents": 354,
+  "linked_first_uses": 1571,
+  "errors": []
+}
+GLOSSARY=PASS
+=== TARGETED PYTEST ===
+...............                                                          [100%]
+15 passed in 4.12s
+TARGETED_SCIENTIFIC_CAMPAIGN_TESTS=PASS
+=== QWAKE C1 HOST IDENTITY CORRECTION POST-MERGE VERIFY V1 SUCCESS ===
+FINAL_STATUS=0
+PR202_MERGED=true
+BASE_COMMIT=fe4ed4271a07dbf9334530a06f31ed57fc044d22
+BASE_TREE=3d33a736313b9293b97c02aedece61db77c02072
+AUTHORING_COMMIT=af8b25872ef6fa092fb3a24e9c390489aa23f986
+AUTHORING_TREE=855889593a33bb6450e31cfc9feb152d14bd5292
+AUTHORING_DIFF_SHA256=3ed683fd5d21bcec645c3113c0239d40641d86ec6a5a35be406d28d95d876897
+MERGE_COMMIT=98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2
+MERGE_TREE=855889593a33bb6450e31cfc9feb152d14bd5292
+MERGE_TREE_EQUALS_AUTHORING_TREE=true
+PATCH_PATH_COUNT=20
+C1_HOST_IDENTITY_PERMISSION_CORRECTION_POST_MERGE_VERIFIED=true
+SCIENTIFIC_AUTHORIZATION_ISSUED=false
+ATTEMPT002_CREATED=false
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+NEXT=authorize_new_corrected_scientific_image_build_freeze
+POST_MERGE_VERIFIER_IDENTITY_EXACT=true
+POST_MERGE_VERIFICATION_REPLAY=PASS
+HOST_IDENTITY_CORRECTION_EXACT=true
+RUNTIME_SOURCE_CLOSURE_EXACT=true
+RUNTIME_SOURCE_PATH_COUNT=157
+RUNTIME_SOURCE_MANIFEST_SHA256=sha256:fbfd01ecd41cc1615acef9f0fc9b3dd390e9605ebadd9a5dc86d78a425e2ac7b
+EVIDENCE_INVENTORY_EXACT=true
+EVIDENCE_SHA256SUMS_EXACT=true
+EVIDENCE_PAYLOAD_FILE_COUNT=17
+AUTHORIZATION_RECORD_EXACT=true
+BUILD_OUTCOME_EXACT=true
+VALIDATION_EVIDENCE_EXACT=true
+RUNTIME_CLOSURE_EVIDENCE_157_OF_157=true
+TRAIN_ONLY_ISOLATION_VALIDATION_5_OF_5=true
+TARGETED_VALIDATION_47_OF_47=true
+DATASET_ABSENCE=PASS
+CANDIDATE_IMAGE_DIGEST=sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d
+FREEZE_SHA256=sha256:ea207e6d31507d449e24fc30bb74fb21ec6560b1ec4a777cb1199de3ad63184f
+[
+    {
+        "Id": "sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d",
+        "RepoTags": [
+            "torch2pc-layerwise-thesis:0.1.0-c1hostfix-98cff5b2ecd6"
+        ],
+        "RepoDigests": [
+            "torch2pc-layerwise-thesis@sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-08-12T18:38:52.648603228-03:00",
+        "Config": {
+            "User": "root",
+            "Env": [
+                "PATH=/opt/venv/bin:/opt/rocm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "DEBIAN_FRONTEND=noninteractive",
+                "LD_LIBRARY_PATH=/opt/rocm/lib",
+                "PYTHONUNBUFFERED=1",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONHASHSEED=0",
+                "SOURCE_GIT_COMMIT=98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2",
+                "PIP_DISABLE_PIP_VERSION_CHECK=1"
+            ],
+            "Entrypoint": [
+                "/usr/bin/tini",
+                "--",
+                "/workspace/scripts/container_entrypoint.sh"
+            ],
+            "Cmd": [
+                "torch2pc-thesis",
+                "validate",
+                "--stage",
+                "smoke",
+                "--method",
+                "bp"
+            ],
+            "WorkingDir": "/workspace",
+            "Labels": {
+                "io.torch2pc.base-image": "rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191",
+                "org.opencontainers.image.description": "Controlled ROCm environment for predictive-coding experiments",
+                "org.opencontainers.image.ref.name": "rocm/pytorch:rocm7.2.1_ubuntu24.04_py3.12_pytorch_release_2.9.1",
+                "org.opencontainers.image.revision": "98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2",
+                "org.opencontainers.image.title": "Torch2PC Layer-wise Thesis",
+                "org.opencontainers.image.version": "0.1.0"
+            },
+            "ArgsEscaped": true
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 10907237878,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:f2a7f072635332d307212e318e07284948b89f4167fce5c4d7c9cfb7590b74b6",
+                "sha256:38431d8e5f8b31c89008ccae537f0577d7baaed71b09aaf4bfe1404c5cf498bc",
+                "sha256:c680c862a0120b3b714242412df2e5cf9815097ddf100f3e927d232a332a9789",
+                "sha256:88f02404abb2fd82fbf049034af019ef5bfcd72fdd3494a857713a5e81554aad",
+                "sha256:636db6118fd07e4d965c6e5601961fc508a20c5eec25ced32f29ae9bfc66bc3b",
+                "sha256:cc599bf66a6e61bba98a5e9856f42cbc1e85d1042ce764042e8e38809556636e",
+                "sha256:94ee51b3a67cd13c1f60ca536f0cc3fa7c73965559ffe8f8342f4e4078cd7822",
+                "sha256:11400d5d58b53c828726b13f195c991d3582d12940657418174972a7f054d910",
+                "sha256:67b4448beec2362bdfeb7891cf40d25e0209331b1fd13fbdccd538ac98394293",
+                "sha256:76a5ef2e648209a38ca927f89f6bf6c025f8e2b86faf254bc2bd76ac8b66f407",
+                "sha256:e6172b0feeca67823f5ac2522ef760baf7c12f49aef42289288fe063ad4d7114",
+                "sha256:335865b4b90a86e05cb3cb6b543b0b42201d0e47e89ebea6cdbd1cb4cec9d560",
+                "sha256:8f9d69fe7aa7aa147a05e7e676d13013eda7dd0d1cff02e2b5d3c8b620d69491",
+                "sha256:25c70a6644cbb7471b75b99088cb5115ec68ddfb3466ef8291d8527eeb34ff41",
+                "sha256:111278a187dc12737d6bff0ecfe810f7dda70e4ae989dfede8fa55db930b1a68",
+                "sha256:10cc600a11155d5d14e0740df474463b2aa767361ad9e9168acaac8969f8fb8a",
+                "sha256:8a1978a7f8c67016b28ab697e1c4625f0367ba51b8d9671a80bfd1256d92da6b"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-08-12T21:39:19.092821505Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "9ec1sb6p3gcxdp3e1r0zka4kp",
+                    "CreatedAt": "2026-08-12T18:39:27.780596328-03:00"
+                }
+            ]
+        }
+    }
+]
+LOCAL_FROZEN_IMAGE_IDENTITY_EXACT=true
+LOCAL_FROZEN_IMAGE_INSPECTION_ONLY=true
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+=== QWAKE C1 HOST-IDENTITY-CORRECTED IMAGE FREEZE VERIFY V1 SUCCESS ===
+FINAL_STATUS=0
+SOURCE_COMMIT=98cff5b2ecd64e1c96e19f0b04104ac00a5c3cf2
+SOURCE_TREE=855889593a33bb6450e31cfc9feb152d14bd5292
+CANDIDATE_IMAGE_DIGEST=sha256:12a4a6792530471517e53b30625bcfc45031a97bb9072f54bfa0c966e3fc2b5d
+FREEZE_SHA256=sha256:ea207e6d31507d449e24fc30bb74fb21ec6560b1ec4a777cb1199de3ad63184f
+SCIENTIFIC_IMAGE_FROZEN=true
+INDEPENDENT_FREEZE_VERIFICATION=PASS
+PREVIOUS_C1_REQUEST_REUSABLE=false
+NEW_C1_REQUEST_FREEZE_REQUIRED=true
+NEW_C1_REQUEST_FROZEN=false
+NEW_C1_EXECUTION_AUTHORIZATION_ISSUED=false
+ATTEMPT002_CREATED=false
+SCIENTIFIC_AUTHORIZATION_ISSUED=false
+DOCKER_BUILD_INVOKED=false
+DOCKER_RUN_INVOKED=false
+TEST_DATASET_ACCESS=false
+PUBLICATION_PERMITTED=false
+REPOSITORY_INTEGRATION_PERFORMED=false
+NEXT=authorize_repository_integration_of_new_scientific_image_freeze

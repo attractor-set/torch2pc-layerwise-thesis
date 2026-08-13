@@ -1,0 +1,50 @@
+ARG BASE_IMAGE=rocm/pytorch@sha256:96a2fb24dec9896e2f8238178f0c49d0dcc4c7dcc597be09e4564316bd86d191
+FROM ${BASE_IMAGE}
+
+ARG BASE_IMAGE
+ARG SOURCE_GIT_COMMIT=unknown
+ARG PIP_VERSION=25.1.1
+ARG QWAKE_RUNTIME_MANIFEST_RELATIVE
+ARG QWAKE_RUNTIME_MANIFEST_SHA256
+LABEL org.opencontainers.image.title="Torch2PC QWake Scientific Successor"
+LABEL org.opencontainers.image.description="Manifest-bound QWake scientific runtime"
+LABEL org.opencontainers.image.version="scientific-successor-v1"
+LABEL org.opencontainers.image.revision="${SOURCE_GIT_COMMIT}"
+LABEL io.torch2pc.base-image="${BASE_IMAGE}"
+LABEL io.torch2pc.qwake-runtime-manifest-relative="${QWAKE_RUNTIME_MANIFEST_RELATIVE}"
+LABEL io.torch2pc.qwake-runtime-manifest-sha256="${QWAKE_RUNTIME_MANIFEST_SHA256}"
+
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       ca-certificates curl git jq make numactl pciutils procps tini \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+# The builder supplies an exact manifest-derived temporary context. No repository
+# working-tree directory is used as Docker build context.
+COPY . /workspace
+RUN PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/workspace/src python \
+      /workspace/scripts/verify_stage3b_qwake_scientific_build_context_v2.py \
+      --project-root /workspace \
+      --runtime-manifest-relative "${QWAKE_RUNTIME_MANIFEST_RELATIVE}" \
+      --runtime-manifest-sha256 "${QWAKE_RUNTIME_MANIFEST_SHA256}"
+RUN python -m pip install --no-cache-dir "pip==${PIP_VERSION}" \
+    && python -m pip install --no-cache-dir -r requirements/qwake-scientific-runtime.txt \
+    && python -m pip check
+RUN mkdir -p /workspace/results /workspace/data /workspace/external \
+    && chmod 0755 /workspace/scripts \
+    && chmod 0755 /workspace/scripts/*.sh \
+    && chmod 0755 /workspace/scripts/*.py
+
+ENV PYTHONPATH=/workspace/src \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONHASHSEED=0 \
+    SOURCE_GIT_COMMIT=${SOURCE_GIT_COMMIT} \
+    QWAKE_RUNTIME_MANIFEST_RELATIVE=${QWAKE_RUNTIME_MANIFEST_RELATIVE} \
+    QWAKE_RUNTIME_MANIFEST_SHA256=${QWAKE_RUNTIME_MANIFEST_SHA256} \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+ENTRYPOINT ["/usr/bin/tini", "--", "/workspace/scripts/container_entrypoint.sh"]
+CMD ["python", "--version"]

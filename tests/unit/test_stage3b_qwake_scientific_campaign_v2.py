@@ -32,6 +32,7 @@ from torch2pc_thesis.stage3b_qwake_fp_pipeline import (
     SealedTrajectoryDataset,
     TrajectorySnapshotRecord,
     build_feature_vector,
+    canonical_value_from_json,
 )
 from torch2pc_thesis.stage3b_qwake_fp_spec import (
     A2_FIELDS,
@@ -55,7 +56,9 @@ from torch2pc_thesis.stage3b_qwake_scientific_runtime_v2 import (
     _collect_model_batch,
     _execution_context,
     _plan_campaign_components,
+    _verify_predecessor_lineage,
     _verify_predecessor_receipts,
+    load_sealed_trajectory_dataset,
     select_c2_policy,
 )
 
@@ -327,6 +330,84 @@ def _manual_dataset() -> SealedTrajectoryDataset:
     return SealedTrajectoryDataset(1, QWAKE_FP_SPECIAL_CASE_CONTRACT.contract_id, (record,), SHA_D)
 
 
+def test_canonical_value_json_inverse_restores_immutable_sequences() -> None:
+    decoded = canonical_value_from_json(
+        {
+            "layers": [0, 1, 2],
+            "nested": {"prefixes": [[1.0, 2.0], [3.0, 4.0]]},
+        },
+        field_name="structured",
+    )
+    assert decoded == {
+        "layers": (0, 1, 2),
+        "nested": {"prefixes": ((1.0, 2.0), (3.0, 4.0))},
+    }
+
+
+def test_sealed_trajectory_structured_value_roundtrip_is_byte_exact(
+    tmp_path: Path,
+) -> None:
+    values: dict[str, object] = {}
+    for name in A2_FIELDS:
+        if name == "snapshot_id":
+            values[name] = "snapshot-structured"
+        elif name in {"registered_layer_order", "registered_block_order"}:
+            values[name] = (0, 1, 2)
+        elif name == "acquired_analytic_ids":
+            values[name] = ()
+        elif name.startswith("per_layer_"):
+            values[name] = (1.0, 2.0, 3.0)
+        elif name.startswith("sample_prefix_"):
+            values[name] = {"32": (1.0, 2.0), "128": (2.0, 3.0), "256": (3.0, 4.0)}
+        elif name in {
+            "compute_step",
+            "reference_horizon_k_ref",
+            "remaining_sweeps",
+            "diagnostic_budget_remaining_ns",
+        }:
+            values[name] = 1
+        else:
+            values[name] = 0.5
+    feature = build_feature_vector(ObservationLevel.A2, values)
+    record = TrajectorySnapshotRecord(
+        model_seed=0,
+        batch_id="batch-structured",
+        snapshot_id="snapshot-structured",
+        compute_step=1,
+        observation=feature,
+        analytics=(),
+        measured_edges=(
+            MeasuredEdge(
+                "control",
+                CostCategory.CONTROL,
+                EdgeMeasurement(host_time_ns=1),
+            ),
+        ),
+        remaining_suffix_ns=10,
+        provenance=Provenance(1, "unit", SHA_A, SHA_B),
+        oracle_label=OracleLabel("snapshot-structured", SHA_C, 0.0, True),
+    )
+    dataset = SealedTrajectoryDataset(
+        1,
+        QWAKE_FP_SPECIAL_CASE_CONTRACT.contract_id,
+        (record,),
+        SHA_D,
+    )
+    path = tmp_path / "trajectory.json"
+    original = dataset.canonical_json()
+    path.write_text(original, encoding="utf-8")
+
+    loaded = load_sealed_trajectory_dataset(path)
+
+    assert loaded == dataset
+    assert loaded.canonical_json() == original
+    assert path.read_text(encoding="utf-8") == original
+    assert isinstance(
+        loaded.records[0].observation.value("registered_layer_order"),
+        tuple,
+    )
+
+
 def test_c2_selection_is_safety_then_coverage_then_cost_and_has_negative_result() -> None:
     dataset = _manual_dataset()
     safe = FrozenPolicyManifest(
@@ -432,20 +513,25 @@ def test_request_namespaces_cannot_overlay_executable_source() -> None:
         )
 
 
-def test_predecessor_receipt_binds_exact_c1_artifact(tmp_path: Path) -> None:
+def test_predecessor_receipt_preserves_cross_image_producer_lineage(
+    tmp_path: Path,
+) -> None:
+    producer_commit = "2" * 40
+    producer_image = SHA_D
+    dataset = _manual_dataset()
     artifact_path = tmp_path / "results/sealed/c1.json"
     artifact_path.parent.mkdir(parents=True)
-    artifact_path.write_text("{}\n", encoding="utf-8")
+    artifact_path.write_text(dataset.canonical_json(), encoding="utf-8")
     artifact_sha = "sha256:" + hashlib.sha256(artifact_path.read_bytes()).hexdigest()
 
     provisional = CampaignExecutionReceipt(
         schema_version=1,
         role=CampaignRole.C1_COLLECTION,
         protocol_receipt_kind=ReceiptKind.C1_COLLECTION,
-        source_commit=COMMIT,
+        source_commit=producer_commit,
         request_sha256=SHA_A,
-        authorization_sha256=SHA_B,
-        image_digest=SHA_A,
+        authorization_sha256=dataset.source_receipt_sha256,
+        image_digest=producer_image,
         output_root="results/scientific/C1_COLLECTION",
         status="scientific_execution_sealed",
         primary_artifact_name="trajectory-dataset.json",
@@ -483,13 +569,84 @@ def test_predecessor_receipt_binds_exact_c1_artifact(tmp_path: Path) -> None:
         ),
         output_root="results/scientific/C2_CALIBRATION",
     )
+
+    lineage = _verify_predecessor_lineage(tmp_path, request)
     refs = _verify_predecessor_receipts(tmp_path, request)
+
+    assert len(lineage) == 1
+    assert lineage[0].producer_source_commit == producer_commit
+    assert lineage[0].producer_image_digest == producer_image
+    assert lineage[0].producer_source_commit != request.source_commit
+    assert lineage[0].producer_image_digest != request.image_digest
+    assert lineage[0].primary_artifact_sha256 == artifact_sha
+    assert lineage[0].compatibility_contract_id == (
+        "qwake-scientific-predecessor-lineage-v1"
+    )
     assert tuple(item.kind for item in refs) == (ReceiptKind.C1_COLLECTION,)
     context = _execution_context(request, refs)
     assert (
         tuple(plan.component_id for plan in _plan_campaign_components(context, request))
         == request.component_sequence
     )
+
+
+def test_predecessor_lineage_rejects_artifact_authorization_mismatch(
+    tmp_path: Path,
+) -> None:
+    dataset = _manual_dataset()
+    artifact_path = tmp_path / "results/sealed/c1.json"
+    artifact_path.parent.mkdir(parents=True)
+    artifact_path.write_text(dataset.canonical_json(), encoding="utf-8")
+    artifact_sha = "sha256:" + hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+    provisional = CampaignExecutionReceipt(
+        schema_version=1,
+        role=CampaignRole.C1_COLLECTION,
+        protocol_receipt_kind=ReceiptKind.C1_COLLECTION,
+        source_commit="2" * 40,
+        request_sha256=SHA_A,
+        authorization_sha256=SHA_B,
+        image_digest=SHA_D,
+        output_root="results/scientific/C1_COLLECTION",
+        status="scientific_execution_sealed",
+        primary_artifact_name="trajectory-dataset.json",
+        primary_artifact_sha256=artifact_sha,
+        artifact_sha256s=(("trajectory-dataset.json", artifact_sha),),
+        component_plan_sha256s=(("seal_artifact", SHA_C),),
+        scientific_execution_performed=True,
+        test_dataset_access=False,
+        publication_permitted=False,
+        receipt_sha256=SHA_D,
+    )
+    receipt = replace(provisional, receipt_sha256=provisional.computed_sha256())
+    receipt_path = tmp_path / "results/receipts/c1.json"
+    receipt_path.parent.mkdir(parents=True)
+    receipt_path.write_text(receipt.canonical_json(), encoding="utf-8")
+    receipt_file_sha = "sha256:" + hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+    request = ScientificCampaignRequest.create(
+        role=CampaignRole.C2_CALIBRATION,
+        source_commit=COMMIT,
+        image_digest=SHA_A,
+        manifest_sha256=SHA_B,
+        code_manifest_sha256=SHA_C,
+        dataset=None,
+        sealed_c1_dataset=ArtifactBinding("results/sealed/c1.json", artifact_sha),
+        candidate_policies=(ArtifactBinding("results/policies/p0.json", SHA_B),),
+        predecessor_receipts=(
+            ProtocolReceiptBinding(
+                ReceiptKind.C1_COLLECTION,
+                "results/receipts/c1.json",
+                receipt.receipt_sha256,
+                receipt_file_sha,
+            ),
+        ),
+        output_root="results/scientific/C2_CALIBRATION",
+    )
+
+    with pytest.raises(
+        RuntimeError,
+        match="sealed C1 trajectory authorization lineage differs",
+    ):
+        _verify_predecessor_lineage(tmp_path, request)
 
 
 def _load_scientific_host_launcher():

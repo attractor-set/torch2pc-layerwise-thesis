@@ -99,6 +99,7 @@ from torch2pc_thesis.stage3b_qwake_scientific_campaign import (
     load_scientific_host_claim,
 )
 from torch2pc_thesis.stage3b_qwake_scientific_identity_v2 import (
+    SOURCE_COMMIT_ENV,
     ScientificRuntimeIdentity,
     ScientificRuntimeIdentityError,
     runtime_identity_from_environment,
@@ -260,8 +261,8 @@ def _require_embedded_runtime_identity(
 ) -> ScientificRuntimeIdentity:
     """Bind embedded execution to the immutable image runtime identity."""
 
-    if os.environ.get("SOURCE_GIT_COMMIT") != request.source_commit:
-        raise ScientificRuntimeError("embedded SOURCE_GIT_COMMIT differs from request")
+    if os.environ.get(SOURCE_COMMIT_ENV) != request.source_commit:
+        raise ScientificRuntimeError("embedded successor source commit differs from request")
     if os.environ.get("EXPERIMENT_IMAGE_DIGEST") != request.image_digest:
         raise ScientificRuntimeError("embedded image digest differs from request")
     try:

@@ -42,7 +42,7 @@ SI_MA0_GPU_OUTPUT_DIR ?= results/stage-3/si-ma0/working/si-ma0-gpu-smoke
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
         apply-pilot-selection final-plan freeze-pilot final diagnostics report manifest docs \
         docs-en jupyter lint \
-        typecheck test thesis article release clean status epistemic-check \
+        typecheck test thesis thesis-data thesis-check article release clean status epistemic-check \
         freeze-environment configure-stage2 prepare-stage2 freeze-stage2-environment \
         control-stage2-cpu control-stage2-gpu stage2-plan freeze-stage2 final-stage2 \
         snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2 \
@@ -211,7 +211,13 @@ epistemic-check:
 	$(PYTHON) scripts/check_language_structure.py
 	$(PYTHON) scripts/check_local_links.py
 
-thesis:
+thesis-check:
+	python3 scripts/build_thesis_assets.py --check
+
+thesis-data:
+	python3 scripts/build_thesis_assets.py
+
+thesis: thesis-data
 	cd thesis && latexmk -xelatex -interaction=nonstopmode main.tex
 
 article:

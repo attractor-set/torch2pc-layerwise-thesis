@@ -1,0 +1,177 @@
+#!/usr/bin/env python3
+"""Validate thesis-facing data and render deterministic LaTeX assets."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import math
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+THESIS = ROOT / "thesis"
+CLAIMS_PATH = THESIS / "data" / "research_claims.json"
+QWAKE_PATH = THESIS / "data" / "qwake_c2_verified_summary.json"
+GENERATED = THESIS / "generated"
+CLAIMS_TEX = GENERATED / "claims_matrix.tex"
+
+STATUS_LABELS = {
+    "supported": "поддержано",
+    "rejected": "отклонено",
+    "not_tested": "не проверено",
+    "descriptive": "описательно",
+}
+
+
+def load(path: Path) -> dict[str, object]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError(f"{path} must contain a JSON object")
+    return value
+
+
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
+
+
+def latex_escape(value: object) -> str:
+    text = str(value)
+    replacements = (
+        ("\\", r"\textbackslash{}"),
+        ("&", r"\&"),
+        ("%", r"\%"),
+        ("$", r"\$"),
+        ("#", r"\#"),
+        ("_", r"\_"),
+        ("{", r"\{"),
+        ("}", r"\}"),
+        ("~", r"\textasciitilde{}"),
+        ("^", r"\textasciicircum{}"),
+    )
+    for source, target in replacements:
+        text = text.replace(source, target)
+    return text
+
+
+def validate_claims(data: dict[str, object]) -> None:
+    require(data.get("schema_version") == 1, "claims schema_version must be 1")
+    rqs = data.get("research_questions")
+    claims = data.get("claims")
+    require(isinstance(rqs, list) and bool(rqs), "research_questions must be non-empty")
+    require(isinstance(claims, list) and bool(claims), "claims must be non-empty")
+    rq_ids = {item.get("id") for item in rqs if isinstance(item, dict)}
+    claim_ids: list[object] = []
+    for item in claims:
+        require(isinstance(item, dict), "each claim must be an object")
+        claim_ids.append(item.get("id"))
+        require(item.get("rq") in rq_ids, f"claim {item.get('id')} has unknown RQ")
+        require(item.get("status") in STATUS_LABELS, f"claim {item.get('id')} has invalid status")
+    require(len(claim_ids) == len(set(claim_ids)), "claim ids must be unique")
+
+
+def validate_qwake(data: dict[str, object]) -> None:
+    require(data.get("schema_version") == 1, "QWake summary schema_version must be 1")
+    selection = data.get("selection")
+    best = data.get("best_safe_policy")
+    protocol = data.get("protocol")
+    require(isinstance(selection, dict), "selection must be an object")
+    require(isinstance(best, dict), "best_safe_policy must be an object")
+    require(isinstance(protocol, dict), "protocol must be an object")
+
+    candidate_count = int(selection["candidate_count"])
+    unsafe_count = int(selection["unsafe_count"])
+    zero_danger_count = int(selection["zero_danger_count"])
+    zero_coverage = int(selection["zero_danger_zero_coverage_count"])
+    safe_nontrivial = int(selection["safe_nontrivial_count"])
+    eligible = int(selection["eligible_policy_count"])
+    require(candidate_count == 2625, "QWake candidate count must remain frozen at 2625")
+    require(unsafe_count + zero_danger_count == candidate_count, "safety partition mismatch")
+    require(zero_coverage + safe_nontrivial == zero_danger_count, "safe coverage partition mismatch")
+    require(eligible == 0, "sealed C2 must have zero eligible policies")
+
+    evaluated = int(best["evaluated_records"])
+    accepted = int(best["accepted_records"])
+    dangerous = int(best["dangerous_accepts"])
+    coverage = float(best["coverage"])
+    require(evaluated == 756, "best-safe evaluated_records must remain 756")
+    require(accepted == 216 and dangerous == 0, "best-safe acceptance identity mismatch")
+    require(math.isclose(coverage, accepted / evaluated, rel_tol=0.0, abs_tol=1e-15), "coverage mismatch")
+
+    component_sum = sum(
+        int(best[name])
+        for name in (
+            "cost_compute_ns",
+            "cost_latency_ns",
+            "cost_diagnostic_ns",
+            "cost_observer_ns",
+            "cost_control_ns",
+            "cost_fallback_ns",
+        )
+    )
+    total_cost = int(best["total_decision_cost_ns"])
+    gross = int(best["gross_implied_avoided_suffix_ns"])
+    net = int(best["total_net_saving_ns"])
+    require(component_sum == total_cost, "QWake cost components do not sum to total")
+    require(gross - total_cost == net, "QWake net-saving arithmetic mismatch")
+    require(int(best["cost_observer_ns"]) > 0, "observer cost must be positive")
+    require(protocol.get("c2_policy_freeze_established") is False, "C2 policy freeze must remain false")
+    require(protocol.get("c3_open") is False, "C3 must remain closed")
+
+
+def render_claims(data: dict[str, object]) -> str:
+    claims = data["claims"]
+    assert isinstance(claims, list)
+    lines = [
+        "% Generated by scripts/build_thesis_assets.py; do not edit manually.",
+        r"\begin{longtable}{p{0.07\textwidth}p{0.08\textwidth}p{0.47\textwidth}p{0.15\textwidth}p{0.16\textwidth}}",
+        r"\toprule",
+        r"ID & RQ & Проверяемое утверждение & Статус & Граница вывода \\",
+        r"\midrule",
+        r"\endfirsthead",
+        r"\toprule",
+        r"ID & RQ & Проверяемое утверждение & Статус & Граница вывода \\",
+        r"\midrule",
+        r"\endhead",
+    ]
+    for item in claims:
+        assert isinstance(item, dict)
+        lines.append(
+            "{} & {} & {} & {} & {} \\\\".format(
+                latex_escape(item["id"]),
+                latex_escape(item["rq"]),
+                latex_escape(item["claim"]),
+                latex_escape(STATUS_LABELS[str(item["status"])]),
+                latex_escape(item["scope"]),
+            )
+        )
+    lines.extend([r"\bottomrule", r"\end{longtable}", ""])
+    return "\n".join(lines)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--check", action="store_true", help="validate inputs without writing generated files")
+    args = parser.parse_args()
+
+    claims = load(CLAIMS_PATH)
+    qwake = load(QWAKE_PATH)
+    validate_claims(claims)
+    validate_qwake(qwake)
+
+    print("THESIS_CLAIMS_SCHEMA=PASS")
+    print("THESIS_QWAKE_SUMMARY_ARITHMETIC=PASS")
+    print("THESIS_QWAKE_PROTOCOL_BOUNDARY=PASS")
+
+    if args.check:
+        print("THESIS_ASSET_WRITE=false")
+        return
+
+    GENERATED.mkdir(parents=True, exist_ok=True)
+    rendered = render_claims(claims)
+    CLAIMS_TEX.write_text(rendered, encoding="utf-8", newline="\n")
+    print(f"THESIS_CLAIMS_RENDERED={CLAIMS_TEX.relative_to(ROOT).as_posix()}")
+
+
+if __name__ == "__main__":
+    main()

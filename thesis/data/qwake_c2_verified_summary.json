@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "document_role": "thesis-facing-derived-summary",
+  "scientific_evidence_status": "not_new_scientific_evidence",
+  "source": {
+    "attempt": "C2_ATTEMPT002",
+    "output_root": "results/scientific/stage3b-qwake-c2-calibration-successor-v1-attempt-002",
+    "policy_selection_file_sha256": "sha256:b3d22c256843dc5dbf84a06562c673b9f38b232775484c58899dd218d61305c1",
+    "receipt_semantic_sha256": "sha256:9020154e2f9bc29091a6ee5fb3a519a389d46fb12acae50e7ae9531d347e0a1c",
+    "receipt_file_sha256": "sha256:a3921fd5556852b58b7385f7d44c5032578655dc0c3799f9f78dc2ffddbc5bd1",
+    "best_safe_policy_sha256": "sha256:c944eb18dd290338f7b7aa910ead1f79e565d47a7b27c8b69566a5486294048d",
+    "common_decision_cost_sequence_sha256": "sha256:6ae6da9706f40f475f084b7d72e103dd42362738fa7922fd57ecb670db3cdf4b"
+  },
+  "verification": {
+    "sealed_result_audit_pass": 70,
+    "sealed_result_audit_fail": 0,
+    "cost_decomposition_audit_pass": 37,
+    "cost_decomposition_audit_fail": 0,
+    "zero_write": true,
+    "policy_evaluation_performed": false,
+    "policy_interpretation_performed": false,
+    "cost_model_changed": false
+  },
+  "selection": {
+    "status": "bounded_negative_no_safe_beneficial_policy",
+    "candidate_count": 2625,
+    "unsafe_count": 2360,
+    "zero_danger_count": 265,
+    "zero_danger_zero_coverage_count": 1,
+    "safe_nontrivial_count": 264,
+    "eligible_policy_count": 0,
+    "safe_and_beneficial_count": 0,
+    "safe_but_not_beneficial_count": 264,
+    "no_nontrivial_coverage_count": 1
+  },
+  "best_safe_policy": {
+    "policy_id": "c2-scalar-v1-000013",
+    "feature_name": "compute_step",
+    "predicate": "feature_ge",
+    "threshold": 5.0,
+    "default_action": "complete_suffix",
+    "accepted_records": 216,
+    "evaluated_records": 756,
+    "dangerous_accepts": 0,
+    "coverage": 0.2857142857142857,
+    "result_class": "SAFE_BUT_NOT_BENEFICIAL",
+    "total_net_saving_ns": -15091090934839,
+    "total_decision_cost_ns": 15096069032266,
+    "gross_implied_avoided_suffix_ns": 4978097427,
+    "cost_compute_ns": 17084507708,
+    "cost_latency_ns": 0,
+    "cost_diagnostic_ns": 3323265,
+    "cost_observer_ns": 15078981201293,
+    "cost_control_ns": 0,
+    "cost_fallback_ns": 0,
+    "break_even_cost_multiplier_for_zero_net": 0.0003297611726840892,
+    "required_cost_reduction_for_zero_net_fraction": 0.9996702388273159
+  },
+  "best_net_any_policy": {
+    "policy_sha256": "sha256:cd6b4f5f8874aeff0d0f6f1c255427d278d72cc09ce7f7c55c81d11b2ab95900",
+    "accepted_records": 756,
+    "evaluated_records": 756,
+    "dangerous_accepts": 83,
+    "coverage": 1.0,
+    "result_class": "UNSAFE",
+    "total_net_saving_ns": -15078101836534,
+    "gross_safe_avoided_suffix_ns": 17967195732
+  },
+  "protocol": {
+    "c2_policy_freeze_established": false,
+    "c3_open": false,
+    "attempt_repeat_permitted": false,
+    "authorization_reuse_permitted": false
+  }
+}

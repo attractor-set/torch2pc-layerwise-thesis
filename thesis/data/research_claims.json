@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "document_role": "dissertation-claims-contract",
+  "language": "ru",
+  "status_values": [
+    "supported",
+    "rejected",
+    "not_tested",
+    "descriptive"
+  ],
+  "research_questions": [
+    {
+      "id": "RQ1",
+      "text": "При каких зафиксированных алгоритмических и вычислительных условиях режимы Exact, FixedPred и Strict близки к BP, а при каких различия выходят за заранее заданные численные или статистические границы?"
+    },
+    {
+      "id": "RQ2",
+      "text": "Какие вычислительные механизмы и компоненты стоимости определяют различия между исследованными режимами предиктивного кодирования?"
+    },
+    {
+      "id": "RQ3",
+      "text": "Можно ли по доступному до завершения вычисления состоянию безопасно распознавать достаточные состояния и получить положительную вычислительную выгоду от раннего решения?"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "rq": "RQ1",
+      "claim": "Изменённый вычислительный путь Stage 2 сохраняет экспериментальный протокол и даёт измеримые изменения времени выполнения относительно Stage 1.",
+      "status": "descriptive",
+      "scope": "Stage 1/2; FashionMNIST и MNIST; зафиксированные реализации и среда.",
+      "evidence": "README.md; results/cross-version/; results/stage-2/summaries/"
+    },
+    {
+      "id": "C02",
+      "rq": "RQ1",
+      "claim": "В зарегистрированной Stage 3A области FixedPred ближе к BP по направлению градиента и представлениям, чем Strict; при этом FixedPred заметно уменьшает норму градиента в ранних слоях.",
+      "status": "supported",
+      "scope": "Stage 3A; FashionMNIST; lenet_classic; model_seed 0--9.",
+      "evidence": "docs/stage3a-statistical-results.md; опубликованные Stage 3A tables/figures"
+    },
+    {
+      "id": "C03",
+      "rq": "RQ2",
+      "claim": "В Stage 3B B0 Strict дороже FixedPred по времени устройства и пиковой памяти, а state_inference является основной областью времени.",
+      "status": "supported",
+      "scope": "Stage 3B B0; ROCm/float32; 96 канонических ячеек.",
+      "evidence": "results/stage-3/profiling/b0/sealed-v1/; results/stage-3/profiling/b0/analysis-v1/"
+    },
+    {
+      "id": "C04",
+      "rq": "RQ2",
+      "claim": "Первичная mechanism-attribution модель SI-MA0 не закрыла зарегистрированный COST-MA0 gate.",
+      "status": "supported",
+      "scope": "SI-MA0; десять независимо обученных моделей.",
+      "evidence": "зафиксированный SI-MA0 negative result и связанная provenance chain"
+    },
+    {
+      "id": "C05",
+      "rq": "RQ2",
+      "claim": "Отдельная observer calibration SI-MA1 прошла зарегистрированный CAL-COST-MA1 gate, при этом signed residual показывает over-closure, а не отрицательную физическую стоимость.",
+      "status": "supported",
+      "scope": "SI-MA1; 10 model_seed; 180 matched blocks.",
+      "evidence": "results/stage-3/si-ma1/confirmatory/"
+    },
+    {
+      "id": "C06",
+      "rq": "RQ2",
+      "claim": "Точные кандидаты B1 isolated_layer_vjp и B2 composite_vjp прошли свои зафиксированные equivalence gates EQ-B1 и EQ-B2.",
+      "status": "supported",
+      "scope": "Stage 3B B1/B2; exact implementation candidates.",
+      "evidence": "B1/B2 confirmatory receipts, freezes и matched-profiling provenance"
+    },
+    {
+      "id": "C07",
+      "rq": "RQ2",
+      "claim": "Сопоставленное профилирование B0/B1/B2 выполнено полностью без failures или retries в зарегистрированной 288-cell matrix.",
+      "status": "supported",
+      "scope": "288/288 cells; 96/96 matched blocks; immutable ROCm/float32 environment.",
+      "evidence": "results/stage-3/profiling/matched/ и запечатанный descriptive-analysis output"
+    },
+    {
+      "id": "C08",
+      "rq": "RQ3",
+      "claim": "В замороженном C2 candidate family существует безопасная ненулевая pre-action распознаваемость.",
+      "status": "supported",
+      "scope": "QWake C2; 2,625 frozen scalar policies; sealed calibration evidence.",
+      "evidence": "thesis/data/qwake_c2_verified_summary.json"
+    },
+    {
+      "id": "C09",
+      "rq": "RQ3",
+      "claim": "В замороженном C2 candidate family существует policy, одновременно безопасная, имеющая ненулевое покрытие и положительную aggregate net saving при frozen full decision-cost accounting.",
+      "status": "rejected",
+      "scope": "QWake C2; тот же frozen policy family, interpreter, evidence и cost accounting.",
+      "evidence": "thesis/data/qwake_c2_verified_summary.json"
+    },
+    {
+      "id": "C10",
+      "rq": "RQ3",
+      "claim": "Минимальный marginal runtime recognizer, реализующий найденное простое правило, экономически невыгоден.",
+      "status": "not_tested",
+      "scope": "Отдельный marginal-cost estimand не входил в sealed C2.",
+      "evidence": "Не исследовано текущим протоколом."
+    },
+    {
+      "id": "C11",
+      "rq": "RQ3",
+      "claim": "Confirmatory C3 был открыт и дал независимое подтверждение выбранной C2 policy.",
+      "status": "not_tested",
+      "scope": "C2 policy freeze не установлен; protocol receipt chain не открыла C3.",
+      "evidence": "thesis/data/qwake_c2_verified_summary.json"
+    }
+  ]
+}

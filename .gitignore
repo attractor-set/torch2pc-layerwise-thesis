@@ -87,3 +87,6 @@ results/stage3/layerwise/confirmatory/raw/
 /results/stage-3/a1-shortcut-observer-controls/working/
 # Stage 3B SI-MA0 local implementation and smoke outputs.
 /results/stage-3/si-ma0/working/
+
+# Deterministically generated dissertation assets
+thesis/generated/*.tex

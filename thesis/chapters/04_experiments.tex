@@ -1,13 +1,25 @@
-\chapter{Организация экспериментов}
+\chapter{Экспериментальная программа}
 
-Глава заполняется после выполнения соответствующих стадий. Для каждой серии
-указываются commit, image, config hash, seeds, failures и критерии включения.
+\section{Stage 1: исходная сравнительная кампания}
+Здесь описываются исходная реализация Torch2PC, матрица методов, наборы данных,
+model seeds и полный final execution Stage~1.
 
-\section{Контрольный шлюз}
-TODO после C0/C1.
+\section{Stage 2: изменение вычислительного пути}
+Здесь фиксируются границы изменения реализации при сохранении
+экспериментального протокола, контрольные проверки и повторная 80-cell final
+campaign.
 
-\section{Pilot}
-TODO после validation-only pilot.
+\section{Stage 3A: послойная диагностика}
+Раздел описывает измерения градиентов и представлений, CKA/RSA и анализ по
+глубине на уровне \texttt{model\_seed}.
 
-\section{Final}
-TODO после pilot-freeze и final runs.
+\section{Stage 3B: механизм и вычислительная стоимость}
+Раздел объединяет B0, SI-MA0, SI-MA1, точные B1/B2 candidates и matched
+profiling. Отрицательный COST-MA0 результат сохраняется как самостоятельный
+этап, а последующая calibration не переписывает его.
+
+\section{QWake: C1 opportunity и C2 bounded policy search}
+Раздел описывает frozen pre-action feature domain, sealed C1 trajectory
+surface, outcome-blind C2 candidate family и критерий safe-and-beneficial
+policy. C3 является условной стадией и открывается только при наличии
+C2 policy-freeze receipt.

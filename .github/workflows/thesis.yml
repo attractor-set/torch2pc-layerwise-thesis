@@ -50,6 +50,7 @@ jobs:
             texlive-bibtex-extra \
             texlive-fonts-recommended \
             texlive-lang-cyrillic \
+            fonts-liberation \
             poppler-utils
 
       - name: Toolchain identity

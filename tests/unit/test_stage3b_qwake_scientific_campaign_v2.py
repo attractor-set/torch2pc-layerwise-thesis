@@ -53,8 +53,10 @@ from torch2pc_thesis.stage3b_qwake_scientific_campaign import (
 )
 from torch2pc_thesis.stage3b_qwake_scientific_runtime_v2 import (
     CampaignExecutionReceipt,
+    ScientificRuntimeError,
     _collect_model_batch,
     _execution_context,
+    _pair,
     _plan_campaign_components,
     _verify_predecessor_lineage,
     _verify_predecessor_receipts,
@@ -342,6 +344,14 @@ def test_canonical_value_json_inverse_restores_immutable_sequences() -> None:
         "layers": (0, 1, 2),
         "nested": {"prefixes": ((1.0, 2.0), (3.0, 4.0))},
     }
+
+
+def test_runtime_pair_translates_invalid_canonical_json_value() -> None:
+    with pytest.raises(
+        ScientificRuntimeError,
+        match="observation field canonical value differs: structured",
+    ):
+        _pair(["structured", object()], "observation field")
 
 
 def test_sealed_trajectory_structured_value_roundtrip_is_byte_exact(

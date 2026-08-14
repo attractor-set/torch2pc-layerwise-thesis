@@ -62,6 +62,7 @@ from torch2pc_thesis.stage3b_qwake_fp_pipeline import (
     PipelinePlan,
     PolicyPredicateKind,
     PolicyRule,
+    QWakeFPPipelineError,
     SealedTrajectoryDataset,
     TrajectorySnapshotRecord,
     analyze_opportunity,

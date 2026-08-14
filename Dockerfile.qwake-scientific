@@ -33,7 +33,8 @@ RUN python -m pip install --no-cache-dir "pip==${PIP_VERSION}" \
     && python -m pip install --no-cache-dir -r requirements/qwake-scientific-runtime.txt \
     && python -m pip check
 RUN mkdir -p /workspace/results /workspace/data /workspace/external \
-    && chmod 0755 /workspace/scripts \
+    && find /workspace -type d -exec chmod 0755 {} + \
+    && find /workspace -type f -exec chmod 0644 {} + \
     && chmod 0755 /workspace/scripts/*.sh \
     && chmod 0755 /workspace/scripts/*.py
 

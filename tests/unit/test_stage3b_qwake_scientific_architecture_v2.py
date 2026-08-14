@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import stat
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -38,6 +39,24 @@ def _sha(path: Path) -> str:
 def _load_host():
     path = ROOT / "scripts/run_stage3b_qwake_scientific_campaign_host_v2.py"
     spec = importlib.util.spec_from_file_location("qwake_arch_host_subject", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_builder():
+    path = ROOT / "scripts/build_stage3b_qwake_scientific_image_v2.py"
+    spec = importlib.util.spec_from_file_location("qwake_arch_builder_subject", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _load_build_context_verifier():
+    path = ROOT / "scripts/verify_stage3b_qwake_scientific_build_context_v2.py"
+    spec = importlib.util.spec_from_file_location("qwake_build_context_verifier_subject", path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -190,11 +209,7 @@ def test_exact_input_stage_excludes_unbound_sibling_test_resource(tmp_path: Path
     stage.mkdir()
     mounts = host._materialize_exact_input_stage(tmp_path, request, stage)
 
-    observed = {
-        path.relative_to(stage).as_posix()
-        for path in stage.rglob("*")
-        if path.is_file()
-    }
+    observed = {path.relative_to(stage).as_posix() for path in stage.rglob("*") if path.is_file()}
     assert observed == {
         "results/splits/frozen.npz",
         "data/FashionMNIST/raw/train-images-idx3-ubyte",
@@ -221,14 +236,80 @@ def test_builder_uses_explicit_rocm_dockerfile_and_read_only_runtime_dirs() -> N
     assert '"git", "ls-files", "--error-unmatch"' in builder
     assert '"git", "diff", "--name-only"' in builder
     assert "mkdir -p /workspace/results /workspace/data /workspace/external" in dockerfile
+    assert "find /workspace -type d -exec chmod 0755 {} +" in dockerfile
+    assert "find /workspace -type f -exec chmod 0644 {} +" in dockerfile
     assert "rocm/pytorch@sha256:96a2fb24" in dockerfile
     assert "--read-only" in builder
     assert "verify_stage3b_qwake_scientific_runtime_identity_v2.py" in builder
 
 
+def test_builder_materialized_context_modes_ignore_restrictive_umask(tmp_path: Path) -> None:
+    builder = _load_builder()
+    source = tmp_path / "source"
+    context = tmp_path / "context"
+    source_file = source / "src/torch2pc_thesis/module.py"
+    manifest = source / "runtime-SHA256SUMS"
+    source_file.parent.mkdir(parents=True)
+    source_file.write_text("VALUE = 1\n", encoding="utf-8")
+    manifest.write_text("manifest\n", encoding="utf-8")
+
+    old_umask = os.umask(0o077)
+    try:
+        context.mkdir()
+        builder._materialize_context(
+            source,
+            context,
+            ScientificRuntimeIdentity("runtime-SHA256SUMS", SHA_B),
+            ("src/torch2pc_thesis/module.py",),
+        )
+    finally:
+        os.umask(old_umask)
+
+    directories = (
+        context,
+        context / "src",
+        context / "src/torch2pc_thesis",
+    )
+    assert all(stat.S_IMODE(path.stat().st_mode) == 0o755 for path in directories)
 
 
-def test_successor_image_is_rejected_by_legacy_host_before_claim(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_builder_production_preflight_matches_unprivileged_confinement() -> None:
+    builder = _load_builder()
+    command = builder._production_preflight_command("docker", SHA_A)
+    assert command[:2] == ["docker", "run"]
+    assert "--network=none" in command
+    assert "--read-only" in command
+    assert "--cap-drop=ALL" in command
+    assert "--security-opt=no-new-privileges" in command
+    assert "/tmp:rw,nosuid,nodev,size=64m" in command
+    assert "HOME=/tmp" in command
+    user_index = command.index("--user")
+    assert command[user_index + 1] == "65534:65534"
+    assert command[-3:] == [
+        "python",
+        "/workspace/scripts/verify_stage3b_qwake_scientific_runtime_identity_v2.py",
+        "--require-non-root",
+    ]
+
+
+def test_build_context_verifier_rejects_private_directory_mode(tmp_path: Path) -> None:
+    verifier = _load_build_context_verifier()
+    root = tmp_path / "context"
+    private = root / "src"
+    private.mkdir(parents=True)
+    root.chmod(0o755)
+    private.chmod(0o700)
+
+    with pytest.raises(RuntimeError, match="directory modes are not deterministic"):
+        verifier._require_deterministic_directory_modes(root)
+
+    private.chmod(0o755)
+    assert verifier._require_deterministic_directory_modes(root) == 2
+
+
+def test_successor_image_is_rejected_by_legacy_host_before_claim(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     legacy = _load_legacy_host()
     inspected = json.dumps([_image()]).encode("utf-8")
     monkeypatch.setattr(legacy, "_require_run", lambda *args, **kwargs: inspected)
@@ -238,26 +319,30 @@ def test_successor_image_is_rejected_by_legacy_host_before_claim(monkeypatch: py
 
 
 def test_in_image_verifier_imports_exact_production_entrypoint() -> None:
-    source = (
-        ROOT / "scripts/verify_stage3b_qwake_scientific_runtime_identity_v2.py"
-    ).read_text(encoding="utf-8")
+    source = (ROOT / "scripts/verify_stage3b_qwake_scientific_runtime_identity_v2.py").read_text(
+        encoding="utf-8"
+    )
     assert "runpy.run_path(" in source
     assert "scripts/run_stage3b_qwake_scientific_campaign_v2.py" in source
     assert "QWAKE_PRODUCTION_ENTRYPOINT_IMPORT_PREFLIGHT=PASS" in source
+    assert 'parser.add_argument("--require-non-root", action="store_true")' in source
+    assert "os.geteuid() == 0" in source
+    assert "QWAKE_NON_ROOT_EXECUTION_PRINCIPAL=PASS" in source
+
 
 def test_request_freezer_derives_runtime_identity_from_image_truth() -> None:
-    source = (
-        ROOT / "scripts/freeze_stage3b_qwake_scientific_request_from_image_v2.py"
-    ).read_text(encoding="utf-8")
+    source = (ROOT / "scripts/freeze_stage3b_qwake_scientific_request_from_image_v2.py").read_text(
+        encoding="utf-8"
+    )
     assert "runtime_identity_from_image_inspection" in source
     assert 'request["code_manifest_sha256"] = runtime_identity.sha256' in source
     assert "RUNTIME_SOURCE_MANIFEST_SHA256" not in source
 
 
 def test_terminal_verifier_is_preissued_for_success_and_consumed_failure() -> None:
-    source = (
-        ROOT / "scripts/verify_stage3b_qwake_scientific_terminal_outcome_v2.py"
-    ).read_text(encoding="utf-8")
+    source = (ROOT / "scripts/verify_stage3b_qwake_scientific_terminal_outcome_v2.py").read_text(
+        encoding="utf-8"
+    )
     assert 'output / "receipt.json"' in source
     assert 'output / "host-outcome.json"' in source
     assert "terminal_consumed_failure" in source

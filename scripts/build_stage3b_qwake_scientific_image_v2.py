@@ -36,6 +36,10 @@ class ScientificImageBuildError(RuntimeError):
     pass
 
 
+_PRODUCTION_PREFLIGHT_USER = "65534:65534"
+_CONTEXT_DIRECTORY_MODE = 0o755
+
+
 def _run(argv: list[str], *, cwd: Path) -> subprocess.CompletedProcess[bytes]:
     env = os.environ.copy()
     env["PYTHONDONTWRITEBYTECODE"] = "1"
@@ -43,9 +47,7 @@ def _run(argv: list[str], *, cwd: Path) -> subprocess.CompletedProcess[bytes]:
     if source_root.is_dir():
         existing = env.get("PYTHONPATH")
         env["PYTHONPATH"] = (
-            str(source_root)
-            if not existing
-            else str(source_root) + os.pathsep + existing
+            str(source_root) if not existing else str(source_root) + os.pathsep + existing
         )
     return subprocess.run(
         argv,
@@ -90,11 +92,13 @@ def _require_commit_bound_sources(
 ) -> None:
     """Bind builder, manifest, and every copied source byte to exact Git HEAD."""
 
-    if _require(["git", "rev-parse", "--show-toplevel"], cwd=root, label="git root").decode().strip() != str(root):
+    if _require(
+        ["git", "rev-parse", "--show-toplevel"], cwd=root, label="git root"
+    ).decode().strip() != str(root):
         raise ScientificImageBuildError("builder project root differs")
-    observed_head = _require(
-        ["git", "rev-parse", "HEAD"], cwd=root, label="git HEAD"
-    ).decode().strip()
+    observed_head = (
+        _require(["git", "rev-parse", "HEAD"], cwd=root, label="git HEAD").decode().strip()
+    )
     if observed_head != source_commit:
         raise ScientificImageBuildError("builder source commit differs from HEAD")
 
@@ -130,6 +134,56 @@ def _materialize_context(
         target = context_root / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
+
+    # TemporaryDirectory/mkdir modes are umask-dependent. Docker COPY preserves
+    # those directory modes, so a restrictive authoring umask can silently make
+    # /workspace/src root-only even though every runtime file hash is correct.
+    # Normalize the complete manifest-derived context before Docker observes it.
+    context_root.chmod(_CONTEXT_DIRECTORY_MODE)
+    for directory in sorted(
+        (path for path in context_root.rglob("*") if path.is_dir() and not path.is_symlink()),
+        key=lambda path: path.as_posix(),
+    ):
+        directory.chmod(_CONTEXT_DIRECTORY_MODE)
+
+
+def _production_preflight_command(
+    docker: str,
+    image_id: str,
+    *,
+    runtime_manifest_sha256: str | None = None,
+) -> list[str]:
+    command = [
+        docker,
+        "run",
+        "--rm",
+        "--network=none",
+        "--read-only",
+        "--cap-drop=ALL",
+        "--security-opt=no-new-privileges",
+        "--user",
+        _PRODUCTION_PREFLIGHT_USER,
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=64m",
+        "--env",
+        "HOME=/tmp",
+    ]
+    if runtime_manifest_sha256 is not None:
+        command.extend(
+            [
+                "--env",
+                f"QWAKE_RUNTIME_MANIFEST_SHA256={runtime_manifest_sha256}",
+            ]
+        )
+    command.extend(
+        [
+            image_id,
+            "python",
+            "/workspace/scripts/verify_stage3b_qwake_scientific_runtime_identity_v2.py",
+            "--require-non-root",
+        ]
+    )
+    return command
 
 
 def main() -> None:
@@ -223,16 +277,7 @@ def main() -> None:
         raise ScientificImageBuildError("built image runtime identity differs")
 
     positive = _run(
-        [
-            docker,
-            "run",
-            "--rm",
-            "--network=none",
-            "--read-only",
-            image_id,
-            "python",
-            "/workspace/scripts/verify_stage3b_qwake_scientific_runtime_identity_v2.py",
-        ],
+        _production_preflight_command(docker, image_id),
         cwd=root,
     )
     if positive.returncode != 0:
@@ -240,18 +285,11 @@ def main() -> None:
 
     stale_digest = "sha256:" + "0" * 64
     negative = _run(
-        [
+        _production_preflight_command(
             docker,
-            "run",
-            "--rm",
-            "--network=none",
-            "--read-only",
-            "--env",
-            f"QWAKE_RUNTIME_MANIFEST_SHA256={stale_digest}",
             image_id,
-            "python",
-            "/workspace/scripts/verify_stage3b_qwake_scientific_runtime_identity_v2.py",
-        ],
+            runtime_manifest_sha256=stale_digest,
+        ),
         cwd=root,
     )
     if negative.returncode == 0:
@@ -263,6 +301,8 @@ def main() -> None:
     print(f"RUNTIME_MANIFEST_RELATIVE={identity.relative_path}")
     print(f"RUNTIME_MANIFEST_SHA256={identity.sha256}")
     print(f"RUNTIME_PATH_COUNT={len(paths)}")
+    print(f"PRODUCTION_PREFLIGHT_USER={_PRODUCTION_PREFLIGHT_USER}")
+    print("NON_ROOT_PRODUCTION_EQUIVALENCE_PREFLIGHT=PASS")
     print("PRODUCTION_EQUIVALENCE_PREFLIGHT=PASS")
     print("STALE_MANIFEST_NEGATIVE=PASS")
     print("REQUEST_FROZEN=false")

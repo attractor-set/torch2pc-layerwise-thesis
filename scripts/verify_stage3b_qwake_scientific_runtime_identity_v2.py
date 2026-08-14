@@ -17,7 +17,11 @@ from torch2pc_thesis.stage3b_qwake_scientific_identity_v2 import (
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--project-root", type=Path, default=Path("/workspace"))
+    parser.add_argument("--require-non-root", action="store_true")
     args = parser.parse_args()
+
+    if args.require_non_root and os.geteuid() == 0:
+        raise RuntimeError("production-equivalence preflight unexpectedly runs as root")
 
     root = args.project_root.expanduser().resolve()
     identity = runtime_identity_from_environment(os.environ)
@@ -31,6 +35,10 @@ def main() -> None:
         raise RuntimeError("production scientific entrypoint main is unavailable")
     print("QWAKE_RUNTIME_IDENTITY_PREFLIGHT=PASS")
     print("QWAKE_PRODUCTION_ENTRYPOINT_IMPORT_PREFLIGHT=PASS")
+    print(f"QWAKE_PRODUCTION_PREFLIGHT_UID={os.geteuid()}")
+    print(f"QWAKE_PRODUCTION_PREFLIGHT_GID={os.getegid()}")
+    if args.require_non_root:
+        print("QWAKE_NON_ROOT_EXECUTION_PRINCIPAL=PASS")
     print(f"RUNTIME_MANIFEST_RELATIVE={identity.relative_path}")
     print(f"RUNTIME_MANIFEST_SHA256={identity.sha256}")
     print(f"RUNTIME_PATH_COUNT={len(paths)}")

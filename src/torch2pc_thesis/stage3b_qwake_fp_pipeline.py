@@ -1083,6 +1083,47 @@ def _accept_or_suffix(condition: bool) -> FrontierAction:
     )
 
 
+def canonical_value_from_json(
+    value: object,
+    *,
+    field_name: str = "canonical_value",
+) -> CanonicalValue:
+    """Decode one JSON value into the immutable in-memory canonical grammar.
+
+    JSON arrays are the wire representation of canonical tuples.  They are
+    normalized exactly once at the parser boundary instead of being admitted
+    as a second mutable in-memory sequence type.
+    """
+
+    if value is None or isinstance(value, bool | int | float | str):
+        candidate = cast(CanonicalValue, value)
+        _validate_scalar(candidate, field_name=field_name)
+        return candidate
+    if isinstance(value, list):
+        candidate = tuple(
+            canonical_value_from_json(item, field_name=f"{field_name}[{index}]")
+            for index, item in enumerate(value)
+        )
+        _validate_scalar(candidate, field_name=field_name)
+        return candidate
+    if isinstance(value, Mapping):
+        decoded: dict[str, CanonicalValue] = {}
+        for key, item in value.items():
+            if not isinstance(key, str) or not key:
+                raise QWakeFPPipelineError(
+                    f"{field_name} mapping keys must be non-empty strings"
+                )
+            decoded[key] = canonical_value_from_json(
+                item,
+                field_name=f"{field_name}.{key}",
+            )
+        _validate_scalar(decoded, field_name=field_name)
+        return decoded
+    raise QWakeFPPipelineError(
+        f"{field_name} has an unsupported canonical JSON value type"
+    )
+
+
 def _validate_scalar(value: CanonicalValue, *, field_name: str) -> None:
     if value is None:
         return

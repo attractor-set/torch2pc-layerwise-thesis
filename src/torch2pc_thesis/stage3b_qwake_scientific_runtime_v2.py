@@ -62,11 +62,13 @@ from torch2pc_thesis.stage3b_qwake_fp_pipeline import (
     PipelinePlan,
     PolicyPredicateKind,
     PolicyRule,
+    QWakeFPPipelineError,
     SealedTrajectoryDataset,
     TrajectorySnapshotRecord,
     analyze_opportunity,
     apply_ablation,
     build_feature_vector,
+    canonical_value_from_json,
     evaluate_baseline,
     evaluate_policy,
     plan_component,
@@ -111,6 +113,9 @@ _CONTRACT_ID: Final = QWAKE_FP_SPECIAL_CASE_CONTRACT.contract_id
 _COMPARISON_PROFILE_ID: Final = "rocm_float32_canonical"
 _COST_PROFILE_ID: Final = "shadow_mechanism_v1"
 _HOST_CLAIM_FILENAME: Final = "host-claim.json"
+_PREDECESSOR_COMPATIBILITY_CONTRACT_ID: Final = (
+    "qwake-scientific-predecessor-lineage-v1"
+)
 _RUNTIME_REQUIRED_PATHS: Final = (
     "Dockerfile.qwake-scientific",
     "requirements/qwake-scientific-runtime.txt",
@@ -298,13 +303,49 @@ def _require_host_claim(
     return claim
 
 
-def _verify_predecessor_receipts(
+@dataclass(frozen=True)
+class VerifiedPredecessorLineage:
+    """Exact producer provenance accepted by this successor runtime."""
+
+    kind: ReceiptKind
+    receipt_sha256: str
+    receipt_file_sha256: str
+    producer_source_commit: str
+    producer_image_digest: str
+    primary_artifact_name: str
+    primary_artifact_sha256: str
+    compatibility_contract_id: str
+
+    def receipt_reference(self) -> ReceiptReference:
+        return ReceiptReference(self.kind, self.receipt_sha256)
+
+    def canonical_record(self) -> dict[str, object]:
+        return {
+            "kind": self.kind.value,
+            "receipt_sha256": self.receipt_sha256,
+            "receipt_file_sha256": self.receipt_file_sha256,
+            "producer_source_commit": self.producer_source_commit,
+            "producer_image_digest": self.producer_image_digest,
+            "primary_artifact_name": self.primary_artifact_name,
+            "primary_artifact_sha256": self.primary_artifact_sha256,
+            "compatibility_contract_id": self.compatibility_contract_id,
+        }
+
+
+def _verify_predecessor_lineage(
     root: Path,
     request: ScientificCampaignRequest,
-) -> tuple[ReceiptReference, ...]:
-    """Verify exact predecessor receipt files before authorization consumption."""
+) -> tuple[VerifiedPredecessorLineage, ...]:
+    """Verify producer provenance separately from the current executor identity.
 
-    verified: list[ReceiptReference] = []
+    The request already binds every predecessor receipt by both semantic and
+    file digest.  The receipt therefore remains the immutable source of its
+    producer commit/image identity.  Compatibility is established by the
+    current image's code-manifest-bound parser and artifact contract, never by
+    pretending that a predecessor was produced by the current image.
+    """
+
+    verified: list[VerifiedPredecessorLineage] = []
     for binding in request.predecessor_receipts:
         path = _resolve_confined(root, binding.relative_path)
         if not path.is_file() or path.is_symlink():
@@ -324,14 +365,6 @@ def _verify_predecessor_receipts(
             raise ScientificRuntimeError(
                 f"predecessor receipt kind differs: {binding.relative_path}"
             )
-        if receipt.source_commit != request.source_commit:
-            raise ScientificRuntimeError(
-                f"predecessor receipt source differs: {binding.relative_path}"
-            )
-        if receipt.image_digest != request.image_digest:
-            raise ScientificRuntimeError(
-                f"predecessor receipt image differs: {binding.relative_path}"
-            )
         expected_role = {
             ReceiptKind.C1_COLLECTION: CampaignRole.C1_COLLECTION,
             ReceiptKind.C2_POLICY_FREEZE: CampaignRole.C2_CALIBRATION,
@@ -341,13 +374,14 @@ def _verify_predecessor_receipts(
             raise ScientificRuntimeError(
                 f"predecessor receipt role differs: {binding.relative_path}"
             )
+
         if binding.kind is ReceiptKind.C1_COLLECTION:
             c1_artifact = request.sealed_c1_dataset
             if c1_artifact is None:
                 raise ScientificRuntimeError(
                     "C1 predecessor receipt has no bound trajectory artifact"
                 )
-            _verified_artifact(root, c1_artifact)
+            c1_path = _verified_artifact(root, c1_artifact)
             if (
                 receipt.primary_artifact_name != "trajectory-dataset.json"
                 or receipt.primary_artifact_sha256 != c1_artifact.sha256
@@ -355,13 +389,18 @@ def _verify_predecessor_receipts(
                 raise ScientificRuntimeError(
                     "C1 receipt does not bind the requested sealed trajectory"
                 )
+            dataset = load_sealed_trajectory_dataset(c1_path)
+            if dataset.source_receipt_sha256 != receipt.authorization_sha256:
+                raise ScientificRuntimeError(
+                    "sealed C1 trajectory authorization lineage differs"
+                )
         elif binding.kind is ReceiptKind.C2_POLICY_FREEZE:
             policy_artifact = request.frozen_policy
             if policy_artifact is None:
                 raise ScientificRuntimeError(
                     "C2 policy-freeze receipt has no bound frozen policy"
                 )
-            _verified_artifact(root, policy_artifact)
+            policy_path = _verified_artifact(root, policy_artifact)
             if (
                 receipt.primary_artifact_name != "selected-policy.json"
                 or receipt.primary_artifact_sha256 != policy_artifact.sha256
@@ -369,8 +408,33 @@ def _verify_predecessor_receipts(
                 raise ScientificRuntimeError(
                     "C2 receipt does not bind the requested frozen policy"
                 )
-        verified.append(ReceiptReference(binding.kind, binding.receipt_sha256))
+            load_frozen_policy(policy_path)
+
+        verified.append(
+            VerifiedPredecessorLineage(
+                kind=binding.kind,
+                receipt_sha256=receipt.receipt_sha256,
+                receipt_file_sha256=binding.file_sha256,
+                producer_source_commit=receipt.source_commit,
+                producer_image_digest=receipt.image_digest,
+                primary_artifact_name=receipt.primary_artifact_name,
+                primary_artifact_sha256=receipt.primary_artifact_sha256,
+                compatibility_contract_id=_PREDECESSOR_COMPATIBILITY_CONTRACT_ID,
+            )
+        )
     return tuple(verified)
+
+
+def _verify_predecessor_receipts(
+    root: Path,
+    request: ScientificCampaignRequest,
+) -> tuple[ReceiptReference, ...]:
+    """Compatibility wrapper returning only protocol receipt references."""
+
+    return tuple(
+        lineage.receipt_reference()
+        for lineage in _verify_predecessor_lineage(root, request)
+    )
 
 
 def _execution_context(
@@ -439,6 +503,7 @@ class ScientificPreclaimPlan:
 
     runtime_identity: ScientificRuntimeIdentity
     predecessor_receipts: tuple[ReceiptReference, ...]
+    predecessor_lineage: tuple[VerifiedPredecessorLineage, ...]
     component_plans: tuple[PipelinePlan, ...]
 
 
@@ -467,13 +532,17 @@ def preflight_scientific_campaign(
         if runtime_identity is None
         else _require_runtime_manifest_identity(root, request, runtime_identity)
     )
-    predecessor_receipts = _verify_predecessor_receipts(root, request)
+    predecessor_lineage = _verify_predecessor_lineage(root, request)
+    predecessor_receipts = tuple(
+        lineage.receipt_reference() for lineage in predecessor_lineage
+    )
     context = _execution_context(request, predecessor_receipts)
     component_plans = _plan_campaign_components(context, request)
     _require_role_data_capability(context)
     return ScientificPreclaimPlan(
         runtime_identity=identity,
         predecessor_receipts=predecessor_receipts,
+        predecessor_lineage=predecessor_lineage,
         component_plans=component_plans,
     )
 
@@ -488,6 +557,7 @@ def execute_scientific_campaign(
     root = project_root.expanduser().resolve()
     preclaim = preflight_scientific_campaign(root, request, authorization)
     predecessor_receipts = preclaim.predecessor_receipts
+    predecessor_lineage = preclaim.predecessor_lineage
     component_plans = preclaim.component_plans
     output_root = _resolve_confined(root, request.output_root)
     host_claim = _require_host_claim(output_root, request, authorization)
@@ -512,6 +582,9 @@ def execute_scientific_campaign(
                 "predecessor_receipts": tuple(
                     (receipt.kind.value, receipt.sha256)
                     for receipt in predecessor_receipts
+                ),
+                "predecessor_lineage": tuple(
+                    lineage.canonical_record() for lineage in predecessor_lineage
                 ),
                 "automatic_retry_permitted": False,
                 "test_dataset_access": False,
@@ -1503,7 +1576,14 @@ def _string_pair(value: object, name: str) -> tuple[str, str]:
 def _pair(value: object, name: str) -> tuple[str, Any]:
     if not isinstance(value, list) or len(value) != 2 or not isinstance(value[0], str):
         raise ScientificRuntimeError(f"{name} must be [name,value]")
-    return value[0], value[1]
+    field_name = value[0]
+    try:
+        decoded = canonical_value_from_json(value[1], field_name=field_name)
+    except QWakeFPPipelineError as exc:
+        raise ScientificRuntimeError(
+            f"{name} canonical value differs: {field_name}"
+        ) from exc
+    return field_name, decoded
 
 
 def _string(payload: dict[str, Any], name: str) -> str:

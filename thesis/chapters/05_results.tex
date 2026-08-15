@@ -1,24 +1,172 @@
 \chapter{Результаты}
+\label{ch:results}
 
-\section{Stage 1 и Stage 2}
-Здесь приводятся автоматически сформированные таблицы качества,
-эквивалентности/различий и вычислительной стоимости для завершённых final
-campaigns.
+В этой главе результаты представлены в порядке исследовательской программы.
+Численные таблицы, для которых существует thesis-facing data contract,
+генерируются в CI из machine-readable summaries. Такой подход отделяет
+литературное изложение от ручного копирования чисел и одновременно сохраняет
+связь с исходными tracked evidence files через SHA-256 bindings.
 
-\section{Stage 3A: градиенты и представления}
-Здесь сводятся зарегистрированные результаты по направлению и норме градиента,
-CKA/RSA и глубине.
+\section{Stage 1 и Stage 2: качество и вычислительная стоимость}
+\label{sec:results-stage12}
+
+Stage~1 показал, что близкие значения конечного качества могут сочетаться с
+существенно различающейся вычислительной стоимостью. Для FashionMNIST средние
+macro-F1 всех четырёх режимов лежат в узком диапазоне, тогда как среднее время
+обучения заметно различается между BP, Exact, FixedPred и Strict
+(табл.~\ref{tab:stage1-summary}).
+
+\input{generated/stage12_results.tex}
+
+В зарегистрированном paired analysis для FashionMNIST FixedPred и Strict
+оказались внутри заранее заданной equivalence margin $\pm0.01$ по test
+macro-F1 относительно BP. Это утверждение относится именно к этой метрике,
+десяти paired model seeds и выбранной margin; оно не означает идентичность
+траекторий обучения или внутренних вычислений.
+
+Stage~2 сохранил завершённую 80-cell final matrix. Для Exact, FixedPred и Strict
+на обоих datasets зарегистрированное quality difference-in-differences между
+Stage~1 и Stage~2 равно нулю. При этом cross-version отношение
+runtime-over-BP к исходной версии оказалось меньше единицы для всех трёх
+PC-режимов (табл.~\ref{tab:stage2-runtime-ratio}). Следовательно, изменение
+реализации изменило вычислительную цену PC относительно BP, не изменив
+зарегистрированное final quality в данной матрице.
+
+Эти результаты мотивировали RQ2: конечное качество само по себе не объясняет,
+какие внутренние операции создают стоимость и почему FixedPred и Strict
+различаются по времени.
+
+\section{Stage 3A: градиенты и внутренние представления}
+\label{sec:results-stage3a}
+
+Численный Exact-control прошёл все зарегистрированные строки; максимальная
+абсолютная ошибка относительно контрольных значений составила
+$1.3545\times10^{-14}$. Это поддерживает корректность extraction/aggregation
+в исследованной области, но не используется как универсальное доказательство
+эквивалентности любой реализации PC и BP.
+
+Для FixedPred направление градиента оставалось близким к BP уже в ранних
+слоях: на layer~0 средний cosine равен примерно $0.9946$. Одновременно norm
+ratio на том же слое составляет около $8.81\times10^{-4}$, то есть высокая
+согласованность направления сосуществует с сильным подавлением масштаба.
+К выходному слою масштаб приближается к BP.
+
+Strict демонстрирует более заметное рассогласование в скрытых слоях: средний
+cosine по скрытым слоям находится примерно в диапазоне $0.843$--$0.927$.
+Различие между режимами видно и в representation metrics. Средние CKA для
+FixedPred лежат в диапазоне примерно $0.989$--$0.994$, тогда как для Strict ---
+примерно $0.961$--$0.979$. Для RSA соответствующие диапазоны составляют
+примерно $0.983$--$0.993$ и $0.940$--$0.972$.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\textwidth]{../results/stage3/layerwise/confirmatory/figures/gradient_norm_ratio_by_depth.pdf}
+  \caption{Отношение нормы градиента к BP по глубине в Stage 3A. Рисунок является tracked confirmatory artifact.}
+  \label{fig:stage3a-gradient-norm}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\textwidth]{../results/stage3/layerwise/confirmatory/figures/representation_cka_by_depth.pdf}
+  \caption{CKA относительно BP по глубине в Stage 3A.}
+  \label{fig:stage3a-cka}
+\end{figure}
+
+В совокупности Stage~3A поддерживает C02 в ограниченной области: FixedPred
+ближе к BP по направлению градиента и representation metrics, чем Strict, но
+эта близость не означает совпадения масштаба ранних градиентов.
 
 \section{Stage 3B: стоимость и механизм}
-Здесь последовательно представлены B0, отрицательный COST-MA0, calibration
-SI-MA1, equivalence B1/B2 и sealed matched profiling.
+\label{sec:results-stage3b}
 
-\section{QWake C1/C2}
-Здесь будут представлены только значения, связанные с
-\texttt{thesis/data/qwake\_c2\_verified\_summary.json}: bounded search по 2625
-policy, safe nontrivial recognition, отсутствие safe-and-beneficial candidate
-при frozen accounting и cost decomposition лучшей безопасной policy.
+\input{generated/stage3_results.tex}
 
-\section{Итоговая матрица результатов}
-Результаты сопоставляются с контрактом C01--C11 без расширения области
-утверждений за пределы соответствующих frozen protocols.
+B0 локализовал основной device-time region в \texttt{state\_inference} для
+обоих методов. Медианная доля этого региона составляет около 71.8\% для
+FixedPred и 78.8\% для Strict. При paired сравнении по конфигурациям медианное
+отношение Strict/FixedPred по device time равно примерно 2.327, а по peak
+allocated memory --- 1.328. Кроме того, median saved-tensor bytes внутри
+\texttt{state\_inference} для Strict примерно в 12 раз выше, чем для
+FixedPred.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\textwidth]{../results/stage-3/profiling/b0/analysis-v1/paired_device_time_ratio_by_depth.pdf}
+  \caption{Paired Strict/FixedPred device-time ratio в B0 scaling matrix.}
+  \label{fig:b0-device-ratio}
+\end{figure}
+
+Первая mechanism-attribution модель SI-MA0 не прошла COST-MA0: ни один из
+7500 measured steps не удовлетворил зарегистрированному cost gate. Этот
+negative result не был переписан после следующей calibration.
+
+В SI-MA1 отдельный CAL-COST-MA1 gate прошёл. Для десяти model seeds и 180
+matched blocks observed signed estimand был отрицательным, а верхняя
+односторонняя 95\%-граница также находилась ниже threshold 0.01. В принятой
+семантике это означает over-closure accounting-модели, а не отрицательную
+физическую длительность операции.
+
+Оба exact candidates затем прошли свои equivalence gates. B1 завершил 120 из
+120 зарегистрированных пар без failed pairs и dangerous misses. B2 завершил
+120 matched triples и 240 pairwise comparisons также без failed pairs.
+После этого matched profiling был запечатан с 288 из 288 cells, 96
+cross-candidate correctness blocks и без retries.
+
+Важно отделять факт завершённого matched profiling от утверждения о
+превосходстве кандидата. Соответствующая sealed profiling surface в текущем
+контракте не разрешает superiority claim; поэтому в настоящей главе она
+используется для подтверждения C07 и provenance завершённой measurement matrix,
+а не для выбора «лучшего» B1/B2 implementation.
+
+\section{QWake C2: безопасная распознаваемость}
+\label{sec:results-qwake}
+
+C2 дал смешанный, но хорошо локализованный результат. Большинство frozen
+policies были unsafe, однако безопасная ненулевая распознаваемость существовала:
+265 candidates имели zero dangerous accepts, и 264 из них одновременно имели
+ненулевое coverage. Тем самым информационная часть RQ3 получила положительный
+bounded result.
+
+\input{generated/qwake_results.tex}
+
+Лучшая безопасная policy была простым правилом
+\texttt{compute\_step >= 5}: она принимала 216 из 756 records, то есть около
+28.57\%, без dangerous accepts. Однако при frozen full decision-cost accounting
+её aggregate net saving оставался отрицательным. Более того, ни одна из 2625
+policies не имела положительного aggregate net saving.
+
+Cost decomposition показывает, что полный cost лучшей безопасной policy
+составляет примерно 15096 секунд aggregate времени против примерно 4.98 секунд
+gross safely avoidable suffix. Около 99.887\% full decision cost приходится
+на observer category. При таком accounting для достижения zero net потребовалось
+бы сократить учитываемый cost примерно на 99.967\%.
+
+Эта величина не интерпретируется как измеренная marginal cost самого правила
+\texttt{compute\_step >= 5}. C2 начислял всем candidates одну и ту же frozen
+per-record decision-cost surface. Поэтому C09 отклонён только внутри данного
+accounting regime, а C10 --- экономическая невыгодность минимального marginal
+recognizer --- остаётся \emph{not tested}.
+
+Поскольку eligible policy отсутствовала, C2 policy-freeze receipt не был
+создан и C3 не открылся. Таким образом, отсутствие confirmatory C3 является
+прямым protocol consequence bounded-negative C2, а не пропущенным запуском.
+
+\section{Сопоставление результатов с исследовательскими вопросами}
+\label{sec:results-rq-reconciliation}
+
+Для RQ1 Stage~1/2 и Stage~3A разделяют конечное качество и внутреннее
+согласование. Близость test metrics не означает одинаковых gradients,
+representations или runtime. FixedPred в исследованной области сохраняет
+направление градиента существенно лучше Strict, но ранний gradient scale
+остаётся сильно подавленным.
+
+Для RQ2 B0, SI-MA0/1 и B1/B2 последовательно сузили объяснение вычислительной
+стоимости до \texttt{state\_inference} и проверяемых implementation candidates.
+При этом negative SI-MA0 сохранился как самостоятельный результат, а успешная
+SI-MA1 calibration не переписала его задним числом.
+
+Для RQ3 безопасная pre-action recognizability наблюдалась в frozen C2 family,
+но economic viability при frozen full decision-cost accounting не наблюдалась.
+Следовательно, informational feasibility и accounting feasibility в этой
+работе имеют разные ответы. Marginal implementation feasibility остаётся
+открытым successor вопросом.

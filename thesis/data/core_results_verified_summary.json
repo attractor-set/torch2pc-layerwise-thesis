@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "document_role": "thesis-facing-derived-summary",
+  "scientific_evidence_status": "not_new_scientific_evidence",
+  "source_bindings": {
+    "results/summaries/final_execution_plan.json": "sha256:c2d9e1ad255a67125ec35a25be485e1a07330b7a0676ff7ff875dff36d8759a9",
+    "results/summaries/primary_test_summary.csv": "sha256:dd4090024c90465c0b8a46352fe8fce27e80c6b7ad33435785908d932e384794",
+    "results/summaries/primary_paired_analysis.csv": "sha256:050f35f72195e39667564b250238ba30e20d1780a7da9e940d66e646192f964e",
+    "results/summaries/computational_summary.csv": "sha256:70b2d34c6bdda3410d32a455ffe7aff36472cd19e1f5721291358ce8c810270c",
+    "results/stage-2/summaries/stage-2-completion.json": "sha256:bcad7e63c4e4dd21beeb6280a8d990465ddba1579ce4220ec43127c4cf25aff0",
+    "results/cross-version/difference_in_differences_summary.csv": "sha256:e63b8fadf685f6843e30f39760b448be3bbf73d441e38966703a669f1059b475",
+    "results/stage3/layerwise/confirmatory/statistics/gradient_statistics.csv": "sha256:1096865f378d1b6ad8015e8c06131d0938816f6424fdc6ac39593a2b2fa3722c",
+    "results/stage3/layerwise/confirmatory/statistics/representation_statistics.csv": "sha256:750d51038e59ae1fa3cf69d93a43ea6aad36ff7df320b041f9cf16faed9d7054",
+    "results/stage3/layerwise/confirmatory/statistics/exact_numerical_control.csv": "sha256:409db5364a1cfa0047e73ecc41c96b95b45d63574011e4908de3264d9adf9e89",
+    "results/stage-3/profiling/b0/analysis-v1/analysis_summary.json": "sha256:5096c42215c534139eb2e5e486c8073ea8eb1594c66f375038892977df00366c",
+    "results/stage-3/si-ma0/confirmatory/si_ma0_summary.json": "sha256:3ba52a33eeea20f9f9e7a0984eea3c6d013bf8f3c2d5ca98c2f8c838aff360ca",
+    "results/stage-3/si-ma1/confirmatory/si_ma1_summary.json": "sha256:f81d4d2e8bbc5ef46761c1d3b6f424cda78a8fbda14bf7b54107c22fc5e99f15",
+    "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/decision.json": "sha256:a20eabc1e6da8c9634792b4c3457a272419568d5f23f3e7bacc2c38da3c87afc",
+    "results/stage-3/b2/stage3b-b2-confirmatory-63885e5-v1/decision.json": "sha256:6e4b5c54a35011dcd39ca621a020d9b75ed5bed706f10f483454641b46b75eea",
+    "results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/seal.json": "sha256:83691730d46599a7a4d1ffd8ee0e2b9ee82c13771892b21c8c986d9a700e60f3"
+  },
+  "stage1": {
+    "planned_cells": 80,
+    "datasets": [
+      "FashionMNIST",
+      "MNIST"
+    ],
+    "model_seed_count": 10,
+    "fashionmnist": {
+      "test_macro_f1_mean": {
+        "bp": 0.8725790693188473,
+        "exact": 0.8725790693188473,
+        "fixedpred": 0.8740583082137512,
+        "strict": 0.8722619287842823
+      },
+      "total_training_time_sec_mean": {
+        "bp": 25.595381125799396,
+        "exact": 29.69870464469968,
+        "fixedpred": 69.00502566799987,
+        "strict": 128.11093225559998
+      },
+      "paired_macro_f1_equivalence_margin": 0.01,
+      "fixedpred_equivalent_within_margin": true,
+      "strict_equivalent_within_margin": true
+    }
+  },
+  "stage2": {
+    "completed_unique_cells": 80,
+    "all_test_evaluated": true,
+    "terminal_completed_attempts": 80,
+    "quality_difference_in_differences_all_zero": true,
+    "runtime_slowdown_ratio_stage2_to_stage1": {
+      "FashionMNIST": {
+        "exact": 0.8609244536491362,
+        "fixedpred": 0.688026160454244,
+        "strict": 0.7380168525081383
+      },
+      "MNIST": {
+        "exact": 0.8611286132146525,
+        "fixedpred": 0.6919014310106507,
+        "strict": 0.7393095044959868
+      }
+    }
+  },
+  "stage3a": {
+    "independent_model_seeds": 10,
+    "exact_control_max_abs_error": 1.354472090042691e-14,
+    "fixedpred": {
+      "gradient_layer0_cosine_mean": 0.9945743718935853,
+      "gradient_layer0_norm_ratio_mean": 0.0008814731909581441,
+      "representation_cka_mean_range": [
+        0.9885992448864791,
+        0.9938606875408322
+      ],
+      "representation_rsa_mean_range": [
+        0.9832372053254662,
+        0.9934748215678443
+      ]
+    },
+    "strict": {
+      "gradient_hidden_cosine_mean_range": [
+        0.8430213774667044,
+        0.9265650667088465
+      ],
+      "representation_cka_mean_range": [
+        0.9609073697888026,
+        0.9786495949343188
+      ],
+      "representation_rsa_mean_range": [
+        0.940177455000612,
+        0.9718258445017944
+      ]
+    }
+  },
+  "stage3b": {
+    "b0": {
+      "analysis_complete": true,
+      "independent_seed_count_per_configuration": 3,
+      "strict_to_fixedpred_device_time_configuration_median_ratio": 2.32690073878938,
+      "strict_to_fixedpred_peak_allocated_configuration_median_ratio": 1.3281135001951883,
+      "fixedpred_state_inference_device_share_median": 0.7177957414130859,
+      "strict_state_inference_device_share_median": 0.7883502994605036,
+      "state_inference_saved_tensor_strict_to_fixedpred_ratio": 11.998191379705275
+    },
+    "si_ma0": {
+      "passed": false,
+      "cost_gate_passed": false,
+      "measured_steps": 7500,
+      "passing_measured_steps": 0,
+      "accounting_residual_median": 0.16060774657755233
+    },
+    "si_ma1": {
+      "passed": true,
+      "model_seed_count": 10,
+      "matched_block_count": 180,
+      "cal_cost_gate_passed": true,
+      "primary_estimand_observed": -0.1906350733728276,
+      "upper_one_sided_95": -0.18862187616037485,
+      "threshold": 0.01
+    },
+    "b1": {
+      "status": "pass",
+      "candidate_id": "isolated_layer_vjp",
+      "registered_pair_count": 120,
+      "observed_pair_count": 120,
+      "failed_pair_count": 0,
+      "dangerous_misses": 0
+    },
+    "b2": {
+      "status": "pass",
+      "candidate_id": "composite_vjp",
+      "matched_triples_expected": 120,
+      "matched_triples_observed": 120,
+      "pairwise_comparisons_observed": 240,
+      "failed_pair_count": 0,
+      "dangerous_misses": 0
+    },
+    "matched_profiling": {
+      "sealed": true,
+      "matched_cell_count": 288,
+      "cross_candidate_correctness_block_count": 96,
+      "retried_cell_count": 0,
+      "candidate_counts": {
+        "stage2_baseline": 96,
+        "isolated_layer_vjp": 96,
+        "composite_vjp": 96
+      },
+      "results_publication_permitted": false
+    }
+  }
+}

@@ -126,6 +126,14 @@ def validate_claims(data: dict[str, object]) -> None:
 
 def validate_qwake(data: dict[str, object]) -> None:
     require(data.get("schema_version") == 1, "QWake summary schema_version must be 1")
+    require(
+        data.get("document_role") == "thesis-facing-derived-summary",
+        "QWake summary must remain a thesis-facing derived summary",
+    )
+    require(
+        data.get("scientific_evidence_status") == "not_new_scientific_evidence",
+        "QWake summary must not claim new scientific evidence",
+    )
     selection = data.get("selection")
     best = data.get("best_safe_policy")
     protocol = data.get("protocol")
@@ -181,6 +189,62 @@ def validate_qwake(data: dict[str, object]) -> None:
     require(int(best["cost_observer_ns"]) > 0, "observer cost must be positive")
     require(protocol.get("c2_policy_freeze_established") is False, "C2 policy freeze must remain false")
     require(protocol.get("c3_open") is False, "C3 must remain closed")
+
+
+def validate_qwake_claim_reconciliation(
+    claims_data: dict[str, object], qwake: dict[str, object]
+) -> None:
+    claims = claims_data.get("claims")
+    require(isinstance(claims, list), "claims must be a list for QWake reconciliation")
+    by_id = {item.get("id"): item for item in claims if isinstance(item, dict)}
+    for claim_id in ("C08", "C09", "C10", "C11"):
+        require(claim_id in by_id, f"missing QWake claim {claim_id}")
+
+    selection = qwake["selection"]
+    best = qwake["best_safe_policy"]
+    protocol = qwake["protocol"]
+    verification = qwake.get("verification")
+    require(isinstance(selection, dict), "QWake selection must be an object")
+    require(isinstance(best, dict), "QWake best_safe_policy must be an object")
+    require(isinstance(protocol, dict), "QWake protocol must be an object")
+    require(isinstance(verification, dict), "QWake verification must be an object")
+    require(int(verification.get("sealed_result_audit_fail", -1)) == 0, "sealed QWake audit must have zero failures")
+    require(int(verification.get("cost_decomposition_audit_fail", -1)) == 0, "QWake cost audit must have zero failures")
+    require(verification.get("zero_write") is True, "QWake thesis-facing verification must remain zero-write")
+
+    accepted = int(best["accepted_records"])
+    dangerous = int(best["dangerous_accepts"])
+    safe_accepts = accepted - dangerous
+    safe_nontrivial = int(selection["safe_nontrivial_count"])
+    eligible = int(selection["eligible_policy_count"])
+
+    require(safe_accepts > 0, "C08 requires at least one safe accepted record")
+    require(safe_nontrivial > 0, "C08 requires non-zero safe recognizability")
+    require(by_id["C08"].get("status") == "supported", "C08 status must be supported")
+
+    require(eligible == 0, "C09 rejection requires zero eligible policies")
+    require(
+        selection.get("status") == "bounded_negative_no_safe_beneficial_policy",
+        "C09 requires the frozen bounded-negative selection status",
+    )
+    require(by_id["C09"].get("status") == "rejected", "C09 status must be rejected")
+
+    require(by_id["C10"].get("status") == "not_tested", "C10 must remain not_tested")
+    require(by_id["C11"].get("status") == "not_tested", "C11 must remain not_tested")
+    require(protocol.get("c3_open") is False, "C11 not_tested requires C3 to remain closed")
+
+    require(
+        verification.get("policy_evaluation_performed") is False,
+        "thesis validation must not perform a new QWake policy evaluation",
+    )
+    require(
+        verification.get("policy_interpretation_performed") is False,
+        "thesis validation must not reinterpret the sealed QWake result",
+    )
+    require(
+        verification.get("cost_model_changed") is False,
+        "thesis validation must preserve frozen QWake cost accounting",
+    )
 
 
 def validate_core_results(data: dict[str, object]) -> None:
@@ -542,11 +606,13 @@ def main() -> None:
     core = load(CORE_RESULTS_PATH)
     validate_claims(claims)
     validate_qwake(qwake)
+    validate_qwake_claim_reconciliation(claims, qwake)
     validate_core_results(core)
 
     print("THESIS_CLAIMS_SCHEMA=PASS")
     print("THESIS_QWAKE_SUMMARY_ARITHMETIC=PASS")
     print("THESIS_QWAKE_PROTOCOL_BOUNDARY=PASS")
+    print("THESIS_QWAKE_CLAIM_RECONCILIATION=PASS")
     print("THESIS_CORE_RESULTS_SOURCE_BINDINGS=PASS")
     print("THESIS_CORE_RESULTS_RECONCILIATION=PASS")
     print("THESIS_PROVENANCE_IDENTITIES=PASS")

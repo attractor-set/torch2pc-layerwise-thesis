@@ -8,7 +8,9 @@ They are document inputs, not replacements for the underlying scientific evidenc
 - `qwake_c2_verified_summary.json` is a thesis-facing summary of the independently
   verified sealed QWake C2 Attempt-002 result. It records frozen source identities,
   aggregate values, protocol consequences, and arithmetic needed by the dissertation.
-  It is explicitly marked `not_new_scientific_evidence`.
+  The thesis build reconciles C08--C11 against those frozen aggregates and protocol
+  facts without re-running policy evaluation or changing the cost model. It is
+  explicitly marked `not_new_scientific_evidence`.
 
 `python3 scripts/build_thesis_assets.py --check` validates the internal consistency
 of these files without writing generated assets. `make thesis` renders the LaTeX

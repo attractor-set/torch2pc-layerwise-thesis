@@ -45,7 +45,10 @@ SHA-256 конкретного PDF artifact.
     ожидаемый SHA-256, который заново проверяется при сборке;
   \item \code{thesis/data/qwake_c2_verified_summary.json} --- компактное
     представление sealed QWake C2 result и независимо проверенных агрегатов.
-    Этот файл явно маркирован как \code{not_new_scientific_evidence}.
+    Сборка дополнительно сверяет статусы C08--C11 с frozen selection, best-safe
+    aggregate и protocol boundary, не выполняя новую policy evaluation и не
+    изменяя cost model. Этот файл явно маркирован как
+    \code{not_new_scientific_evidence}.
 \end{itemize}
 
 Полная QWake forensic surface намеренно не превращается в обычный dissertation

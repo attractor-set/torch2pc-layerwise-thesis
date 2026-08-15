@@ -119,17 +119,19 @@ measurement lane не вычитала стоимость observer post hoc; obs
 реплик. Поэтому 288 cells не используются как $n=288$ для статистических
 утверждений о популяции моделей.
 
-\section{QWake: безопасная распознаваемость и экономический gate}
+\section{QWake: task-relative sufficiency, безопасная распознаваемость и экономический gate}
 \label{sec:qwake-experiment}
 
-QWake был построен как следующий вопрос после локализации стоимости: можно ли
-завершать часть итеративного вычисления раньше, используя только состояние,
-доступное до действия, не увеличивая dangerous acceptance.
+QWake был построен как следующий вопрос после локализации стоимости и разделял
+три ступени: существуют ли достаточные для задачи preterminal outcomes, можно
+ли распознать их безопасное ненулевое подмножество до действия и окупается ли
+такое решение после учёта decision-facing cost.
 
-C1 формировал sealed calibration trajectories и post-action oracle labels.
-Oracle использовался для последующей оценки решения, но не был доступен
-candidate policy как pre-action feature. C2 использовал 756 sealed records и
-замороженную конечную family из 2625 scalar policies. Candidate generator был
+C1 формировал sealed calibration trajectories и post-action oracle labels,
+которые задавали task-relative sufficiency. Oracle использовался только для
+последующей оценки решения и не был доступен candidate policy как pre-action
+feature. C2 использовал 756 sealed records и замороженную конечную family из
+2625 scalar policies. Candidate generator был
 ограничен заранее выбранным набором scalar features и одномерными пороговыми
 правилами; поэтому C2 является bounded search, а не перебором всех возможных
 recognizers.

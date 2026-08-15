@@ -23,6 +23,46 @@ QWake кампании наследуют уже установленные ре
 интерпретацию предыдущего результата, однако не может сделать неудачный или
 отрицательный предыдущий запуск ``несуществующим''.
 
+\section{Эволюция исследовательского scope и исторические ветки}
+\label{sec:method-scope-evolution}
+
+Корневые файлы \code{HYPOTHESES.md} и \code{ROADMAP.md} сохраняют историю
+более широкой исследовательской программы и поэтому содержат исторические
+RQ1--RQ11, Scenario~A, PC-TREF/PC-CATM и ряд exploratory направлений. Эти
+обозначения не имеют взаимно однозначного соответствия итоговым RQ1--RQ3
+диссертации. Финальные вопросы являются консолидацией только тех веток, которые
+образуют завершённую evidence chain либо были явно сужены последующим
+протоколом.
+
+\begin{longtable}{@{}L{0.19\textwidth}L{0.31\textwidth}L{0.39\textwidth}@{}}
+\toprule
+Историческая ветка & Финальная роль & Статус в диссертации \\
+\midrule
+\endfirsthead
+\toprule
+Историческая ветка & Финальная роль & Статус в диссертации \\
+\midrule
+\endhead
+RQ1: качество & RQ1, Stage~1/2 & Включено: paired macro-F1 equivalence и cross-version quality/runtime surface. \\
+RQ2: градиенты; RQ3: представления & RQ1, Stage~3A & Включено как layer-wise gradient и CKA/RSA analysis. \\
+RQ4: стоимость; RQ6: локальность; RQ7: организация точных вычислений & RQ2, Stage~3B & Включено через B0, SI-MA0/1, B1/B2 и matched profiling. \\
+RQ5: robustness к noise, blur и occlusion & Отдельная ранняя ветка & В финальную completed evidence chain не включено; отдельный dissertation claim не формулируется. \\
+RQ8: adaptive budget & RQ3, QWake & Сужено: вместо общего adaptive stopping проверяются task-relative sufficiency, safe pre-action recognizability и frozen-accounting economics. \\
+RQ9: periodic VJP refresh & Историческая planned family & В финальную confirmatory chain не включено; отсутствие результата не трактуется как отрицательный эксперимент. \\
+RQ10: approximate feedback & Условная exploratory ветка & Не входит в финальный core claims contract. \\
+RQ11: predict-correct acceleration & Design/ADR history & Не формулируется как завершённый confirmatory claim диссертации. \\
+PC-TREF/PC-CATM, ECZ и H-TREF family & Теоретико-операциональная мотивация & Используются как происхождение идей task-relative sufficiency, decision regret и cost-aware representation; общий theorem о минимальном или универсальном представлении не заявляется. \\
+\bottomrule
+\end{longtable}
+
+Такое reconciliation важно для интерпретации repository history. Ветка,
+отсутствующая из финального claims contract, не считается автоматически
+отклонённой гипотезой: она может быть исторически запланированной,
+эксплораторной, superseded более узким estimand либо оставленной за пределами
+завершённой evidence chain. Только результаты, явно связанные с итоговыми
+RQ1--RQ3 и machine-readable claims contract, используются как выводы
+диссертации.
+
 \section{Статистическая единица и повторные измерения}
 \label{sec:method-stat-unit}
 
@@ -169,13 +209,37 @@ memory заранее не предполагается.
 альтернативные организации вычисления на одной зарегистрированной поверхности,
 не смешивая equivalence admission и последующий engineering comparison.
 
+\subsection{Task-relative sufficiency как мотивация QWake}
+\label{sec:method-task-relative-sufficiency}
+
+Историческая рамка PC-TREF/PC-CATM вводила более общий язык относительной к
+задаче эквивалентности, decision regret и стоимости representation. В
+финальной диссертации эта рамка не используется как доказанный общий theorem и
+не требует утверждения о существовании глобально минимального представления.
+Вместо этого QWake операционализирует более узкое проверяемое следствие: для
+конкретной sealed trajectory surface post-action oracle определяет, был ли
+preterminal outcome уже достаточен для зафиксированной задачи, после чего C2
+проверяет, можно ли распознать ненулевое безопасное подмножество таких outcomes
+только по pre-action признакам и остаётся ли решение выгодным после учёта
+стоимости его получения.
+
+Тем самым task-relative sufficiency, safe recognizability и economic viability
+являются последовательными, но не взаимозаменяемыми ступенями. Исторические
+ECZ/TREF/CATM конструкции объясняют происхождение этой постановки, однако
+конкретный C2 claim опирается только на frozen policy family, post-action
+sufficiency oracle, pre-action feature boundary и preregistered cost
+accounting.
+
 \section{QWake: C1 calibration surface и C2 bounded policy search}
 \label{sec:method-qwake}
 
 QWake является финальным сужением исследовательского вопроса. После того как
 Stage~3B показывает значимость стоимости наблюдения и структуры
-\texttt{state\_inference}, возникает вопрос: можно ли по уже доступному
-pre-action состоянию определить, что дальнейший exact suffix не нужен.
+\texttt{state\_inference}, вопрос разделяется на три последовательные проверки:
+существуют ли на sealed trajectory surface достаточные для задачи preterminal
+outcomes; можно ли распознавать их безопасное ненулевое подмножество по уже
+доступному pre-action состоянию; и окупается ли такое решение относительно
+оставшегося exact suffix.
 
 \subsection{C1: запечатанная trajectory surface}
 
@@ -258,7 +322,7 @@ runtime cost конкретного простого recognizer.
 экономически невыгодна. Это отдельный вопрос и в контракте утверждений
 диссертации имеет статус \texttt{not\_tested}.
 
-\section{Отрицательный результат, stopping rules и C3 boundary}
+\section{Отрицательные результаты и C3 boundary}
 \label{sec:method-negative}
 
 Отрицательный результат считается терминальным результатом соответствующего

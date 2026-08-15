@@ -19,17 +19,17 @@
     },
     {
       "id": "RQ3",
-      "text": "Можно ли по доступному до завершения вычисления состоянию безопасно распознавать достаточные состояния и получить положительную вычислительную выгоду от раннего решения?"
+      "text": "Существуют ли в доступной до завершения вычисления trajectory surface достаточные для задачи preterminal состояния, можно ли безопасно распознавать их по pre-action состоянию и приводит ли такое решение к положительной вычислительной выгоде?"
     }
   ],
   "claims": [
     {
       "id": "C01",
       "rq": "RQ1",
-      "claim": "Изменённый вычислительный путь Stage 2 сохраняет экспериментальный протокол и даёт измеримые изменения времени выполнения относительно Stage 1.",
-      "status": "descriptive",
-      "scope": "Stage 1/2; FashionMNIST и MNIST; зафиксированные реализации и среда.",
-      "evidence": "README.md; results/cross-version/; results/stage-2/summaries/"
+      "claim": "В Stage 1 для FashionMNIST FixedPred и Strict находятся внутри заранее заданной paired macro-F1 equivalence margin ±0.01 относительно BP; Stage 2 сохраняет зарегистрированную final-quality surface при измеримом изменении runtime относительно Stage 1.",
+      "status": "supported",
+      "scope": "Stage 1: FashionMNIST paired macro-F1; Stage 2: FashionMNIST и MNIST cross-version.",
+      "evidence": "thesis/data/core_results_verified_summary.json; tracked Stage 1/2 source bindings"
     },
     {
       "id": "C02",
@@ -82,9 +82,9 @@
     {
       "id": "C08",
       "rq": "RQ3",
-      "claim": "В замороженном C2 candidate family существует безопасная ненулевая pre-action распознаваемость.",
+      "claim": "На sealed QWake C1/C2 surface существуют достаточные для задачи preterminal outcomes, и в замороженном C2 candidate family существует безопасная ненулевая pre-action распознаваемость их подмножества.",
       "status": "supported",
-      "scope": "QWake C2; 2,625 frozen scalar policies; sealed calibration evidence.",
+      "scope": "QWake C1/C2; 2,625 frozen scalar policies; sealed calibration evidence и post-action sufficiency oracle.",
       "evidence": "thesis/data/qwake_c2_verified_summary.json"
     },
     {

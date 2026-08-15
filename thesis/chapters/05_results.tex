@@ -121,11 +121,14 @@ cross-candidate correctness blocks и без retries.
 \section{QWake C2: безопасная распознаваемость}
 \label{sec:results-qwake}
 
-C2 дал смешанный, но хорошо локализованный результат. Большинство frozen
-policies были unsafe, однако безопасная ненулевая распознаваемость существовала:
-265 candidates имели zero dangerous accepts, и 264 из них одновременно имели
-ненулевое coverage. Тем самым информационная часть RQ3 получила положительный
-bounded result.
+C2 дал смешанный, но хорошо локализованный результат. Sealed surface содержит
+достаточные для задачи preterminal outcomes: это следует, в частности, из
+наличия безопасно принятых записей, для которых post-action sufficiency oracle
+не фиксирует dangerous outcome. Большинство frozen policies были unsafe,
+однако безопасная ненулевая pre-action распознаваемость существовала: 265
+candidates имели zero dangerous accepts, и 264 из них одновременно имели
+ненулевое coverage. Тем самым первые две ступени RQ3 --- task-relative
+sufficiency и bounded safe recognizability --- получили положительный ответ.
 
 \input{generated/qwake_results.tex}
 
@@ -165,8 +168,10 @@ representations или runtime. FixedPred в исследованной обла
 При этом negative SI-MA0 сохранился как самостоятельный результат, а успешная
 SI-MA1 calibration не переписала его задним числом.
 
-Для RQ3 безопасная pre-action recognizability наблюдалась в frozen C2 family,
-но economic viability при frozen full decision-cost accounting не наблюдалась.
-Следовательно, informational feasibility и accounting feasibility в этой
-работе имеют разные ответы. Marginal implementation feasibility остаётся
-открытым successor вопросом.
+Для RQ3 sealed surface содержит task-relative sufficient preterminal outcomes,
+а frozen C2 family позволяет безопасно распознавать их ненулевое подмножество
+по pre-action признакам. Economic viability при frozen full decision-cost
+accounting при этом не наблюдалась. Следовательно, sufficiency,
+recognizability и accounting feasibility в этой работе имеют раздельные
+ответы. Marginal implementation feasibility остаётся открытым successor
+вопросом.

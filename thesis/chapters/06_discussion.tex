@@ -93,20 +93,25 @@ candidates проходят собственные admission gates и тольк
 matched profiling. Такая staged organization уменьшает риск перепутать
 корректность, attribution и engineering trade-off.
 
-\section{RQ3: safe recognizability и economic viability}
+\section{RQ3: sufficiency, recognizability и economics}
 \label{sec:discussion-rq3}
 
-Финальный QWake вопрос специально разделяет информационную и экономическую
-части раннего решения. Это различие является главным интерпретационным
-результатом C2.
+Финальный QWake вопрос разделяет три ступени раннего решения: наличие
+достаточных для задачи preterminal outcomes, их безопасную распознаваемость по
+pre-action состоянию и экономическую целесообразность decision mechanism. Эти
+ступени логически связаны, но не взаимозаменяемы.
 
-В frozen family из 2\,625 scalar policies безопасная ненулевая
-pre-action распознаваемость существует. Из 2\,625 candidates 265 имеют zero
+Наличие safe accepts означает, что sealed surface содержит ненулевую область
+preterminal outcomes, для которых post-action oracle считает suffix уже
+необязательным относительно зафиксированной задачи. Следующий вопрос состоит в
+том, можно ли выделить часть этой области до действия. В frozen family из
+2\,625 scalar policies безопасная ненулевая pre-action распознаваемость существует. Из 2\,625 candidates 265 имеют zero
 dangerous accepts; 264 из них одновременно имеют ненулевое coverage. Лучшая
 безопасная policy принимает 216 из 756 records, то есть примерно 28.57\%,
-без dangerous accepts. Эти результаты поддерживают C08: в запечатанной
-calibration surface существует pre-action signal, позволяющий отделить
-ненулевую безопасную область в пределах заданного policy family.
+без dangerous accepts. Эти результаты поддерживают C08 сразу в двух
+ограниченных смыслах: task-relative sufficient outcomes присутствуют на sealed
+surface, а frozen family содержит pre-action signal, позволяющий отделить их
+ненулевую безопасную область.
 
 Экономическая часть того же вопроса получает другой ответ. Ни одна из
 2\,625 policies не удовлетворяет одновременно safety, nontrivial coverage и

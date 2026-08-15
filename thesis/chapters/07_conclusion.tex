@@ -28,8 +28,10 @@ representation metrics, чем Strict, но при этом ранний gradien
 final metric, gradient direction, gradient scale или representation state ---
 и должна указываться вместе с соответствующим scope.
 
-В claims contract это отражено C01 как описательным cross-version результатом
-и C02 как поддержанным Stage~3A утверждением.
+В claims contract C01 теперь фиксирует поддержанный Stage~1 paired
+macro-F1 equivalence result вместе с сохранением Stage~2 final-quality surface
+и cross-version runtime shift; C02 отдельно фиксирует поддержанный Stage~3A
+layer-wise результат.
 
 \section{Ответ на RQ2}
 
@@ -60,12 +62,14 @@ candidate.
 
 \section{Ответ на RQ3}
 
-RQ3 объединял два условия раннего решения: безопасную распознаваемость
-достаточного состояния и положительную вычислительную выгоду.
+RQ3 объединял три последовательные ступени раннего решения: наличие
+достаточного для задачи preterminal outcome, возможность безопасно распознать
+такой outcome по pre-action состоянию и положительную вычислительную выгоду.
 
-На sealed QWake calibration surface первое условие выполняется в bounded
-смысле. Среди 2\,625 frozen scalar policies существуют candidates с zero
-dangerous accepts и ненулевым coverage. Лучшая безопасная policy принимает
+На sealed QWake calibration surface первые две ступени выполняются в bounded
+смысле. Наличие безопасно принятых записей означает ненулевую область
+post-action oracle-sufficient outcomes, а среди 2\,625 frozen scalar policies
+существуют candidates с zero dangerous accepts и ненулевым coverage. Лучшая безопасная policy принимает
 216 из 756 records, около 28.57\%, без dangerous accepts. C08 поэтому имеет
 статус \texttt{supported}.
 
@@ -82,10 +86,11 @@ cost простого recognizer. Такой estimand не входил в C2, �
 policy freeze и protocol не открыл C3; C11 также остаётся
 \texttt{not\_tested}.
 
-Таким образом, RQ3 получает разделённый ответ: безопасная pre-action
-recognizability наблюдается внутри frozen family, но safe-and-beneficial
-policy при frozen full decision-cost accounting не наблюдается. Marginal
-implementation viability текущей работой не проверена.
+Таким образом, RQ3 получает трёхчастный ответ: task-relative sufficient
+preterminal outcomes присутствуют на sealed surface; их ненулевое подмножество
+безопасно распознаётся внутри frozen family по pre-action признакам; но
+safe-and-beneficial policy при frozen full decision-cost accounting не
+наблюдается. Marginal implementation viability текущей работой не проверена.
 
 \section{Научный и методологический итог}
 \label{sec:conclusion-contribution}

@@ -1,0 +1,91 @@
+\chapter*{Аннотация}
+\addcontentsline{toc}{chapter}{Аннотация}
+
+Диссертация посвящена послойному и вычислительно сопоставимому исследованию
+режимов предиктивного кодирования (PC) относительно обратного распространения
+ошибки (BP). Работа разделяет четыре вопроса, которые часто смешиваются при
+сравнении алгоритмов обучения: сходство конечного поведения, сходство
+внутреннего механизма, вычислительную стоимость и возможность безопасно
+прекратить часть вычисления до его штатного завершения.
+
+Экспериментальная программа организована как последовательность заранее
+зафиксированных этапов. Stage~1 и Stage~2 сравнивают BP, Exact, FixedPred и
+Strict в контролируемых условиях. Stage~3A исследует послойные градиенты и
+представления; Stage~3B локализует стоимость state inference и проверяет
+кандидаты точного вычислительного замещения через зарегистрированные gates.
+Финальная ветка QWake изучает, существует ли доступный до завершения вычисления
+сигнал, достаточный для безопасного решения о прекращении suffix computation,
+и даёт ли такое решение положительную выгоду при заранее замороженном полном
+учёте decision cost.
+
+В исследованных условиях FixedPred оказался ближе к BP по направлению
+градиента и представлениям, чем Strict, при одновременном уменьшении нормы
+градиента в ранних слоях. Профилирование Stage~3B связало существенную часть
+стоимости исследованных PC-режимов с state inference; последующие B1/B2
+кандидаты прошли зарегистрированные equivalence gates, а matched profiling был
+завершён для полной матрицы без retries. В QWake безопасная ненулевая
+pre-action распознаваемость наблюдалась внутри замороженного семейства из
+2625 scalar policies: 264 policy имели ненулевое покрытие при отсутствии
+опасных принятия решений, а лучшая безопасная policy покрывала 216 из 756
+calibration records (28.57\%). При этом ни одна policy не достигла положительной
+aggregate net saving при frozen full decision-cost accounting. Для лучшей
+безопасной policy полный decision cost был преимущественно observer-dominated,
+а C2 policy freeze не был установлен, поэтому confirmatory C3 не открывался.
+
+Полученный отрицательный экономический результат ограничен использованным
+full decision-cost accounting и не является измерением marginal runtime cost
+минимального recognizer. Поэтому работа поддерживает вывод о существовании
+безопасной pre-action распознаваемости в исследованной области, отклоняет
+гипотезу о safe-and-beneficial policy внутри замороженного C2 family при
+зафиксированном accounting и оставляет marginal implementation viability
+отдельным непроверенным estimand.
+
+\noindent\textbf{Ключевые слова:} предиктивное кодирование, обратное
+распространение ошибки, послойный анализ, вычислительная стоимость,
+раннее завершение, воспроизводимость, predictive coding, backpropagation.
+
+\clearpage
+\begin{otherlanguage}{english}
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This dissertation studies layer-wise and computationally controlled
+comparisons of predictive-coding (PC) regimes with backpropagation (BP). The
+research separates four questions that are often conflated: similarity of
+final behavior, similarity of internal mechanism, computational cost, and the
+possibility of safely terminating part of the computation before its normal
+completion.
+
+The experimental program is organized as a sequence of preregistered and
+versioned stages. Stage~1 and Stage~2 compare BP, Exact, FixedPred, and Strict
+under controlled conditions. Stage~3A examines layer-wise gradients and
+representations, while Stage~3B localizes state-inference cost and evaluates
+exact replacement candidates through registered equivalence gates. The final
+QWake branch asks whether a pre-completion state contains enough information
+for a safe suffix-termination decision and whether such a decision yields
+positive savings under frozen full decision-cost accounting.
+
+Within the investigated conditions, FixedPred was closer to BP than Strict in
+gradient direction and learned representations, while its early-layer gradient
+norm was substantially reduced. Stage~3B profiling associated a substantial
+share of the measured PC cost with state inference; subsequent B1/B2 candidates
+passed their registered equivalence gates, and the matched profiling matrix was
+completed without retries. In QWake, non-zero safe pre-action recognizability
+was observed within the frozen family of 2,625 scalar policies: 264 policies
+had non-zero coverage with zero dangerous accepts, and the best safe policy
+covered 216 of 756 calibration records (28.57\%). No policy achieved positive
+aggregate net saving under the frozen full decision-cost accounting. The full
+cost assigned to the best safe policy was overwhelmingly observer-dominated,
+no C2 policy freeze was established, and confirmatory C3 therefore remained
+closed.
+
+The negative economic result is specific to the frozen full-cost accounting
+used in C2 and does not measure the marginal runtime cost of a minimal
+recognizer. The dissertation therefore supports safe pre-action recognizability
+within the investigated domain, rejects the existence of a safe-and-beneficial
+policy in the frozen C2 family under that accounting regime, and leaves
+marginal implementation viability as a separate untested estimand.
+
+\noindent\textbf{Keywords:} predictive coding, backpropagation, layer-wise
+analysis, computational cost, early termination, reproducibility.
+\end{otherlanguage}

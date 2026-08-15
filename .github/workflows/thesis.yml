@@ -45,6 +45,10 @@ jobs:
         run: |
           python3 scripts/build_thesis_assets.py --check
 
+      - name: Validate epistemic language
+        run: |
+          python3 scripts/check_epistemic_language.py
+
       - name: Install LaTeX toolchain
         run: |
           sudo apt-get update
@@ -74,6 +78,55 @@ jobs:
       - name: Build thesis
         run: |
           make thesis
+
+      - name: Verify LaTeX references
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          log = Path("thesis/main.log").read_text(encoding="utf-8", errors="replace")
+          blg_path = Path("thesis/main.blg")
+          blg = blg_path.read_text(encoding="utf-8", errors="replace") if blg_path.is_file() else ""
+
+          findings = []
+          for marker in (
+              "There were undefined references.",
+              "There were undefined citations.",
+          ):
+              if marker in log:
+                  findings.append(marker)
+          for line in log.splitlines():
+              if "LaTeX Warning:" in line and "undefined" in line:
+                  findings.append(line.strip())
+          for line in blg.splitlines():
+              if "WARN -" in line and "database entry" in line:
+                  findings.append(line.strip())
+
+          print(f"THESIS_UNRESOLVED_REFERENCE_COUNT={len(findings)}")
+          for finding in findings:
+              print(f"THESIS_REFERENCE_FINDING={finding}")
+          print(f"THESIS_REFERENCES={'PASS' if not findings else 'FAIL'}")
+          if findings:
+              raise SystemExit(2)
+          PY
+
+      - name: Audit typography
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          log = Path("thesis/main.log").read_text(encoding="utf-8", errors="replace")
+          overfull = [line.strip() for line in log.splitlines() if "Overfull" in line and "hbox" in line]
+          underfull = [line.strip() for line in log.splitlines() if "Underfull" in line and "hbox" in line]
+
+          print(f"THESIS_OVERFULL_COUNT={len(overfull)}")
+          print(f"THESIS_UNDERFULL_COUNT={len(underfull)}")
+          for finding in overfull:
+              print(f"THESIS_OVERFULL_FINDING={finding}")
+          print(f"THESIS_TYPOGRAPHY={'PASS' if not overfull else 'FAIL'}")
+          if overfull:
+              raise SystemExit(2)
+          PY
 
       - name: Verify PDF
         run: |

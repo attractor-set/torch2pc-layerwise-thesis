@@ -20,3 +20,10 @@ artifact by SHA-256. `scripts/build_thesis_assets.py` rehashes those files and
 reconciles the selected aggregates against the upstream CSV/JSON content before
 rendering dissertation tables. It is not a replacement for the underlying
 evidence and is explicitly marked `not_new_scientific_evidence`.
+
+## Reproducibility manifest
+
+During `make thesis`, `scripts/build_thesis_assets.py` also renders
+`thesis/generated/reproducibility_manifest.tex` from the validated source
+bindings and frozen QWake identities. The generated table is documentation of
+provenance, not new scientific evidence.

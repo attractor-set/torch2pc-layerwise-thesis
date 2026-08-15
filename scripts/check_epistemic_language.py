@@ -54,6 +54,11 @@ NEGATED_CONTEXT = re.compile(
     re.IGNORECASE,
 )
 INLINE_CODE = re.compile(r"`[^`]*`")
+RU_DIRECT_NEGATION = re.compile(r"\bне\s*$", re.IGNORECASE)
+EN_GUARANTEE_CLAUSE_BOUNDARY = re.compile(
+    r"(?:[.;!?]\s+|,\s*(?:but|however|yet)\s+)",
+    re.IGNORECASE,
+)
 
 
 def _strip_fenced_code(text: str) -> str:
@@ -86,7 +91,19 @@ def _text_sources(path: Path) -> Iterable[tuple[str, str]]:
         yield f"{path.relative_to(ROOT)}::markdown_cell_{index}", _strip_fenced_code(text)
 
 
-def _is_negated(line: str, match_start: int) -> bool:
+def _is_negated(label: str, line: str, match_start: int) -> bool:
+    if label == "ru_guarantee":
+        prefix = line[max(0, match_start - 32) : match_start]
+        return RU_DIRECT_NEGATION.search(prefix) is not None
+    if label == "en_guarantee":
+        context_start = max(0, match_start - 180)
+        prefix = line[context_start:match_start]
+        boundaries = list(EN_GUARANTEE_CLAUSE_BOUNDARY.finditer(prefix))
+        if boundaries:
+            context_start += boundaries[-1].end()
+        context = line[context_start : match_start + 120]
+        return NEGATED_CONTEXT.search(context) is not None
+
     context = line[max(0, match_start - 120) : match_start + 120]
     return NEGATED_CONTEXT.search(context) is not None
 
@@ -96,7 +113,7 @@ def scan_text(source_name: str, text: str) -> list[dict[str, object]]:
     for line_number, line in enumerate(text.splitlines(), start=1):
         for label, pattern in PATTERNS.items():
             for match in pattern.finditer(line):
-                if _is_negated(line, match.start()):
+                if _is_negated(label, line, match.start()):
                     continue
                 findings.append(
                     {

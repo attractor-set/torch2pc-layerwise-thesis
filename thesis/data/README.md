@@ -1,29 +1,34 @@
-# Thesis-facing data
+# Данные для диссертации
 
-This directory contains compact, Git-tracked inputs used to build the dissertation.
-They are document inputs, not replacements for the underlying scientific evidence.
+Этот каталог содержит компактные отслеживаемые Git входные данные, используемые
+при сборке диссертации. Они являются входами документа и не заменяют исходные
+научные доказательные материалы.
 
-- `research_claims.json` is the dissertation claims contract: research questions,
-  claim status, scope, and evidence locator.
-- `qwake_c2_verified_summary.json` is a thesis-facing summary of the independently
-  verified sealed QWake C2 Attempt-002 result. It records frozen source identities,
-  aggregate values, protocol consequences, and arithmetic needed by the dissertation.
-  It is explicitly marked `not_new_scientific_evidence`.
+- `research_claims.json` задаёт контракт утверждений диссертации: исследовательские
+  вопросы, статус утверждения, границу вывода и указатель на доказательные материалы.
+- `qwake_c2_verified_summary.json` содержит предназначенную для диссертации сводку
+  независимо проверенного результата QWake C2 Attempt-002 с зафиксированной
+  целостностью. В ней сохранены зафиксированные идентификаторы исходных материалов,
+  агрегированные значения, протокольные следствия и арифметика, необходимая
+  диссертации. Сборка сопоставляет C08--C11 с этими зафиксированными агрегатами и
+  фактами протокола без повторного выполнения оценки правил и без изменения модели
+  стоимости. Машинная отметка `not_new_scientific_evidence` сохраняется без перевода.
 
-`python3 scripts/build_thesis_assets.py --check` validates the internal consistency
-of these files without writing generated assets. `make thesis` renders the LaTeX
-claims matrix from them before compiling the PDF.
+Команда `python3 scripts/build_thesis_assets.py --check` проверяет внутреннюю
+согласованность этих файлов без записи сгенерированных материалов. `make thesis`
+формирует из них таблицу утверждений LaTeX перед сборкой PDF.
 
-`core_results_verified_summary.json` is a compact thesis-facing projection of
-tracked Stage 1/2/3 evidence. Its `source_bindings` map pins every upstream
-artifact by SHA-256. `scripts/build_thesis_assets.py` rehashes those files and
-reconciles the selected aggregates against the upstream CSV/JSON content before
-rendering dissertation tables. It is not a replacement for the underlying
-evidence and is explicitly marked `not_new_scientific_evidence`.
+`core_results_verified_summary.json` представляет собой компактную проекцию
+отслеживаемых доказательных материалов этап 1/2/3 для диссертации. Карта
+`source_bindings` закрепляет каждый исходный артефакт по SHA-256.
+`scripts/build_thesis_assets.py` повторно вычисляет хэши этих файлов и
+сопоставляет выбранные агрегаты с исходным содержимым CSV/JSON до формирования
+таблиц диссертации. Файл не заменяет исходные доказательные материалы и также
+имеет машинную отметку `not_new_scientific_evidence`.
 
-## Reproducibility manifest
+## Манифест воспроизводимости
 
-During `make thesis`, `scripts/build_thesis_assets.py` also renders
-`thesis/generated/reproducibility_manifest.tex` from the validated source
-bindings and frozen QWake identities. The generated table is documentation of
-provenance, not new scientific evidence.
+Во время `make thesis` сценарий `scripts/build_thesis_assets.py` также формирует
+`thesis/generated/reproducibility_manifest.tex` из проверенных привязок исходных
+файлов и зафиксированных идентификаторов QWake. Полученная таблица документирует
+происхождение артефактов и не является новым научным доказательством.

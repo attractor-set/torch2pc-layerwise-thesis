@@ -8,6 +8,7 @@ import csv
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +23,117 @@ STAGE12_TEX = GENERATED / "stage12_results.tex"
 STAGE3_TEX = GENERATED / "stage3_results.tex"
 QWAKE_TEX = GENERATED / "qwake_results.tex"
 REPRO_TEX = GENERATED / "reproducibility_manifest.tex"
+TERMINOLOGY_TEX = GENERATED / "terminology_registry.tex"
+GLOSSARY_RU_PATH = ROOT / "docs" / "glossary.md"
+GLOSSARY_EN_PATH = ROOT / "docs" / "glossary_EN.md"
+EXPECTED_GLOSSARY_TERM_COUNT = 117
+
+
+
+RUSSIAN_THESIS_SOURCES = (
+    THESIS / "chapters" / "01_introduction.tex",
+    THESIS / "chapters" / "02_related_work.tex",
+    THESIS / "chapters" / "03_methodology.tex",
+    THESIS / "chapters" / "04_experiments.tex",
+    THESIS / "chapters" / "05_results.tex",
+    THESIS / "chapters" / "06_discussion.tex",
+    THESIS / "chapters" / "07_conclusion.tex",
+    THESIS / "frontmatter" / "abstracts.tex",
+    THESIS / "frontmatter" / "abbreviations.tex",
+    THESIS / "appendices" / "terminology.tex",
+    THESIS / "appendices" / "reproducibility.tex",
+)
+
+RUSSIAN_THESIS_SUPPORT_DOCS = (
+    THESIS / "README.md",
+    THESIS / "data" / "README.md",
+)
+
+# Generic English working vocabulary is not permitted in Russian dissertation
+# prose. Exact method names, acronyms, machine identifiers and artifact paths
+# are masked before this list is checked.
+NONCANONICAL_RUSSIAN_PROSE = (
+    "scope",
+    "stage",
+    "scenario",
+    "baseline",
+    "evidence",
+    "policy",
+    "policies",
+    "accounting",
+    "surface",
+    "pre-action",
+    "post-action",
+    "preterminal",
+    "observer",
+    "recognizer",
+    "recognizability",
+    "candidate",
+    "candidates",
+    "confirmatory",
+    "runtime",
+    "marginal",
+    "implementation",
+    "admission",
+    "claim",
+    "claims",
+    "gate",
+    "gates",
+    "provenance",
+    "seed",
+    "seeds",
+    "dataset",
+    "datasets",
+    "profiling",
+    "matched",
+    "retry",
+    "retries",
+    "outcome",
+    "outcomes",
+    "sufficiency",
+    "safe",
+    "safety",
+    "beneficial",
+    "decision cost",
+    "thesis-facing",
+    "tracked",
+    "execution",
+    "estimand",
+    "bounded",
+    "feasibility",
+    "lineage",
+    "hardware",
+    "software",
+    "entrypoint",
+    "artifact",
+    "artifacts",
+    "upstream",
+    "workflow",
+    "checkout",
+    "metadata",
+    "threshold",
+    "residual",
+    "final",
+    "test",
+    "quality",
+    "device",
+    "memory",
+    "gradient",
+    "representation",
+    "difference",
+    "equivalence",
+    "environment",
+    "measurement",
+    "failure",
+    "failures",
+    "superiority",
+    "eligible",
+    "records",
+    "dangerous",
+    "coverage",
+    "cost",
+    "calibration",
+)
 
 STATUS_LABELS = {
     "supported": "поддержано",
@@ -84,6 +196,249 @@ def latex_digest(value: object) -> str:
     return r"\texttt{sha256:" + r"\allowbreak{}".join(chunks) + "}"
 
 
+
+def latex_prose(value: object) -> str:
+    """Escape prose while preserving a small set of exact machine identifiers."""
+    rendered = latex_breakable(value)
+    identifiers = (
+        "lenet_classic",
+        "state_inference",
+        "isolated_layer_vjp",
+        "composite_vjp",
+    )
+    for identifier in identifiers:
+        escaped = latex_breakable(identifier)
+        rendered = rendered.replace(escaped, latex_code(identifier))
+    return rendered
+
+
+def visible_russian_tex(text: str, *, strip_english_abstract: bool = False) -> str:
+    """Return user-visible Russian LaTeX prose with technical surfaces masked."""
+    if strip_english_abstract:
+        text = re.sub(
+            r"\\begin\{otherlanguage\}\{english\}.*?\\end\{otherlanguage\}",
+            " ",
+            text,
+            flags=re.DOTALL,
+        )
+    text = re.sub(r"(?m)%.*$", " ", text)
+    text = re.sub(
+        r"\\begin\{verbatim\}.*?\\end\{verbatim\}",
+        " ",
+        text,
+        flags=re.DOTALL,
+    )
+    for command in (
+        "code",
+        "texttt",
+        "cite",
+        "label",
+        "ref",
+        "pageref",
+        "input",
+        "includegraphics",
+        "url",
+        "href",
+    ):
+        text = re.sub(
+            rf"\\{command}(?:\[[^\]]*\])?\{{[^{{}}]*\}}",
+            " ",
+            text,
+        )
+    return text
+
+
+def visible_russian_markdown(text: str) -> str:
+    """Return Russian Markdown prose with code and link targets masked."""
+    text = re.sub(r"```.*?```", " ", text, flags=re.DOTALL)
+    text = re.sub(r"`[^`]+`", " ", text)
+    text = re.sub(r"\[[^\]]*\]\([^)]*\)", lambda m: m.group(0).split("]", 1)[0][1:], text)
+    return text
+
+
+def validate_russian_thesis_prose(rendered_assets: dict[Path, str]) -> None:
+    """Reject generic English working vocabulary in Russian thesis-facing prose."""
+    surfaces: list[tuple[str, str]] = []
+    for path in RUSSIAN_THESIS_SOURCES:
+        source = path.read_text(encoding="utf-8")
+        visible = visible_russian_tex(
+            source,
+            strip_english_abstract=path.name == "abstracts.tex",
+        )
+        surfaces.append((path.relative_to(ROOT).as_posix(), visible))
+
+    for path in RUSSIAN_THESIS_SUPPORT_DOCS:
+        source = path.read_text(encoding="utf-8")
+        surfaces.append(
+            (path.relative_to(ROOT).as_posix(), visible_russian_markdown(source))
+        )
+
+    for path, rendered in rendered_assets.items():
+        surfaces.append(
+            (
+                path.relative_to(ROOT).as_posix(),
+                visible_russian_tex(rendered),
+            )
+        )
+
+    violations: list[str] = []
+    for label, text in surfaces:
+        lowered = text.casefold()
+        for term in NONCANONICAL_RUSSIAN_PROSE:
+            pattern = rf"(?<![A-Za-z0-9_-]){re.escape(term)}(?![A-Za-z0-9_-])"
+            if re.search(pattern, lowered, flags=re.IGNORECASE):
+                violations.append(f"{label}: {term}")
+
+    require(
+        not violations,
+        "noncanonical English prose in Russian dissertation: " + "; ".join(violations),
+    )
+
+def parse_glossary_entries() -> list[dict[str, str]]:
+    """Parse the canonical Russian glossary and verify bilingual TERM-* parity."""
+    ru_text = GLOSSARY_RU_PATH.read_text(encoding="utf-8")
+    en_text = GLOSSARY_EN_PATH.read_text(encoding="utf-8")
+
+    entry_re = re.compile(r"^### (TERM-[A-Z0-9-]+) — (.+)$")
+
+    def parse_russian(text: str) -> list[dict[str, str]]:
+        entries: list[dict[str, str]] = []
+        section = ""
+        current: dict[str, str] | None = None
+        for raw_line in text.splitlines():
+            if raw_line.startswith("## "):
+                section = raw_line.removeprefix("## ").strip()
+                continue
+            match = entry_re.match(raw_line)
+            if match:
+                if current is not None:
+                    entries.append(current)
+                current = {
+                    "term_id": match.group(1),
+                    "term": match.group(2).strip(),
+                    "section": section,
+                    "meaning": "",
+                    "rule": "",
+                    "name_semantics": "",
+                    "architectural_role": "",
+                }
+                continue
+            if current is None:
+                continue
+            fields = (
+                ("- **Значение в работе:** ", "meaning"),
+                ("- **Правило употребления:** ", "rule"),
+                ("- **Семантика имени:** ", "name_semantics"),
+                ("- **Архитектурная роль:** ", "architectural_role"),
+            )
+            for prefix, key in fields:
+                if raw_line.startswith(prefix):
+                    current[key] = raw_line.removeprefix(prefix).strip()
+                    break
+        if current is not None:
+            entries.append(current)
+        return entries
+
+    ru_entries = parse_russian(ru_text)
+    en_ids = [
+        match.group(1)
+        for line in en_text.splitlines()
+        if (match := entry_re.match(line)) is not None
+    ]
+    ru_ids = [item["term_id"] for item in ru_entries]
+
+    require(
+        len(ru_entries) == EXPECTED_GLOSSARY_TERM_COUNT,
+        f"expected {EXPECTED_GLOSSARY_TERM_COUNT} glossary terms, got {len(ru_entries)}",
+    )
+    require(len(ru_ids) == len(set(ru_ids)), "Russian glossary TERM-* identifiers must be unique")
+    require(ru_ids == en_ids, "Russian and English glossary TERM-* identifiers/order differ")
+    for item in ru_entries:
+        require(bool(item["section"]), f"{item['term_id']} has no glossary section")
+        require(bool(item["meaning"]), f"{item['term_id']} has no Russian meaning")
+        require(bool(item["rule"]), f"{item['term_id']} has no Russian usage rule")
+    return ru_entries
+
+
+def latex_glossary_inline(value: str) -> str:
+    """Render glossary Markdown inline code/math without translating identifiers."""
+    parts = re.split(r"(`[^`]*`|\$[^$]*\$|\\\([^)]*\\\))", value)
+    rendered: list[str] = []
+    for part in parts:
+        if not part:
+            continue
+        if part.startswith("`") and part.endswith("`"):
+            rendered.append(latex_code(part[1:-1]))
+        elif (part.startswith("$") and part.endswith("$")) or (
+            part.startswith(r"\(") and part.endswith(r"\)")
+        ):
+            rendered.append(part)
+        else:
+            rendered.append(latex_escape(part))
+    return "".join(rendered)
+
+
+def render_terminology_registry(entries: list[dict[str, str]]) -> str:
+    """Render every canonical TERM-* entry into the dissertation appendix."""
+    lines = [
+        "% Generated by scripts/build_thesis_assets.py; do not edit manually.",
+        r"\begingroup",
+        r"\small",
+    ]
+    current_section = ""
+    for item in entries:
+        section = item["section"]
+        if section != current_section:
+            if current_section:
+                lines.extend([r"\bottomrule", r"\end{longtable}", ""])
+            current_section = section
+            lines.extend(
+                [
+                    rf"\section{{{latex_escape(section)}}}",
+                    r"\begin{longtable}{@{}L{0.31\textwidth}L{0.59\textwidth}@{}}",
+                    r"\toprule",
+                    r"Термин & Каноническое значение и граница употребления \\",
+                    r"\midrule",
+                    r"\endfirsthead",
+                    r"\toprule",
+                    r"Термин & Каноническое значение и граница употребления \\",
+                    r"\midrule",
+                    r"\endhead",
+                ]
+            )
+        left = (
+            rf"\textbf{{{latex_glossary_inline(item['term'])}}}"
+            + r"\newline "
+            + latex_code(item["term_id"])
+        )
+        right_parts = [latex_glossary_inline(item["meaning"])]
+        if item["name_semantics"]:
+            right_parts.append(
+                r"\par\smallskip\emph{Семантика имени: }"
+                + latex_glossary_inline(item["name_semantics"])
+            )
+        if item["architectural_role"]:
+            right_parts.append(
+                r"\par\smallskip\emph{Архитектурная роль: }"
+                + latex_glossary_inline(item["architectural_role"])
+            )
+        right_parts.append(
+            r"\par\smallskip\emph{Правило употребления: }"
+            + latex_glossary_inline(item["rule"])
+        )
+        lines.append(left + " & " + "".join(right_parts) + r" \\")
+    if current_section:
+        lines.extend([r"\bottomrule", r"\end{longtable}"])
+    lines.extend([r"\endgroup", ""])
+    rendered = "\n".join(lines)
+    rendered_ids = re.findall(r"TERM-[A-Z0-9-]+", rendered)
+    require(
+        len(set(rendered_ids)) == EXPECTED_GLOSSARY_TERM_COUNT,
+        "rendered terminology registry does not contain every TERM-* identifier",
+    )
+    return rendered
+
+
 def validate_sha256_identity(value: object, label: str) -> None:
     require(isinstance(value, str), f"{label} must be a string")
     require(value.startswith("sha256:") and len(value) == 71, f"{label} must be sha256:<64 hex>")
@@ -126,6 +481,14 @@ def validate_claims(data: dict[str, object]) -> None:
 
 def validate_qwake(data: dict[str, object]) -> None:
     require(data.get("schema_version") == 1, "QWake summary schema_version must be 1")
+    require(
+        data.get("document_role") == "thesis-facing-derived-summary",
+        "QWake summary must remain a thesis-facing derived summary",
+    )
+    require(
+        data.get("scientific_evidence_status") == "not_new_scientific_evidence",
+        "QWake summary must not claim new scientific evidence",
+    )
     selection = data.get("selection")
     best = data.get("best_safe_policy")
     protocol = data.get("protocol")
@@ -181,6 +544,62 @@ def validate_qwake(data: dict[str, object]) -> None:
     require(int(best["cost_observer_ns"]) > 0, "observer cost must be positive")
     require(protocol.get("c2_policy_freeze_established") is False, "C2 policy freeze must remain false")
     require(protocol.get("c3_open") is False, "C3 must remain closed")
+
+
+def validate_qwake_claim_reconciliation(
+    claims_data: dict[str, object], qwake: dict[str, object]
+) -> None:
+    claims = claims_data.get("claims")
+    require(isinstance(claims, list), "claims must be a list for QWake reconciliation")
+    by_id = {item.get("id"): item for item in claims if isinstance(item, dict)}
+    for claim_id in ("C08", "C09", "C10", "C11"):
+        require(claim_id in by_id, f"missing QWake claim {claim_id}")
+
+    selection = qwake["selection"]
+    best = qwake["best_safe_policy"]
+    protocol = qwake["protocol"]
+    verification = qwake.get("verification")
+    require(isinstance(selection, dict), "QWake selection must be an object")
+    require(isinstance(best, dict), "QWake best_safe_policy must be an object")
+    require(isinstance(protocol, dict), "QWake protocol must be an object")
+    require(isinstance(verification, dict), "QWake verification must be an object")
+    require(int(verification.get("sealed_result_audit_fail", -1)) == 0, "sealed QWake audit must have zero failures")
+    require(int(verification.get("cost_decomposition_audit_fail", -1)) == 0, "QWake cost audit must have zero failures")
+    require(verification.get("zero_write") is True, "QWake thesis-facing verification must remain zero-write")
+
+    accepted = int(best["accepted_records"])
+    dangerous = int(best["dangerous_accepts"])
+    safe_accepts = accepted - dangerous
+    safe_nontrivial = int(selection["safe_nontrivial_count"])
+    eligible = int(selection["eligible_policy_count"])
+
+    require(safe_accepts > 0, "C08 requires at least one safe accepted record")
+    require(safe_nontrivial > 0, "C08 requires non-zero safe recognizability")
+    require(by_id["C08"].get("status") == "supported", "C08 status must be supported")
+
+    require(eligible == 0, "C09 rejection requires zero eligible policies")
+    require(
+        selection.get("status") == "bounded_negative_no_safe_beneficial_policy",
+        "C09 requires the frozen bounded-negative selection status",
+    )
+    require(by_id["C09"].get("status") == "rejected", "C09 status must be rejected")
+
+    require(by_id["C10"].get("status") == "not_tested", "C10 must remain not_tested")
+    require(by_id["C11"].get("status") == "not_tested", "C11 must remain not_tested")
+    require(protocol.get("c3_open") is False, "C11 not_tested requires C3 to remain closed")
+
+    require(
+        verification.get("policy_evaluation_performed") is False,
+        "thesis validation must not perform a new QWake policy evaluation",
+    )
+    require(
+        verification.get("policy_interpretation_performed") is False,
+        "thesis validation must not reinterpret the sealed QWake result",
+    )
+    require(
+        verification.get("cost_model_changed") is False,
+        "thesis validation must preserve frozen QWake cost accounting",
+    )
 
 
 def validate_core_results(data: dict[str, object]) -> None:
@@ -335,9 +754,9 @@ def render_claims(data: dict[str, object]) -> str:
             "{} & {} & {} & {} & {} \\\\".format(
                 latex_escape(item["id"]),
                 latex_escape(item["rq"]),
-                latex_breakable(item["claim"]),
+                latex_prose(item["claim"]),
                 latex_escape(STATUS_LABELS[str(item["status"])]),
-                latex_breakable(item["scope"]),
+                latex_prose(item["scope"]),
             )
         )
     lines.extend([r"\bottomrule", r"\end{longtable}", r"\endgroup", ""])
@@ -364,11 +783,11 @@ def render_program(core: dict[str, object], qwake: dict[str, object]) -> str:
         r"\toprule",
         texrow("Этап & Основная единица/объём & Роль & Завершённая граница"),
         r"\midrule",
-        texrow(f"Stage 1 & {int(s1['planned_cells'])} final cells; 10 model seeds & качество и стоимость & исходная сравнительная кампания"),
-        texrow(f"Stage 2 & {int(s2['completed_unique_cells'])} final cells & controlled implementation change & все final cells завершены; test evaluated"),
-        texrow(f"Stage 3A & {int(s3a['independent_model_seeds'])} model seeds & mechanism diagnostics & gradients, CKA/RSA и численный Exact-control"),
-        texrow(f"Stage 3B & {int(s3b['matched_profiling']['matched_cell_count'])} matched cells & cost/mechanism attribution & B0, SI-MA0/1, B1/B2 и sealed profiling"),
-        texrow(f"QWake C2 & {int(selection['candidate_count'])} frozen policies; 756 records & безопасность и экономика & bounded negative result; C3 closed"),
+        texrow(f"этап 1 & {int(s1['planned_cells'])} итоговых ячеек; 10 независимо обученных моделей & качество и стоимость & исходная сравнительная кампания"),
+        texrow(f"этап 2 & {int(s2['completed_unique_cells'])} итоговых ячеек & контролируемое изменение реализации & все итоговые ячейки завершены; тестовая оценка выполнена"),
+        texrow(f"этап 3A & {int(s3a['independent_model_seeds'])} независимо обученных моделей & диагностика механизма & градиенты, CKA/RSA и численный контроль Exact"),
+        texrow(f"этап 3B & {int(s3b['matched_profiling']['matched_cell_count'])} сопоставленных ячеек & стоимость и отнесение к механизму & B0, SI-MA0/1, B1/B2 и профилирование с зафиксированной целостностью"),
+        texrow(f"QWake C2 & {int(selection['candidate_count'])} зафиксированных правил; 756 записей & безопасность и экономика & ограниченно отрицательный результат; C3 закрыт"),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
@@ -387,11 +806,11 @@ def render_stage12(core: dict[str, object]) -> str:
         "% Generated by scripts/build_thesis_assets.py; do not edit manually.",
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{Stage 1: FashionMNIST, средние значения по 10 model seeds}",
+        r"\caption{Этап 1: FashionMNIST, средние значения по 10 независимо обученным моделям}",
         r"\label{tab:stage1-summary}",
         r"\begin{tabular}{lrr}",
         r"\toprule",
-        texrow("Метод & Test macro-F1 & Training time, s"),
+        texrow("Метод & Тестовая macro-F1 & Время обучения, с"),
         r"\midrule",
     ]
     for method, label in (("bp", "BP"), ("exact", "Exact"), ("fixedpred", "FixedPred"), ("strict", "Strict")):
@@ -404,7 +823,7 @@ def render_stage12(core: dict[str, object]) -> str:
             "",
             r"\begin{table}[htbp]",
             r"\centering",
-            r"\caption{Stage 2: cross-version отношение runtime-over-BP к Stage 1}",
+            r"\caption{Этап 2: межверсионное отношение времени выполнения относительно BP к этапу 1}",
             r"\label{tab:stage2-runtime-ratio}",
             r"\begin{tabular}{lrr}",
             r"\toprule",
@@ -428,18 +847,18 @@ def render_stage3(core: dict[str, object]) -> str:
         "% Generated by scripts/build_thesis_assets.py; do not edit manually.",
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{Ключевые зарегистрированные результаты Stage 3}",
+        r"\caption{Ключевые зарегистрированные результаты этапа 3}",
         r"\label{tab:stage3-summary}",
-        r"\begin{tabular}{@{}L{0.14\textwidth}L{0.73\textwidth}@{}}",
+        r"\begin{tabular}{@{}L{0.18\textwidth}L{0.69\textwidth}@{}}",
         r"\toprule",
         texrow("Подэтап & Зарегистрированный результат"),
         r"\midrule",
-        texrow(f"Stage 3A & Exact max abs error = {float(s3a['exact_control_max_abs_error']):.3e}; FixedPred layer-0 cosine = {float(s3a['fixedpred']['gradient_layer0_cosine_mean']):.6f}, norm ratio = {float(s3a['fixedpred']['gradient_layer0_norm_ratio_mean']):.6f}."),
-        texrow(f"B0 & median Strict/FixedPred device-time ratio = {float(b0['strict_to_fixedpred_device_time_configuration_median_ratio']):.3f}; peak-allocated ratio = {float(b0['strict_to_fixedpred_peak_allocated_configuration_median_ratio']):.3f}."),
-        texrow(f"SI-MA0 & COST-MA0 = FAIL; {int(ma0['passing_measured_steps'])}/{int(ma0['measured_steps'])} measured steps passed; median signed accounting residual = {float(ma0['accounting_residual_median']):.3f}."),
-        texrow(f"SI-MA1 & CAL-COST-MA1 = PASS; 10 model seeds, {int(ma1['matched_block_count'])} matched blocks; upper one-sided 95\\% = {float(ma1['upper_one_sided_95']):.3f} at threshold {float(ma1['threshold']):.2f}."),
-        texrow(f"B1/B2 & EQ-B1 and EQ-B2 = PASS; B1: {int(s3b['b1']['observed_pair_count'])} pairs, B2: {int(s3b['b2']['matched_triples_observed'])} matched triples; zero failed pairs."),
-        texrow(f"Matched profiling & {int(s3b['matched_profiling']['matched_cell_count'])}/{int(s3b['matched_profiling']['matched_cell_count'])} cells sealed, {int(s3b['matched_profiling']['cross_candidate_correctness_block_count'])} correctness blocks, retries = {int(s3b['matched_profiling']['retried_cell_count'])}."),
+        texrow(f"этап 3A & максимальная абсолютная ошибка Exact = {float(s3a['exact_control_max_abs_error']):.3e}; косинусное сходство FixedPred на слое 0 = {float(s3a['fixedpred']['gradient_layer0_cosine_mean']):.6f}, отношение норм = {float(s3a['fixedpred']['gradient_layer0_norm_ratio_mean']):.6f}."),
+        texrow(f"B0 & медианное отношение времени устройства Strict/FixedPred = {float(b0['strict_to_fixedpred_device_time_configuration_median_ratio']):.3f}; отношение пиковой выделенной памяти = {float(b0['strict_to_fixedpred_peak_allocated_configuration_median_ratio']):.3f}."),
+        texrow(f"SI-MA0 & COST-MA0 не пройдена; проверку прошли {int(ma0['passing_measured_steps'])}/{int(ma0['measured_steps'])} измеренных шагов; медианный знаковый остаток учёта = {float(ma0['accounting_residual_median']):.3f}."),
+        texrow(f"SI-MA1 & CAL-COST-MA1 пройдена; 10 независимо обученных моделей, {int(ma1['matched_block_count'])} сопоставленных блоков; верхняя односторонняя 95\\%-я граница = {float(ma1['upper_one_sided_95']):.3f} при пороге {float(ma1['threshold']):.2f}."),
+        texrow(f"B1/B2 & EQ-B1 и EQ-B2 пройдены; B1: {int(s3b['b1']['observed_pair_count'])} пар, B2: {int(s3b['b2']['matched_triples_observed'])} сопоставленных троек; неуспешных пар нет."),
+        texrow(f"Сопоставленное профилирование & целостность зафиксирована для {int(s3b['matched_profiling']['matched_cell_count'])}/{int(s3b['matched_profiling']['matched_cell_count'])} ячеек; {int(s3b['matched_profiling']['cross_candidate_correctness_block_count'])} блоков проверки корректности; повторных запусков = {int(s3b['matched_profiling']['retried_cell_count'])}."),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
@@ -456,37 +875,37 @@ def render_qwake(qwake: dict[str, object]) -> str:
         "% Generated by scripts/build_thesis_assets.py; do not edit manually.",
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{QWake C2: последовательность зарегистрированных gates}",
+        r"\caption{QWake C2: последовательность зарегистрированных проверок}",
         r"\label{tab:qwake-funnel}",
         r"\begin{tabular}{lr}",
         r"\toprule",
-        texrow("Категория & Число policies"),
+        texrow("Категория & Число правил"),
         r"\midrule",
-        texrow(f"Всего frozen candidates & {int(s['candidate_count'])}"),
-        texrow(f"Unsafe & {int(s['unsafe_count'])}"),
-        texrow(f"Zero-danger & {int(s['zero_danger_count'])}"),
-        texrow(f"Safe + nontrivial coverage & {int(s['safe_nontrivial_count'])}"),
-        texrow(f"Safe + beneficial & {int(s['eligible_policy_count'])}"),
+        texrow(f"Всего зафиксированных кандидатов & {int(s['candidate_count'])}"),
+        texrow(f"Небезопасные & {int(s['unsafe_count'])}"),
+        texrow(f"Без опасных принятий & {int(s['zero_danger_count'])}"),
+        texrow(f"Безопасные с ненулевым покрытием & {int(s['safe_nontrivial_count'])}"),
+        texrow(f"Безопасные и экономически выгодные & {int(s['eligible_policy_count'])}"),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
         "",
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{QWake C2: decomposition лучшей безопасной policy при frozen accounting}",
+        r"\caption{QWake C2: разложение стоимости лучшего безопасного правила при зафиксированном учёте}",
         r"\label{tab:qwake-cost}",
         r"\begin{tabular}{lr}",
         r"\toprule",
         texrow("Показатель & Значение"),
         r"\midrule",
-        texrow(f"Accepted / evaluated & {int(b['accepted_records'])} / {int(b['evaluated_records'])}"),
-        texrow(f"Dangerous accepts & {int(b['dangerous_accepts'])}"),
-        texrow(f"Coverage & {float(b['coverage']) * 100.0:.2f}\\%"),
-        texrow(f"Gross safely avoidable suffix & {int(b['gross_implied_avoided_suffix_ns']) / 1e9:.3f} s"),
-        texrow(f"Full decision cost & {int(b['total_decision_cost_ns']) / 1e9:.3f} s"),
-        texrow(f"Observer share of full cost & {observer_share:.3f}\\%"),
-        texrow(f"Aggregate net saving & {int(b['total_net_saving_ns']) / 1e9:.3f} s"),
-        texrow(f"Break-even cost reduction & {float(b['required_cost_reduction_for_zero_net_fraction']) * 100.0:.3f}\\%"),
+        texrow(f"Принято / оценено & {int(b['accepted_records'])} / {int(b['evaluated_records'])}"),
+        texrow(f"Опасные принятия & {int(b['dangerous_accepts'])}"),
+        texrow(f"Покрытие & {float(b['coverage']) * 100.0:.2f}\\%"),
+        texrow(f"Безопасно устранимый остаток вычисления & {int(b['gross_implied_avoided_suffix_ns']) / 1e9:.3f} с"),
+        texrow(f"Полная стоимость решения & {int(b['total_decision_cost_ns']) / 1e9:.3f} с"),
+        texrow(f"Доля наблюдателя в полной стоимости & {observer_share:.3f}\\%"),
+        texrow(f"Совокупная чистая экономия & {int(b['total_net_saving_ns']) / 1e9:.3f} с"),
+        texrow(f"Снижение стоимости до безубыточности & {float(b['required_cost_reduction_for_zero_net_fraction']) * 100.0:.3f}\\%"),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
@@ -507,11 +926,11 @@ def render_reproducibility(core: dict[str, object], qwake: dict[str, object]) ->
         r"\footnotesize",
         r"\begin{longtable}{@{}L{0.50\textwidth}L{0.38\textwidth}@{}}",
         r"\toprule",
-        r"Источник / identity & SHA-256 \\",
+        r"Источник / идентификатор & SHA-256 \\",
         r"\midrule",
         r"\endfirsthead",
         r"\toprule",
-        r"Источник / identity & SHA-256 \\",
+        r"Источник / идентификатор & SHA-256 \\",
         r"\midrule",
         r"\endhead",
     ]
@@ -519,11 +938,11 @@ def render_reproducibility(core: dict[str, object], qwake: dict[str, object]) ->
         lines.append(f"{latex_code(relative)} & {latex_digest(digest)} \\\\")
 
     qlabels = (
-        ("QWake C2 policy-selection file", "policy_selection_file_sha256"),
-        ("QWake C2 receipt semantic", "receipt_semantic_sha256"),
-        ("QWake C2 receipt file", "receipt_file_sha256"),
-        ("QWake best-safe policy", "best_safe_policy_sha256"),
-        ("QWake common decision-cost sequence", "common_decision_cost_sequence_sha256"),
+        ("Файл выбора правила QWake C2", "policy_selection_file_sha256"),
+        ("Семантика квитанции QWake C2", "receipt_semantic_sha256"),
+        ("Файл квитанции QWake C2", "receipt_file_sha256"),
+        ("Лучшее безопасное правило QWake", "best_safe_policy_sha256"),
+        ("Общая последовательность стоимости решения QWake", "common_decision_cost_sequence_sha256"),
     )
     for label, key in qlabels:
         lines.append(f"{latex_escape(label)} & {latex_digest(source[key])} \\\\")
@@ -540,22 +959,12 @@ def main() -> None:
     claims = load(CLAIMS_PATH)
     qwake = load(QWAKE_PATH)
     core = load(CORE_RESULTS_PATH)
+    glossary_entries = parse_glossary_entries()
     validate_claims(claims)
     validate_qwake(qwake)
+    validate_qwake_claim_reconciliation(claims, qwake)
     validate_core_results(core)
 
-    print("THESIS_CLAIMS_SCHEMA=PASS")
-    print("THESIS_QWAKE_SUMMARY_ARITHMETIC=PASS")
-    print("THESIS_QWAKE_PROTOCOL_BOUNDARY=PASS")
-    print("THESIS_CORE_RESULTS_SOURCE_BINDINGS=PASS")
-    print("THESIS_CORE_RESULTS_RECONCILIATION=PASS")
-    print("THESIS_PROVENANCE_IDENTITIES=PASS")
-
-    if args.check:
-        print("THESIS_ASSET_WRITE=false")
-        return
-
-    GENERATED.mkdir(parents=True, exist_ok=True)
     assets = {
         CLAIMS_TEX: render_claims(claims),
         PROGRAM_TEX: render_program(core, qwake),
@@ -563,7 +972,27 @@ def main() -> None:
         STAGE3_TEX: render_stage3(core),
         QWAKE_TEX: render_qwake(qwake),
         REPRO_TEX: render_reproducibility(core, qwake),
+        TERMINOLOGY_TEX: render_terminology_registry(glossary_entries),
     }
+    validate_russian_thesis_prose(assets)
+
+    print("THESIS_CLAIMS_SCHEMA=PASS")
+    print("THESIS_QWAKE_SUMMARY_ARITHMETIC=PASS")
+    print("THESIS_QWAKE_PROTOCOL_BOUNDARY=PASS")
+    print("THESIS_QWAKE_CLAIM_RECONCILIATION=PASS")
+    print("THESIS_CORE_RESULTS_SOURCE_BINDINGS=PASS")
+    print("THESIS_CORE_RESULTS_RECONCILIATION=PASS")
+    print("THESIS_PROVENANCE_IDENTITIES=PASS")
+    print("THESIS_RUSSIAN_PROSE=PASS")
+    print(f"THESIS_GLOSSARY_TERM_COUNT={len(glossary_entries)}")
+    print(f"THESIS_GLOSSARY_COVERAGE={len(glossary_entries)}/{EXPECTED_GLOSSARY_TERM_COUNT}")
+    print("THESIS_GLOSSARY_COVERAGE=PASS")
+
+    if args.check:
+        print("THESIS_ASSET_WRITE=false")
+        return
+
+    GENERATED.mkdir(parents=True, exist_ok=True)
     for path, rendered in assets.items():
         path.write_text(rendered, encoding="utf-8", newline="\n")
         print(f"THESIS_ASSET_RENDERED={path.relative_to(ROOT).as_posix()}")

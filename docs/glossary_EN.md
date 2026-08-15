@@ -421,12 +421,13 @@ equivalence and limits each meaning to the scope of this project.
 - **Project meaning:** An algorithm or protocol parameter set before training and not estimated as a model parameter from the training data.
 - **Usage rule:** State the selection rule and freeze point explicitly.
 
-## Reserved terms for the next research line
+## Theoretical, mechanism, and control terms
 
-The following definitions establish terminology for operator diagnostics,
-local-predictor design, and the primary post-B0 working scenario. They do not
-change current B0 findings or authorize candidate execution without separate
-checks and decision gates.
+The following definitions form the extended theoretical and control vocabulary
+of the study. They include concepts already used by PC-TREF, PC-CATM, and QWake,
+as well as bounded theoretical constructs whose empirical status is stated
+separately in the dissertation. Presence in the glossary does not itself imply
+a positive experimental result or authorization for a new execution.
 
 <a id="term-mechanism-attribution"></a>
 ### TERM-MECHANISM-ATTRIBUTION — mechanism attribution
@@ -466,14 +467,14 @@ checks and decision gates.
 <a id="term-pc-tref"></a>
 ### TERM-PC-TREF — Predictive-Coding Task-Relative Equivalence Framework (PC-TREF)
 
-- **Russian equivalent:** рамка относительной к задаче эквивалентности predictive coding (PC-TREF).
+- **Russian equivalent:** рамка относительной к задаче эквивалентности предиктивного кодирования (PC-TREF).
 - **Project meaning:** The upper-level framework linking a diagnostic state representation to the required computational action and evaluating whether the retained distinctions are sufficient for adaptive inference.
 - **Usage rule:** PC-TREF specializes established equivalence, sufficiency, and quotient-space concepts; it is not presented as a universal theory beyond the registered predictive-coding scope.
 
 <a id="term-pc-catm"></a>
 ### TERM-PC-CATM — Predictive-Coding Correction Aggregation and Transport Model (PC-CATM)
 
-- **Russian equivalent:** операторная модель агрегации коррекций и переноса ошибок в predictive coding (PC-CATM).
+- **Russian equivalent:** операторная модель агрегации коррекций и переноса ошибок в предиктивном кодировании (PC-CATM).
 - **Project meaning:** The mechanism operator model of canonical channels, their aggregation, state-error transport, and the NCZ, ECZ, and TNZ null regimes.
 - **Usage rule:** PC-CATM is the mechanism layer of PC-TREF; PNZ is included only as a limited parameter-accessibility extension.
 
@@ -494,7 +495,7 @@ checks and decision gates.
 <a id="term-decision-regret"></a>
 ### TERM-DECISION-REGRET — decision regret
 
-- **Russian equivalent:** regret решения.
+- **Russian equivalent:** избыточная потеря решения.
 - **Project meaning:** The additional registered loss of a selected action relative to the best available action in the same state and action space.
 - **Usage rule:** Freeze the loss function, improvement direction, aggregation unit, and admissible tolerance $\delta_R$ before confirmatory analysis.
 
@@ -529,7 +530,7 @@ checks and decision gates.
 <a id="term-oracle-sufficiency-margin"></a>
 ### TERM-ORACLE-SUFFICIENCY-MARGIN — oracle sufficiency margin
 
-- **Russian equivalent:** oracle-запас достаточности.
+- **Russian equivalent:** эталонный запас достаточности.
 - **Project meaning:** The post-action quantity $M^*=\varepsilon_R-r_{\mathrm{skip}}^*$ computed through exact reference and representing the sign and reserve relative to the one-step operational boundary.
 - **Usage rule:** Oracle means post-action truth relative to the registered exact reference, not established global optimality; the margin is online-inaccessible before the exact action and remains distinct from its diagnostic estimate.
 
@@ -664,7 +665,7 @@ checks and decision gates.
 <a id="term-capability-gate"></a>
 ### TERM-CAPABILITY-GATE — capability gate
 
-- **Russian equivalent:** барьер capability.
+- **Russian equivalent:** барьер возможностей.
 - **Project meaning:** An internal fail-closed permission check at an effect boundary that permits only a preregistered capability embedded for the current campaign role.
 - **Usage rule:** A disabled capability does not execute and creates no hidden tensor read, allocation, synchronization, trace, or output; a manifest cannot carry arbitrary code.
 
@@ -692,7 +693,7 @@ checks and decision gates.
 <a id="term-pareto-admissibility"></a>
 ### TERM-PARETO-ADMISSIBILITY — Pareto admissibility
 
-- **Russian equivalent:** Pareto-допустимость.
+- **Russian equivalent:** Парето-допустимость.
 - **Project meaning:** An action is not dominated by another action on every registered quality and cost component with strict improvement on at least one component.
 - **Usage rule:** Pareto admissibility does not select one winner; a separate primary decision rule is preregistered.
 
@@ -738,12 +739,11 @@ checks and decision gates.
 - **Project meaning:** A nonzero local error in the kernel of the adjoint parameter Jacobian and therefore inaccessible to first-order parameter change of that layer.
 - **Usage rule:** In Scenario A, PNZ is a limited theoretical extension with a deterministic control; it does not imply global unlearnability or authorize skipped learning.
 
-## Glossary change procedure
+## Prospective theory and control extensions
 
-Changing the meaning of a canonical term requires updating both language
-versions, checking every repository-wide use, and explicitly documenting the
-migration from the previous wording. Change a `TERM-*` identifier only when
-concepts are split or merged, and record the change in the changelog.
+The following concepts define possible extensions beyond the mandatory
+experimental line of the current dissertation. Their presence fixes semantics
+but does not imply implementation or empirical validation.
 
 <a id="term-multiscale-mechanism-decision-architecture"></a>
 ### TERM-MULTISCALE-MECHANISM-DECISION-ARCHITECTURE — multiscale mechanism–decision architecture
@@ -788,10 +788,15 @@ concepts are split or merged, and record the change in the changelog.
 - **Project meaning:** A prospective PhD line in which qualified QWake correction events become native spikes and predictive-coding state, error transport, communication, and learning receive spike-native implementations.
 - **Usage rule:** It is not an implemented controller or an execution permission; QWake-SPC remains outside the mandatory boundary of the current master's thesis.
 
+## QWake-FP operational concepts
+
+The following terms belong to the bounded QWake-FP experimental embodiment and
+its exact-reference, shadow, and safety checks.
+
 <a id="term-rosenbaum-wavefront-control"></a>
 ### TERM-ROSENBAUM-WAVEFRONT-CONTROL — Rosenbaum wavefront control
 
-- **Russian equivalent:** wavefront-контроль Rosenbaum.
+- **Russian equivalent:** волновой контроль Розенбаума.
 - **Project meaning:** An analytic positive control for the \(\eta=1\) FixedPred special case, used to test the analytically known completion order of layerwise error and gradient components.
 - **Usage rule:** The control is not a new method, joint-VJP, a new exact reference, a policy action, or permission to terminate the full endpoint early; equations are checked against the 2022 article and the 2025 correction.
 
@@ -823,6 +828,13 @@ concepts are split or merged, and record the change in the changelog.
 - **Project meaning:** The share or set of states that are already sufficient under the post-action oracle but remain `UNKNOWN` under the registered low-cost pre-action representation.
 - **Usage rule:** The gap separates computational sufficiency from cheap diagnostic recognizability and is not treated as a failure of baseline FixedPred.
 
+
+## Reserved generalizations of computational action
+
+The following concepts provide vocabulary for possible later generalizations of
+results, mechanisms, and resource trajectories. In the current dissertation they
+are represented to bound terminology and do not constitute separate empirical
+claims.
 
 <a id="term-required-result"></a>
 ### TERM-REQUIRED-RESULT — required result
@@ -872,3 +884,10 @@ concepts are split or merged, and record the change in the changelog.
 - **Russian equivalent:** аналитическое завершение.
 - **Project meaning:** A bounded mechanism that obtains the registered result without explicitly replaying the whole computational sequence.
 - **Usage rule:** Admit it only for a preregistered bounded case after matched shadow validation and with an available exact fallback.
+
+## Glossary change procedure
+
+Changing a canonical term requires updating both language versions, checking
+all repository usages, and documenting the migration from the previous wording.
+Changing a `TERM-*` identifier is allowed only when concepts are split or merged
+and must be recorded in the changelog.

@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scripts.check_glossary_usage import (
+    check_russian_glossary_prose,
     check_russian_prose,
     first_term_event,
     parse_terms,
@@ -52,6 +53,18 @@ def test_russian_prose_rejects_unformatted_english_term(tmp_path: Path) -> None:
     errors = check_russian_prose(document, "Обычный runtime не разрешён.\n")
     assert errors
     assert "runtime" in errors[0]
+
+
+
+
+def test_russian_glossary_prose_rejects_unformatted_english_working_term(tmp_path: Path) -> None:
+    document = tmp_path / "glossary.md"
+    errors = check_russian_glossary_prose(
+        document,
+        "- **Значение в работе:** Этот scope не должен попадать в русский словарь.\n",
+    )
+    assert errors
+    assert "scope" in errors[0]
 
 
 def test_first_term_event_requires_expected_link() -> None:

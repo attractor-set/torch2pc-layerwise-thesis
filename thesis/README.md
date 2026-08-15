@@ -1,14 +1,14 @@
 # Исходники диссертации
 
-[English version](README_EN.md)
+[Английская версия](README_EN.md)
 
 `main.tex` является нейтральным LaTeX-каркасом, а не официальным шаблоном
-кафедры МИФИ. Текст включает нейтральные аннотации, список сокращений,
-основные главы и приложение по воспроизводимости; перед сдачей титульная
-страница и оформление заменяются на утвержденный шаблон.
+кафедры МИФИ. Текст включает аннотации, список сокращений, основные главы и
+приложение по воспроизводимости; перед сдачей титульная страница и оформление
+заменяются на утверждённый кафедрой шаблон.
 
 Таблицы и рисунки подключаются из `../results/`. Численные значения не следует
-переписывать вручную, если существует автоматически сформированная таблица.
+переписывать вручную, если для них существует автоматически формируемая таблица.
 
 Сборка:
 
@@ -16,23 +16,27 @@
 make thesis
 ```
 
-Сборка диссертации использует XeLaTeX и системные шрифты Liberation.
+Диссертация собирается XeLaTeX с использованием системных шрифтов Liberation.
 
-## Dissertation contract and generated assets
+## Контракт диссертации и формируемые материалы
 
-Research questions and the claims matrix are stored in
-`data/research_claims.json`. The QWake C2 thesis-facing aggregate summary is
-stored in `data/qwake_c2_verified_summary.json` and contains frozen source
-identities plus independently verified aggregate values; it does not replace
-or reinterpret the underlying scientific evidence.
+Исследовательские вопросы и матрица утверждений хранятся в
+`data/research_claims.json`. Сводка агрегированных результатов QWake C2 для
+диссертации хранится в `data/qwake_c2_verified_summary.json`: она содержит
+зафиксированные идентификаторы исходных материалов и независимо проверенные
+агрегированные значения, но не заменяет и не переопределяет исходные научные
+доказательные материалы.
 
-`make thesis` first validates these data files and deterministically renders
-the claims/results tables plus `generated/reproducibility_manifest.tex`, then
-runs XeLaTeX. Generated `.tex` assets are not committed. The reproducibility
-manifest binds the dissertation to tracked Stage 1/2/3 evidence and frozen
-QWake identities without copying the full forensic evidence surface into Git.
+Команда `make thesis` сначала проверяет эти файлы данных, затем детерминированно
+формирует таблицы утверждений и результатов, а также
+`generated/reproducibility_manifest.tex`, после чего запускает XeLaTeX.
+Формируемые файлы `.tex` не сохраняются в Git. Манифест воспроизводимости
+связывает диссертацию с отслеживаемыми доказательными материалами этап 1/2/3 и
+зафиксированными идентификаторами QWake без копирования полной служебной
+поверхности доказательств в дерево исходников диссертации.
 
-A data-only validation that does not require LaTeX can be run with:
+Проверку данных и происхождения материалов без запуска LaTeX можно выполнить
+командой:
 
 ```bash
 make thesis-check

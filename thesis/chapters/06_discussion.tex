@@ -1,28 +1,343 @@
 \chapter{Обсуждение}
+\label{ch:discussion}
 
-\section{От сходства поведения к механизмам}
-Интерпретация Stage~1--3 связывает наблюдаемое качество, послойные различия и
-измеренную вычислительную структуру, не сводя одно измерение к универсальной
-характеристике алгоритма.
+Эта глава интерпретирует результаты не как единый рейтинг исследованных
+режимов, а как последовательность ответов на RQ1--RQ3. Центральная линия
+диссертации состоит в разделении нескольких уровней, которые легко смешать:
+конечного поведения модели, внутренней структуры градиентов и представлений,
+механизма вычислительной стоимости и возможности использовать промежуточное
+состояние для управления оставшимся вычислением. Результаты глав
+\ref{ch:experiments} и \ref{ch:results} показывают, что переход между этими
+уровнями требует отдельного estimand и отдельной экспериментальной границы.
 
-\section{Safe recognizability и economic viability}
-QWake C2 разделяет два вопроса: наличие безопасно распознаваемой области и
-экономическую полезность при замороженном full decision-cost accounting.
-Первый получил bounded positive evidence; второй --- bounded negative result.
+\section{RQ1: близость к BP не является одномерным свойством}
+\label{sec:discussion-rq1}
 
-\section{Observer-dominated accounting}
-Cost decomposition рассматривается как свойство замороженного C2 accounting.
-Она не интерпретируется как прямое измерение marginal runtime cost простого
-recognizer, если такой отдельный estimand не был выполнен.
+Stage~1/2 и Stage~3A дают согласованную, но не сводимую к одной метрике картину.
+В Stage~1 для FashionMNIST конечные значения macro-F1 исследованных режимов
+располагались близко, а для FixedPred и Strict зарегистрированный paired
+equivalence analysis относительно BP находился внутри заранее заданной
+границы \(\pm 0.01\). Stage~2 сохранил зарегистрированное final quality при
+изменившемся runtime-over-BP. Уже это разделяет качество результата и цену его
+получения.
 
-\section{Ограничения и угрозы валидности}
-Обсуждаются конкретная реализация Torch2PC, архитектура, наборы данных,
-численные допуски, число model seeds, аппаратная среда, иерархическая структура
-наблюдений, границы candidate family и различие между full accounting и
-marginal implementation cost.
+Stage~3A дополнительно показывает, почему одинаковая или практически
+эквивалентная final metric не должна использоваться как proxy внутренней
+эквивалентности. Для FixedPred направление градиента в исследованной области
+остаётся близким к BP, но ранний gradient norm сильно уменьшен. Strict
+демонстрирует более заметное расхождение и по направлению скрытых градиентов,
+и по representation metrics. Следовательно, утверждение C02 относится к
+конкретным координатам внутреннего состояния --- gradient direction,
+gradient scale и representation similarity --- а не к общему понятию
+``эквивалентности алгоритмов''.
 
-\section{Последующая работа}
-Естественный successor question состоит в проверке того, может ли более дешёвый
-наблюдатель или lightweight recognizer сохранить найденную безопасную область
-и пересечь экономическую break-even границу. Это новый estimand и не является
-частью завершённого C2.
+Такой результат согласуется с литературной рамкой главы
+\ref{ch:related-work}. Теоретические отношения PC и BP зависят от конкретной
+динамики, initialization и update schedule
+\cite{whittington2017approximation,song2020exact,millidge2022arbitrary,
+rosenbaum2022relationship,rosenbaum2025correction}. Эмпирическая часть этой
+работы добавляет к такому разграничению исполняемую perspective: даже когда
+конечная метрика не различает режимы в practically significant scale,
+градиентные и representation-level diagnostics могут различать их внутренние
+траектории.
+
+Поэтому ответ на RQ1 имеет условную форму. В исследованной области существуют
+режимы и метрики, по которым наблюдается близость к BP, но область этой
+близости зависит от уровня анализа. Exact выполняет роль численного и
+технического контроля; FixedPred сохраняет более тесное согласование с BP по
+направлению градиента и представлениям, чем Strict в зарегистрированной
+Stage~3A области; при этом FixedPred не сохраняет ранний gradient scale.
+Диссертация не сводит эти наблюдения к единственному scalar score и не
+переносит их за пределы исследованных реализаций, datasets и model seeds.
+
+\section{RQ2: от runtime difference к механизму стоимости}
+\label{sec:discussion-rq2}
+
+RQ2 возникает из ограничения RQ1: наблюдаемое различие времени само по себе не
+объясняет, какая часть вычисления создаёт эту разницу и можно ли изменить её,
+не изменив зарегистрированное поведение.
+
+B0 локализует основную device-time область внутри
+\texttt{state\_inference}. В закреплённой ROCm/float32 матрице Strict имеет
+более высокие device time и peak allocated memory относительно FixedPred, а
+доля \texttt{state\_inference} составляет основную часть device time для обоих
+режимов. C03 поэтому является mechanism-localization result в конкретной
+execution environment, а не универсальным утверждением о стоимости любого
+predictive-coding implementation.
+
+Дальнейшая последовательность SI-MA0 \(\rightarrow\) SI-MA1 имеет
+методологическое значение сама по себе. Первичная attribution model SI-MA0 не
+закрыла зарегистрированный COST-MA0 gate. Этот negative result сохранён как
+C04 и не заменён последующей calibration. SI-MA1 затем отвечает на более узкий
+вопрос: может ли отдельная observer calibration закрыть собственный
+CAL-COST-MA1 gate. В зарегистрированной поверхности этот gate проходит, а
+signed residual интерпретируется как over-closure относительно accounting
+equation, но не как отрицательная физическая длительность. Такое разделение
+не позволяет превратить calibration residual в искусственный ``бюджет'' для
+следующих стадий.
+
+B1 и B2 вводят ещё одно разделение: функциональная допустимость кандидата
+проверяется до сравнительного профилирования. Прохождение EQ-B1 и EQ-B2
+поддерживает C06 в пределах соответствующих exact candidates. После этого
+288-cell matched profiling формирует общую измерительную поверхность без
+failed cells или retries, что поддерживает C07. Однако завершённость этой
+матрицы не является сама по себе superiority result. В текущем claims
+contract отсутствует утверждение о том, что один из B1/B2 candidates
+универсально предпочтительнее другого.
+
+В совокупности RQ2 получает не один ``главный источник стоимости'', а
+последовательную локализацию. Сначала B0 выделяет
+\texttt{state\_inference}; затем mechanism-attribution отделяет исходную
+неудачную модель от последующей observer calibration; после этого exact
+candidates проходят собственные admission gates и только затем попадают в
+matched profiling. Такая staged organization уменьшает риск перепутать
+корректность, attribution и engineering trade-off.
+
+\section{RQ3: safe recognizability и economic viability}
+\label{sec:discussion-rq3}
+
+Финальный QWake вопрос специально разделяет информационную и экономическую
+части раннего решения. Это различие является главным интерпретационным
+результатом C2.
+
+В frozen family из 2\,625 scalar policies безопасная ненулевая
+pre-action распознаваемость существует. Из 2\,625 candidates 265 имеют zero
+dangerous accepts; 264 из них одновременно имеют ненулевое coverage. Лучшая
+безопасная policy принимает 216 из 756 records, то есть примерно 28.57\%,
+без dangerous accepts. Эти результаты поддерживают C08: в запечатанной
+calibration surface существует pre-action signal, позволяющий отделить
+ненулевую безопасную область в пределах заданного policy family.
+
+Экономическая часть того же вопроса получает другой ответ. Ни одна из
+2\,625 policies не удовлетворяет одновременно safety, nontrivial coverage и
+positive aggregate net saving при frozen full decision-cost accounting.
+Поэтому C09 отклонён в пределах точно зафиксированного C2 estimand. Это
+bounded-negative result: он исключает safe-and-beneficial policy внутри
+исследованного family, interpreter, evidence и cost accounting, но не
+распространяется на все возможные recognizers или способы реализации.
+
+Именно здесь важно не объединять C08 и C09. Если бы safe recognizability
+отсутствовала, successor engineering вопрос о более дешёвом recognizer не имел
+бы эмпирической опоры в этой calibration surface. Если бы, напротив, C09 был
+поддержан, C2 мог бы установить policy freeze и открыть confirmatory C3.
+Фактический результат находится между этими крайностями: безопасно
+распознаваемая область существует, но frozen accounting делает все проверенные
+policies невыгодными. Поэтому informational feasibility поддерживается, а
+frozen-accounting economic feasibility --- нет.
+
+\section{Observer-dominated accounting и граница интерпретации}
+\label{sec:discussion-observer-cost}
+
+Cost decomposition лучшей безопасной policy помогает локализовать причину
+отрицательного C2 результата. В frozen accounting полный aggregate decision
+cost составляет около 15\,096 секунд, тогда как gross safely avoidable suffix
+--- около 4.98 секунды. Около 99.887\% полного decision cost приходится на
+observer category. Для достижения zero net при том же gross benefit пришлось
+бы сократить учитываемый cost примерно на 99.967\%.
+
+Эти величины характеризуют \emph{frozen full decision-cost surface}, а не
+измеренную стоимость исполнения одного порогового условия
+\texttt{compute\_step >= 5}. В C2 всем candidates назначается одна и та же
+per-record cost sequence, извлечённая из C1 measured edges. Такое решение
+полезно как outcome-blind common accounting: после просмотра policy results
+нельзя назначить понравившемуся candidate более дешёвую cost model. Но оно
+одновременно ограничивает estimand.
+
+Следовательно, отношение full decision cost к gross safely avoided suffix
+нельзя интерпретировать как runtime ratio конкретного lightweight recognizer.
+C10 именно поэтому имеет статус \texttt{not\_tested}. Для его проверки нужен
+новый эксперимент, в котором marginal observation/admission path
+материализован, измерен независимо и заранее связан с тем же safety predicate.
+Пересчёт старого C2 с постфактум уменьшенной стоимостью не был бы проверкой
+этого вопроса, поскольку изменил бы estimand после известного результата.
+
+\section{Значение отрицательных результатов}
+\label{sec:discussion-negative-results}
+
+В исследовательской линии присутствуют по меньшей мере два содержательных
+negative gates: SI-MA0 и QWake C2 economic gate. Они выполняют разные функции,
+но вместе показывают, почему сохранение отрицательного результата важно для
+причинной интерпретации.
+
+SI-MA0 ограничивает первую mechanism-attribution модель. Последующая SI-MA1
+calibration не превращает исходный COST-MA0 в пройденный gate; она проверяет
+новую, более узкую конструкцию. Аналогично, bounded-negative C2 не становится
+положительным только потому, что после decomposition видна observer-dominated
+структура стоимости. Эта decomposition объясняет, \emph{где} находится
+accounting barrier, но не меняет исходное условие eligibility.
+
+Такая логика препятствует двум формам post-hoc reinterpretation. Во-первых,
+неуспешный gate нельзя молча заменить новым порогом и назвать продолжением той
+же проверки. Во-вторых, diagnostic result нельзя использовать как
+ретроспективное разрешение на этап, который preregistered protocol открывал
+только после положительного predecessor receipt. Поэтому отсутствие C3
+является частью результата: C11 остаётся \texttt{not\_tested}, поскольку C2
+не создал policy-freeze receipt.
+
+\section{Связь QWake с adaptive computation и selective prediction}
+\label{sec:discussion-related-qwake}
+
+QWake близок к adaptive-computation и early-exit literature по общей
+экономической постановке: дополнительный механизм решения имеет смысл только
+тогда, когда стоимость принятия решения компенсируется предотвращённым
+вычислением \cite{graves2016adaptive,bolukbasi2017adaptive}. Одновременно
+safety gate сближает задачу с selective prediction и risk-aware early exit,
+где coverage рассматривается вместе с риском
+\cite{geifman2019selectivenet,jazbec2024riskcontrol,valade2025eero}.
+
+Однако прямое отождествление было бы некорректным. В типичной multi-exit
+architecture промежуточный predictive head является частью модели и может
+обучаться специально для раннего выхода. В QWake C2 candidate использует
+ограниченное pre-action representation уже существующего iterative PC
+computation, а sufficiency проверяется post-action oracle. Кроме того,
+dangerous-accept criterion в текущем C2 является bounded empirical predicate,
+а не перенесённой из литературы статистического risk-control свойства.
+
+Поэтому вклад QWake в рамках этой диссертации состоит не в новом общем методе
+early exit, а в экспериментальном разделении трёх вопросов на одной sealed
+surface: доступен ли до действия полезный сигнал; может ли bounded policy
+использовать его без dangerous accepts; окупается ли это решение при заранее
+замороженном accounting. Полученные ответы различаются, и именно это различие
+задаёт направление successor work.
+
+\section{Угрозы валидности}
+\label{sec:discussion-validity}
+
+\subsection{Конструктная валидность}
+
+Понятия ``близость к BP'', ``стоимость'' и ``безопасность'' представлены
+конкретными операциональными определениями. Близость оценивается отдельно по
+final metrics, gradient direction/scale и representation similarity. Поэтому
+ни одна из этих метрик не должна использоваться как полная замена остальных.
+
+В Stage~3B стоимость представлена зарегистрированными device-time, memory и
+observer/accounting компонентами. В QWake безопасность означает отсутствие
+dangerous accepts на sealed calibration evidence относительно конкретного
+post-action oracle. Это более узкое понятие, чем статистическая гарантия риска
+на неизвестной генеральной совокупности.
+
+\subsection{Внутренняя валидность}
+
+Versioned protocols, frozen configs, exact source/image identities, checksums
+и admission gates уменьшают риск незаметного изменения условий между стадиями.
+Matched designs дополнительно уменьшают влияние несопоставимых execution
+conditions. Однако исследовательская программа развивается во времени:
+Stage~1/2, Stage~3A, Stage~3B и QWake имеют разные локальные estimands и
+инструментальные поверхности. Поэтому причинные связи между этапами
+интерпретируются как последовательное сужение вопросов, а не как единый
+монолитный эксперимент с неизменной measurement system.
+
+Для QWake важной защитой является отделение pre-action policy inputs от
+post-action oracle. В то же время C2 является calibration-stage bounded search,
+а не независимым confirmatory test. Отсутствие C3 ограничивает силу
+обобщения найденной safe recognizability.
+
+\subsection{Статистическая валидность}
+
+Основные Stage~1/2 и Stage~3A выводы опираются на десять независимо обученных
+model seeds. Послойные observations внутри одной модели не считаются
+дополнительными независимыми репликациями. Такой подход предотвращает
+псевдорепликацию, но оставляет ограниченную statistical power для небольших
+эффектов и ограничивает точность оценок между seed.
+
+Stage~1 отдельно различает difference testing и equivalence testing.
+Непрохождение difference test не используется как доказательство
+эквивалентности. QWake C2, в свою очередь, не является оценкой population
+risk: zero dangerous accepts относится к 756 sealed calibration records и
+замороженному candidate family.
+
+\subsection{Внешняя валидность}
+
+Экспериментальная область ограничена Torch2PC, FashionMNIST/MNIST,
+\texttt{lenet\_classic}, конкретными реализациями Exact/FixedPred/Strict,
+float32/ROCm profiling environment и зарегистрированными execution matrices.
+Другие архитектуры, datasets, hardware backends, precision regimes или
+варианты PC dynamics могут иметь иные gradient, representation и cost
+properties.
+
+Особенно ограничен перенос QWake economics. Observer-dominated accounting
+относится к измерительной архитектуре C1/C2. На другой runtime architecture
+соотношение observation cost и avoidable suffix может измениться. Поэтому
+результат C09 должен переноситься только вместе с его scope.
+
+\subsection{Воспроизводимость и provenance}
+
+Репозиторий хранит tracked evidence, frozen specifications и thesis-facing
+summaries с source SHA-256 bindings. CI проверяет selected aggregates до
+генерации LaTeX. Это уменьшает риск ручного расхождения текста и данных, но не
+означает, что любой внешний пользователь может воспроизвести каждый
+исторический scientific execution без исходной аппаратной среды и приватных
+или локально сохранённых forensic artifacts.
+
+Отдельно следует различать воспроизводимость научного результата и
+byte-for-byte идентичность PDF. Текущий thesis CI идентифицирует конкретный
+PDF artifact его SHA-256, однако сама по себе эта контрольная сумма не
+устанавливает детерминированность PDF между независимыми сборками.
+
+\section{Что текущая работа не устанавливает}
+\label{sec:discussion-nonclaims}
+
+Для предотвращения расширения выводов за пределы evidence полезно явно
+перечислить несколько утверждений, которые из диссертации не следуют:
+
+\begin{itemize}
+  \item не устанавливается универсальная эквивалентность predictive coding и
+        backpropagation;
+  \item не устанавливается универсальное преимущество FixedPred, Strict, B1
+        или B2;
+  \item zero dangerous accepts в C2 не является population-level safety
+        property;
+  \item bounded-negative C2 не исключает существование recognizer вне
+        замороженного семейства 2\,625 policies;
+  \item observer-dominated full accounting не измеряет marginal runtime cost
+        простого порогового recognizer;
+  \item confirmatory C3 не выполнялся и не может считаться неявно пройденным.
+\end{itemize}
+
+Эти ограничения являются частью claims contract, а не оговорками после
+получения результата. Они задают границу, внутри которой ответы на RQ1--RQ3
+остаются трассируемыми до зарегистрированной evidence surface.
+
+\section{Направления последующей работы}
+\label{sec:discussion-future}
+
+Первый successor question непосредственно следует из сочетания C08, C09 и
+C10: может ли lightweight recognizer сохранить найденную safe pre-action
+область при существенно меньшей \emph{marginal} стоимости наблюдения и
+решения. Для этого нужен новый preregistered estimand, в котором измеряется
+реальный incremental path конкретного recognizer. Такой эксперимент не должен
+переоценивать старый C2; он должен иметь новую identity, новую cost surface и
+собственный break-even criterion.
+
+Второе направление --- независимая проверка recognizability на новой
+confirmatory evidence surface. Она имеет смысл только после появления нового
+admissible policy или recognizer и не является продолжением закрытой C3 chain
+исходного C2.
+
+Третье направление --- расширение внешней валидности: другие datasets,
+архитектуры, глубины, precision regimes и hardware backends. Здесь важно
+сохранять уже использованное разделение поведенческой близости, внутреннего
+механизма и стоимости, а не переносить вывод одного уровня на другой.
+
+Наконец, mechanism-level часть может быть расширена профилированием
+альтернативных observer architectures и более дешёвых representations
+pre-action state. Научно существенным будет не само уменьшение overhead, а
+сохранение safety predicate при заранее зафиксированном accounting и
+независимой проверке.
+
+\section{Итог обсуждения}
+
+Основная интерпретация завершённой программы состоит в том, что три уровня
+осуществимости дают разные ответы. Поведенческая близость к BP наблюдается для
+части режимов и метрик, но не означает внутренней идентичности. Mechanism
+profiling локализует существенную стоимость и допускает точные альтернативные
+организации вычисления, но не превращает profiling matrix в автоматический
+superiority result. Наконец, QWake обнаруживает bounded safe recognizability,
+однако frozen full decision-cost accounting не допускает safe-and-beneficial
+policy в проверенном семействе.
+
+Такой результат не является незавершённостью экспериментальной программы.
+Напротив, stopping rule сработал по назначению: отсутствие eligible C2 policy
+закрыло confirmatory chain, сохранило C3 как \texttt{not\_tested} и
+локализовало следующий научный вопрос в новом estimand --- marginal
+implementation cost безопасного recognizer.

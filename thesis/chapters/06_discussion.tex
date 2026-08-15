@@ -185,8 +185,8 @@ safety gate сближает задачу с selective prediction и risk-aware 
 где coverage рассматривается вместе с риском
 \cite{geifman2019selectivenet,jazbec2024riskcontrol,valade2025eero}.
 
-Однако прямое отождествление было бы некорректным. В типичной multi-exit
-architecture промежуточный predictive head является частью модели и может
+Однако прямое отождествление было бы некорректным. В типичной архитектуре с
+несколькими выходами (multi-exit) промежуточный predictive head является частью модели и может
 обучаться специально для раннего выхода. В QWake C2 candidate использует
 ограниченное pre-action representation уже существующего iterative PC
 computation, а sufficiency проверяется post-action oracle. Кроме того,
@@ -248,8 +248,9 @@ risk: zero dangerous accepts относится к 756 sealed calibration record
 
 \subsection{Внешняя валидность}
 
-Экспериментальная область ограничена Torch2PC, FashionMNIST/MNIST,
-\texttt{lenet\_classic}, конкретными реализациями Exact/FixedPred/Strict,
+Экспериментальная область ограничена Torch2PC, наборами FashionMNIST и MNIST,
+архитектурой \code{lenet_classic} и конкретными реализациями
+Exact/FixedPred/Strict,
 float32/ROCm profiling environment и зарегистрированными execution matrices.
 Другие архитектуры, datasets, hardware backends, precision regimes или
 варианты PC dynamics могут иметь иные gradient, representation и cost
@@ -281,8 +282,7 @@ PDF artifact его SHA-256, однако сама по себе эта конт
 перечислить несколько утверждений, которые из диссертации не следуют:
 
 \begin{itemize}
-  \item не устанавливается универсальная эквивалентность predictive coding и
-        backpropagation;
+  \item не устанавливается универсальная эквивалентность PC и BP;
   \item не устанавливается универсальное преимущество FixedPred, Strict, B1
         или B2;
   \item zero dangerous accepts в C2 не является population-level safety

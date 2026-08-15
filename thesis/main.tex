@@ -10,10 +10,24 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{array}
+\usepackage{xurl}
+\usepackage{microtype}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{hyperref}
 \usepackage[backend=biber,style=numeric,sorting=nyt]{biblatex}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\setlength{\emergencystretch}{2em}
+
+\hypersetup{
+  hidelinks,
+  unicode=true,
+  pdftitle={Послойное и вычислительно сопоставимое сравнение режимов предиктивного кодирования и обратного распространения ошибки},
+  pdfauthor={Dzmitry Prychyna}
+}
 
 \geometry{left=30mm,right=15mm,top=20mm,bottom=20mm}
 \addbibresource{../references/bibliography.bib}
@@ -24,9 +38,18 @@
 \date{2026}
 
 \begin{document}
+\pagenumbering{roman}
+\hypersetup{pageanchor=false}
 \maketitle
+\hypersetup{pageanchor=true}
+\input{frontmatter/abstracts}
+\input{frontmatter/abbreviations}
 \tableofcontents
+\listoftables
+\listoffigures
 
+\clearpage
+\pagenumbering{arabic}
 \include{chapters/01_introduction}
 \include{chapters/02_related_work}
 \include{chapters/03_methodology}

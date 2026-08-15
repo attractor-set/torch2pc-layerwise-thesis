@@ -199,10 +199,10 @@ mechanism-attribution, observer calibration, точные кандидаты B1/
   marginal runtime recognizer не проверялась и не выводится из C2.
 
   \item На уровне исследовательской инфраструктуры реализована воспроизводимая
-  provenance chain: последовательные стадии связаны с commit/image identities,
-  manifest, request/authorization boundaries, receipts и checksums, а сборка
-  диссертации отделена от научного выполнения и использует read-only
-  thesis-facing summaries.
+  цепочка происхождения: стадии связаны с идентификаторами коммита и образа,
+  манифестами, границами запроса и авторизации, квитанциями и контрольными
+  суммами. Сборка диссертации отделена от научного выполнения и использует
+  компактные сводки только для чтения.
 \end{enumerate}
 
 \section{Контракт утверждений диссертации}
@@ -210,9 +210,9 @@ mechanism-attribution, observer calibration, точные кандидаты B1/
 
 Чтобы отделить фактический результат от последующей интерпретации, основные
 утверждения диссертации имеют явный статус. Таблица ниже
-генерируется из \texttt{thesis/data/research\_claims.json}. Для QWake численные
+генерируется из \code{thesis/data/research_claims.json}. Для QWake численные
 границы дополнительно связаны с
-\texttt{thesis/data/qwake\_c2\_verified\_summary.json}. Этот thesis-facing файл
+\code{thesis/data/qwake_c2_verified_summary.json}. Этот thesis-facing файл
 хранит уже независимо проверенные агрегаты и идентичности запечатанного C2
 результата; он явно не является новым scientific evidence и не заменяет
 первичные артефакты кампании.

@@ -15,9 +15,9 @@
 
 Stage~1 задавал исходную эмпирическую поверхность для RQ1. Использовались два
 набора данных, FashionMNIST и MNIST, одна архитектура
-\texttt{lenet\_classic} и четыре режима обучения: BP, Exact, FixedPred и
+\code{lenet_classic} и четыре режима обучения: BP, Exact, FixedPred и
 Strict. Для каждого сочетания dataset--method выполнялись десять независимо
-обученных моделей с \texttt{model\_seed}=0--9. Тем самым final matrix
+обученных моделей с \code{model_seed}=0--9. Тем самым final matrix
 содержала 80 ячеек.
 
 Для PC-режимов использовались значения гиперпараметров, закреплённые до final
@@ -52,7 +52,7 @@ cross-version анализе отдельно рассматриваются и�
 \section{Stage 3A: послойная диагностика}
 \label{sec:stage3a-experiment}
 
-Stage~3A был ограничен FashionMNIST, архитектурой \texttt{lenet\_classic} и
+Stage~3A был ограничен FashionMNIST, архитектурой \code{lenet_classic} и
 десятью независимо обученными моделями. Диагностические данные извлекались на
 validation split и не открывали новый доступ к test data. Сравнение выполнялось
 для BP, Exact, FixedPred и Strict.
@@ -80,14 +80,14 @@ Stage~3B переносил фокус с конечного качества и
 B0 измерял FixedPred и Strict в закреплённой ROCm/float32 среде на
 синтетической scaling matrix. Для каждой конфигурации использовались три
 независимых model seeds. Измерялись device/host time, peak memory и
-региональные затраты, включая \texttt{state\_inference}. B0 не пытался
+региональные затраты, включая \code{state_inference}. B0 не пытался
 доказать структурную локальность вычислительного графа; он локализовал области,
 в которых дальнейшая mechanism-attribution работа имела смысл.
 
 \subsection{SI-MA0 и SI-MA1}
 
 SI-MA0 проверял первую зарегистрированную модель accounting для стоимости
-\texttt{state\_inference}. Его отрицательный исход сохранялся как результат, а
+\code{state_inference}. Его отрицательный исход сохранялся как результат, а
 не использовался как основание для ретроспективной подстройки threshold.
 
 SI-MA1 был отдельной preregistered calibration, а не повтором SI-MA0. В нём
@@ -99,7 +99,7 @@ residual интерпретируется как over-closure accounting-мод�
 \subsection{B1 и B2: equivalence gates}
 
 После calibration были проверены два exact implementation candidates:
-\texttt{isolated\_layer\_vjp} (B1) и \texttt{composite\_vjp} (B2).
+\code{isolated_layer_vjp} (B1) и \code{composite_vjp} (B2).
 Confirmatory B1 сравнивал candidate с Stage~2 baseline на 120
 зарегистрированных парах. B2 использовал 120 matched triples и 240 парных
 сопоставлений между baseline, B1 и B2. Открытие следующего этапа зависело от
@@ -110,7 +110,7 @@ trajectory, structural, observer и provenance gates.
 
 После EQ-B1 и EQ-B2 была выполнена отдельная matched profiling matrix.
 Она содержала 288 cells: по 96 для Stage~2 baseline,
-\texttt{isolated\_layer\_vjp} и \texttt{composite\_vjp}. Cross-candidate
+\code{isolated_layer_vjp} и \code{composite_vjp}. Cross-candidate
 correctness проверялась на 96 matched blocks вне primary timing lane. Primary
 measurement lane не вычитала стоимость observer post hoc; observer-related
 структурные измерения сохранялись отдельно.

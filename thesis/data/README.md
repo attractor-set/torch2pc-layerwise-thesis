@@ -13,3 +13,10 @@ They are document inputs, not replacements for the underlying scientific evidenc
 `python3 scripts/build_thesis_assets.py --check` validates the internal consistency
 of these files without writing generated assets. `make thesis` renders the LaTeX
 claims matrix from them before compiling the PDF.
+
+`core_results_verified_summary.json` is a compact thesis-facing projection of
+tracked Stage 1/2/3 evidence. Its `source_bindings` map pins every upstream
+artifact by SHA-256. `scripts/build_thesis_assets.py` rehashes those files and
+reconciles the selected aggregates against the upstream CSV/JSON content before
+rendering dissertation tables. It is not a replacement for the underlying
+evidence and is explicitly marked `not_new_scientific_evidence`.

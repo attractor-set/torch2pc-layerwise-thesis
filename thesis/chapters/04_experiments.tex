@@ -1,25 +1,155 @@
 \chapter{Экспериментальная программа}
+\label{ch:experiments}
+
+Экспериментальная программа строилась последовательно: каждый следующий этап
+отвечал на вопрос, который оставался открытым после предыдущего, и не заменял
+его результаты. Поэтому Stage~1/2, Stage~3A, Stage~3B и QWake рассматриваются
+не как независимые наборы запусков, а как одна причинная цепочка от сравнения
+качества и стоимости к анализу внутреннего механизма и, затем, к проверке
+возможности раннего решения.
+
+\input{generated/experimental_program.tex}
 
 \section{Stage 1: исходная сравнительная кампания}
-Здесь описываются исходная реализация Torch2PC, матрица методов, наборы данных,
-model seeds и полный final execution Stage~1.
+\label{sec:stage1-experiment}
 
-\section{Stage 2: изменение вычислительного пути}
-Здесь фиксируются границы изменения реализации при сохранении
-экспериментального протокола, контрольные проверки и повторная 80-cell final
-campaign.
+Stage~1 задавал исходную эмпирическую поверхность для RQ1. Использовались два
+набора данных, FashionMNIST и MNIST, одна архитектура
+\texttt{lenet\_classic} и четыре режима обучения: BP, Exact, FixedPred и
+Strict. Для каждого сочетания dataset--method выполнялись десять независимо
+обученных моделей с \texttt{model\_seed}=0--9. Тем самым final matrix
+содержала 80 ячеек.
+
+Для PC-режимов использовались значения гиперпараметров, закреплённые до final
+execution: Exact --- $\eta=0.1$, 20 inference steps; FixedPred --- $\eta=0.1$,
+10 inference steps; Strict --- $\eta=0.05$, 20 inference steps. BP не имел
+соответствующих параметров внутреннего inference. Порядок final cells был
+детерминированно counterbalanced, чтобы порядок запуска не совпадал
+систематически с одним методом.
+
+Доступ к test split был отделён от pilot/validation. Final test оценивался
+только после фиксации pilot selection и для завершённого run. Основными
+выходами для диссертации являются test accuracy, macro-F1 и зарегистрированные
+вычислительные метрики. Для парных сравнений единицей оставалась отдельно
+обученная модель; отдельные examples и batches не рассматривались как новые
+независимые повторения.
+
+\section{Stage 2: controlled изменение вычислительного пути}
+\label{sec:stage2-experiment}
+
+Stage~2 сохранял основную 80-cell структуру Stage~1, но использовал изменённый
+вычислительный путь реализации. Целью было отделить свойства исследуемых
+режимов от издержек конкретной реализации. Сохранялись наборы данных,
+архитектура, методы, model seeds и final-test protocol; новая кампания получила
+собственную environment/provenance chain.
+
+Такой дизайн позволяет сравнивать две версии на совпадающих ячейках. В
+cross-version анализе отдельно рассматриваются изменения качества и
+вычислительных показателей. Нулевое изменение качества между версиями не
+интерпретируется как универсальная эквивалентность реализаций: оно относится к
+зафиксированной матрице, метрикам и конечному набору model seeds.
 
 \section{Stage 3A: послойная диагностика}
-Раздел описывает измерения градиентов и представлений, CKA/RSA и анализ по
-глубине на уровне \texttt{model\_seed}.
+\label{sec:stage3a-experiment}
 
-\section{Stage 3B: механизм и вычислительная стоимость}
-Раздел объединяет B0, SI-MA0, SI-MA1, точные B1/B2 candidates и matched
-profiling. Отрицательный COST-MA0 результат сохраняется как самостоятельный
-этап, а последующая calibration не переписывает его.
+Stage~3A был ограничен FashionMNIST, архитектурой \texttt{lenet\_classic} и
+десятью независимо обученными моделями. Диагностические данные извлекались на
+validation split и не открывали новый доступ к test data. Сравнение выполнялось
+для BP, Exact, FixedPred и Strict.
 
-\section{QWake: C1 opportunity и C2 bounded policy search}
-Раздел описывает frozen pre-action feature domain, sealed C1 trajectory
-surface, outcome-blind C2 candidate family и критерий safe-and-beneficial
-policy. C3 является условной стадией и открывается только при наличии
-C2 policy-freeze receipt.
+Для градиентов регистрировались cosine similarity, norm ratio, relative $L_2$
+error и sign agreement. Для внутренних представлений использовались CKA и RSA.
+Сначала метрики агрегировались внутри каждой модели, после чего статистические
+сравнения проводились на уровне model seed. Exact использовался также как
+численный контроль извлечения и сопоставления градиентов.
+
+Отдельный анализ по глубине проверял, меняется ли согласование с BP
+систематически при продвижении от ранних слоёв к выходу. Cross-layer CKA
+сохранялся как описательный материал и не превращал пары слоёв в независимые
+статистические единицы.
+
+\section{Stage 3B: профилирование стоимости и локализация механизма}
+\label{sec:stage3b-experiment}
+
+Stage~3B переносил фокус с конечного качества и сходства представлений на
+структуру вычислительной стоимости. Программа состояла из нескольких
+последовательных gates.
+
+\subsection{B0: baseline profiling}
+
+B0 измерял FixedPred и Strict в закреплённой ROCm/float32 среде на
+синтетической scaling matrix. Для каждой конфигурации использовались три
+независимых model seeds. Измерялись device/host time, peak memory и
+региональные затраты, включая \texttt{state\_inference}. B0 не пытался
+доказать структурную локальность вычислительного графа; он локализовал области,
+в которых дальнейшая mechanism-attribution работа имела смысл.
+
+\subsection{SI-MA0 и SI-MA1}
+
+SI-MA0 проверял первую зарегистрированную модель accounting для стоимости
+\texttt{state\_inference}. Его отрицательный исход сохранялся как результат, а
+не использовался как основание для ретроспективной подстройки threshold.
+
+SI-MA1 был отдельной preregistered calibration, а не повтором SI-MA0. В нём
+использовались десять model seeds и 180 matched blocks. Основным estimand был
+signed residual с заранее заданным односторонним gate. Отрицательный signed
+residual интерпретируется как over-closure accounting-модели и не означает
+отрицательную физическую стоимость выполнения.
+
+\subsection{B1 и B2: equivalence gates}
+
+После calibration были проверены два exact implementation candidates:
+\texttt{isolated\_layer\_vjp} (B1) и \texttt{composite\_vjp} (B2).
+Confirmatory B1 сравнивал candidate с Stage~2 baseline на 120
+зарегистрированных парах. B2 использовал 120 matched triples и 240 парных
+сопоставлений между baseline, B1 и B2. Открытие следующего этапа зависело от
+нулевого числа dangerous misses и прохождения зарегистрированных numerical,
+trajectory, structural, observer и provenance gates.
+
+\subsection{Matched profiling}
+
+После EQ-B1 и EQ-B2 была выполнена отдельная matched profiling matrix.
+Она содержала 288 cells: по 96 для Stage~2 baseline,
+\texttt{isolated\_layer\_vjp} и \texttt{composite\_vjp}. Cross-candidate
+correctness проверялась на 96 matched blocks вне primary timing lane. Primary
+measurement lane не вычитала стоимость observer post hoc; observer-related
+структурные измерения сохранялись отдельно.
+
+Эта матрица является инженерным профилированием, а не новым набором независимых
+реплик. Поэтому 288 cells не используются как $n=288$ для статистических
+утверждений о популяции моделей.
+
+\section{QWake: безопасная распознаваемость и экономический gate}
+\label{sec:qwake-experiment}
+
+QWake был построен как следующий вопрос после локализации стоимости: можно ли
+завершать часть итеративного вычисления раньше, используя только состояние,
+доступное до действия, не увеличивая dangerous acceptance.
+
+C1 формировал sealed calibration trajectories и post-action oracle labels.
+Oracle использовался для последующей оценки решения, но не был доступен
+candidate policy как pre-action feature. C2 использовал 756 sealed records и
+замороженную конечную family из 2625 scalar policies. Candidate generator был
+ограничен заранее выбранным набором scalar features и одномерными пороговыми
+правилами; поэтому C2 является bounded search, а не перебором всех возможных
+recognizers.
+
+Для каждого candidate фиксировались coverage, dangerous accepts и aggregate
+net saving при полном frozen decision-cost accounting. Eligibility требовала
+одновременно нулевого числа dangerous accepts, ненулевого coverage и
+положительного aggregate net saving. Только такой результат мог создать
+C2 policy-freeze receipt и открыть C3.
+
+\section{Принцип остановки экспериментальной программы}
+\label{sec:experiment-stopping}
+
+Экспериментальная программа не продолжалась до получения положительного
+результата. Отрицательные gates SI-MA0 и QWake C2 сохранялись в исходной
+семантике. Новый estimand, новая representation, другой accounting или
+marginal-cost benchmark минимального recognizer требуют отдельного successor
+protocol и не относятся к текущей confirmatory chain.
+
+Такой stopping rule особенно важен для QWake: отсутствие eligible C2 policy
+оставило C3 закрытым. Следовательно, отсутствие C3 в настоящей работе является
+результатом выполнения протокола, а не незавершённостью вычислительной
+кампании.

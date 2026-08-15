@@ -19,96 +19,96 @@
     },
     {
       "id": "RQ3",
-      "text": "Существуют ли в доступной до завершения вычисления trajectory surface достаточные для задачи preterminal состояния, можно ли безопасно распознавать их по pre-action состоянию и приводит ли такое решение к положительной вычислительной выгоде?"
+      "text": "Существуют ли на доступной до завершения вычисления поверхности траекторий предтерминальные состояния, достаточные относительно задачи; можно ли безопасно распознавать их по состоянию, доступному до действия; и приводит ли такое решение к положительной вычислительной выгоде?"
     }
   ],
   "claims": [
     {
       "id": "C01",
       "rq": "RQ1",
-      "claim": "В Stage 1 для FashionMNIST FixedPred и Strict находятся внутри заранее заданной paired macro-F1 equivalence margin ±0.01 относительно BP; Stage 2 сохраняет зарегистрированную final-quality surface при измеримом изменении runtime относительно Stage 1.",
+      "claim": "В этап 1 для FashionMNIST FixedPred и Strict находятся внутри заранее заданной парной границы эквивалентности macro-F1 ±0.01 относительно BP; этап 2 сохраняет зарегистрированную поверхность итогового качества при измеримом изменении времени выполнения относительно этап 1.",
       "status": "supported",
-      "scope": "Stage 1: FashionMNIST paired macro-F1; Stage 2: FashionMNIST и MNIST cross-version.",
-      "evidence": "thesis/data/core_results_verified_summary.json; tracked Stage 1/2 source bindings"
+      "scope": "этап 1: FashionMNIST, парное сравнение macro-F1; этап 2: межверсионное сравнение FashionMNIST и MNIST.",
+      "evidence": "thesis/data/core_results_verified_summary.json; отслеживаемые привязки исходных материалов этап 1/2"
     },
     {
       "id": "C02",
       "rq": "RQ1",
-      "claim": "В зарегистрированной Stage 3A области FixedPred ближе к BP по направлению градиента и представлениям, чем Strict; при этом FixedPred заметно уменьшает норму градиента в ранних слоях.",
+      "claim": "В зарегистрированной области этап 3A FixedPred ближе к BP по направлению градиента и представлениям, чем Strict; при этом FixedPred заметно уменьшает норму градиента в ранних слоях.",
       "status": "supported",
-      "scope": "Stage 3A; FashionMNIST; lenet_classic; model_seed 0--9.",
-      "evidence": "docs/stage3a-statistical-results.md; опубликованные Stage 3A tables/figures"
+      "scope": "этап 3A; FashionMNIST; архитектура lenet_classic; десять независимо обученных моделей.",
+      "evidence": "docs/stage3a-statistical-results.md; опубликованные таблицы и рисунки этап 3A"
     },
     {
       "id": "C03",
       "rq": "RQ2",
-      "claim": "В Stage 3B B0 Strict дороже FixedPred по времени устройства и пиковой памяти, а state_inference является основной областью времени.",
+      "claim": "В этап 3B B0 Strict дороже FixedPred по времени устройства и пиковой памяти, а state_inference является основной областью времени.",
       "status": "supported",
-      "scope": "Stage 3B B0; ROCm/float32; 96 канонических ячеек.",
+      "scope": "этап 3B B0; ROCm/float32; 96 канонических ячеек.",
       "evidence": "results/stage-3/profiling/b0/sealed-v1/; results/stage-3/profiling/b0/analysis-v1/"
     },
     {
       "id": "C04",
       "rq": "RQ2",
-      "claim": "Первичная mechanism-attribution модель SI-MA0 не закрыла зарегистрированный COST-MA0 gate.",
+      "claim": "Первичная модель отнесения стоимости к механизму SI-MA0 не прошла зарегистрированную проверку COST-MA0.",
       "status": "supported",
       "scope": "SI-MA0; десять независимо обученных моделей.",
-      "evidence": "зафиксированный SI-MA0 negative result и связанная provenance chain"
+      "evidence": "зафиксированный отрицательный результат SI-MA0 и связанная цепочка происхождения артефактов"
     },
     {
       "id": "C05",
       "rq": "RQ2",
-      "claim": "Отдельная observer calibration SI-MA1 прошла зарегистрированный CAL-COST-MA1 gate, при этом signed residual показывает over-closure, а не отрицательную физическую стоимость.",
+      "claim": "Отдельная калибровка стоимости наблюдателя SI-MA1 прошла зарегистрированную проверку CAL-COST-MA1; знаковый остаток при этом указывает на избыточное закрытие модели учёта, а не на отрицательную физическую стоимость.",
       "status": "supported",
-      "scope": "SI-MA1; 10 model_seed; 180 matched blocks.",
+      "scope": "SI-MA1; десять независимо обученных моделей; 180 сопоставленных блоков.",
       "evidence": "results/stage-3/si-ma1/confirmatory/"
     },
     {
       "id": "C06",
       "rq": "RQ2",
-      "claim": "Точные кандидаты B1 isolated_layer_vjp и B2 composite_vjp прошли свои зафиксированные equivalence gates EQ-B1 и EQ-B2.",
+      "claim": "Точные кандидаты B1 isolated_layer_vjp и B2 composite_vjp прошли свои зафиксированные проверки эквивалентности EQ-B1 и EQ-B2.",
       "status": "supported",
-      "scope": "Stage 3B B1/B2; exact implementation candidates.",
-      "evidence": "B1/B2 confirmatory receipts, freezes и matched-profiling provenance"
+      "scope": "этап 3B B1/B2; точные кандидаты реализации.",
+      "evidence": "подтверждающие квитанции и фиксации B1/B2, а также происхождение материалов сопоставленного профилирования"
     },
     {
       "id": "C07",
       "rq": "RQ2",
-      "claim": "Сопоставленное профилирование B0/B1/B2 выполнено полностью без failures или retries в зарегистрированной 288-cell matrix.",
+      "claim": "Сопоставленное профилирование B0/B1/B2 выполнено полностью без неуспешных или повторных запусков в зарегистрированной матрице из 288 ячеек.",
       "status": "supported",
-      "scope": "288/288 cells; 96/96 matched blocks; immutable ROCm/float32 environment.",
-      "evidence": "results/stage-3/profiling/matched/ и запечатанный descriptive-analysis output"
+      "scope": "288/288 ячеек; 96/96 сопоставленных блоков; неизменяемая среда ROCm/float32.",
+      "evidence": "results/stage-3/profiling/matched/ и зафиксированный результат описательного анализа"
     },
     {
       "id": "C08",
       "rq": "RQ3",
-      "claim": "На sealed QWake C1/C2 surface существуют достаточные для задачи preterminal outcomes, и в замороженном C2 candidate family существует безопасная ненулевая pre-action распознаваемость их подмножества.",
+      "claim": "На поверхности QWake C1/C2 с зафиксированной целостностью существуют предтерминальные исходы, достаточные относительно задачи, а в зафиксированном семействе кандидатов C2 существует безопасная ненулевая распознаваемость их подмножества по состоянию, доступному до действия.",
       "status": "supported",
-      "scope": "QWake C1/C2; 2,625 frozen scalar policies; sealed calibration evidence и post-action sufficiency oracle.",
+      "scope": "QWake C1/C2; 2,625 зафиксированных скалярных правил; доказательные материалы калибровки с зафиксированной целостностью и оракул достаточности после действия.",
       "evidence": "thesis/data/qwake_c2_verified_summary.json"
     },
     {
       "id": "C09",
       "rq": "RQ3",
-      "claim": "В замороженном C2 candidate family существует policy, одновременно безопасная, имеющая ненулевое покрытие и положительную aggregate net saving при frozen full decision-cost accounting.",
+      "claim": "В зафиксированном семействе кандидатов C2 существует правило, одновременно безопасное, имеющее ненулевое покрытие и положительную совокупную чистую экономию при полном зафиксированном учёте стоимости решения.",
       "status": "rejected",
-      "scope": "QWake C2; тот же frozen policy family, interpreter, evidence и cost accounting.",
+      "scope": "QWake C2; то же зафиксированное семейство правил, интерпретатор, доказательные материалы и способ учёта стоимости.",
       "evidence": "thesis/data/qwake_c2_verified_summary.json"
     },
     {
       "id": "C10",
       "rq": "RQ3",
-      "claim": "Минимальный marginal runtime recognizer, реализующий найденное простое правило, экономически невыгоден.",
+      "claim": "Минимальный распознаватель, реализующий найденное простое правило, экономически невыгоден по добавочной стоимости выполнения.",
       "status": "not_tested",
-      "scope": "Отдельный marginal-cost estimand не входил в sealed C2.",
+      "scope": "Отдельная оцениваемая величина добавочной стоимости не входила в C2 с зафиксированной целостностью.",
       "evidence": "Не исследовано текущим протоколом."
     },
     {
       "id": "C11",
       "rq": "RQ3",
-      "claim": "Confirmatory C3 был открыт и дал независимое подтверждение выбранной C2 policy.",
+      "claim": "Подтверждающий C3 был открыт и дал независимое подтверждение выбранного правила C2.",
       "status": "not_tested",
-      "scope": "C2 policy freeze не установлен; protocol receipt chain не открыла C3.",
+      "scope": "Фиксация правила C2 не установлена; цепочка протокольных квитанций не открыла C3.",
       "evidence": "thesis/data/qwake_c2_verified_summary.json"
     }
   ]

@@ -6,14 +6,20 @@
 ошибки (BP). Работа разделяет четыре аналитических измерения, которые часто
 смешиваются при сравнении алгоритмов обучения: сходство конечного поведения,
 сходство внутреннего механизма, вычислительную стоимость и возможность
-безопасно прекратить часть вычисления до его штатного завершения.
+безопасно прекратить часть вычисления до его штатного завершения. Для перехода
+от наблюдения внутреннего состояния к вычислительному решению вводятся две
+ограниченные теоретические конструкции: PC-TREF задаёт эквивалентность
+состояний относительно допустимого действия и достаточность диагностического
+представления, а PC-CATM описывает формирование, перенос и компенсацию каналов
+коррекции. Архитектура QWake-PC операционализирует эти основания; в работе
+экспериментально проверяется её ограниченная реализация QWake-FP для FixedPred.
 
 Экспериментальная программа организована как последовательность заранее
 зафиксированных этапов. Этапы этап~1 и этап~2 сравнивают BP, Exact, FixedPred
 и Strict в контролируемых условиях. этап~3A исследует послойные градиенты и
 представления; этап~3B локализует стоимость итеративного вывода состояния и
 проверяет кандидаты точного вычислительного замещения посредством заранее
-зарегистрированных проверок эквивалентности. Финальная ветка QWake разделяет
+зарегистрированных проверок эквивалентности. Финальная ветка QWake-FP разделяет
 три последовательных вопроса: присутствуют ли на поверхности траекторий с
 зафиксированной целостностью предтерминальные исходы, достаточные относительно
 задачи; можно ли безопасно распознавать ненулевое их подмножество по состоянию,
@@ -26,7 +32,7 @@
 стоимости исследованных режимов PC с итеративным выводом состояния; последующие
 кандидаты B1/B2 прошли зарегистрированные проверки эквивалентности, а полная
 матрица сопоставленного профилирования была завершена без повторных попыток. В
-QWake поверхность с зафиксированной целостностью содержала предтерминальные
+QWake-FP поверхность с зафиксированной целостностью содержала предтерминальные
 исходы, достаточные относительно задачи, а безопасная ненулевая распознаваемость
 их подмножества по состоянию до действия наблюдалась внутри замороженного
 семейства из 2625 скалярных правил принятия решения. Из них 264 правила имели
@@ -62,14 +68,19 @@ comparisons of predictive-coding (PC) regimes with backpropagation (BP). The
 research separates four analytical dimensions that are often conflated:
 similarity of final behavior, similarity of internal mechanism, computational
 cost, and the possibility of safely terminating part of the computation before
-its normal completion.
+its normal completion. To connect internal diagnostics with a computational
+decision, the dissertation introduces two bounded theoretical constructs:
+PC-TREF defines task-relative state equivalence and diagnostic sufficiency,
+while PC-CATM models correction formation, transport, and cancellation.
+QWake-PC operationalizes these foundations as a compute-control architecture;
+only its bounded FixedPred instantiation, QWake-FP, is evaluated empirically.
 
 The experimental program is organized as a sequence of preregistered and
 versioned stages. Stage~1 and Stage~2 compare BP, Exact, FixedPred, and Strict
 under controlled conditions. Stage~3A examines layer-wise gradients and
 representations, while Stage~3B localizes state-inference cost and evaluates
 exact replacement candidates through registered equivalence gates. The final
-QWake branch separates three questions: whether the sealed trajectory surface
+QWake-FP branch separates three questions: whether the sealed trajectory surface
 contains task-relative sufficient preterminal outcomes, whether a non-zero
 subset can be recognized safely from the pre-action state, and whether such a
 decision yields positive savings under frozen full decision-cost accounting.
@@ -79,7 +90,7 @@ gradient direction and learned representations, while its early-layer gradient
 norm was substantially reduced. Stage~3B profiling associated a substantial
 share of the measured PC cost with state inference; subsequent B1/B2 candidates
 passed their registered equivalence gates, and the matched profiling matrix was
-completed without retries. In QWake, the sealed surface contained task-relative
+completed without retries. In QWake-FP, the sealed surface contained task-relative
 sufficient preterminal outcomes, and non-zero safe pre-action recognizability
 of their subset was observed within the frozen family of 2,625 scalar policies:
 264 policies had non-zero coverage with zero dangerous accepts, and the best

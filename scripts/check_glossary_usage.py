@@ -49,6 +49,22 @@ ALLOWED_LATIN_TOKENS = {
     "mib",
     "mnist",
     "npz",
+    "ncz",
+    "ecz",
+    "tnz",
+    "pnz",
+    "dus",
+    "done",
+    "unknown",
+    "sweep",
+    "pc-tref",
+    "pc-catm",
+    "qwake",
+    "qwake-pc",
+    "qwake-fp",
+    "qwake-spc",
+    "yaml",
+    "json",
     "oom",
     "p95",
     "pdf",
@@ -209,6 +225,28 @@ def latin_token_allowed(token: str) -> bool:
     return any(pattern.fullmatch(token) for pattern in ALLOWED_TOKEN_PATTERNS)
 
 
+def check_russian_glossary_prose(document: Path, text: str) -> list[str]:
+    """Validate Russian glossary definitions while preserving bilingual metadata."""
+    errors: list[str] = []
+    for number, line in enumerate(text.splitlines(), start=1):
+        stripped = line.strip()
+        if (
+            stripped.startswith("### TERM-")
+            or stripped.startswith("- **Английский эквивалент:**")
+            or stripped == "[English version](glossary_EN.md)"
+        ):
+            continue
+        for token_match in LATIN_TOKEN.finditer(plain_text(line)):
+            token = token_match.group(0)
+            if latin_token_allowed(token):
+                continue
+            errors.append(
+                f"{display_path(document)}:{number}: "
+                f"неканоническая английская проза в глоссарии: {token}"
+            )
+    return errors
+
+
 def check_russian_prose(document: Path, text: str) -> list[str]:
     errors: list[str] = []
     fenced = False
@@ -256,8 +294,10 @@ def run_checks(root: Path = ROOT) -> dict[str, object]:
     linked_uses = 0
     scanned_documents = 0
 
-    ru_glossary = (root / "docs" / "glossary.md").read_text(encoding="utf-8")
+    ru_glossary_path = root / "docs" / "glossary.md"
+    ru_glossary = ru_glossary_path.read_text(encoding="utf-8")
     en_glossary = (root / "docs" / "glossary_EN.md").read_text(encoding="utf-8")
+    errors.extend(check_russian_glossary_prose(ru_glossary_path, ru_glossary))
     expected_anchors = [term.anchor for term in terms]
     if ANCHOR.findall(ru_glossary) != expected_anchors:
         errors.append("Русский глоссарий не содержит полный упорядоченный набор якорей")

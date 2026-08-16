@@ -35,8 +35,11 @@
 градиента в ранних слоях. Профилирование этап~3B связало существенную часть
 стоимости исследованных режимов PC с итеративным выводом состояния; последующие
 кандидаты B1/B2 прошли зарегистрированные проверки эквивалентности, а полная
-матрица сопоставленного профилирования была завершена без повторных попыток. В
-QWake-FP поверхность с зафиксированной целостностью содержала предтерминальные
+матрица сопоставленного профилирования была завершена без повторных попыток.
+При этом зарегистрированный инженерный экран продолжения дал 0/16
+квалифицированных конфигураций во всех четырёх группах B1/B2×FixedPred/Strict,
+и оба кандидата получили решение \texttt{reject\_or\_revise}; этот результат не
+интерпретируется как утверждение о превосходстве исходной линии. В QWake-FP поверхность с зафиксированной целостностью содержала предтерминальные
 исходы класса \texttt{EARLY\_ADMISSIBLE}, а ненулевая селективная распознаваемость
 их подмножества по состоянию до действия с нулём наблюдавшихся опасных принятий
 наблюдалась внутри замороженного семейства из 2625 скалярных правил принятия
@@ -103,7 +106,10 @@ early-layer gradient
 norm was substantially reduced. Stage~3B profiling associated a substantial
 share of the measured PC cost with state inference; subsequent B1/B2 candidates
 passed their registered equivalence gates, and the matched profiling matrix was
-completed without retries. In QWake-FP, the sealed surface contained preterminal outcomes for which
+completed without retries. The registered engineering-continuation screen then
+qualified 0 of 16 configurations in each of the four B1/B2-by-FixedPred/Strict
+groups, and both candidates received \texttt{reject\_or\_revise}; this bounded
+negative result is not interpreted as a superiority claim for the baseline. In QWake-FP, the sealed surface contained preterminal outcomes for which
 early termination was task-admissible, and non-zero selective pre-action
 recognizability with zero observed dangerous accepts was found within the frozen
 family of 2,625 scalar policies on 756 calibration records: 264 policies had

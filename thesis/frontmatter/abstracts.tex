@@ -6,12 +6,13 @@
 ошибки (BP). Работа разделяет четыре аналитических измерения, которые часто
 смешиваются при сравнении алгоритмов обучения: сходство конечного поведения,
 сходство внутреннего механизма, вычислительную стоимость и возможность
-безопасно прекратить часть вычисления до его штатного завершения. Для перехода
+принимать решение о прекращении части вычисления до его штатного завершения. Для перехода
 от наблюдения внутреннего состояния к вычислительному решению вводятся две
 ограниченные теоретические конструкции: PC-TREF задаёт эквивалентность
-состояний относительно допустимого действия и достаточность диагностического
-представления, а PC-CATM описывает формирование, перенос и компенсацию каналов
-коррекции. Архитектура QWake-PC операционализирует эти основания; в работе
+состояний относительно требуемого действия, глобальную достаточность
+диагностического представления и более узкую селективную достаточность правила
+для конкретного действия, а PC-CATM описывает формирование, перенос и
+компенсацию каналов коррекции. Архитектура QWake-PC операционализирует эти основания; в работе
 экспериментально проверяется её ограниченная реализация QWake-FP для FixedPred.
 
 Экспериментальная программа организована как последовательность заранее
@@ -21,10 +22,11 @@
 проверяет кандидаты точного вычислительного замещения посредством заранее
 зарегистрированных проверок эквивалентности. Финальная ветка QWake-FP разделяет
 три последовательных вопроса: присутствуют ли на поверхности траекторий с
-зафиксированной целостностью предтерминальные исходы, достаточные относительно
-задачи; можно ли на зафиксированной калибровочной поверхности распознавать
-ненулевое их подмножество по состоянию, доступному до действия, без наблюдавшихся
-опасных принятий; и даёт ли такое решение положительную выгоду при
+зафиксированной целостностью предтерминальные исходы, для которых раннее действие
+допустимо относительно задачи; можно ли на зафиксированной калибровочной
+поверхности селективно распознавать ненулевое их подмножество по состоянию,
+доступному до действия, без наблюдавшихся опасных принятий; и даёт ли такое
+решение положительную выгоду при
 заранее зафиксированном полном учёте стоимости принятия решения.
 
 В исследованных условиях FixedPred демонстрировал более высокую наблюдаемую
@@ -35,8 +37,8 @@
 кандидаты B1/B2 прошли зарегистрированные проверки эквивалентности, а полная
 матрица сопоставленного профилирования была завершена без повторных попыток. В
 QWake-FP поверхность с зафиксированной целостностью содержала предтерминальные
-исходы, достаточные относительно задачи, а ненулевая распознаваемость их
-подмножества по состоянию до действия с нулём наблюдавшихся опасных принятий
+исходы класса \texttt{EARLY\_ADMISSIBLE}, а ненулевая селективная распознаваемость
+их подмножества по состоянию до действия с нулём наблюдавшихся опасных принятий
 наблюдалась внутри замороженного семейства из 2625 скалярных правил принятия
 решения на 756 калибровочных записях. Из них 264 правила имели ненулевое
 покрытие при отсутствии опасных принятых решений, а правило с наибольшим
@@ -51,8 +53,9 @@ QWake-FP поверхность с зафиксированной целостн
 учёту стоимости принятия решения, зафиксированному для C2, и не измеряет
 добавочную стоимость выполнения минимального распознавателя. Поэтому работа
 поддерживает вывод о наличии в исследованной области предтерминальных исходов,
-достаточных относительно задачи, и ненулевой калибровочной распознаваемости их
-подмножества по состоянию до действия с нулём наблюдавшихся опасных принятий;
+для которых раннее действие допустимо относительно задачи, и ненулевой
+селективной калибровочной распознаваемости их подмножества по состоянию до
+действия с нулём наблюдавшихся опасных принятий;
 отклоняет гипотезу о существовании
 правила с нулём наблюдавшихся опасных принятий и положительной экономической
 выгодой в замороженном семействе C2 при
@@ -75,8 +78,10 @@ similarity of final behavior, similarity of internal mechanism, computational
 cost, and the possibility of safely terminating part of the computation before
 its normal completion. To connect internal diagnostics with a computational
 decision, the dissertation introduces two bounded theoretical constructs:
-PC-TREF defines task-relative state equivalence and diagnostic sufficiency,
-while PC-CATM models correction formation, transport, and cancellation.
+PC-TREF defines task-relative state equivalence, a global criterion of
+diagnostic-representation sufficiency, and a narrower action-selective
+sufficiency condition, while PC-CATM models correction formation, transport,
+and cancellation.
 QWake-PC operationalizes these foundations as a compute-control architecture;
 only its bounded FixedPred instantiation, QWake-FP, is evaluated empirically.
 
@@ -86,9 +91,10 @@ under controlled conditions. Stage~3A examines layer-wise gradients and
 representations, while Stage~3B localizes state-inference cost and evaluates
 exact replacement candidates through registered equivalence gates. The final
 QWake-FP branch separates three questions: whether the sealed trajectory surface
-contains task-relative sufficient preterminal outcomes, whether a non-zero
-subset can be recognized from the pre-action state with zero observed dangerous
-accepts on the frozen calibration surface, and whether such a decision yields
+contains preterminal outcomes for which early termination is task-admissible,
+whether a non-zero subset can be selectively recognized from the pre-action
+state with zero observed dangerous accepts on the frozen calibration surface,
+and whether such a decision yields
 positive savings under frozen full decision-cost accounting.
 
 Within the investigated conditions, FixedPred showed higher observed similarity
@@ -97,24 +103,27 @@ early-layer gradient
 norm was substantially reduced. Stage~3B profiling associated a substantial
 share of the measured PC cost with state inference; subsequent B1/B2 candidates
 passed their registered equivalence gates, and the matched profiling matrix was
-completed without retries. In QWake-FP, the sealed surface contained task-relative
-sufficient preterminal outcomes, and non-zero pre-action recognizability with
-zero observed dangerous accepts was found within the frozen family of 2,625
-scalar policies on 756 calibration records: 264 policies had non-zero coverage
-with zero dangerous accepts, and the best
-safe policy covered 216 of 756 calibration records (28.57\%). No policy achieved positive
-aggregate net saving under the frozen full decision-cost accounting. The full
-cost assigned to the best safe policy was overwhelmingly observer-dominated,
+completed without retries. In QWake-FP, the sealed surface contained preterminal outcomes for which
+early termination was task-admissible, and non-zero selective pre-action
+recognizability with zero observed dangerous accepts was found within the frozen
+family of 2,625 scalar policies on 756 calibration records: 264 policies had
+non-zero coverage with zero dangerous accepts, and the highest-coverage policy
+among candidates with zero observed dangerous accepts covered 216 of 756
+calibration records (28.57\%). No policy achieved positive aggregate net
+saving under the frozen full decision-cost accounting. The full cost assigned
+to that highest-coverage zero-danger candidate was overwhelmingly
+observer-dominated,
 no C2 policy freeze was established, and confirmatory C3 therefore remained
 closed.
 
 The negative economic result is specific to the frozen full-cost accounting
 used in C2 and does not measure the marginal runtime cost of a minimal
-recognizer. The dissertation therefore supports the presence of task-relative
-sufficient preterminal outcomes and non-zero pre-action recognizability with
-zero observed dangerous accepts on the frozen calibration surface, rejects the
-existence of a
-safe-and-beneficial policy in the frozen C2 family under that accounting
+recognizer. The dissertation therefore supports the presence of preterminal outcomes for
+which early termination is task-admissible and non-zero selective pre-action
+recognizability with zero observed dangerous accepts on the frozen calibration
+surface, rejects the existence of a policy with zero observed dangerous accepts,
+non-zero coverage, and positive aggregate net saving in the frozen C2 family
+under that accounting
 regime, and leaves marginal implementation viability as a separate untested
 estimand.
 

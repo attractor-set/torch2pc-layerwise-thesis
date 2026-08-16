@@ -17,7 +17,11 @@
     "results/stage-3/si-ma1/confirmatory/si_ma1_summary.json": "sha256:f81d4d2e8bbc5ef46761c1d3b6f424cda78a8fbda14bf7b54107c22fc5e99f15",
     "results/stage-3/b1/stage3b-b1-confirmatory-ceebdce-v1/decision.json": "sha256:a20eabc1e6da8c9634792b4c3457a272419568d5f23f3e7bacc2c38da3c87afc",
     "results/stage-3/b2/stage3b-b2-confirmatory-63885e5-v1/decision.json": "sha256:6e4b5c54a35011dcd39ca621a020d9b75ed5bed706f10f483454641b46b75eea",
-    "results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/seal.json": "sha256:83691730d46599a7a4d1ffd8ee0e2b9ee82c13771892b21c8c986d9a700e60f3"
+    "results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/seal.json": "sha256:83691730d46599a7a4d1ffd8ee0e2b9ee82c13771892b21c8c986d9a700e60f3",
+    "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1/analysis_summary.json": "sha256:4f02d8f0297e3ced79110487d6837308f2da2de704083ce2be73f01c43a28f3a",
+    "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1/engineering_decision.json": "sha256:3ccd65cf86dbb26a306bcd97bba60bf9851fd7d4f20af3340d6795fb19ea3199",
+    "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1/candidate_method_summary.csv": "sha256:023fdde739acb1c5e89809b608d38b23238a903f675fbb705f791b007ca8f17c",
+    "experiments/frozen/stage3b-matched-descriptive-analysis-publication-receipt-v1/receipt.json": "sha256:82467dcbf25776fff249500f229146ae3352fc9b61a17dbac86d96f588071336"
   },
   "stage1": {
     "planned_cells": 80,
@@ -146,6 +150,20 @@
         "composite_vjp": 96
       },
       "results_publication_permitted": false
+    },
+    "matched_analysis": {
+      "analysis_id": "stage3b-matched-descriptive-analysis-70d6c3c-v1",
+      "decision_scope": "engineering_continuation_not_superiority",
+      "candidate_method_group_count": 4,
+      "configuration_count_per_group": 16,
+      "qualified_configuration_count_per_group": 0,
+      "candidate_decisions": {
+        "isolated_layer_vjp": "reject_or_revise",
+        "composite_vjp": "reject_or_revise"
+      },
+      "results_publication_permitted": true,
+      "release_publication_complete": true,
+      "superiority_claim_permitted": false
     }
   }
 }

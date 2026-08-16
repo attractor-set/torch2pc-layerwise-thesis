@@ -731,6 +731,38 @@ def validate_core_results(data: dict[str, object]) -> None:
     require(int(seal["cross_candidate_correctness_block_count"]) == int(matched["cross_candidate_correctness_block_count"]) == 96, "matched profiling block count mismatch")
     require(int(seal["retried_cell_count"]) == int(matched["retried_cell_count"]) == 0, "matched profiling retry count mismatch")
 
+    matched_analysis = stage3b["matched_analysis"]
+    require(isinstance(matched_analysis, dict), "matched analysis summary invalid")
+    decision = load(ROOT / "results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1/engineering_decision.json")
+    candidate_rows = csv_rows("results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1/candidate_method_summary.csv")
+    receipt = load(ROOT / "experiments/frozen/stage3b-matched-descriptive-analysis-publication-receipt-v1/receipt.json")
+
+    require(decision["decision_scope"] == matched_analysis["decision_scope"] == "engineering_continuation_not_superiority", "matched analysis decision scope mismatch")
+    require(decision["superiority_claim_permitted"] is matched_analysis["superiority_claim_permitted"] is False, "matched analysis superiority boundary mismatch")
+    require(len(candidate_rows) == int(matched_analysis["candidate_method_group_count"]) == 4, "matched analysis candidate-method group count mismatch")
+    expected_pairs = {
+        ("isolated_layer_vjp", "fixedpred"),
+        ("isolated_layer_vjp", "strict"),
+        ("composite_vjp", "fixedpred"),
+        ("composite_vjp", "strict"),
+    }
+    require({(row["candidate_id"], row["method"]) for row in candidate_rows} == expected_pairs, "matched analysis candidate-method groups mismatch")
+    for row in candidate_rows:
+        require(int(row["configuration_count"]) == int(matched_analysis["configuration_count_per_group"]) == 16, "matched analysis configuration count mismatch")
+        require(int(row["qualified_configuration_count"]) == int(matched_analysis["qualified_configuration_count_per_group"]) == 0, "matched analysis qualified count mismatch")
+        require(row["status"] == "reject_or_revise", "matched analysis group decision mismatch")
+
+    expected_decisions = matched_analysis["candidate_decisions"]
+    require(isinstance(expected_decisions, dict), "matched analysis candidate decisions invalid")
+    observed_decisions = {item["candidate_id"]: item["status"] for item in decision["candidate_decisions"]}
+    require(observed_decisions == expected_decisions == {"isolated_layer_vjp": "reject_or_revise", "composite_vjp": "reject_or_revise"}, "matched analysis candidate decision mismatch")
+
+    claim_boundary = receipt["claim_boundary"]
+    require(receipt["status"] == "publication_action_complete", "matched analysis publication receipt incomplete")
+    require(claim_boundary["results_publication_permitted"] is matched_analysis["results_publication_permitted"] is True, "matched analysis publication permission mismatch")
+    require(claim_boundary["release_publication_complete"] is matched_analysis["release_publication_complete"] is True, "matched analysis release publication mismatch")
+    require(claim_boundary["superiority_claim_permitted"] is matched_analysis["superiority_claim_permitted"] is False, "matched analysis publication superiority boundary mismatch")
+
 
 def render_claims(data: dict[str, object]) -> str:
     claims = data["claims"]
@@ -859,6 +891,7 @@ def render_stage3(core: dict[str, object]) -> str:
         texrow(f"SI-MA1 & CAL-COST-MA1 пройдена; 10 независимо обученных моделей, {int(ma1['matched_block_count'])} сопоставленных блоков; верхняя односторонняя 95\\%-я граница = {float(ma1['upper_one_sided_95']):.3f} при пороге {float(ma1['threshold']):.2f}."),
         texrow(f"B1/B2 & EQ-B1 и EQ-B2 пройдены; B1: {int(s3b['b1']['observed_pair_count'])} пар, B2: {int(s3b['b2']['matched_triples_observed'])} сопоставленных троек; неуспешных пар нет."),
         texrow(f"Сопоставленное профилирование & целостность зафиксирована для {int(s3b['matched_profiling']['matched_cell_count'])}/{int(s3b['matched_profiling']['matched_cell_count'])} ячеек; {int(s3b['matched_profiling']['cross_candidate_correctness_block_count'])} блоков проверки корректности; повторных запусков = {int(s3b['matched_profiling']['retried_cell_count'])}."),
+        texrow(f"Инженерный экран B1/B2 & четыре группы кандидат×метод по {int(s3b['matched_analysis']['configuration_count_per_group'])} конфигураций; квалифицировано {int(s3b['matched_analysis']['qualified_configuration_count_per_group'])}/{int(s3b['matched_analysis']['configuration_count_per_group'])} в каждой группе; оба кандидата получили решение reject\\_or\\_revise; утверждение о превосходстве не разрешено."),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
@@ -982,6 +1015,7 @@ def main() -> None:
     print("THESIS_QWAKE_CLAIM_RECONCILIATION=PASS")
     print("THESIS_CORE_RESULTS_SOURCE_BINDINGS=PASS")
     print("THESIS_CORE_RESULTS_RECONCILIATION=PASS")
+    print("THESIS_STAGE3B_MATCHED_DECISION_RECONCILIATION=PASS")
     print("THESIS_PROVENANCE_IDENTITIES=PASS")
     print("THESIS_RUSSIAN_PROSE=PASS")
     print(f"THESIS_GLOSSARY_TERM_COUNT={len(glossary_entries)}")

@@ -22,21 +22,24 @@
 зарегистрированных проверок эквивалентности. Финальная ветка QWake-FP разделяет
 три последовательных вопроса: присутствуют ли на поверхности траекторий с
 зафиксированной целостностью предтерминальные исходы, достаточные относительно
-задачи; можно ли безопасно распознавать ненулевое их подмножество по состоянию,
-доступному до действия; и даёт ли такое решение положительную выгоду при
+задачи; можно ли на зафиксированной калибровочной поверхности распознавать
+ненулевое их подмножество по состоянию, доступному до действия, без наблюдавшихся
+опасных принятий; и даёт ли такое решение положительную выгоду при
 заранее зафиксированном полном учёте стоимости принятия решения.
 
-В исследованных условиях FixedPred оказался ближе к BP по направлению градиента
-и внутренним представлениям, чем Strict, при одновременном уменьшении нормы
+В исследованных условиях FixedPred демонстрировал более высокую наблюдаемую
+близость к BP по направлению градиента и внутренним представлениям, чем Strict,
+при одновременном уменьшении нормы
 градиента в ранних слоях. Профилирование этап~3B связало существенную часть
 стоимости исследованных режимов PC с итеративным выводом состояния; последующие
 кандидаты B1/B2 прошли зарегистрированные проверки эквивалентности, а полная
 матрица сопоставленного профилирования была завершена без повторных попыток. В
 QWake-FP поверхность с зафиксированной целостностью содержала предтерминальные
-исходы, достаточные относительно задачи, а безопасная ненулевая распознаваемость
-их подмножества по состоянию до действия наблюдалась внутри замороженного
-семейства из 2625 скалярных правил принятия решения. Из них 264 правила имели
-ненулевое покрытие при отсутствии опасных принятых решений, а лучшее безопасное
+исходы, достаточные относительно задачи, а ненулевая распознаваемость их
+подмножества по состоянию до действия с нулём наблюдавшихся опасных принятий
+наблюдалась внутри замороженного семейства из 2625 скалярных правил принятия
+решения на 756 калибровочных записях. Из них 264 правила имели ненулевое
+покрытие при отсутствии опасных принятых решений, а лучшее безопасное
 правило покрывало 216 из 756 калибровочных записей (28.57\%). При этом ни одно
 правило не обеспечило положительную совокупную чистую экономию при
 зафиксированном полном учёте стоимости принятия решения. Для лучшего безопасного
@@ -48,8 +51,9 @@ QWake-FP поверхность с зафиксированной целостн
 учёту стоимости принятия решения, зафиксированному для C2, и не измеряет
 добавочную стоимость выполнения минимального распознавателя. Поэтому работа
 поддерживает вывод о наличии в исследованной области предтерминальных исходов,
-достаточных относительно задачи, и безопасной ненулевой распознаваемости их
-подмножества по состоянию до действия; отклоняет гипотезу о существовании
+достаточных относительно задачи, и ненулевой калибровочной распознаваемости их
+подмножества по состоянию до действия с нулём наблюдавшихся опасных принятий;
+отклоняет гипотезу о существовании
 безопасного и экономически выгодного правила в замороженном семействе C2 при
 указанном учёте стоимости; и оставляет экономическую осуществимость минимальной
 реализации отдельной непроверенной оцениваемой величиной.
@@ -82,18 +86,21 @@ representations, while Stage~3B localizes state-inference cost and evaluates
 exact replacement candidates through registered equivalence gates. The final
 QWake-FP branch separates three questions: whether the sealed trajectory surface
 contains task-relative sufficient preterminal outcomes, whether a non-zero
-subset can be recognized safely from the pre-action state, and whether such a
-decision yields positive savings under frozen full decision-cost accounting.
+subset can be recognized from the pre-action state with zero observed dangerous
+accepts on the frozen calibration surface, and whether such a decision yields
+positive savings under frozen full decision-cost accounting.
 
-Within the investigated conditions, FixedPred was closer to BP than Strict in
-gradient direction and learned representations, while its early-layer gradient
+Within the investigated conditions, FixedPred showed higher observed similarity
+to BP than Strict in gradient direction and learned representations, while its
+early-layer gradient
 norm was substantially reduced. Stage~3B profiling associated a substantial
 share of the measured PC cost with state inference; subsequent B1/B2 candidates
 passed their registered equivalence gates, and the matched profiling matrix was
 completed without retries. In QWake-FP, the sealed surface contained task-relative
-sufficient preterminal outcomes, and non-zero safe pre-action recognizability
-of their subset was observed within the frozen family of 2,625 scalar policies:
-264 policies had non-zero coverage with zero dangerous accepts, and the best
+sufficient preterminal outcomes, and non-zero pre-action recognizability with
+zero observed dangerous accepts was found within the frozen family of 2,625
+scalar policies on 756 calibration records: 264 policies had non-zero coverage
+with zero dangerous accepts, and the best
 safe policy covered 216 of 756 calibration records (28.57\%). No policy achieved positive
 aggregate net saving under the frozen full decision-cost accounting. The full
 cost assigned to the best safe policy was overwhelmingly observer-dominated,
@@ -103,8 +110,9 @@ closed.
 The negative economic result is specific to the frozen full-cost accounting
 used in C2 and does not measure the marginal runtime cost of a minimal
 recognizer. The dissertation therefore supports the presence of task-relative
-sufficient preterminal outcomes and non-zero safe pre-action recognizability of
-their subset within the investigated domain, rejects the existence of a
+sufficient preterminal outcomes and non-zero pre-action recognizability with
+zero observed dangerous accepts on the frozen calibration surface, rejects the
+existence of a
 safe-and-beneficial policy in the frozen C2 family under that accounting
 regime, and leaves marginal implementation viability as a separate untested
 estimand.

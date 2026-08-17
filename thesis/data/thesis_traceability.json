@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "document_role": "dissertation-claim-traceability",
+  "source_contract": "thesis/data/research_claims.json",
+  "required_stages": [
+    "theory",
+    "methodology",
+    "experiment",
+    "results",
+    "discussion",
+    "conclusion"
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "rq": "RQ1",
+      "status": "supported",
+      "sections": {
+        "theory": [
+          "sec:related-pc-bp",
+          "sec:theory-framework"
+        ],
+        "methodology": [
+          "sec:method-stage12"
+        ],
+        "experiment": [
+          "sec:stage1-experiment",
+          "sec:stage2-experiment"
+        ],
+        "results": [
+          "sec:results-stage12"
+        ],
+        "discussion": [
+          "sec:discussion-rq1"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq1"
+        ]
+      }
+    },
+    {
+      "id": "C02",
+      "rq": "RQ1",
+      "status": "supported",
+      "sections": {
+        "theory": [
+          "sec:related-representations",
+          "sec:theory-framework"
+        ],
+        "methodology": [
+          "sec:method-stage3a"
+        ],
+        "experiment": [
+          "sec:stage3a-experiment"
+        ],
+        "results": [
+          "sec:results-stage3a"
+        ],
+        "discussion": [
+          "sec:discussion-rq1"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq1"
+        ]
+      }
+    },
+    {
+      "id": "C03",
+      "rq": "RQ2",
+      "status": "supported",
+      "sections": {
+        "theory": [
+          "sec:theory-pc-catm",
+          "sec:theory-tref-catm-link"
+        ],
+        "methodology": [
+          "sec:method-stage3b"
+        ],
+        "experiment": [
+          "sec:stage3b-experiment"
+        ],
+        "results": [
+          "sec:results-stage3b"
+        ],
+        "discussion": [
+          "sec:discussion-rq2"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq2"
+        ]
+      }
+    },
+    {
+      "id": "C04",
+      "rq": "RQ2",
+      "status": "supported",
+      "sections": {
+        "theory": [
+          "sec:theory-pc-catm",
+          "sec:theory-tref-catm-link"
+        ],
+        "methodology": [
+          "sec:method-stage3b"
+        ],
+        "experiment": [
+          "sec:stage3b-experiment"
+        ],
+        "results": [
+          "sec:results-stage3b"
+        ],
+        "discussion": [
+          "sec:discussion-rq2"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq2"
+        ]
+      }
+    },
+    {
+      "id": "C05",
+      "rq": "RQ2",
+      "status": "supported",
+      "sections": {
+        "theory": [
+          "sec:theory-pc-catm",
+          "sec:theory-tref-catm-link"
+        ],
+        "methodology": [
+          "sec:method-stage3b"
+        ],
+        "experiment": [
+          "sec:stage3b-experiment"
+        ],
+        "results": [
+          "sec:results-stage3b"
+        ],
+        "discussion": [
+          "sec:discussion-rq2"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq2"
+        ]
+      }
+    },
+    {
+      "id": "C06",
+      "rq": "RQ2",
+      "status": "supported",
+      "sections": {
+        "theory": [
+          "sec:theory-pc-tref",
+          "sec:theory-tref-catm-link"
+        ],
+        "methodology": [
+          "sec:method-task-relative-sufficiency"
+        ],
+        "experiment": [
+          "sec:stage3b-experiment"
+        ],
+        "results": [
+          "sec:results-stage3b"
+        ],
+        "discussion": [
+          "sec:discussion-rq2"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq2"
+        ]
+      }
+    },
+    {
+      "id": "C07",
+      "rq": "RQ2",
+      "status": "descriptive",
+      "sections": {
+        "theory": [
+          "sec:theory-pc-tref",
+          "sec:theory-tref-catm-link"
+        ],
+        "methodology": [
+          "sec:method-stage3b"
+        ],
+        "experiment": [
+          "sec:stage3b-experiment"
+        ],
+        "results": [
+          "sec:results-stage3b"
+        ],
+        "discussion": [
+          "sec:discussion-rq2"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq2"
+        ]
+      }
+    },
+    {
+      "id": "C08",
+      "rq": "RQ3",
+      "status": "supported",
+      "sections": {
+        "theory": [
+          "sec:theory-pc-tref",
+          "sec:theory-qwake"
+        ],
+        "methodology": [
+          "sec:method-qwake"
+        ],
+        "experiment": [
+          "sec:qwake-experiment"
+        ],
+        "results": [
+          "sec:results-qwake"
+        ],
+        "discussion": [
+          "sec:discussion-rq3"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq3"
+        ]
+      }
+    },
+    {
+      "id": "C09",
+      "rq": "RQ3",
+      "status": "rejected",
+      "sections": {
+        "theory": [
+          "sec:theory-qwake"
+        ],
+        "methodology": [
+          "sec:method-qwake"
+        ],
+        "experiment": [
+          "sec:qwake-experiment"
+        ],
+        "results": [
+          "sec:results-qwake"
+        ],
+        "discussion": [
+          "sec:discussion-rq3",
+          "sec:discussion-observer-cost"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq3"
+        ]
+      }
+    },
+    {
+      "id": "C10",
+      "rq": "RQ3",
+      "status": "not_tested",
+      "sections": {
+        "theory": [
+          "sec:theory-qwake"
+        ],
+        "methodology": [
+          "sec:method-negative"
+        ],
+        "experiment": [
+          "sec:experiment-stopping"
+        ],
+        "results": [
+          "sec:results-qwake"
+        ],
+        "discussion": [
+          "sec:discussion-observer-cost"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq3"
+        ]
+      }
+    },
+    {
+      "id": "C11",
+      "rq": "RQ3",
+      "status": "not_tested",
+      "sections": {
+        "theory": [
+          "sec:theory-qwake"
+        ],
+        "methodology": [
+          "sec:method-negative"
+        ],
+        "experiment": [
+          "sec:experiment-stopping"
+        ],
+        "results": [
+          "sec:results-qwake"
+        ],
+        "discussion": [
+          "sec:discussion-negative-results"
+        ],
+        "conclusion": [
+          "sec:conclusion-rq3"
+        ]
+      }
+    }
+  ]
+}

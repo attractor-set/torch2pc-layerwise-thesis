@@ -479,8 +479,18 @@ def validate_claims(data: dict[str, object]) -> None:
     require(data.get("schema_version") == 1, "claims schema_version must be 1")
     rqs = data.get("research_questions")
     claims = data.get("claims")
+    status_semantics = data.get("status_semantics")
     require(isinstance(rqs, list) and bool(rqs), "research_questions must be non-empty")
     require(isinstance(claims, list) and bool(claims), "claims must be non-empty")
+    require(isinstance(status_semantics, dict), "status_semantics must be an object")
+    require(
+        set(status_semantics) == set(STATUS_LABELS),
+        "status_semantics keys must exactly match the registered status labels",
+    )
+    require(
+        all(isinstance(value, str) and value.strip() for value in status_semantics.values()),
+        "status_semantics values must be non-empty strings",
+    )
     rq_ids = {item.get("id") for item in rqs if isinstance(item, dict)}
     claim_ids: list[object] = []
     for item in claims:
@@ -1079,18 +1089,18 @@ def render_qwake(qwake: dict[str, object]) -> str:
         r"\toprule",
         texrow("Категория & Число правил"),
         r"\midrule",
-        texrow(f"Всего зафиксированных кандидатов & {int(s['candidate_count'])}"),
-        texrow(f"Небезопасные & {int(s['unsafe_count'])}"),
-        texrow(f"Без опасных принятий & {int(s['zero_danger_count'])}"),
-        texrow(f"Безопасные с ненулевым покрытием & {int(s['safe_nontrivial_count'])}"),
-        texrow(f"Безопасные и экономически выгодные & {int(s['eligible_policy_count'])}"),
+        texrow(f"Всего зафиксированных правил & {int(s['candidate_count'])}"),
+        texrow(f"С хотя бы одним опасным принятием & {int(s['unsafe_count'])}"),
+        texrow(f"С нулём наблюдавшихся опасных принятий & {int(s['zero_danger_count'])}"),
+        texrow(f"С нулём опасных принятий и ненулевым покрытием & {int(s['safe_nontrivial_count'])}"),
+        texrow(f"Допустимые по полному критерию C2 & {int(s['eligible_policy_count'])}"),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
         "",
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{QWake C2: временное разложение и стоимость лучшего безопасного правила}",
+        r"\caption{QWake C2: временное разложение и стоимость правила с наибольшим покрытием при нуле опасных принятий}",
         r"\label{tab:qwake-cost}",
         r"\begin{tabular}{@{}p{0.76\textwidth}r@{}}",
         r"\toprule",
@@ -1103,7 +1113,7 @@ def render_qwake(qwake: dict[str, object]) -> str:
         texrow(f"Принятые предтерминальные записи (шаг 5, один оставшийся проход) & {int(d['best_safe_policy_accepted_preterminal_records'])}"),
         texrow(f"Записей терминальной границы на поверхности C1 & {int(d['terminal_boundary_records'])}"),
         texrow(f"Принятые записи терминальной границы (шаг 6) & {int(d['best_safe_policy_accepted_terminal_records'])}"),
-        texrow(f"Зарегистрированная сумма {latex_code('remaining_suffix_ns')} по безопасно принятым записям & {int(b['gross_implied_avoided_suffix_ns']) / 1e9:.3f} с"),
+        texrow(f"Зарегистрированная сумма {latex_code('remaining_suffix_ns')} по принятым записям без опасного принятия & {int(b['gross_implied_avoided_suffix_ns']) / 1e9:.3f} с"),
         texrow(f"Полная стоимость решения & {int(b['total_decision_cost_ns']) / 1e9:.3f} с"),
         texrow(f"Доля наблюдателя в полной стоимости & {observer_share:.3f}\\%"),
         texrow(f"Совокупная чистая экономия & {int(b['total_net_saving_ns']) / 1e9:.3f} с"),
@@ -1159,7 +1169,7 @@ def render_reproducibility(core: dict[str, object], qwake: dict[str, object]) ->
         ("Файл выбора правила QWake C2", "policy_selection_file_sha256"),
         ("Семантика квитанции QWake C2", "receipt_semantic_sha256"),
         ("Файл квитанции QWake C2", "receipt_file_sha256"),
-        ("Лучшее безопасное правило QWake", "best_safe_policy_sha256"),
+        ("Правило QWake с наибольшим покрытием при нуле опасных принятий", "best_safe_policy_sha256"),
         (
             "Общая последовательность стоимости решения QWake",
             "common_decision_cost_sequence_sha256",

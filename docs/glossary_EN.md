@@ -58,8 +58,8 @@ equivalence and limits each meaning to the scope of this project.
 ### TERM-CANDIDATE — candidate
 
 - **Russian equivalent:** кандидат.
-- **Project meaning:** A proposed implementation or mechanism change that must pass registered checks before a full experiment.
-- **Usage rule:** B1 and B2 remain candidates until they pass numerical-equivalence checks and receive a separate decision-gate approval.
+- **Project meaning:** The role of a proposed B1/B2 implementation or mechanism change, retained until it is accepted or finally removed by the registered engineering decision.
+- **Usage rule:** B1 and B2 remain candidates after numerical-equivalence checks; passing those checks does not change the object type. QWake C2 rules are not called candidates.
 
 ## Execution and reproducibility
 

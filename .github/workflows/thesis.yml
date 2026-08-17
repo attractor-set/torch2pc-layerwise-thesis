@@ -5,9 +5,13 @@ on:
     paths:
       - "thesis/**"
       - "references/**"
+      - "docs/glossary.md"
+      - "docs/glossary_EN.md"
       - "results/**"
       - "Makefile"
       - "scripts/build_thesis_assets.py"
+      - "scripts/check_thesis_semantic_contract.py"
+      - "tests/unit/test_thesis_semantic_contract.py"
       - ".github/workflows/thesis.yml"
 
   push:
@@ -16,9 +20,13 @@ on:
     paths:
       - "thesis/**"
       - "references/**"
+      - "docs/glossary.md"
+      - "docs/glossary_EN.md"
       - "results/**"
       - "Makefile"
       - "scripts/build_thesis_assets.py"
+      - "scripts/check_thesis_semantic_contract.py"
+      - "tests/unit/test_thesis_semantic_contract.py"
       - ".github/workflows/thesis.yml"
 
   workflow_dispatch:
@@ -44,6 +52,10 @@ jobs:
       - name: Validate thesis-facing evidence
         run: |
           python3 scripts/build_thesis_assets.py --check
+
+      - name: Validate thesis semantic contract
+        run: |
+          python3 scripts/check_thesis_semantic_contract.py
 
       - name: Validate epistemic language
         run: |

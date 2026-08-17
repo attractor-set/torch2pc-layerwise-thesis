@@ -21,6 +21,7 @@ def test_thesis_semantic_contract_is_stable() -> None:
 
     assert "THESIS_TERMINOLOGY_INVARIANCE=PASS" in output
     assert "THESIS_THEORY_LAYER_SEPARATION=PASS" in output
+    assert "THESIS_QWAKE_RULE_VOCABULARY=PASS" in output
     assert "THESIS_SYMBOL_NAMESPACE=PASS" in output
     assert "THESIS_TERM_FIRST_DEFINITION=PASS" in output
     assert "THESIS_CLAIM_STATUS_SEMANTICS=PASS" in output

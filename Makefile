@@ -214,6 +214,7 @@ epistemic-check:
 thesis-check:
 	python3 scripts/build_thesis_assets.py --check
 	python3 scripts/check_thesis_semantic_contract.py
+	python3 scripts/check_thesis_traceability.py
 
 thesis-data:
 	python3 scripts/build_thesis_assets.py

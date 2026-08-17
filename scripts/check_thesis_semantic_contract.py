@@ -156,6 +156,44 @@ def check_theory_layer_separation(sources: dict[Path, str]) -> list[str]:
     return errors
 
 
+def check_qwake_rule_vocabulary() -> list[str]:
+    errors: list[str] = []
+    abstracts = (THESIS / "frontmatter" / "abstracts.tex").read_text(encoding="utf-8")
+    _, separator, english_abstract = abstracts.partition(r"\begin{otherlanguage}{english}")
+    if not separator:
+        fail(errors, "QWake rule vocabulary", "English abstract boundary is missing")
+        return errors
+
+    policy_match = re.search(r"\bpolic(?:y|ies)\b", english_abstract, flags=re.IGNORECASE)
+    if policy_match:
+        fail(
+            errors,
+            "QWake rule vocabulary",
+            f"English abstract uses {policy_match.group(0)!r} for a C2 rule",
+        )
+
+    normalized = " ".join(english_abstract.split())
+    required = (
+        "frozen family of 2,625 scalar rules",
+        "264 rules had non-zero coverage with zero dangerous accepts",
+        "highest-coverage rule among rules with zero observed dangerous accepts",
+        "No rule achieved positive aggregate net saving",
+        "no C2 rule freeze was established",
+        "rejects the existence of a rule with zero observed dangerous accepts",
+    )
+    for marker in required:
+        require_contains(errors, normalized, marker, "QWake rule vocabulary")
+
+    glossary_en = GLOSSARY_EN.read_text(encoding="utf-8")
+    require_contains(
+        errors,
+        glossary_en,
+        "QWake C2 rules are not called candidates",
+        "QWake rule vocabulary",
+    )
+    return errors
+
+
 def check_symbol_namespace(sources: dict[Path, str]) -> list[str]:
     errors: list[str] = []
     thesis_text = "\n".join(sources.values())
@@ -211,7 +249,9 @@ def check_first_definitions() -> list[str]:
         "TNZ": ("ядре", "сопряжённого оператора переноса"),
     }
     for term, markers in requirements.items():
-        match = re.search(rf"\\item\[{term}\](.*?)(?=\\item\[|\\end\{{description\}})", abbreviations, re.DOTALL)
+        match = re.search(
+            rf"\\item\[{term}\](.*?)(?=\\item\[|\\end\{{description\}})", abbreviations, re.DOTALL
+        )
         if not match:
             fail(errors, "first definition", f"missing abbreviation definition for {term}")
             continue
@@ -269,6 +309,7 @@ def main() -> None:
     checks = (
         ("THESIS_TERMINOLOGY_INVARIANCE", check_terminology_invariance(sources)),
         ("THESIS_THEORY_LAYER_SEPARATION", check_theory_layer_separation(sources)),
+        ("THESIS_QWAKE_RULE_VOCABULARY", check_qwake_rule_vocabulary()),
         ("THESIS_SYMBOL_NAMESPACE", check_symbol_namespace(sources)),
         ("THESIS_TERM_FIRST_DEFINITION", check_first_definitions()),
         ("THESIS_CLAIM_STATUS_SEMANTICS", check_claim_status_semantics()),

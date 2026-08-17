@@ -11,7 +11,9 @@ on:
       - "Makefile"
       - "scripts/build_thesis_assets.py"
       - "scripts/check_thesis_semantic_contract.py"
+      - "scripts/check_thesis_traceability.py"
       - "tests/unit/test_thesis_semantic_contract.py"
+      - "tests/unit/test_thesis_traceability.py"
       - ".github/workflows/thesis.yml"
 
   push:
@@ -26,7 +28,9 @@ on:
       - "Makefile"
       - "scripts/build_thesis_assets.py"
       - "scripts/check_thesis_semantic_contract.py"
+      - "scripts/check_thesis_traceability.py"
       - "tests/unit/test_thesis_semantic_contract.py"
+      - "tests/unit/test_thesis_traceability.py"
       - ".github/workflows/thesis.yml"
 
   workflow_dispatch:
@@ -56,6 +60,10 @@ jobs:
       - name: Validate thesis semantic contract
         run: |
           python3 scripts/check_thesis_semantic_contract.py
+
+      - name: Validate thesis claim traceability
+        run: |
+          python3 scripts/check_thesis_traceability.py
 
       - name: Validate epistemic language
         run: |

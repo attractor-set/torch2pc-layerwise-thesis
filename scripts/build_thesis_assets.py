@@ -498,6 +498,8 @@ def validate_qwake(data: dict[str, object]) -> None:
     source = data.get("source")
     require(isinstance(source, dict), "QWake source must be an object")
     for key in (
+        "c1_request_file_sha256",
+        "qwake_contract_file_sha256",
         "policy_selection_file_sha256",
         "receipt_semantic_sha256",
         "receipt_file_sha256",
@@ -505,6 +507,24 @@ def validate_qwake(data: dict[str, object]) -> None:
         "common_decision_cost_sequence_sha256",
     ):
         validate_sha256_identity(source.get(key), f"QWake source.{key}")
+
+    bound_sources: dict[str, Path] = {}
+    for path_key, digest_key in (
+        ("c1_request_relative_path", "c1_request_file_sha256"),
+        ("qwake_contract_relative_path", "qwake_contract_file_sha256"),
+    ):
+        relative = source.get(path_key)
+        require(
+            isinstance(relative, str) and bool(relative),
+            f"QWake source.{path_key} must be a path",
+        )
+        bound = ROOT / relative
+        require(bound.is_file(), f"QWake bound source missing: {relative}")
+        require(
+            sha256_file(bound) == source[digest_key],
+            f"QWake bound source digest mismatch: {relative}",
+        )
+        bound_sources[path_key] = bound
 
     candidate_count = int(selection["candidate_count"])
     unsafe_count = int(selection["unsafe_count"])
@@ -523,7 +543,128 @@ def validate_qwake(data: dict[str, object]) -> None:
     coverage = float(best["coverage"])
     require(evaluated == 756, "best-safe evaluated_records must remain 756")
     require(accepted == 216 and dangerous == 0, "best-safe acceptance identity mismatch")
-    require(math.isclose(coverage, accepted / evaluated, rel_tol=0.0, abs_tol=1e-15), "coverage mismatch")
+    require(
+        math.isclose(coverage, accepted / evaluated, rel_tol=0.0, abs_tol=1e-15),
+        "coverage mismatch",
+    )
+
+    decomposition = data.get("temporal_surface_decomposition")
+    require(
+        isinstance(decomposition, dict),
+        "temporal_surface_decomposition must be an object",
+    )
+    require(
+        decomposition.get("derivation_status")
+        == "structural_reconciliation_not_new_scientific_execution",
+        "temporal decomposition must remain a structural reconciliation",
+    )
+    c1_request = load(bound_sources["c1_request_relative_path"])
+    qwake_contract = load(bound_sources["qwake_contract_relative_path"])
+    model_seeds = c1_request.get("model_seeds")
+    dataset = c1_request.get("dataset")
+    require(
+        isinstance(model_seeds, list) and bool(model_seeds),
+        "C1 request model_seeds must be non-empty",
+    )
+    require(isinstance(dataset, dict), "C1 request dataset must be an object")
+    batches = dataset.get("batches")
+    require(
+        isinstance(batches, list) and bool(batches),
+        "C1 request batches must be non-empty",
+    )
+    require(
+        c1_request.get("role") == "C1_COLLECTION",
+        "bound request must remain C1_COLLECTION",
+    )
+    require(
+        qwake_contract.get("decision_epoch")
+        == "after S_t and before sweep t+1 for t in [0,K_ref]",
+        "QWake decision epoch must remain inclusive through K_ref",
+    )
+    require(
+        qwake_contract.get("horizon_rule") == "registered_inference_steps",
+        "QWake horizon rule must remain registered_inference_steps",
+    )
+    trajectory_count = len(model_seeds) * len(batches)
+    require(
+        evaluated % trajectory_count == 0,
+        "QWake evaluated records must factor by C1 trajectories",
+    )
+    steps_per_trajectory = evaluated // trajectory_count
+    k_ref = steps_per_trajectory - 1
+    require(
+        (len(model_seeds), len(batches), trajectory_count) == (3, 36, 108),
+        "C1 trajectory identity mismatch",
+    )
+    require(
+        (steps_per_trajectory, k_ref) == (7, 6),
+        "QWake temporal surface identity mismatch",
+    )
+    require(
+        best.get("feature_name") == "compute_step",
+        "best-safe feature must remain compute_step",
+    )
+    require(
+        best.get("predicate") == "feature_ge",
+        "best-safe predicate must remain feature_ge",
+    )
+    threshold = float(best["threshold"])
+    require(threshold == 5.0, "best-safe compute_step threshold must remain 5")
+    accepted_steps = [step for step in range(k_ref + 1) if step >= threshold]
+    preterminal_steps = [step for step in accepted_steps if step < k_ref]
+    terminal_steps = [step for step in accepted_steps if step == k_ref]
+    require(
+        accepted_steps == [5, 6],
+        "best-safe accepted temporal steps must remain 5 and 6",
+    )
+    require(
+        preterminal_steps == [5] and terminal_steps == [6],
+        "preterminal/terminal step partition mismatch",
+    )
+    preterminal_accepted = trajectory_count * len(preterminal_steps)
+    terminal_accepted = trajectory_count * len(terminal_steps)
+    preterminal_surface = trajectory_count * k_ref
+    terminal_surface = trajectory_count
+    require(
+        preterminal_accepted + terminal_accepted == accepted,
+        "accepted temporal decomposition mismatch",
+    )
+    expected_temporal = {
+        "model_seed_count": len(model_seeds),
+        "batch_count": len(batches),
+        "trajectory_count": trajectory_count,
+        "reference_horizon_k_ref": k_ref,
+        "candidate_steps_per_trajectory": steps_per_trajectory,
+        "preterminal_surface_records": preterminal_surface,
+        "terminal_boundary_records": terminal_surface,
+        "best_safe_policy_accepted_preterminal_records": preterminal_accepted,
+        "best_safe_policy_accepted_terminal_records": terminal_accepted,
+        "best_safe_policy_preterminal_compute_step": preterminal_steps[0],
+        "best_safe_policy_preterminal_remaining_sweeps": k_ref - preterminal_steps[0],
+        "best_safe_policy_terminal_compute_step": terminal_steps[0],
+        "best_safe_policy_terminal_remaining_sweeps": k_ref - terminal_steps[0],
+    }
+    for key, expected in expected_temporal.items():
+        require(
+            decomposition.get(key) == expected,
+            f"QWake temporal decomposition mismatch: {key}",
+        )
+    require(
+        decomposition.get("registered_full_surface_coverage_includes_terminal_boundary")
+        is True,
+        "registered C2 coverage must explicitly retain the terminal boundary",
+    )
+    require(
+        decomposition.get(
+            "registered_full_surface_coverage_must_not_be_reinterpreted_as_preterminal_coverage"
+        )
+        is True,
+        "registered C2 coverage must not be relabeled as preterminal coverage",
+    )
+    require(
+        decomposition.get("cost_accounting_recalculated") is False,
+        "T19 must not recalculate C2 cost accounting",
+    )
 
     component_sum = sum(
         int(best[name])
@@ -557,10 +698,15 @@ def validate_qwake_claim_reconciliation(
 
     selection = qwake["selection"]
     best = qwake["best_safe_policy"]
+    decomposition = qwake.get("temporal_surface_decomposition")
     protocol = qwake["protocol"]
     verification = qwake.get("verification")
     require(isinstance(selection, dict), "QWake selection must be an object")
     require(isinstance(best, dict), "QWake best_safe_policy must be an object")
+    require(
+        isinstance(decomposition, dict),
+        "QWake temporal_surface_decomposition must be an object",
+    )
     require(isinstance(protocol, dict), "QWake protocol must be an object")
     require(isinstance(verification, dict), "QWake verification must be an object")
     require(int(verification.get("sealed_result_audit_fail", -1)) == 0, "sealed QWake audit must have zero failures")
@@ -574,6 +720,16 @@ def validate_qwake_claim_reconciliation(
     eligible = int(selection["eligible_policy_count"])
 
     require(safe_accepts > 0, "C08 requires at least one safe accepted record")
+    require(
+        int(decomposition.get("best_safe_policy_accepted_preterminal_records", 0))
+        == 108,
+        "C08 requires the structurally reconciled 108 preterminal accepted records",
+    )
+    require(
+        int(decomposition.get("best_safe_policy_accepted_terminal_records", 0))
+        == 108,
+        "C08 full-surface coverage must retain the 108 terminal-boundary accepts",
+    )
     require(safe_nontrivial > 0, "C08 requires non-zero safe recognizability")
     require(by_id["C08"].get("status") == "supported", "C08 status must be supported")
 
@@ -903,6 +1059,7 @@ def render_stage3(core: dict[str, object]) -> str:
 def render_qwake(qwake: dict[str, object]) -> str:
     s = qwake["selection"]
     b = qwake["best_safe_policy"]
+    d = qwake["temporal_surface_decomposition"]
     observer_share = int(b["cost_observer_ns"]) / int(b["total_decision_cost_ns"]) * 100.0
     lines = [
         "% Generated by scripts/build_thesis_assets.py; do not edit manually.",
@@ -925,16 +1082,20 @@ def render_qwake(qwake: dict[str, object]) -> str:
         "",
         r"\begin{table}[htbp]",
         r"\centering",
-        r"\caption{QWake C2: разложение стоимости лучшего безопасного правила при зафиксированном учёте}",
+        r"\caption{QWake C2: временное разложение и стоимость лучшего безопасного правила}",
         r"\label{tab:qwake-cost}",
-        r"\begin{tabular}{lr}",
+        r"\begin{tabular}{@{}p{0.76\textwidth}r@{}}",
         r"\toprule",
         texrow("Показатель & Значение"),
         r"\midrule",
-        texrow(f"Принято / оценено & {int(b['accepted_records'])} / {int(b['evaluated_records'])}"),
+        texrow(f"Принято / оценено на полной поверхности C1 & {int(b['accepted_records'])} / {int(b['evaluated_records'])}"),
         texrow(f"Опасные принятия & {int(b['dangerous_accepts'])}"),
-        texrow(f"Покрытие & {float(b['coverage']) * 100.0:.2f}\\%"),
-        texrow(f"Безопасно устранимый остаток вычисления & {int(b['gross_implied_avoided_suffix_ns']) / 1e9:.3f} с"),
+        texrow(f"Зарегистрированное покрытие полной поверхности & {float(b['coverage']) * 100.0:.2f}\\%"),
+        texrow(f"Предтерминальных записей на поверхности C1 & {int(d['preterminal_surface_records'])}"),
+        texrow(f"Принятые предтерминальные записи (шаг 5, один оставшийся проход) & {int(d['best_safe_policy_accepted_preterminal_records'])}"),
+        texrow(f"Записей терминальной границы на поверхности C1 & {int(d['terminal_boundary_records'])}"),
+        texrow(f"Принятые записи терминальной границы (шаг 6) & {int(d['best_safe_policy_accepted_terminal_records'])}"),
+        texrow(f"Зарегистрированная сумма {latex_code('remaining_suffix_ns')} по безопасно принятым записям & {int(b['gross_implied_avoided_suffix_ns']) / 1e9:.3f} с"),
         texrow(f"Полная стоимость решения & {int(b['total_decision_cost_ns']) / 1e9:.3f} с"),
         texrow(f"Доля наблюдателя в полной стоимости & {observer_share:.3f}\\%"),
         texrow(f"Совокупная чистая экономия & {int(b['total_net_saving_ns']) / 1e9:.3f} с"),
@@ -971,6 +1132,8 @@ def render_reproducibility(core: dict[str, object], qwake: dict[str, object]) ->
         lines.append(f"{latex_code(relative)} & {latex_digest(digest)} \\\\")
 
     qlabels = (
+        ("Замороженный запрос QWake C1", "c1_request_file_sha256"),
+        ("Контракт специального случая QWake-FP", "qwake_contract_file_sha256"),
         ("Файл выбора правила QWake C2", "policy_selection_file_sha256"),
         ("Семантика квитанции QWake C2", "receipt_semantic_sha256"),
         ("Файл квитанции QWake C2", "receipt_file_sha256"),
@@ -1013,6 +1176,7 @@ def main() -> None:
     print("THESIS_QWAKE_SUMMARY_ARITHMETIC=PASS")
     print("THESIS_QWAKE_PROTOCOL_BOUNDARY=PASS")
     print("THESIS_QWAKE_CLAIM_RECONCILIATION=PASS")
+    print("THESIS_QWAKE_TEMPORAL_SURFACE_RECONCILIATION=PASS")
     print("THESIS_CORE_RESULTS_SOURCE_BINDINGS=PASS")
     print("THESIS_CORE_RESULTS_RECONCILIATION=PASS")
     print("THESIS_STAGE3B_MATCHED_DECISION_RECONCILIATION=PASS")

@@ -46,11 +46,15 @@
 решения на 756 калибровочных записях. Из них 264 правила имели ненулевое
 покрытие при отсутствии опасных принятых решений, а правило с наибольшим
 покрытием среди кандидатов с нулём наблюдавшихся опасных принятий покрывало 216
-из 756 калибровочных записей (28.57\%). При этом ни одно правило не обеспечило
-положительную совокупную чистую экономию при зафиксированном полном учёте
-стоимости принятия решения. В полной стоимости этого правила преобладали
-накладные расходы наблюдателя; правило C2 не было зафиксировано, поэтому
-подтверждающий этап C3 не открывался.
+из 756 калибровочных записей (28.57\%). Структурная сверка временной поверхности
+показывает, что эти 216 записей состоят из 108 предтерминальных записей шага 5 с
+одним оставшимся проходом и 108 записей терминальной границы шага 6; поэтому
+28.57\% сохраняется как зарегистрированное покрытие полной поверхности и не
+трактуется как доля предтерминальных ранних завершений. При этом ни одно правило
+не обеспечило положительную совокупную чистую экономию при зафиксированном
+полном учёте стоимости принятия решения. В полной стоимости этого правила
+преобладали накладные расходы наблюдателя; правило C2 не было зафиксировано,
+поэтому подтверждающий этап C3 не открывался.
 
 Полученный отрицательный экономический результат относится именно к полному
 учёту стоимости принятия решения, зафиксированному для C2, и не измеряет
@@ -115,12 +119,15 @@ recognizability with zero observed dangerous accepts was found within the frozen
 family of 2,625 scalar policies on 756 calibration records: 264 policies had
 non-zero coverage with zero dangerous accepts, and the highest-coverage policy
 among candidates with zero observed dangerous accepts covered 216 of 756
-calibration records (28.57\%). No policy achieved positive aggregate net
-saving under the frozen full decision-cost accounting. The full cost assigned
-to that highest-coverage zero-danger candidate was overwhelmingly
-observer-dominated,
-no C2 policy freeze was established, and confirmatory C3 therefore remained
-closed.
+calibration records (28.57\%). Structural reconciliation of the temporal
+surface shows that these 216 records comprise 108 preterminal records at step 5
+with one remaining sweep and 108 records at the terminal boundary step 6;
+therefore 28.57\% remains the registered full-surface coverage and is not
+interpreted as preterminal early-exit coverage. No policy achieved positive
+aggregate net saving under the frozen full decision-cost accounting. The full
+cost assigned to that highest-coverage zero-danger candidate was overwhelmingly
+observer-dominated, no C2 policy freeze was established, and confirmatory C3
+therefore remained closed.
 
 The negative economic result is specific to the frozen full-cost accounting
 used in C2 and does not measure the marginal runtime cost of a minimal

@@ -476,7 +476,7 @@ a positive experimental result or authorization for a new execution.
 
 - **Russian equivalent:** операторная модель агрегации коррекций и переноса ошибок в предиктивном кодировании (PC-CATM).
 - **Project meaning:** The mechanism operator model of canonical channels, their aggregation, state-error transport, and the NCZ, ECZ, and TNZ null regimes.
-- **Usage rule:** PC-CATM is the mechanism layer of PC-TREF; PNZ is included only as a limited parameter-accessibility extension.
+- **Usage rule:** PC-CATM is a distinct mechanistic layer linked to PC-TREF: it provides mechanism-motivated diagnostic features whose task-relative sufficiency for a computational action is evaluated by PC-TREF; PNZ is included only as a limited parameter-accessibility extension.
 
 <a id="term-task-relative-equivalence"></a>
 ### TERM-TASK-RELATIVE-EQUIVALENCE — task-relative equivalence

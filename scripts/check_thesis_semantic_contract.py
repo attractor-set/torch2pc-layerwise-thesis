@@ -105,6 +105,57 @@ def check_terminology_invariance(sources: dict[Path, str]) -> list[str]:
     return errors
 
 
+def check_theory_layer_separation(sources: dict[Path, str]) -> list[str]:
+    errors: list[str] = []
+    glossary_ru = GLOSSARY_RU.read_text(encoding="utf-8")
+    glossary_en = GLOSSARY_EN.read_text(encoding="utf-8")
+    related = RELATED_WORK.read_text(encoding="utf-8")
+    conclusion = CONCLUSION.read_text(encoding="utf-8")
+
+    forbidden = (
+        (
+            glossary_ru,
+            "PC-CATM является механизмным слоем PC-TREF",
+            "RU glossary collapses PC-CATM into PC-TREF",
+        ),
+        (
+            glossary_en,
+            "PC-CATM is the mechanism layer of PC-TREF",
+            "EN glossary collapses PC-CATM into PC-TREF",
+        ),
+    )
+    for text, marker, label in forbidden:
+        if marker in text:
+            fail(errors, "theory layer separation", label)
+
+    required = (
+        (
+            glossary_ru,
+            "PC-CATM является отдельным механизмным уровнем, связанным с PC-TREF",
+            "RU glossary relation",
+        ),
+        (
+            glossary_en,
+            "PC-CATM is a distinct mechanistic layer linked to PC-TREF",
+            "EN glossary relation",
+        ),
+        (
+            related,
+            "Два уровня решают разные задачи и поэтому не должны сливаться в одну модель.",
+            "related-work separation",
+        ),
+        (
+            conclusion,
+            "Эти уровни намеренно не отождествляются.",
+            "conclusion separation",
+        ),
+    )
+    for text, marker, label in required:
+        require_contains(errors, text, marker, label)
+
+    return errors
+
+
 def check_symbol_namespace(sources: dict[Path, str]) -> list[str]:
     errors: list[str] = []
     thesis_text = "\n".join(sources.values())
@@ -217,6 +268,7 @@ def main() -> None:
     sources = thesis_sources()
     checks = (
         ("THESIS_TERMINOLOGY_INVARIANCE", check_terminology_invariance(sources)),
+        ("THESIS_THEORY_LAYER_SEPARATION", check_theory_layer_separation(sources)),
         ("THESIS_SYMBOL_NAMESPACE", check_symbol_namespace(sources)),
         ("THESIS_TERM_FIRST_DEFINITION", check_first_definitions()),
         ("THESIS_CLAIM_STATUS_SEMANTICS", check_claim_status_semantics()),

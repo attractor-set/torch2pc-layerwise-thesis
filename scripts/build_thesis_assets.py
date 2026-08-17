@@ -27,7 +27,19 @@ TERMINOLOGY_TEX = GENERATED / "terminology_registry.tex"
 GLOSSARY_RU_PATH = ROOT / "docs" / "glossary.md"
 GLOSSARY_EN_PATH = ROOT / "docs" / "glossary_EN.md"
 EXPECTED_GLOSSARY_TERM_COUNT = 117
+LATEX_ROW_END = r" \\"
 
+QWAKE_LOCAL_SOURCE_BINDINGS = (
+    ("c1_request_relative_path", "c1_request_file_sha256"),
+    ("qwake_contract_relative_path", "qwake_contract_file_sha256"),
+)
+QWAKE_SEALED_IDENTIFIER_KEYS = (
+    "policy_selection_file_sha256",
+    "receipt_semantic_sha256",
+    "receipt_file_sha256",
+    "best_safe_policy_sha256",
+    "common_decision_cost_sequence_sha256",
+)
 
 
 RUSSIAN_THESIS_SOURCES = (
@@ -479,7 +491,7 @@ def validate_claims(data: dict[str, object]) -> None:
     require(len(claim_ids) == len(set(claim_ids)), "claim ids must be unique")
 
 
-def validate_qwake(data: dict[str, object]) -> None:
+def validate_qwake(data: dict[str, object]) -> dict[str, int]:
     require(data.get("schema_version") == 1, "QWake summary schema_version must be 1")
     require(
         data.get("document_role") == "thesis-facing-derived-summary",
@@ -497,22 +509,13 @@ def validate_qwake(data: dict[str, object]) -> None:
     require(isinstance(protocol, dict), "protocol must be an object")
     source = data.get("source")
     require(isinstance(source, dict), "QWake source must be an object")
-    for key in (
-        "c1_request_file_sha256",
-        "qwake_contract_file_sha256",
-        "policy_selection_file_sha256",
-        "receipt_semantic_sha256",
-        "receipt_file_sha256",
-        "best_safe_policy_sha256",
-        "common_decision_cost_sequence_sha256",
-    ):
+    for _, digest_key in QWAKE_LOCAL_SOURCE_BINDINGS:
+        validate_sha256_identity(source.get(digest_key), f"QWake source.{digest_key}")
+    for key in QWAKE_SEALED_IDENTIFIER_KEYS:
         validate_sha256_identity(source.get(key), f"QWake source.{key}")
 
     bound_sources: dict[str, Path] = {}
-    for path_key, digest_key in (
-        ("c1_request_relative_path", "c1_request_file_sha256"),
-        ("qwake_contract_relative_path", "qwake_contract_file_sha256"),
-    ):
+    for path_key, digest_key in QWAKE_LOCAL_SOURCE_BINDINGS:
         relative = source.get(path_key)
         require(
             isinstance(relative, str) and bool(relative),
@@ -685,6 +688,11 @@ def validate_qwake(data: dict[str, object]) -> None:
     require(int(best["cost_observer_ns"]) > 0, "observer cost must be positive")
     require(protocol.get("c2_policy_freeze_established") is False, "C2 policy freeze must remain false")
     require(protocol.get("c3_open") is False, "C3 must remain closed")
+
+    return {
+        "local_source_bindings_verified": len(bound_sources),
+        "sealed_identifiers_present": len(QWAKE_SEALED_IDENTIFIER_KEYS),
+    }
 
 
 def validate_qwake_claim_reconciliation(
@@ -1128,20 +1136,37 @@ def render_reproducibility(core: dict[str, object], qwake: dict[str, object]) ->
         r"\midrule",
         r"\endhead",
     ]
+    lines.append(
+        r"\multicolumn{2}{@{}l}{\textbf{Локально перепроверяемые привязки}} \\"
+    )
     for relative, digest in bindings.items():
-        lines.append(f"{latex_code(relative)} & {latex_digest(digest)} \\\\")
+        lines.append(f"{latex_code(relative)} & {latex_digest(digest)}{LATEX_ROW_END}")
 
-    qlabels = (
+    qlocal_labels = (
         ("Замороженный запрос QWake C1", "c1_request_file_sha256"),
         ("Контракт специального случая QWake-FP", "qwake_contract_file_sha256"),
+    )
+    for label, key in qlocal_labels:
+        lines.append(f"{latex_escape(label)} & {latex_digest(source[key])}{LATEX_ROW_END}")
+
+    lines.extend(
+        [
+            r"\addlinespace",
+            r"\multicolumn{2}{@{}l}{\textbf{Сохранённые идентификаторы запечатанных материалов}} \\",
+        ]
+    )
+    qsealed_labels = (
         ("Файл выбора правила QWake C2", "policy_selection_file_sha256"),
         ("Семантика квитанции QWake C2", "receipt_semantic_sha256"),
         ("Файл квитанции QWake C2", "receipt_file_sha256"),
         ("Лучшее безопасное правило QWake", "best_safe_policy_sha256"),
-        ("Общая последовательность стоимости решения QWake", "common_decision_cost_sequence_sha256"),
+        (
+            "Общая последовательность стоимости решения QWake",
+            "common_decision_cost_sequence_sha256",
+        ),
     )
-    for label, key in qlabels:
-        lines.append(f"{latex_escape(label)} & {latex_digest(source[key])} \\\\")
+    for label, key in qsealed_labels:
+        lines.append(f"{latex_escape(label)} & {latex_digest(source[key])}{LATEX_ROW_END}")
 
     lines.extend([r"\bottomrule", r"\end{longtable}", r"\endgroup", ""])
     return "\n".join(lines)
@@ -1157,7 +1182,7 @@ def main() -> None:
     core = load(CORE_RESULTS_PATH)
     glossary_entries = parse_glossary_entries()
     validate_claims(claims)
-    validate_qwake(qwake)
+    qwake_provenance = validate_qwake(qwake)
     validate_qwake_claim_reconciliation(claims, qwake)
     validate_core_results(core)
 
@@ -1180,7 +1205,17 @@ def main() -> None:
     print("THESIS_CORE_RESULTS_SOURCE_BINDINGS=PASS")
     print("THESIS_CORE_RESULTS_RECONCILIATION=PASS")
     print("THESIS_STAGE3B_MATCHED_DECISION_RECONCILIATION=PASS")
-    print("THESIS_PROVENANCE_IDENTITIES=PASS")
+    print(
+        "THESIS_QWAKE_LOCAL_SOURCE_BINDINGS="
+        f"{qwake_provenance['local_source_bindings_verified']}/"
+        f"{len(QWAKE_LOCAL_SOURCE_BINDINGS)}_PASS"
+    )
+    print(
+        "THESIS_QWAKE_SEALED_IDENTIFIERS_PRESENT="
+        f"{qwake_provenance['sealed_identifiers_present']}/"
+        f"{len(QWAKE_SEALED_IDENTIFIER_KEYS)}_PASS"
+    )
+    print("THESIS_PROVENANCE_CONTRACT=PASS")
     print("THESIS_RUSSIAN_PROSE=PASS")
     print(f"THESIS_GLOSSARY_TERM_COUNT={len(glossary_entries)}")
     print(f"THESIS_GLOSSARY_COVERAGE={len(glossary_entries)}/{EXPECTED_GLOSSARY_TERM_COUNT}")

@@ -2,71 +2,114 @@
 
 [Русская версия](PROJECT_STRUCTURE.md)
 
-The repository separates scientific implementation, configuration,
-experiment lifecycle, analysis, dissertation text, and publication artifacts.
+The `v1.0.0` repository combines three surfaces that must remain distinct: the
+**final dissertation**, the **executable research implementation**, and the
+**historical experimental provenance**.
 
-The main rule is:
+## Top-level map
 
 ```text
-Issue
--> ADR for protocol changes
--> test
--> src module
--> YAML configuration
--> CLI
--> documentation
--> validation-only experiment
--> freeze
--> final experiment
--> aggregate result
--> dissertation section
+.
+├── thesis/                  # final dissertation and thesis-facing contracts
+│   ├── chapters/
+│   ├── appendices/
+│   ├── frontmatter/
+│   ├── data/                # C01–C11, verified summaries, traceability
+│   └── generated/           # locally rendered, not the source of truth
+├── src/torch2pc_thesis/     # executable research logic and CLI
+├── tests/                   # unit/correctness/integration regression surface
+├── configs/                 # Stage 1/2/3 and hardware configuration
+├── experiments/             # planned/frozen/completed lifecycle and authorization records
+├── results/                 # aggregate results and compact evidence packages
+├── docs/                    # theory, methodology, glossary, ADRs, protocols
+├── references/              # BibTeX and source traceability
+├── article/                 # secondary future-article package
+├── notebooks/               # analysis-only and historical migration notebooks
+├── scripts/                 # validation, provenance, thesis, and release tooling
+├── requirements/            # CPU/ROCm/development dependency surfaces
+├── external/                # locally bound external implementations
+├── private/                 # excluded from the public scientific claim surface
+└── .github/workflows/       # CI, thesis build, and tag-bound release
 ```
 
-`src/` is the canonical source of scientific logic. Analysis notebooks consume
-registered results and do not contain unique training or metric implementations.
-English user-facing documents use the `_EN` suffix.
+## Authoritative v1.0.0 surfaces
 
-`RESEARCH_PRINCIPLES.md`, `HYPOTHESES.md`, and `PREREGISTRATION.md` define
-the epistemic position, research questions, and confirmatory boundaries before
-final test access.
+### `thesis/`
 
-The `requirements/` directory separates the CPU development wheel index from
-the ROCm container lock. Dataset assets and their hashes are bound to
-`environment-lock.json` through `src/torch2pc_thesis/assets.py`.
+The final scientific narrative. Main machine-readable contracts are:
 
+- `thesis/data/research_claims.json` — registered C01–C11 claims;
+- `thesis/data/thesis_traceability.json` — theory → methodology → experiment →
+  results → discussion → conclusion binding for every claim;
+- `thesis/data/qwake_c2_verified_summary.json` — thesis-facing QWake C2
+  aggregates with provenance bindings;
+- `scripts/build_thesis_assets.py` — validation/rendering of generated assets;
+- `scripts/check_thesis_semantic_contract.py` — terminology, statuses, and
+  QWake action semantics;
+- `scripts/check_thesis_traceability.py` — local claim-to-section binding.
 
-Raw runs and checkpoints are not stored in the `main` Git tree. The complete
-Stage 2 raw artifact set is distributed through the `stage2-results-v1`
-replication bundle.
+`make thesis-check` validates the scientific surface without LaTeX; `make thesis`
+builds the final PDF.
 
+### `src/torch2pc_thesis/`
 
-## Stage 3 additions
+Canonical executable research implementation. Notebooks must not contain unique
+scientific logic absent from `src/`.
 
-Stage 3 adds `configs/stage3/design.yaml`, profiling/pilot/final templates,
-candidate overlays, `src/torch2pc_thesis/locality.py`,
-`src/torch2pc_thesis/profiling.py`, and `src/torch2pc_thesis/stage3.py`.
-The new modules define the locality trace schema, measured profiling regions,
-deterministic design plans, and readiness guards. Stage 3 remains outside
-`TRAINING_STAGES` until candidate commits, numerical gates, environment locks,
-and freeze artifacts exist.
+### `experiments/` and `results/`
 
-Stage 1/2 evidence, tags, and published manifests remain immutable. Stage 3 uses
-its own registry, results tree, execution commit, and publication state.
+`experiments/` preserves protocol, freeze, authorization, and receipt lifecycle
+artifacts. `results/` stores tracked aggregate outputs and compact evidence
+packages. Historical execution-control documents retain the state of their own
+time and are not current authorization for a new run.
 
-### Theoretical package after `SI-MA1`
+### `docs/`
 
-- `docs/pc-tref-pc-catm-theoretical-foundation.md` and `_EN` freeze normative operational semantics;
-- `docs/decisions/ADR-013-pc-tref-operational-semantics.md` and `_EN` record B1/B2 admission to preregistration;
-- documentation changes do not modify `results/stage-3/si-ma1/` or earlier sealed evidence.
+- `glossary.md` / `_EN` — normative terminology;
+- `pc-tref-*` — task-relative theoretical framework;
+- `pc-catm-*` — distinct mechanistic diagnostic level;
+- `qwake-*` — architecture and historical bounded protocol surfaces;
+- `decisions/` — ADRs, including immutable historical decisions;
+- `research-log/` — point-in-time research history.
 
-### B1/B2 preregistration
+Read the current outcome from `README_EN.md`, `STATUS_EN.md`, and the final
+thesis. Historical protocol/ADR statements are not rewritten after results are
+known.
 
-- `experiments/planned/STAGE3B-B1.md` and `_EN`: B1 `isolated_layer_vjp`;
-- `experiments/planned/STAGE3B-B1-CONTRACT.json`: machine-readable B1 contract;
-- `experiments/planned/STAGE3B-B2.md` and `_EN`: B2 `composite_vjp`;
-- `experiments/planned/STAGE3B-B2-CONTRACT.json`: machine-readable B2 contract;
-- `docs/stage3b-b1-b2-preregistration.md` and `_EN`: shared admission boundary;
-- `docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md` and `_EN`: sequential admission;
-- `tests/unit/test_stage3b_future_policy_boundary.py`: boundary to future policy.
+## Release surface
 
-Published configuration and evidence references retain their recorded SHA-256 identifiers.
+Tag `v1.0.0` is bound to an exact source commit/tree. `scripts/build_release.sh`
+creates the source archive, PDF, SHA-256 files, metadata, and `release-manifest.json`.
+The GitHub workflow publishes those exact assets and refuses to overwrite an
+existing release.
+
+## Historical documents
+
+`HYPOTHESES.md`, `PREREGISTRATION.md`, earlier Stage/QWake plans, ADRs,
+`STATUS_EN.md`/`ROADMAP_EN.md` historical ledgers, and image IDs such as
+`torch2pc-layerwise-thesis:0.1.0-...` are provenance. Their versions and local
+open/closed states are not retroactively normalized to `v1.0.0`.
+
+`pyproject.toml` and `src/torch2pc_thesis/__init__.py` belong to frozen QWake
+scientific runtime closures and therefore retain the historical package version
+`0.1.0` and their registered SHA-256 identities. Repository publication release
+version authority is the separate `RELEASE_VERSION`, `CITATION.cff`, and the tag;
+frozen runtime source must not be rewritten merely to synchronize release text.
+
+## Post-v1.0.0 extension rule
+
+New scientific work does not automatically continue an old claim identifier:
+
+```text
+new question
+-> preregistered protocol / new claim identifier
+-> immutable source + environment binding
+-> authorized execution
+-> preserved evidence
+-> independent verification
+-> bounded claim decision
+-> optional dissertation/article successor
+```
+
+In particular, future C10 testing or a new confirmatory surface requires a new
+protocol ID and does not redefine C09/C11 from the current dissertation.

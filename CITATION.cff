@@ -2,9 +2,8 @@ cff-version: 1.2.0
 message: "If you use this research software or its results, please cite the archived release."
 title: "Torch2PC Layer-wise Thesis"
 type: software
-version: 0.1.0
-date-released: 2026-07-13
-commit: "bb435432a65b76b7fc4f383b566b9a372fc346ae"
+version: 1.0.0
+date-released: 2026-08-17
 authors:
   - family-names: "Prychyna"
     given-names: "Dzmitry"
@@ -12,17 +11,24 @@ authors:
 repository-code: "https://github.com/attractor-set/torch2pc-layerwise-thesis"
 identifiers:
   - type: url
-    value: "https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1"
-    description: "GitHub Release for the Stage 2 results publication state."
+    value: "https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/v1.0.0"
+    description: "GitHub Release for the final thesis v1.0.0 publication state."
 abstract: >
-  Reproducible software and research artifacts for a master's thesis on
-  layer-wise and compute-matched comparison of backpropagation and
-  predictive-coding regimes implemented with Torch2PC.
+  Software, evidence, and dissertation sources for a protocol-first study of
+  backpropagation and predictive-coding regimes in Torch2PC. The work separates
+  final behavior, internal mechanism, compute cost, task-relative action
+  admissibility, pre-action recognizability, and full decision-cost economics;
+  it introduces the PC-TREF and PC-CATM theoretical levels and evaluates the
+  bounded QWake-FP FixedPred realization.
 keywords:
   - predictive coding
   - backpropagation
   - Torch2PC
+  - PC-TREF
+  - PC-CATM
+  - QWake-FP
   - reproducibility
   - representation similarity
+  - computational cost
   - ROCm
 license: Apache-2.0

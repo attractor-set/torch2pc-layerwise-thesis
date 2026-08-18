@@ -2,95 +2,94 @@
 
 [Русская версия](methodology.md)
 
-## Design
+This document describes the completed `v1.0.0` dissertation methodology.
+Historical protocols and authorizations remain in their own files; publication
+does not open a new scientific [execution](glossary_EN.md#term-execution).
 
-The study is a protocol-first comparison of BP and predictive-coding variants
-in Torch2PC. Plans, [execution](glossary_EN.md#term-execution), [evidence](glossary_EN.md#term-evidence), analysis, and admission decisions are
-separated by commits and tags. Negative and mixed results are retained without
-changing frozen criteria.
+## Research principle
 
-## Completed stages
+The work follows a protocol-first sequence: question → operational definition →
+frozen test → measurement → registered claim status. A result at one level is
+not automatically transferred to another.
 
-1. pilot and infrastructure validation;
-2. Stage 1 — original Torch2PC;
-3. Stage 2 — patched Torch2PC with verified equivalence;
-4. Stage 3A — layer-wise gradients and representations;
-5. Stage 3B B0 — canonical ROCm/float32 [profiling](glossary_EN.md#term-profiling);
-6. `SI-MA0` — [mechanism attribution](glossary_EN.md#term-mechanism-attribution) with its negative cost gate retained;
-7. `SI-MA1` — matched A/B/C observer calibration and final pass;
-8. the `PC-TREF`/`PC-CATM` theoretical freeze before B1/B2.
+The primary [independent statistical unit](glossary_EN.md#term-statistical-unit)
+is an independently trained model with its own `model_seed`; images, batches,
+and layers are not treated as independent model replications.
 
-## Data and independent unit
+## Experimental-program sequence
 
-MNIST and FashionMNIST are used within their registered stages. The independent
-statistical unit is the independently trained model identified by `model_seed`.
-Batches, layers, steps, images, and timing blocks are nested observations, not
-additional independent models.
+1. C0/C1 — structural and numerical implementation controls;
+2. pilot [configuration](glossary_EN.md#term-configuration) selection without final test evaluation;
+3. Stage 1 — final quality and registered equivalence;
+4. Stage 2 — quality-surface reproduction and timing;
+5. Stage 3A — layer-wise gradients and representation similarity;
+6. Stage 3B B0 — [profiling](glossary_EN.md#term-profiling) and cost localization;
+7. SI-MA0/SI-MA1 — decomposition of `state_inference` and [observer cost](glossary_EN.md#term-observer-cost);
+8. B1/B2 — exact alternative computational organizations and equivalence checks;
+9. [matched profiling](glossary_EN.md#term-matched-profiling) of B0/B1/B2 plus a
+   separate resource continuation criterion;
+10. [QWake-FP](glossary_EN.md#term-qwake-fp) C1/C2 — action admissibility, recognizability, and economics;
+11. T21–T24 — terminology, structure, and scientific-semantic closure of the
+    manuscript without another scientific execution.
 
-The validation split supports selection, calibration, and [confirmatory analysis](glossary_EN.md#term-confirmatory-analysis)
-under frozen contracts. The test split remains closed until the implementation,
-features, thresholds, and statistical plan are frozen.
+## Stage 3B: correctness and cost are separate
 
-## Controlled environment
+B1/B2 remain [candidates](glossary_EN.md#term-candidate) after passing numerical
+checks. Functional/trajectory equivalence is evaluated separately from the
+resource continuation criterion. Passing B1/B2 therefore does not establish
+superiority over the [baseline](glossary_EN.md#term-baseline), while
+`reject_or_revise` at the resource criterion does not undo passed numerical
+equivalence.
 
-GPU/ROCm execution uses the canonical Docker image. The host is limited to
-static, Git, and documentation checks. Each publication campaign freezes source
-commit, image revision, Torch2PC revision, [configuration](glossary_EN.md#term-configuration), [checkpoint](glossary_EN.md#term-checkpoint) hashes,
-and `SHA256SUMS`.
+## QWake-FP operational semantics
 
-## Measurements
+[QWake-FP](glossary_EN.md#term-qwake-fp) is the bounded implementation of the
+general [QWake-PC](glossary_EN.md#term-qwake-pc). Each pre-action state is
+compared through two paths:
 
-- quality and convergence;
-- gradient geometry and depth effects;
-- CKA, RSA, and cross-layer representation metrics;
-- [device time](glossary_EN.md#term-device-time), wall time, memory, and [saved tensors](glossary_EN.md#term-saved-tensors);
-- canonical correction channels, `NCZ`, `ECZ`, `TNZ`, and transport;
-- [candidate](glossary_EN.md#term-candidate)/reference numerical equivalence;
-- safety outcomes and [decision regret](glossary_EN.md#term-decision-regret);
-- the [cost vector](glossary_EN.md#term-cost-vector).
+```text
+state
+├─ fixedpred_eta1_wavefront_completion_v1
+│  └─ candidate required response
+└─ complete_suffix_stage2_baseline_v1
+   └─ exact required response
+```
 
-Every `PC-CATM` norm has a measurement contract covering space, norm, scale,
-dtype, device, epsilon, threshold, layer/step, and aggregation. Threshold
-proximity is not called a quotient without an explicit partition map.
+The first path uses [analytic completion](glossary_EN.md#term-analytic-completion);
+the second is the exact reference and [fallback](glossary_EN.md#term-fallback).
+`EARLY_ADMISSIBLE` means that the registered analytic action is admissible with
+respect to the required response of the exact suffix; it does not mean that all
+further computation disappears. Analytic-completion cost is included in the
+measured compute cost.
 
-## Cost separation
+## QWake-FP C2 evaluation
 
-The project accounts separately for:
+The frozen family contains 2,625 scalar rules. Each rule is evaluated
+separately for dangerous accepts, coverage, full decision cost, and aggregate
+saving relative to the registered residual-compute estimand.
 
-1. [diagnostic-mechanism cost](glossary_EN.md#term-diagnostic-mechanism-cost);
-2. [observer cost](glossary_EN.md#term-observer-cost);
-3. [control-plane cost](glossary_EN.md#term-control-plane-cost);
-4. [fallback](glossary_EN.md#term-fallback) and end-to-end cost.
+Decision order is dangerous-accept constraint → non-zero coverage → net
+economics. The best zero-observed-danger rule is `compute_step >= 5`; it is a
+temporal fixed-prefix boundary. Its 216/756 coverage contains 108 preterminal
+step-5 records and 108 terminal-boundary step-6 records.
 
-`SI-MA1` addresses the observer boundary. Its negative calibrated residual is
-over-closure, not negative physical cost or future savings.
+## Claim statuses
 
-## B1/B2 method
+Descriptive analysis is not retrospectively relabeled as confirmatory
+[evidence](glossary_EN.md#term-evidence). The final registry uses only
+`supported`, `rejected`, `descriptive`, and `not_tested`.
 
-Each candidate receives a separate preregistration before implementation. The
-contract freezes reference path, state/belief/RNG restoration, scope, numerical
-endpoints and tolerances, independent unit, replacement policy, safety/regret,
-cost vector, observer/control separation, fallback, and stop rules.
-
-Sequence:
-
-1. deterministic and unit controls;
-2. CPU structural check;
-3. controlled ROCm smoke;
-4. candidate-specific numerical-equivalence gate;
-5. separate admission decision for confirmatory profiling;
-6. matched confirmatory execution;
-7. aggregation by `model_seed` without post-hoc exclusions.
-
-## Statistics
-
-Primary estimands, test direction, bootstrap seed, replication count,
-multiplicity policy, and thresholds are frozen before confirmatory execution.
-Nested measurements are reduced to `model_seed`. Descriptive analyses are not
-retrospectively relabeled as confirmatory evidence.
+For QWake, four distinct boundaries are preserved: C08 `supported` for bounded
+selective recognizability on the frozen calibration surface; C09 `rejected`
+under full decision-cost accounting; C10 `not_tested`, because marginal cost of
+a minimal recognizer is a different estimand and was not measured; and C11
+`not_tested`, because confirmatory C3 was not opened by the original protocol.
 
 ## Limitations
 
-Claims are bounded to registered datasets, `lenet_classic`, the Torch2PC
-revision, checkpoints, float32/ROCm environment, and diagnostic family. B1/B2,
-active `QWake-PC`, and transfer require their own evidence packages.
+Claims are bounded to registered datasets, the `lenet_classic`
+[architecture](glossary_EN.md#term-architecture), Torch2PC, seeds, numerical
+tolerances, and frozen hardware/software environments. PC-CATM has a
+mechanistic diagnostic status: superiority of its mechanism-aware features was
+not directly tested. Zero observed dangerous accepts on the finite calibration
+surface does not establish population-level safety.

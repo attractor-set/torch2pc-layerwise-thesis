@@ -1,6 +1,6 @@
 # Language-pair numeric parity for research-log paths: 0 07
 site_name: Torch2PC Layer-wise Thesis
-site_description: Воспроизводимый репозиторий магистерской диссертации и научной публикации
+site_description: "Финальная диссертация о BP и predictive coding: PC-TREF, PC-CATM, Stage 1–3 и bounded QWake-FP"
 site_dir: site_ru
 theme:
   name: material
@@ -15,7 +15,7 @@ nav:
   - Исследование:
       - Исследовательский вопрос: research-question.md
       - Методология: methodology.md
-      - План анализа: analysis-plan.md
+      - Исторический план анализа: analysis-plan.md
       - FixedPred sufficiency:
           - Концепция: fixedpred-sufficiency-dus-design.md
           - Метрики D/U/S: fixedpred-sufficiency-dus-metrics.md
@@ -26,21 +26,21 @@ nav:
       - Воспроизводимость: reproducibility.md
       - Управление данными: data-management.md
       - Оборудование: hardware.md
-      - План публикации: publication-plan.md
+      - Исторический план публикации: publication-plan.md
       - Протокол Stage 2: stage-2-protocol.md
       - Протокол Stage 3: stage-3-protocol.md
-      - Готовность Stage 3: stage-3-readiness.md
+      - Историческая готовность Stage 3: stage-3-readiness.md
       - Результаты Stage 3A: stage3a-statistical-results.md
       - Stage 3B B0 validation и sealing: stage3b-b0-sealing.md
       - Stage 3B B0 analysis pipeline: stage3b-b0-analysis-pipeline.md
-      - План магистерской диссертации: masters-thesis-plan.md
+      - Исторический план диссертации: masters-thesis-plan.md
       - Теоретическое основание PC-TREF/PC-CATM: pc-tref-pc-catm-theoretical-foundation.md
       - PC-TREF Balanced Core: pc-tref-balanced-core.md
       - PC-TREF — граница достаточности: pc-tref-sufficiency-boundary.md
       - PC-CATM: pc-catm-operator-model.md
       - Основной сценарий A: stage3b-primary-scenario-a.md
       - QWake-PC: qwake-pc-design.md
-      - QWake-FP plan: qwake-fp-experimental-plan.md
+      - Исторический QWake-FP plan: qwake-fp-experimental-plan.md
       - Многомасштабная механизмно-решающая архитектура: pc-multiscale-mechanism-decision-architecture.md
       - ECZ-targeted local sweep: ecz-targeted-local-sweep.md
       - Граница будущей политики: stage3b-future-policy-boundary.md
@@ -51,63 +51,11 @@ nav:
       - Общий дизайн: research-design/design.md
       - Вычислительная среда: research-design/controlled-compute.md
       - Контрольный список: research-design/run-checklist.md
-      - План статьи: research-design/article-plan.md
+      - Исторический план статьи: research-design/article-plan.md
   - Расширение QWake: qwake-local-compute-extension.md
   - Решения:
-      - Индекс ADR: decisions/index.md
-      - ADR-001 Torch2PC: decisions/ADR-001-use-torch2pc.md
-      - ADR-002 ROCm Docker: decisions/ADR-002-use-rocm-docker.md
-      - ADR-003 Основная метрика: decisions/ADR-003-primary-metric.md
-      - ADR-004 Статистика: decisions/ADR-004-statistical-protocol.md
-      - ADR-006 Scope Stage 3: decisions/ADR-006-stage3-scope.md
-      - ADR-007 Таксономия локальности: decisions/ADR-007-stage3-locality-taxonomy.md
-      - ADR-008 Predict-correct acceleration: decisions/ADR-008-predict-correct-acceleration.md
-      - ADR-012 Основной сценарий A: decisions/ADR-012-pc-tref-pc-catm-scenario-a.md
-      - ADR-013 Операциональная семантика: decisions/ADR-013-pc-tref-operational-semantics.md
-      - ADR-014 Контракты B1/B2: decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md
-      - ADR-015 Сопоставленные измерения: decisions/ADR-015-stage3b-matched-measurement-sealing.md
-      - ADR-016 Граница достаточности: decisions/ADR-016-stage3b-sufficiency-boundary.md
-      - ADR-017 Корректность 288-cell: decisions/ADR-017-stage3b-288cell-correctness-repair.md
-      - ADR-018 Confirmatory EQ-B1: decisions/ADR-018-stage3b-b1-confirmatory-preregistration.md
-      - ADR-019 Confirmatory EQ-B1 opening: decisions/ADR-019-stage3b-b1-confirmatory-opening.md
-      - ADR-020 Многомасштабная архитектура: decisions/ADR-020-pc-multiscale-mechanism-decision-architecture.md
-      - ADR-021 Confirmatory EQ-B2: decisions/ADR-021-stage3b-b2-confirmatory-preregistration.md
+      - Полный индекс ADR: decisions/index.md
       - ADR-022 Confirmatory EQ-B2 opening: decisions/ADR-022-stage3b-b2-confirmatory-opening.md
-      - ADR-023 Confirmatory EQ-B2 request freeze: decisions/ADR-023-stage3b-b2-confirmatory-request-freeze.md
-      - ADR-024 Confirmatory EQ-B2 evidence: decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation.md
-      - ADR-025 Matched profiling refreeze: decisions/ADR-025-stage3b-matched-profiling-request-refreeze.md
-      - ADR-026 Matched profiling evidence: decisions/ADR-026-stage3b-matched-profiling-evidence-preservation.md
-      - ADR-027 Matched analysis protocol: decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol.md
-      - ADR-028 Matched analysis implementation: decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation.md
-      - ADR-029 Matched analysis hardening: decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening.md
-      - ADR-030 Matched analysis execution request: decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze.md
-      - ADR-031 Matched analysis runtime preflight: decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation.md
-      - ADR-032 Matched analysis runtime preflight freeze: decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze.md
-      - ADR-033 Matched analysis execution authorization: decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze.md
-      - ADR-034 Matched analysis output seal: decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze.md
-      - ADR-035 Рекурсивная достаточность: decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction.md
-      - ADR-036 Publication gate matched analysis: decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate.md
-      - ADR-037 Publication receipt matched analysis: decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt.md
-      - ADR-038 EX-IF0 exact reference: decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary.md
-      - ADR-039 FixedPred sufficiency D/U/S: decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design.md
-      - ADR-040 Integrated frontier: decisions/ADR-040-stage3b-integrated-frontier-model.md
-      - ADR-041 Corrective frontier semantics: decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md
-      - ADR-042 QWake-FP scope: decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md
-      - ADR-043 QWake-FP special-case contract: decisions/ADR-043-stage3b-qwake-fp-special-case-contract.md
-      - ADR-044 QWake-FP pre-freeze validation: decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation.md
-      - ADR-045 QWake-FP runtime validation implementation: decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation.md
-      - ADR-046 QWake documentation refactor: decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset.md
-      - ADR-047 QWake runtime validation freeze v2: decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2.md
-      - ADR-048 QWake runtime validation evidence v2: decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2.md
-      - ADR-049 QWake LC0 post-merge transition: decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition.md
-      - ADR-050 QWake LC0 semantics and scope: decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze.md
-      - ADR-051 QWake LC0 repository freeze: decisions/ADR-051-stage3b-qwake-lc0-repository-freeze.md
-      - ADR-052 QWake LC1 transition: decisions/ADR-052-stage3b-qwake-lc1-transition.md
-      - ADR-053 QWake LC1 required-response schema: decisions/ADR-053-stage3b-qwake-lc1-required-response-schema.md
-      - ADR-054 QWake LC1 repository freeze: decisions/ADR-054-stage3b-qwake-lc1-repository-freeze.md
-      - ADR-055 QWake LC2 transition: decisions/ADR-055-stage3b-qwake-lc2-transition.md
-      - ADR-056 QWake LC2 resource-cost contract: decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract.md
-      - ADR-057 QWake LC2 repository freeze: decisions/ADR-057-stage3b-qwake-lc2-repository-freeze.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

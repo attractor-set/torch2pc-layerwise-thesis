@@ -2,188 +2,115 @@
 
 [English version](PROJECT_STRUCTURE_EN.md)
 
+Репозиторий `v1.0.0` объединяет три разных типа поверхности, которые нельзя
+смешивать: **финальный текст диссертации**, **исполняемую исследовательскую
+реализацию** и **исторический provenance экспериментов**.
+
+## Карта верхнего уровня
+
 ```text
-torch2pc-layerwise-thesis/
-├── README.md
-├── README_EN.md
-├── STATUS.md
-├── STATUS_EN.md
-├── ROADMAP.md
-├── ROADMAP_EN.md
-├── LANGUAGE_POLICY.md
-├── LANGUAGE_POLICY_EN.md
-├── RESEARCH_PRINCIPLES.md
-├── HYPOTHESES.md
-├── PREREGISTRATION.md
-├── FIRST_COMMIT.md
-├── pyproject.toml
-├── Makefile
-├── Dockerfile.rocm
-├── compose.yaml
-├── configs/
-│   ├── base.yaml
-│   ├── hardware/
-│   ├── methods/
-│   ├── stages/
-│   ├── experiments/
-│   └── stage3/
-├── src/torch2pc_thesis/
-│   ├── array_types.py
-│   ├── assets.py
-│   ├── cli.py
-│   ├── config.py
-│   ├── data.py
-│   ├── models.py
-│   ├── pc_methods.py
-│   ├── controls.py
-│   ├── locality.py
-│   ├── profiling.py
-│   ├── stage3.py
-│   ├── training.py
-│   ├── metrics.py
-│   ├── representations.py
-│   ├── robustness.py
-│   ├── statistics.py
-│   ├── registry.py
-│   ├── manifests.py
-│   └── reporting.py
-├── experiments/
-│   ├── registry.csv
-│   ├── registry-stage-2*.csv
-│   ├── planned/
-│   ├── completed/
-│   └── failed/
-├── results/
-│   ├── summaries/
-│   ├── figures/
-│   ├── tables/
-│   ├── stage-2/
-│   ├── cross-version/
-│   └── stage-3/
-├── notebooks/
-│   ├── analysis/
-│   └── legacy/
-├── thesis/
-│   ├── main.tex
+.
+├── thesis/                  # финальная диссертация и thesis-facing contracts
 │   ├── chapters/
-│   └── appendices/
-├── article/
-│   ├── manuscript_EN.tex
-│   ├── supplementary_EN.tex
-│   └── structure.md
-├── references/
-│   ├── bibliography.bib
-│   └── literature-matrix.csv
-├── docs/
-│   ├── stage-3-protocol.md
-│   ├── stage-3-readiness.md
-│   ├── decisions/
-│   ├── research-log/
-│   ├── research-design/
-│   ├── analysis-plan.md
-│   ├── data-management.md
-│   └── threats-to-validity.md
-├── tests/
-├── scripts/
-└── .github/
+│   ├── appendices/
+│   ├── frontmatter/
+│   ├── data/                # C01–C11, verified summaries, traceability
+│   └── generated/           # формируется локально, не является source of truth
+├── src/torch2pc_thesis/     # исполняемая исследовательская логика и CLI
+├── tests/                   # unit/correctness/integration regression surface
+├── configs/                 # Stage 1/2/3 и аппаратные конфигурации
+├── experiments/             # planned/frozen/completed lifecycle и authorization records
+├── results/                 # агрегированные результаты и compact evidence packages
+├── docs/                    # теория, методология, глоссарий, ADR и протоколы
+├── references/              # BibTeX и трассировка источников
+├── article/                 # вторичный пакет будущей статьи
+├── notebooks/               # analysis-only и historical migration notebooks
+├── scripts/                 # validation, provenance, thesis и release tooling
+├── requirements/            # CPU/ROCm/dev dependency surfaces
+├── external/                # локально привязываемые внешние реализации
+├── private/                 # исключённая из публичного scientific claim surface область
+└── .github/workflows/       # CI, thesis build и tag-bound release
 ```
 
-## Назначение уровней
+## Авторитетные поверхности v1.0.0
 
-### Корневые методологические документы
+### `thesis/`
 
-`RESEARCH_PRINCIPLES.md`, `HYPOTHESES.md` и `PREREGISTRATION.md` фиксируют
-эпистемическую позицию, вопросы, критерии и границы подтверждающего анализа до
-получения final test. Stage 3 оформляется отдельным протоколом и ADR, поэтому
-завершённые Stage 1/2 не переопределяются.
+Финальный научный нарратив. Основные машинные контракты:
 
+- `thesis/data/research_claims.json` — зарегистрированные C01–C11;
+- `thesis/data/thesis_traceability.json` — связь каждого claim с theory,
+  methodology, experiment, results, discussion и conclusion;
+- `thesis/data/qwake_c2_verified_summary.json` — thesis-facing QWake C2
+  агрегаты с provenance binding;
+- `scripts/build_thesis_assets.py` — проверка/рендеринг generated assets;
+- `scripts/check_thesis_semantic_contract.py` — терминология, статусы и QWake
+  action semantics;
+- `scripts/check_thesis_traceability.py` — локальная claim-to-section binding.
 
-### `src/`
+`make thesis-check` проверяет научную поверхность без LaTeX, `make thesis`
+собирает финальный PDF.
 
-Единственный основной источник научной логики. Ноутбуки не должны содержать
-уникальные реализации обучения, метрик или статистики. `locality.py` определяет
-Stage 3 trace schema и structural gate; `profiling.py` — измеряемые регионы,
-timing summaries и Amdahl utilities; `stage3.py` — design contract,
-детерминированный план и readiness report.
+### `src/torch2pc_thesis/`
 
-### `configs/`
+Каноническая исполняемая реализация исследовательской логики. Ноутбуки не
+должны содержать уникальную научную логику, отсутствующую в `src/`.
 
-Декларативное описание эксперимента. Каждый запуск сохраняет итоговую
-разрешенную конфигурацию и ее SHA-256. `configs/stage3/design.yaml` фиксирует
-Stage 3 design, а stage templates остаются вне `TRAINING_STAGES` до реализации,
-gates и freeze.
+### `experiments/` и `results/`
 
-### `experiments/`
+`experiments/` хранит жизненный цикл протоколов, freeze/authorization/receipt
+артефактов. `results/` содержит отслеживаемые агрегированные результаты и
+компактные evidence packages. Исторические execution-control документы
+сохраняют состояние своего времени и не являются текущим разрешением на новый
+запуск.
 
-Управление жизненным циклом исследования. Реестр является append-only и
-сохраняет неудачные запуски.
+### `docs/`
 
-### `results/`
+- `glossary.md` / `_EN` — нормативная терминология;
+- `pc-tref-*` — task-relative теоретическая рамка;
+- `pc-catm-*` — отдельный механизмный диагностический уровень;
+- `qwake-*` — архитектура и исторические bounded protocol surfaces;
+- `decisions/` — ADR, включая неизменяемые historical decisions;
+- `research-log/` — point-in-time исследовательский журнал.
 
-В Git добавляются только компактные агрегированные материалы. Сырые запуски и
-checkpoints не хранятся в ветви `main`; полный набор Stage 2 raw artifacts
-распространяется через replication bundle в GitHub Release
-`stage2-results-v1`.
+Текущий итог следует читать по `README.md`, `STATUS.md` и финальной
+диссертации; исторические protocol/ADR блоки не переписываются после получения
+результата.
 
-### `notebooks/analysis/`
+## Release surface
 
-Только анализ готовых результатов. Настройка гиперпараметров и обучение
-выполняются через CLI.
+Tag `v1.0.0` связывается с exact source commit/tree. `scripts/build_release.sh`
+создаёт source archive, PDF, SHA-256 files, metadata и
+`release-manifest.json`. GitHub workflow публикует именно эти assets и не
+перезаписывает существующий release.
 
-### `thesis/` и `article/`
+## Исторические документы
 
-Текст подключает автоматически сформированные таблицы и рисунки. Английская
-рукопись статьи явно обозначена суффиксом `_EN`.
+`HYPOTHESES.md`, `PREREGISTRATION.md`, старые Stage/QWake plans, ADR,
+`STATUS.md`/`ROADMAP.md` historical ledgers и image IDs вида
+`torch2pc-layerwise-thesis:0.1.0-...` сохраняются как provenance. Их версии и
+локальные `open/closed` состояния не нормализуются под `v1.0.0` задним числом.
 
-### `docs/decisions/`
+`pyproject.toml` и `src/torch2pc_thesis/__init__.py` входят в зафиксированные
+научные runtime-контуры QWake и поэтому сохраняют историческую package version
+`0.1.0` и зарегистрированные SHA-256 identities. Версия публикационного релиза
+репозитория определяется отдельным `RELEASE_VERSION`, `CITATION.cff` и тегом;
+научный runtime нельзя переписывать только ради синхронизации номера релиза.
 
-ADR фиксируют решения, влияющие на воспроизводимость и интерпретацию.
+## Правило расширения после v1.0.0
 
-### `.github/`
-
-Автоматические проверки, русские шаблоны по умолчанию и английские варианты
-через `_EN`.
-
-### Теоретический пакет после `SI-MA1`
-
-- `docs/pc-tref-pc-catm-theoretical-foundation.md` и `_EN` — нормативная операциональная семантика;
-- `docs/decisions/ADR-013-pc-tref-operational-semantics.md` и `_EN` — решение о допуске B1/B2 к предварительной регистрации;
-- изменения документации не изменяют `results/stage-3/si-ma1/` и предыдущие sealed evidence.
-
-### Предварительная регистрация B1/B2
-
-- `experiments/planned/STAGE3B-B1.md` и `_EN` — B1 `isolated_layer_vjp`;
-- `experiments/planned/STAGE3B-B1-CONTRACT.json` — машиночитаемый B1 contract;
-- `experiments/planned/STAGE3B-B2.md` и `_EN` — B2 `composite_vjp`;
-- `experiments/planned/STAGE3B-B2-CONTRACT.json` — машиночитаемый B2 contract;
-- `docs/stage3b-b1-b2-preregistration.md` и `_EN` — общая граница допуска;
-- `docs/decisions/ADR-014-stage3b-b1-b2-candidate-contracts.md` и `_EN` — sequential admission;
-- `tests/unit/test_stage3b_future_policy_boundary.py` — граница B1/B2 с будущей policy.
-
-## Правило расширения
-
-Новая возможность добавляется в следующем порядке:
+Новая научная работа не продолжает старый claim ID автоматически:
 
 ```text
-Issue
--> ADR при изменении протокола
--> тест
--> модуль src
--> YAML-конфигурация
--> CLI
--> документация
--> validation-only эксперимент
--> freeze
--> final эксперимент
--> агрегированный результат
--> глава диссертации
+new question
+-> preregistered protocol / new claim identifier
+-> immutable source + environment binding
+-> authorized execution
+-> preserved evidence
+-> independent verification
+-> bounded claim decision
+-> optional dissertation/article successor
 ```
 
-
-## Защита завершённых результатов
-
-Stage 1/2 evidence, tags и опубликованные manifests рассматриваются как
-исторические свидетельства. Stage 3 получает отдельные конфигурации, registry,
-results tree, environment lock, execution commit и publication state. Это
-сохраняет distinction между кодом исполнения и последующим оформлением
-результатов.
+В частности, будущая проверка C10 или новая confirmatory surface должна иметь
+новый protocol ID и не переопределяет C09/C11 текущей диссертации.

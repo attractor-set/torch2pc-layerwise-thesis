@@ -2,7 +2,19 @@
 
 [Русская версия](CHANGELOG.md)
 
-## [Unreleased] — B1/B2 preregistration
+## [Unreleased]
+
+No changes have been recorded after `v1.0.0` yet.
+
+## [1.0.0] — 2026-08-17
+
+### Final thesis release
+
+- Freezes the integrated 99-page dissertation state after the independent T24 scientific review.
+- Aligns QWake-FP semantics with the registered bounded analytic completion and exact-suffix reference/fallback.
+- Preserves registered C01–C11 statuses, the negative C09 result, and the `not_tested` boundaries for C10/C11.
+- Adds a machine-checkable release contract and tagged `v1.0.0` publication of source/PDF assets.
+
 ### Added
 
 - Materialized the two-file `QW-LC2` repository freeze binding the verified resource-cost contract to `8f24229bcf19736086fe6f0340bda26dd533936a`; `QW-LC3`, implementation, and execution remain closed.

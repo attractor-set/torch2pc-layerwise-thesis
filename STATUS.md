@@ -2,6 +2,82 @@
 
 [English version](STATUS_EN.md)
 
+## Текущий статус v1.0.0 — 17 августа 2026 года
+
+Этот раздел является **авторитетным текущим статусом** репозитория перед
+релизом `v1.0.0`. Исторические point-in-time блоки ниже сохраняются для
+трассировки решений и не переопределяют этот итог.
+
+Научный текст закрыт после T24 и слит в `main` без изменения проверенного
+дерева:
+
+```text
+T24_COMMIT=9d45c897d35225fd541aa1b96aeed7fa7e945531
+T24_TREE=44575ea3aced7c76633aa05f6ac22b89a20c615f
+T24_MERGE=3cd892a62bce947886214fa887bde64748b5bf33
+MAIN_TREE_AT_T24_MERGE=44575ea3aced7c76633aa05f6ac22b89a20c615f
+T24_MERGED_INTO_MAIN=PASS
+MAIN_TREE_EQUALS_T24_TREE=PASS
+```
+
+Exact-commit assurance T24:
+
+```text
+SEMANTIC_STATUS=0
+TRACEABILITY_STATUS=0
+RUFF_T24_STATUS=0
+RUFF_FORMAT_T24_STATUS=0
+THESIS_CHECK_STATUS=0
+PYTEST_STATUS=0
+THESIS_BUILD_STATUS=0
+FULL_PYTEST=1732_passed_8_skipped
+THESIS_PAGES=99
+THESIS_OVERFULL_COUNT=0
+THESIS_UNDEFINED_REFERENCES_COUNT=0
+THESIS_UNDEFINED_CITATIONS_COUNT=0
+THESIS_RERUN_REFERENCES_COUNT=0
+TRACKED_WORKTREE_UNCHANGED=PASS
+THESIS_STATUS=DEFENSE_READY_WITH_EXPLICIT_EXTERNAL_VALIDITY_BOUNDARIES
+```
+
+### Финальные статусы утверждений
+
+| Утверждение | RQ | Статус | Граница |
+|---|---|---|---|
+| C01 | RQ1 | `supported` | зарегистрированная Stage 1/2 поверхность качества |
+| C02 | RQ1 | `supported` | Stage 3A, наблюдаемая близость градиентов/представлений |
+| C03 | RQ2 | `supported` | B0 локализует существенную стоимость в `state_inference` |
+| C04 | RQ2 | `supported` | `SI-MA0` не проходит `COST-MA0` |
+| C05 | RQ2 | `supported` | `SI-MA1` проходит калибровку стоимости наблюдателя |
+| C06 | RQ2 | `supported` | B1/B2 проходят зарегистрированные equivalence gates |
+| C07 | RQ2 | `descriptive` | matched profiling завершён; continuation screen даёт `reject_or_revise` |
+| C08 | RQ3 | `supported` | bounded calibration surface; правило `compute_step >= 5` |
+| C09 | RQ3 | `rejected` | frozen full decision-cost accounting |
+| C10 | RQ3 | `not_tested` | marginal runtime cost минимального recognizer не измерен |
+| C11 | RQ3 | `not_tested` | C3 исходной цепочки не открыт |
+
+C08 не является доказательством input-dependent adaptivity: лучшее правило
+является временной границей фиксированного префикса. Ноль наблюдавшихся
+dangerous accepts на 756 calibration records не является популяционной
+гарантией безопасности. C09 не переносится на C10.
+
+### Текущая граница выполнения
+
+Диссертационная научная программа завершена на своей зарегистрированной
+границе остановки. Релиз `v1.0.0` публикует уже полученные результаты и **не
+разрешает новый scientific execution, повтор C1/C2, ретроспективное открытие
+C3 или пересчёт C09 под другой estimand**. Любая проверка C10, новая
+confirmatory surface или прямое подтверждение PC-CATM требует нового
+предварительно зарегистрированного протокола с собственным идентификатором.
+
+### Исторический журнал
+
+Ниже сохранён прежний append-only статусный журнал. Формулировки «текущее»,
+`open=false`, `execution remains closed`, старые версии image и промежуточные
+Stage/QWake transition states относятся к моменту соответствующей записи.
+Они являются provenance, а не текущим состоянием `v1.0.0`.
+
+
 На 23 июля 2026 года опубликованы неизменяемые результаты Stage 1/2, Stage 3A,
 Stage 3B B0, `SI-MA0` и `SI-MA1`. Подтверждающие B1 и B2 запечатаны с
 положительными решениями. Новый пакет `v2`

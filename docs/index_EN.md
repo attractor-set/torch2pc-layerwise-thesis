@@ -1,122 +1,84 @@
-# Research documentation
+# Torch2PC Layer-wise Thesis documentation
 
 [Русская версия](index.md)
 
-The documentation connects the research question, protocol,
-[execution](glossary_EN.md#term-execution),
-[evidence](glossary_EN.md#term-evidence), and bounded findings. Plans remain
-separate from observations, and published results carry claim boundaries and
-[artifact provenance](glossary_EN.md#term-provenance).
+This is the documentation portal for the completed `v1.0.0` dissertation.
+Current public pages describe the post-T24 state. Historical plans,
+[execution](glossary_EN.md#term-execution) requests, ADRs, and freeze records are
+retained as research provenance and are not the current plan.
 
-## Current state
+## Quick entry points
 
-As of 21 July 2026:
+- [README](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/README_EN.md) — project overview and final outcomes;
+- [STATUS](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/STATUS_EN.md) — authoritative current status and C01–C11 registry;
+- [Research questions](research-question_EN.md) — RQ1–RQ3 and final answers;
+- [Methodology](methodology_EN.md) — completed validation sequence;
+- [Glossary](glossary_EN.md) — normative term meanings;
+- [Repository validation](validation_EN.md) — current checks and `v1.0.0` release;
+- [Roadmap](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/ROADMAP_EN.md) — follow-up research only;
+- `thesis/main.tex` — canonical dissertation source;
+- `thesis/data/thesis_traceability.json` — machine-readable C01–C11 traceability.
 
-- Stage 1/2, Stage 3A, Stage 3B B0, `SI-MA0`, and `SI-MA1` are complete;
-- confirmatory B1 and B2 are sealed with positive `EQ-B1` and `EQ-B2`
-  decisions;
-- the 288-cell [matched-profiling](glossary_EN.md#term-matched-profiling)
-  campaign is complete: 288/288 cells, 96/96 blocks, and 0 failures;
-- evidence is preserved in the repository and bound to immutable tag
-  `stage3b-matched-profiling-evidence-v1`;
-- the complete ten-asset run package is uploaded to a verified draft release;
-- the post-collection/pre-analysis descriptive protocol is frozen as
-  `stage3b-matched-descriptive-analysis-protocol-v1`;
-- a separate implementation PR is permitted, while sealed-evidence execution,
-  publication, `EX-IF0`, policy activation, and test access remain closed;
-- `full_stage3b_campaign_complete=false`.
+## Final research questions
 
-The protocol freeze occurs after data collection and is therefore not presented
-as a preregistration made before data collection. It closes analytical degrees
-of freedom before comparative results are computed.
+| Question | Final status |
+|---|---|
+| RQ1 — behavior and internal mechanism | C01, C02 `supported` |
+| RQ2 — cost and computational organization | C03–C06 `supported`; C07 `descriptive` |
+| RQ3 — [QWake-FP](glossary_EN.md#term-qwake-fp) | C08 `supported`; C09 `rejected`; C10/C11 `not_tested` |
 
-## Reading order
+Stage 1/2 establishes the registered final-quality surface. Stage 3A separates
+that result from gradient and representation similarity. Stage 3B B0 localizes
+cost; B1/B2 pass numerical-equivalence checks, while subsequent
+[matched profiling](glossary_EN.md#term-matched-profiling) does not open the
+resource continuation criterion.
 
-1. [Current status](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/STATUS_EN.md)
-   contains verified state and bounded findings.
-2. [Roadmap](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/ROADMAP_EN.md)
-   defines the permitted sequence of future work.
-3. The [glossary](glossary_EN.md) fixes normative meanings and Russian–English
-   mappings.
-4. Protocols and preregistrations define rules before execution.
-5. Result directories and reports record observations after execution.
-6. The [language policy](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/LANGUAGE_POLICY_EN.md)
-   requires synchronized Russian and English versions.
+## QWake-FP
 
-## Core documents
+[QWake-FP](glossary_EN.md#term-qwake-fp) is the tested bounded implementation of
+the general [QWake-PC](glossary_EN.md#term-qwake-pc). The registered early action
+does not mean that all further computation disappears: the remaining canonical
+iterative suffix is replaced by [analytic completion](glossary_EN.md#term-analytic-completion)
+`fixedpred_eta1_wavefront_completion_v1`, while
+`complete_suffix_stage2_baseline_v1` remains the exact reference and
+[fallback](glossary_EN.md#term-fallback) path.
 
-### Cross-cutting rules
+The best C2 rule is `compute_step >= 5`. It is a temporal fixed-prefix boundary,
+does not demonstrate input-dependent adaptivity or superiority of PC-CATM features.
+Registered 216/756 coverage contains 108 preterminal step-5 records and 108
+terminal-boundary step-6 records. Zero observed dangerous accepts on this finite
+calibration surface does not establish population-level safety.
 
-- [Research glossary](glossary_EN.md)
-- [Language and terminology policy](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/LANGUAGE_POLICY_EN.md)
-- [Research principles](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/RESEARCH_PRINCIPLES_EN.md)
+C09 is rejected only under the frozen full decision-cost accounting. It does
+not establish C10: marginal execution cost of a minimal recognizer was not
+measured. C11 also remains `not_tested` because confirmatory C3 did not open in
+the original protocol.
 
-### Research design
+## Theoretical levels
 
-- [Research question](research-question_EN.md)
-- [Methodology](methodology_EN.md)
-- [Analysis plan](analysis-plan_EN.md)
-- [Experiment protocol](experiment-protocol_EN.md)
-- [Reproducibility](reproducibility_EN.md)
-- [Data management](data-management_EN.md)
-- [Hardware](hardware_EN.md)
+- [PC-TREF](glossary_EN.md#term-pc-tref) — [task-relative equivalence](glossary_EN.md#term-task-relative-equivalence) and
+  sufficiency framework;
+- [PC-CATM](glossary_EN.md#term-pc-catm) — distinct linked mechanistic diagnostic
+  level;
+- QWake-PC — general research control [architecture](glossary_EN.md#term-architecture);
+- QWake-FP — tested bounded special case.
 
-### `PC-TREF`, `PC-CATM`, and Scenario A
+PC-CATM motivates mechanism-aware features, but superiority of NCZ/ECZ/TNZ and
+related transport/compensation features was not directly tested.
 
-- [Theoretical foundation after `SI-MA1`](pc-tref-pc-catm-theoretical-foundation_EN.md)
-- [PC-TREF Balanced Core](pc-tref-balanced-core_EN.md)
-- [PC-CATM of correction zero and error transport](pc-catm-operator-model_EN.md)
-- [Primary working Scenario A](glossary_EN.md#term-primary-working-scenario) ([document](stage3b-primary-scenario-a_EN.md))
-- [Realistic master's thesis plan](masters-thesis-plan_EN.md)
-- [ADR-013: operational semantics and B1/B2 admission](decisions/ADR-013-pc-tref-operational-semantics_EN.md)
+## Current and historical documents
 
-### Stages and results
+Current entry surfaces are README, STATUS, ROADMAP, this index,
+`research-question`, `methodology`, `validation`, project structure, and
+subdirectory READMEs. Files named `analysis-plan`, `publication-plan`,
+`masters-thesis-plan`, `stage-3-readiness`, `qwake-fp-experimental-plan`, ADRs,
+old protocols, and execution requests are historical records and are not
+rewritten to match final outcomes.
 
-- [Stage 2 protocol](stage-2-protocol_EN.md)
-- [Stage 3 protocol](stage-3-protocol_EN.md)
-- [Stage 3 readiness](stage-3-readiness_EN.md)
-- [Stage 3A statistical results](stage3a-statistical-results_EN.md)
-- [Stage 3B B0 validation and integrity sealing](glossary_EN.md#term-integrity-sealing) ([document](stage3b-b0-sealing_EN.md))
-- [Stage 3B B0 analysis pipeline](stage3b-b0-analysis-pipeline_EN.md)
-- [B0 sealed evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/b0/sealed-v1)
-- [B0 engineering analysis](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/b0/analysis-v1)
-- [`SI-MA1` confirmatory evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/si-ma1/confirmatory)
-- [`SI-MA1` final report](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/results/stage-3/si-ma1/confirmatory/si_ma1_report_EN.md)
-- [`SI-MA1` final tag](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/stage3b-si-ma1-confirmatory-v1)
-- [Matched-profiling descriptive-analysis protocol](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS_EN.md)
-- [Matched descriptive-analysis execution request](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-REQUEST_EN.md)
-- [Runtime](glossary_EN.md#term-runtime): [matched descriptive-analysis preflight](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-RUNTIME-PREFLIGHT_EN.md)
-- [Frozen matched-analysis runtime preflight](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-runtime-preflight-v1)
-- [Matched descriptive-analysis execution authorization](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-EXECUTION-AUTHORIZATION_EN.md)
-- [Frozen execution-authorization package](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-execution-authorization-v1)
-- [Descriptive-analysis output seal specification](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-OUTPUT-SEAL_EN.md)
-- [Descriptive-analysis output audit package](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-output-audit-v1)
-- [Descriptive-analysis output seal package](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/experiments/frozen/stage3b-matched-descriptive-analysis-output-seal-v1)
-- [Descriptive-analysis publication gate](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/experiments/planned/STAGE3B-MATCHED-DESCRIPTIVE-ANALYSIS-PUBLICATION-GATE_EN.md)
-- [Sealed 18-file descriptive-analysis output](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/analysis/matched/stage3b-matched-descriptive-analysis-70d6c3c-v1)
-- [Sealed matched-profiling evidence](https://github.com/attractor-set/torch2pc-layerwise-thesis/tree/main/results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1)
+## `v1.0.0` release
 
-### Architecture and research decisions
-
-- [ADR index](decisions/index_EN.md)
-
-## FixedPred sufficiency and D/U/S
-
-- [Consolidated design](fixedpred-sufficiency-dus-design_EN.md)
-- [Metric registry](fixedpred-sufficiency-dus-metrics_EN.md)
-- [Refactoring plan](fixedpred-sufficiency-dus-refactoring-plan_EN.md)
-- [ADR-039](decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md)
-- Planned experiment: `experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md`
-
-## Integrated frontier model
-
-- [Design model](stage3b-integrated-frontier-model_EN.md)
-- [ADR-040](decisions/ADR-040-stage3b-integrated-frontier-model_EN.md)
-- [ADR-041](decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md)
-
-## Bounded `QWake-FP` validation
-
-- [Canonical plan](qwake-fp-experimental-plan_EN.md)
-- [Mechanism-selection extension](qwake-local-compute-extension_EN.md)
-- [ADR-042](decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
-- [QWake-PC](glossary_EN.md#term-qwake-pc): [general design](qwake-pc-design_EN.md)
+`scripts/check_public_surface.py` validates the current public surface and
+`scripts/check_release_contract.py` validates the release contract.
+`scripts/build_release.sh` produces the source archive, final PDF, SHA-256
+records, Git commit/tree metadata, and `release-manifest.json`. The GitHub
+workflow for tag `v1.0.0` publishes those artifacts as a GitHub Release.

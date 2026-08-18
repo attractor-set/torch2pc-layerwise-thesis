@@ -75,7 +75,7 @@ The following retain their standard technical names:
    structure.
 7. `scripts/check_glossary_usage.py` verifies first-use glossary links and the
    absence of noncanonical English prose in Russian documents.
-8. Before publication, search README, STATUS, ROADMAP, CHANGELOG, protocol
+8. Before each public release, search README, STATUS, ROADMAP, CHANGELOG, protocol
    documents, and result reports for competing variants of each term.
 
 ## Source-code language

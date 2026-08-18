@@ -1,6 +1,6 @@
 # Language-pair numeric parity for research-log paths: 0 07
 site_name: Torch2PC Layer-wise Thesis
-site_description: Reproducible master's thesis and publication repository
+site_description: "Final dissertation on backpropagation and predictive coding: PC-TREF, PC-CATM, Stage 1–3, and bounded QWake-FP"
 site_dir: site_en
 theme:
   name: material
@@ -15,7 +15,7 @@ nav:
   - Research:
       - Research question: research-question_EN.md
       - Methodology: methodology_EN.md
-      - Analysis plan: analysis-plan_EN.md
+      - Historical analysis plan: analysis-plan_EN.md
       - FixedPred sufficiency:
           - Design: fixedpred-sufficiency-dus-design_EN.md
           - D/U/S metrics: fixedpred-sufficiency-dus-metrics_EN.md
@@ -26,21 +26,21 @@ nav:
       - Reproducibility: reproducibility_EN.md
       - Data management: data-management_EN.md
       - Hardware: hardware_EN.md
-      - Publication plan: publication-plan_EN.md
+      - Historical publication plan: publication-plan_EN.md
       - Stage 2 protocol: stage-2-protocol_EN.md
       - Stage 3 protocol: stage-3-protocol_EN.md
-      - Stage 3 readiness: stage-3-readiness_EN.md
+      - Historical Stage 3 readiness: stage-3-readiness_EN.md
       - Stage 3A results: stage3a-statistical-results_EN.md
       - Stage 3B B0 validation and sealing: stage3b-b0-sealing_EN.md
       - Stage 3B B0 analysis pipeline: stage3b-b0-analysis-pipeline_EN.md
-      - Master's thesis plan: masters-thesis-plan_EN.md
+      - Historical thesis plan: masters-thesis-plan_EN.md
       - PC-TREF/PC-CATM theoretical foundation: pc-tref-pc-catm-theoretical-foundation_EN.md
       - PC-TREF Balanced Core: pc-tref-balanced-core_EN.md
       - PC-TREF sufficiency boundary: pc-tref-sufficiency-boundary_EN.md
       - PC-CATM: pc-catm-operator-model_EN.md
       - Primary Scenario A: stage3b-primary-scenario-a_EN.md
       - QWake-PC: qwake-pc-design_EN.md
-      - QWake-FP plan: qwake-fp-experimental-plan_EN.md
+      - Historical QWake-FP plan: qwake-fp-experimental-plan_EN.md
       - Multiscale mechanism–decision architecture: pc-multiscale-mechanism-decision-architecture_EN.md
       - ECZ-targeted local sweep: ecz-targeted-local-sweep_EN.md
       - Future-policy boundary: stage3b-future-policy-boundary_EN.md
@@ -51,63 +51,11 @@ nav:
       - Research design: research-design/design_EN.md
       - Controlled compute: research-design/controlled-compute_EN.md
       - Run checklist: research-design/run-checklist_EN.md
-      - Article plan: research-design/article-plan_EN.md
+      - Historical article plan: research-design/article-plan_EN.md
   - QWake extension: qwake-local-compute-extension_EN.md
   - Decisions:
-      - ADR index: decisions/index_EN.md
-      - ADR-001 Torch2PC: decisions/ADR-001-use-torch2pc_EN.md
-      - ADR-002 ROCm Docker: decisions/ADR-002-use-rocm-docker_EN.md
-      - ADR-003 Primary metric: decisions/ADR-003-primary-metric_EN.md
-      - ADR-004 Statistics: decisions/ADR-004-statistical-protocol_EN.md
-      - ADR-006 Stage 3 scope: decisions/ADR-006-stage3-scope_EN.md
-      - ADR-007 Locality taxonomy: decisions/ADR-007-stage3-locality-taxonomy_EN.md
-      - ADR-008 Predict-correct acceleration: decisions/ADR-008-predict-correct-acceleration_EN.md
-      - ADR-012 Primary Scenario A: decisions/ADR-012-pc-tref-pc-catm-scenario-a_EN.md
-      - ADR-013 Operational semantics: decisions/ADR-013-pc-tref-operational-semantics_EN.md
-      - ADR-014 B1/B2 contracts: decisions/ADR-014-stage3b-b1-b2-candidate-contracts_EN.md
-      - ADR-015 Matched measurements: decisions/ADR-015-stage3b-matched-measurement-sealing_EN.md
-      - ADR-016 Sufficiency boundary: decisions/ADR-016-stage3b-sufficiency-boundary_EN.md
-      - ADR-017 288-cell correctness: decisions/ADR-017-stage3b-288cell-correctness-repair_EN.md
-      - ADR-018 Confirmatory EQ-B1: decisions/ADR-018-stage3b-b1-confirmatory-preregistration_EN.md
-      - ADR-019 Confirmatory EQ-B1 opening: decisions/ADR-019-stage3b-b1-confirmatory-opening_EN.md
-      - ADR-020 Multiscale architecture: decisions/ADR-020-pc-multiscale-mechanism-decision-architecture_EN.md
-      - ADR-021 Confirmatory EQ-B2: decisions/ADR-021-stage3b-b2-confirmatory-preregistration_EN.md
+      - Full ADR index: decisions/index_EN.md
       - ADR-022 Confirmatory EQ-B2 opening: decisions/ADR-022-stage3b-b2-confirmatory-opening_EN.md
-      - ADR-023 Confirmatory EQ-B2 request freeze: decisions/ADR-023-stage3b-b2-confirmatory-request-freeze_EN.md
-      - ADR-024 Confirmatory EQ-B2 evidence: decisions/ADR-024-stage3b-b2-confirmatory-evidence-preservation_EN.md
-      - ADR-025 Matched profiling refreeze: decisions/ADR-025-stage3b-matched-profiling-request-refreeze_EN.md
-      - ADR-026 Matched profiling evidence: decisions/ADR-026-stage3b-matched-profiling-evidence-preservation_EN.md
-      - ADR-027 Matched analysis protocol: decisions/ADR-027-stage3b-matched-descriptive-analysis-protocol_EN.md
-      - ADR-028 Matched analysis implementation: decisions/ADR-028-stage3b-matched-descriptive-analysis-implementation_EN.md
-      - ADR-029 Matched analysis hardening: decisions/ADR-029-stage3b-matched-descriptive-analysis-preexecution-hardening_EN.md
-      - ADR-030 Matched analysis execution request: decisions/ADR-030-stage3b-matched-descriptive-analysis-execution-request-freeze_EN.md
-      - ADR-031 Matched analysis runtime preflight: decisions/ADR-031-stage3b-matched-descriptive-analysis-runtime-preflight-implementation_EN.md
-      - ADR-032 Matched analysis runtime preflight freeze: decisions/ADR-032-stage3b-matched-descriptive-analysis-runtime-preflight-freeze_EN.md
-      - ADR-033 Matched analysis execution authorization: decisions/ADR-033-stage3b-matched-descriptive-analysis-execution-authorization-freeze_EN.md
-      - ADR-034 Matched analysis output seal: decisions/ADR-034-stage3b-matched-descriptive-analysis-output-seal-freeze_EN.md
-      - ADR-035 Recursive sufficiency: decisions/ADR-035-stage3b-recursive-sufficiency-aggregate-direction_EN.md
-      - ADR-036 Matched analysis publication gate: decisions/ADR-036-stage3b-matched-descriptive-analysis-publication-gate_EN.md
-      - ADR-037 Matched analysis publication receipt: decisions/ADR-037-stage3b-matched-descriptive-analysis-publication-receipt_EN.md
-      - ADR-038 EX-IF0 exact reference: decisions/ADR-038-stage3b-ex-if0-exact-implementation-and-oracle-sweep-boundary_EN.md
-      - ADR-039 FixedPred sufficiency D/U/S: decisions/ADR-039-stage3b-fixedpred-sufficiency-dus-design_EN.md
-      - ADR-040 Integrated frontier: decisions/ADR-040-stage3b-integrated-frontier-model_EN.md
-      - ADR-041 Corrective frontier semantics: decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md
-      - ADR-042 QWake-FP scope: decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md
-      - ADR-043 QWake-FP special-case contract: decisions/ADR-043-stage3b-qwake-fp-special-case-contract_EN.md
-      - ADR-044 QWake-FP pre-freeze validation: decisions/ADR-044-stage3b-qwake-fp-pre-freeze-validation_EN.md
-      - ADR-045 QWake-FP runtime validation implementation: decisions/ADR-045-stage3b-qwake-fp-runtime-validation-implementation_EN.md
-      - ADR-046 QWake documentation refactor: decisions/ADR-046-stage3b-qwake-documentation-refactor-and-image-reset_EN.md
-      - ADR-047 QWake runtime validation freeze v2: decisions/ADR-047-stage3b-qwake-fp-runtime-validation-freeze-v2_EN.md
-      - ADR-048 QWake runtime validation evidence v2: decisions/ADR-048-stage3b-qwake-fp-runtime-validation-evidence-v2_EN.md
-      - ADR-049 QWake LC0 post-merge transition: decisions/ADR-049-stage3b-qwake-lc0-post-merge-transition_EN.md
-      - ADR-050 QWake LC0 semantics and scope: decisions/ADR-050-stage3b-qwake-lc0-semantics-scope-freeze_EN.md
-      - ADR-051 QWake LC0 repository freeze: decisions/ADR-051-stage3b-qwake-lc0-repository-freeze_EN.md
-      - ADR-052 QWake LC1 transition: decisions/ADR-052-stage3b-qwake-lc1-transition_EN.md
-      - ADR-053 QWake LC1 required-response schema: decisions/ADR-053-stage3b-qwake-lc1-required-response-schema_EN.md
-      - ADR-054 QWake LC1 repository freeze: decisions/ADR-054-stage3b-qwake-lc1-repository-freeze_EN.md
-      - ADR-055 QWake LC2 transition: decisions/ADR-055-stage3b-qwake-lc2-transition_EN.md
-      - ADR-056 QWake LC2 resource-cost contract: decisions/ADR-056-stage3b-qwake-lc2-resource-cost-contract_EN.md
-      - ADR-057 QWake LC2 repository freeze: decisions/ADR-057-stage3b-qwake-lc2-repository-freeze_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

@@ -42,7 +42,7 @@ SI_MA0_GPU_OUTPUT_DIR ?= results/stage-3/si-ma0/working/si-ma0-gpu-smoke
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
         apply-pilot-selection final-plan freeze-pilot final diagnostics report manifest docs \
         docs-en jupyter lint \
-        typecheck test thesis thesis-data thesis-check article release clean status epistemic-check \
+        typecheck test thesis thesis-data thesis-check article release release-check clean status epistemic-check \
         freeze-environment configure-stage2 prepare-stage2 freeze-stage2-environment \
         control-stage2-cpu control-stage2-gpu stage2-plan freeze-stage2 final-stage2 \
         snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2 \
@@ -110,6 +110,7 @@ help:
 	  '  typecheck             Run Mypy' \
 	  '  test                  Run Pytest' \
 	  '  epistemic-check       Run documentation and language checks' \
+	  '  public-surface-check  Validate final v1.0.0 public entry points' \
 	  '  report                Build experiment reports' \
 	  '  manifest              Build artifact manifests' \
 	  '  thesis                Build the dissertation' \
@@ -210,6 +211,10 @@ epistemic-check:
 	$(PYTHON) scripts/check_epistemic_language.py
 	$(PYTHON) scripts/check_language_structure.py
 	$(PYTHON) scripts/check_local_links.py
+	$(PYTHON) scripts/check_public_surface.py
+
+public-surface-check:
+	$(PYTHON) scripts/check_public_surface.py
 
 thesis-check:
 	python3 scripts/build_thesis_assets.py --check
@@ -225,7 +230,10 @@ thesis: thesis-data
 article:
 	cd article && latexmk -pdf -interaction=nonstopmode manuscript_EN.tex
 
-release:
+release-check:
+	python3 scripts/check_release_contract.py
+
+release: release-check
 	bash scripts/build_release.sh
 
 # Stage 2: exact replication of the 80-cell final matrix with a patched

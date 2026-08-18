@@ -30,6 +30,20 @@ hypothesis and does not replace Docker/ROCm [execution](glossary_EN.md#term-exec
 
 ## Release metadata
 
-`scripts/build_release.sh` creates a `git archive` package and records its
-SHA-256, project version, full source commit, and metadata creation time.
-[Runtime](glossary_EN.md#term-runtime) experiments retain their own manifests and environment-lock binding.
+For `v1.0.0`, `scripts/check_release_contract.py` validates the release contract and `scripts/build_release.sh` is the release-facing builder. It
+checks the release and public-surface contracts, runs `make thesis-check` and
+the final dissertation build, and then creates:
+
+- a `git archive` source package and SHA-256 digest;
+- the final PDF and its SHA-256 digest;
+- metadata JSON containing version and Git commit/tree identities;
+- `release-manifest.json` binding asset identities, page count, and document
+  gate statuses;
+- release notes.
+
+The builder requires an unchanged tracked tree and index but does not treat
+local untracked scientific/[runtime](glossary_EN.md#term-runtime) [evidence](glossary_EN.md#term-evidence) as part of the public source
+release. It neither runs nor authorizes scientific experiments.
+
+The GitHub workflow for tag `v1.0.0` publishes these assets as a GitHub Release
+and refuses to overwrite an existing release for the same tag.

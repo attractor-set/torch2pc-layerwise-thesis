@@ -55,6 +55,7 @@ nav:
   - Расширение QWake: qwake-local-compute-extension.md
   - Решения:
       - Полный индекс ADR: decisions/index.md
+      - ADR-022 Confirmatory EQ-B2 opening: decisions/ADR-022-stage3b-b2-confirmatory-opening.md
   - Журнал исследования:
       - Июль 2026: research-log/2026-07.md
       - Шаблон: research-log/template.md

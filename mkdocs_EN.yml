@@ -55,6 +55,7 @@ nav:
   - QWake extension: qwake-local-compute-extension_EN.md
   - Decisions:
       - Full ADR index: decisions/index_EN.md
+      - ADR-022 Confirmatory EQ-B2 opening: decisions/ADR-022-stage3b-b2-confirmatory-opening_EN.md
   - Research log:
       - July 2026: research-log/2026-07_EN.md
       - Template: research-log/template_EN.md

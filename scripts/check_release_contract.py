@@ -3,12 +3,18 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_VERSION = "1.0.0"
+FROZEN_RUNTIME_PACKAGE_VERSION = "0.1.0"
+FROZEN_RUNTIME_INIT_SHA256 = "99a15a1f681efaaff846df254eab58412a16fc8e1c7767d0ccd00b5e721b08f0"
+FROZEN_RUNTIME_MANIFEST = (
+    "experiments/runtime/stage3b-qwake-scientific-successor-v1/runtime-SHA256SUMS"
+)
 EXPECTED_TAG = f"v{EXPECTED_VERSION}"
 RELEASE_URL = (
     f"https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/{EXPECTED_TAG}"
@@ -35,6 +41,10 @@ def main() -> None:
     changelog_ru = _read("CHANGELOG.md")
     changelog_en = _read("CHANGELOG_EN.md")
     public_surface = _read("scripts/check_public_surface.py")
+    runtime_manifest = _read(FROZEN_RUNTIME_MANIFEST)
+    package_init_sha256 = hashlib.sha256(
+        (ROOT / "src/torch2pc_thesis/__init__.py").read_bytes()
+    ).hexdigest()
 
     project_version = pyproject["project"]["version"]
     package_version = _single_match(
@@ -48,13 +58,17 @@ def main() -> None:
     )
 
     assert project_version == EXPECTED_VERSION
-    assert package_version == EXPECTED_VERSION
+    assert package_version == FROZEN_RUNTIME_PACKAGE_VERSION
     assert citation_version == EXPECTED_VERSION
     assert citation_date == "2026-08-17"
     assert RELEASE_URL in citation
     assert "stage2-results-v1" not in citation
     assert not re.search(r"^commit:\s*", citation, flags=re.MULTILINE)
     print("RELEASE_VERSION_SURFACES=PASS")
+
+    assert package_init_sha256 == FROZEN_RUNTIME_INIT_SHA256
+    assert f"{FROZEN_RUNTIME_INIT_SHA256}  src/torch2pc_thesis/__init__.py" in runtime_manifest
+    print("RELEASE_FROZEN_RUNTIME_CLOSURE=PASS")
 
     for heading, changelog in (
         ("## [1.0.0] — 2026-08-17", changelog_ru),
@@ -87,6 +101,8 @@ def main() -> None:
     )
     for token in workflow_tokens:
         assert token in workflow, f"release workflow missing {token!r}"
+    assert "pyproject.toml" in workflow
+    assert "from torch2pc_thesis import __version__" not in workflow
     print("RELEASE_WORKFLOW_CONTRACT=PASS")
 
     builder_tokens = (
@@ -105,6 +121,8 @@ def main() -> None:
     )
     for token in builder_tokens:
         assert token in builder, f"release builder missing {token!r}"
+    assert "pyproject.toml" in builder
+    assert "from torch2pc_thesis import __version__" not in builder
     print("RELEASE_ARTIFACT_CONTRACT=PASS")
 
     print("THESIS_V1_RELEASE_CONTRACT=PASS")

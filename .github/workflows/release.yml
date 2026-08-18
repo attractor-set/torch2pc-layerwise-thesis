@@ -68,7 +68,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          version="$(PYTHONPATH=src python3 -c 'from torch2pc_thesis import __version__; print(__version__)')"
+          version="$(python3 -c 'import tomllib; from pathlib import Path; print(tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"])')"
           name="torch2pc-layerwise-thesis-${version}"
 
           if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then

@@ -14,7 +14,7 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
   exit 1
 fi
 
-version="$(PYTHONPATH=src "$PYTHON_BIN" -c 'from torch2pc_thesis import __version__; print(__version__)')"
+version="$("$PYTHON_BIN" -c 'import tomllib; from pathlib import Path; print(tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"])')"
 expected_tag="v${version}"
 release_tag="${RELEASE_TAG:-${GITHUB_REF_NAME:-$expected_tag}}"
 commit="$(git rev-parse HEAD)"

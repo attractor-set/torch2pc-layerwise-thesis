@@ -158,9 +158,9 @@ def check_theory_layer_separation(sources: dict[Path, str]) -> list[str]:
 
 def check_qwake_rule_vocabulary() -> list[str]:
     errors: list[str] = []
-    english_abstract = (
-        THESIS / "frontmatter" / "abstract_en_content.tex"
-    ).read_text(encoding="utf-8")
+    english_abstract = (THESIS / "frontmatter" / "abstract_en_content.tex").read_text(
+        encoding="utf-8"
+    )
 
     policy_match = re.search(r"\bpolic(?:y|ies)\b", english_abstract, flags=re.IGNORECASE)
     if policy_match:

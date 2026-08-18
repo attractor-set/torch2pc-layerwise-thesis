@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import argparse
 import re
-from pathlib import Path
 
 import build_thesis_assets as base
 
@@ -188,11 +187,21 @@ def render_program(core: dict[str, object], qwake: dict[str, object]) -> str:
         r"\toprule",
         base.texrow("Stage & Main unit/volume & Role & Completed boundary"),
         r"\midrule",
-        base.texrow(f"Stage 1 & {int(s1['planned_cells'])} final cells; 10 independently trained models & quality and cost & initial comparative campaign"),
-        base.texrow(f"Stage 2 & {int(s2['completed_unique_cells'])} final cells & controlled implementation change & all final cells complete; test evaluation performed"),
-        base.texrow(f"Stage 3A & {int(s3a['independent_model_seeds'])} independently trained models & mechanism diagnostics & gradients, CKA/RSA, and Exact numerical control"),
-        base.texrow(f"Stage 3B & {int(s3b['matched_profiling']['matched_cell_count'])} matched cells & cost and mechanism attribution & B0, SI-MA0/1, B1/B2, and integrity-sealed profiling"),
-        base.texrow(f"QWake C2 & {int(selection['candidate_count'])} frozen rules; 756 records & dangerous-accept barrier and economics & bounded negative economic result; C3 closed"),
+        base.texrow(
+            f"Stage 1 & {int(s1['planned_cells'])} final cells; 10 independently trained models & quality and cost & initial comparative campaign"
+        ),
+        base.texrow(
+            f"Stage 2 & {int(s2['completed_unique_cells'])} final cells & controlled implementation change & all final cells complete; test evaluation performed"
+        ),
+        base.texrow(
+            f"Stage 3A & {int(s3a['independent_model_seeds'])} independently trained models & mechanism diagnostics & gradients, CKA/RSA, and Exact numerical control"
+        ),
+        base.texrow(
+            f"Stage 3B & {int(s3b['matched_profiling']['matched_cell_count'])} matched cells & cost and mechanism attribution & B0, SI-MA0/1, B1/B2, and integrity-sealed profiling"
+        ),
+        base.texrow(
+            f"QWake C2 & {int(selection['candidate_count'])} frozen rules; 756 records & dangerous-accept barrier and economics & bounded negative economic result; C3 closed"
+        ),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
@@ -218,7 +227,12 @@ def render_stage12(core: dict[str, object]) -> str:
         base.texrow("Method & Test macro-F1 & Training time, s"),
         r"\midrule",
     ]
-    for method, label in (("bp", "BP"), ("exact", "Exact"), ("fixedpred", "FixedPred"), ("strict", "Strict")):
+    for method, label in (
+        ("bp", "BP"),
+        ("exact", "Exact"),
+        ("fixedpred", "FixedPred"),
+        ("strict", "Strict"),
+    ):
         lines.append(base.texrow(f"{label} & {float(f1[method]):.6f} & {float(times[method]):.3f}"))
     lines.extend(
         [
@@ -237,7 +251,11 @@ def render_stage12(core: dict[str, object]) -> str:
         ]
     )
     for method, label in (("exact", "Exact"), ("fixedpred", "FixedPred"), ("strict", "Strict")):
-        lines.append(base.texrow(f"{label} & {float(ratios['FashionMNIST'][method]):.3f} & {float(ratios['MNIST'][method]):.3f}"))
+        lines.append(
+            base.texrow(
+                f"{label} & {float(ratios['FashionMNIST'][method]):.3f} & {float(ratios['MNIST'][method]):.3f}"
+            )
+        )
     lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
     return "\n".join(lines)
 
@@ -258,13 +276,27 @@ def render_stage3(core: dict[str, object]) -> str:
         r"\toprule",
         base.texrow("Substage & Registered result"),
         r"\midrule",
-        base.texrow(f"Stage 3A & Exact maximum absolute error = {float(s3a['exact_control_max_abs_error']):.3e}; FixedPred layer-0 gradient cosine similarity = {float(s3a['fixedpred']['gradient_layer0_cosine_mean']):.6f}, norm ratio = {float(s3a['fixedpred']['gradient_layer0_norm_ratio_mean']):.6f}."),
-        base.texrow(f"B0 & Strict/FixedPred median device-time ratio = {float(b0['strict_to_fixedpred_device_time_configuration_median_ratio']):.3f}; peak allocated-memory ratio = {float(b0['strict_to_fixedpred_peak_allocated_configuration_median_ratio']):.3f}."),
-        base.texrow(f"SI-MA0 & COST-MA0 failed; {int(ma0['passing_measured_steps'])}/{int(ma0['measured_steps'])} measured steps passed; median signed accounting residual = {float(ma0['accounting_residual_median']):.3f}."),
-        base.texrow(f"SI-MA1 & CAL-COST-MA1 passed; 10 independently trained models, {int(ma1['matched_block_count'])} matched blocks; upper one-sided 95\\% bound = {float(ma1['upper_one_sided_95']):.3f} at threshold {float(ma1['threshold']):.2f}."),
-        base.texrow(f"B1/B2 & EQ-B1 and EQ-B2 passed; B1: {int(s3b['b1']['observed_pair_count'])} pairs, B2: {int(s3b['b2']['matched_triples_observed'])} matched triples; no failed pairs."),
-        base.texrow(f"Matched profiling & integrity sealed for {int(s3b['matched_profiling']['matched_cell_count'])}/{int(s3b['matched_profiling']['matched_cell_count'])} cells; {int(s3b['matched_profiling']['cross_candidate_correctness_block_count'])} correctness blocks; retries = {int(s3b['matched_profiling']['retried_cell_count'])}."),
-        base.texrow(f"B1/B2 engineering screen & four candidate × method groups of {int(s3b['matched_analysis']['configuration_count_per_group'])} configurations; {int(s3b['matched_analysis']['qualified_configuration_count_per_group'])}/{int(s3b['matched_analysis']['configuration_count_per_group'])} qualify in every group; both candidates receive reject\\_or\\_revise; superiority claim not authorized."),
+        base.texrow(
+            f"Stage 3A & Exact maximum absolute error = {float(s3a['exact_control_max_abs_error']):.3e}; FixedPred layer-0 gradient cosine similarity = {float(s3a['fixedpred']['gradient_layer0_cosine_mean']):.6f}, norm ratio = {float(s3a['fixedpred']['gradient_layer0_norm_ratio_mean']):.6f}."
+        ),
+        base.texrow(
+            f"B0 & Strict/FixedPred median device-time ratio = {float(b0['strict_to_fixedpred_device_time_configuration_median_ratio']):.3f}; peak allocated-memory ratio = {float(b0['strict_to_fixedpred_peak_allocated_configuration_median_ratio']):.3f}."
+        ),
+        base.texrow(
+            f"SI-MA0 & COST-MA0 failed; {int(ma0['passing_measured_steps'])}/{int(ma0['measured_steps'])} measured steps passed; median signed accounting residual = {float(ma0['accounting_residual_median']):.3f}."
+        ),
+        base.texrow(
+            f"SI-MA1 & CAL-COST-MA1 passed; 10 independently trained models, {int(ma1['matched_block_count'])} matched blocks; upper one-sided 95\\% bound = {float(ma1['upper_one_sided_95']):.3f} at threshold {float(ma1['threshold']):.2f}."
+        ),
+        base.texrow(
+            f"B1/B2 & EQ-B1 and EQ-B2 passed; B1: {int(s3b['b1']['observed_pair_count'])} pairs, B2: {int(s3b['b2']['matched_triples_observed'])} matched triples; no failed pairs."
+        ),
+        base.texrow(
+            f"Matched profiling & integrity sealed for {int(s3b['matched_profiling']['matched_cell_count'])}/{int(s3b['matched_profiling']['matched_cell_count'])} cells; {int(s3b['matched_profiling']['cross_candidate_correctness_block_count'])} correctness blocks; retries = {int(s3b['matched_profiling']['retried_cell_count'])}."
+        ),
+        base.texrow(
+            f"B1/B2 engineering screen & four candidate × method groups of {int(s3b['matched_analysis']['configuration_count_per_group'])} configurations; {int(s3b['matched_analysis']['qualified_configuration_count_per_group'])}/{int(s3b['matched_analysis']['configuration_count_per_group'])} qualify in every group; both candidates receive reject\\_or\\_revise; superiority claim not authorized."
+        ),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
@@ -290,9 +322,15 @@ def render_qwake(qwake: dict[str, object]) -> str:
         r"\midrule",
         base.texrow(f"Total frozen rules & {int(selection['candidate_count'])}"),
         base.texrow(f"With at least one dangerous accept & {int(selection['unsafe_count'])}"),
-        base.texrow(f"With zero observed dangerous accepts & {int(selection['zero_danger_count'])}"),
-        base.texrow(f"Zero dangerous accepts and non-zero coverage & {int(selection['safe_nontrivial_count'])}"),
-        base.texrow(f"Eligible under the full C2 criterion & {int(selection['eligible_policy_count'])}"),
+        base.texrow(
+            f"With zero observed dangerous accepts & {int(selection['zero_danger_count'])}"
+        ),
+        base.texrow(
+            f"Zero dangerous accepts and non-zero coverage & {int(selection['safe_nontrivial_count'])}"
+        ),
+        base.texrow(
+            f"Eligible under the full C2 criterion & {int(selection['eligible_policy_count'])}"
+        ),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
@@ -305,18 +343,32 @@ def render_qwake(qwake: dict[str, object]) -> str:
         r"\toprule",
         base.texrow("Metric & Value"),
         r"\midrule",
-        base.texrow(f"Accepted / evaluated on the full C1 surface & {int(best['accepted_records'])} / {int(best['evaluated_records'])}"),
+        base.texrow(
+            f"Accepted / evaluated on the full C1 surface & {int(best['accepted_records'])} / {int(best['evaluated_records'])}"
+        ),
         base.texrow(f"Dangerous accepts & {int(best['dangerous_accepts'])}"),
         base.texrow(f"Registered full-surface coverage & {float(best['coverage']) * 100.0:.2f}\\%"),
-        base.texrow(f"Preterminal records on the C1 surface & {int(decomposition['preterminal_surface_records'])}"),
-        base.texrow(f"Accepted preterminal records (step 5, one sweep remaining) & {int(decomposition['best_safe_policy_accepted_preterminal_records'])}"),
-        base.texrow(f"Terminal-boundary records on the C1 surface & {int(decomposition['terminal_boundary_records'])}"),
-        base.texrow(f"Accepted terminal-boundary records (step 6) & {int(decomposition['best_safe_policy_accepted_terminal_records'])}"),
-        base.texrow(f"Registered sum of {base.latex_code('remaining_suffix_ns')} over accepted zero-danger records & {int(best['gross_implied_avoided_suffix_ns']) / 1e9:.3f} s"),
+        base.texrow(
+            f"Preterminal records on the C1 surface & {int(decomposition['preterminal_surface_records'])}"
+        ),
+        base.texrow(
+            f"Accepted preterminal records (step 5, one sweep remaining) & {int(decomposition['best_safe_policy_accepted_preterminal_records'])}"
+        ),
+        base.texrow(
+            f"Terminal-boundary records on the C1 surface & {int(decomposition['terminal_boundary_records'])}"
+        ),
+        base.texrow(
+            f"Accepted terminal-boundary records (step 6) & {int(decomposition['best_safe_policy_accepted_terminal_records'])}"
+        ),
+        base.texrow(
+            f"Registered sum of {base.latex_code('remaining_suffix_ns')} over accepted zero-danger records & {int(best['gross_implied_avoided_suffix_ns']) / 1e9:.3f} s"
+        ),
         base.texrow(f"Full decision cost & {int(best['total_decision_cost_ns']) / 1e9:.3f} s"),
         base.texrow(f"Observer share of full decision cost & {observer_share:.3f}\\%"),
         base.texrow(f"Aggregate net saving & {int(best['total_net_saving_ns']) / 1e9:.3f} s"),
-        base.texrow(f"Cost reduction required for break-even & {float(best['required_cost_reduction_for_zero_net_fraction']) * 100.0:.3f}\\%"),
+        base.texrow(
+            f"Cost reduction required for break-even & {float(best['required_cost_reduction_for_zero_net_fraction']) * 100.0:.3f}\\%"
+        ),
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
@@ -346,16 +398,21 @@ def render_reproducibility(core: dict[str, object], qwake: dict[str, object]) ->
         r"\multicolumn{2}{@{}l}{\textbf{Locally re-verifiable bindings}} " + base.LATEX_ROW_END,
     ]
     for relative, digest in bindings.items():
-        lines.append(f"{base.latex_code(relative)} & {base.latex_digest(digest)}{base.LATEX_ROW_END}")
+        lines.append(
+            f"{base.latex_code(relative)} & {base.latex_digest(digest)}{base.LATEX_ROW_END}"
+        )
     for label, key in (
         ("Frozen QWake C1 request", "c1_request_file_sha256"),
         ("QWake-FP special-case contract", "qwake_contract_file_sha256"),
     ):
-        lines.append(f"{base.latex_escape(label)} & {base.latex_digest(source[key])}{base.LATEX_ROW_END}")
+        lines.append(
+            f"{base.latex_escape(label)} & {base.latex_digest(source[key])}{base.LATEX_ROW_END}"
+        )
     lines.extend(
         [
             r"\addlinespace",
-            r"\multicolumn{2}{@{}l}{\textbf{Preserved identifiers of sealed material}} " + base.LATEX_ROW_END,
+            r"\multicolumn{2}{@{}l}{\textbf{Preserved identifiers of sealed material}} "
+            + base.LATEX_ROW_END,
         ]
     )
     for label, key in (
@@ -365,7 +422,9 @@ def render_reproducibility(core: dict[str, object], qwake: dict[str, object]) ->
         ("Highest-coverage QWake zero-danger rule", "best_safe_policy_sha256"),
         ("QWake common decision-cost sequence", "common_decision_cost_sequence_sha256"),
     ):
-        lines.append(f"{base.latex_escape(label)} & {base.latex_digest(source[key])}{base.LATEX_ROW_END}")
+        lines.append(
+            f"{base.latex_escape(label)} & {base.latex_digest(source[key])}{base.LATEX_ROW_END}"
+        )
     lines.extend([r"\bottomrule", r"\end{longtable}", r"\endgroup", ""])
     return "\n".join(lines)
 
@@ -414,8 +473,7 @@ def render_terminology(entries: list[dict[str, str]]) -> str:
                 + base.latex_glossary_inline(item["architectural_role"])
             )
         right_parts.append(
-            r"\par\smallskip\emph{Usage rule: }"
-            + base.latex_glossary_inline(item["rule"])
+            r"\par\smallskip\emph{Usage rule: }" + base.latex_glossary_inline(item["rule"])
         )
         lines.append(left + " & " + "".join(right_parts) + base.LATEX_ROW_END)
     if current_section:
@@ -432,7 +490,9 @@ def render_terminology(entries: list[dict[str, str]]) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true", help="validate inputs without writing generated files")
+    parser.add_argument(
+        "--check", action="store_true", help="validate inputs without writing generated files"
+    )
     args = parser.parse_args()
 
     claims = base.load(base.CLAIMS_PATH)

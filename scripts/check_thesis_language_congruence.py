@@ -39,9 +39,7 @@ REQUIRED_ENGLISH_FILES = (
     THESIS / "appendices" / "reproducibility_EN.tex",
 )
 
-STRUCTURE_COMMAND = re.compile(
-    r"\\(chapter|section|subsection|subsubsection|paragraph)\*?\{"
-)
+STRUCTURE_COMMAND = re.compile(r"\\(chapter|section|subsection|subsubsection|paragraph)\*?\{")
 
 
 def require(condition: bool, message: str) -> None:
@@ -88,8 +86,7 @@ def citation_counts(path: Path) -> Counter[str]:
 
 def monospace_tokens(path: Path) -> set[str]:
     return {
-        normalized_tex(token)
-        for token in MONOSPACE_TOKEN.findall(path.read_text(encoding="utf-8"))
+        normalized_tex(token) for token in MONOSPACE_TOKEN.findall(path.read_text(encoding="utf-8"))
     }
 
 
@@ -103,10 +100,7 @@ def input_sequence(path: Path) -> list[str]:
 
 def normalized_tex(text: str) -> str:
     normalized = (
-        text.replace(r"\_", "_")
-        .replace(r"\%", "%")
-        .replace(r"\,", "")
-        .replace("\u00a0", " ")
+        text.replace(r"\_", "_").replace(r"\%", "%").replace(r"\,", "").replace("\u00a0", " ")
     )
     return re.sub(r"\s+", " ", normalized)
 
@@ -213,7 +207,9 @@ def main() -> None:
     )
     print("THESIS_BILINGUAL_ABSTRACT_IDENTITY=PASS")
 
-    claims = json.loads((THESIS / "data" / "research_claims.json").read_text(encoding="utf-8"))["claims"]
+    claims = json.loads((THESIS / "data" / "research_claims.json").read_text(encoding="utf-8"))[
+        "claims"
+    ]
     statuses = {item["id"]: item["status"] for item in claims}
     require(statuses["C08"] == "supported", "C08 English rendering must remain supported")
     require(statuses["C09"] == "rejected", "C09 English rendering must remain rejected")
@@ -250,7 +246,9 @@ def main() -> None:
         "fixedpred_eta1_wavefront_completion_v1",
         "complete_suffix_stage2_baseline_v1",
     ):
-        require(token in combined, f"English dissertation missing canonical term/identifier: {token}")
+        require(
+            token in combined, f"English dissertation missing canonical term/identifier: {token}"
+        )
     require(
         "must not be collapsed into one model" in combined,
         "PC-CATM/PC-TREF separation marker missing from English theory",
@@ -266,9 +264,13 @@ def main() -> None:
         "108 terminal-boundary",
         "108 preterminal",
     ):
-        require(token in combined, f"English dissertation missing critical QWake/Stage3 boundary: {token}")
+        require(
+            token in combined,
+            f"English dissertation missing critical QWake/Stage3 boundary: {token}",
+        )
     require(
-        "replaces the remaining canonical iterative sweeps with a bounded analytic completion" in combined,
+        "replaces the remaining canonical iterative sweeps with a bounded analytic completion"
+        in combined,
         "English QWake-FP action semantics drifted",
     )
     require(

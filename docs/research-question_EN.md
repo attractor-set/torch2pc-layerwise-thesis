@@ -1,88 +1,100 @@
-# Research question
+# Research questions
 
 [Русская версия](research-question.md)
 
-## Observed problem
+This document records the **final `v1.0.0` dissertation questions and answers**.
+Historical preregistration and protocol formulations remain in their frozen
+files and are not treated as the current plan.
 
-Torch2PC exposes several update rules, but matching final accuracy alone does
-not explain where and why `Strict`, `FixedPred`, `Exact`, and BP differ in
-layer-wise gradient geometry, representations, and cost. Stage 3A and B0 showed
-that differences are layer-dependent and that `state_inference` is the dominant
-engineering-cost region.
+## Starting problem
 
-`SI-MA0` and `SI-MA1` further showed that mechanism-aware diagnostics are
-measurable without a registered positive uncovered observer residual above 1%
-after separate calibration. This justifies testing local exact candidates but
-does not prejudge speedup or safety.
+Matching final quality between BP and predictive-coding regimes establishes
+neither similarity of internal mechanism, equality of compute cost, nor the
+ability to safely reduce residual computation. The dissertation therefore
+separates three research questions.
 
-## Primary question
+## RQ1 — behavior and internal mechanism
 
-With [architecture](glossary_EN.md#term-architecture), data, initialization, and training budget fixed, how does
-the update rule affect:
+> Under what registered conditions do PC regimes preserve the required final-
+> quality surface relative to BP, and how close are their layer-wise gradients
+> and representations to BP?
 
-1. layer-wise gradient direction and scale;
-2. representation similarity to BP;
-3. computational cost and memory;
-4. diagnostic sufficiency for selecting among `stop`, `local sweep`,
-   `exact sweep`, and `fallback` under bounded
-   [decision regret](glossary_EN.md#term-decision-regret)?
+Final answer: C01 and C02 are `supported` within the studied domain. Stage 1/2
+preserves the registered final-quality surface, while Stage 3A shows greater
+observed FixedPred proximity to BP than Strict in gradient direction and
+representations, together with reduced early-layer gradient norm.
 
-## Completed B1/B2 question and next bounded object
+## RQ2 — cost and computational organization
 
-B1 `isolated_layer_vjp` and B2 `composite_vjp` tested exact alternatives to the
-heavy path. Both candidates passed registered numerical equivalence, while
-matched analysis preserved different cost vectors and `reject_or_revise`
-decisions. The bounded supported conclusion is that numerical equivalence does
-not guarantee resource equivalence. This conclusion does not prove that
-adaptive control is necessary.
+> Where is PC compute cost localized, and can exact alternative organizations
+> pass functional/trajectory equivalence checks and a separate resource
+> continuation criterion?
 
-The next central question for the mandatory thesis path is:
+Final answer: C03–C06 are `supported`; C07 is `descriptive`.
 
-> Can a frozen [QWake-FP](glossary_EN.md#term-qwake-fp) use a nested measurably
-> cheap pre-action representation and a finite analytic registry to safely
-> recognize a task-relative sufficient temporal FixedPred prefix before the
-> full `stage2_baseline` suffix and retain positive end-to-end savings after
-> complete observer, analytic, control, and [fallback](glossary_EN.md#term-fallback) cost?
+- B0 localizes substantial cost to `state_inference`;
+- `SI-MA0` retains the negative `COST-MA0` result;
+- `SI-MA1` separately calibrates [observer cost](glossary_EN.md#term-observer-cost);
+- B1 `isolated_layer_vjp` and B2 `composite_vjp` pass registered equivalence
+  checks;
+- [matched profiling](glossary_EN.md#term-matched-profiling) completes, but both
+  [candidates](glossary_EN.md#term-candidate) receive `reject_or_revise` at the
+  separate resource continuation criterion.
 
-Validation is bounded to the corrected Rosenbaum special case: `FixedPred`,
-`eta=1`, a registered sequential architecture, and a finite canonical suffix.
-It validates or falsifies only one concrete shadow implementation, not general
-`QWake-PC` applicability.
+Numerical/trajectory equivalence therefore does not imply resource equivalence
+and does not establish [baseline](glossary_EN.md#term-baseline) superiority.
 
-The experimental logic is ordered:
+## RQ3 — task-relative [QWake-FP](glossary_EN.md#term-qwake-fp) action
 
-1. do pre-terminal sufficient states exist;
-2. are they recognizable from admissible pre-action data;
-3. does frozen admission pass the safety gate;
-4. do positive net savings remain?
+> Do preterminal states exist for which the registered analytic action is
+> admissible relative to the exact suffix; can a non-zero subset be recognized
+> from pre-action data with zero observed dangerous accepts; and does positive
+> saving remain under frozen full decision-cost accounting?
 
-The system compares acquiring the next observation level, running a registered
-analytic step, executing the next canonical sweep, and `COMPLETE_SUFFIX`. `O`
-is created only after action and is never a decision input.
+The tested special case is [QWake-FP](glossary_EN.md#term-qwake-fp) for
+`FixedPred`, `eta=1`, and `stage2_baseline`. Canonical early action replaces the
+remaining iterative suffix with [analytic completion](glossary_EN.md#term-analytic-completion)
+`fixedpred_eta1_wavefront_completion_v1`; exact
+`complete_suffix_stage2_baseline_v1` remains the reference and
+[fallback](glossary_EN.md#term-fallback) path.
 
-All mandatory capabilities are implemented in one immutable superset image.
-[Campaign roles](glossary_EN.md#term-campaign-role)
-`C1_COLLECTION / C2_CALIBRATION / C3_CONFIRMATORY / R_REPLICATION` activate
-them through internal [capability gates](glossary_EN.md#term-capability-gate)
-without changing executable code between [evidence](glossary_EN.md#term-evidence) stages.
+The final answer has four parts:
 
-Recursive spatial aggregates, `Strict`, arbitrary `eta`, learned routing, and
-active control remain future work rather than mandatory results.
+1. **C08 `supported`**: the bounded calibration surface contains preterminal
+   `EARLY_ADMISSIBLE` records and a non-zero selectively recognizable subset
+   with zero observed dangerous accepts;
+2. the best rule is `compute_step >= 5`, i.e. a **sufficient temporal FixedPred prefix**
+   rather than demonstrating input-dependent adaptivity;
+3. **C09 `rejected`**: none of 2,625 rules combines zero observed dangerous
+   accepts, non-zero coverage, and positive aggregate net saving under frozen
+   full decision-cost accounting;
+4. **C10/C11 `not_tested`**: marginal [runtime](glossary_EN.md#term-runtime) cost
+   of a minimal recognizer was not measured, and the original-chain C3 did not
+   open.
+
+Registered 216/756 coverage belongs to the full calibration surface and
+contains 108 preterminal step-5 records plus 108 terminal-boundary step-6
+records. Zero observed dangerous accepts does not establish population-level
+safety.
 
 ## Theoretical framework
 
-[PC-TREF](glossary_EN.md#term-pc-tref) bounds claims to a registered family of
-diagnostics and decisions. An exact quotient requires a partition map;
-[operational diagnostic indistinguishability](glossary_EN.md#term-operational-diagnostic-indistinguishability)
-is threshold proximity without assumed transitivity.
-[PC-CATM](glossary_EN.md#term-pc-catm) provides mechanism-aware correction and
-transport features with explicit norm contracts and
-[precision-masked zero](glossary_EN.md#term-precision-masked-zero).
+- [PC-TREF](glossary_EN.md#term-pc-tref) — distinct task-relative
+  equivalence/sufficiency framework;
+- [PC-CATM](glossary_EN.md#term-pc-catm) — distinct linked mechanistic
+  diagnostic level;
+- [QWake-PC](glossary_EN.md#term-qwake-pc) — general research control
+  [architecture](glossary_EN.md#term-architecture);
+- QWake-FP — bounded FixedPred implementation actually tested in the thesis.
 
-## Research boundary
+PC-CATM motivates mechanism-aware features, but superiority of NCZ/ECZ/TNZ and
+related channel/transport/compensation features was not directly established.
+**Recursive spatial aggregates** and other extensions remain follow-up work.
 
-The study does not claim global representation minimality, universal predictive-
-coding superiority, transfer to other architectures or devices, or active-
-control safety before separate confirmatory experiments. The independent
-statistical unit is the independently trained model identified by `model_seed`;
-the test split remains closed until final freeze.
+## Generalization boundary
+
+The dissertation does not claim universal PC/BP equivalence, universal
+FixedPred superiority, population-level QWake-FP safety, input-dependent
+adaptivity from C08, or economic non-viability of a minimal recognizer. Claims
+remain bounded to the registered datasets, `lenet_classic`, Torch2PC, numeric
+tolerances, seeds, and frozen hardware/software environments.

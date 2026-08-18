@@ -44,9 +44,13 @@ prespecified tolerances and statistical conclusions are compared instead.
 - the full Torch2PC commit;
 - host, driver, and ROCm-tool information.
 
-After a source or [configuration](glossary_EN.md#term-configuration) change, the lock is regenerated and C0/C1 are
-repeated. Control results contain the lock-file SHA-256, so an artifact from a
-different environment is not accepted automatically.
+For historical registered executions, a change to scientific source or
+[configuration](glossary_EN.md#term-configuration) required a new environment lock and a separately authorized
+protocol; existing [evidence](glossary_EN.md#term-evidence) bindings were not rewritten. Publication-only
+changes after experimental closure, including `v1.0.0` release metadata and
+documentation, do not by themselves authorize rerunning C0/C1 or any other
+closed scientific execution. Control results contain the lock-file SHA-256, so
+an artifact from a different environment is not accepted automatically.
 
 ## Canonical release assets and A1 CSV byte integrity
 

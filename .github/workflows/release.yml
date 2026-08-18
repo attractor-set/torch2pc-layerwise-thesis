@@ -1,4 +1,4 @@
-name: Пакет релиза
+name: Thesis release
 
 on:
   push:
@@ -6,21 +6,83 @@ on:
       - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   package:
-    name: Сборка воспроизводимого архива
+    name: Build and publish tag-bound thesis release
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v7
+      - name: Checkout exact tagged source
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - run: bash scripts/build_release.sh
-      - uses: actions/upload-artifact@v7
+
+      - name: Validate final public surface
+        run: python3 scripts/check_public_surface.py
+
+      - name: Validate release metadata contract
+        run: python3 scripts/check_release_contract.py
+
+      - name: Install LaTeX toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            latexmk \
+            biber \
+            texlive-xetex \
+            texlive-latex-extra \
+            texlive-bibtex-extra \
+            texlive-fonts-recommended \
+            texlive-lang-cyrillic \
+            fonts-liberation \
+            poppler-utils
+
+      - name: Release source identity
+        run: |
+          echo "RELEASE_TAG=${GITHUB_REF_NAME}"
+          printf 'SOURCE_COMMIT='
+          git rev-parse HEAD
+          printf 'SOURCE_TREE='
+          git rev-parse HEAD^{tree}
+
+      - name: Build release assets
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: bash scripts/build_release.sh
+
+      - name: Upload CI copy of release assets
+        uses: actions/upload-artifact@v7
         with:
-          name: research-release
+          name: thesis-release-${{ github.ref_name }}
           path: artifacts/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="$(PYTHONPATH=src python3 -c 'from torch2pc_thesis import __version__; print(__version__)')"
+          name="torch2pc-layerwise-thesis-${version}"
+
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            echo "GitHub Release ${GITHUB_REF_NAME} already exists; refusing to mutate published assets." >&2
+            exit 1
+          fi
+
+          gh release create "${GITHUB_REF_NAME}" \
+            "artifacts/${name}.zip" \
+            "artifacts/${name}.zip.sha256" \
+            "artifacts/${name}.pdf" \
+            "artifacts/${name}.pdf.sha256" \
+            "artifacts/${name}.metadata.json" \
+            "artifacts/${name}.release-manifest.json" \
+            --verify-tag \
+            --title "Torch2PC Layer-wise Thesis ${GITHUB_REF_NAME}" \
+            --notes-file "artifacts/${name}.release-notes.md"

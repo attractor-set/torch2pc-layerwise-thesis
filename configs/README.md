@@ -2,7 +2,10 @@
 
 [English version](README_EN.md)
 
-Основная конфигурация собирается последовательно:
+Конфигурации фиксируют исторические Stage 1/2/3 execution surfaces и аппаратные
+профили. Более позднее значение в цепочке разрешения переопределяет более раннее,
+а каждый зарегистрированный запуск сохраняет полностью resolved configuration и
+её SHA-256.
 
 ```text
 base.yaml
@@ -10,31 +13,20 @@ base.yaml
 -> stages/<stage>.yaml
 -> methods/<method>.yaml
 -> experiments/<optional-experiment>.yaml
--> переопределения CLI
+-> CLI overrides
 ```
 
-Более поздние значения переопределяют более ранние. Каждый запуск сохраняет
-полностью разрешённую конфигурацию и её SHA-256.
+## Stage 3 design contract
 
-## Stage 3
+`configs/stage3/design.yaml` хранит baseline hashes, candidates, phases, gates,
+stop rules и planned provenance исторической Stage 3 программы. Stage templates
+и B0/B1/B2 overlays сохраняются для воспроизводимости и не являются новым
+разрешением на выполнение после `v1.0.0`.
 
-`configs/stage3/design.yaml` является отдельным design contract. Он фиксирует
-baseline hashes, candidates, phases, gates, stop rules и planned provenance.
+Важно для терминологической дисциплины: старые обозначения `C1/C2/C3` в
+Stage-3 configuration design предшествуют финальной QWake claim chain. Их нужно
+читать в контексте конкретного configuration/protocol файла, а не автоматически
+отождествлять с QWake C1/C2/C3 или диссертационными C01–C11.
 
-Stage 3 stage templates:
-
-- `stage3_profiling.yaml`;
-- `stage3_pilot.yaml`;
-- `stage3_final_template.yaml`.
-
-Candidate overlays используют префиксы B0/B1/B2 для baseline и точных
-implementation candidates, C1/C2/C3 — для аппроксимаций. Эти stage names не
-входят в `TRAINING_STAGES`, поэтому их нельзя случайно запустить через CLI.
-
-Проверка:
-
-```bash
-PYTHONPATH=src python -m torch2pc_thesis.cli stage3-check
-PYTHONPATH=src python -m torch2pc_thesis.cli stage3-plan \
-  --output build/stage3/stage3_design_plan.json
-```
+Текущие научные статусы определяются `thesis/data/research_claims.json`, а не
+состоянием stage template.

@@ -5,461 +5,178 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
-![Лицензия](https://img.shields.io/badge/код-Apache--2.0-green)
-![Статус](https://img.shields.io/badge/этап-analysis%20protocol%20frozen%3B%20execution%20closed-blue)
+![Версия](https://img.shields.io/badge/release-v1.0.0-blue)
+![Код](https://img.shields.io/badge/code-Apache--2.0-green)
+![Документы](https://img.shields.io/badge/docs-CC%20BY%204.0-green)
 
-Репозиторий магистерской диссертации по сравнению обратного распространения
-ошибки (backpropagation, BP) и режимов предиктивного кодирования в Torch2PC.
-Проект отделяет предположения от наблюдений, процедуры от результатов, а
-результаты — от их интерпретации.
+Исследовательский репозиторий завершённой диссертации о послойном,
+механизмном и вычислительно сопоставимом сравнении обратного распространения
+ошибки (BP) и режимов предиктивного кодирования (PC) в Torch2PC.
 
-Нормативные определения и русско-английские соответствия терминов:
-[глоссарий исследования](docs/glossary.md).
+Работа сознательно разделяет утверждения, которые нельзя заменять друг другом:
 
-## Исследовательская позиция
+1. близость конечного поведения;
+2. близость внутренних градиентов и представлений;
+3. вычислительную стоимость и локализацию этой стоимости;
+4. допустимость замены оставшегося канонического вычисления относительно
+   требуемого ответа;
+5. распознаваемость такой допустимости до действия;
+6. экономическую целесообразность решения при полном учёте стоимости.
 
-Проект следует нейтральной исследовательской позиции:
+Финальный текст диссертации находится в [`thesis/`](thesis/). Нормативные
+значения терминов заданы в [глоссарии](docs/glossary.md), текущий итог — в
+[`STATUS.md`](STATUS.md), а последующая исследовательская программа — в
+[`ROADMAP.md`](ROADMAP.md).
 
-- превосходство метода не предполагается заранее;
-- теоретические ожидания формулируются как проверяемые предположения;
-- отсутствие обнаруженного различия не считается эквивалентностью без
-  отдельного анализа эквивалентности;
-- эмпирическое утверждение принимается только в пределах заранее описанного
-  эксперимента и зафиксированной вычислительной среды;
-- отрицательные, смешанные и нестабильные результаты сохраняются;
-- выводы ограничиваются исследованной реализацией, архитектурами, наборами
-  данных и вычислительной средой.
+## Статус v1.0.0
 
-Подробно: [RESEARCH_PRINCIPLES.md](RESEARCH_PRINCIPLES.md).
-
-## Исследовательский вопрос
-
-При каких алгоритмических и вычислительных условиях режимы `Exact`,
-`FixedPred` и `Strict` дают результаты, близкие к BP, и когда различия выходят
-за заранее заданные численные или статистические границы?
-
-После завершения Stage 3A и B0 основной post-B0 вопрос уточнён:
-
-> Можно ли построить вычислительно экономичное диагностическое представление
-> `state_inference`, достаточное для безопасного выбора числа последующих
-> полных exact sweeps?
-
-Верхнеуровневая рамка — [PC-TREF](docs/pc-tref-balanced-core.md), механизмная
-модель — [PC-CATM](docs/pc-catm-operator-model.md), реалистичный маршрут —
-[Scenario A](docs/stage3b-primary-scenario-a.md).
-
-Сравнение охватывает:
-
-- корректность реализации и численные контрольные соотношения;
-- качество классификации;
-- послойные градиенты;
-- нейронные представления;
-- устойчивость к искажениям;
-- вычислительное время и память;
-- воспроизводимость между независимыми запусками.
-
-## Текущее состояние на 23 июля 2026 года
-
-В закреплённой среде Ubuntu/ROCm завершены:
-
-- пилотная кампания: **96/96**, тестовая выборка не использовалась;
-- Stage 1: **80/80** на исходном Torch2PC
-  `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
-- Stage 2: **80/80** на изменённом Torch2PC
-  `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
-- Stage 3A: послойная диагностика, статистика на уровне `model_seed`,
-  анализ по глубине и публикационные рисунки;
-- Stage 3B B0: каноническая базовая линия ROCm/float32, 96/96 ячеек,
-  опубликованные доказательные материалы и статистический и инженерный анализ;
-- `SI-MA0`: проверки `REC`, `OBS`, `VER` и `CMP` прошли, а `COST-MA0`
-  не прошёл; отрицательный общий результат сохранён;
-- `SI-MA1`: завершена калибровка наблюдателя на десяти `model_seed` и
-  180 сопоставленных блоках; `CAL-COST-MA1=true`, `SI-MA1=pass`;
-- B1 `isolated_layer_vjp`: реализация завершена, зафиксированное решение
-  `EQ-B1` имеет `status=pass`;
-- B2 `composite_vjp`: реализация завершена, зафиксированное решение
-  `EQ-B2` имеет `status=pass`;
-- sealed confirmatory `EQ-B1` и `EQ-B2` prospectively связаны с новым `v2`
-  request/manifest пакетом [сопоставленного профилирования](docs/glossary.md#term-matched-profiling)
-  B0/B1/B2 на 288 ячеек;
-- исторический `v1` request/manifest сохранён byte-for-byte;
-- 288/288 ячеек и 96/96 matched blocks выполнены в immutable ROCm/float32
-  окружении без failures и retries;
-- runtime validation прошла, а compact evidence package запечатан и сохранён в
-  `results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`;
-- post-collection/pre-analysis протокол зафиксирован как
-  `stage3b-matched-descriptive-analysis-protocol-v1`; зарегистрированное
-  вычислительное ядро реализовано, прошло полную синтетическую проверку и
-  pre-execution hardening происхождения, compact consistency и настоящего
-  `Zstandard` кадра. Execution request `v1` зафиксирован и связан с точными
-идентичностями входов, protocol/core, одним output root и 18 файлами.
-Отдельная authorization была зафиксирована для одной read-only попытки. Она
-выполнена на проверенном `main`; точный 18-файловый output прошёл независимый
-audit и связан внешним seal без изменения generated metadata.
-
-Текущая граница:
+Научный текст закрыт после независимой пост-рефакторинговой проверки T24.
+Зафиксированная научная точка закрытия:
 
 ```text
-matched_profiling_execution_complete=true
-matched_profiling_runtime_validation=valid
-matched_profiling_evidence=sealed
-matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_complete=true
-matched_profiling_analysis_preexecution_hardening=complete
-matched_profiling_analysis_execution_request_frozen=true
-matched_profiling_analysis_runtime_preflight_implementation=complete
-matched_profiling_analysis_runtime_preflight_frozen=true
-matched_profiling_analysis_execution_authorization_present=true
-matched_profiling_analysis_synthetic_validation=pass
-matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_execution_complete=true
-matched_profiling_analysis_results_present=true
-matched_profiling_analysis_output_audited=true
-matched_profiling_analysis_output_seal_frozen=true
-matched_profiling_analysis_output_evidence=true
-matched_profiling_analysis_publication_gate_frozen=true
+T24_COMMIT=9d45c897d35225fd541aa1b96aeed7fa7e945531
+T24_TREE=44575ea3aced7c76633aa05f6ac22b89a20c615f
+T24_MERGE=3cd892a62bce947886214fa887bde64748b5bf33
+T24_POST_MERGE_TREE_IDENTITY=PASS
+THESIS_STATUS=DEFENSE_READY_WITH_EXPLICIT_EXTERNAL_VALIDITY_BOUNDARIES
+```
+
+Exact-commit assurance T24 завершился результатом **1732 passed, 8 skipped**;
+диссертация собирается в **99 страниц** без overfull boxes, неопределённых
+ссылок/цитат и незавершённых cross-reference rerun warnings. Эти числа относятся
+к точке T24; релизный manifest дополнительно связывает конкретный тег `v1.0.0`
+с его source commit/tree и SHA-256 опубликованных assets.
+
+## Исследовательские вопросы и финальные статусы
+
+Машиночитаемая трассировка хранится в
+[`thesis/data/thesis_traceability.json`](thesis/data/thesis_traceability.json).
+
+| RQ | Содержание | Итог |
+|---|---|---|
+| RQ1 | Когда PC-режимы близки к BP по поведению и внутренней динамике? | C01–C02 `supported` |
+| RQ2 | Где возникает вычислительная стоимость и сохраняют ли альтернативные точные организации требуемую эквивалентность/ресурсный допуск? | C03–C06 `supported`; C07 `descriptive` |
+| RQ3 | Можно ли до штатного завершения распознать допустимое раннее действие и получить положительную экономию? | C08 `supported`; C09 `rejected`; C10–C11 `not_tested` |
+
+Ключевая эпистемическая граница RQ3: QWake-FP показал информационную
+осуществимость на зарегистрированной калибровочной поверхности, но не
+экономическую состоятельность при замороженном полном учёте стоимости решения.
+Отрицательный C09 **не** переопределяет C10: добавочная стоимость минимального
+распознавателя в этой работе не измерялась.
+
+## Теоретическая рамка
+
+- **PC-TREF** — отдельная task-relative рамка эквивалентности и достаточности;
+- **PC-CATM** — отдельный связанный механизмный диагностический уровень;
+- **QWake-PC** — общая архитектура управления остаточным вычислением;
+- **QWake-FP** — проверенная в работе ограниченная реализация для FixedPred.
+
+В QWake-FP раннее действие не означает «никакого дальнейшего вычисления».
+Зарегистрированный кандидат
+`fixedpred_eta1_wavefront_completion_v1` заменяет оставшийся канонический
+итеративный suffix ограниченным аналитическим завершением, а
+`complete_suffix_stage2_baseline_v1` остаётся точным эталонным/резервным путём.
+
+Положительный C08 основан на правиле `compute_step >= 5`. Поэтому в этой работе
+он устанавливает временную границу фиксированного префикса, а не демонстрирует
+input-dependent adaptivity и не подтверждает преимущество признаков PC-CATM.
+
+## Основные эмпирические результаты
+
+- Stage 1/2: в зарегистрированной области FixedPred/Strict сохраняют заданную
+  поверхность конечного качества относительно BP при различающейся стоимости;
+- Stage 3A: FixedPred наблюдаемо ближе к BP по направлению градиента и
+  представлениям, чем Strict, при уменьшенной норме ранних градиентов;
+- Stage 3B B0: существенная стоимость локализована в `state_inference`;
+- `SI-MA0`: `COST-MA0` не пройден, отрицательный результат сохранён;
+- `SI-MA1`: калибровка стоимости наблюдателя пройдена; signed residual не
+  интерпретируется как отрицательная физическая стоимость;
+- B1/B2: точные кандидаты проходят зарегистрированные equivalence gates, но
+  получают `reject_or_revise` на отдельном resource continuation screen;
+- QWake C2: из 2625 скалярных правил 264 имеют ненулевое покрытие при нуле
+  наблюдавшихся dangerous accepts; максимальное зарегистрированное покрытие —
+  216/756 (28.57%), включая 108 preterminal записей шага 5 и 108 terminal
+  boundary записей шага 6;
+- C09: ни одно правило не сочетает ноль наблюдавшихся dangerous accepts,
+  ненулевое покрытие и положительную aggregate net saving при полном frozen
+  decision-cost accounting.
+
+Ноль наблюдавшихся опасных принятий на конечной calibration surface не является
+популяционной гарантией безопасности.
+
+## Сборка диссертации
+
+```bash
+make thesis-check
+make thesis
+```
+
+`make thesis-check` проверяет claim schema, численные сводки, provenance,
+терминологический контракт, QWake action semantics и локальную трассировку
+C01–C11. `make thesis` после этих проверок генерирует thesis-facing assets и
+собирает PDF через XeLaTeX/Biber.
+
+## Релиз
+
+Версия `1.0.0` публикуется как tag-bound release. Релизный pipeline собирает:
+
+```text
+torch2pc-layerwise-thesis-1.0.0.zip
+torch2pc-layerwise-thesis-1.0.0.zip.sha256
+torch2pc-layerwise-thesis-1.0.0.pdf
+torch2pc-layerwise-thesis-1.0.0.pdf.sha256
+torch2pc-layerwise-thesis-1.0.0.metadata.json
+torch2pc-layerwise-thesis-1.0.0.release-manifest.json
+```
+
+Manifest фиксирует source commit/tree, SHA-256 source archive и PDF, число
+страниц и результаты release/thesis gates. Подробный release contract проверяет
+`scripts/check_release_contract.py`.
+
+## Репозиторий
+
+| Каталог | Роль |
+|---|---|
+| `thesis/` | финальный текст диссертации, claim registry и generated thesis assets |
+| `src/torch2pc_thesis/` | исполняемая исследовательская логика и CLI |
+| `experiments/` | исторические preregistration/freeze/authorization contracts и lifecycle records |
+| `results/` | отслеживаемые агрегированные результаты и компактные evidence packages |
+| `docs/` | глоссарий, теория, методология, ADR и исторические протоколы |
+| `configs/` | конфигурации Stage 1/2/3 и аппаратные профили |
+| `references/` | BibTeX и трассировка литературы без перераспространения PDF |
+| `article/` | вторичный пакет будущей статьи; не определяет v1.0.0 thesis release |
+
+Полное описание: [`PROJECT_STRUCTURE.md`](PROJECT_STRUCTURE.md).
+
+## Что является историческим
+
+`HYPOTHESES.md`, `PREREGISTRATION.md`, старые Stage/QWake plans, ADR,
+authorization/receipt/freeze документы и встроенные в `STATUS.md`/`ROADMAP.md`
+point-in-time блоки сохраняют состояние соответствующего этапа. Их старые
+`open=false`, `execution closed` и версии образов не следует читать как текущий
+статус v1.0.0. Текущий статус всегда задаётся верхним разделом `STATUS.md`, а
+финальные научные статусы — claim registry диссертации.
+
+Исторические image IDs вида `torch2pc-layerwise-thesis:0.1.0-...` также не
+переименовываются: они являются частью зафиксированного provenance.
+
+## Совместимость с историческими publication contracts
+
+Следующие маркеры сохраняются в README как исторические regression anchors для
+ранее опубликованного matched-profiling слоя; они **не** являются текущим
+статусом QWake или разрешением нового scientific execution:
+
+```text
 matched_profiling_analysis_publication_action_complete=true
 matched_profiling_analysis_publication_receipt_frozen=true
-matched_profiling_analysis_open=false
-runtime_authorization=issued_consumed
-measurements_allowed=false
 results_publication_permitted=true
 release_draft_required=false
 release_publication_permitted=true
 release_publication_complete=true
 ```
 
-Фактический runtime preflight зафиксирован отдельно и связан с merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. Машиночитаемая authorization связала execution request, runtime preflight и runtime identity. Единственная попытка завершена на `main@72b95a284e8747a33b8c34d5929d4110aa4bfea1`; receipt, audit и внешний seal связывают неизменённый 18-файловый output. Tagged publication action и frozen receipt разрешают только публикацию
-запечатанного описательного анализа. Они не открывают `EX-IF0`, пассивную
-диагностику, предиктор, `QWake-PC` или тестовую выборку.
-
-Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1 и B2 не обращались к тестовой выборке.
-Исходные и зафиксированные результаты не переписываются документационными
-изменениями. Актуальное состояние регрессионных проверок фиксирует CI;
-документация не закрепляет быстро устаревающее число пройденных тестов.
-
-Подробный статус: [STATUS.md](STATUS.md). Последовательность дальнейшей работы:
-[ROADMAP.md](ROADMAP.md).
-
-## Основные опубликованные результаты
-
-### Stage 1 и Stage 2
-
-Изменения Stage 2 сохранили экспериментальный протокол и изменили только
-вычислительный путь. По среднему общему времени обучения относительно Stage 1:
-
-- Exact выполнялся примерно на 14% быстрее;
-- FixedPred — примерно на 31% быстрее;
-- Strict — примерно на 26% быстрее;
-- время BP практически не изменилось.
-
-Наблюдаемый порядок времени Stage 2:
-`BP ≈ Exact < FixedPred << Strict`.
-
-Парные записи опубликованы в
-[`results/cross-version/`](results/cross-version/).
-
-### Stage 3A
-
-Подтверждающая кампания охватывает FashionMNIST, `lenet_classic` и случайные
-начальные значения 0–9. Опубликованы:
-
-- 2250 наблюдений градиентов;
-- 150 наблюдений CKA/RSA по представлениям;
-- 750 наблюдений межслойного CKA;
-- 40 подтверждающих сравнений градиентов;
-- 20 подтверждающих сравнений представлений;
-- 24 статистические строки анализа по глубине;
-- 8 PDF-рисунков.
-
-В зарегистрированной области `FixedPred` почти сохраняет направление градиента,
-но существенно уменьшает его норму в ранних слоях. `Strict` в скрытых слоях
-отличается от BP по направлению и масштабу. Представления `FixedPred` ближе к
-BP, чем представления `Strict`.
-
-Подробный отчёт:
-[docs/stage3a-statistical-results.md](docs/stage3a-statistical-results.md).
-
-### Stage 3B B0
-
-B0 закрепляет кандидата `stage2_baseline` для `FixedPred` и `Strict` в
-синтетической кампании масштабирования ROCm/float32. Канонический протокол
-использует 20 разогревочных шагов, 5 повторений и 50 измеряемых шагов.
-
-Завершены:
-
-- 96/96 канонических ячеек и 96/96 попыток;
-- 0 неудачных попыток и 0 системных отказов ресурсов;
-- 96 записей процессов и 96 уникальных дочерних PID;
-- 48 ячеек `FixedPred` и 48 ячеек `Strict`;
-- 96 строк по ячейкам, 480 по областям, 48 парных и 32 по конфигурациям;
-- измерение областей `initial_forward`, `state_inference`, `local_state_vjp`,
-  `parameter_vjp` и `optimizer_step`;
-- проверки отсутствия возмущения, полноты и конечности значений.
-
-Зафиксированные доказательные материалы:
-[`results/stage-3/profiling/b0/sealed-v1/`](results/stage-3/profiling/b0/sealed-v1/).
-Контрольная сумма набора:
-`6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
-
-Инженерный анализ опубликован в
-[`results/stage-3/profiling/b0/analysis-v1/`](results/stage-3/profiling/b0/analysis-v1/).
-Независимая статистическая единица — отдельно обученная модель, заданная
-`model_seed`; доступны три модели на конфигурацию.
-
-Основные выводы в зарегистрированной области:
-
-- медианное отношение Strict/FixedPred для времени на устройстве — **2.327×**;
-- медианное отношение пиковой выделенной памяти — **1.328×**;
-- основная область времени — вывод состояний (`state_inference`);
-- отношение сохранённых тензоров Strict/FixedPred в `state_inference` —
-  **11.998×**.
-
-Эти результаты являются описательным инженерным анализом закреплённой матрицы,
-а не универсальным ранжированием методов. Полный Stage 3B остаётся
-незавершённым:
-`full_stage3b_campaign_complete=false`.
-
-### Stage 3B `SI-MA0` и `SI-MA1`
-
-`SI-MA0` выполнил зарегистрированные mechanism-attribution checks на десяти
-независимо обученных моделях. `REC-MA0`, `OBS-MA0`, `VER-MA0` и `CMP-MA0`
-прошли, но `COST-MA0` не прошёл: медианный непокрытый accounting residual
-составил примерно `0.1606`. Этот результат сохранён как отрицательный и не
-переписывается.
-
-`SI-MA1` проверил отдельную observer calibration с matched A/B/C blocks и
-signed residual:
-
-- `10` model seeds и `180` matched blocks;
-- observed median `D_seed = -0.190635073373`;
-- one-sided 95% bootstrap upper bound `-0.188621876160`;
-- registered threshold `0.01`;
-- `CAL-COST-MA1=true`, `si_ma1_passed=true`.
-
-Отрицательный `D_seed` означает over-closure калибровки, а не отрицательную
-физическую стоимость. `SI-MA1` не включает `ECZ` evaluator, action selection,
-fallback validation или end-to-end B1/B2 benefit. Итоговые материалы:
-[`results/stage-3/si-ma1/confirmatory/`](results/stage-3/si-ma1/confirmatory/).
-
-Теоретическое предварительное условие B1/B2 закрывается
-[теоретическим пакетом](docs/pc-tref-pc-catm-theoretical-foundation.md) и
-[ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics.md).
-
-## Цепочка выполнения и публикации
-
-| Роль | Идентификатор |
-|---|---|
-| Исходное состояние Stage 1 | `140e77cc2083bf04234dcea16b95803e63cb0537` |
-| Источник выполнения Stage 2 | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
-| Публикационное состояние Stage 2 | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
-| Тег публикации Stage 3A | `stage3a-statistical-publication-v1` |
-| Источник выполнения Stage 3B B0 | `95c25d35224abd5e741f1df9327662ff2fde23ad` |
-| Источник фиксации целостности Stage 3B B0 | `caa226cc1cd5d4aa0f9772c1fb997f7388d60730` |
-| Публикационное состояние Stage 3B B0 | `ed0d48063a17e2d9c6679869a4d930f933877052` |
-| Тег доказательных материалов Stage 3B B0 | `stage3b-b0-evidence-v1` |
-| Реализация анализа Stage 3B B0 | `e7a1632a947fae578e877826f0c923342669430e` |
-| Публикационное состояние анализа Stage 3B B0 | `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3` |
-| Тег анализа Stage 3B B0 | `stage3b-b0-analysis-evidence-v1` |
-| Предварительная регистрация `SI-MA1` | `stage3b-si-ma1-prereg-v1` |
-| Тег реализации `SI-MA1` | `stage3b-si-ma1-implementation-v1` |
-| Тег выполнения `SI-MA1` | `stage3b-si-ma1-confirmatory-execution-v1` |
-| Итоговый тег `SI-MA1` | `stage3b-si-ma1-confirmatory-v1` |
-| Публикационное состояние итогового `SI-MA1` | `9bf500a2494267e83cbf9657ad2f075e349a8a75` |
-
-Выпуски GitHub:
-
-- [`stage2-results-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
-- [`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
-- [`stage3b-b0-analysis-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1)
-
-## Следующий этап
-
-Предварительная регистрация B1/B2, реализации B1 и B2, решения `EQ-B1` и
-`EQ-B2`, выполнение 288-ячеечного сопоставленного профилирования, sealing,
-evidence PR, immutable tag и полный черновой релиз уже завершены.
-
-Однократное выполнение, независимая проверка и внешняя печать результатов завершены.
-Publication action успешно завершён и связан frozen receipt; границы остаются ограниченными опубликованным запечатанным анализом:
-
-```text
-matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_complete=true
-matched_profiling_analysis_preexecution_hardening=complete
-matched_profiling_analysis_execution_request_frozen=true
-matched_profiling_analysis_runtime_preflight_implementation=complete
-matched_profiling_analysis_runtime_preflight_frozen=true
-matched_profiling_analysis_execution_authorization_present=true
-matched_profiling_analysis_synthetic_validation=pass
-matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_execution_complete=true
-matched_profiling_analysis_results_present=true
-matched_profiling_analysis_output_audited=true
-matched_profiling_analysis_output_seal_frozen=true
-matched_profiling_analysis_output_evidence=true
-matched_profiling_analysis_publication_gate_frozen=true
-matched_profiling_analysis_publication_action_complete=true
-matched_profiling_analysis_publication_receipt_frozen=true
-results_publication_permitted=true
-release_publication_complete=true
-```
-
-Evidence release опубликован bounded tagged action, а frozen receipt связывает publication commit, workflow run и digests assets.
-
-Этот переход не открывает `EX-IF0`, `A11-OFF0`, `A11-OFF1`, предиктор,
-гистерезис, активное управление или доступ к тестовой выборке. B1/B2 остаются
-точными кандидатами реализации, а не политиками `QWake-PC`.
-
-Следующий docs-only этап — `QW-0`: ограничить эмпирическую проверку одной
-[QWake-FP](docs/glossary.md#term-qwake-fp) для corrected Rosenbaum FixedPred,
-реализовать весь обязательный pipeline до одной заморозки immutable image и
-разделять `C1/C2/C3/R` внутренними fail-closed permission gates. Этот scope
-freeze сам по себе не открывает выполнение.
-
-## Контрольные проверки
-
-Обозначения C0 и C1 используются вместо H0/H1, чтобы не смешивать технические
-контроли с нулевыми статистическими гипотезами.
-
-- **C0:** численное сопоставление градиентов `Exact` и BP;
-- **C1:** численное сопоставление `FixedPred` при `eta=1`, `n>=depth` и `Exact`;
-- **структурная проверка:** проверка выбранных выражений Torch2PC, связанных с
-  поправкой Rosenbaum 2025.
-
-Успешный результат C0/C1 относится только к закреплённым версии кода, типу
-данных, устройству и тестовым пакетам. Он не является универсальным
-доказательством эквивалентности алгоритмов.
-
-## Воспроизведение
-
-Базовая подготовка среды:
-
-```bash
-cp .env.example .env
-./scripts/setup_ubuntu.sh
-make init
-make host-check
-make image-check
-make pin-base-image
-make build
-make validate
-make prepare
-```
-
-`make pin-base-image` заменяет изменяемый тег Docker на неизменяемую ссылку
-`repository@sha256:...`. Локальный `.env` не добавляется в Git.
-
-Дальнейшие команды и требования к фиксации среды описаны в
-[docs/reproducibility.md](docs/reproducibility.md) и
-[docs/validation.md](docs/validation.md).
-
-## Защита тестовой выборки
-
-- стадии `smoke` и `pilot` не создают загрузчик тестовой выборки;
-- тестовая выборка разрешена только для стадии `final`;
-- `final` требует замороженного протокола и артефакта `pilot-freeze`;
-- каждый запуск сохраняет разрешённую конфигурацию, описание среды, контрольные
-  суммы разбиений, предсказания по примерам, метрики и уникальный `run_id`;
-- повторный успешный запуск той же комбинации кода, конфигурации и начального
-  значения блокируется, чтобы повторный просмотр тестовой выборки не считался
-  новой репликацией.
-
-## Структура репозитория
-
-| Каталог | Назначение |
-|---|---|
-| `src/torch2pc_thesis/` | Исполняемая исследовательская логика и CLI |
-| `configs/` | Базовые, аппаратные, этапные и методические конфигурации |
-| `experiments/` | Добавляемый реестр запусков и планы экспериментов |
-| `results/` | Агрегированные публичные материалы |
-| `notebooks/analysis/` | Анализ зарегистрированных результатов |
-| `notebooks/legacy/` | Исторический блокнот для проверки миграции |
-| `thesis/` | Русскоязычный каркас диссертации |
-| `article/` | Англоязычный каркас статьи с суффиксом `_EN` |
-| `references/` | BibTeX и матрица литературы без PDF |
-| `docs/` | Протоколы, решения и журнал исследования |
-
-Полная схема: [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md).
-
-## Язык и терминология
-
-Русский является основным языком пользовательских материалов. Английские
-версии используют суффикс `_EN`. Технические идентификаторы Python, YAML,
-Torch2PC и GitHub сохраняются на английском. Канонические термины определены в
-[LANGUAGE_POLICY.md](LANGUAGE_POLICY.md).
-
 ## Лицензирование
 
-- программный код: Apache License 2.0 — [LICENSE](LICENSE);
-- текст диссертации, статьи, документации, таблицы и рисунки: Creative Commons
-  Attribution 4.0 International — [LICENSE-DOCS](LICENSE-DOCS) и
-  [LICENSE-DOCS_EN](LICENSE-DOCS_EN);
-- сторонние материалы сохраняют исходные лицензии и условия атрибуции —
-  [NOTICE](NOTICE) и [NOTICE_EN](NOTICE_EN).
-
-## FixedPred sufficiency и D/U/S
-
-После `EX-IF0` обязательный частный случай фиксирует `FixedPred` и
-`stage2_baseline` и исследует
-[минимальный устойчиво достаточный префикс
-FixedPred](docs/glossary.md#term-minimum-stably-sufficient-fixedpred-prefix).
-
-Joint-VJP сохраняется как exact graph-organization control и не называется
-шоткатом. [Wavefront-контроль
-Rosenbaum](docs/glossary.md#term-rosenbaum-wavefront-control) используется
-только как аналитический положительный контроль.
-
-Новая [семантика решений
-D/U/S](docs/glossary.md#term-dus-decision-semantics) остаётся теневой:
-`DONE` требует положительного допуска, `UNKNOWN` допускает приобретение
-аналитики, а неразрешённый случай завершается `SWEEP`.
-
-- [Консолидированная концепция](docs/fixedpred-sufficiency-dus-design.md)
-- [Реестр метрик](docs/fixedpred-sufficiency-dus-metrics.md)
-- [План рефакторинга](docs/fixedpred-sufficiency-dus-refactoring-plan.md)
-- [План этапа](experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS.md)
-
-Документационная фиксация не открывает выполнение, создание oracle-меток,
-сбор признаков, policy activation или test split.
-
-## Интегрированная модель фронтира
-
-[ADR-041](docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics.md)
-задаёт текущую корректирующую семантику поверх неизменных ADR-039 и ADR-040.
-Развёртываемая ось равна `A0 -> A1 -> A2`, `O` остаётся отдельным post-action
-oracle, а `ADVANCE_FRONTIER` разделён на `OBSERVATION`, `ANALYTIC` и `COMPUTE`.
-`DONE` означает уже допущенный теневой исход. Обязательное ядро ограничено
-temporal `FixedPred`; рекурсивные масштабы и active control условны.
-Документационная фиксация не открывает выполнение, сбор, метки или test split.
-
-## Ограниченная проверка `QWake-FP`
-
-[ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md)
-фиксирует `QWake-PC` как общую спецификацию, а QWake-FP — как единственную
-обязательную реализацию. Проверочный случай ограничен `FixedPred`, `eta=1`,
-`stage2_baseline` и конечным canonical suffix.
-
-Один superset image заранее содержит collectors, analytics, oracle, replay,
-baselines и evaluators. Роли кампании `C1_COLLECTION`, `C2_CALIBRATION`,
-`C3_CONFIRMATORY` и `R_REPLICATION` активируют только зарегистрированные
-capabilities. Policy замораживается как data manifest, а executable code между
-стадиями не меняется.
-
-Публикационный пакет требует untouched confirmatory seeds, простых baselines,
-nested ablations, полной стоимости, одной replication без retuning и
-trajectory benchmark. Порядок решения: `safety -> coverage -> net cost`.
-
-- [Полный план](docs/qwake-fp-experimental-plan.md)
-- [ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating.md)
-
-```text
-qwake_fp_scope_freeze_complete=true
-execution_image_strategy=single_immutable_superset_image
-stage_activation=fail_closed_permission_manifest
-qwake_fp_execution_permitted=false
-c1_collection_open=false
-c2_calibration_open=false
-c3_confirmatory_open=false
-replication_open=false
-test_dataset_access=false
-```
+- код: Apache License 2.0 — [`LICENSE`](LICENSE);
+- диссертация и документация: CC BY 4.0 — [`LICENSE-DOCS`](LICENSE-DOCS);
+- сторонние материалы: условия исходных правообладателей — [`NOTICE`](NOTICE).

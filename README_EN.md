@@ -5,455 +5,176 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
-![License](https://img.shields.io/badge/code-Apache--2.0-green)
-![Status](https://img.shields.io/badge/stage-analysis%20protocol%20frozen%3B%20execution%20closed-blue)
+![Version](https://img.shields.io/badge/release-v1.0.0-blue)
+![Code](https://img.shields.io/badge/code-Apache--2.0-green)
+![Documents](https://img.shields.io/badge/docs-CC%20BY%204.0-green)
 
-A master's thesis repository comparing backpropagation (BP) with predictive
-coding regimes in Torch2PC. The project separates assumptions from
-observations, procedures from results, and results from interpretation.
+Research repository for the completed dissertation on layer-wise, mechanistic,
+and compute-matched comparison of backpropagation (BP) with predictive-coding
+(PC) regimes implemented in Torch2PC.
 
-Normative definitions and Russian–English mappings are in the
-[research glossary](docs/glossary_EN.md).
+The work deliberately separates claims that cannot substitute for one another:
 
-## Research stance
+1. final-behavior similarity;
+2. similarity of internal gradients and representations;
+3. compute cost and localization of that cost;
+4. task-relative admissibility of replacing the remaining canonical compute;
+5. pre-action recognizability of that admissibility;
+6. economic viability under full decision-cost accounting.
 
-The project follows a neutral research stance:
+The final dissertation source is in [`thesis/`](thesis/). Normative terminology
+is defined in the [glossary](docs/glossary_EN.md), the current outcome is in
+[`STATUS_EN.md`](STATUS_EN.md), and the post-thesis research program is in
+[`ROADMAP_EN.md`](ROADMAP_EN.md).
 
-- no method is assumed superior in advance;
-- theoretical expectations are treated as testable assumptions;
-- failure to detect a difference is not treated as equivalence without a
-  dedicated equivalence analysis;
-- empirical claims are accepted only within a preregistered experiment and a
-  recorded compute environment;
-- negative, mixed, and unstable outcomes are retained;
-- conclusions remain limited to the studied implementation, architectures,
-  datasets, and compute environment.
+## v1.0.0 status
 
-See [RESEARCH_PRINCIPLES_EN.md](RESEARCH_PRINCIPLES_EN.md).
-
-## Research question
-
-Under which algorithmic and computational conditions do `Exact`, `FixedPred`,
-and `Strict` produce behavior close to BP, and when do their differences exceed
-preregistered numerical or statistical bounds?
-
-After Stage 3A and B0, the primary post-B0 question is refined to:
-
-> Can a cost-efficient diagnostic representation of `state_inference` retain
-> enough information to safely choose the number of subsequent full exact
-> sweeps?
-
-The upper-level framework is [PC-TREF](docs/pc-tref-balanced-core_EN.md), the
-mechanism model is [PC-CATM](docs/pc-catm-operator-model_EN.md), and the
-realistic experimental path is [Scenario A](docs/stage3b-primary-scenario-a_EN.md).
-
-The comparison covers:
-
-- implementation correctness and numerical controls;
-- classification quality;
-- layer-wise gradients;
-- neural representations;
-- robustness to corruption;
-- compute time and memory;
-- reproducibility across independent runs.
-
-## Current state as of July 23, 2026
-
-The following work is complete in the pinned Ubuntu/ROCm environment:
-
-- validation-only pilot: **96/96**, without test-dataset access;
-- Stage 1: **80/80** with original Torch2PC
-  `00c6c50ee3540537bbb56ab2b6567b541f42b093`;
-- Stage 2: **80/80** with patched Torch2PC
-  `b20d9142e4bdbf57b3ec8bf9f9c4472372ec8db4`;
-- Stage 3A: layer-wise diagnostics, `model_seed`-level statistics, depth
-  analysis, and publication figures;
-- Stage 3B B0: the canonical ROCm/float32 baseline, 96/96 cells, published
-  evidence, and published statistical and engineering analysis;
-- `SI-MA0`: `REC`, `OBS`, `VER`, and `CMP` passed, while `COST-MA0` failed;
-  the negative global result is retained;
-- `SI-MA1`: observer calibration is complete across ten `model_seed` values
-  and 180 matched blocks; `CAL-COST-MA1=true`, `SI-MA1=pass`;
-- B1 `isolated_layer_vjp`: implementation is complete and sealed `EQ-B1`
-  has `status=pass`;
-- B2 `composite_vjp`: implementation is complete and sealed `EQ-B2`
-  has `status=pass`;
-- sealed confirmatory `EQ-B1` and `EQ-B2` are prospectively bound to the new
-  `v2` request/manifest package for 288-cell B0/B1/B2
-  [matched profiling](docs/glossary_EN.md#term-matched-profiling);
-- the historical `v1` request/manifest remains byte-for-byte unchanged;
-- all 288 cells and 96 matched blocks completed in the immutable ROCm/float32
-  environment without failures or retries;
-- runtime validation passed, and the compact evidence package is sealed at
-  `results/stage-3/profiling/matched/stage3b-matched-profiling-e1dcfb2-v1/`;
-- the post-collection/pre-analysis protocol is frozen as
-  `stage3b-matched-descriptive-analysis-protocol-v1`; the registered
-  computational engine is implemented, passed full synthetic validation, and
-  completed pre-execution hardening for provenance, compact consistency, and a
-  real `Zstandard` frame. Execution request `v1` is frozen and binds exact
-input, protocol/core, one output-root, and 18-file identities. A separate
-authorization was frozen for one read-only attempt. It completed on verified
-`main`; the exact 18-file output passed independent audit and is bound by an
-external seal without changing generated metadata.
-
-The current boundary is:
+The scientific narrative was closed after the independent T24 post-refactor
+review. The scientific closure point is:
 
 ```text
-matched_profiling_execution_complete=true
-matched_profiling_runtime_validation=valid
-matched_profiling_evidence=sealed
-matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_complete=true
-matched_profiling_analysis_preexecution_hardening=complete
-matched_profiling_analysis_execution_request_frozen=true
-matched_profiling_analysis_runtime_preflight_implementation=complete
-matched_profiling_analysis_runtime_preflight_frozen=true
-matched_profiling_analysis_execution_authorization_present=true
-matched_profiling_analysis_synthetic_validation=pass
-matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_execution_complete=true
-matched_profiling_analysis_results_present=true
-matched_profiling_analysis_output_audited=true
-matched_profiling_analysis_output_seal_frozen=true
-matched_profiling_analysis_output_evidence=true
-matched_profiling_analysis_publication_gate_frozen=true
+T24_COMMIT=9d45c897d35225fd541aa1b96aeed7fa7e945531
+T24_TREE=44575ea3aced7c76633aa05f6ac22b89a20c615f
+T24_MERGE=3cd892a62bce947886214fa887bde64748b5bf33
+T24_POST_MERGE_TREE_IDENTITY=PASS
+THESIS_STATUS=DEFENSE_READY_WITH_EXPLICIT_EXTERNAL_VALIDITY_BOUNDARIES
+```
+
+T24 exact-commit assurance completed with **1732 passed, 8 skipped**; the
+thesis builds to **99 pages** with no overfull boxes, undefined
+references/citations, or pending cross-reference rerun warnings. Those numbers
+belong to the T24 closure point; the release manifest separately binds the
+concrete `v1.0.0` tag to its source commit/tree and published-asset SHA-256s.
+
+## Research questions and final statuses
+
+Machine-readable claim traceability is stored in
+[`thesis/data/thesis_traceability.json`](thesis/data/thesis_traceability.json).
+
+| RQ | Scope | Outcome |
+|---|---|---|
+| RQ1 | When are PC regimes close to BP in behavior and internal dynamics? | C01–C02 `supported` |
+| RQ2 | Where does compute cost arise, and do exact alternative organizations preserve required equivalence/resource admission? | C03–C06 `supported`; C07 `descriptive` |
+| RQ3 | Can an admissible early action be recognized before normal completion and yield positive savings? | C08 `supported`; C09 `rejected`; C10–C11 `not_tested` |
+
+The key epistemic boundary for RQ3 is that QWake-FP establishes informational
+feasibility on the registered calibration surface but not economic viability
+under the frozen full decision-cost accounting. Rejected C09 does **not**
+redefine C10: the marginal execution cost of a minimal recognizer was not
+measured in this work.
+
+## Theoretical framework
+
+- **PC-TREF** is a distinct task-relative equivalence/sufficiency framework;
+- **PC-CATM** is a distinct linked mechanistic diagnostic level;
+- **QWake-PC** is the general residual-compute control architecture;
+- **QWake-FP** is the bounded FixedPred implementation tested in the thesis.
+
+In QWake-FP, an early action does not mean “no computation remains.” The
+registered `fixedpred_eta1_wavefront_completion_v1` candidate replaces the
+remaining canonical iterative suffix with bounded analytic completion, while
+`complete_suffix_stage2_baseline_v1` remains the exact reference/fallback path.
+
+Positive C08 is driven by `compute_step >= 5`; on this surface it therefore
+establishes a temporal fixed-prefix boundary, not input-dependent adaptivity or
+superiority of PC-CATM features.
+
+## Main empirical results
+
+- Stage 1/2: the registered final-quality surface is preserved while execution
+  cost changes across regimes;
+- Stage 3A: FixedPred is observably closer to BP than Strict in gradient
+  direction and representations, while early-layer gradient norm is reduced;
+- Stage 3B B0: substantial cost is localized to `state_inference`;
+- `SI-MA0`: `COST-MA0` fails and the negative result is retained;
+- `SI-MA1`: observer-cost calibration passes; the signed residual is not
+  interpreted as negative physical cost;
+- B1/B2: exact candidates pass registered equivalence gates but receive
+  `reject_or_revise` at the separate resource continuation screen;
+- QWake C2: 264 of 2,625 scalar rules have non-zero coverage with zero observed
+  dangerous accepts; the maximum registered full-surface coverage is 216/756
+  (28.57%), comprising 108 preterminal step-5 records and 108 terminal-boundary
+  step-6 records;
+- C09: no rule combines zero observed dangerous accepts, non-zero coverage, and
+  positive aggregate net saving under frozen full decision-cost accounting.
+
+Zero observed dangerous accepts on a finite calibration surface does not
+establish population-level safety.
+
+## Build the dissertation
+
+```bash
+make thesis-check
+make thesis
+```
+
+`make thesis-check` validates the claim schema, numeric summaries, provenance,
+terminology contract, QWake action semantics, and local C01–C11 traceability.
+`make thesis` then renders thesis-facing assets and builds the PDF with
+XeLaTeX/Biber.
+
+## Release
+
+Version `1.0.0` is published as a tag-bound release. The release pipeline builds:
+
+```text
+torch2pc-layerwise-thesis-1.0.0.zip
+torch2pc-layerwise-thesis-1.0.0.zip.sha256
+torch2pc-layerwise-thesis-1.0.0.pdf
+torch2pc-layerwise-thesis-1.0.0.pdf.sha256
+torch2pc-layerwise-thesis-1.0.0.metadata.json
+torch2pc-layerwise-thesis-1.0.0.release-manifest.json
+```
+
+The manifest records the source commit/tree, source/PDF SHA-256s, page count,
+and release/thesis gate outcomes. The release contract is checked by
+`scripts/check_release_contract.py`.
+
+## Repository
+
+| Directory | Role |
+|---|---|
+| `thesis/` | final dissertation text, claim registry, and generated thesis assets |
+| `src/torch2pc_thesis/` | executable research logic and CLI |
+| `experiments/` | historical preregistration/freeze/authorization contracts and lifecycle records |
+| `results/` | tracked aggregate results and compact evidence packages |
+| `docs/` | glossary, theory, methodology, ADRs, and historical protocols |
+| `configs/` | Stage 1/2/3 configurations and hardware profiles |
+| `references/` | BibTeX/source traceability without redistributed PDFs |
+| `article/` | secondary future article package; not release-defining for thesis v1.0.0 |
+
+See [`PROJECT_STRUCTURE_EN.md`](PROJECT_STRUCTURE_EN.md) for the complete map.
+
+## Historical artifacts
+
+`HYPOTHESES.md`, `PREREGISTRATION.md`, earlier Stage/QWake plans, ADRs,
+authorization/receipt/freeze documents, and point-in-time blocks embedded in
+`STATUS_EN.md`/`ROADMAP_EN.md` preserve the state of their own stage. Their old
+`open=false`, `execution closed`, or image-version statements must not be read
+as the current v1.0.0 status. The authoritative current status is the top
+section of `STATUS_EN.md`; final scientific statuses come from the dissertation
+claim registry.
+
+Historical image IDs such as `torch2pc-layerwise-thesis:0.1.0-...` are likewise
+left unchanged because they are part of frozen provenance.
+
+## Historical publication-contract compatibility
+
+The markers below are retained in the README as historical regression anchors
+for the previously published matched-profiling layer. They are **not** the
+current QWake state and do not authorize new scientific execution:
+
+```text
 matched_profiling_analysis_publication_action_complete=true
 matched_profiling_analysis_publication_receipt_frozen=true
-matched_profiling_analysis_open=false
-runtime_authorization=issued_consumed
-measurements_allowed=false
 results_publication_permitted=true
 release_draft_required=false
 release_publication_permitted=true
 release_publication_complete=true
 ```
 
-The actual runtime preflight is frozen separately and bound to merge commit `272a9258f70320416ff97c3da076435fd5334bc4`. The machine-readable authorization bound the execution request, runtime preflight, and runtime identity. The single attempt completed on `main@72b95a284e8747a33b8c34d5929d4110aa4bfea1`; the receipt, audit, and external seal bind the unchanged 18-file output. The tagged publication action and frozen receipt authorize publication of
-the sealed descriptive analysis only. They do not open EX-IF0, passive
-diagnostics, the predictor, QWake-PC, or the test split.
-
-Stage 3A, B0, `SI-MA0`, `SI-MA1`, B1, and B2 did not access the test dataset.
-Raw and sealed results are not regenerated by documentation changes. CI is
-the source of truth for current regression checks; the documentation does not
-pin a quickly stale test count.
-
-See [STATUS_EN.md](STATUS_EN.md) for details and
-[ROADMAP_EN.md](ROADMAP_EN.md) for the remaining sequence.
-
-## Main published results
-
-### Stage 1 and Stage 2
-
-The Stage 2 intervention preserved the experimental protocol and changed only
-the compute path. Relative to Stage 1 mean total training time:
-
-- Exact was approximately 14% faster;
-- FixedPred was approximately 31% faster;
-- Strict was approximately 26% faster;
-- BP was effectively unchanged.
-
-Observed Stage 2 runtime ordering:
-`BP ≈ Exact < FixedPred << Strict`.
-
-Paired records are published under
-[`results/cross-version/`](results/cross-version/).
-
-### Stage 3A
-
-The confirmatory campaign covers FashionMNIST, `lenet_classic`, and seeds 0–9.
-Published outputs include:
-
-- 2250 gradient observations;
-- 150 representation CKA/RSA observations;
-- 750 cross-layer CKA observations;
-- 40 confirmatory gradient comparisons;
-- 20 confirmatory representation comparisons;
-- 24 statistical depth-analysis rows;
-- 8 PDF figures.
-
-Within the registered scope, `FixedPred` nearly preserves gradient direction
-while strongly attenuating the norm in early layers. `Strict` differs from BP
-in both direction and scale in hidden layers. `FixedPred` representations are
-closer to BP than `Strict` representations.
-
-Detailed report:
-[docs/stage3a-statistical-results_EN.md](docs/stage3a-statistical-results_EN.md).
-
-### Stage 3B B0
-
-B0 fixes `stage2_baseline` for `FixedPred` and `Strict` in a synthetic
-ROCm/float32 scaling campaign. The canonical protocol uses 20 warm-up steps,
-5 repetitions, and 50 measured steps.
-
-Completed outputs include:
-
-- 96/96 canonical cells and 96/96 attempts;
-- 0 failed attempts and 0 systemic resource failures;
-- 96 process records and 96 unique child PIDs;
-- 48 `FixedPred` and 48 `Strict` cells;
-- 96 cell, 480 region, 48 paired, and 32 configuration rows;
-- measured regions `initial_forward`, `state_inference`, `local_state_vjp`,
-  `parameter_vjp`, and `optimizer_step`;
-- non-perturbation, completeness, and finite-value checks.
-
-Sealed evidence:
-[`results/stage-3/profiling/b0/sealed-v1/`](results/stage-3/profiling/b0/sealed-v1/).
-Bundle digest:
-`6a3d61838810e559a39f13e6ac39d6b22624c21d72523bddb55c33e83063c93e`.
-
-Engineering analysis:
-[`results/stage-3/profiling/b0/analysis-v1/`](results/stage-3/profiling/b0/analysis-v1/).
-The independently trained model identified by `model_seed` is the statistical
-unit; three models are available per configuration.
-
-Main bounded findings:
-
-- median Strict/FixedPred device-time ratio: **2.327×**;
-- median peak-allocated-memory ratio: **1.328×**;
-- dominant device-time region: state inference (`state_inference`);
-- Strict/FixedPred saved-tensor ratio within `state_inference`: **11.998×**.
-
-These results are descriptive engineering analysis of the pinned matrix, not a
-universal method ranking. The full Stage 3B program remains incomplete:
-`full_stage3b_campaign_complete=false`.
-
-### Stage 3B `SI-MA0` and `SI-MA1`
-
-`SI-MA0` completed the registered mechanism-attribution checks across ten
-independently trained models. `REC-MA0`, `OBS-MA0`, `VER-MA0`, and `CMP-MA0`
-passed, while `COST-MA0` failed with a median uncovered accounting residual of
-approximately `0.1606`. The negative result is retained unchanged.
-
-`SI-MA1` evaluated separate observer calibration with matched A/B/C blocks and
-signed residuals:
-
-- `10` model seeds and `180` matched blocks;
-- observed median `D_seed = -0.190635073373`;
-- one-sided 95% bootstrap upper bound `-0.188621876160`;
-- registered threshold `0.01`;
-- `CAL-COST-MA1=true`, `si_ma1_passed=true`.
-
-Negative `D_seed` is calibration over-closure, not negative physical cost.
-`SI-MA1` excludes `ECZ` evaluation, action selection, fallback validation, and
-end-to-end B1/B2 benefit. Final artifacts are under
-[`results/stage-3/si-ma1/confirmatory/`](results/stage-3/si-ma1/confirmatory/).
-
-The B1/B2 theoretical prerequisite is closed by the
-[theoretical package](docs/pc-tref-pc-catm-theoretical-foundation_EN.md) and
-[ADR-013](docs/decisions/ADR-013-pc-tref-operational-semantics_EN.md).
-
-## Execution and publication chain
-
-| Role | Identifier |
-|---|---|
-| Stage 1 source state | `140e77cc2083bf04234dcea16b95803e63cb0537` |
-| Stage 2 execution source | `6d66b0a6f82c30c4fb8eca6247383ca13e0636a2` |
-| Stage 2 publication state | `bb435432a65b76b7fc4f383b566b9a372fc346ae` |
-| Stage 3A publication tag | `stage3a-statistical-publication-v1` |
-| Stage 3B B0 execution source | `95c25d35224abd5e741f1df9327662ff2fde23ad` |
-| Stage 3B B0 integrity-sealing source | `caa226cc1cd5d4aa0f9772c1fb997f7388d60730` |
-| Stage 3B B0 publication state | `ed0d48063a17e2d9c6679869a4d930f933877052` |
-| Stage 3B B0 evidence tag | `stage3b-b0-evidence-v1` |
-| Stage 3B B0 analysis implementation | `e7a1632a947fae578e877826f0c923342669430e` |
-| Stage 3B B0 analysis publication state | `b9ff8b2ab76f8752b15dd3bb968565d05f1fe9d3` |
-| Stage 3B B0 analysis tag | `stage3b-b0-analysis-evidence-v1` |
-| `SI-MA1` preregistration | `stage3b-si-ma1-prereg-v1` |
-| `SI-MA1` implementation tag | `stage3b-si-ma1-implementation-v1` |
-| `SI-MA1` execution tag | `stage3b-si-ma1-confirmatory-execution-v1` |
-| Final `SI-MA1` tag | `stage3b-si-ma1-confirmatory-v1` |
-| Final `SI-MA1` publication state | `9bf500a2494267e83cbf9657ad2f075e349a8a75` |
-
-GitHub Releases:
-
-- [`stage2-results-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage2-results-v1)
-- [`stage3b-b0-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-evidence-v1)
-- [`stage3b-b0-analysis-evidence-v1`](https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/stage3b-b0-analysis-evidence-v1)
-
-## Next stage
-
-B1/B2 preregistration, the B1 and B2 implementations, sealed `EQ-B1` and
-`EQ-B2`, the 288-cell matched-profiling execution, sealing, evidence PR,
-immutable tag, and complete draft release are finished.
-
-The single execution, independent audit, and external output seal are complete.
-The publication action completed successfully and is bound by a frozen receipt; the boundary remains limited to the published sealed analysis:
-
-```text
-matched_profiling_analysis_protocol_frozen=true
-matched_profiling_analysis_implementation_complete=true
-matched_profiling_analysis_preexecution_hardening=complete
-matched_profiling_analysis_execution_request_frozen=true
-matched_profiling_analysis_runtime_preflight_implementation=complete
-matched_profiling_analysis_runtime_preflight_frozen=true
-matched_profiling_analysis_execution_authorization_present=true
-matched_profiling_analysis_synthetic_validation=pass
-matched_profiling_analysis_execution_open=false
-matched_profiling_analysis_execution_complete=true
-matched_profiling_analysis_results_present=true
-matched_profiling_analysis_output_audited=true
-matched_profiling_analysis_output_seal_frozen=true
-matched_profiling_analysis_output_evidence=true
-matched_profiling_analysis_publication_gate_frozen=true
-matched_profiling_analysis_publication_action_complete=true
-matched_profiling_analysis_publication_receipt_frozen=true
-results_publication_permitted=true
-release_publication_complete=true
-```
-
-The evidence release was published by a bounded tagged action, and the frozen receipt binds the publication commit, workflow run, and asset digests.
-
-This transition does not open `EX-IF0`, `A11-OFF0`, `A11-OFF1`, the predictor,
-hysteresis, active control, or test-dataset access. B1 and B2 remain exact
-implementation candidates, not `QWake-PC` policies.
-
-The next docs-only stage is `QW-0`: bound empirical validation to one
-[QWake-FP](docs/glossary_EN.md#term-qwake-fp) for corrected Rosenbaum FixedPred,
-implement the full mandatory pipeline before one immutable-image freeze, and
-separate C1/C2/C3/R through internal fail-closed permission gates. This scope
-freeze does not itself open execution.
-
-## Numerical controls
-
-C0 and C1 are used instead of H0/H1 to avoid confusion with null statistical
-hypotheses.
-
-- **C0:** numerical comparison of `Exact` and BP gradients;
-- **C1:** numerical comparison of `FixedPred` at `eta=1`, `n>=depth`, and
-  `Exact`;
-- **structural check:** inspection of selected Torch2PC expressions associated
-  with the Rosenbaum 2025 correction.
-
-Passing C0/C1 applies only to the pinned code, dtype, device, and test packages.
-It is not a universal proof of algorithmic equivalence.
-
-## Reproduction
-
-Base environment preparation:
-
-```bash
-cp .env.example .env
-./scripts/setup_ubuntu.sh
-make init
-make host-check
-make image-check
-make pin-base-image
-make build
-make validate
-make prepare
-```
-
-`make pin-base-image` replaces a mutable Docker tag with an immutable
-`repository@sha256:...` reference. The local `.env` is not committed.
-
-See [docs/reproducibility_EN.md](docs/reproducibility_EN.md) and
-[docs/validation_EN.md](docs/validation_EN.md) for the complete procedure.
-
-## Test-dataset protection
-
-- `smoke` and `pilot` do not create a test loader;
-- test access is permitted only for `final`;
-- `final` requires a frozen protocol and `pilot-freeze` artifact;
-- each run records the resolved configuration, environment manifest, split
-  checksums, per-sample predictions, metrics, and a unique `run_id`;
-- a repeated successful run with the same code, configuration, and seed is
-  blocked so repeated test inspection cannot count as a new replication.
-
-## Repository structure
-
-| Directory | Purpose |
-|---|---|
-| `src/torch2pc_thesis/` | Executable research logic and CLI |
-| `configs/` | Base, hardware, stage, and method configurations |
-| `experiments/` | Append-only run registry and experiment plans |
-| `results/` | Aggregate public artifacts |
-| `notebooks/analysis/` | Analysis of registered results |
-| `notebooks/legacy/` | Historical migration-check notebook |
-| `thesis/` | Russian dissertation scaffold |
-| `article/` | English article scaffold with `_EN` suffix |
-| `references/` | BibTeX and literature matrix without PDFs |
-| `docs/` | Protocols, decisions, and research log |
-
-See [PROJECT_STRUCTURE_EN.md](PROJECT_STRUCTURE_EN.md).
-
-## Language and terminology
-
-Russian is the primary language of user-facing materials. English versions use
-the `_EN` suffix. Python, YAML, Torch2PC, and GitHub identifiers remain English.
-Canonical terminology is defined in
-[LANGUAGE_POLICY_EN.md](LANGUAGE_POLICY_EN.md).
-
 ## Licensing
 
-- software code: Apache License 2.0 — [LICENSE](LICENSE);
-- thesis, article, documentation, tables, and figures: Creative Commons
-  Attribution 4.0 International — [LICENSE-DOCS](LICENSE-DOCS) and
-  [LICENSE-DOCS_EN](LICENSE-DOCS_EN);
-- third-party materials retain their original licenses and attribution terms —
-  [NOTICE](NOTICE) and [NOTICE_EN](NOTICE_EN).
-
-## FixedPred sufficiency and D/U/S
-
-After EX-IF0, the mandatory scoped continuation fixes FixedPred and
-`stage2_baseline` and studies the
-[minimum stably sufficient FixedPred
-prefix](docs/glossary_EN.md#term-minimum-stably-sufficient-fixedpred-prefix).
-
-Joint-VJP remains an exact graph-organization control and is not called a
-shortcut. The [Rosenbaum wavefront
-control](docs/glossary_EN.md#term-rosenbaum-wavefront-control) is only an
-analytic positive control.
-
-The new [D/U/S decision
-semantics](docs/glossary_EN.md#term-dus-decision-semantics) remains shadow-only:
-`DONE` requires positive admission, `UNKNOWN` permits analytic acquisition,
-and unresolved cases become `SWEEP`.
-
-- [Consolidated design](docs/fixedpred-sufficiency-dus-design_EN.md)
-- [Metric registry](docs/fixedpred-sufficiency-dus-metrics_EN.md)
-- [Refactoring plan](docs/fixedpred-sufficiency-dus-refactoring-plan_EN.md)
-- [Stage plan](experiments/planned/STAGE3B-FIXEDPRED-SUFFICIENCY-DUS_EN.md)
-
-This documentation freeze does not open execution, oracle-label generation,
-feature collection, policy activation, or test access.
-
-## Integrated frontier model
-
-[ADR-041](docs/decisions/ADR-041-stage3b-integrated-frontier-corrective-semantics_EN.md)
-supplies current corrective semantics above unchanged ADR-039 and ADR-040. The
-deployable axis is A0 -> A1 -> A2, O is a separate post-action oracle, and
-ADVANCE_FRONTIER is split into OBSERVATION, ANALYTIC, and COMPUTE. DONE denotes
-an already admitted shadow outcome. The mandatory core is temporal FixedPred;
-recursive scales and active control are conditional. This freeze opens no
-execution, collection, labels, or test access.
-
-## Bounded `QWake-FP` validation
-
-[ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
-freezes QWake-PC as a general specification and QWake-FP as the only mandatory
-implementation. The validation case is bounded to FixedPred, eta=1,
-stage2_baseline, and a finite canonical suffix.
-
-One superset image embeds collectors, analytics, oracle logic, replay,
-baselines, and evaluators. `C1_COLLECTION`, `C2_CALIBRATION`,
-`C3_CONFIRMATORY`, and `R_REPLICATION` activate only registered capabilities.
-Policy is frozen as a data manifest, while executable code remains unchanged
-between stages.
-
-The publication package requires untouched confirmatory seeds, simple
-baselines, nested ablations, complete cost, one replication without retuning,
-and a trajectory benchmark. Decision order is safety -> coverage -> net cost.
-
-- [Full plan](docs/qwake-fp-experimental-plan_EN.md)
-- [ADR-042](docs/decisions/ADR-042-stage3b-qwake-fp-bounded-validation-and-single-image-gating_EN.md)
-
-```text
-qwake_fp_scope_freeze_complete=true
-execution_image_strategy=single_immutable_superset_image
-stage_activation=fail_closed_permission_manifest
-qwake_fp_execution_permitted=false
-c1_collection_open=false
-c2_calibration_open=false
-c3_confirmatory_open=false
-replication_open=false
-test_dataset_access=false
-```
+- code: Apache License 2.0 — [`LICENSE`](LICENSE);
+- dissertation and documentation: CC BY 4.0 — [`LICENSE-DOCS_EN`](LICENSE-DOCS_EN);
+- third-party materials: original rights and attribution terms — [`NOTICE_EN`](NOTICE_EN).

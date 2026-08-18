@@ -2,6 +2,56 @@
 
 [Русская версия](ROADMAP.md)
 
+## Current post-dissertation roadmap
+
+This section defines the **current** sequence after T24 scientific closure. The
+existing Stage/QWake roadmap below is preserved as historical provenance and
+must not be read as unfinished `v1.0.0` work.
+
+### R0 — publish `v1.0.0`
+
+1. synchronize the repository public surface with the final dissertation;
+2. validate a single version/citation/release contract;
+3. build the source archive and final 99-page PDF from the exact release commit;
+4. bind commit/tree and asset SHA-256s in the release manifest;
+5. create annotated tag `v1.0.0` and an immutable GitHub Release.
+
+This stage does not change C01–C11 and does not open scientific execution.
+
+### R1 — new experiment for C10
+
+The next scientific question must be a new preregistered experiment rather than
+a C2 recomputation: measure the **marginal execution cost of an actual minimal
+recognizer** and compare it with avoided residual compute. The protocol must
+freeze the estimand, hardware environment, calibration/confirmatory split,
+dangerous-accept criterion, and stopping rules in advance.
+
+### R2 — independent confirmatory surface
+
+Only if a new recognizer passes the preregistered safety/cost criterion may a
+separate confirmatory campaign run on a new surface. It must not be
+retroactively named the original C2 chain's `C3`; it receives a new protocol ID.
+
+### R3 — direct empirical test of PC-CATM
+
+PC-CATM remains a theoretical/diagnostic level. Strengthening it requires a
+separate preregistered comparison in which `NCZ`/`ECZ`/`TNZ`, `alpha_l`,
+`m_l`, `chi_l`, or related channel/transport/cancellation features make a
+distinguishable prediction and are compared against simpler temporal features.
+
+### R4 — external validity
+
+Replications across other architectures, datasets, numerical precision,
+hardware environments, and PC implementations should expand applicability
+without rewriting the existing bounded claims.
+
+### Historical roadmap
+
+The former stage-by-stage roadmap is preserved below because it is provenance
+of the admission sequence. Historical tokens and closed states remain even
+after their corresponding stages have completed.
+
+
 The roadmap separates completed, permitted, and blocked work. Every transition
 requires verified artifacts, preserved claim boundaries, and a separate
 admission decision.

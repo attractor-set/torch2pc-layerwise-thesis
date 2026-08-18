@@ -2,6 +2,81 @@
 
 [Русская версия](STATUS.md)
 
+## Current v1.0.0 status — 17 August 2026
+
+This section is the **authoritative current repository status** before the
+`v1.0.0` release. Point-in-time blocks preserved below are historical
+traceability records and do not override this outcome.
+
+The scientific narrative was closed by T24 and merged into `main` without any
+change to the assured tree:
+
+```text
+T24_COMMIT=9d45c897d35225fd541aa1b96aeed7fa7e945531
+T24_TREE=44575ea3aced7c76633aa05f6ac22b89a20c615f
+T24_MERGE=3cd892a62bce947886214fa887bde64748b5bf33
+MAIN_TREE_AT_T24_MERGE=44575ea3aced7c76633aa05f6ac22b89a20c615f
+T24_MERGED_INTO_MAIN=PASS
+MAIN_TREE_EQUALS_T24_TREE=PASS
+```
+
+T24 exact-commit assurance:
+
+```text
+SEMANTIC_STATUS=0
+TRACEABILITY_STATUS=0
+RUFF_T24_STATUS=0
+RUFF_FORMAT_T24_STATUS=0
+THESIS_CHECK_STATUS=0
+PYTEST_STATUS=0
+THESIS_BUILD_STATUS=0
+FULL_PYTEST=1732_passed_8_skipped
+THESIS_PAGES=99
+THESIS_OVERFULL_COUNT=0
+THESIS_UNDEFINED_REFERENCES_COUNT=0
+THESIS_UNDEFINED_CITATIONS_COUNT=0
+THESIS_RERUN_REFERENCES_COUNT=0
+TRACKED_WORKTREE_UNCHANGED=PASS
+THESIS_STATUS=DEFENSE_READY_WITH_EXPLICIT_EXTERNAL_VALIDITY_BOUNDARIES
+```
+
+### Final claim statuses
+
+| Claim | RQ | Status | Boundary |
+|---|---|---|---|
+| C01 | RQ1 | `supported` | registered Stage 1/2 final-quality surface |
+| C02 | RQ1 | `supported` | Stage 3A observed gradient/representation proximity |
+| C03 | RQ2 | `supported` | B0 localizes substantial cost to `state_inference` |
+| C04 | RQ2 | `supported` | `SI-MA0` fails `COST-MA0` |
+| C05 | RQ2 | `supported` | `SI-MA1` passes observer-cost calibration |
+| C06 | RQ2 | `supported` | B1/B2 pass registered equivalence gates |
+| C07 | RQ2 | `descriptive` | matched profiling complete; continuation screen yields `reject_or_revise` |
+| C08 | RQ3 | `supported` | bounded calibration surface; `compute_step >= 5` rule |
+| C09 | RQ3 | `rejected` | frozen full decision-cost accounting |
+| C10 | RQ3 | `not_tested` | marginal runtime cost of a minimal recognizer not measured |
+| C11 | RQ3 | `not_tested` | original-chain C3 did not open |
+
+C08 is not evidence of input-dependent adaptivity: its best rule is a temporal
+fixed-prefix boundary. Zero observed dangerous accepts on 756 calibration
+records is not a population-level safety guarantee. C09 does not imply C10.
+
+### Current execution boundary
+
+The dissertation scientific program has ended at its registered stopping
+boundary. Release `v1.0.0` publishes the completed results and **does not
+authorize new scientific execution, a C1/C2 rerun, retrospective opening of C3,
+or re-estimation of C09 under a different estimand**. Testing C10, opening a
+new confirmatory surface, or directly validating PC-CATM requires a new
+preregistered protocol with its own identifier.
+
+### Historical ledger
+
+The former append-only status ledger is preserved below. Statements such as
+“current,” `open=false`, “execution remains closed,” historical image versions,
+and intermediate Stage/QWake transition states describe the time of their own
+entry. They are provenance, not the current `v1.0.0` state.
+
+
 As of 23 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,
 `SI-MA0`, and `SI-MA1` results are published. Confirmatory B1 and B2 are sealed
 with positive decisions. The new `v2`

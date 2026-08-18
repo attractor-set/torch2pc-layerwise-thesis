@@ -2,9 +2,12 @@
 
 [Русская версия](README.md)
 
+`analysis/` contains analysis-only notebooks for registered artifacts. They
+must not modify experimental configurations, perform hidden hyperparameter
+selection, or define a new scientific claim.
 
-`analysis/` contains analysis-only notebooks that read registered artifacts.
+`legacy/full_pipeline_v11.ipynb` is a historical migration baseline retained
+for regression/provenance purposes. It is not the `v1.0.0` orchestration layer.
 
-`legacy/full_pipeline_v11.ipynb` is a frozen migration baseline. It is not
-the preferred orchestration layer in v0.1.0. New scientific functions belong
-in `src/torch2pc_thesis/`, and new runs use the CLI.
+Canonical executable logic lives in `src/torch2pc_thesis/`; final numerical
+claims are validated separately through the thesis-facing contracts.

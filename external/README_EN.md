@@ -2,16 +2,21 @@
 
 [Русская версия](README.md)
 
-Torch2PC is cloned into this directory during `make prepare`. The source
-checkout itself is excluded from Git.
+The `external/` directory is reserved for local checkouts of external
+implementations and is excluded from Git. Historical dissertation experiments
+used a pinned Torch2PC checkout with a full commit identity and separate
+environment/provenance bindings.
 
-Before pilot or final experiments:
+The dissertation release `v1.0.0` does not require recloning Torch2PC and does
+not authorize rerunning completed scientific protocols.
 
-1. audit the implementation against the official correction;
-2. record the complete Torch2PC commit SHA;
-3. pin that commit in `configs/base.yaml`;
-4. prevent automatic updates of the checkout;
-5. record the selected commit in every experiment manifest.
+A new independent experiment must separately:
 
-Research conclusions apply only to the pinned implementation and declared
-configuration.
+1. select and audit the external implementation;
+2. record its complete commit SHA;
+3. bind it to a new configuration and protocol identity;
+4. prevent automatic checkout updates during registered execution;
+5. record the selected identity in the new experiment manifest.
+
+Dissertation conclusions apply only to the historically pinned implementations
+and declared configurations that were actually evaluated.

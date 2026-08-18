@@ -2,7 +2,9 @@
 
 [Русская версия](README.md)
 
-The primary configuration is merged in this order:
+Configurations preserve historical Stage 1/2/3 execution surfaces and hardware
+profiles. Later values in the resolution chain override earlier ones, and each
+registered run stores the fully resolved configuration with its SHA-256.
 
 ```text
 base.yaml
@@ -13,20 +15,17 @@ base.yaml
 -> CLI overrides
 ```
 
-Later values override earlier values. Every run stores the fully resolved
-configuration and its SHA-256.
+## Stage 3 design contract
 
-## Stage 3
+`configs/stage3/design.yaml` preserves baseline hashes, candidates, phases,
+gates, stop rules, and planned provenance from the historical Stage 3 program.
+Stage templates and B0/B1/B2 overlays remain for reproducibility and are not
+new authorization for execution after `v1.0.0`.
 
-`configs/stage3/design.yaml` is a separate design contract containing baseline
-hashes, candidates, phases, gates, stop rules, and planned provenance. Stage
-templates are `stage3_profiling.yaml`, `stage3_pilot.yaml`, and
-`stage3_final_template.yaml`. B0/B1/B2 overlays describe baseline and exact
-implementation candidates; C1/C2/C3 describe approximations. These stages are
-not in `TRAINING_STAGES`, preventing accidental execution.
+Terminology boundary: older `C1/C2/C3` labels in the Stage-3 configuration
+design predate the final QWake claim chain. Read them in the context of their
+specific configuration/protocol file; do not automatically equate them with
+QWake C1/C2/C3 or dissertation claims C01–C11.
 
-```bash
-PYTHONPATH=src python -m torch2pc_thesis.cli stage3-check
-PYTHONPATH=src python -m torch2pc_thesis.cli stage3-plan \
-  --output build/stage3/stage3_design_plan.json
-```
+Current scientific statuses are defined by `thesis/data/research_claims.json`,
+not by a stage-template state.

@@ -90,10 +90,11 @@ existing release.
 `torch2pc-layerwise-thesis:0.1.0-...` are provenance. Their versions and local
 open/closed states are not retroactively normalized to `v1.0.0`.
 
-`src/torch2pc_thesis/__init__.py` belongs to the frozen QWake scientific runtime
-closure and therefore retains the historical `__version__ = "0.1.0"`. Repository
-and release version authority is `pyproject.toml`, `CITATION.cff`, and the tag;
-frozen runtime source must not be rewritten merely to synchronize version text.
+`pyproject.toml` and `src/torch2pc_thesis/__init__.py` belong to frozen QWake
+scientific runtime closures and therefore retain the historical package version
+`0.1.0` and their registered SHA-256 identities. Repository publication release
+version authority is the separate `RELEASE_VERSION`, `CITATION.cff`, and the tag;
+frozen runtime source must not be rewritten merely to synchronize release text.
 
 ## Post-v1.0.0 extension rule
 

@@ -12,8 +12,14 @@ ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_VERSION = "1.0.0"
 FROZEN_RUNTIME_PACKAGE_VERSION = "0.1.0"
 FROZEN_RUNTIME_INIT_SHA256 = "99a15a1f681efaaff846df254eab58412a16fc8e1c7767d0ccd00b5e721b08f0"
+FROZEN_RUNTIME_PYPROJECT_SHA256 = "5646a4275998b91efe05c215f334eb2ab1f292828434a7eddfc715bf56746352"
 FROZEN_RUNTIME_MANIFEST = (
     "experiments/runtime/stage3b-qwake-scientific-successor-v1/runtime-SHA256SUMS"
+)
+ATTEMPT003_RUNTIME_MANIFEST = (
+    "experiments/frozen/"
+    "stage3b-qwake-attempt-003-clean-source-closure-implementation-authoring-v1/"
+    "runtime-SHA256SUMS"
 )
 EXPECTED_TAG = f"v{EXPECTED_VERSION}"
 RELEASE_URL = (
@@ -32,7 +38,20 @@ def _single_match(pattern: str, text: str, label: str) -> str:
     return matches[0]
 
 
+def _verify_runtime_registry(manifest_relative: str) -> None:
+    manifest = _read(manifest_relative)
+    for line in manifest.splitlines():
+        if not line.strip():
+            continue
+        digest, relative = line.split("  ", 1)
+        target = ROOT / relative
+        assert target.is_file() and not target.is_symlink(), relative
+        actual = hashlib.sha256(target.read_bytes()).hexdigest()
+        assert actual == digest, relative
+
+
 def main() -> None:
+    release_version_raw = _read("RELEASE_VERSION")
     pyproject = tomllib.loads(_read("pyproject.toml"))
     package_init = _read("src/torch2pc_thesis/__init__.py")
     citation = _read("CITATION.cff")
@@ -42,10 +61,13 @@ def main() -> None:
     changelog_en = _read("CHANGELOG_EN.md")
     public_surface = _read("scripts/check_public_surface.py")
     runtime_manifest = _read(FROZEN_RUNTIME_MANIFEST)
+    attempt003_runtime_manifest = _read(ATTEMPT003_RUNTIME_MANIFEST)
     package_init_sha256 = hashlib.sha256(
         (ROOT / "src/torch2pc_thesis/__init__.py").read_bytes()
     ).hexdigest()
+    pyproject_sha256 = hashlib.sha256((ROOT / "pyproject.toml").read_bytes()).hexdigest()
 
+    release_version = release_version_raw.strip()
     project_version = pyproject["project"]["version"]
     package_version = _single_match(
         r'^__version__\s*=\s*"([^"]+)"$', package_init, "package version"
@@ -57,7 +79,9 @@ def main() -> None:
         "CITATION.cff release date",
     )
 
-    assert project_version == EXPECTED_VERSION
+    assert release_version_raw == f"{EXPECTED_VERSION}\n"
+    assert release_version == EXPECTED_VERSION
+    assert project_version == FROZEN_RUNTIME_PACKAGE_VERSION
     assert package_version == FROZEN_RUNTIME_PACKAGE_VERSION
     assert citation_version == EXPECTED_VERSION
     assert citation_date == "2026-08-17"
@@ -68,6 +92,10 @@ def main() -> None:
 
     assert package_init_sha256 == FROZEN_RUNTIME_INIT_SHA256
     assert f"{FROZEN_RUNTIME_INIT_SHA256}  src/torch2pc_thesis/__init__.py" in runtime_manifest
+    _verify_runtime_registry(FROZEN_RUNTIME_MANIFEST)
+    _verify_runtime_registry(ATTEMPT003_RUNTIME_MANIFEST)
+    assert pyproject_sha256 == FROZEN_RUNTIME_PYPROJECT_SHA256
+    assert f"{FROZEN_RUNTIME_PYPROJECT_SHA256}  pyproject.toml" in attempt003_runtime_manifest
     print("RELEASE_FROZEN_RUNTIME_CLOSURE=PASS")
 
     for heading, changelog in (
@@ -101,7 +129,8 @@ def main() -> None:
     )
     for token in workflow_tokens:
         assert token in workflow, f"release workflow missing {token!r}"
-    assert "pyproject.toml" in workflow
+    assert "RELEASE_VERSION" in workflow
+    assert "tomllib" not in workflow
     assert "from torch2pc_thesis import __version__" not in workflow
     print("RELEASE_WORKFLOW_CONTRACT=PASS")
 
@@ -121,7 +150,8 @@ def main() -> None:
     )
     for token in builder_tokens:
         assert token in builder, f"release builder missing {token!r}"
-    assert "pyproject.toml" in builder
+    assert "RELEASE_VERSION" in builder
+    assert "tomllib" not in builder
     assert "from torch2pc_thesis import __version__" not in builder
     print("RELEASE_ARTIFACT_CONTRACT=PASS")
 

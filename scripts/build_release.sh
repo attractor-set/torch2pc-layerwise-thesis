@@ -14,7 +14,7 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
   exit 1
 fi
 
-version="$("$PYTHON_BIN" -c 'import tomllib; from pathlib import Path; print(tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"])')"
+version="$(< RELEASE_VERSION)"
 expected_tag="v${version}"
 release_tag="${RELEASE_TAG:-${GITHUB_REF_NAME:-$expected_tag}}"
 commit="$(git rev-parse HEAD)"
@@ -22,7 +22,7 @@ tree="$(git rev-parse HEAD^{tree})"
 name="torch2pc-layerwise-thesis-${version}"
 
 if [[ "$release_tag" != "$expected_tag" ]]; then
-  printf 'Release tag %s does not match project version %s (expected %s).\n' \
+  printf 'Release tag %s does not match release version %s (expected %s).\n' \
     "$release_tag" "$version" "$expected_tag" >&2
   exit 1
 fi

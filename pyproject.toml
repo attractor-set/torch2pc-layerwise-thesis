@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "torch2pc-layerwise-thesis"
-version = "1.0.0"
-description = "Диссертационный исследовательский артефакт: послойное, механизмное и вычислительное сравнение BP и predictive coding с PC-TREF, PC-CATM и bounded QWake-FP."
+version = "0.1.0"
+description = "Воспроизводимые эксперименты для послойного сравнения режимов Torch2PC и обратного распространения ошибки."
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
 license = {text = "Apache-2.0"}

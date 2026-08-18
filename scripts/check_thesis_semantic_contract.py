@@ -194,6 +194,95 @@ def check_qwake_rule_vocabulary() -> list[str]:
     return errors
 
 
+def check_qwake_action_semantics() -> list[str]:
+    errors: list[str] = []
+    abstracts = (THESIS / "frontmatter" / "abstracts.tex").read_text(encoding="utf-8")
+    related = RELATED_WORK.read_text(encoding="utf-8")
+    methodology = METHODOLOGY.read_text(encoding="utf-8")
+    experiments = (THESIS / "chapters" / "04_experiments.tex").read_text(encoding="utf-8")
+    results = (THESIS / "chapters" / "05_results.tex").read_text(encoding="utf-8")
+    discussion = (THESIS / "chapters" / "06_discussion.tex").read_text(encoding="utf-8")
+    conclusion = CONCLUSION.read_text(encoding="utf-8")
+
+    forbidden = (
+        (
+            related,
+            "признание текущего состояния достаточным и прекращение оставшегося",
+            "QWake-FP acceptance collapses analytic completion into no further compute",
+        ),
+        (
+            methodology,
+            "раннее завершение допустимо по эталонной",
+            "methodology describes the registered action as bare termination",
+        ),
+        (
+            abstracts,
+            "states make early termination task-admissible",
+            "English abstract collapses the registered analytic action into termination",
+        ),
+    )
+    for surface, marker, label in forbidden:
+        if marker in surface:
+            fail(errors, "QWake action semantics", label)
+
+    required = (
+        (
+            abstracts,
+            "fixedpred_eta1_wavefront_completion_v1",
+            "abstract analytic candidate",
+        ),
+        (
+            abstracts,
+            "complete_suffix_stage2_baseline_v1",
+            "abstract exact reference",
+        ),
+        (
+            related,
+            "Принятие поэтому не означает",
+            "theory non-zero-compute boundary",
+        ),
+        (
+            methodology,
+            r"\texttt{ANALYTIC\_COMPLETION}",
+            "methodology action family",
+        ),
+        (
+            methodology,
+            "fixedpred_eta1_wavefront_completion_v1",
+            "methodology candidate id",
+        ),
+        (
+            methodology,
+            "complete_suffix_stage2_baseline_v1",
+            "methodology exact reference id",
+        ),
+        (
+            experiments,
+            r"\texttt{EARLY\_ADMISSIBLE} формируется только после сравнения требуемых",
+            "experiment oracle binding",
+        ),
+        (
+            results,
+            r"\texttt{compute\_step >= 5}",
+            "results temporal rule",
+        ),
+        (
+            discussion,
+            "не демонстрирует адаптивность по",
+            "discussion adaptivity boundary",
+        ),
+        (
+            conclusion,
+            r"\texttt{ANALYTIC\_COMPLETION}",
+            "conclusion action family",
+        ),
+    )
+    for surface, marker, label in required:
+        require_contains(errors, surface, marker, label)
+
+    return errors
+
+
 def check_symbol_namespace(sources: dict[Path, str]) -> list[str]:
     errors: list[str] = []
     thesis_text = "\n".join(sources.values())
@@ -310,6 +399,7 @@ def main() -> None:
         ("THESIS_TERMINOLOGY_INVARIANCE", check_terminology_invariance(sources)),
         ("THESIS_THEORY_LAYER_SEPARATION", check_theory_layer_separation(sources)),
         ("THESIS_QWAKE_RULE_VOCABULARY", check_qwake_rule_vocabulary()),
+        ("THESIS_QWAKE_ACTION_SEMANTICS", check_qwake_action_semantics()),
         ("THESIS_SYMBOL_NAMESPACE", check_symbol_namespace(sources)),
         ("THESIS_TERM_FIRST_DEFINITION", check_first_definitions()),
         ("THESIS_CLAIM_STATUS_SEMANTICS", check_claim_status_semantics()),

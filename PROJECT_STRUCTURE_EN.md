@@ -2,7 +2,7 @@
 
 [Русская версия](PROJECT_STRUCTURE.md)
 
-The `v1.0.0` repository combines three surfaces that must remain distinct: the
+The `v1.0.1` repository combines three surfaces that must remain distinct: the
 **final dissertation**, the **executable research implementation**, and the
 **historical experimental provenance**.
 
@@ -10,7 +10,9 @@ The `v1.0.0` repository combines three surfaces that must remain distinct: the
 
 ```text
 .
-├── thesis/                  # final dissertation and thesis-facing contracts
+├── thesis/                  # final RU/EN dissertation and thesis-facing contracts
+│   ├── main.tex             # Russian entrypoint
+│   ├── main_EN.tex          # complete English entrypoint
 │   ├── chapters/
 │   ├── appendices/
 │   ├── frontmatter/
@@ -32,7 +34,7 @@ The `v1.0.0` repository combines three surfaces that must remain distinct: the
 └── .github/workflows/       # CI, thesis build, and tag-bound release
 ```
 
-## Authoritative v1.0.0 surfaces
+## Authoritative v1.0.1 surfaces
 
 ### `thesis/`
 
@@ -43,13 +45,16 @@ The final scientific narrative. Main machine-readable contracts are:
   results → discussion → conclusion binding for every claim;
 - `thesis/data/qwake_c2_verified_summary.json` — thesis-facing QWake C2
   aggregates with provenance bindings;
-- `scripts/build_thesis_assets.py` — validation/rendering of generated assets;
+- `scripts/build_thesis_assets.py` — validation/rendering of Russian generated assets;
+- `scripts/build_thesis_assets_en.py` — English generated assets from the same data contracts;
+- `scripts/check_thesis_language_congruence.py` — RU/EN structural and scientific-semantic congruence;
 - `scripts/check_thesis_semantic_contract.py` — terminology, statuses, and
   QWake action semantics;
 - `scripts/check_thesis_traceability.py` — local claim-to-section binding.
 
-`make thesis-check` validates the scientific surface without LaTeX; `make thesis`
-builds the final PDF.
+`make thesis-check` validates the scientific and bilingual surface without LaTeX;
+`make thesis` builds the Russian PDF, `make thesis-en` the English PDF, and
+`make thesis-all` builds both renderings.
 
 ### `src/torch2pc_thesis/`
 
@@ -78,17 +83,18 @@ known.
 
 ## Release surface
 
-Tag `v1.0.0` is bound to an exact source commit/tree. `scripts/build_release.sh`
-creates the source archive, PDF, SHA-256 files, metadata, and `release-manifest.json`.
-The GitHub workflow publishes those exact assets and refuses to overwrite an
-existing release.
+Tag `v1.0.1` is bound to an exact source commit/tree. `scripts/build_release.sh`
+creates the source archive, separate `-ru.pdf`/`-en.pdf` artifacts, their SHA-256
+files, metadata, and `release-manifest.json`. One manifest binds both language
+renderings to the same source commit/tree. The GitHub workflow publishes those
+exact assets and refuses to overwrite an existing release.
 
 ## Historical documents
 
 `HYPOTHESES.md`, `PREREGISTRATION.md`, earlier Stage/QWake plans, ADRs,
 `STATUS_EN.md`/`ROADMAP_EN.md` historical ledgers, and image IDs such as
 `torch2pc-layerwise-thesis:0.1.0-...` are provenance. Their versions and local
-open/closed states are not retroactively normalized to `v1.0.0`.
+open/closed states are not retroactively normalized to `v1.0.1`.
 
 `pyproject.toml` and `src/torch2pc_thesis/__init__.py` belong to frozen QWake
 scientific runtime closures and therefore retain the historical package version
@@ -96,7 +102,7 @@ scientific runtime closures and therefore retain the historical package version
 version authority is the separate `RELEASE_VERSION`, `CITATION.cff`, and the tag;
 frozen runtime source must not be rewritten merely to synchronize release text.
 
-## Post-v1.0.0 extension rule
+## Post-v1.0.1 extension rule
 
 New scientific work does not automatically continue an old claim identifier:
 

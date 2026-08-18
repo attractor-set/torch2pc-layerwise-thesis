@@ -1,0 +1,685 @@
+\chapter{Predictive Coding, Representation Comparison, and Adaptive Computation}
+\label{ch:related-work}
+
+This chapter serves two distinct functions. It first bounds the literature context and
+then introduces the dissertation's own theoretical constructs. The separation prevents
+external PC/BP results from being mistaken for evidence supporting the dissertation's
+C01--C11 claims.
+
+The literature is organized around the three final research questions. Backpropagation
+is first treated as the baseline computational training line. The discussion then
+moves from the neurobiological formulation of predictive coding (PC) to contemporary
+inference-based learning variants and the question of how their updates relate to
+backpropagation (BP). Methods for comparing internal representations and gradients are
+considered separately. Finally, work on adaptive computation, early exit, and selective
+prediction is used to position QWake as a compute-continuation decision problem under
+a registered admissibility criterion.
+
+Several claim types must remain distinct even when they appear together in the
+literature: similarity of final quality, similarity of internal representations,
+similarity of gradient directions, exact equality of updates under special conditions,
+and computational efficiency. This dissertation keeps these levels separate and uses
+each source only within the question it directly addresses.
+
+\section{Backpropagation as the Baseline Computational Line}
+\label{sec:related-bp}
+
+The classical work of Rumelhart, Hinton, and Williams established practical training
+of multilayer networks by backpropagation and linked changes in hidden representations
+to reduction of output error \cite{rumelhart1986backprop}. In modern terms, BP can be
+viewed as an efficient implementation of the chain rule for derivatives through a
+composition of functions. In this dissertation, BP is not treated as a biological
+model but as a well-defined reference algorithmic regime against which paired
+comparisons can be constructed.
+
+This positioning matters for interpretation. Matching or similar quality metrics do
+not imply matching internal learning trajectories. Similarity of one layer's gradient
+does not automatically transfer to other layers, and an approximation to BP under
+special conditions does not specify the cost of satisfying those conditions. BP is
+therefore used as a behavioral baseline, a source of reference gradients, and a point
+of comparison for matched profiling.
+
+\section{Hierarchical Predictive Coding}
+\label{sec:related-pc}
+
+The historical predictive-coding line includes models in which neighboring hierarchy
+levels exchange predictions and prediction errors. Rao and Ballard connected this
+architecture to visual processing and hierarchical explanation of sensory input
+\cite{rao1999predictive}. Prediction-error units have an explicit computational role,
+and network state includes internal variables that change during iterative inference,
+not only parameters.
+
+For machine learning, Whittington and Bogacz are particularly relevant
+\cite{whittington2017approximation}. They compare supervised learning in a PC network
+using local Hebbian updates with BP and show that, under specified conditions, PC
+updates approximate backpropagation updates. The problem is thereby narrowed from a
+general comparison of biological principles to an algorithmic question: under which
+dynamics, initial conditions, and update rules does a local inference procedure
+reproduce or approximate a reference gradient?
+
+Contemporary work also changes and accelerates the internal inference dynamics. Hybrid
+Predictive Coding combines multiple temporal inference regimes and motivates separation
+of fast and slower computational processes \cite{tschantz2023hybrid}. This line is
+important here because PC iterativity makes the number of internal computation steps a
+first-class quantity and therefore permits separate study of intermediate-state
+sufficiency and the price of further refinement.
+
+\section{Relations Between Predictive Coding and Backpropagation}
+\label{sec:related-pc-bp}
+
+The PC/BP relation cannot be reduced to one universal equivalence claim. Different
+works use different dynamics, initialization schemes, and update orders, so every
+result must retain its applicability domain.
+
+Whittington and Bogacz analyze approximation of BP by local rules
+\cite{whittington2017approximation}. Song et al. identify conditions under which a
+predictive-coding network reproduces BP updates exactly \cite{song2020exact}.
+Salvatori et al. extend exact-BP reproduction to convolutional and recurrent networks,
+which is directly relevant to the convolutional architecture used here
+\cite{salvatori2021convolutional}. Millidge, Tschantz, and Buckley generalize the
+analysis to arbitrary differentiable computation graphs and describe asymptotic
+convergence of PC gradients toward BP gradients in their construction
+\cite{millidge2022arbitrary}.
+
+These results do not remove the need to state comparison constraints. Rosenbaum
+analyzes several PC/BP regimes in which equivalence statements have different strengths
+\cite{rosenbaum2022relationship}. The present work also incorporates the official 2025
+correction \cite{rosenbaum2025correction}; the original article is not interpreted
+without the corrected version.
+
+A separate line concerns the computational cost of exact or BP-like PC variants.
+Zahid, Guo, and Fountas study modern PC variants as a possible neuromorphic alternative
+and derive temporal-complexity limitations for the investigated constructions
+\cite{zahid2023critical}. This is especially relevant to RQ2: locality of updates or a
+theoretical relation to BP does not itself establish a computational advantage.
+
+The literature on PC efficiency and scaling has subsequently broadened. Salvatori et
+al. show that changing the temporal order of weight updates in iPC improves stability
+and efficiency relative to standard PC in their studied tasks
+\cite{salvatori2024stable}. Pinchetti et al. make efficiency and scalability explicit
+benchmarking targets, introduce PCX, and evaluate substantially larger architectures
+and task sets than typical early PC experiments \cite{pinchetti2025benchmarking}.
+Innocenti, Achour, and Buckley show that the specialized $\mu$PC parameterization can
+stably train PC networks deeper than one hundred layers in their investigated
+conditions while exposing scaling pathologies of the standard parameterization
+\cite{innocenti2025mupc}. Goemaere et al. in ePC examine the mismatch between local PC
+state dynamics and their digital simulation and propose an error-based parameterization
+for faster and more scalable computation \cite{goemaere2026epc}.
+
+These works neither replace the measurements of this dissertation nor explain its
+results retrospectively. They show that computational cost, signal propagation with
+depth, and scaling are independent open coordinates of PC. Mechanistic attribution
+and matched cost profiling are therefore treated here as separate empirical tasks
+after behavioral and gradient comparability have been assessed.
+
+The literature thus supports the sequential organization of the present work: first
+establish \emph{what} agrees or differs between regimes, then localize the region of
+difference, test its registered mechanistic attribution, and only then discuss the
+computational price of a concrete implementation.
+
+\section{Similarity of Internal Representations and Gradients}
+\label{sec:related-representations}
+
+Comparing neural networks only by accuracy or loss leaves open whether their internal
+representations are similar. SVCCA combines singular-value decomposition and canonical
+correlation analysis to compare activations across networks or training times
+\cite{raghu2017svcca}. Morcos, Raghu, and Bengio extend CCA-based representation
+analysis and discuss robustness of similarity conclusions \cite{morcos2018insights}.
+
+Kornblith et al. systematically compare representation-similarity measures and
+introduce centered kernel alignment (CKA) as a useful metric
+\cite{kornblith2019similarity}. CKA is the primary representation diagnostic here,
+while CCA-based methods provide complementary literature context.
+
+Representation similarity and gradient similarity answer different questions. The
+former describes activation geometry on a selected sample; the latter describes the
+local parameter-update direction. Stage~3A therefore does not aggregate these into a
+single ``similarity score''. Gradient cosine similarity, gradient-norm ratio, and CKA
+are complementary coordinates. This distinction is particularly important for regimes
+that can preserve representation geometry while strongly changing early-layer gradient
+magnitude.
+
+\section{Theoretical Framework of the Study}
+\label{sec:theory-framework}
+
+The theoretical constructs are introduced in dependency order rather than experimental
+execution order. Task-relative equivalence and PC-TREF come first; the distinct
+mechanistic PC-CATM level follows; their relation is then fixed; and only afterward is
+QWake-PC introduced as a compute-action selection architecture. None of these steps
+turns PC-CATM into a component of PC-TREF, and PC-TREF sufficiency never becomes an
+economic-benefit claim.
+
+The literature on PC/BP relations primarily asks when two computational procedures
+produce equal or similar gradients and updates. Compute-budget control requires more.
+Two numerically different states may require the same computational action; conversely,
+states close under a simple diagnostic may require different actions if further
+computation materially changes the required final response.
+
+The dissertation therefore uses a bounded three-level construction. PC-TREF formalizes
+which state differences must be preserved for an admissible compute-control action.
+PC-CATM models correction formation in predictive coding and thereby supplies
+mechanistically interpretable sources of diagnostic features. QWake-PC links these
+levels to action and budget selection. QWake-FP is only one preregistered bounded
+instantiation for FixedPred.
+
+The construction is not claimed as a universal theory of predictive coding. Action
+spaces, norms, thresholds, relations, and sufficiency criteria are defined only
+relative to the registered task, Torch2PC implementation, and experimental domain.
+
+\subsection{Relation to State Abstraction and Action-sufficient Representations}
+\label{sec:theory-state-abstraction-basis}
+
+The general principle that a representation should preserve only state differences
+capable of changing the decision is not new to this dissertation. MDP state-abstraction
+theory studies partitions that preserve optimal-control properties
+\cite{li2006stateabstraction}; bisimulation metrics provide a quantitative basis for
+state similarity and aggregation while controlling changes in value
+\cite{ferns2004metrics}. More directly, Huang et al. introduce action-sufficient
+representations (ASRs), minimal representations retaining the information required for
+subsequent action selection \cite{huang2022actionsufficient}. Raman, Milani, and Fang
+formulate a related decision-preserving state abstraction in which a common conceptual
+representation must not merge states with different optimal actions
+\cite{raman2026decisionrelevant}.
+
+PC-TREF does not claim novelty for this general principle and is not a new MDP,
+bisimulation, or representation-learning theory. Its contribution here is specialization
+of action-relative sufficiency to residual iterative PC computation. The finite action
+set $\mathcal A$, required partition $q_R$, diagnostic partition $q_I$, domain
+$\Omega$, and tolerance $\delta_R$ are registered in advance. Diagnostics may use only
+pre-action information, while sufficiency is audited with a post-action reference.
+Required-partition defect and common-admissibility defect are separated explicitly,
+and representation suitability for compute control is separated both from the
+admissibility of a concrete decision rule and from the cost of producing and using the
+representation. PC-TREF is therefore a registered PC specialization of existing
+state-abstraction and action-sufficiency ideas, not a claim to have invented
+decision-preserving abstraction itself.
+
+\subsection{PC-TREF: Equivalence Relative to the Computational Task}
+\label{sec:theory-pc-tref}
+
+PC-TREF is the Predictive-Coding Task-Relative Equivalence Framework. Its premise is
+that compute control does not require equality of complete internal states; it requires
+preserving state differences that can change the admissible action.
+
+Let $x\in\mathcal X$ be an iterative-inference state and
+$\phi_I(x)\in\mathcal Y_I$ a selected diagnostic representation. If a discrete
+diagnostic partition is required, a frozen mapping $q_I$ defines
+\[
+  x\sim_I y
+  \quad\Longleftrightarrow\quad
+  q_I\!\left(\phi_I(x)\right)=q_I\!\left(\phi_I(y)\right).
+\]
+This relation induces a diagnostic quotient: within one class, the controller
+intentionally does not distinguish states under the selected representation.
+
+For continuous features, exact equality is often impractical. An operational
+closeness relation can instead be defined as
+\[
+  x\approx_{I,\varepsilon}y
+  \quad\Longleftrightarrow\quad
+  d_I\!\left(\phi_I(x),\phi_I(y)\right)\leq\varepsilon_I,
+\]
+with metric, normalization, and tolerance frozen before analysis. Thresholded closeness
+is not itself treated as an equivalence relation because it can be non-transitive and
+does not induce a quotient without a separate partition rule.
+
+The second PC-TREF object is the required equivalence, defined by the task rather than
+the diagnostic. Let $\mathcal A$ be the preregistered action set and $L_R(a,x)$ the
+loss associated with choosing action $a$ in state $x$. The dissertation uses
+\[
+  \operatorname{Regret}_R(a;x)
+  =L_R(a,x)-\inf_{b\in\mathcal A}L_R(b,x)\geq0.
+\]
+It measures how much worse $a$ is than the best action within the registered set
+$\mathcal A$. Action $a$ is admissible when the regret does not exceed the frozen
+tolerance $\delta_R$.
+
+The required partition $q_R$ is part of the registered task contract and encodes the
+action distinctions that must be preserved. PC-TREF neither asserts uniqueness of
+$q_R$ nor derives a minimal partition outside the registered domain from $L_R$,
+$\mathcal A$, and $\delta_R$. Let $\mathcal C_R$ be the set of required classes and
+$d_R:\mathcal C_R\rightarrow\mathcal A$ the registered action assignment. Define
+\[
+  \mathcal T_R=(\mathcal A,L_R,\delta_R,q_R,d_R).
+\]
+Then
+\[
+  x\sim_R y\quad\Longleftrightarrow\quad q_R(x)=q_R(y),
+\]
+and each class must satisfy
+\[
+  \sup_{x:q_R(x)=c}
+  \operatorname{Regret}_R\!\left(d_R(c);x\right)\leq\delta_R.
+\]
+The existence of another action admissible for several classes does not permit their
+merger. This matters when a universal fallback action exists: exact continuation may be
+admissible almost everywhere, but it must not collapse all of $\Omega$ into one class
+and thereby erase the question of early-action admissibility.
+
+QWake-FP therefore specializes the required partition directly by early-action
+admissibility:
+\[
+ q_R^{\mathrm{QW}}(x)=
+ \begin{cases}
+   \texttt{EARLY\_ADMISSIBLE},&
+   \operatorname{Regret}_R(a_{\mathrm{early}};x)\leq\delta_R,\\
+   \texttt{CONTINUE\_REQUIRED},&\text{otherwise}.
+ \end{cases}
+\]
+For this specialization,
+$d_R(\texttt{EARLY\_ADMISSIBLE})=a_{\mathrm{early}}$ and
+$d_R(\texttt{CONTINUE\_REQUIRED})=a_{\mathrm{continue}}$; the contract separately
+requires the assigned action to be admissible within each class. Canonical continuation
+remains the exact fallback, but is not used to merge the two required classes. PC-TREF
+therefore preserves the distinction between early-action admissibility and later
+economic benefit.
+
+The key PC-TREF comparison is between diagnostic and required partitions. Let
+\[
+  E_I^q=\{(x,y):q_I(\phi_I(x))=q_I(\phi_I(y))\},
+  \qquad
+  E_R^q=\{(x,y):q_R(x)=q_R(y)\}.
+\]
+The exact required-partition defect is
+\[
+  \mathfrak D_{I\to R}^{q}=E_I^q\setminus E_R^q.
+\]
+It contains pairs intentionally merged by the diagnostic representation although the
+registered task assigns them to different required decision classes. Another common
+fallback action does not remove this defect; universal \texttt{CONTINUE} therefore
+does not permit merging \texttt{EARLY\_ADMISSIBLE} with
+\texttt{CONTINUE\_REQUIRED}.
+
+Separately define common admissibility
+\[
+  A_R^{\delta}
+  =\left\{(x,y):\exists a\in\mathcal A:\;
+  \operatorname{Regret}_R(a;x)\leq\delta_R
+  \land
+  \operatorname{Regret}_R(a;y)\leq\delta_R\right\}.
+\]
+This relation need not be transitive and is not used as a second equivalence relation.
+Diagnostic pairs with no common admissible action form the narrower defect
+\[
+  \mathfrak D_{I\to R}^{q,\delta}=E_I^q\setminus A_R^{\delta}.
+\]
+Thus, $\mathfrak D_{I\to R}^{q}$ records loss of required discrimination, while
+$\mathfrak D_{I\to R}^{q,\delta}$ records at least one diagnostic pair lacking a
+common admissible action. The pairwise property does not replace a class-level test for
+a single common admissible action across three or more states. The two defect notions
+need not coincide.
+
+For a registered domain $\Omega\subseteq\mathcal X$, strong sufficiency of a discrete
+diagnostic representation is defined through the required partition:
+\[
+  \phi_I\text{ is sufficient relative to }(\mathcal T_R,\Omega)
+  \quad\Longleftrightarrow\quad
+  E_I^q|_{\Omega}\subseteq E_R^q|_{\Omega}
+  \quad\Longleftrightarrow\quad
+  \mathfrak D_{I\to R}^{q}|_{\Omega}=\varnothing.
+\]
+When the superscript is unnecessary, write $E_I:=E_I^q$ and $E_R:=E_R^q$. The
+criterion is relative to the frozen $q_I$, $q_R$, and $\Omega$ and does not establish
+sufficiency outside them. A partition defect is not yet a dangerous action of a
+concrete rule. A conservative rule can respond to lost discrimination by continuing,
+reducing coverage or adding computation; a dangerous accept occurs only when it
+proposes the early action for a state requiring continuation.
+
+Hence $\phi_I$ is sufficient relative to the registered required partition not because
+it reconstructs the full internal state, but because it does not merge states from
+different required classes on the registered domain. Admissibility of a concrete rule
+is checked separately. Minimality is not claimed. Only a predefined representation
+family is compared, and a more compact representation can be preferred only after
+action admissibility and feature-computation cost are considered.
+
+Full sufficiency $E_I|_\Omega\subseteq E_R|_\Omega$ is a strong property of the entire
+diagnostic partition. A selective controller can test a narrower property without
+claiming full sufficiency of $\phi_I$. For action $a$, define its admissibility set
+\[
+  S_a=\{x\in\Omega:\operatorname{Regret}_R(a;x)\leq\delta_R\}.
+\]
+In the remainder of the dissertation, the phrase ``a state task-sufficient for action
+$a$'' means only $x\in S_a$ and is not synonymous with full sufficiency of the
+diagnostic representation. For a rule $\pi$ proposing $a$ on
+\[
+  A_{\pi}(a)=\{x\in\Omega:\pi(x)=a\},
+\]
+call the rule selectively sufficient for action $a$ on $\Omega$ when
+\[
+  A_{\pi}(a)\subseteq S_a.
+\]
+The corresponding rule-admissibility defect is
+\[
+  \mathfrak D_{\pi,a}=A_{\pi}(a)\setminus S_a.
+\]
+This is one-sided: the rule must be correct where it proposes the specialized action,
+but may abstain elsewhere even when the same action is admissible. Non-zero selective
+coverage therefore does not prove full representation sufficiency, and partition-defect
+absence remains distinct from rule admissibility.
+
+In QWake-FP, $a_{\mathrm{early}}$ denotes the registered analytic-completion action.
+The experimental dangerous-accept counter is defined later in C2 methodology. At the
+theoretical level, zero observed dangerous accepts means no observed elements of
+$\mathfrak D_{\pi,a_{\mathrm{early}}}$ on the finite calibration surface. It is only
+an empirical manifestation of
+$A_{\pi}(a_{\mathrm{early}})\subseteq S_{a_{\mathrm{early}}}$ and does not prove the
+inclusion on all of $\Omega$, establish
+$\mathfrak D_{I\to R}^{q}=\varnothing$ for the full representation, or replace
+independent confirmation.
+
+\subsection{PC-CATM: Mechanism of Correction Formation and Cancellation}
+\label{sec:theory-pc-catm}
+
+PC-TREF specifies \emph{which} state distinctions matter for a decision but does not
+explain \emph{where} informative differences come from. PC-CATM, the
+Predictive-Coding Correction Aggregation and Transport Model, provides that
+mechanistic level.
+
+For layer $l$, denote prediction, state, and prediction error by
+\[
+  p_l=f_l(h_{l-1};\theta_l),\qquad e_l=p_l-h_l.
+\]
+With a symmetric positive-semidefinite precision operator $\Pi_l\succeq0$, the local
+quadratic energy is
+\[
+  F_l=\frac12 e_l^{\mathsf T}\Pi_l e_l,\qquad F=\sum_j F_j.
+\]
+For internal state $h_l$, the two neighboring energy terms give the structural
+decomposition
+\[
+  -\frac{\partial F}{\partial h_l}
+  =\Pi_l e_l-J_{h,l+1}^{*}\Pi_{l+1}e_{l+1}.
+\]
+PC-CATM does not claim this standard energy-derived dynamic as a new PC algorithm. Its
+role is to treat structurally distinct terms as diagnostic channels and analyze their
+activity, transport, and cancellation separately. The self channel is
+\[
+  c_l^{(\mathrm{self})}=\Pi_l e_l,
+\]
+and the transported upper channel is
+\[
+  c_l^{(\mathrm{upper})}
+  =-J_{h,l+1}^{*}\Pi_{l+1}e_{l+1},
+\]
+where $J_{h,l+1}^{*}$ is the adjoint operator transporting the influence of upper-layer
+error to the current state. The resulting correction is the channel aggregate
+\[
+  u_l=\mathcal S_l(\mathbf c_l)=\sum_k c_l^{(k)}.
+\]
+
+A small $\|u_l\|$ can arise through at least two mechanisms. The individual channels
+may themselves be small, indicating a region of low activity, or individually large
+channels may cancel. PC-CATM keeps these cases separate and therefore does not treat a
+small resulting residual as automatic evidence that further computation is unnecessary.
+
+Define total channel activity and resulting-correction norm
+\[
+  \alpha_l=\sum_k\|c_l^{(k)}\|,
+  \qquad
+  m_l=\left\|\sum_k c_l^{(k)}\right\|,
+\]
+and for $\alpha_l>0$ the residual-correction coefficient
+\[
+  \chi_l=\frac{m_l}{\alpha_l}.
+\]
+Small $\chi_l$ with non-zero $\alpha_l$ indicates strong mutual cancellation, but
+remains diagnostic rather than a stopping permission. PC-CATM also considers
+inter-layer transport: a non-zero upper-layer error component may weakly affect a lower
+state because of Jacobian-transport geometry.
+
+The normative glossary names exact and thresholded instances of these phenomena NCZ,
+ECZ, and TNZ. For the dissertation, the important distinction is among low source
+activity, cancellation of active channels, and suppression during transport. They
+supply different possible PC-TREF features and must not be collapsed into one scalar
+``state error''.
+
+Every PC-CATM norm and threshold exists only inside a measurement contract specifying
+space, norm, scale, numerical precision, device, layer, step, and aggregation rule. A
+numerically small value in one layer or regime therefore does not automatically transfer
+to another. PC-CATM is a mechanistic feature model and does not make a compute-control
+decision by itself.
+
+In glossary terms, channel norms and pairwise interactions form \emph{correction
+geometry}. The exact correction-zero set is the kernel of the channel-summation
+operator,
+\[
+  \mathcal Z_l^{(0)}=\ker\mathcal S_l.
+\]
+Its trivial part
+\[
+  \mathrm{NCZ}_l^{(0)}=\{\mathbf0\}
+\]
+corresponds to all canonical channels being exactly zero, while the non-trivial part
+\[
+  \mathrm{ECZ}_l^{(0)}=\ker\mathcal S_l\setminus\{\mathbf0\}
+\]
+corresponds to exact cancellation of non-zero channels. Exact NCZ and ECZ therefore
+partition $\ker\mathcal S_l$ but do not include every state with a small non-zero
+resulting correction.
+
+The numerical protocol does not identify exact sets with threshold classes. The
+registered NCZ neighborhood describes low activity of all channels; the ECZ
+neighborhood describes non-zero activity with low resulting efficiency and a
+registered destructive-interaction condition. Resulting efficiency measures the share
+of channel activity surviving in the net correction; destructive interaction records
+the negative part of pairwise alignment. TNZ separately denotes non-zero error input
+suppressed during transport to the state. A directed transport coefficient describes
+one registered input vector and does not replace spectral analysis of the full Jacobian.
+A block-Jacobian probe is a matrix-free observation of such transport and is not itself
+evidence of speedup or global algorithmic locality.
+
+\subsection{Relationship Between PC-TREF and PC-CATM}
+\label{sec:theory-tref-catm-link}
+
+The two levels solve different problems and must not be collapsed into one model.
+PC-CATM asks how an observed correction is structurally decomposed: which channels are
+active, how they are transported, and under which combinations their aggregate effect
+is large, small, or cancelled. PC-TREF asks whether that observation is sufficient for
+an action: can the selected features preserve the same admissible computational
+decision that would be obtained with complete exact continuation?
+
+The dependency is
+\[
+  \text{PC-CATM mechanism}
+  \;\longrightarrow\;
+  \phi_I(x)
+  \;\longrightarrow\;
+  \text{PC-TREF sufficiency test}
+  \;\longrightarrow\;
+  a\in\mathcal A.
+\]
+The first arrow constructs a diagnostic representation; the second checks whether
+decision-relevant distinctions are lost; the third selects an action only after the
+admissibility criterion is satisfied.
+
+This separation explains the Stage~3A/3B sequence. Layer-wise gradients and
+representations show that PC/BP similarity varies with depth. Profiling and SI-MA0/1
+localize cost and test measurability of mechanistic components. B1/B2 then test exact
+alternative computational organizations. Only afterward is it meaningful to ask
+whether pre-action state is sufficient for a continuation decision.
+
+\subsection{QWake-PC and the Experimental QWake-FP Instantiation}
+\label{sec:theory-qwake}
+
+QWake-PC is the proper name of the compute-budget control architecture. It is not a new
+kind of predictive coding and does not replace PC-TREF or PC-CATM. Architecturally,
+\[
+  \text{PC-TREF}\;\longrightarrow\;\text{sufficiency criterion},
+  \qquad
+  \text{PC-CATM}\;\longrightarrow\;\text{mechanistic features},
+\]
+\[
+  \text{criterion + features}
+  \;\longrightarrow\;
+  \text{QWake-PC}
+  \;\longrightarrow\;
+  \text{computational action}.
+\]
+
+In general, the architecture chooses from a bounded action space, for example continue
+exact computation, choose a registered bounded analytic completion, or switch to an
+exact fallback path. A decision is admissible only when an estimate available
+\emph{before action} indicates sufficiency of the current state, while a separate exact
+post-action oracle verifies that the registered required-response tolerance was not
+violated. QWake-PC therefore separates estimator and reference oracle: the latter may
+use counterfactual continuation for labeling and audit but cannot be a pre-decision
+feature.
+
+The dissertation evaluates only QWake-FP, a bounded shadow instantiation for the
+registered FixedPred case with $\eta=1$ and the canonical Stage~2 executor. The
+registered early action belongs to the \code{ANALYTIC_COMPLETION} family and has
+identifier \code{fixedpred_eta1_wavefront_completion_v1}. It replaces the remaining
+canonical iterative sweeps with a bounded analytic completion and therefore still
+performs computation. The complete exact suffix
+\code{complete_suffix_stage2_baseline_v1} is reference and fallback. In shadow mode,
+both branches execute on disposable forks of one state to produce evidence; the rule
+only proposes an action and does not activate it in the live trajectory.
+
+The PC-TREF objects map to QWake-FP as follows:
+\begin{center}
+\small
+\begin{tabular}{p{0.27\textwidth}p{0.64\textwidth}}
+\toprule
+PC-TREF object & QWake-FP realization \\
+\midrule
+$x$ & state $x(\rho)$ contained in C1 record $\rho$ and available before action \\
+$\phi_I(x)$ & allowed pre-action C2 rule features \\
+$\mathcal A$ & continue the exact suffix or propose the registered analytic completion \\
+$q_R^{\mathrm{QW}}$ & \texttt{EARLY\_ADMISSIBLE}/\texttt{CONTINUE\_REQUIRED}, determined by comparing the analytic candidate's required response with the post-action exact-suffix required response \\
+$\delta_R$ & registered tolerance on required final response \\
+$\mathfrak D_{I\to R}^{q}$ & diagnostic merging of states from different registered required classes \\
+$\mathfrak D_{\pi,a_{\mathrm{early}}}$ & dangerous accept: the rule proposes the early action for a state that the oracle requires to continue \\
+action cost & frozen C2 full decision-cost vector \\
+\bottomrule
+\end{tabular}
+\end{center}
+This mapping is experimental and does not enlarge PC-TREF. C2 tests a finite family of
+scalar representations, not every possible $\phi_I$. In particular, it tests selective
+sufficiency of the early action on accepted records, not full sufficiency
+$E_I|_\Omega\subseteq E_R|_\Omega$ of the whole diagnostic representation.
+
+C1 and C2 follow from this separation. C1 collects complete trajectories and
+counterfactual post-action sufficiency labels without selecting a rule. C2 operates
+only on the sealed C1 surface and tests a finite rule family using exclusively
+pre-action features. The final branch therefore asks, in strict order:
+\begin{enumerate}
+  \item whether preterminal states exist for which the required response of the registered analytic completion is equivalent to that of the complete exact suffix within the registered tolerance;
+  \item whether a non-zero subset can be recognized on the frozen calibration surface without future-result access and with zero observed dangerous accepts;
+  \item whether the avoided computation remains beneficial after observation, decision, analytic-completion, and exact-fallback costs are accounted for.
+\end{enumerate}
+
+For the fixed FixedPred case, the complete canonical suffix is the exact reference for
+the registered analytic candidate. Post hoc, one can define the \emph{minimal stably
+admissible FixedPred prefix}: the first inference-cycle index from which the candidate's
+required response remains equivalent to the exact-suffix required response for all
+subsequent decision epochs. This quantity is unavailable to the rule at decision time
+because it requires post-action oracle checks. A separate Rosenbaum analytic wavefront
+control is used as a positive control for the special FixedPred $\eta=1$ structure,
+but it does not itself authorize \code{ANALYTIC_COMPLETION} and must not be conflated
+with \code{fixedpred_eta1_wavefront_completion_v1}.
+
+QWake-FP shadow decisions use D/U/S semantics. \code{DONE} proposes the registered
+analytic completion instead of the next canonical sweep; \code{UNKNOWN} means
+available features are insufficient for that proposal; \code{SWEEP} continues the
+canonical inference cycle. A \emph{dangerous DONE} occurs when \code{DONE} is proposed
+but the candidate required response fails the registered comparison with the exact
+suffix. Conversely, when the candidate is oracle-equivalent but the cheap diagnostic
+returns \code{UNKNOWN}, there is a \emph{diagnostic observability gap}. QWake thus
+separates inadmissibility of an action from inability to recognize existing
+admissibility before action.
+
+In the broader QWake-PC architecture, these relations can be expressed through an
+operational sufficiency boundary. A reference sufficiency margin is computed after
+action relative to the exact reference, while a sufficiency-boundary estimator uses
+only pre-action features. A predicted sufficiency horizon is stronger: it estimates
+how long the current margin may persist. C1/C2 does not test that horizon; it is bounded
+to recognition of current admissibility of the registered analytic action, so the
+finite scalar-rule family is not assigned a stronger capability than was tested.
+
+The economic decision is represented by a \emph{cost vector}, not one implicit scalar.
+Compute, latency, memory, diagnostic mechanism, observer, control-loop, and fallback
+costs are kept distinct. Pareto admissibility can be used where multiple components
+cannot be justifiedly reduced to one number. C2 used one concrete preregistered full
+decision-cost accounting model, so its negative economic result is not equivalent to
+impossibility of a cheap minimal controller.
+
+A positive answer at one level does not imply a positive answer at the next. Existence
+of task-admissible states does not guarantee their recognizability, and zero observed
+dangerous accepts on the calibration surface establishes neither economic benefit nor
+population-level dangerous-accept safety. This three-level logic is the theoretical
+basis of RQ3.
+
+\section{Adaptive Computation and Early Termination of Computation}
+\label{sec:related-adaptive-computation}
+
+Input-dependent computation predates predictive coding. Adaptive Computation Time
+(ACT) lets a recurrent network adapt the number of internal steps before emitting a
+result \cite{graves2016adaptive}, making compute budget part of the model's decision
+rather than a fixed architectural constant.
+
+For feed-forward networks, early termination is often implemented through intermediate
+exits. Bolukbasi et al. formulate adaptive network evaluation as selecting which
+components must be computed for a particular example and train an early-exit rule with
+the explicit goal of reducing runtime \cite{bolukbasi2017adaptive}. Multi-exit
+architectures remain active: Kubaty et al. analyze how joint or separate training of
+the backbone and exit heads changes model properties \cite{kubaty2025multiexit}.
+
+For predictive coding specifically, Zniber et al. propose EE-PCN, a dynamic early-exit
+architecture for PC cycles in which a classifier evaluates quality after a cycle and
+classifier confidence is compared with a user threshold; separate classifiers are used
+for up to $T$ cycles \cite{zniber2025earlyexit}. This is a direct neighbor of QWake
+because the controlled quantity is the number of PC cycles.
+
+The formulations nevertheless differ. EE-PCN designs and trains an architecture with
+early classifiers and a confidence threshold. QWake-FP introduces no new classifier
+head per step; it studies an existing FixedPred trajectory, asks whether a bounded
+pre-action state can recognize sufficiency labeled by exact post-action continuation,
+and then separately accounts for full decision cost. QWake-FP is therefore not claimed
+as the first PC early-exit method. Its contribution is the registered separation of
+task admissibility, observed zero-danger calibration recognition, and economics.
+
+\section{Selective Prediction, Abstention, and Risk-aware Early Exit}
+\label{sec:related-selective}
+
+Early exit creates a second question beyond saving computation: when is reduced
+computation admissible with respect to output quality? In selective prediction, a
+model can abstain on some inputs, creating a risk--coverage tradeoff. SelectiveNet
+combines a selection function and predictive model in one trainable architecture
+\cite{geifman2019selectivenet}. The important principle here is separation of coverage
+and risk: a high accepted fraction is meaningless if accepted states include states
+the criterion declares insufficient.
+
+Recent early-exit work makes risk control explicit. Jazbec et al. apply risk-control
+methods to early-exit networks and bind the exit decision to a predefined quality
+boundary \cite{jazbec2024riskcontrol}; related work considers nested uncertainty sets
+across multi-exit networks \cite{jazbec2024nested}. EERO combines early exit and
+abstention with an explicit compute-budget constraint \cite{valade2025eero}.
+
+QWake-FP is adjacent to this literature but uses a stricter bounded dangerous-accept
+criterion. On calibration evidence, a rule is admissible only with zero observed
+dangerous accepted decisions; non-zero coverage alone is insufficient. The economic
+criterion is applied only afterward. QWake-FP can therefore be viewed as a special
+case of selective computation: acceptance chooses the registered bounded analytic
+completion instead of the canonical iterative suffix, while abstention continues the
+exact suffix in a risk-aware fallback sense. Acceptance does not mean zero further
+computation. This analogy is conceptual; QWake-FP does not inherit statistical risk
+or conformal risk-control bounds that were not implemented and tested in its own protocol.
+
+\section{Positioning of the Present Work}
+\label{sec:related-positioning}
+
+The literature provides several distinct axes that this dissertation connects in one
+sequential experimental line:
+\begin{enumerate}
+  \item PC may approximate or, under special conditions, reproduce selected BP updates, but the applicability domain depends on the concrete algorithmic regime \cite{whittington2017approximation,song2020exact,salvatori2021convolutional,millidge2022arbitrary,rosenbaum2022relationship,rosenbaum2025correction};
+  \item representation similarity requires separate diagnostics and does not automatically follow from final-error similarity \cite{raghu2017svcca,morcos2018insights,kornblith2019similarity};
+  \item computational price must be measured separately from functional relation to BP \cite{zahid2023critical};
+  \item adaptive computation trades completeness against cost, while selective-prediction and early-exit work adds an explicit risk--coverage dimension \cite{graves2016adaptive,bolukbasi2017adaptive,zniber2025earlyexit,geifman2019selectivenet,jazbec2024riskcontrol,valade2025eero}.
+\end{enumerate}
+
+The dissertation therefore does not offer another undifferentiated PC/BP equivalence
+claim and is not reducible to a new multi-exit architecture. It sequentially tests
+behavior, internal representations and gradients, mechanism, and measured cost within
+one versioned experimental line, then asks the separate bounded question of whether a
+registered analytic completion can replace part of an already existing iterative
+computation. That separation motivates RQ1--RQ3 and the subsequent chapters.

@@ -6,15 +6,18 @@
 
 This section defines the **current** sequence after T24 scientific closure. The
 existing Stage/QWake roadmap below is preserved as historical provenance and
-must not be read as unfinished `v1.0.0` work.
+must not be read as unfinished `v1.0.1` work.
 
-### R0 — publish `v1.0.0`
+### R0 — publish bilingual `v1.0.1`
 
-1. synchronize the repository public surface with the final dissertation;
-2. validate a single version/citation/release contract;
-3. build the source archive and final 99-page PDF from the exact release commit;
-4. bind commit/tree and asset SHA-256s in the release manifest;
-5. create annotated tag `v1.0.0` and an immutable GitHub Release.
+`v1.0.0` is already published as the scientific closure point. `v1.0.1`
+completes the public language surface without changing the science:
+
+1. add the complete English rendering of every chapter and appendix;
+2. bind RU/EN structure, C01–C11, terminology, and critical numerical boundaries with a machine congruence gate;
+3. build the Russian and English PDFs from one exact release commit/tree;
+4. publish separate `-ru.pdf` and `-en.pdf` assets with their own SHA-256s in one release manifest;
+5. keep frozen scientific-runtime identities and historical `v1.0.0` unchanged.
 
 This stage does not change C01–C11 and does not open scientific execution.
 

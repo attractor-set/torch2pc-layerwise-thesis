@@ -5,7 +5,7 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
-![Version](https://img.shields.io/badge/release-v1.0.0-blue)
+![Version](https://img.shields.io/badge/release-v1.0.1-blue)
 ![Code](https://img.shields.io/badge/code-Apache--2.0-green)
 ![Documents](https://img.shields.io/badge/docs-CC%20BY%204.0-green)
 
@@ -27,10 +27,12 @@ is defined in the [glossary](docs/glossary_EN.md), the current outcome is in
 [`STATUS_EN.md`](STATUS_EN.md), and the post-thesis research program is in
 [`ROADMAP_EN.md`](ROADMAP_EN.md).
 
-## v1.0.0 status
+## v1.0.1 status
 
 The scientific narrative was closed after the independent T24 post-refactor
-review. The scientific closure point is:
+review and is unchanged in `v1.0.1`. This publication release adds the complete
+English rendering of the same dissertation together with a machine-enforced RU/EN
+congruence gate. The scientific closure point is:
 
 ```text
 T24_COMMIT=9d45c897d35225fd541aa1b96aeed7fa7e945531
@@ -44,7 +46,7 @@ T24 exact-commit assurance completed with **1732 passed, 8 skipped**; the
 thesis builds to **99 pages** with no overfull boxes, undefined
 references/citations, or pending cross-reference rerun warnings. Those numbers
 belong to the T24 closure point; the release manifest separately binds the
-concrete `v1.0.0` tag to its source commit/tree and published-asset SHA-256s.
+concrete `v1.0.1` tag to its source commit/tree and published-asset SHA-256s.
 
 ## Research questions and final statuses
 
@@ -105,30 +107,35 @@ establish population-level safety.
 
 ```bash
 make thesis-check
-make thesis
+make thesis       # Russian rendering
+make thesis-en    # complete English rendering
+make thesis-all   # both renderings
 ```
 
 `make thesis-check` validates the claim schema, numeric summaries, provenance,
-terminology contract, QWake action semantics, and local C01–C11 traceability.
-`make thesis` then renders thesis-facing assets and builds the PDF with
-XeLaTeX/Biber.
+terminology contract, QWake action semantics, local C01–C11 traceability, and
+RU/EN semantic congruence. Both language builds consume the same machine-readable
+scientific contracts.
 
 ## Release
 
-Version `1.0.0` is published as a tag-bound release. The release pipeline builds:
+Version `1.0.1` is published as a bilingual tag-bound release. The release pipeline builds:
 
 ```text
-torch2pc-layerwise-thesis-1.0.0.zip
-torch2pc-layerwise-thesis-1.0.0.zip.sha256
-torch2pc-layerwise-thesis-1.0.0.pdf
-torch2pc-layerwise-thesis-1.0.0.pdf.sha256
-torch2pc-layerwise-thesis-1.0.0.metadata.json
-torch2pc-layerwise-thesis-1.0.0.release-manifest.json
+torch2pc-layerwise-thesis-1.0.1.zip
+torch2pc-layerwise-thesis-1.0.1.zip.sha256
+torch2pc-layerwise-thesis-1.0.1-ru.pdf
+torch2pc-layerwise-thesis-1.0.1-ru.pdf.sha256
+torch2pc-layerwise-thesis-1.0.1-en.pdf
+torch2pc-layerwise-thesis-1.0.1-en.pdf.sha256
+torch2pc-layerwise-thesis-1.0.1.metadata.json
+torch2pc-layerwise-thesis-1.0.1.release-manifest.json
 ```
 
-The manifest records the source commit/tree, source/PDF SHA-256s, page count,
-and release/thesis gate outcomes. The release contract is checked by
-`scripts/check_release_contract.py`.
+The manifest binds one source commit/tree to the source archive and both language
+PDFs, including per-artifact SHA-256 and page counts. The English document is a
+semantically bound rendering of the same scientific work; C01–C11 and their
+epistemic statuses are unchanged.
 
 ## Repository
 
@@ -141,7 +148,7 @@ and release/thesis gate outcomes. The release contract is checked by
 | `docs/` | glossary, theory, methodology, ADRs, and historical protocols |
 | `configs/` | Stage 1/2/3 configurations and hardware profiles |
 | `references/` | BibTeX/source traceability without redistributed PDFs |
-| `article/` | secondary future article package; not release-defining for thesis v1.0.0 |
+| `article/` | secondary future article package; not release-defining for thesis v1.0.1 |
 
 See [`PROJECT_STRUCTURE_EN.md`](PROJECT_STRUCTURE_EN.md) for the complete map.
 
@@ -151,7 +158,7 @@ See [`PROJECT_STRUCTURE_EN.md`](PROJECT_STRUCTURE_EN.md) for the complete map.
 authorization/receipt/freeze documents, and point-in-time blocks embedded in
 `STATUS_EN.md`/`ROADMAP_EN.md` preserve the state of their own stage. Their old
 `open=false`, `execution closed`, or image-version statements must not be read
-as the current v1.0.0 status. The authoritative current status is the top
+as the current v1.0.1 status. The authoritative current status is the top
 section of `STATUS_EN.md`; final scientific statuses come from the dissertation
 claim registry.
 

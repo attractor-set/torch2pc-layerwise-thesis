@@ -36,10 +36,15 @@ artifacts/
 *.fdb_latexmk
 *.fls
 *.log
+*.lof
+*.lot
+*.toc
+*.xdv
 *.out
 *.run.xml
 *.synctex.gz
 thesis/main.pdf
+thesis/main_EN.pdf
 .DS_Store
 Thumbs.db
 site_ru/

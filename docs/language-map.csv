@@ -236,3 +236,16 @@ docs/decisions/ADR-128-stage3b-qwake-c1-request-freeze-repository-integration.md
 docs/decisions/ADR-129-stage3b-qwake-c1-attempt-001-host-identity-permission-correction.md,docs/decisions/ADR-129-stage3b-qwake-c1-attempt-001-host-identity-permission-correction_EN.md,required
 docs/decisions/ADR-130-stage3b-qwake-c1-host-identity-corrected-scientific-image-freeze.md,docs/decisions/ADR-130-stage3b-qwake-c1-host-identity-corrected-scientific-image-freeze_EN.md,required
 docs/decisions/ADR-131-stage3b-qwake-c1-hostfix-request-freeze-repository-integration.md,docs/decisions/ADR-131-stage3b-qwake-c1-hostfix-request-freeze-repository-integration_EN.md,required
+thesis/main.tex,thesis/main_EN.tex,required
+thesis/frontmatter/abstracts.tex,thesis/frontmatter/abstracts_EN.tex,required
+thesis/frontmatter/abstract_ru_content.tex,thesis/frontmatter/abstract_en_content.tex,required
+thesis/frontmatter/abbreviations.tex,thesis/frontmatter/abbreviations_EN.tex,required
+thesis/chapters/01_introduction.tex,thesis/chapters/01_introduction_EN.tex,required
+thesis/chapters/02_related_work.tex,thesis/chapters/02_related_work_EN.tex,required
+thesis/chapters/03_methodology.tex,thesis/chapters/03_methodology_EN.tex,required
+thesis/chapters/04_experiments.tex,thesis/chapters/04_experiments_EN.tex,required
+thesis/chapters/05_results.tex,thesis/chapters/05_results_EN.tex,required
+thesis/chapters/06_discussion.tex,thesis/chapters/06_discussion_EN.tex,required
+thesis/chapters/07_conclusion.tex,thesis/chapters/07_conclusion_EN.tex,required
+thesis/appendices/terminology.tex,thesis/appendices/terminology_EN.tex,required
+thesis/appendices/reproducibility.tex,thesis/appendices/reproducibility_EN.tex,required

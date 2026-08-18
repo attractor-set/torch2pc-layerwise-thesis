@@ -1,0 +1,68 @@
+\documentclass[12pt,a4paper,oneside]{report}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\setotherlanguage{russian}
+\setmainfont{Liberation Serif}
+\setsansfont{Liberation Sans}
+\setmonofont{Liberation Mono}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xurl}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[backend=biber,style=numeric,sorting=nyt]{biblatex}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\setlength{\emergencystretch}{2em}
+
+\hypersetup{
+  hidelinks,
+  unicode=true,
+  pdftitle={Layer-wise Comparison of Predictive-Coding Regimes and Backpropagation under Comparable Computational Conditions},
+  pdfauthor={Dzmitry Prychyna}
+}
+
+\geometry{left=30mm,right=15mm,top=20mm,bottom=20mm}
+\addbibresource{../references/bibliography.bib}
+
+\title{Layer-wise Comparison of Predictive-Coding Regimes and Backpropagation under Comparable Computational Conditions}
+\author{Dzmitry Prychyna\\\texttt{evil.java.deus.ex@gmail.com}}
+\date{2026}
+
+\begin{document}
+\pagenumbering{roman}
+\hypersetup{pageanchor=false}
+\maketitle
+\hypersetup{pageanchor=true}
+\input{frontmatter/abstracts_EN}
+\input{frontmatter/abbreviations_EN}
+\tableofcontents
+\listoftables
+\listoffigures
+
+\clearpage
+\pagenumbering{arabic}
+\include{chapters/01_introduction_EN}
+\include{chapters/02_related_work_EN}
+\include{chapters/03_methodology_EN}
+\include{chapters/04_experiments_EN}
+\include{chapters/05_results_EN}
+\include{chapters/06_discussion_EN}
+\include{chapters/07_conclusion_EN}
+
+\begingroup
+\setlength{\emergencystretch}{2em}
+\sloppy
+\printbibliography
+\endgroup
+\appendix
+\include{appendices/terminology_EN}
+\include{appendices/reproducibility_EN}
+\end{document}

@@ -79,8 +79,10 @@ jobs:
           gh release create "${GITHUB_REF_NAME}" \
             "artifacts/${name}.zip" \
             "artifacts/${name}.zip.sha256" \
-            "artifacts/${name}.pdf" \
-            "artifacts/${name}.pdf.sha256" \
+            "artifacts/${name}-ru.pdf" \
+            "artifacts/${name}-ru.pdf.sha256" \
+            "artifacts/${name}-en.pdf" \
+            "artifacts/${name}-en.pdf.sha256" \
             "artifacts/${name}.metadata.json" \
             "artifacts/${name}.release-manifest.json" \
             --verify-tag \

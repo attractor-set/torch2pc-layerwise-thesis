@@ -23,5 +23,7 @@ def test_release_contract() -> None:
     assert "RELEASE_CHANGELOG_SURFACE=PASS" in completed.stdout
     assert "RELEASE_PUBLIC_SURFACE_CONTRACT=PASS" in completed.stdout
     assert "RELEASE_WORKFLOW_CONTRACT=PASS" in completed.stdout
+    assert "RELEASE_BILINGUAL_CI_CONTRACT=PASS" in completed.stdout
     assert "RELEASE_ARTIFACT_CONTRACT=PASS" in completed.stdout
+    assert "THESIS_V1_BILINGUAL_RELEASE_CONTRACT=PASS" in completed.stdout
     assert "THESIS_V1_RELEASE_CONTRACT=PASS" in completed.stdout

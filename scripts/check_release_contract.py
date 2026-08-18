@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the final thesis release metadata and publication contract."""
+"""Validate the bilingual thesis release metadata and publication contract."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_VERSION = "1.0.0"
+EXPECTED_VERSION = "1.0.1"
 FROZEN_RUNTIME_PACKAGE_VERSION = "0.1.0"
 FROZEN_RUNTIME_INIT_SHA256 = "99a15a1f681efaaff846df254eab58412a16fc8e1c7767d0ccd00b5e721b08f0"
 FROZEN_RUNTIME_PYPROJECT_SHA256 = "5646a4275998b91efe05c215f334eb2ab1f292828434a7eddfc715bf56746352"
@@ -56,6 +56,7 @@ def main() -> None:
     package_init = _read("src/torch2pc_thesis/__init__.py")
     citation = _read("CITATION.cff")
     workflow = _read(".github/workflows/release.yml")
+    thesis_workflow = _read(".github/workflows/thesis.yml")
     builder = _read("scripts/build_release.sh")
     changelog_ru = _read("CHANGELOG.md")
     changelog_en = _read("CHANGELOG_EN.md")
@@ -84,7 +85,7 @@ def main() -> None:
     assert project_version == FROZEN_RUNTIME_PACKAGE_VERSION
     assert package_version == FROZEN_RUNTIME_PACKAGE_VERSION
     assert citation_version == EXPECTED_VERSION
-    assert citation_date == "2026-08-17"
+    assert citation_date == "2026-08-18"
     assert RELEASE_URL in citation
     assert "stage2-results-v1" not in citation
     assert not re.search(r"^commit:\s*", citation, flags=re.MULTILINE)
@@ -99,10 +100,12 @@ def main() -> None:
     print("RELEASE_FROZEN_RUNTIME_CLOSURE=PASS")
 
     for heading, changelog in (
-        ("## [1.0.0] — 2026-08-17", changelog_ru),
-        ("## [1.0.0] — 2026-08-17", changelog_en),
+        ("## [1.0.1] — 2026-08-18", changelog_ru),
+        ("## [1.0.1] — 2026-08-18", changelog_en),
     ):
         assert heading in changelog
+    assert "## [1.0.0] — 2026-08-17" in changelog_ru
+    assert "## [1.0.0] — 2026-08-17" in changelog_en
     assert "## [Не опубликовано]" in changelog_ru
     assert "## [Unreleased]" in changelog_en
     print("RELEASE_CHANGELOG_SURFACE=PASS")
@@ -112,6 +115,7 @@ def main() -> None:
         "PUBLIC_README_CURRENTNESS=PASS",
         "PUBLIC_STATUS_PRECEDENCE=PASS",
         "PUBLIC_ROADMAP_PRECEDENCE=PASS",
+        "PUBLIC_BILINGUAL_THESIS_SURFACE=PASS",
     ):
         assert marker in public_surface
     print("RELEASE_PUBLIC_SURFACE_CONTRACT=PASS")
@@ -125,7 +129,10 @@ def main() -> None:
         "gh release create",
         "--verify-tag",
         ".release-manifest.json",
-        ".pdf.sha256",
+        "${name}-ru.pdf",
+        "${name}-en.pdf",
+        "${name}-ru.pdf.sha256",
+        "${name}-en.pdf.sha256",
     )
     for token in workflow_tokens:
         assert token in workflow, f"release workflow missing {token!r}"
@@ -134,19 +141,31 @@ def main() -> None:
     assert "from torch2pc_thesis import __version__" not in workflow
     print("RELEASE_WORKFLOW_CONTRACT=PASS")
 
+    for token in (
+        "make thesis-all",
+        "scripts/check_thesis_language_congruence.py",
+        "thesis/main_EN.pdf",
+        "THESIS_EN_PDF_SHA256",
+    ):
+        assert token in thesis_workflow, f"thesis workflow missing {token!r}"
+    print("RELEASE_BILINGUAL_CI_CONTRACT=PASS")
+
     builder_tokens = (
         "make thesis-check",
-        "make thesis",
+        "make thesis-all",
         "source_git_tree",
         "release_tag",
-        "THESIS_PDF_SHA256",
+        "THESIS_RU_PDF_SHA256",
+        "THESIS_EN_PDF_SHA256",
         "SOURCE_ARCHIVE_SHA256",
-        "THESIS_OVERFULL_COUNT",
-        "THESIS_UNDEFINED_REFERENCES_COUNT",
-        "THESIS_UNDEFINED_CITATIONS_COUNT",
-        "THESIS_RERUN_REFERENCES_COUNT",
+        "THESIS_%s_OVERFULL_COUNT",
+        'check_document "RU"',
+        'check_document "EN"',
         "TRACKED_WORKTREE_UNCHANGED=PASS",
         ".release-manifest.json",
+        '"thesis_pdf_ru"',
+        '"thesis_pdf_en"',
+        '"thesis_languages": ["ru", "en"]',
     )
     for token in builder_tokens:
         assert token in builder, f"release builder missing {token!r}"
@@ -155,6 +174,7 @@ def main() -> None:
     assert "from torch2pc_thesis import __version__" not in builder
     print("RELEASE_ARTIFACT_CONTRACT=PASS")
 
+    print("THESIS_V1_BILINGUAL_RELEASE_CONTRACT=PASS")
     print("THESIS_V1_RELEASE_CONTRACT=PASS")
 
 

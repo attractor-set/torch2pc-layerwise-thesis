@@ -1,0 +1,168 @@
+\chapter{Experimental Program}
+\label{ch:experiments-en}
+
+The experimental program is described as the executable layer of the claim contract:
+Stage~1/2 tests C01, Stage~3A tests C02, Stage~3B tests C03--C07, and QWake-FP C1/C2
+tests C08--C11. Each block below separates the measurement objective, admissible unit
+of inference, and transition condition to the next block.
+
+The program was built sequentially. Each stage addressed a question left open by its
+predecessor and did not replace earlier results. Stage~1/2, Stage~3A, Stage~3B, and
+QWake therefore form one research chain: from quality and computational cost, through
+internal mechanism, to an early compute-control decision under a registered
+dangerous-accept criterion.
+
+\input{generated/experimental_program_EN.tex}
+
+\section{Stage 1: Initial Comparative Campaign}
+\label{sec:stage1-experiment-en}
+
+Stage~1 defined the initial empirical domain for RQ1 and the first part of C01. It used
+FashionMNIST and MNIST, one \code{lenet\_classic} architecture, and four training
+regimes: BP, Exact, FixedPred, and Strict. Ten independently trained models with
+\code{model\_seed}=0--9 were executed for every dataset--method combination, producing
+80 final cells.
+
+PC hyperparameters were frozen before final execution: Exact used \(\eta=0.1\) and 20
+state-inference steps; FixedPred used \(\eta=0.1\) and 10 steps; Strict used
+\(\eta=0.05\) and 20 steps. BP had no corresponding internal-inference parameters.
+Final-cell order was deterministically balanced so run order was not systematically
+confounded with a method.
+
+Test access was separated from pilot and validation stages. Final test evaluation was
+performed only after predecessor-stage selection was frozen and only for a completed
+run. Thesis-facing outputs are test accuracy, macro-F1, and registered computational
+measures. The paired-analysis unit remained the independently trained model; examples
+and batches were not treated as independent replications.
+
+\section{Stage 2: Controlled Change of the Computational Path}
+\label{sec:stage2-experiment-en}
+
+Stage~2 completed C01 while retaining the 80-cell Stage~1 structure under a modified
+implementation path. Its purpose was to separate properties of the studied regimes
+from costs of a particular implementation. Datasets, architecture, methods, model
+seeds, and final test protocol were retained, while the new campaign received its own
+environment and artifact provenance chain.
+
+This design permits matched cross-version comparison. Quality changes and
+computational changes are analyzed separately. Zero quality change across versions is
+not interpreted as universal implementation equivalence; it is bounded to the frozen
+matrix, selected metrics, and finite model-seed set.
+
+\section{Stage 3A: Layer-wise Diagnostics}
+\label{sec:stage3a-experiment-en}
+
+Stage~3A operationalized C02 and was restricted to FashionMNIST,
+\code{lenet\_classic}, and ten independently trained models. Diagnostics were
+extracted on validation data and did not reopen test access. BP, Exact, FixedPred, and
+Strict were compared.
+
+Gradient measures were cosine similarity, norm ratio, relative \(L_2\) error, and sign
+agreement. Internal representations were compared using CKA and RSA. Metrics were
+first aggregated within model and only then compared statistically at model-seed level.
+Exact additionally served as a numerical control for gradient extraction and matching.
+
+A separate depth analysis tested whether agreement with BP changed systematically from
+early layers toward the output. Cross-layer CKA was retained descriptively and did not
+turn layer pairs into independent statistical units.
+
+\section{Stage 3B: Cost Profiling and Computational-domain Localization}
+\label{sec:stage3b-experiment-en}
+
+Stage~3B formed the C03--C07 surface and moved attention from final quality and
+representation similarity to computational cost structure. The program comprised
+several sequential tests.
+
+\subsection{B0: Baseline Profiling}
+
+B0 measured FixedPred and Strict in a frozen ROCm/float32 environment over a synthetic
+scaling matrix. Three independent model seeds were used per configuration. Device and
+CPU time, peak memory, and cost by execution region---including
+\code{state\_inference}---were measured. B0 was not designed to prove structural
+locality of the computational graph; it localized regions in which further
+mechanistic cost attribution was meaningful.
+
+\subsection{SI-MA0 and SI-MA1}
+
+SI-MA0 tested the first registered \code{state\_inference} cost-accounting model. Its
+negative outcome was preserved rather than used to retrospectively change a threshold.
+SI-MA1 was a separate preregistered calibration, not a rerun of SI-MA0. It used ten
+model seeds and 180 matched blocks. The primary estimand was a signed residual under a
+predefined one-sided test. A negative signed residual means over-closure of the
+accounting model, not negative physical runtime.
+
+\subsection{B1 and B2: Equivalence Gates}
+
+Two exact implementation candidates were then tested:
+\code{isolated\_layer\_vjp} (B1) and \code{composite\_vjp} (B2). B1 compared the
+candidate with the Stage~2 baseline over 120 registered pairs. B2 used 120 matched
+triples and 240 pairwise comparisons among baseline, B1, and B2. Admission depended on
+zero dangerous misses and passage of registered numerical, trajectory, structural,
+observer, and provenance checks.
+
+\subsection{Matched Profiling}
+
+After EQ-B1 and EQ-B2, a separate matched-profiling matrix was executed. It contained
+288 cells: 96 each for the Stage~2 baseline, \code{isolated\_layer\_vjp}, and
+\code{composite\_vjp}. Cross-candidate correctness was checked on 96 matched blocks
+outside the primary timing lane. Observer cost was not subtracted post hoc from the
+primary measurements; observation-related structural measurements were retained
+separately.
+
+The matrix is engineering profiling, not 288 independent replications. A separate
+descriptive analysis therefore applies the registered engineering-continuation screen
+to four B1/B2-by-FixedPred/Strict groups of 16 configurations each. Decisions
+\code{retain}, \code{conditional}, or \texttt{reject\_or\_revise} concern engineering
+continuation only; the protocol forbids using the screen as a statistical or universal
+superiority claim.
+
+\section{QWake-FP: Sufficiency, Recognizability, and Economics}
+\label{sec:qwake-experiment-en}
+
+QWake-FP forms the C08--C11 experimental surface and continues the program after cost
+localization. It separates three levels: whether preterminal records exist whose states
+make the registered early action task-admissible; whether a non-zero subset can be
+recognized before action with zero observed dangerous accepts on the calibration
+surface; and whether the decision remains beneficial after full decision-cost
+accounting.
+
+The registered QWake-FP early action is \texttt{ANALYTIC\_COMPLETION} with identifier
+\nolinkurl{fixedpred_eta1_wavefront_completion_v1}. It replaces the remaining
+canonical iterative sweeps with a bounded analytic completion. The exact path
+\nolinkurl{complete_suffix_stage2_baseline_v1} executes the full remaining suffix and
+serves as reference and fallback. The \texttt{EARLY\_ADMISSIBLE} label is created only
+after comparing required responses of those two branches; it does not mean that no
+computation occurs after the decision epoch. Measured analytic-completion cost is part
+of the registered C2 compute-cost component.
+
+C1 produced sealed calibration trajectories and post-action sufficiency labels. The
+exact oracle was used only for later evaluation and was not a C2 pre-action feature.
+The frozen C1 request uses three model seeds and 36 batches, giving 108 trajectories.
+The contract includes decision epochs \(t\in[0,K_{\mathrm{ref}}]\); with
+\(K_{\mathrm{ref}}=6\), each trajectory yields seven records and the complete C2
+surface contains 756 records: 648 preterminal records at \(t<6\) and 108 terminal-
+boundary records at \(t=6\). C2 evaluates the whole surface and a preregistered finite
+family of 2,625 scalar rules. The generator is restricted to selected scalar features
+and one-dimensional threshold rules; C2 is therefore a bounded search, not an
+exhaustive search over all recognizers.
+
+For every rule, coverage, dangerous-accept count, and aggregate net saving under frozen
+full decision-cost accounting are recorded. Eligibility requires zero dangerous
+accepts, non-zero coverage, and positive aggregate net saving simultaneously. If no
+rule satisfies all three, C2 terminates with a bounded negative result and the protocol
+does not open C3.
+
+\section{Experimental-program Stopping Principle}
+\label{sec:experiment-stopping-en}
+
+The program stops at registered decision boundaries rather than at a desired sign of
+the result. Stage~3B preserves the negative SI-MA0 result before opening a narrower
+observer-cost calibration. B1/B2 equivalence gates precede matched profiling, and the
+engineering-continuation screen remains separate from equivalence. QWake-FP similarly
+requires a C2 rule-freeze receipt before C3 can open. Because C2 found no eligible rule,
+no rule-freeze receipt was created and C3 did not open. In the claim contract, C10 and
+C11 therefore remain \texttt{not\_tested}: C10 requires a separate measurement of the
+marginal execution cost of a minimal recognizer, while C11 requires confirmatory C3 to
+have actually opened and independently confirmed a selected C2 rule. No post-hoc
+threshold extension, feature addition, or cost redefinition is used to alter that
+terminal outcome.

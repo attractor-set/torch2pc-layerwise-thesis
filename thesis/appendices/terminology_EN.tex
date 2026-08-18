@@ -1,0 +1,34 @@
+\chapter{Terminology Registry}
+\label{app:terminology-en}
+
+\section{Purpose of the Registry}
+
+The repository glossary is the normative source of terminology for documentation,
+protocols, reports, and the dissertation. Terminology therefore must not exist in two
+disconnected variants, one in \code{docs/glossary_EN.md} and another in the main
+text. This appendix contains the complete English registry of all stable
+\code{TERM-*} identifiers present in the normative glossary at dissertation build
+time.
+
+Concepts needed directly for the research questions and result interpretation are
+introduced in the main chapters. In particular, Chapter~\ref{ch:related-work}
+defines PC-TREF, PC-CATM, and QWake-PC/QWake-FP before the experiments are
+described. This appendix serves a different role: it is a verifiable registry in
+which every normative term is presented with its canonical meaning and usage
+boundary inside the dissertation itself.
+
+Presence of a term in this registry does not imply empirical confirmation of the
+corresponding mechanism. Sections concerning prospective extensions of theory and
+control, and reserved generalizations of computational action, contain concepts
+whose meanings are fixed for unambiguous usage but which lie outside the mandatory
+empirical claims of the present work.
+
+\section{Completeness and Source}
+
+The registry below is generated automatically from \code{docs/glossary_EN.md}
+during \code{make thesis}. The build checks equality of the ordered TERM-* identifier
+set against \code{docs/glossary.md}, identifier uniqueness, presence of an English
+definition and usage rule for every term, and complete inclusion in the dissertation.
+The current repository state expects 117 of 117 terms.
+
+\input{generated/terminology_registry_EN}

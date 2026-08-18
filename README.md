@@ -5,7 +5,7 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9.1-ee4c2c)
 ![ROCm](https://img.shields.io/badge/ROCm-7.2.1-ED1C24)
-![Версия](https://img.shields.io/badge/release-v1.0.0-blue)
+![Версия](https://img.shields.io/badge/release-v1.0.1-blue)
 ![Код](https://img.shields.io/badge/code-Apache--2.0-green)
 ![Документы](https://img.shields.io/badge/docs-CC%20BY%204.0-green)
 
@@ -28,9 +28,11 @@
 [`STATUS.md`](STATUS.md), а последующая исследовательская программа — в
 [`ROADMAP.md`](ROADMAP.md).
 
-## Статус v1.0.0
+## Статус v1.0.1
 
-Научный текст закрыт после независимой пост-рефакторинговой проверки T24.
+Научный текст закрыт после независимой пост-рефакторинговой проверки T24 и
+не изменяется в `v1.0.1`. Этот публикационный выпуск добавляет полное английское
+представление той же диссертации и машинную проверку RU/EN-конгруэнтности.
 Зафиксированная научная точка закрытия:
 
 ```text
@@ -44,7 +46,7 @@ THESIS_STATUS=DEFENSE_READY_WITH_EXPLICIT_EXTERNAL_VALIDITY_BOUNDARIES
 Exact-commit assurance T24 завершился результатом **1732 passed, 8 skipped**;
 диссертация собирается в **99 страниц** без overfull boxes, неопределённых
 ссылок/цитат и незавершённых cross-reference rerun warnings. Эти числа относятся
-к точке T24; релизный manifest дополнительно связывает конкретный тег `v1.0.0`
+к точке T24; релизный manifest дополнительно связывает конкретный тег `v1.0.1`
 с его source commit/tree и SHA-256 опубликованных assets.
 
 ## Исследовательские вопросы и финальные статусы
@@ -108,30 +110,35 @@ input-dependent adaptivity и не подтверждает преимущест
 
 ```bash
 make thesis-check
-make thesis
+make thesis       # русская версия
+make thesis-en    # полная английская версия
+make thesis-all   # обе версии
 ```
 
 `make thesis-check` проверяет claim schema, численные сводки, provenance,
-терминологический контракт, QWake action semantics и локальную трассировку
-C01–C11. `make thesis` после этих проверок генерирует thesis-facing assets и
-собирает PDF через XeLaTeX/Biber.
+терминологический контракт, QWake action semantics, локальную трассировку C01–C11
+и RU/EN-конгруэнтность. Обе языковые сборки используют одни и те же
+машиночитаемые научные контракты.
 
 ## Релиз
 
-Версия `1.0.0` публикуется как tag-bound release. Релизный pipeline собирает:
+Версия `1.0.1` публикуется как двуязычный tag-bound release. Релизный pipeline собирает:
 
 ```text
-torch2pc-layerwise-thesis-1.0.0.zip
-torch2pc-layerwise-thesis-1.0.0.zip.sha256
-torch2pc-layerwise-thesis-1.0.0.pdf
-torch2pc-layerwise-thesis-1.0.0.pdf.sha256
-torch2pc-layerwise-thesis-1.0.0.metadata.json
-torch2pc-layerwise-thesis-1.0.0.release-manifest.json
+torch2pc-layerwise-thesis-1.0.1.zip
+torch2pc-layerwise-thesis-1.0.1.zip.sha256
+torch2pc-layerwise-thesis-1.0.1-ru.pdf
+torch2pc-layerwise-thesis-1.0.1-ru.pdf.sha256
+torch2pc-layerwise-thesis-1.0.1-en.pdf
+torch2pc-layerwise-thesis-1.0.1-en.pdf.sha256
+torch2pc-layerwise-thesis-1.0.1.metadata.json
+torch2pc-layerwise-thesis-1.0.1.release-manifest.json
 ```
 
-Manifest фиксирует source commit/tree, SHA-256 source archive и PDF, число
-страниц и результаты release/thesis gates. Подробный release contract проверяет
-`scripts/check_release_contract.py`.
+Manifest фиксирует единый source commit/tree, SHA-256 исходного архива и обоих
+языковых PDF, число страниц каждого документа и результаты release/thesis gates.
+Английская версия является семантически связанным представлением той же научной
+работы; C01–C11 и их эпистемические статусы не изменяются.
 
 ## Репозиторий
 
@@ -144,7 +151,7 @@ Manifest фиксирует source commit/tree, SHA-256 source archive и PDF, �
 | `docs/` | глоссарий, теория, методология, ADR и исторические протоколы |
 | `configs/` | конфигурации Stage 1/2/3 и аппаратные профили |
 | `references/` | BibTeX и трассировка литературы без перераспространения PDF |
-| `article/` | вторичный пакет будущей статьи; не определяет v1.0.0 thesis release |
+| `article/` | вторичный пакет будущей статьи; не определяет v1.0.1 thesis release |
 
 Полное описание: [`PROJECT_STRUCTURE.md`](PROJECT_STRUCTURE.md).
 
@@ -154,7 +161,7 @@ Manifest фиксирует source commit/tree, SHA-256 source archive и PDF, �
 authorization/receipt/freeze документы и встроенные в `STATUS.md`/`ROADMAP.md`
 point-in-time блоки сохраняют состояние соответствующего этапа. Их старые
 `open=false`, `execution closed` и версии образов не следует читать как текущий
-статус v1.0.0. Текущий статус всегда задаётся верхним разделом `STATUS.md`, а
+статус v1.0.1. Текущий статус всегда задаётся верхним разделом `STATUS.md`, а
 финальные научные статусы — claim registry диссертации.
 
 Исторические image IDs вида `torch2pc-layerwise-thesis:0.1.0-...` также не

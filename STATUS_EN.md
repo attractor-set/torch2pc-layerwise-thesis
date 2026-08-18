@@ -2,11 +2,25 @@
 
 [Русская версия](STATUS.md)
 
-## Current v1.0.0 status — 17 August 2026
+## Current v1.0.1 status — 18 August 2026
 
-This section is the **authoritative current repository status** before the
-`v1.0.0` release. Point-in-time blocks preserved below are historical
-traceability records and do not override this outcome.
+This section is the **authoritative current repository status**. The scientific
+content remains the T24 closure point and is unchanged in `v1.0.1`. Release
+`v1.0.1` adds the complete English rendering of the same dissertation, a
+machine-checkable RU/EN congruence gate, and separate `-ru.pdf` / `-en.pdf`
+release assets. No C01–C11 claim, epistemic status, experimental result, or
+scientific execution is changed or reopened.
+
+The authoritative document entrypoints are `thesis/main.tex` (RU) and
+`thesis/main_EN.tex` (EN). Both renderings are generated from the same frozen
+machine-readable scientific surface; equal pagination is not a semantic
+equivalence criterion.
+
+## Scientific closure point v1.0.0 — 17 August 2026
+
+This historical block records the scientific closure point published in
+`v1.0.0`. It is retained for traceability and does not override the current
+bilingual `v1.0.1` publication surface.
 
 The scientific narrative was closed by T24 and merged into `main` without any
 change to the assured tree:
@@ -74,7 +88,7 @@ preregistered protocol with its own identifier.
 The former append-only status ledger is preserved below. Statements such as
 “current,” `open=false`, “execution remains closed,” historical image versions,
 and intermediate Stage/QWake transition states describe the time of their own
-entry. They are provenance, not the current `v1.0.0` state.
+entry. They are provenance, not the current `v1.0.1` state.
 
 
 As of 23 July 2026, the immutable Stage 1/2, Stage 3A, Stage 3B B0,

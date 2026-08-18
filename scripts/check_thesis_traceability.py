@@ -46,7 +46,14 @@ def fail(errors: list[str], detail: str) -> None:
 def chapter_label_index() -> dict[str, Path]:
     index: dict[str, Path] = {}
     duplicates: set[str] = set()
+    # Claim-to-section bindings are defined against the canonical Russian
+    # dissertation source. The English rendering intentionally reuses the same
+    # LaTeX labels in a separate document, so it must not be folded into this
+    # single-document label namespace. RU/EN correspondence is enforced by
+    # check_thesis_language_congruence.py instead.
     for path in sorted(CHAPTERS.glob("*.tex")):
+        if path.name.endswith("_EN.tex"):
+            continue
         text = path.read_text(encoding="utf-8")
         for label in LABEL_RE.findall(text):
             if label in index:

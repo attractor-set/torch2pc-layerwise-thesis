@@ -1,0 +1,71 @@
+This dissertation presents a layer-wise study of predictive-coding (PC) regimes
+relative to backpropagation (BP) under comparable computational conditions. The work keeps
+four analytical dimensions separate: similarity of final behavior, similarity
+of internal mechanism, computational cost, and the possibility of replacing the
+remaining canonical iterative suffix before normal completion with a registered
+bounded analytic completion while preserving the required response. To connect
+internal state observations to a compute-control decision, two bounded theoretical
+constructs are introduced. PC-TREF defines task-relative state equivalence, full
+sufficiency of a diagnostic representation on the registered domain, and a
+narrower selective sufficiency condition for a specific action. PC-CATM describes
+correction formation, transport, and cancellation channels. QWake-PC operationalizes
+these foundations as a compute-control architecture; only its bounded FixedPred
+instantiation, QWake-FP, is evaluated empirically. In QWake-FP, the early action
+selects the registered analytic completion
+\nolinkurl{fixedpred_eta1_wavefront_completion_v1} instead of the remaining
+canonical iterative sweeps; the complete exact suffix
+\nolinkurl{complete_suffix_stage2_baseline_v1} remains the reference and fallback
+path.
+
+The experimental program is organized as a sequence of preregistered and versioned
+stages. Stage~1 and Stage~2 compare BP, Exact, FixedPred, and Strict under controlled
+conditions. Stage~3A examines layer-wise gradients and representations, while
+Stage~3B localizes state-inference cost and evaluates exact computational-replacement
+candidates through registered equivalence gates. The final QWake-FP branch separates
+three questions: whether the sealed trajectory surface contains preterminal records
+whose states make the registered analytic-completion action task-admissible; whether
+a non-zero subset can be selectively recognized from the pre-action state with zero
+observed dangerous accepts on the frozen calibration surface; and whether that
+decision yields positive aggregate net saving under frozen full decision-cost
+accounting.
+
+Within the investigated conditions, FixedPred showed higher observed similarity to
+BP than Strict in gradient direction and learned representations, while its
+early-layer gradient norm was substantially reduced. Stage~3B profiling associated
+a substantial share of the measured PC cost with state inference; subsequent B1/B2
+candidates passed their registered equivalence gates, and the matched profiling
+matrix was completed without retries. The registered engineering-continuation
+screen then qualified 0 of 16 configurations in each of the four
+B1/B2-by-FixedPred/Strict groups, and both candidates received
+\texttt{reject\_or\_revise}; this bounded negative result is not interpreted as a
+superiority claim for the baseline.
+
+In QWake-FP, the sealed surface contained preterminal records whose states made the
+registered analytic-completion action task-admissible, and non-zero selective
+pre-action recognizability with zero observed dangerous accepts was found within the
+frozen family of 2,625 scalar rules on 756 calibration records. Of these, 264 rules
+had non-zero coverage with zero dangerous accepts, and the highest-coverage rule
+among rules with zero observed dangerous accepts covered 216 of 756 calibration
+records (28.57\%). That rule uses only \texttt{compute\_step >= 5}; therefore C08
+establishes a temporal boundary equivalent to a fixed prefix on this surface, not
+input-dependent adaptivity or superiority of PC-CATM features. Structural
+reconciliation shows that these 216 records comprise 108 preterminal records at
+step 5 with one remaining sweep and 108 records at the terminal boundary step 6.
+Thus, 28.57\% remains the registered full-surface coverage and is not interpreted
+as preterminal analytic-action coverage. No rule achieved positive aggregate net
+saving under the frozen full decision-cost accounting. The full cost assigned to
+the highest-coverage zero-danger rule was overwhelmingly observer-dominated; no C2
+rule freeze was established, and confirmatory C3 therefore remained closed.
+
+The negative economic result is specific to the frozen full-cost accounting used in
+C2 and does not measure the marginal runtime cost of a minimal recognizer. The
+dissertation therefore supports the presence of preterminal records whose states
+make the registered analytic-completion action task-admissible and non-zero selective
+pre-action recognizability with zero observed dangerous accepts on the frozen
+calibration surface; rejects the existence of a rule with zero observed dangerous accepts,
+non-zero coverage, and positive aggregate net saving within the frozen C2 family under
+that accounting regime; and leaves marginal implementation viability as a separate
+untested estimand.
+
+\noindent\textbf{Keywords:} predictive coding, backpropagation, layer-wise analysis,
+computational cost, analytic completion, traceability.

@@ -1,0 +1,27 @@
+\chapter*{List of Abbreviations and Symbols}
+\addcontentsline{toc}{chapter}{List of Abbreviations and Symbols}
+
+\begin{description}
+  \item[BP] backpropagation.
+  \item[PC] predictive coding.
+  \item[Exact] studied PC regime with the exact computational relation defined by the Torch2PC implementation.
+  \item[FixedPred] PC regime with predictions fixed during iterative state inference.
+  \item[Strict] studied strict PC regime defined by the project protocol.
+  \item[CKA] centered kernel alignment, a representation-similarity measure.
+  \item[RSA] representational similarity analysis; this work uses the correlation-based form registered for Stage~3A.
+  \item[VJP] vector--Jacobian product.
+  \item[ROCm] AMD software platform for GPU computing used in the frozen Stage~3B environment.
+  \item[CI] continuous integration; in the repository it is also the canonical mechanism for building and validating the dissertation artifact.
+  \item[B0] baseline Stage~3B profiling surface.
+  \item[B1/B2] exact Stage~3B implementation candidates; passing a separate equivalence gate does not change candidate status before the final engineering decision.
+  \item[SI-MA0/SI-MA1] sequential stages for mechanistic attribution and observer-cost calibration for iterative state inference.
+  \item[NCZ] null-contribution zone: the exact trivial part of the correction-zero set in which all canonical channels are zero; the numerical protocol separately uses a registered neighborhood of low channel activity.
+  \item[ECZ] error-cancellation zone: the exact non-trivial part of the correction-zero set in which non-zero channels sum to zero; the numerical protocol separately uses a registered active cancellation neighborhood.
+  \item[TNZ] transport-null zone: a non-zero error source in the kernel of the adjoint transport operator to the state, producing a zero upper channel.
+  \item[D/U/S] QWake-FP shadow-decision semantics: \code{DONE}, \code{UNKNOWN}, and \code{SWEEP}.
+  \item[PC-TREF] Predictive-Coding Task-Relative Equivalence Framework; links a diagnostic state representation to an admissible computational action.
+  \item[PC-CATM] Predictive-Coding Correction Aggregation and Transport Model; describes mechanistic sources of diagnostic features.
+  \item[QWake-PC] proper name of the compute-budget control architecture using the PC-TREF sufficiency criterion and PC-CATM mechanistic features; it does not denote a single fixed algorithm.
+  \item[QWake-FP] bounded shadow instantiation of QWake-PC for the registered FixedPred case evaluated in the dissertation.
+  \item[C1/C2/C3] sequential QWake-FP stages: trajectory and post-action-label collection, offline evaluation of frozen decision rules, and a conditionally opened confirmatory stage.
+\end{description}

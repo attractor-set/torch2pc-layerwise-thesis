@@ -1,0 +1,110 @@
+\chapter{Reproducibility and Traceability}
+\label{app:reproducibility-en}
+
+\section{Purpose of the Appendix}
+
+Reproducibility is separated into two levels. The first is \emph{document
+reproducibility}: from a specific Git repository state, thesis-facing data contracts
+are checked, deterministic LaTeX tables are rendered, and the PDF is built. The
+second is \emph{scientific traceability}: dissertation claims are linked either to
+tracked scientific summaries or to frozen evidence identities whose integrity was
+previously established. These levels must not be conflated: rebuilding the PDF is
+not rerunning a scientific experiment.
+
+\section{Canonical Document Build Path}
+
+The primary repository entry point for the Russian dissertation is
+\begin{verbatim}
+make thesis
+\end{verbatim}
+and the English rendering is built with
+\begin{verbatim}
+make thesis-en
+\end{verbatim}
+Both targets render language-specific tables from the same frozen thesis data before
+XeLaTeX: \code{scripts/build_thesis_assets.py} produces the Russian assets and
+\code{scripts/build_thesis_assets_en.py} produces the English assets. The underlying
+validation checks the claim contract, the thesis-facing QWake C2 summary, SHA-256 bindings to
+tracked Stage~1/2/3 evidence, two locally available QWake bindings, and five frozen
+identities of sealed QWake C2 materials. Local files are re-hashed; for sealed
+materials absent from the ordinary source tree, preserved identities and their format
+are checked instead. Only after those checks pass are files under
+\code{thesis/generated/} created. Generated files are not committed to Git and do not
+constitute independent scientific evidence.
+
+Data contracts can be checked without LaTeX through
+\begin{verbatim}
+make thesis-check
+\end{verbatim}
+The canonical CI build additionally records the Git commit and tree, toolchain
+versions, PDF signature and size, and SHA-256 of each concrete language artifact.
+
+\section{Evidence Layers Used by the Dissertation}
+
+Two compact machine-readable layers are used:
+\begin{itemize}
+  \item \code{thesis/data/core_results_verified_summary.json}, a projection of Stage~1/2/3 results. Each tracked source artifact has an expected SHA-256 that is rechecked during the build;
+  \item \code{thesis/data/qwake_c2_verified_summary.json}, a compact representation of the sealed QWake C2 result and independently verified aggregates. The build reconciles C08--C11 statuses against the frozen selection result, highest-coverage zero-danger-rule aggregates, and the protocol boundary without rerunning rule evaluation or changing the accounting model. The file is explicitly marked \code{not_new_scientific_evidence}.
+\end{itemize}
+
+The complete QWake verification material is intentionally not copied into the ordinary
+dissertation source tree. The locally available frozen C1 request and QWake-FP
+contract are re-hashed and must match their expected SHA-256 values. For five other C2
+materials, frozen artifact, receipt, selected-rule, and common decision-cost-sequence
+identities are retained; their source bytes are not claimed to be locally reverified
+by this build. This makes the exact sealed result referenced by the text verifiable
+without implying that the compact thesis JSON replaces the primary scientific
+material.
+
+The build exposes this boundary through separate machine signals:
+\code{THESIS_QWAKE_LOCAL_SOURCE_BINDINGS=2/2_PASS} for the two locally re-hashed
+files and \code{THESIS_QWAKE_SEALED_IDENTIFIERS_PRESENT=5/5_PASS} for the five
+preserved identities. Their joint provenance consistency is reported as
+\code{THESIS_PROVENANCE_CONTRACT=PASS}; this does not mean that all seven QWake
+materials are present as bytes in the current repository state.
+
+\section{Bound Sources and Checksums}
+
+The following table is generated directly from the thesis data contracts and keeps
+the two categories separate: tracked Stage~1/2/3 source artifacts plus two local
+QWake sources whose SHA-256 values are recomputed, and five frozen identities of
+sealed QWake C2 materials whose source bytes are outside the ordinary local thesis
+build surface.
+
+\input{generated/reproducibility_manifest_EN}
+
+\section{QWake Protocol Boundaries}
+
+For QWake C2 the following protocol facts are frozen: no C2 rule was frozen, C3 was
+not opened, and neither automatic retry nor authorization reuse is permitted.
+Therefore dissertation reproducibility does not include rerunning C2 or transitioning
+to C3. Any future experiment on marginal recognizer cost requires a new estimand, a
+new protocol, and a new evidence chain; it is not a continuation of the closed C2
+invocation.
+
+\section{Minimal Verification of the Resulting PDF}
+
+After a successful build, a concrete artifact can be identified with
+\begin{verbatim}
+pdfinfo thesis/main_EN.pdf
+sha256sum thesis/main_EN.pdf
+\end{verbatim}
+The SHA-256 identifies that concrete PDF. Byte-identical PDFs across independent build
+environments are not claimed by the current process as a scientific result. Content
+reproducibility rests on the exact Git source state together with successful data and
+provenance-contract checks.
+
+\section{Practical Independent Verification}
+
+An independent reader can verify the document by:
+\begin{enumerate}
+  \item obtaining the exact Git commit;
+  \item running \texttt{make thesis-check} and confirming the claim, arithmetic, QWake protocol-boundary, and core-result binding checks;
+  \item running the epistemic-language and bilingual-congruence checks used by CI;
+  \item in an environment with XeLaTeX/Biber, running \texttt{make thesis-en};
+  \item checking PDF metadata and SHA-256;
+  \item for a disputed numerical claim, tracing the generated table to the thesis JSON and then to the referenced source artifact or frozen scientific identity.
+\end{enumerate}
+This procedure makes the path from prose to evidence explicit while preserving the
+boundary between documenting completed research and initiating new scientific
+execution.

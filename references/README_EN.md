@@ -3,12 +3,12 @@
 [Русская версия](README.md)
 
 This public directory is the canonical bibliography surface for dissertation
-`v1.0.0`. It contains bibliographic metadata and source traceability, not
+`v1.0.1`. It contains bibliographic metadata and source traceability, not
 redistributed article PDFs.
 
 Local PDFs may be stored in `references/pdfs/`, which is ignored by Git.
 
-For the `v1.0.0` release, the bibliography must pass a complete dissertation
+For the `v1.0.1` release, the bibliography must pass a complete dissertation
 build with no undefined citations. A machine build does not replace substantive
 verification against primary sources. Any later bibliography change requires:
 

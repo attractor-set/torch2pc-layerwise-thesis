@@ -7,7 +7,7 @@ implementations and is excluded from Git. Historical dissertation experiments
 used a pinned Torch2PC checkout with a full commit identity and separate
 environment/provenance bindings.
 
-The dissertation release `v1.0.0` does not require recloning Torch2PC and does
+The dissertation release `v1.0.1` does not require recloning Torch2PC and does
 not authorize rerunning completed scientific protocols.
 
 A new independent experiment must separately:

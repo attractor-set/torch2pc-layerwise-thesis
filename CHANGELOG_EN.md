@@ -4,7 +4,16 @@
 
 ## [Unreleased]
 
-No changes have been recorded after `v1.0.0` yet.
+No changes after `v1.0.1` yet.
+
+## [1.0.1] — 2026-08-18
+
+### Complete English dissertation rendering
+
+- Added a complete English rendering of the dissertation with the separate `thesis/main_EN.tex` entrypoint and English chapters, appendices, and generated tables.
+- Added a machine-enforced RU/EN structural and scientific-semantic congruence gate; C01–C11 statuses and inference boundaries are unchanged.
+- The release contract now publishes two language-explicit PDF assets, `-ru.pdf` and `-en.pdf`, with independent SHA-256 values and one shared commit/tree manifest.
+- No scientific execution is reopened; `v1.0.1` is a language/publication extension of the scientifically closed `v1.0.0` state.
 
 ## [1.0.0] — 2026-08-17
 

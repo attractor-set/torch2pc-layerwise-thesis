@@ -1,0 +1,437 @@
+\chapter{Research Methodology}
+\label{chap:methodology-en}
+
+This chapter translates the theoretical constructs of Chapter~\ref{ch:related-work}
+into observables, decision rules, and admission boundaries. Every principal claim
+preserves the same path: theoretical construct $\rightarrow$ operational definition
+$\rightarrow$ experiment $\rightarrow$ result $\rightarrow$ interpretation. The
+C01--C11 correspondence is additionally registered in
+\code{thesis/data/thesis\_traceability.json}.
+
+\section{Principles of the Research Design}
+
+The methodology is organized around four principles: prior specification, separation
+of data roles, preservation of negative results, and reproducible artifact provenance.
+They are not imposed as one immutable protocol over the entire multi-month program;
+rather, they form a sequence of versioned contracts. Completed Stage~1/2 work is not
+rewritten when Stage~3 opens, and later mechanistic-attribution and QWake questions
+receive their own freeze and admission boundaries.
+
+The Stage~1/2 specification fixes the primary statistical unit, datasets, principal
+contrasts, registered operational equivalence margin, pilot-selection rules, and the
+first admissible point of access to the final test set. Stage~3 is added through a
+separate protocol. SI-MA0, SI-MA1, B1/B2, and QWake inherit established results as
+predecessor evidence but do not redefine them retrospectively.
+
+The experiment sequence is therefore treated as a directed claim chain. A new stage
+may support, refine, or restrict interpretation of an earlier result, but it cannot
+make an unsuccessful or negative predecessor ``cease to exist''.
+
+\section{Evolution of Research Scope and Historical Branches}
+\label{sec:method-scope-evolution-en}
+
+The root \code{HYPOTHESES.md} and \code{ROADMAP.md} preserve the history of a broader
+research program and therefore contain historical RQ1--RQ11, Scenario~A,
+PC-TREF/PC-CATM, and several exploratory directions. These identifiers are not in
+one-to-one correspondence with the final dissertation RQ1--RQ3. The final questions
+consolidate only branches that form a completed evidence chain or were explicitly
+narrowed by a later protocol.
+
+\begin{longtable}{@{}L{0.19\textwidth}L{0.31\textwidth}L{0.39\textwidth}@{}}
+\toprule
+Historical branch & Final role & Dissertation status \\
+\midrule
+\endfirsthead
+\toprule
+Historical branch & Final role & Dissertation status \\
+\midrule
+\endhead
+RQ1: quality & RQ1, Stage~1/2 & Included: paired macro-F1 equivalence and the cross-version quality/runtime surface. \\
+RQ2: gradients; RQ3: representations & RQ1, Stage~3A & Included as layer-wise gradient analysis and CKA/RSA analysis. \\
+RQ4: cost; RQ6: locality; RQ7: organization of exact computation & RQ2, Stage~3B & Included through B0, SI-MA0/1, B1/B2, and matched profiling. \\
+RQ5: robustness to noise, blur, and occlusion & Separate early branch & Not included in the final completed evidence chain; no independent dissertation claim is made. \\
+RQ8: adaptive budget & RQ3, QWake-FP & Narrowed: instead of general adaptive stopping, the work tests task-relative admissibility, pre-action recognizability with zero observed dangerous accepts, and economics under frozen accounting. \\
+RQ9: periodic VJP updates & Historical planned family & Not included in the final confirmatory chain; absence of a result is not treated as a negative experiment. \\
+RQ10: approximate feedback & Conditional exploratory branch & Outside the final primary claim contract. \\
+RQ11: predict--correct acceleration & Design-history/ADR branch & Not formulated as a completed confirmatory dissertation claim. \\
+PC-TREF/PC-CATM and QWake-PC & Theoretical framework for RQ3 & Included: PC-TREF defines task-relative equivalence and representation sufficiency; PC-CATM defines mechanistic feature sources; QWake-PC links them to computational action. Only bounded QWake-FP is evaluated empirically. \\
+\bottomrule
+\end{longtable}
+
+This reconciliation is important when interpreting repository history. A branch absent
+from the final claim contract is not automatically a rejected hypothesis; it may be a
+historically planned or exploratory direction, replaced by a narrower estimand, or
+left outside the completed evidence chain. Only results explicitly bound to final
+RQ1--RQ3 and the machine-readable claim contract are used as dissertation conclusions.
+
+\section{Statistical Unit and Repeated Measurements}
+\label{sec:method-stat-unit-en}
+
+For Stage~1/2 and the corresponding Stage~3 comparisons, the independent statistical
+unit is an independently trained model identified by \texttt{model\_seed}. Batches,
+layers, states, tensor elements, and repeated measurements within one model are not
+independent replications.
+
+This distinction is essential for layer-wise analysis. Stage~3A creates many layer and
+metric observations, but confirmatory comparisons are first aggregated at model level
+and only then paired across matching \texttt{model\_seed} values. Linear depth slopes
+and cross-layer matrices may be used descriptively but do not increase the number of
+independent models.
+
+The original Stage~1/2 protocol requires at least ten complete pairs. A recommendation
+procedure could increase, but not decrease, the number before final test access. The
+confirmatory Stage~3A uses \texttt{model\_seed}=0--9; this limit is propagated into
+the inference boundary.
+
+\section{Datasets, Architecture, and Computational Domain}
+
+FashionMNIST is the primary Stage~1/2 dataset and MNIST the secondary dataset. The
+primary architecture is \texttt{lenet\_classic}. Principal contrasts compare
+FixedPred and Strict with BP, while Exact serves as a technical and secondary control.
+These conditions define the empirical domain of the dissertation and are not claimed
+to be universal properties of PC.
+
+Stage~3A retains FashionMNIST, \texttt{lenet\_classic}, and ten model seeds but moves
+from final metrics to layer-wise gradients and representations. Stage~3B uses a
+separate frozen ROCm/float32 environment and execution matrices designed for
+mechanism, runtime, and memory measurements. A change of analytical level therefore
+receives a new protocol and freeze rather than silently extending an earlier estimand.
+
+\section{Separation of Pilot, Validation, Test, and Post-action Oracle Roles}
+\label{sec:method-data-separation-en}
+
+In Stage~1/2, the pilot phase uses validation data. The final test set becomes
+available only after the \texttt{pilot-freeze}, which records commit, computational
+environment, selected parameters, configuration hashes, preregistration, and analysis
+plan. Configuration changes after inspecting the final test set do not replace the
+original confirmatory analysis and require a separate exploratory identifier.
+
+QWake adds a second distinction between \emph{pre-action input} and
+\emph{post-action oracle verification}. A rule may use only the preregistered
+representation available before the action. The oracle label is produced after the
+action to audit sufficiency and evaluate dangerous accepts, but it is not an input
+feature of the rule. Recognizability is therefore tested without direct access by the
+decision rule to the target label against which action admissibility is subsequently
+checked.
+
+\section{Stage~1/2: Comparative Protocol}
+\label{sec:method-stage12-en}
+
+Stage~1/2 establishes the initial comparison surface. Each independently trained model
+is compared using predefined metrics and contrasts. The primary quality metric is
+macro-F1. In equivalence testing, the equivalence margin is ordinarily tied to the
+smallest effect meaningful for the research question \cite{lakens2017equivalence}.
+Here, an operational margin of \(\delta=0.01\) is preregistered for the paired
+difference between a method and BP. It is a protocol tolerance, not a universal
+practical-significance threshold for macro-F1.
+
+For model seed \(s\), define the paired difference
+\[
+  d_s=m_{\mathrm{PC},s}-m_{\mathrm{BP},s}.
+\]
+Failure to detect a difference from zero is not treated as equivalence. Equivalence is
+admissible only with at least ten complete pairs and when the 90\% confidence interval
+for the mean paired difference lies entirely within
+\[
+  [-\delta,\delta]=[-0.01,0.01].
+\]
+
+For primary contrasts the work reports model-level values, mean paired difference,
+95\% confidence interval, Cohen \(d_z\), an exact sign-permutation test for a small
+number of non-zero pairs or the preregistered Wilcoxon approximation, and Holm
+correction for primary contrasts. Difference testing and practical-equivalence testing
+therefore serve different logical functions.
+
+Failed and repeated runs are retained append-only. A later technical rerun does not
+turn the first terminal failure into a successful independent replication and does not
+increase \(n\).
+
+\section{Stage~3A: Layer-wise Confirmatory Analysis}
+\label{sec:method-stage3a-en}
+
+Stage~3A tests how well final behavior reflects internal computational structure.
+Gradient diagnostics include cosine similarity, norm ratio, relative \(L_2\) error,
+and sign agreement; representation diagnostics use CKA and RSA. Comparisons are made
+against registered BP references. Exact has a separate numerical-control tolerance.
+
+Confirmatory inference is based on model-level aggregates. For depth dependence,
+Spearman correlation is computed separately within each trained model and inference
+is then performed over the set of model-level coefficients. Cross-layer CKA matrices
+are retained descriptively rather than treated as an additional family of independent
+confirmatory tests.
+
+The stage therefore does not ask whether algorithms are simply ``the same''. It asks
+which gradient and representation components are preserved or changed in the
+registered implementation and configuration.
+
+\section{Stage~3B: From Profiling to Mechanistic Attribution}
+\label{sec:method-stage3b-en}
+
+Stage~3B moves the primary estimand to computational mechanism and the cost vector. B0
+freezes the canonical ROCm/float32 baseline for FixedPred and Strict. Measurements
+include time, memory, and structural execution decomposition, while mathematical
+locality and execution locality remain distinct properties.
+
+After B0, the question becomes whether a representation of \texttt{state\_inference}
+can be informative enough for a decision about subsequent exact sweeps while remaining
+computationally economical. This is addressed through a sequential mechanistic-
+attribution program.
+
+\subsection{SI-MA0 and SI-MA1}
+
+SI-MA0 tests the registered primary attribution model. Passing some structural or
+recognition checks while failing \texttt{COST-MA0} is not reclassified as an overall
+positive result: the negative criterion is preserved and motivates a separate
+calibration rather than retrospective threshold adjustment.
+
+SI-MA1 independently evaluates observer-cost calibration. A signed residual is
+permitted as a diagnostic quantity; a negative residual is interpreted as
+\emph{over-closure} relative to the calibration equation, not negative physical cost
+and not ``free'' budget for a future controller. This distinction is carried into
+B1/B2 and QWake accounting.
+
+\subsection{B1/B2 and Matched Profiling}
+
+After SI-MA1, exact implementation candidates receive separate preregistered
+contracts. B1 is \texttt{isolated\_layer\_vjp}; B2 is \texttt{composite\_vjp}. Each
+candidate must pass its own equivalence gate before entering the shared comparison
+matrix. No prior direction is assumed for the tradeoff among locality, runtime, and
+memory.
+
+Matched B0/B1/B2 profiling is executed as 288 cells corresponding to 96 matched
+blocks. The purpose is to compare alternative computational organizations on one
+registered surface without mixing the equivalence tolerance with the later engineering
+comparison.
+
+\subsection{Operationalizing PC-TREF and PC-CATM in QWake-FP}
+\label{sec:method-task-relative-sufficiency-en}
+
+The operationalization preserves theoretical role separation. PC-CATM motivates
+mechanistic observables; PC-TREF defines a testable sufficiency relation relative to
+a computational action; QWake-FP defines a bounded experimental decision mechanism.
+Observing a feature is therefore not permission to take the early action, and action
+admissibility is not evidence of positive savings.
+
+The theoretical definitions in Sections~\ref{sec:theory-pc-tref}--
+\ref{sec:theory-tref-catm-link} are not redefined here. The QWake-FP branch does not
+test full sufficiency of the entire diagnostic representation. It tests the narrower
+selective question of whether a rule over registered pre-action FixedPred state can
+identify a non-zero region on which the registered analytic completion passes the
+post-action reference comparison.
+
+In PC-TREF terms, the complete canonical suffix
+\nolinkurl{complete_suffix_stage2_baseline_v1} is the exact counterfactual reference,
+and the registered early action
+\nolinkurl{fixedpred_eta1_wavefront_completion_v1} belongs to the
+\texttt{ANALYTIC\_COMPLETION} family. Both branches start from disposable forks of
+the same snapshot; required responses are materialized and the registered comparator
+checks the analytic candidate against the exact suffix. \texttt{EARLY\_ADMISSIBLE}
+means that the candidate passes this comparison, whereas
+\texttt{CONTINUE\_REQUIRED} means it does not. Thus the early action replaces the
+remaining canonical iterative sweeps with analytic computation; it does not mean zero
+further computation. The post-action label defines the required decision class but is
+unavailable to the rule before action. The exact suffix also remains the fallback and
+does not collapse the two required classes.
+
+Pre-action features form \(\phi_I(x)\). For a rule \(\pi\), its early-accept region
+\(A_{\pi}(a_{\mathrm{early}})\) is checked against the admissible-action region
+\(S_{a_{\mathrm{early}}}\). In C2, zero observed dangerous accepts refers only to
+the 756 frozen calibration records and is not a statistical population-risk guarantee.
+
+PC-CATM motivates a subset of possible features: channel activity and resulting
+correction, mutual cancellation, and inter-layer transport can distinguish states that
+look identical under a simple residual norm. C2, however, does not test PC-CATM as a
+universal model and need not use its complete feature set. The rule family is frozen
+in advance and the result is bounded to that family.
+
+QWake-FP cost accounting follows the same semantics. Runtime of the analytic candidate
+is included in the registered compute-cost component together with observation and
+control components. What is avoided is the exact iterative suffix, not all
+post-decision computation. C09 therefore compares replacement of one computational
+path by another rather than comparing ``zero-cost stopping'' with full continuation.
+
+Thus, existence of task-admissible preterminal states, selective recognizability of a
+region with zero observed dangerous accepts on the calibration surface, and economic
+viability remain three sequential tests. Zero observed dangerous accepts checks only
+the finite observed manifestation of
+\(A_{\pi}(a_{\mathrm{early}})\subseteq S_{a_{\mathrm{early}}}\); full PC-TREF
+sufficiency on the registered \(\Omega\) is not inferred.
+
+\section{QWake-FP: C1 Calibration Surface and Bounded C2 Rule Search}
+\label{sec:method-qwake-en}
+
+QWake-FP is the experimental specialization of QWake-PC. After Stage~3B shows the
+importance of observation cost and \texttt{state\_inference} structure, the problem
+is split into three tests: whether the sealed trajectory surface contains preterminal
+records for which the registered analytic completion is admissible relative to the
+required response of the exact suffix; whether a non-zero subset can be recognized
+from already available pre-action state with zero observed dangerous accepts; and
+whether that decision pays for itself relative to the residual exact computation.
+
+\subsection{C1: Sealed Trajectory Surface}
+
+C1 creates calibration evidence containing pre-action observations, measured cost
+edges, residual-computation cost, and post-action oracle labels. Its scientific role
+is not to select a rule but to create an immutable surface on which C2 can search
+without changing trajectories after seeing rule-selection outcomes.
+
+The registered C1 time axis includes decision epochs \(t\in[0,K_{\mathrm{ref}}]\).
+Let \(\rho_{j,t}\in\mathcal R_{C1}\) denote a record and
+\(x(\rho_{j,t})\in\mathcal X\) its contained pre-action state. The terminal boundary
+\(t=K_{\mathrm{ref}}\) therefore belongs to the calibration record surface with zero
+remaining sweeps. The set of state values
+\(\Omega_{C1}:=\{x(\rho):\rho\in\mathcal R_{C1}\}\) is not identified with the set
+of records and need not have the same cardinality. Structurally preterminal records
+satisfy \(t<K_{\mathrm{ref}}\), equivalently
+\texttt{remaining\_sweeps > 0}; define
+\[
+  \mathcal R_{\mathrm{pre}}
+  =\{\rho_{j,t}\in\mathcal R_{C1}:t<K_{\mathrm{ref}}\}.
+\]
+Registered C2 coverage is defined over the complete record surface
+\(\mathcal R_{C1}\), including the terminal boundary, and is not the fraction of
+preterminal applications of the registered analytic action. This distinction is used
+only to interpret the already frozen surface: terminal records are not removed and the
+C2 estimand and cost model are not recomputed.
+
+C1 data provenance and provenance of later executors are distinct. A new executor must
+prove compatibility with predecessor evidence but does not rewrite the provenance of
+already sealed C1 artifacts.
+
+\subsection{C2: Frozen Rule Family}
+
+C2 evaluates a finite family of 2,625 frozen scalar rules. It includes a complete-
+rejection rule and one-dimensional threshold rules over preregistered numerical
+features available before action; threshold search is bounded to values frozen before
+C2 execution. The post-action oracle, measured outcomes, and confirmatory or test-stage
+data are not admissible inputs to rule generation.
+
+For a rule \(\pi\), let
+\begin{itemize}
+  \item \(n_{\mathrm{acc}}(\pi)\) be the number of accepted records;
+  \item \(n_{\mathrm{danger}}(\pi)\) be the number of dangerous accepts---records for which the rule proposes the early action but the post-action oracle assigns \texttt{CONTINUE\_REQUIRED};
+  \item \(n_{\mathrm{eval}}\) be the total number of evaluated records;
+  \item \(\Delta_{\mathrm{net}}(\pi)\) be aggregate net saving.
+\end{itemize}
+Coverage is
+\[
+  \operatorname{cov}(\pi)=\frac{n_{\mathrm{acc}}(\pi)}{n_{\mathrm{eval}}}.
+\]
+
+For a sealed record \(i\), the frozen accounting model defines
+\[
+  g_i(\pi)=
+  \begin{cases}
+    \tau_i^{\mathrm{rem}}-\kappa_i,&\text{if the early action is accepted and not dangerous},\\
+    -\kappa_i,&\text{otherwise},
+  \end{cases}
+\]
+where \(\tau_i^{\mathrm{rem}}\) is registered residual-computation time and
+\(\kappa_i\) is full decision cost aggregated from measured edges. Then
+\[
+  \Delta_{\mathrm{net}}(\pi)=\sum_i g_i(\pi).
+\]
+
+The temporal part of \(\kappa_i\) is decomposed into frozen categories
+\[
+  \kappa_i=\kappa_i^{\mathrm{compute}}+\kappa_i^{\mathrm{latency}}+
+  \kappa_i^{\mathrm{diagnostic}}+\kappa_i^{\mathrm{observer}}+
+  \kappa_i^{\mathrm{control}}+\kappa_i^{\mathrm{fallback}}.
+\]
+Memory is a separate component of the cost vector and is not added to nanoseconds.
+
+A rule is eligible for freezing only when
+\[
+  n_{\mathrm{danger}}(\pi)=0,\qquad
+  n_{\mathrm{acc}}(\pi)>0,\qquad
+  \Delta_{\mathrm{net}}(\pi)>0,
+\]
+and its result class is \texttt{SAFE\_AND\_BENEFICIAL}. If this set is empty, C2
+returns a bounded negative result and does not create \texttt{selected-policy.json}.
+
+\subsection{Interpretation Boundary of Full Decision-cost Accounting}
+
+C2 extracts decision cost from sealed C1 \texttt{measured\_edges}; the same per-record
+cost surface is therefore applied to every rule. This provides a controlled comparison
+and prevents post-outcome revaluation. It also fixes the estimand boundary: C2 tests
+economic viability under \emph{frozen full decision-cost accounting}, not the
+separately measured marginal runtime overhead of a specific simple recognizer.
+
+Consequently, the negative C2 result is not used as evidence that a minimal
+implementation of the simple rule is itself economically non-viable. That is a
+separate question with status \texttt{not\_tested}.
+
+\section{Negative Results and the C3 Boundary}
+\label{sec:method-negative-en}
+
+A negative result is terminal for its frozen protocol and is not an automatic reason
+to broaden the search. After C2, no additional threshold search is performed, the cost
+model is not changed, and features are not added to obtain a desired positive outcome
+within the same campaign.
+
+C3 is a confirmatory stage only for a rule established by a C2 rule-freeze receipt. A
+bounded negative C2 result leaves the \texttt{protocol\_receipt\_kind} value
+corresponding to a rule freeze absent, so the receipt chain does not open C3. Absence of
+C3 is therefore a consequence of preregistered protocol logic, not a missing positive
+experiment.
+
+Historical infrastructure failures are likewise not reinterpreted as scientific
+results. The one-shot authorization/admission model distinguishes failure before host
+claim, terminal failure after authorization consumption, and successfully sealed
+scientific execution. Infrastructure repair requires a new provenance line and new
+admission rather than silent reuse of consumed authorization.
+
+\section{Artifact Provenance and Reproducibility}
+\label{sec:method-provenance-en}
+
+For every significant stage, available source and environment identities are recorded:
+Git commit and tree, environment state or container-image digest, runtime manifest,
+request hash, authorization binding, host claim, terminal receipt, and artifact
+checksums. Where a protocol requires one-shot execution, automatic retry is forbidden
+and authorization consumption is retained independently of later scientific
+materialization success.
+
+This scheme serves two purposes. First, it binds a scientific result to a particular
+executable state. Second, it prevents a repaired later implementation from silently
+claiming provenance of earlier evidence. This is essential in a long sequential
+program where the scientific predecessor can remain valid even if the executor of a
+later stage changes for infrastructure reasons.
+
+\section{Thesis-facing Evidence and CI Build}
+\label{sec:method-thesis-ci-en}
+
+The complete evidence set is not copied into LaTeX as manually maintained numbers.
+The dissertation uses a small Git-tracked layer. The file
+\texttt{thesis/data/research\_claims.json} stores research question, status, scope,
+and evidence link for principal claims. For final QWake C2,
+\texttt{thesis/data/qwake\_c2\_verified\_summary.json} stores independently verified
+aggregates and frozen hashes and is explicitly marked as not creating new scientific
+evidence.
+
+Before XeLaTeX, CI checks schemas, arithmetic identities, and protocol boundaries and
+then deterministically renders thesis-facing LaTeX assets. The PDF is built from
+Git-tracked source in a separate process, receives SHA-256, and is retained as a CI
+artifact. This build is read-only relative to scientific evidence: it may not execute
+C1/C2, change cost accounting, regenerate rules, or open C3.
+
+Document reproducibility is thus distinct from experimental reproducibility but linked
+through verifiable identities. The dissertation can be rebuilt after editorial
+changes without new scientific execution, while scientific claim-contract changes
+remain visible as ordinary Git differences.
+
+\section{Methodological Limitations}
+\label{sec:method-limitations-en}
+
+Ten model seeds do not turn layer-wise observations into additional independent
+replications. FashionMNIST and \code{lenet_classic} in the frozen ROCm environment do
+not justify automatic transfer of numerical or runtime findings to other datasets,
+architectures, or hardware. Equivalence gates establish only the registered numerical
+relations of specific implementation candidates, not universal equivalence of
+algorithm classes.
+
+For QWake-FP, two boundaries are most important. First, the bounded negative C2 result
+concerns a finite frozen scalar-rule family and is not proof that no zero-danger
+recognizer can exist. Second, the full decision-cost surface from C1 is not the
+measured marginal overhead of a particular production recognizer. These limitations
+must not be repaired by post-hoc re-accounting inside the completed campaign; they
+define properly separated future research directions.

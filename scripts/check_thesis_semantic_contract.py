@@ -158,11 +158,9 @@ def check_theory_layer_separation(sources: dict[Path, str]) -> list[str]:
 
 def check_qwake_rule_vocabulary() -> list[str]:
     errors: list[str] = []
-    abstracts = (THESIS / "frontmatter" / "abstracts.tex").read_text(encoding="utf-8")
-    _, separator, english_abstract = abstracts.partition(r"\begin{otherlanguage}{english}")
-    if not separator:
-        fail(errors, "QWake rule vocabulary", "English abstract boundary is missing")
-        return errors
+    english_abstract = (
+        THESIS / "frontmatter" / "abstract_en_content.tex"
+    ).read_text(encoding="utf-8")
 
     policy_match = re.search(r"\bpolic(?:y|ies)\b", english_abstract, flags=re.IGNORECASE)
     if policy_match:
@@ -196,7 +194,10 @@ def check_qwake_rule_vocabulary() -> list[str]:
 
 def check_qwake_action_semantics() -> list[str]:
     errors: list[str] = []
-    abstracts = (THESIS / "frontmatter" / "abstracts.tex").read_text(encoding="utf-8")
+    abstracts = "\n".join(
+        (THESIS / "frontmatter" / name).read_text(encoding="utf-8")
+        for name in ("abstract_ru_content.tex", "abstract_en_content.tex")
+    )
     related = RELATED_WORK.read_text(encoding="utf-8")
     methodology = METHODOLOGY.read_text(encoding="utf-8")
     experiments = (THESIS / "chapters" / "04_experiments.tex").read_text(encoding="utf-8")

@@ -10,10 +10,13 @@ on:
       - "results/**"
       - "Makefile"
       - "scripts/build_thesis_assets.py"
+      - "scripts/build_thesis_assets_en.py"
       - "scripts/check_thesis_semantic_contract.py"
       - "scripts/check_thesis_traceability.py"
+      - "scripts/check_thesis_language_congruence.py"
       - "tests/unit/test_thesis_semantic_contract.py"
       - "tests/unit/test_thesis_traceability.py"
+      - "tests/unit/test_thesis_language_congruence.py"
       - ".github/workflows/thesis.yml"
 
   push:
@@ -27,10 +30,13 @@ on:
       - "results/**"
       - "Makefile"
       - "scripts/build_thesis_assets.py"
+      - "scripts/build_thesis_assets_en.py"
       - "scripts/check_thesis_semantic_contract.py"
       - "scripts/check_thesis_traceability.py"
+      - "scripts/check_thesis_language_congruence.py"
       - "tests/unit/test_thesis_semantic_contract.py"
       - "tests/unit/test_thesis_traceability.py"
+      - "tests/unit/test_thesis_language_congruence.py"
       - ".github/workflows/thesis.yml"
 
   workflow_dispatch:
@@ -56,6 +62,7 @@ jobs:
       - name: Validate thesis-facing evidence
         run: |
           python3 scripts/build_thesis_assets.py --check
+          python3 scripts/build_thesis_assets_en.py --check
 
       - name: Validate thesis semantic contract
         run: |
@@ -64,6 +71,10 @@ jobs:
       - name: Validate thesis claim traceability
         run: |
           python3 scripts/check_thesis_traceability.py
+
+      - name: Validate RU/EN thesis congruence
+        run: |
+          python3 scripts/check_thesis_language_congruence.py
 
       - name: Validate epistemic language
         run: |
@@ -95,34 +106,29 @@ jobs:
           xelatex --version | head -n 2
           biber --version
 
-      - name: Build thesis
+      - name: Build both thesis renderings
         run: |
-          make thesis
+          make thesis-all
 
       - name: Verify LaTeX references
         run: |
           python3 - <<'PY'
           from pathlib import Path
 
-          log = Path("thesis/main.log").read_text(encoding="utf-8", errors="replace")
-          blg_path = Path("thesis/main.blg")
-          blg = blg_path.read_text(encoding="utf-8", errors="replace") if blg_path.is_file() else ""
-
           findings = []
-          for marker in (
-              "There were undefined references.",
-              "There were undefined citations.",
-          ):
-              if marker in log:
-                  findings.append(marker)
-          for line in log.splitlines():
-              if "LaTeX Warning:" in line and "undefined" in line:
-                  findings.append(line.strip())
-          for line in blg.splitlines():
-              if "WARN -" in line and "database entry" in line:
-                  findings.append(line.strip())
+          for stem in ("main", "main_EN"):
+              log = Path(f"thesis/{stem}.log").read_text(encoding="utf-8", errors="replace")
+              blg_path = Path(f"thesis/{stem}.blg")
+              blg = blg_path.read_text(encoding="utf-8", errors="replace") if blg_path.is_file() else ""
+              local = []
+              for marker in ("There were undefined references.", "There were undefined citations."):
+                  if marker in log:
+                      local.append(marker)
+              local.extend(line.strip() for line in log.splitlines() if "LaTeX Warning:" in line and "undefined" in line)
+              local.extend(line.strip() for line in blg.splitlines() if "WARN -" in line and "database entry" in line)
+              print(f"THESIS_{stem.upper()}_UNRESOLVED_REFERENCE_COUNT={len(local)}")
+              findings.extend(f"{stem}: {item}" for item in local)
 
-          print(f"THESIS_UNRESOLVED_REFERENCE_COUNT={len(findings)}")
           for finding in findings:
               print(f"THESIS_REFERENCE_FINDING={finding}")
           print(f"THESIS_REFERENCES={'PASS' if not findings else 'FAIL'}")
@@ -135,12 +141,12 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
 
-          log = Path("thesis/main.log").read_text(encoding="utf-8", errors="replace")
-          overfull = [line.strip() for line in log.splitlines() if "Overfull" in line and "hbox" in line]
-          underfull = [line.strip() for line in log.splitlines() if "Underfull" in line and "hbox" in line]
-
-          print(f"THESIS_OVERFULL_COUNT={len(overfull)}")
-          print(f"THESIS_UNDERFULL_COUNT={len(underfull)}")
+          overfull = []
+          for stem in ("main", "main_EN"):
+              log = Path(f"thesis/{stem}.log").read_text(encoding="utf-8", errors="replace")
+              local = [line.strip() for line in log.splitlines() if "Overfull" in line and "hbox" in line]
+              print(f"THESIS_{stem.upper()}_OVERFULL_COUNT={len(local)}")
+              overfull.extend(f"{stem}: {item}" for item in local)
           for finding in overfull:
               print(f"THESIS_OVERFULL_FINDING={finding}")
           print(f"THESIS_TYPOGRAPHY={'PASS' if not overfull else 'FAIL'}")
@@ -148,25 +154,19 @@ jobs:
               raise SystemExit(2)
           PY
 
-      - name: Verify PDF
+      - name: Verify PDFs
         run: |
           python3 - <<'PY'
           from pathlib import Path
 
-          pdf = Path("thesis/main.pdf")
-
-          checks = {
-              "THESIS_PDF_EXISTS": pdf.is_file(),
-              "THESIS_PDF_NONEMPTY": pdf.is_file() and pdf.stat().st_size > 0,
-              "THESIS_PDF_MAGIC": (
-                  pdf.is_file()
-                  and pdf.read_bytes()[:5] == b"%PDF-"
-              ),
-          }
-
+          checks = {}
+          for language, relative in (("RU", "thesis/main.pdf"), ("EN", "thesis/main_EN.pdf")):
+              pdf = Path(relative)
+              checks[f"THESIS_{language}_PDF_EXISTS"] = pdf.is_file()
+              checks[f"THESIS_{language}_PDF_NONEMPTY"] = pdf.is_file() and pdf.stat().st_size > 0
+              checks[f"THESIS_{language}_PDF_MAGIC"] = pdf.is_file() and pdf.read_bytes()[:5] == b"%PDF-"
           for name, value in checks.items():
               print(f"{name}={'PASS' if value else 'FAIL'}")
-
           if not all(checks.values()):
               raise SystemExit(2)
           PY
@@ -174,10 +174,12 @@ jobs:
       - name: PDF metadata
         run: |
           pdfinfo thesis/main.pdf
+          pdfinfo thesis/main_EN.pdf
 
       - name: Artifact identity
         run: |
           sha256sum thesis/main.pdf | tee thesis/main.pdf.sha256
+          sha256sum thesis/main_EN.pdf | tee thesis/main_EN.pdf.sha256
 
           echo
           printf 'SOURCE_COMMIT='
@@ -186,20 +188,25 @@ jobs:
           printf 'SOURCE_TREE='
           git rev-parse HEAD^{tree}
 
-          printf 'THESIS_PDF_SHA256='
+          printf 'THESIS_RU_PDF_SHA256='
           sha256sum thesis/main.pdf | cut -d' ' -f1
 
-      - name: Upload dissertation PDF
+          printf 'THESIS_EN_PDF_SHA256='
+          sha256sum thesis/main_EN.pdf | cut -d' ' -f1
+
+      - name: Upload dissertation PDFs
         uses: actions/upload-artifact@v7
         with:
           name: dissertation-${{ github.sha }}
           path: |
             thesis/main.pdf
             thesis/main.pdf.sha256
+            thesis/main_EN.pdf
+            thesis/main_EN.pdf.sha256
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload LaTeX log on failure
+      - name: Upload LaTeX logs on failure
         if: failure()
         uses: actions/upload-artifact@v7
         with:
@@ -207,5 +214,7 @@ jobs:
           path: |
             thesis/main.log
             thesis/main.blg
+            thesis/main_EN.log
+            thesis/main_EN.blg
           if-no-files-found: ignore
           retention-days: 14

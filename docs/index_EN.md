@@ -2,7 +2,7 @@
 
 [Русская версия](index.md)
 
-This is the documentation portal for the completed `v1.0.0` dissertation.
+This is the documentation portal for the completed bilingual `v1.0.1` dissertation.
 Current public pages describe the post-T24 state. Historical plans,
 [execution](glossary_EN.md#term-execution) requests, ADRs, and freeze records are
 retained as research provenance and are not the current plan.
@@ -14,9 +14,10 @@ retained as research provenance and are not the current plan.
 - [Research questions](research-question_EN.md) — RQ1–RQ3 and final answers;
 - [Methodology](methodology_EN.md) — completed validation sequence;
 - [Glossary](glossary_EN.md) — normative term meanings;
-- [Repository validation](validation_EN.md) — current checks and `v1.0.0` release;
+- [Repository validation](validation_EN.md) — current checks and `v1.0.1` release;
 - [Roadmap](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/ROADMAP_EN.md) — follow-up research only;
-- `thesis/main.tex` — canonical dissertation source;
+- `thesis/main.tex` — Russian dissertation entrypoint;
+- `thesis/main_EN.tex` — complete English entrypoint for the same dissertation;
 - `thesis/data/thesis_traceability.json` — machine-readable C01–C11 traceability.
 
 ## Final research questions
@@ -75,10 +76,12 @@ subdirectory READMEs. Files named `analysis-plan`, `publication-plan`,
 old protocols, and execution requests are historical records and are not
 rewritten to match final outcomes.
 
-## `v1.0.0` release
+## `v1.0.1` release
 
 `scripts/check_public_surface.py` validates the current public surface and
 `scripts/check_release_contract.py` validates the release contract.
-`scripts/build_release.sh` produces the source archive, final PDF, SHA-256
-records, Git commit/tree metadata, and `release-manifest.json`. The GitHub
-workflow for tag `v1.0.0` publishes those artifacts as a GitHub Release.
+`scripts/build_release.sh` produces the source archive, separate Russian and
+English PDFs, their SHA-256 records, Git commit/tree metadata, and
+`release-manifest.json`. The GitHub workflow for tag `v1.0.1` publishes both
+language artifacts as one GitHub Release. `v1.0.1` does not change C01–C11
+relative to the scientifically closed `v1.0.0`.

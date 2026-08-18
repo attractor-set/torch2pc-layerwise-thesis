@@ -42,7 +42,7 @@ SI_MA0_GPU_OUTPUT_DIR ?= results/stage-3/si-ma0/working/si-ma0-gpu-smoke
         control-cpu control-gpu run smoke pilot select-pilot pilot-observations \
         apply-pilot-selection final-plan freeze-pilot final diagnostics report manifest docs \
         docs-en jupyter lint \
-        typecheck test thesis thesis-data thesis-check article release release-check clean status epistemic-check \
+        typecheck test thesis thesis-en thesis-all thesis-data thesis-check article release release-check clean status epistemic-check \
         freeze-environment configure-stage2 prepare-stage2 freeze-stage2-environment \
         control-stage2-cpu control-stage2-gpu stage2-plan freeze-stage2 final-stage2 \
         snapshot-stage2 report-stage2 manifest-stage2 compare-stages bundle-stage2 \
@@ -113,7 +113,9 @@ help:
 	  '  public-surface-check  Validate final v1.0.0 public entry points' \
 	  '  report                Build experiment reports' \
 	  '  manifest              Build artifact manifests' \
-	  '  thesis                Build the dissertation' \
+	  '  thesis                Build the Russian dissertation' \
+	  '  thesis-en             Build the complete English dissertation' \
+	  '  thesis-all            Build both Russian and English dissertations' \
 	  '  article               Build the article' \
 	  '  status                Show experiment and Git status' \
 	  '  clean                 Remove local generated caches'
@@ -218,14 +220,22 @@ public-surface-check:
 
 thesis-check:
 	python3 scripts/build_thesis_assets.py --check
+	python3 scripts/build_thesis_assets_en.py --check
 	python3 scripts/check_thesis_semantic_contract.py
 	python3 scripts/check_thesis_traceability.py
+	python3 scripts/check_thesis_language_congruence.py
 
 thesis-data:
 	python3 scripts/build_thesis_assets.py
+	python3 scripts/build_thesis_assets_en.py
 
 thesis: thesis-data
 	cd thesis && latexmk -xelatex -interaction=nonstopmode main.tex
+
+thesis-en: thesis-data
+	cd thesis && latexmk -xelatex -interaction=nonstopmode main_EN.tex
+
+thesis-all: thesis thesis-en
 
 article:
 	cd article && latexmk -pdf -interaction=nonstopmode manuscript_EN.tex

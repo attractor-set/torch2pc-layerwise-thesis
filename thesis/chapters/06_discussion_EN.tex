@@ -1,0 +1,386 @@
+\chapter{Discussion}
+\label{ch:discussion}
+
+This chapter interprets previously reported results and introduces no new experimental
+decisions. Any strengthening of wording remains bounded by the corresponding C01--C11
+status; \texttt{descriptive} and \texttt{not\_tested} are not converted into supported
+hypotheses here.
+
+The results are not treated as a single ranking of the investigated regimes but as a
+sequence of answers to RQ1--RQ3. The central line of the dissertation is the separation
+of levels that are easy to conflate: final model behavior, internal gradient and
+representation structure, computational-cost structure, mechanistic attribution of
+that cost, and the possibility of using intermediate state to control residual
+computation. Chapters~\ref{ch:experiments-en} and \ref{ch:results-en} show that moving
+between these levels requires a separate estimand and experimental boundary.
+
+\section{RQ1: Proximity to BP Is Not One-dimensional}
+\label{sec:discussion-rq1-en}
+
+C01 and C02 together give a coherent but irreducibly multidimensional picture from
+Stage~1/2 and Stage~3A. In Stage~1 on FashionMNIST, final macro-F1 values of the
+investigated regimes were close, and the registered paired equivalence analysis for
+FixedPred and Strict relative to BP lay inside the preregistered \(\pm0.01\) margin.
+Stage~2 preserved the registered final-quality surface while the runtime ratio relative
+to BP changed. Quality and the price of obtaining it are therefore already distinct.
+
+Stage~3A explains why practical equivalence of a final metric cannot substitute for
+internal equivalence. FixedPred gradient direction remains close to BP in the studied
+domain, but early-gradient norm is strongly reduced. Strict shows more visible
+disagreement in hidden-gradient direction and representation measures. C02 therefore
+concerns concrete coordinates of internal state---gradient direction, gradient scale,
+and representation similarity---rather than a general claim of ``algorithm
+equivalence''.
+
+This result is consistent with the literature boundary in Chapter~\ref{ch:related-work}.
+Theoretical PC/BP relations depend on concrete dynamics, initialization, and update
+ordering \cite{whittington2017approximation,song2020exact,millidge2022arbitrary,
+rosenbaum2022relationship,rosenbaum2025correction}. The empirical contribution here is
+an executable counterpart to that distinction: even when final metrics do not separate
+regimes beyond a registered operational boundary, gradient and representation
+diagnostics can distinguish their internal trajectories.
+
+The answer to RQ1 is therefore conditional. Some regimes and metrics show proximity to
+BP in the studied domain, but the domain of that proximity depends on analytical
+level. Exact serves as numerical and technical control. FixedPred has closer observed
+agreement with BP than Strict in gradient direction and representations in registered
+Stage~3A, but it does not preserve early-gradient scale. These observations are not
+collapsed to one scalar score and are not transferred beyond the studied
+implementations, datasets, and model seeds.
+
+\section{RQ2: From Runtime Difference to Cost Localization and Attribution}
+\label{sec:discussion-rq2-en}
+
+RQ2 follows from a limitation of RQ1: an observed runtime difference does not reveal
+which part of computation creates it or whether that part can be changed while
+preserving registered behavior.
+
+B0 localizes the principal device-time region to \texttt{state\_inference}. On the
+frozen ROCm/float32 matrix, Strict has higher device time and peak allocated memory than
+FixedPred, and \texttt{state\_inference} dominates device time for both regimes. The
+independent B0 unit is \texttt{model\_seed}, with three seeds per configuration;
+runtime and memory ratios are therefore interpreted as descriptive engineering
+estimates on the registered profiling surface rather than highly precise population
+estimates. C03 is localization of observed cost within a concrete execution environment,
+not independent proof of a causal mechanism or a universal cost claim for every PC
+implementation. Mechanistic attribution is tested only in the following SI-MA0/SI-MA1
+stages.
+
+The SI-MA0 $\rightarrow$ SI-MA1 sequence has methodological importance of its own. The
+initial SI-MA0 mechanistic cost-attribution model fails the registered COST-MA0 gate.
+That negative result is preserved as C04 and is not replaced by later calibration. C05
+(\texttt{supported}) records the independent SI-MA1 calibration, which asks the
+narrower question of whether observer-cost calibration passes CAL-COST-MA1. It does in
+the registered domain. The signed residual is interpreted as over-closure relative to
+the accounting equation, not negative physical duration. The residual is therefore not
+converted into artificial ``budget'' for later stages.
+
+B1 and B2 add another separation: functional admissibility is tested before comparative
+profiling. Passage of EQ-B1 and EQ-B2 supports C06 only for the corresponding exact
+candidates. The 288-cell matched profiling surface then completes with no failed or
+repeated runs. The registered engineering-continuation screen applied to four groups of
+16 configurations yields 0/16 qualified configurations in every group; both candidates
+receive \texttt{reject\_or\_revise}. C07 records this result as \texttt{descriptive}.
+
+Stage~3B therefore exposes a difference among admission levels: numerical and trajectory
+equivalence of B1/B2 does not guarantee passage of the registered multi-component
+resource-continuation screen. This is not a claim that
+\texttt{stage2\_baseline} is superior. The publication boundary explicitly forbids a
+superiority claim, and \texttt{reject\_or\_revise} concerns continuation of the studied
+candidates on the registered engineering matrix only.
+
+Taken together, RQ2 receives a sequential localization rather than one ``main source of
+cost''. B0 identifies \texttt{state\_inference}; cost attribution then keeps the failed
+initial model distinct from observer calibration; exact candidates next pass their own
+numerical and trajectory gates but neither passes the separate engineering-continuation
+screen on the studied matrix. This organization reduces the risk of conflating
+correctness, mechanistic attribution, and engineering acceptability: numerical
+equivalence does not imply resource admissibility under the registered screen.
+
+Recent literature reinforces that PC efficiency and scaling are independent research
+axes. iPC changes temporal update order for stability and efficiency
+\cite{salvatori2024stable}; PCX systematizes scalability benchmarking
+\cite{pinchetti2025benchmarking}; $\mu$PC addresses training of networks deeper than
+one hundred layers \cite{innocenti2025mupc}; and ePC examines digital cost and signal
+propagation with depth \cite{goemaere2026epc}. These works do not explain the B0 or
+Stage~3A mechanisms in the present study. In particular, the reduced early-gradient
+norm of FixedPred is not identified with the signal attenuation discussed in ePC; such
+a causal comparison would require a separate experiment sharing a mechanistic
+diagnostic.
+
+\section{RQ3: Sufficiency, Recognizability, and Economics}
+\label{sec:discussion-rq3-en}
+
+The final QWake-FP question is a bounded empirical test of the selective PC-TREF case,
+not proof of full sufficiency on the registered domain
+$E_I|_\Omega\subseteq E_R|_\Omega$. It separates three levels: presence of
+preterminal records whose states belong to \texttt{EARLY\_ADMISSIBLE}; ability to
+select a non-zero subset of that class on the frozen calibration surface with zero
+observed dangerous accepts; and economic viability of the decision mechanism. The
+levels are logically related but not interchangeable.
+
+Structural reconciliation of the temporal surface identifies exactly which accepted
+records support the first two levels. The frozen C1 request defines 108 trajectories,
+and the full surface contains seven epochs \(t=0,\ldots,6\) per trajectory. The
+highest-coverage zero-danger rule, \texttt{compute\_step >= 5}, accepts two epochs: 108
+records at \(t=5\), where one sweep remains, and 108 terminal-boundary records at
+\(t=6\). Because the rule has zero registered dangerous accepts, the 108 step-5 records
+form an explicitly preterminal accepted subset with zero observed dangerous accepts.
+The presence of preterminal states for which the early action is admissible is therefore
+supported without relying on the terminal boundary.
+
+Within the frozen family of 2,625 scalar rules, non-zero calibration recognizability
+with zero observed dangerous accepts exists: 265 rules have zero dangerous accepts and
+264 of those also have non-zero coverage. The highest-coverage rule's registered
+coverage remains 216/756 (about 28.57\%), but that quantity refers to the full C1
+surface and includes 108 terminal records; it is not the fraction of preterminal early
+actions. These findings support C08 in two bounded senses: preterminal records exist on
+the studied surface for which the registered analytic completion is required-response
+equivalent to the exact suffix, and the frozen family contains a pre-action signal that
+selectively identifies a non-zero preterminal subset with zero observed dangerous
+accepts. In PC-TREF terms, the observed finite manifestation on the preterminal surface
+is
+\[
+  \{\rho\in\mathcal R_{\mathrm{pre}}:\pi(x(\rho))=a_{\mathrm{early}}\}
+  \subseteq
+  \{\rho\in\mathcal R_{\mathrm{pre}}:x(\rho)\in S_{a_{\mathrm{early}}}\},
+\]
+not proof of full sufficiency of \(\phi_I\) on \(\Omega\). It also establishes no
+statistical safety beyond the 756 calibration records.
+
+The economic level receives a different answer. None of the 2,625 rules simultaneously
+satisfies zero dangerous accepts, non-zero coverage, and positive aggregate net saving
+under frozen full decision-cost accounting. C09 is therefore rejected within the exact
+C2 estimand. This is a bounded negative result: it excludes such a rule only within the
+studied family, interpreter, evidence surface, and accounting model, not across all
+possible recognizers or implementations.
+
+C08 and C09 must therefore not be merged. If zero-danger recognizability had been absent
+even on the calibration surface, there would be no empirical basis here for a later
+engineering question about a cheaper recognizer. If C09 had been supported, C2 could
+have frozen a rule and opened confirmatory C3. The observed result lies between these
+extremes: a non-zero zero-danger calibration region exists, but the frozen accounting
+makes every evaluated rule economically non-beneficial. Bounded informational
+viability is supported; economic viability under this accounting is not.
+
+The result must also be mapped correctly to theory. It is not a negative result for
+PC-TREF: the non-zero calibration region with zero observed dangerous accepts shows
+that, within the studied family and surface, the diagnostic representation contains
+information sufficient for a subset of decisions. It does not falsify PC-CATM because
+C2 does not test universal correctness of that mechanistic model. Nor does C2 provide
+positive evidence that PC-CATM features are superior: the highest-coverage zero-danger
+rule uses only \texttt{compute\_step >= 5}, not channel activity, resulting correction,
+cancellation coefficient, or transport measures. The result therefore does not show
+that PC-CATM features are necessary or better than a simple trajectory-progress
+indicator. Moreover, \texttt{compute\_step >= 5} is a fixed-prefix temporal rule and
+does not demonstrate input-content-dependent adaptivity. PC-CATM remains a
+mechanistically motivated diagnostic feature system; direct confirmatory comparison of
+its NCZ/ECZ/TNZ and transport/cancellation features was not performed. Their comparative
+value for compute control requires a separately preregistered feature comparison.
+
+\section{Observer-cost Dominance and Its Interpretation Boundary}
+\label{sec:discussion-observer-cost-en}
+
+Cost decomposition of the highest-coverage zero-danger rule localizes the barrier in C2.
+Under frozen accounting, aggregate full decision cost is about 15,096 seconds, while
+the registered \texttt{remaining\_suffix\_ns} sum over accepted non-dangerous records
+is about 4.98 seconds. Approximately 99.887\% of full decision cost belongs to the
+observer category. Break-even with the same registered suffix sum would require about
+99.967\% reduction of the accounted cost.
+
+The 4.98-second quantity is not identified with pure time of avoidable iterative sweeps.
+The accepted set includes the terminal boundary \(t=6\), where remaining sweeps are
+zero even though measured \texttt{remaining\_suffix\_ns} may include service work of
+exact completion and accounting. The structural reconciliation therefore does not
+remove terminal records and does not recompute aggregate net saving or the original C2
+estimand.
+
+These quantities describe the frozen full decision-cost surface, not measured runtime
+of the single threshold comparison \texttt{compute\_step >= 5}. C2 assigns every rule
+the same per-record cost sequence derived from measured C1 edges. This provides a
+common outcome-independent accounting model: after seeing rule results, a preferred
+rule cannot be assigned a cheaper cost model. But the same design bounds the estimand.
+C09 is rejected under this registered full accounting, not under an unmeasured marginal
+runtime model for a lightweight recognizer.
+
+Consequently, the ratio of full decision cost to the registered suffix-time sum cannot
+be interpreted as the runtime ratio of a lightweight recognizer. C10 is therefore
+\texttt{not\_tested}. Testing it requires a new experiment in which the marginal
+observation/admission path is materialized, independently measured, and preregistered
+under the same dangerous-accept criterion. Recomputing old C2 post hoc with a lower cost
+would change the estimand after the outcome is known.
+
+\section{Significance of Negative Results}
+\label{sec:discussion-negative-results-en}
+
+The research line contains at least two scientifically meaningful negative tests:
+SI-MA0 and the QWake-FP C2 economic test. They serve different roles but jointly show
+why preservation of negative results matters for mechanistic interpretation.
+
+SI-MA0 bounds the first mechanistic cost-attribution model. Later SI-MA1 calibration
+does not turn COST-MA0 into a passed gate; it tests a new narrower construction.
+Likewise, the bounded-negative C2 does not become positive merely because cost
+decomposition reveals observer dominance. Decomposition explains \emph{where} the
+accounting barrier lies but does not change the original eligibility condition.
+
+This logic prevents two forms of post-hoc interpretation. A failed gate cannot be
+silently replaced by a new threshold and called the same test, and a diagnostic result
+cannot retroactively authorize a stage that the preregistered protocol opened only
+after a positive predecessor receipt. Absence of C3 is therefore part of the result:
+C11 remains \texttt{not\_tested} because C2 created no rule-freeze receipt.
+
+\section{QWake-PC/QWake-FP Relative to Adaptive Computation and Selective Prediction}
+\label{sec:discussion-related-qwake-en}
+
+QWake-PC is close to adaptive-computation and early-exit literature in its economic
+formulation: an extra decision mechanism is useful only when its cost is compensated by
+avoided computation \cite{graves2016adaptive,bolukbasi2017adaptive}. For PC
+specifically, Zniber et al. implement dynamic early exit from PC cycles using separate
+classifiers and a confidence threshold \cite{zniber2025earlyexit}. The dangerous-accept
+test also places QWake near selective prediction and risk-aware early exit, where
+coverage is considered jointly with risk
+\cite{geifman2019selectivenet,jazbec2024riskcontrol,valade2025eero}.
+
+Direct identification would nevertheless be incorrect. In EE-PCN and typical
+multi-exit networks, an intermediate prediction head is part of the model and may be
+trained specifically for early exit. QWake-FP C2 uses a bounded representation of an
+already existing PC iterative computation, available before action, while admissibility
+of the registered analytic completion is labeled by comparing its required response
+with the post-action exact-suffix required response. QWake-FP novelty is therefore not
+formulated as the first application of early exit to PC. The C2 dangerous-accept
+criterion is also a bounded empirical condition, not a statistical risk-control
+risk bound imported from the literature.
+
+The QWake-FP contribution in this dissertation is instead the experimental separation
+of three questions on one sealed surface: is the registered analytic replacement
+admissible relative to the exact required response; is a pre-action signal available
+that selects it with zero observed dangerous accepts; and does the decision pay under
+the preregistered accounting model? The answers differ, and that difference defines the
+next research direction.
+
+\section{Threats to Validity}
+\label{sec:discussion-validity-en}
+
+\subsection{Construct Validity}
+
+``Proximity to BP'', ``cost'', and ``safety'' are represented by concrete operational
+definitions. Proximity is evaluated separately through final metrics, gradient
+direction and magnitude, and representation similarity; none substitutes for all the
+others.
+
+In Stage~3B, cost is represented by registered device time, memory, observation, and
+accounting components. In QWake, safety means absence of dangerous accepts on sealed
+calibration evidence relative to a concrete post-action oracle. This is narrower than
+a statistical population-risk bound.
+
+\subsection{Internal Validity}
+
+Versioned protocols, frozen configurations, exact source/image identities, checksums,
+and admission gates reduce the risk of silent condition drift between stages. Matched
+designs further reduce mismatched execution conditions. The program nevertheless
+evolves over time: Stage~1/2, Stage~3A, Stage~3B, and QWake use different local
+estimands and instrumentation surfaces. Cross-stage relations are therefore interpreted
+as sequential narrowing, not as one monolithic experiment with an invariant measurement
+system.
+
+For QWake-FP, an important protection is separation of pre-action rule input from the
+post-action oracle. C2 is nevertheless a bounded calibration search, not independent
+confirmation. The absence of C3 limits generalization of zero-danger recognizability
+observed on the calibration surface.
+
+\subsection{Statistical Validity}
+
+Primary Stage~1/2 and Stage~3A results use ten independently trained models. B0 has a
+narrower replication base: \texttt{model\_seed} is the independent unit with three
+values per configuration, so its time and memory ratios are descriptive engineering
+estimates. Layer observations within one model are not independent replications. This
+prevents pseudoreplication but leaves limited power for small effects and limits
+precision across model seeds.
+
+Stage~1 separates difference testing from equivalence testing; failure to detect a
+difference is not evidence of equivalence. QWake-FP C2 is not a population-risk
+estimate: zero dangerous accepts refer to 756 sealed calibration records and the frozen
+rule family.
+
+\subsection{External Validity}
+
+The experimental domain is bounded to Torch2PC, FashionMNIST and MNIST,
+\code{lenet\_classic}, the concrete Exact/FixedPred/Strict implementations, the
+float32/ROCm profiling environment, and registered execution matrices. Other
+architectures, datasets, hardware, numerical precision, or PC dynamics can exhibit
+different gradient, representation, and cost behavior.
+
+The QWake-FP economic result has an especially narrow transfer boundary. Observer-cost
+dominance belongs to the C1/C2 measurement architecture. Another runtime architecture
+may change the ratio between observation cost and avoidable residual computation. C09
+must therefore travel only with its applicability boundary.
+
+\subsection{Reproducibility and Artifact Provenance}
+
+The repository stores tracked evidence, frozen specifications, and thesis-facing
+summaries with SHA-256 bindings to sources. CI checks selected aggregates before LaTeX
+generation. This reduces manual text/data drift but does not imply that every external
+reader can rerun every historical scientific execution without the original hardware
+environment and private or locally retained forensic artifacts.
+
+Scientific-result reproducibility and byte identity of a PDF are also distinct. The
+thesis CI identifies each concrete PDF by SHA-256; that checksum does not by itself
+establish byte determinism across independent builds.
+
+\section{What the Current Work Does Not Establish}
+\label{sec:discussion-nonclaims-en}
+
+To prevent claim expansion beyond the evidence surface, the dissertation explicitly
+does \emph{not} establish:
+\begin{itemize}
+  \item universal equivalence of PC and BP;
+  \item universal superiority of FixedPred, Strict, B1, or B2;
+  \item population-level safety from zero dangerous accepts in C2;
+  \item impossibility of a recognizer outside the frozen family of 2,625 rules;
+  \item marginal runtime cost of a simple threshold recognizer from the observer-dominated full decision cost;
+  \item execution or implicit passage of confirmatory C3.
+\end{itemize}
+These are part of the claim contract, not caveats added after the result. They define
+the boundary within which RQ1--RQ3 remain traceable to the registered evidence surface.
+
+\section{Directions for Future Work}
+\label{sec:discussion-future-en}
+
+The first follow-up question follows directly from C08, C09, and C10: can a lightweight
+recognizer preserve a preregistered dangerous-accept criterion on a new confirmatory
+surface at far lower marginal observation/decision cost? This requires a new
+preregistered estimand measuring the concrete recognizer's actual extra path. It must
+not revalue the old C2; it needs a new identifier, new cost surface, and its own
+break-even criterion.
+
+A second direction is independent confirmation of recognizability on a new evidence
+surface. It is meaningful only after a new eligible rule or recognizer exists and is
+not continuation of the closed original C3 chain.
+
+A third direction is broader external validity: additional datasets, architectures,
+depths, numerical-precision regimes, and hardware. The separation among behavioral
+proximity, internal mechanism, and cost should be preserved rather than transferring a
+claim from one analytical level to another.
+
+Mechanistic work can also profile alternative observer architectures and cheaper
+pre-action state representations. The scientifically relevant result would not be lower
+overhead alone, but preservation of the preregistered dangerous-accept condition under
+independent measurement.
+
+\section{Discussion Summary}
+
+The main interpretation of the completed program is that different notions of
+viability receive different answers. Behavioral proximity to BP is observed for some
+regimes and metrics but does not mean internal identity. Profiling localizes
+substantial cost, while exact alternative organizations, despite passing equivalence
+gates, receive \texttt{reject\_or\_revise} on a separate engineering-continuation
+screen; this is not baseline superiority. Finally, QWake finds bounded calibration
+recognizability with zero observed dangerous accepts, but frozen full decision-cost
+accounting admits no rule that combines the same condition with positive economic
+benefit.
+
+This is not an unfinished experimental program. The stopping rule worked as designed:
+absence of an eligible C2 rule closed the confirmatory chain, preserved C3 as
+\texttt{not\_tested}, and localized the next scientific question in a new estimand---
+the marginal cost of a recognizer preserving the preregistered dangerous-accept
+criterion.

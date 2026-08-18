@@ -1,0 +1,231 @@
+\chapter{Introduction}
+\label{chap:introduction-en}
+
+This introduction fixes the research problem, the three final research questions,
+and the claim boundaries before presenting results. Its purpose is to define the
+dependence between the theoretical constructs, the experimental stages, and the
+machine-readable C01--C11 contract; all numerical results reported later are bounded
+by that contract.
+
+\section{Research Motivation}
+
+Backpropagation (BP) remains the baseline computational mechanism for training
+multilayer neural networks. Predictive coding (PC), in contrast, denotes a class of
+models in which learning and inference are formulated through local states,
+prediction errors, and iterative dynamics. The relation between PC and BP has been
+studied both at the level of theoretical correspondences and executable algorithms
+\cite{rao1999predictive,whittington2017approximation,rosenbaum2022relationship,rosenbaum2025correction}.
+A practical assessment of that relation cannot stop at final model quality. At least
+three levels must be separated: behavior of the trained system, internal computational
+mechanism, and cost of obtaining the result.
+
+This dissertation performs such a multilevel comparison using Torch2PC. The initial
+task is to compare the \texttt{Exact}, \texttt{FixedPred}, and \texttt{Strict}
+regimes with BP under frozen algorithmic and computational conditions. As evidence
+accumulates, the research question is refined sequentially: from quality and
+numerical agreement, to layer-wise gradients and representations, then to localization
+of the cost of \texttt{state\_inference}, and finally, in the QWake-FP branch, to
+whether a selectively recognizable region permits replacement of the remaining
+canonical iterative computation without observed dangerous accepts and with positive
+computational benefit.
+
+This progression is essential. Similarity of final metrics does not prove similarity
+of internal computation; an observed runtime difference does not explain its
+mechanism; and an informative signal does not imply that observing and using it is
+economically worthwhile. To connect these levels, the work draws on established ideas
+of state abstraction, behavioral equivalence, and action-sufficient representations
+\cite{ferns2004metrics,li2006stateabstraction,huang2022actionsufficient,raman2026decisionrelevant}
+and specializes them to control of residual iterative PC computation. PC-TREF
+formalizes registered state equivalence relative to a required computational action
+and a sufficiency criterion for a diagnostic representation. PC-CATM describes the
+formation, transport, and mutual cancellation of correction channels in PC. QWake-PC
+uses these foundations as a compute-control architecture, and QWake-FP is the bounded
+shadow instantiation for FixedPred evaluated experimentally here. Full definitions and
+boundaries are given in Chapter~2.
+
+The dissertation is therefore not organized as a search for a single regime that
+must be ``better''. It is a sequence of increasingly narrow explanations with
+predefined criteria and explicit inference boundaries.
+
+\section{Research Problem}
+
+The central problem is that statements about the proximity of PC to BP can refer to
+different objects and are therefore not interchangeable. The following must be tested
+separately:
+\begin{itemize}
+  \item numerical agreement of technical controls and the executable implementation;
+  \item classification quality and stability across independently trained models;
+  \item direction and magnitude of layer-wise gradients;
+  \item similarity of internal representations;
+  \item runtime, memory, and localization of computational cost;
+  \item whether pre-action state can be used to control the residual compute budget under registered dangerous-accept barriers.
+\end{itemize}
+
+A further difficulty is the logic of negative results. Failure to detect a statistical
+difference is not evidence of equivalence. Likewise, failure to find an economically
+beneficial rule in a finite preregistered frozen family does not prove that no such
+solution exists. The dissertation therefore uses four mutually exclusive claim-status
+labels. \texttt{supported} means that the stated claim is supported by the registered
+test; \texttt{rejected} means that the tested hypothesis is rejected within its stated
+domain; \texttt{descriptive} permits descriptive reporting without classifying the
+result as a supported or rejected hypothesis; and \texttt{not\_tested} means that the
+admissible test was not performed. The status is stored in the machine-readable thesis
+contract and its meaning does not change between chapters.
+
+\section{Aim, Object, and Subject of the Study}
+
+\textbf{Aim.} To establish, within frozen conditions, where the investigated PC
+regimes are close to BP, localize computational differences and test their registered
+attribution to mechanisms and cost components, and determine whether state available
+before completion can support an early compute-control decision with zero observed
+dangerous accepts and positive economic benefit.
+
+\textbf{Object of study.} Executable training and inference regimes implemented in
+Torch2PC and compared with BP in a reproducible experimental environment.
+
+\textbf{Subject of study.} Numerical, statistical, layer-wise, and computational
+relations among BP, \texttt{Exact}, \texttt{FixedPred}, and \texttt{Strict}, including
+the cost structure of \texttt{state\_inference} and the bounded early-action problem
+under a registered dangerous-accept criterion.
+
+\section{Research Questions}
+\label{sec:intro-rq-en}
+
+The final dissertation is organized around three questions. They synthesize the
+successive preregistration and protocol stages and do not replace more detailed
+historical hypotheses of individual campaigns.
+
+\begin{description}
+  \item[RQ1.] Under which frozen algorithmic and computational conditions are Exact, FixedPred, and Strict close to BP, and under which conditions do differences exceed the predefined numerical or statistical boundaries?
+  \item[RQ2.] Where are computational differences among the investigated PC regimes localized, and with which mechanisms and cost components are they associated?
+  \item[RQ3.] Does the pre-completion trajectory surface contain states that are task-sufficient before normal completion; can a non-zero subset be recognized on the frozen calibration surface from pre-action state with zero observed dangerous accepts; and does such a decision yield positive computational benefit?
+\end{description}
+
+In the claim contract, RQ1 corresponds to C01--C02, RQ2 to C03--C07, and RQ3 to
+C08--C11. This mapping is used throughout as an end-to-end path from method to
+result, discussion, and conclusion.
+
+RQ1 links Stage~1/2 with Stage~3A: final comparative characteristics and technical
+controls are tested first, followed by gradients and representations. RQ2 covers
+Stage~3B: canonical profiling, mechanistic attribution, observer-cost calibration,
+exact B1/B2 candidates, and matched profiling. RQ3 concerns QWake-FP C1/C2 and has
+three logical levels: presence on the sealed trajectory surface of preterminal records
+whose states are task-sufficient for the registered early action; ability to recognize
+a non-zero subset from pre-action state with zero observed dangerous accepts on the
+frozen calibration surface; and economic viability after full decision-cost
+accounting.
+
+\section{Research Tasks}
+
+The study performs the following tasks:
+\begin{enumerate}
+  \item freeze a reproducible comparison protocol for BP and PC regimes with separate pilot, validation, final, and test phases;
+  \item validate numerical controls and execute Stage~1/2 comparative campaigns without interpreting absence of a difference as equivalence;
+  \item perform Stage~3A layer-wise analysis of gradients and representations at the level of independently trained models;
+  \item establish the Stage~3B computational-cost baseline and localize the contribution of \texttt{state\_inference};
+  \item execute a sequential mechanistic-attribution program while preserving negative results and separating observer, diagnostic, control, and exact-fallback costs;
+  \item validate exact B1/B2 candidates through independent equivalence gates and execute matched profiling;
+  \item construct a sealed QWake-FP calibration surface and evaluate a finite frozen family of rules that use only pre-action features, without access to the post-action oracle;
+  \item separate the inference that a pre-action signal with zero observed dangerous accepts exists on the calibration surface from the inference that it is economically beneficial under frozen accounting;
+  \item maintain traceability from claims to Git commit, environment and image identities, manifests, receipts, and checksums, while building the dissertation through a separate CI process as a reproducible document artifact.
+\end{enumerate}
+
+\section{Research Logic and Stages}
+\label{sec:intro-logic-en}
+
+The study has a sequential evidence structure. Each subsequent stage either refines
+the mechanistic interpretation of the previous result or tests a narrower condition
+of applicability.
+
+\begin{enumerate}
+  \item \textbf{Stage~1/2---behavior and reproducibility.} BP, Exact, FixedPred, and Strict are compared in the original and modified implementation under a predefined statistical unit and test-data access policy.
+  \item \textbf{Stage~3A---layer-wise diagnostics.} The comparison moves to gradient direction and magnitude, representation CKA/RSA, and depth dependence, separating final-result similarity from internal computational-trajectory similarity.
+  \item \textbf{Stage~3B---localization and cost.} B0 freezes the canonical cost baseline; SI-MA0 and SI-MA1 test mechanistic attribution and observer cost; B1/B2 test exact alternative organizations of computation; matched profiling places them on one comparable surface.
+  \item \textbf{QWake-FP C1/C2---decision.} The sealed C1 trajectory surface is used for a preregistered bounded search over C2 rules. The early action means selecting the registered bounded analytic completion instead of the remaining canonical iterative sweeps, not eliminating all further computation. Zero observed dangerous accepts, non-zero coverage, and positive aggregate net saving are tested separately. If no C2 rule is frozen, the protocol does not open C3.
+\end{enumerate}
+
+The final QWake-FP branch is therefore not an unrelated experiment. It follows from
+Stage~3B: once \texttt{state\_inference} is localized, the natural question is whether
+part of the exact iterative suffix can be replaced by a registered analytic completion
+without observed dangerous accepts, without spending more on the decision mechanism
+than the replacement can save.
+
+\section{Main Results and Contributions}
+\label{sec:intro-contributions-en}
+
+Within the investigated domain, the dissertation contributes the following:
+\begin{enumerate}
+  \item A single sequential experimental line from BP/PC comparison through layer-wise diagnostics and mechanistic attribution to compute-budget control with registered dangerous-accept barriers.
+  \item In Stage~1 on FashionMNIST, FixedPred and Strict fall inside the preregistered paired macro-F1 equivalence margin of \(\pm0.01\) relative to BP; Stage~2 preserves the registered final-quality surface while changing runtime. This behavioral baseline is fixed before internal-mechanism analysis.
+  \item In the registered Stage~3A domain, proximity of PC to BP depends on the analytical level. FixedPred shows higher observed similarity to BP than Strict in gradient direction and representations, while substantially reducing early-layer gradient norm; Strict diverges from BP in both direction and hidden-layer scale.
+  \item Stage~3B separates baseline cost from mechanistic attribution: the negative SI-MA0 result is preserved, SI-MA1 independently calibrates observer cost, and exact B1/B2 candidates pass their own equivalence gates before matched profiling. The subsequent registered engineering-continuation screen qualifies 0 of 16 configurations in every B1/B2-by-FixedPred/Strict group, and both candidates receive \texttt{reject\_or\_revise}. Numerical and trajectory equivalence therefore do not imply passage of the registered resource-continuation criterion.
+  \item QWake-FP experimentally separates the three RQ3 levels: presence of preterminal records whose states make the early action task-admissible; non-zero selective recognizability from pre-action state with zero observed dangerous accepts on 756 calibration records; and economic viability. The first two are supported in this bounded domain, but no rule simultaneously achieves zero dangerous accepts, non-zero coverage, and positive aggregate net saving under frozen full decision-cost accounting.
+  \item The economic interpretation of the negative C2 result is bounded to the frozen full-cost accounting. Economic non-viability of a minimal recognizer under marginal runtime cost was not tested and is not inferred from C2.
+  \item The research infrastructure provides a traceable and machine-verifiable artifact-provenance chain: stages are tied to commit and image identities, manifests, request and authorization boundaries, receipts, and checksums. Dissertation building is separated from scientific execution and consumes compact read-only summaries.
+\end{enumerate}
+
+\paragraph{Novelty boundary and empirical status.}
+The novelty claim is not that this is the first comparison of PC with BP, the first
+action-relative state abstraction, or the first early-exit method for PC. The
+contribution lies in a specialized formalization and a sequential evidence architecture
+in which behavior, mechanism, cost, action admissibility, recognizability, and
+economics are tested separately.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.27\textwidth}p{0.45\textwidth}p{0.20\textwidth}}
+\toprule
+Prior line & Addition in this work & Empirical status \\
+\midrule
+PC/BP comparison & behavior $\to$ mechanism $\to$ cost sequence with separate interpretation gates & C01--C07 \\
+Decision-preserving abstractions & PC-TREF as a PC-specific task-relative formalization and selective dangerous-accept criterion & bounded operationalization in C08 \\
+Adaptive computation and PC early exit & separate tests of action admissibility, pre-action recognizability, and full-decision economics & C08 supported; C09 rejected \\
+Mechanistic PC diagnostics & PC-CATM as a model of correction channels, transport, and cancellation & theoretical/\allowbreak diagnostic; feature superiority not tested \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Dissertation Claim Contract}
+\label{sec:intro-claims-en}
+
+To separate factual results from later interpretation, the principal dissertation
+claims carry explicit statuses. The table below is generated from
+\code{thesis/data/research_claims.json}. QWake-FP numerical boundaries are also bound
+to \code{thesis/data/qwake_c2_verified_summary.json}. This thesis-facing file contains
+independently verified aggregates and sealed C2 result identities; it is explicitly
+not new scientific evidence and does not replace the primary campaign artifacts.
+
+\input{generated/claims_matrix_EN}
+
+\section{Generalization Boundaries}
+\label{sec:intro-scope-en}
+
+The results are not interpreted as universal statements about predictive coding. They
+are bounded to the investigated Torch2PC versions, architectures, datasets, frozen
+hyperparameters, model seeds, data type, and computational environment. Stage~3A
+statistical results concern ten independently trained models and a registered domain
+using validation data only. Stage~3B profiling concerns the frozen ROCm/float32
+environment and its execution matrices.
+
+The QWake-FP boundary is particularly important. The bounded negative C2 result means
+that no rule with zero observed dangerous accepts and positive economic benefit was
+found only within the specific family of 2,625 frozen scalar rules, on the specific
+sealed calibration surface, under the specific interpreter and frozen full decision-
+cost accounting. It does not establish impossibility of every recognizer. Marginal
+runtime cost of a simple recognizer was not measured in this campaign, and C3 did not
+open because no C2 rule-freeze receipt existed.
+
+\section{Dissertation Structure}
+
+Chapter~2 reviews the literature on predictive coding, PC/BP relations, and internal-
+representation comparison, then develops the thesis-specific theoretical connection:
+PC-TREF defines task-relative equivalence and sufficiency criteria; PC-CATM remains a
+distinct linked mechanistic layer; and QWake-PC uses these foundations to formulate a
+computational action. Chapter~3 operationalizes the theory in the QWake-FP research
+design and defines the statistical unit, data-access rules, equivalence gates, cost
+accounting, and artifact provenance. Chapter~4 records the sequence of experimental
+stages. Chapter~5 reports results and links them to the claim contract. Chapter~6
+interprets the observed mechanisms, validity boundaries, and the bounded negative
+QWake-FP result. Chapter~7 answers the research questions and separates completed
+conclusions from future work. The appendices provide material needed for independent
+building and artifact verification.

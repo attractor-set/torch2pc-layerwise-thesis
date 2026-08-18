@@ -23,6 +23,7 @@ def test_public_surface_contract() -> None:
     assert "PUBLIC_DOC_INDEX_CURRENTNESS=PASS" in completed.stdout
     assert "PUBLIC_STRUCTURE_CURRENTNESS=PASS" in completed.stdout
     assert "PUBLIC_SUBREADME_CURRENTNESS=PASS" in completed.stdout
+    assert "PUBLIC_BILINGUAL_THESIS_SURFACE=PASS" in completed.stdout
     assert "THESIS_V1_PUBLIC_SURFACE=PASS" in completed.stdout
 
 

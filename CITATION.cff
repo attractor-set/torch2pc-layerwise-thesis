@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this research software or its results, please cite the archived release."
 title: "Torch2PC Layer-wise Thesis"
 type: software
-version: 1.0.0
-date-released: 2026-08-17
+version: 1.0.1
+date-released: 2026-08-18
 authors:
   - family-names: "Prychyna"
     given-names: "Dzmitry"
@@ -11,8 +11,8 @@ authors:
 repository-code: "https://github.com/attractor-set/torch2pc-layerwise-thesis"
 identifiers:
   - type: url
-    value: "https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/v1.0.0"
-    description: "GitHub Release for the final thesis v1.0.0 publication state."
+    value: "https://github.com/attractor-set/torch2pc-layerwise-thesis/releases/tag/v1.0.1"
+    description: "GitHub Release for the bilingual thesis v1.0.1 publication state."
 abstract: >
   Software, evidence, and dissertation sources for a protocol-first study of
   backpropagation and predictive-coding regimes in Torch2PC. The work separates

@@ -1,0 +1,219 @@
+\chapter{Conclusion}
+\label{ch:conclusion-en}
+
+This conclusion introduces no new empirical claims. It closes only chains already
+assigned statuses in C01--C11 and preserves the distinction among
+\code{supported}, \code{rejected}, \code{descriptive}, and
+\code{not_tested}.
+
+The dissertation aimed to compare the investigated predictive-coding regimes with BP
+within a frozen experimental domain, move from final metrics to internal computational
+organization, and test whether state available before normal completion could support
+an early compute-control decision under a registered dangerous-accept criterion and
+positive economic benefit. The work therefore proceeded through Stage~1/2, Stage~3A,
+Stage~3B, and QWake-FP C1/C2 with versioned protocols, separate admission gates, and
+preserved artifact provenance.
+
+\section{The PC-TREF, PC-CATM, and QWake-PC Theoretical Connection}
+
+Alongside its empirical results, the dissertation formulates a connection among
+separate theoretical levels linking the internal PC mechanism to a compute-budget
+decision. PC-CATM decomposes the resulting correction into structurally distinct
+channels, transport, and cancellation. PC-TREF uses a diagnostic representation of
+states and distinguishes the strong criterion of full representation sufficiency on
+the registered domain from narrower selective sufficiency for a specific action.
+QWake-PC occupies the next level and turns these criteria and available features into
+a proposal for a computational action.
+
+In QWake-FP, the required partition distinguishes \code{EARLY_ADMISSIBLE} from
+\code{CONTINUE_REQUIRED}. The first class means that the required response of the
+registered \code{ANALYTIC_COMPLETION}
+\nolinkurl{fixedpred_eta1_wavefront_completion_v1} is equivalent, within the
+registered tolerance, to the required response of the exact suffix
+\nolinkurl{complete_suffix_stage2_baseline_v1}. The early action therefore replaces
+the canonical iterative suffix with another computational path; it does not remove all
+further computation.
+
+These levels are intentionally not identified with one another. A PC-CATM diagnostic
+regime is not permission to take an early action; PC-TREF sufficiency does not guarantee
+economic benefit; and QWake-PC is not one fixed algorithm. The C1/C2 empirical result
+therefore concerns QWake-FP, a particular bounded shadow instantiation for FixedPred,
+and does not automatically transfer to the whole architecture or other PC regimes.
+PC-CATM remains theoretical/diagnostic in the current work: comparative superiority of
+its NCZ/ECZ/TNZ or other mechanistic features for compute control was not directly
+tested.
+
+\section{Answer to RQ1}
+\label{sec:conclusion-rq1-en}
+
+RQ1 asked under which frozen conditions Exact, FixedPred, and Strict are close to BP
+and where differences exceed selected boundaries.
+
+Stage~1/2 shows that similarity of final quality can coexist with differences in
+computational cost. In the registered paired FashionMNIST analysis, FixedPred and
+Strict fall inside the preregistered test-macro-F1 equivalence margin relative to BP.
+Stage~2 preserves the registered final-quality surface while changing runtime relative
+to BP.
+
+Stage~3A bounds the interpretation of this behavioral proximity. In the registered
+domain, FixedPred shows higher observed similarity to BP than Strict in gradient
+direction and representation metrics, while early-gradient norm is substantially
+reduced. The RQ1 answer is therefore not binary ``equivalent/not equivalent''.
+Proximity depends on the level of analysis---final metric, gradient direction, gradient
+magnitude, or representation state---and must be reported with its corresponding
+inference boundary.
+
+C01 records the supported Stage~1 paired macro-F1 equivalence result together with the
+Stage~2 final-quality preservation and cross-version runtime change; C02 independently
+records the supported layer-wise Stage~3A result.
+
+\section{Answer to RQ2}
+\label{sec:conclusion-rq2-en}
+
+RQ2 concerned localization of computational differences and their relation to
+mechanisms and cost components.
+
+Stage~3B B0 localizes \texttt{state\_inference} as the principal device-time region in
+the studied ROCm/float32 environment; Strict has higher device time and peak memory
+than FixedPred on this matrix. B0 uses three independent \texttt{model\_seed} values
+per configuration, so C03 is interpreted as descriptive localization on the
+registered profiling surface rather than a precise population estimate.
+
+The primary SI-MA0 mechanistic cost-attribution model fails COST-MA0 and that result is
+preserved as C04. Independent SI-MA1 calibration passes CAL-COST-MA1; its signed
+residual is interpreted as accounting over-closure, not negative physical cost,
+supporting C05.
+
+Exact B1 and B2 implementation candidates pass their own equivalence gates before
+comparative profiling, supporting C06. The registered matched 288-cell matrix then
+completes without failed or repeated runs. However, the separate registered
+engineering-continuation screen qualifies no configuration in any of the four
+B1/B2-by-FixedPred/Strict groups: each yields 0/16 and both candidates receive
+\texttt{reject\_or\_revise}. C07 records this bounded negative result descriptively.
+Passing numerical and trajectory equivalence does not guarantee passage of the
+resource-continuation screen, but neither universal baseline superiority nor universal
+non-viability of B1/B2 is inferred.
+
+RQ2 therefore receives a sequential-localization answer: cost is associated with the
+specific \texttt{state\_inference} region; the initial attribution hypothesis receives
+a negative result; observer-cost calibration is tested separately; and alternative
+exact computational organizations reach matched profiling after functional-equivalence
+gates but receive \texttt{reject\_or\_revise} on the registered engineering screen.
+
+\section{Answer to RQ3}
+\label{sec:conclusion-rq3-en}
+
+RQ3 combined three sequential levels: existence of preterminal records for which the
+registered analytic completion is admissible relative to the required response of the
+exact suffix; ability to recognize a non-zero subset on the frozen calibration surface
+from pre-action state with zero observed dangerous accepts; and positive computational
+benefit.
+
+On the sealed QWake-FP calibration surface, the first two levels hold in a bounded
+selective sense. Structural reconciliation gives 108 trajectories with seven epochs
+\(t=0,\ldots,6\). The highest-coverage zero-danger rule,
+\texttt{compute\_step >= 5}, accepts 108 preterminal step-5 records with one remaining
+sweep and 108 terminal-boundary step-6 records; all 216 accepted records have zero
+registered dangerous accepts. C08 therefore rests on at least 108 explicitly
+preterminal accepted records whose analytic candidate is labeled
+\code{EARLY_ADMISSIBLE} by the oracle. But the rule itself uses only
+\texttt{compute\_step >= 5}; C08 establishes a temporal fixed-prefix boundary on this
+surface and does not demonstrate input-dependent adaptivity or superiority of
+PC-CATM features. Registered 216/756 coverage (about 28.57\%) concerns the complete
+calibration surface and is not preterminal early-action coverage. C08 is therefore
+\texttt{supported} only within this calibration boundary; observing zero dangerous
+accepts does not establish population-level safety.
+
+The third, economic condition fails under frozen full decision-cost accounting. None
+of the 2,625 rules has zero dangerous accepts, non-zero coverage, and positive
+aggregate net saving simultaneously. C09 is \texttt{rejected}. For the highest-
+coverage zero-danger rule, full decision cost greatly exceeds the registered
+\texttt{remaining\_suffix\_ns} sum over accepted non-dangerous records, and about
+99.887\% of the accounted cost belongs to the observer category. The original C2
+estimand is retained; the residual-suffix sum is not interpreted as pure avoidable
+sweep time because accepted records include the terminal boundary.
+
+This negative economic result does not transfer to marginal execution cost of a simple
+recognizer. That estimand was outside C2, so C10 remains \code{not_tested}. Because
+no eligible rule existed, C2 established no rule freeze and the protocol did not open
+C3; C11 also remains \code{not_tested}.
+
+RQ3 therefore receives a three-part answer: preterminal states admitting the
+registered early action exist on the studied surface; 108 such step-5 records lie in
+the subset accepted by the highest-coverage zero-danger rule, while the original
+216/756 registered coverage additionally includes 108 terminal-boundary records; but
+no zero-danger rule with positive aggregate net saving exists under the frozen full
+accounting. Economic viability of a minimal implementation was not tested.
+
+\section{Scientific and Methodological Outcome}
+\label{sec:conclusion-contribution-en}
+
+Within its declared domain, the work links analytical levels often treated separately:
+final behavior, internal gradients and representations, mechanistic profiling, and a
+bounded decision about residual computation. The principal result is not selection of
+one ``best'' regime but localization of which properties agree, which differ, and which
+next hypothesis becomes admissible after each stage.
+
+Methodologically, the study separates difference from equivalence claims, uses the
+independently trained model as statistical unit, preserves negative tests, separates
+pre-action from post-action information in QWake-FP, and gates sequential stages by
+frozen receipts. Thesis-facing summaries bind key numerical claims to tracked evidence
+through SHA-256 and are checked in CI before LaTeX generation.
+
+This matters especially for negative results. SI-MA0 and C2 do not disappear after
+narrower explanations are found. They remain constraints on their respective
+hypotheses and determine whether a next experiment is scientifically new or merely a
+post-hoc modification of a completed estimand.
+
+\section{Inference Boundaries}
+
+The results concern the investigated Torch2PC versions, datasets,
+\code{lenet\_classic}, model seeds, algorithmic regimes, numerical tolerances, and
+frozen hardware/software environments. They do not establish universal PC/BP
+equivalence or a universally preferred implementation.
+
+QWake-FP C2 is additionally bounded to a finite rule family, 756 sealed calibration
+records, and frozen full decision-cost accounting. Zero dangerous accepts on this
+surface are not a population safety guarantee. Failure to find a zero-danger,
+economically beneficial rule does not exclude another recognizer, another state
+representation, or another architecture with lower marginal cost.
+
+These boundaries are not post-hoc caveats: the statuses \code{supported},
+\code{rejected}, \code{descriptive}, and \code{not_tested} are part of the
+claim contract and constrain the wording of conclusions.
+
+\section{Future Work}
+
+The immediate next research question is localized by C08--C10: can the observed or a
+functionally comparable recognizer preserve a preregistered dangerous-accept criterion
+on a new confirmatory surface at sufficiently low marginal cost that its actual extra
+runtime is below the cost of the avoided residual computation? This requires a new
+preregistration, a new cost-measurement surface, and independent measurement; the old
+C2 must not be retrospectively recomputed under a new accounting model.
+
+Once an eligible rule with measured marginal cost exists, an independent confirmatory
+campaign can be run on a new evidence surface. It requires its own protocol identity
+and is not a retroactively opened C3 of the original C2 chain.
+
+Further work includes transfer of the sequential analysis to other architectures,
+datasets, numerical-precision regimes, and hardware, and investigation of cheaper
+observer representations. In every case, behavioral similarity, internal mechanism,
+dangerous-accept criterion, and economic cost should remain separate.
+
+\section{Final Conclusion}
+
+The completed experimental program progressively narrowed the original question about
+the relation between predictive coding and backpropagation. In the studied domain,
+proximity of final quality does not imply identity of gradients, representations, or
+runtime; profiling localizes substantial cost in \texttt{state\_inference}; B1/B2 show
+that numerical and trajectory admissibility do not guarantee passage of a separate
+resource-continuation screen; and QWake-FP shows that a pre-action signal selecting a
+non-zero calibration region with zero observed dangerous accepts does not by itself
+establish economic viability.
+
+The separation of these levels is the principal outcome: bounded informational
+viability is supported while economic viability under the frozen accounting is
+rejected, and economic viability of a minimal implementation remains an open but now
+precisely formulated next question. The completed evidence chain reaches its
+preregistered stopping boundary: C2 remains bounded-negative on the economic test, C3
+remains closed, and any new claim requires a new experimental contract.

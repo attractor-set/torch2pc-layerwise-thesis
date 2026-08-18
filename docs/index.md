@@ -9,13 +9,13 @@
 
 ## Быстрый вход
 
-- [Основное описание](../README.md) — краткое описание проекта и итогов;
-- [Текущий статус](../STATUS.md) — авторитетный текущий статус и реестр C01–C11;
+- [Основное описание](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/README.md) — краткое описание проекта и итогов;
+- [Текущий статус](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/STATUS.md) — авторитетный текущий статус и реестр C01–C11;
 - [Исследовательские вопросы](research-question.md) — RQ1–RQ3 и финальные ответы;
 - [Методология](methodology.md) — завершённая последовательность проверок;
 - [Глоссарий](glossary.md) — нормативные значения терминов;
 - [Проверка репозитория](validation.md) — текущие проверки и выпуск `v1.0.0`;
-- [Дорожная карта](../ROADMAP.md) — только последующие исследования;
+- [Дорожная карта](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/ROADMAP.md) — только последующие исследования;
 - `thesis/main.tex` — канонический исходный текст диссертации;
 - `thesis/data/thesis_traceability.json` — машиночитаемая трассировка C01–C11.
 

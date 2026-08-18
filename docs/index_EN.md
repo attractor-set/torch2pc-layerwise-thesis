@@ -9,13 +9,13 @@ retained as research provenance and are not the current plan.
 
 ## Quick entry points
 
-- [README](../README_EN.md) — project overview and final outcomes;
-- [STATUS](../STATUS_EN.md) — authoritative current status and C01–C11 registry;
+- [README](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/README_EN.md) — project overview and final outcomes;
+- [STATUS](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/STATUS_EN.md) — authoritative current status and C01–C11 registry;
 - [Research questions](research-question_EN.md) — RQ1–RQ3 and final answers;
 - [Methodology](methodology_EN.md) — completed validation sequence;
 - [Glossary](glossary_EN.md) — normative term meanings;
 - [Repository validation](validation_EN.md) — current checks and `v1.0.0` release;
-- [Roadmap](../ROADMAP_EN.md) — follow-up research only;
+- [Roadmap](https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main/ROADMAP_EN.md) — follow-up research only;
 - `thesis/main.tex` — canonical dissertation source;
 - `thesis/data/thesis_traceability.json` — machine-readable C01–C11 traceability.
 

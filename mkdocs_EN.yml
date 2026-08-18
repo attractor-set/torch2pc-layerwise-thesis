@@ -1,6 +1,6 @@
 # Language-pair numeric parity for research-log paths: 0 07
 site_name: Torch2PC Layer-wise Thesis
-site_description: Final dissertation on backpropagation and predictive coding: PC-TREF, PC-CATM, Stage 1–3, and bounded QWake-FP
+site_description: "Final dissertation on backpropagation and predictive coding: PC-TREF, PC-CATM, Stage 1–3, and bounded QWake-FP"
 site_dir: site_en
 theme:
   name: material

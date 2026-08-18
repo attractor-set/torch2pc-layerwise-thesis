@@ -101,7 +101,20 @@ def main() -> None:
     )
     print("PUBLIC_ROADMAP_PRECEDENCE=PASS")
 
-    for relative in ("docs/index.md", "docs/index_EN.md"):
+    repository_blob_root = "https://github.com/attractor-set/torch2pc-layerwise-thesis/blob/main"
+    index_contracts = {
+        "docs/index.md": (
+            f"{repository_blob_root}/README.md",
+            f"{repository_blob_root}/STATUS.md",
+            f"{repository_blob_root}/ROADMAP.md",
+        ),
+        "docs/index_EN.md": (
+            f"{repository_blob_root}/README_EN.md",
+            f"{repository_blob_root}/STATUS_EN.md",
+            f"{repository_blob_root}/ROADMAP_EN.md",
+        ),
+    }
+    for relative, repository_links in index_contracts.items():
         _require(
             relative,
             (
@@ -113,8 +126,12 @@ def main() -> None:
                 "fixedpred_eta1_wavefront_completion_v1",
                 "complete_suffix_stage2_baseline_v1",
                 "thesis/data/thesis_traceability.json",
+                *repository_links,
             ),
         )
+        assert "](../README" not in _read(relative)
+        assert "](../STATUS" not in _read(relative)
+        assert "](../ROADMAP" not in _read(relative)
     assert "На 21 июля 2026 года" not in _read("docs/index.md")
     assert "As of 21 July 2026" not in _read("docs/index_EN.md")
     print("PUBLIC_DOC_INDEX_CURRENTNESS=PASS")

@@ -12,7 +12,7 @@ jupyterlab==4.4.4
 ipykernel==6.29.5
 tqdm==4.70.0
 pytest==8.4.1
-pytest-cov==6.2.1
+pytest-cov==7.1.0
 ruff==0.12.2
 mypy==2.3.0
 types-PyYAML==6.0.12.20260724

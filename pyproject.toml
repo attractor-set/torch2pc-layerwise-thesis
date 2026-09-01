@@ -30,7 +30,7 @@ analysis = [
 ]
 dev = [
   "pytest>=8.3,<9",
-  "pytest-cov>=6,<7",
+  "pytest-cov>=6,<8",
   "ruff>=0.9,<1",
   "mypy>=1.14,<3",
   "types-PyYAML>=6.0,<7",
